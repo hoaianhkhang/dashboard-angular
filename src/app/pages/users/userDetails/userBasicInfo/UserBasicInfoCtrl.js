@@ -112,7 +112,7 @@
                 }).then(function (res) {
                     $scope.loadingUserBasicInfo = false;
                     if (res.status === 200) {
-                        toastr.success('Successfully updated the user info!');
+                        toastr.success('Successfully updated the user info');
                         vm.getUser();
                     }
                 }).catch(function (error) {

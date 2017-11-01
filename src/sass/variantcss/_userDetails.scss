@@ -1,3 +1,45 @@
+.user-profile-picture{
+  border-radius: 100px;
+  margin: 0 30px 30px 0;
+}
+
+.user-details-first-row{
+  display: inline-flex;
+}
+
+.user-details-name{
+  display: block;
+  font-size: 20px;
+  line-height: 24px;
+  font-weight: bold;
+  color: #222D32;
+  margin-bottom: 8px;
+}
+
+.user-details-info{
+  color: #A8A8A8;
+  font-size: 14px;
+  line-height: 17px;
+  margin-bottom: 0;
+}
+
+.user-details-nav-bar{
+  margin: 0;
+  color: #A8A8A8;
+  font-weight: bold;
+  list-style: none;
+  padding: 0;
+  li{
+    font-size: 16px;
+    display: inline-block;
+    margin:0 25px 20px 0;
+    cursor: pointer;
+  }
+  li:hover{
+    color: $primary;
+  }
+}
+
 .user-btn-export{
   position: relative;
   top: -34px;
@@ -30,8 +72,14 @@
 }
 
 .user-details-table > tbody > tr > th {
-  padding: 6px;
+  font-size: 14px;
+  padding: 2px;
   vertical-align: middle;
+  line-height: 12px;
+}
+
+.user-details-table > tbody > tr > th:first-child {
+  color: #979797;
 }
 
 .user-details-table > tbody > tr > .custom-table-th {
@@ -40,11 +88,6 @@
 
 .user-details-table > tbody > tr > th:last-child{
   padding: 6px 0 6px 6px;
-}
-
-.user-details-table{
-  border-top: 1px solid gainsboro;
-  border-bottom: 1px solid gainsboro;
 }
 
 .user-accounts-btn{

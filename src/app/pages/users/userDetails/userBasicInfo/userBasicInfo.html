@@ -1,41 +1,44 @@
-<div ng-hide="loadingUserBasicInfo || editingUserBasicInfo" ba-panel ba-panel-title="Basic info" >
-    <div>
-        <button ng-click="toggleUserBasicInfoView(user)" class="btn btn-primary pull-right user-accounts-btn panel-header-button">Edit</button>
+<div ng-hide="loadingUserBasicInfo || editingUserBasicInfo" class="panel panel-default">
+    <div class="panel-heading">
+        <span class="user-details-panel-title">Basic info</span>
+        <a ng-click="toggleUserBasicInfoView(user)" class="user-details-panel-link pull-right pointer">Edit</a>
     </div>
-    <table class="table table-condensed table-striped user-details-table">
-        <tr>
-            <th width="50%"><strong>First name</strong></th>
-            <th ng-bind="user.first_name"></th>
-        </tr>
-        <tr>
-            <th width="50%"><strong>Last name</strong></th>
-            <th ng-bind="user.last_name"></th>
-        </tr>
-        <tr>
-            <th width="50%"><strong>Nationality</strong></th>
-            <th ng-bind="user.nationality | isoCountry"></th>
-        </tr>
-        <tr>
-            <th width="50%"><strong>Language</strong></th>
-            <th ng-bind="user.language"></th>
-        </tr>
-        <tr>
-            <th width="50%"><strong>Date of birth</strong></th>
-            <th ng-bind="user.birth_date"></th>
-        </tr>
-        <tr>
-            <th width="50%"><strong>Age</strong></th>
-            <th ng-bind="user.birth_date | ageCalculator"></th>
-        </tr>
-        <tr>
-            <th width="50%"><strong>Id number</strong></th>
-            <th ng-bind="user.id_number"></th>
-        </tr>
-        <tr>
-            <th width="50%"><strong>Status</strong></th>
-            <th>{{user.status | capitalizeWord}}</th>
-        </tr>
-    </table>
+    <div class="panel-body">
+        <table class="table user-details-table">
+            <tr>
+                <th width="12%">First name</th>
+                <th ng-bind="user.first_name"></th>
+            </tr>
+            <tr>
+                <th width="12%">Last name</th>
+                <th ng-bind="user.last_name"></th>
+            </tr>
+            <tr>
+                <th width="12%">Nationality</th>
+                <th ng-bind="user.nationality | isoCountry"></th>
+            </tr>
+            <tr>
+                <th width="12%">Language</th>
+                <th ng-bind="user.language"></th>
+            </tr>
+            <tr>
+                <th width="12%">Date of birth</th>
+                <th ng-bind="user.birth_date"></th>
+            </tr>
+            <tr>
+                <th width="12%">Age</th>
+                <th ng-bind="user.birth_date | ageCalculator"></th>
+            </tr>
+            <tr>
+                <th width="12%">Id number</th>
+                <th ng-bind="user.id_number"></th>
+            </tr>
+            <tr>
+                <th width="12%">Status</th>
+                <th>{{user.status | capitalizeWord}}</th>
+            </tr>
+            </table>
+    </div>
 </div>
 <div ba-panel ng-show="loadingUserBasicInfo">
     <loading-image></loading-image>

@@ -1,22 +1,38 @@
-<content-top></content-top>
-<button ng-csv="getCSVArray" filename="{{getFileName}}"
-        class="btn pull-right btn-primary user-accounts-btn user-btn-export">Export</button>
+<!--<button ng-csv="getCSVArray" filename="{{getFileName}}"-->
+        <!--class="btn pull-right btn-primary user-accounts-btn user-btn-export">Export</button>-->
 <div class="user-details-view" ng-hide="loadingUser">
-    <div class="row divider">
-        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
-            <img class="pointer" ng-click="openUserProfilePictureModal('app/pages/users/userDetails/userProfilePictureModal/userProfilePictureModal.html','lg',user)"
-                 ng-src="{{user.profile}}"  width="90" height="90" alt="token Image">
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 user-details-first-row">
+            <img class="pointer user-profile-picture" ng-click="openUserProfilePictureModal('app/pages/users/userDetails/userProfilePictureModal/userProfilePictureModal.html','md',user)"
+                 ng-src="{{user.profile}}"  width="130" height="130" alt="token Image">
+            <div>
+                <span class="user-details-name">{{user.first_name}} {{user.last_name}}</span>
+                <p ngclipboard ngclipboard-success="copiedSuccessfully()" data-clipboard-text="{{user.identifier}}"
+                   class="user-details-info pointer">identifier: {{user.identifier}}</p>
+                <p class="user-details-info">user for {{beenAUser}}
+                </p>
+            </div>
         </div>
     </div>
     <div class="row">
-        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-            <user-account-info></user-account-info>
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <ul class="user-details-nav-bar">
+                <li>Details</li>
+                <li>Currencies</li>
+                <li>Accounts</li>
+                <li>Transactions</li>
+            </ul>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+            <!--<user-account-info></user-account-info>-->
             <user-basic-info></user-basic-info>
             <user-address></user-address>
             <user-bank-account></user-bank-account>
             <user-documents></user-documents>
         </div>
-        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
             <user-activity></user-activity>
             <user-accounts-list></user-accounts-list>
             <user-accounts></user-accounts>
