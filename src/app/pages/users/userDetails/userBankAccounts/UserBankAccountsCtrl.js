@@ -30,6 +30,7 @@
                     $scope.loadingUserBankAccount = false;
                     if (res.status === 200) {
                         $scope.userBanks = res.data.data.results;
+                        console.log($scope.userBanks);
                         $window.sessionStorage.userBanks = JSON.stringify(res.data.data.results);
                     }
                 }).catch(function (error) {

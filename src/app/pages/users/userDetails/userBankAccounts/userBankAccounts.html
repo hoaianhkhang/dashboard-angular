@@ -1,56 +1,31 @@
-<div ng-hide="loadingUserBankAccount || addingUserBankAccount || editingUserBankAccount" ba-panel ba-panel-title="Bank accounts" >
-    <button ng-click="toggleAddUserBankAccountView()" class="btn btn-success pull-right user-accounts-btn panel-header-button">Add</button>
-    <div ng-repeat="bank in userBanks">
-        <table class="table table-condensed table-striped user-details-table divider">
-            <tr>
-                <th width="50%"><strong>Account name/holder</strong></th>
-                <th>{{bank.name || 'None'}}</th>
-            </tr>
-            <tr>
-                <th width="50%"><strong>Account number</strong></th>
-                <th>{{bank.number || 'None'}}</th>
-            </tr>
-            <tr>
-                <th width="50%"><strong>Account type</strong></th>
-                <th>{{bank.type || 'None'}}</th>
-            </tr>
-            <tr>
-                <th width="50%"><strong>Bank name</strong></th>
-                <th>{{bank.bank_name || 'None'}}</th>
-            </tr>
-            <tr>
-                <th width="50%"><strong>Bank code</strong></th>
-                <th>{{bank.bank_code || 'None'}}</th>
-            </tr>
-            <tr>
-                <th width="50%"><strong>Branch code</strong></th>
-                <th>{{bank.branch_code || 'None'}}</th>
-            </tr>
-            <tr>
-                <th width="50%"><strong>Bank address</strong></th>
-                <th>{{bank.address || 'None'}}</th>
-            </tr>
-            <tr>
-                <th width="50%"><strong>Swift</strong></th>
-                <th>{{bank.swift || 'None'}}</th>
-            </tr>
-            <tr>
-                <th width="50%"><strong>IBAN</strong></th>
-                <th>{{bank.iban || 'None'}}</th>
-            </tr>
-            <tr>
-                <th width="50%"><strong>BIC</strong></th>
-                <th>{{bank.bic || 'None'}}</th>
-            </tr>
-            <tr>
-                <th width="50%"><strong>Status</strong></th>
-                <th>{{bank.status | capitalizeWord}}</th>
-            </tr>
-        </table>
-        <button ng-click="openUserBankAccountModal('app/pages/users/userDetails/userBankAccounts/userBankAccountModal/userBankAccountModal.html','md',bank)" class="btn btn-danger pull-right user-accounts-btn divider">Delete</button>
-        <button ng-click="toggleEditUserBankAccountView(bank)" class="btn btn-primary pull-right user-accounts-btn divider margin-right-10">Edit</button>
+<div ng-hide="loadingUserBankAccount || addingUserBankAccount || editingUserBankAccount" class="panel">
+    <div class="panel-heading">
+        <span class="user-details-panel-title">Bank accounts</span>
+        <a ng-click="toggleAddUserBankAccountView()" class="user-details-panel-link pull-right pointer">Add bank account</a>
+    </div>
+    <div class="panel-body">
+        <div  ng-repeat="bank in userBanks">
+            <div class="row user-address">
+                <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">
+                    <a class="pointer"><i class="fa fa-chevron-right"></i> <strong>{{bank.name}}</strong></a>
+                </div>
+                <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+                    <span ng-class="{'status-pending': bank.status == 'pending','status-verified': bank.status == 'verified',
+                    'status-incomplete-declined': bank.status == 'incomplete' || bank.status == 'declined'}"
+                          class="user-address-status">{{bank.status | uppercase}}</span>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                    <a ng-click="openUserAddressModal('app/pages/users/userDetails/userAddress/userAddressModal/userAddressModal.html','md',bank)"
+                       class="pull-right pointer">Delete</a>
+                    <a ng-click="toggleEditUserAddressView(bank)" class="pull-right pointer user-bank-edit margin-right-30">Edit</a>
+                    <a ng-show="bank.status == 'pending'" ng-click="verifyUserAddressConfirm(bank.id,'verified')" class="pull-right pointer user-bank-edit margin-right-30">Verify</a>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
+
+
 <div ba-panel ng-show="loadingUserBankAccount">
     <loading-image></loading-image>
 </div>
@@ -61,3 +36,53 @@
     <edit-user-bank-account-view></edit-user-bank-account-view>
 </div>
 
+
+
+<!--<table class="table table-condensed table-striped user-details-table divider">-->
+    <!--<tr>-->
+        <!--<th width="50%"><strong>Account name/holder</strong></th>-->
+        <!--<th>{{bank.name || 'None'}}</th>-->
+    <!--</tr>-->
+    <!--<tr>-->
+        <!--<th width="50%"><strong>Account number</strong></th>-->
+        <!--<th>{{bank.number || 'None'}}</th>-->
+    <!--</tr>-->
+    <!--<tr>-->
+        <!--<th width="50%"><strong>Account type</strong></th>-->
+        <!--<th>{{bank.type || 'None'}}</th>-->
+    <!--</tr>-->
+    <!--<tr>-->
+        <!--<th width="50%"><strong>Bank name</strong></th>-->
+        <!--<th>{{bank.bank_name || 'None'}}</th>-->
+    <!--</tr>-->
+    <!--<tr>-->
+        <!--<th width="50%"><strong>Bank code</strong></th>-->
+        <!--<th>{{bank.bank_code || 'None'}}</th>-->
+    <!--</tr>-->
+    <!--<tr>-->
+        <!--<th width="50%"><strong>Branch code</strong></th>-->
+        <!--<th>{{bank.branch_code || 'None'}}</th>-->
+    <!--</tr>-->
+    <!--<tr>-->
+        <!--<th width="50%"><strong>Bank bank</strong></th>-->
+        <!--<th>{{bank.bank || 'None'}}</th>-->
+    <!--</tr>-->
+    <!--<tr>-->
+        <!--<th width="50%"><strong>Swift</strong></th>-->
+        <!--<th>{{bank.swift || 'None'}}</th>-->
+    <!--</tr>-->
+    <!--<tr>-->
+        <!--<th width="50%"><strong>IBAN</strong></th>-->
+        <!--<th>{{bank.iban || 'None'}}</th>-->
+    <!--</tr>-->
+    <!--<tr>-->
+        <!--<th width="50%"><strong>BIC</strong></th>-->
+        <!--<th>{{bank.bic || 'None'}}</th>-->
+    <!--</tr>-->
+    <!--<tr>-->
+        <!--<th width="50%"><strong>Status</strong></th>-->
+        <!--<th>{{bank.status | capitalizeWord}}</th>-->
+    <!--</tr>-->
+<!--</table>-->
+<!--<button ng-click="openUserBankAccountModal('app/pages/users/userDetails/userBankAccounts/userBankAccountModal/userBankAccountModal.html','md',bank)" class="btn btn-danger pull-right user-accounts-btn divider">Delete</button>-->
+<!--<button ng-click="toggleEditUserBankAccountView(bank)" class="btn btn-primary pull-right user-accounts-btn divider margin-right-10">Edit</button>-->
