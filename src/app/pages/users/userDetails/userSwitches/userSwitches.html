@@ -1,26 +1,38 @@
-<div ng-hide="loadingUserSwitches || addingUserSwitches || editingUserSwitches" ba-panel class="setting-bank-accounts" ba-panel-title="User switches">
-    <button ng-click="toggleAddUserSwitchesView()" class="btn btn-success pull-right user-accounts-btn panel-header-button">Add</button>
-    <table ng-show="userSwitchesList.length > 0" class="table fees-table table-striped setting-bank-accounts-table">
-        <tr class="black-muted-bg divider">
-            <th><strong>Tx Type</strong></th>
-            <th><strong>Subtype</strong></th>
-            <th><strong>Enabled</strong></th>
-            <th></th>
-        </tr>
-        <tr ng-repeat="switches in userSwitchesList">
-            <td class="table-row-center transactions-list-element" title="{{switches.tx_type}}" ng-bind="switches.tx_type | capitalizeWord | limitTo: '35'"></td>
-            <td class="table-row-center transactions-list-element" title="{{switches.subtype}}" ng-bind="switches.subtype ? switches.subtype: 'None' | limitTo: '35'"></td>
-            <td class="table-row-center transactions-list-element" title="{{switches.enabled}}" ng-bind="switches.enabled | capitalizeWord"></td>
-            <td class="rehive-table-row-last-child">
-                <button ng-click="openUserSwitchesModal('app/pages/users/userDetails/userSwitches/userSwitchesModal/userSwitchesModal.html','md',switches)" class="btn btn-danger pull-right user-accounts-btn">Delete</button>
-                <button ng-click="toggleUserSwitchesEditView(switches)" class="btn btn-primary pull-right user-accounts-btn margin-right-10">Edit</button>
-            </td>
-        </tr>
-    </table>
-    <div ng-show="userSwitchesList.length == 0">
-        <i>No user switches have been added</i>
+<div ng-hide="loadingUserSwitches || addingUserSwitches || editingUserSwitches" class="setting-bank-accounts panel">
+    <div class="panel-heading">
+        <span class="user-details-panel-title">Switches</span>
+        <a ng-click="toggleAddUserSwitchesView()" class="user-details-panel-link pull-right pointer">Add switch</a>
+    </div>
+    <div class="panel-body">
+        <table ng-show="userSwitchesList.length > 0" class="table">
+            <tr class="user-switches-table-header divider">
+                <th>Tx Type</th>
+                <th>Subtype</th>
+                <th></th>
+            </tr>
+            <tr ng-repeat="switches in userSwitchesList | orderBy: '-created'">
+                <td class="table-row-center transactions-list-element" title="{{switches.tx_type}}" ng-bind="switches.tx_type | capitalizeWord | limitTo: '35'"></td>
+                <td class="table-row-center transactions-list-element" title="{{switches.enabled}}" ng-bind="switches.subtype ? switches.subtype: 'None' | limitTo: '35'"></td>
+                <td class="rehive-table-row-last-child">
+                    <div ng-show="switches.enabled">
+                        <i class="fa fa-toggle-on user-switch-active pull-right"  ng-click="enableSwitch(switches)"></i>
+                    </div>
+                    <div ng-hide="switches.enabled">
+                        <i class="fa fa-toggle-on fa-rotate-180 user-switch-inactive pull-right"  ng-click="enableSwitch(switches)"></i>
+                    </div>
+                    <a ng-click="openUserSwitchesModal('app/pages/users/userDetails/userSwitches/userSwitchesModal/userSwitchesModal.html','md',switches)"
+                       class="pull-right pointer margin-right-30">Delete</a>
+                    <a ng-click="toggleUserSwitchesEditView(switches)" class="pull-right pointer user-address-edit margin-right-30">Edit</a>
+                </td>
+            </tr>
+        </table>
+        <div ng-show="userSwitchesList.length == 0">
+            <i>No user switches have been added</i>
+        </div>
     </div>
 </div>
+
+
 <div ng-show="addingUserSwitches">
     <create-user-switch></create-user-switch>
 </div>

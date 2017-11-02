@@ -6,7 +6,7 @@
 
     /** @ngInject */
     function UserAddressCtrl($scope,environmentConfig,$stateParams,$http,cookieManagement,
-                             $window,errorHandler,$uibModal,toastr,$filter) {
+                             $window,errorHandler,$uibModal,toastr,$filter,$ngConfirm) {
 
         var vm = this;
         vm.token = cookieManagement.getCookie('TOKEN');
@@ -110,6 +110,52 @@
             vm.updatedUserAddress[field] = $scope.editUserAddress[field];
         };
 
+        $scope.verifyUserAddressConfirm = function (id,status) {
+            $ngConfirm({
+                title: 'Verify user address',
+                content: 'Are you sure you want to verify this address?',
+                animationBounce: 1,
+                animationSpeed: 100,
+                scope: $scope,
+                buttons: {
+                    close: {
+                        text: "No",
+                        btnClass: 'btn-default pull-left dashboard-btn'
+                    },
+                    ok: {
+                        text: "Yes",
+                        btnClass: 'btn-primary dashboard-btn',
+                        keys: ['enter'], // will trigger when enter is pressed
+                        action: function(scope){
+                            $scope.verifyUserAddress(id,status);
+                        }
+                    }
+                }
+            });
+        };
+
+        $scope.verifyUserAddress = function(id,status){
+            if(vm.token) {
+                $scope.loadingUserAddress = true;
+                $http.patch(environmentConfig.API + '/admin/users/addresses/' + id + '/',{status: status},{
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': vm.token
+                    }
+                }).then(function (res) {
+                    $scope.loadingUserAddress = false;
+                    if (res.status === 200) {
+                        toastr.success('Successfully verified user address');
+                        vm.getUserAddress();
+                    }
+                }).catch(function (error) {
+                    $scope.loadingUserAddress = false;
+                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.handleErrors(error);
+                });
+            }
+        };
+
         $scope.updateUserAddress = function(){
             if(vm.token) {
                 $scope.loadingUserAddress = true;
@@ -125,7 +171,7 @@
                     if (res.status === 200) {
                         vm.updatedUserAddress = {};
                         $scope.editUserAddress = {};
-                        toastr.success('Successfully updated user address!');
+                        toastr.success('Successfully updated user address');
                         vm.getUserAddress();
                     }
                 }).catch(function (error) {

@@ -1,4 +1,5 @@
 .ng-confirm.ng-confirm-white .ng-confirm-box{
+  padding: 25px;
   font-family: 'Source Sans Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   border-radius: 0;
 }
@@ -18,6 +19,11 @@
 }
 
 .ng-confirm .ng-confirm-box div.ng-confirm-title-c .ng-confirm-title{
-  font-size: 18px !important;
-  font-weight: 500 !important;
+  font-size: 14px !important;
+  font-weight: bold !important;
+  color: #222D32 !important;
+}
+
+.ng-confirm .ng-confirm-box .ng-confirm-buttons {
+  padding: 0;
 }

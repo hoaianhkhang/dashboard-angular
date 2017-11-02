@@ -6,35 +6,35 @@
     <div class="panel-body">
         <table class="table user-details-table">
             <tr>
-                <th width="12%">First name</th>
+                <th width="20%">First name</th>
                 <th ng-bind="user.first_name"></th>
             </tr>
             <tr>
-                <th width="12%">Last name</th>
+                <th width="20%">Last name</th>
                 <th ng-bind="user.last_name"></th>
             </tr>
             <tr>
-                <th width="12%">Nationality</th>
+                <th width="20%">Nationality</th>
                 <th ng-bind="user.nationality | isoCountry"></th>
             </tr>
             <tr>
-                <th width="12%">Language</th>
+                <th width="20%">Language</th>
                 <th ng-bind="user.language"></th>
             </tr>
             <tr>
-                <th width="12%">Date of birth</th>
+                <th width="20%">Date of birth</th>
                 <th ng-bind="user.birth_date"></th>
             </tr>
             <tr>
-                <th width="12%">Age</th>
+                <th width="20%">Age</th>
                 <th ng-bind="user.birth_date | ageCalculator"></th>
             </tr>
             <tr>
-                <th width="12%">Id number</th>
+                <th width="20%">Id number</th>
                 <th ng-bind="user.id_number"></th>
             </tr>
             <tr>
-                <th width="12%">Status</th>
+                <th width="20%">Status</th>
                 <th>{{user.status | capitalizeWord}}</th>
             </tr>
             </table>

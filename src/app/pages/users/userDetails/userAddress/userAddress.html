@@ -1,38 +1,32 @@
-<div ng-hide="loadingUserAddress || addingUserAddress || editingUserAddress" ba-panel ba-panel-title="Addresses">
-    <button ng-click="toggleAddUserAddressView()" class="btn btn-success pull-right user-accounts-btn panel-header-button">Add</button>
-    <div  ng-repeat="address in userAddresses">
-        <table class="table table-striped user-details-table divider">
-            <tr>
-                <th width="50%"><strong>Line 1</strong></th>
-                <th>{{address.line_1 || 'None'}}</th>
-            </tr>
-            <tr>
-                <th width="50%"><strong>Line 2</strong></th>
-                <th>{{address.line_2 || 'None'}}</th>
-            </tr>
-            <tr>
-                <th width="50%"><strong>City</strong></th>
-                <th>{{address.city || 'None'}}</th>
-            </tr>
-            <tr>
-                <th width="50%"><strong>State/province</strong></th>
-                <th>{{address.state_province || 'None'}}</th>
-            </tr>
-            <tr>
-                <th width="50%"><strong>Country</strong></th>
-                <th>{{address.country || 'None' | isoCountry}}</th>
-            </tr>
-            <tr>
-                <th width="50%"><strong>Postal code</strong></th>
-                <th>{{address.postal_code || 'None'}}</th>
-            </tr>
-            <tr>
-                <th width="50%"><strong>Status</strong></th>
-                <th>{{address.status | capitalizeWord}}</th>
-            </tr>
-        </table>
-        <button ng-click="openUserAddressModal('app/pages/users/userDetails/userAddress/userAddressModal/userAddressModal.html','md',address)" class="btn btn-danger pull-right user-accounts-btn divider">Delete</button>
-        <button ng-click="toggleEditUserAddressView(address)" class="btn btn-primary pull-right user-accounts-btn divider margin-right-10">Edit</button>
+<div ng-hide="loadingUserAddress || addingUserAddress || editingUserAddress" class="panel">
+    <div class="panel-heading">
+        <span class="user-details-panel-title">Address</span>
+        <a ng-click="toggleAddUserAddressView()" class="user-details-panel-link pull-right pointer">Add address</a>
+    </div>
+    <div class="panel-body">
+        <div  ng-repeat="address in userAddresses">
+            <div class="row user-address">
+                <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">
+                    {{address.line_1 ? address.line_1  + ',': ''}}
+                    {{address.line_2 ? address.line_2  + ',': ''}}
+                    {{address.city ? address.city  + ',': ''}}
+                    {{address.state_province ? address.state_province  + ',': ''}}
+                    {{address.country ? address.country  + ',': ''}}
+                    {{address.postal_code ? address.postal_code: ''}}
+                </div>
+                <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+                    <span ng-class="{'status-pending': address.status == 'pending','status-verified': address.status == 'verified',
+                    'status-incomplete-declined': address.status == 'incomplete' || address.status == 'declined'}"
+                          class="user-address-status">{{address.status | uppercase}}</span>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                    <a ng-click="openUserAddressModal('app/pages/users/userDetails/userAddress/userAddressModal/userAddressModal.html','md',address)"
+                       class="pull-right pointer">Delete</a>
+                    <a ng-click="toggleEditUserAddressView(address)" class="pull-right pointer user-address-edit margin-right-30">Edit</a>
+                    <a ng-show="address.status == 'pending'" ng-click="verifyUserAddressConfirm(address.id,'verified')" class="pull-right pointer user-address-edit margin-right-30">Verify</a>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 <div ba-panel ng-show="loadingUserAddress">
