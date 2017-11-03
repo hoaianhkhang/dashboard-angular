@@ -10,7 +10,6 @@
         var vm = this;
 
         $scope.userCryptoAccount = userCryptoAccount;
-        $scope.userCryptoAccount.metadata = metadataTextService.convertToText($scope.userCryptoAccount.metadata);
         vm.uuid = uuid;
         $scope.deletingUserCryptoAccount = false;
         vm.token = cookieManagement.getCookie('TOKEN');

@@ -37,7 +37,7 @@
         $scope.transactionsData = {};
         $scope.loadingLastTransactions = false;
         $scope.typeOptions = ['Type','Credit','Debit']; //Transfer
-        $scope.transactionStatusOptions = ['Status','Initiating','Processing','Pending','Complete','Failed'];
+        $scope.lastTransactionStatusOptions = ['Status','Pending','Complete','Failed','Deleted'];
         $scope.lastTransactionsCurrencyOptions = [];
         $scope.orderByOptions = ['Largest','Latest','Smallest'];
 

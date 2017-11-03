@@ -1,24 +1,35 @@
-<div ng-hide="loadingUserCryptoAccounts || addingUserCryptoAccounts || editingUserCryptoAccounts" ba-panel class="setting-bank-accounts" ba-panel-title="User crypto accounts">
-    <button ng-click="toggleAddUserCryptoAccountsView()" class="btn btn-success pull-right user-accounts-btn panel-header-button">Add</button>
-    <table ng-show="userCryptoAccountsList.length > 0" class="table fees-table table-striped setting-bank-accounts-table">
-        <tr class="black-muted-bg divider">
-            <th><strong>Address</strong></th>
-            <th><strong>Type</strong></th>
-            <th><strong>Status</strong></th>
-            <th></th>
-        </tr>
-        <tr ng-repeat="cryptoAccount in userCryptoAccountsList">
-            <td class="table-row-center transactions-list-element" title="{{cryptoAccount.address}}" ng-bind="cryptoAccount.address"></td>
-            <td class="table-row-center transactions-list-element" title="{{cryptoAccount.crypto_type | capitalizeWord}}" ng-bind="cryptoAccount.crypto_type | capitalizeWord"></td>
-            <td class="table-row-center transactions-list-element" title="{{cryptoAccount.status | capitalizeWord}}" ng-bind="cryptoAccount.status | capitalizeWord"></td>
-            <td class="rehive-table-row-last-child">
-                <button ng-click="openUserCryptoAccountsModal('app/pages/users/userDetails/userCryptoAccounts/userCryptoAccountsModal/userCryptoAccountsModal.html','md',cryptoAccount)" class="btn btn-danger pull-right user-accounts-btn">Delete</button>
-                <button ng-click="toggleUserCryptoAccountsEditView(cryptoAccount)" class="btn btn-primary pull-right user-accounts-btn margin-right-10">Edit</button>
-            </td>
-        </tr>
-    </table>
-    <div ng-show="userCryptoAccountsList.length == 0 && !loadingUserCryptoAccounts">
-        <i>No user crypto accounts are available</i>
+<div ng-hide="loadingUserCryptoAccounts || addingUserCryptoAccounts || editingUserCryptoAccounts"
+     class="panel">
+    <div class="panel-heading">
+            <span class="user-details-panel-title">Crypto accounts</span>
+        <a ng-click="toggleAddUserCryptoAccountsView()" class="user-details-panel-link pull-right pointer">Add crypto account</a>
+    </div>
+    <div class="panel-body">
+        <table ng-show="userCryptoAccountsList.length > 0" class="table">
+            <tr class="user-switches-table-header divider">
+                <th>Address</th>
+                <th>Type</th>
+                <th></th>
+                <th></th>
+            </tr>
+            <tr ng-repeat="cryptoAccount in userCryptoAccountsList | orderBy: '-created'">
+                <td class="table-row-center transactions-list-element" title="{{cryptoAccount.address}}" ng-bind="cryptoAccount.address"></td>
+                <td class="table-row-center transactions-list-element" title="{{cryptoAccount.crypto_type}}" ng-bind="cryptoAccount.crypto_type"></td>
+                <td class="table-row-center transactions-list-element">
+                    <span ng-class="{'status-pending': cryptoAccount.status == 'pending','status-verified': cryptoAccount.status == 'verified',
+                    'status-incomplete-declined': cryptoAccount.status == 'incomplete' || cryptoAccount.status == 'declined'}"
+                          class="user-address-status">{{cryptoAccount.status | uppercase}}</span>
+                </td>
+                <td class="rehive-table-row-last-child">
+                    <a ng-click="openUserCryptoAccountsModal('app/pages/users/userDetails/userCryptoAccounts/userCryptoAccountsModal/userCryptoAccountsModal.html','md',cryptoAccount)"
+                       class="pull-right pointer ">Delete</a>
+                    <a ng-click="toggleUserCryptoAccountsEditView(cryptoAccount)" class="pull-right pointer user-address-edit margin-right-30">Edit</a>
+                </td>
+            </tr>
+        </table>
+        <div ng-show="userCryptoAccountsList.length == 0 && !loadingUserCryptoAccounts">
+            <i>No user crypto accounts are available</i>
+        </div>
     </div>
 </div>
 <div ng-show="addingUserCryptoAccounts">
