@@ -17,7 +17,12 @@
         $scope.showingDocumentFile = true;
         $scope.defaultImageUrl = "/assets/img/app/placeholders/hex_grey.svg";
         if(typeof document.metadata == 'string'){
-            document.metadata = JSON.parse(document.metadata)
+            try{
+                document.metadata = JSON.parse(document.metadata);
+            } catch(err) {
+                document.metadata = {metadata: document.metadata};
+            }
+
         }
         $scope.editDocument = {
             file: {},
@@ -61,7 +66,7 @@
 
         $scope.checkIfMetadataExists = function () {
             if(Object.keys($scope.editDocument.metadata).length == 0){
-                return false
+                return false;
             } else {
                 return true;
             }

@@ -1,18 +1,25 @@
-<div ng-hide="loadingUserDocuments" ba-panel ba-panel-title="Documents">
-    <button ng-click="openAddUserDocumentModal('app/pages/users/userDetails/userDocuments/addUserDocumentModal/addUserDocumentModal.html','lg')"
-            class="btn btn-success pull-right user-accounts-btn panel-header-button">Add</button>
-    <table ng-show="userDocuments.length > 0" class="table table-hover table-condensed table-striped user-details-table">
-        <tr>
-            <th><strong>Category</strong></th>
-            <th><strong>Type</strong></th>
-            <th><strong>Status</strong></th>
-        </tr>
-        <tr class="pointer" ng-repeat="document in userDocuments" ng-click="openUserDocumentModal('app/pages/users/userDetails/userDocuments/userDocumentModal/userDocumentModal.html',document)">
-            <th width="30%">{{document.document_category}}</th>
-            <th width="30%">{{document.document_type}}</th>
-            <th width="30%">{{document.status | capitalizeWord}}</th>
-        </tr>
-    </table>
+<div ng-hide="loadingUserDocuments" class="panel">
+    <div class="panel-heading">
+        <span class="user-details-panel-title">Documents</span>
+        <a ng-click="openAddUserDocumentModal('app/pages/users/userDetails/userDocuments/addUserDocumentModal/addUserDocumentModal.html','lg')"
+           class="user-details-panel-link pull-right pointer">Add</a>
+    </div>
+    <div class="panel-body">
+        <table ng-show="userDocuments.length > 0" class="table">
+            <tr class="user-switches-table-header">
+                <th>Category</th>
+                <th>Type</th>
+                <th></th>
+            </tr>
+            <tr class="pointer user-details-hover" ng-repeat="document in userDocuments" ng-click="openUserDocumentModal('app/pages/users/userDetails/userDocuments/userDocumentModal/userDocumentModal.html',document)">
+                <th width="30%">{{document.document_category}}</th>
+                <th width="30%">{{document.document_type}}</th>
+                <th width="30%"><span ng-class="{'status-pending': document.status == 'pending','status-verified': document.status == 'verified',
+                    'status-incomplete-declined': document.status == 'incomplete' || document.status == 'declined'}"
+                                      class="user-address-status">{{document.status | uppercase}}</span></th>
+            </tr>
+        </table>
+    </div>
 </div>
 <div ba-panel ng-show="loadingUserDocuments">
     <loading-image></loading-image>
