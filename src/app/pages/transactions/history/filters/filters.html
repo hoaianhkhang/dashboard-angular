@@ -19,7 +19,8 @@
         <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12 divider datepicker">
             <label><strong>From date</strong></label>
             <p class="input-group">
-                <input type="text" class="form-control" uib-datepicker-popup="{{dateObj.format}}" ng-model="searchParams.searchDateFrom"
+                <input type="text" class="form-control custom-datepicker" uib-datepicker-popup="{{dateObj.format}}" popup-placement="bottom-left"
+                       ng-model="searchParams.searchDateFrom" show-button-bar="false" datepicker-options="{showWeeks: false}"
                        placeholder="mm/dd/yyyy" is-open="popup1.opened" close-text="Close" />
                 <span class="input-group-btn">
                     <button type="button" class="btn btn-default" ng-click="open1()"><i class="glyphicon glyphicon-calendar"></i></button>
@@ -29,7 +30,8 @@
         <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12 divider">
             <label><strong>To date</strong></label>
             <p class="input-group">
-                <input type="text" class="form-control" uib-datepicker-popup="{{dateObj.format}}" ng-model="searchParams.searchDateTo"
+                <input type="text" class="form-control custom-datepicker" uib-datepicker-popup="{{dateObj.format}}" popup-placement="bottom-left"
+                       ng-model="searchParams.searchDateTo" show-button-bar="false" datepicker-options="{showWeeks: false}"
                        placeholder="mm/dd/yyyy" is-open="popup2.opened" close-text="Close" />
                 <span class="input-group-btn">
                     <button type="button" class="btn btn-default" ng-click="open2()"><i class="glyphicon glyphicon-calendar"></i></button>

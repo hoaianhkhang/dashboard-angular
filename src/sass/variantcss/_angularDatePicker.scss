@@ -1,3 +1,11 @@
-.uib-datepicker-popup button.btn-info,.uib-datepicker-popup button.btn-danger ,.uib-datepicker-popup button.btn-success  {
-  color: white !important;
+.uib-datepicker-popup.dropdown-menu .uib-daypicker button.btn-default{
+  border: none;
+}
+
+:focus{
+  outline: none !important;
+}
+
+uib-datepicker-popup button.btn-default{
+  border: none;
 }
