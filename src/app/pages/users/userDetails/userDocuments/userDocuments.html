@@ -12,11 +12,11 @@
                 <th></th>
             </tr>
             <tr class="pointer user-details-hover" ng-repeat="document in userDocuments" ng-click="openUserDocumentModal('app/pages/users/userDetails/userDocuments/userDocumentModal/userDocumentModal.html',document)">
-                <th width="30%">{{document.document_category}}</th>
-                <th width="30%">{{document.document_type}}</th>
-                <th width="30%"><span ng-class="{'status-pending': document.status == 'pending','status-verified': document.status == 'verified',
+                <td width="30%">{{document.document_category}}</td>
+                <td width="30%">{{document.document_type}}</td>
+                <td width="30%"><span ng-class="{'status-pending': document.status == 'pending','status-verified': document.status == 'verified',
                     'status-incomplete-declined': document.status == 'incomplete' || document.status == 'declined'}"
-                                      class="user-address-status">{{document.status | uppercase}}</span></th>
+                                      class="user-address-status">{{document.status | uppercase}}</span></td>
             </tr>
         </table>
     </div>
