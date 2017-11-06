@@ -27,6 +27,7 @@
     "bootstrap-switch": "~3.3.2",
     "font-awesome": "fontawesome#~4.4.0",
     "moment": "~2.17.0",
+    "moment-precise-range": "codebox/moment-precise-range#latest",
     "angular-ui-router": "~0.3.2",
     "angular-bootstrap": "~1.3.3",
     "angular-ui-select": "^0.19.6",

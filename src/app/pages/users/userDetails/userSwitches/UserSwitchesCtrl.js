@@ -161,12 +161,36 @@
                     if (res.status === 200) {
                         $scope.editingUserSwitches = !$scope.editingUserSwitches;
                         vm.updatedUserSwitch = {};
-                        toastr.success('Successfully updated the user switch!');
+                        toastr.success('Successfully updated the user switch');
                         vm.getUserSwitches();
                     }
                 }).catch(function (error) {
                     vm.updatedUserSwitch = {};
                     $scope.loadingUserSwitches = false;
+                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.handleErrors(error);
+                });
+            }
+        };
+
+        $scope.enableSwitch = function (switches) {
+            if(vm.token) {
+                $http.patch(environmentConfig.API + '/admin/users/' + vm.uuid + '/switches/' + switches.id + '/', {enabled: !switches.enabled}, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': vm.token
+                    }
+                }).then(function (res) {
+                    if (res.status === 200) {
+                        if(!switches.enabled){
+                            switches.enabled = !switches.enabled;
+                            toastr.success('Switch enabled');
+                        } else {
+                            switches.enabled = !switches.enabled;
+                            toastr.success('Switch disabled');
+                        }
+                    }
+                }).catch(function (error) {
                     errorHandler.evaluateErrors(error.data);
                     errorHandler.handleErrors(error);
                 });

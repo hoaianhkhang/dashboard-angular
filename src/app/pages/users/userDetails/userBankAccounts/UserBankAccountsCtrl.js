@@ -6,12 +6,14 @@
 
     /** @ngInject */
     function UserBankAccountsCtrl($scope,environmentConfig,$stateParams,$uibModal,$http,$window,
-                                  cookieManagement,errorHandler,toastr,$filter) {
+                                  cookieManagement,errorHandler,toastr,$filter,$ngConfirm) {
 
         var vm = this;
         vm.token = cookieManagement.getCookie('TOKEN');
         vm.uuid = $stateParams.uuid;
         vm.updatedUserBankAccount = {};
+        $scope.isBankDetailsCollapsed = true;
+        $scope.uncollapsedBank = {};
         $scope.userBankAccountParams = {status: 'Pending'};
         $scope.editUserBankAccount = {};
         $scope.loadingUserBankAccount = true;
@@ -42,6 +44,7 @@
         vm.getUserBankAccounts();
 
         $scope.toggleAddUserBankAccountView = function () {
+            $scope.isBankDetailsCollapsed = true;
             $scope.addingUserBankAccount = !$scope.addingUserBankAccount;
         };
 
@@ -72,6 +75,7 @@
         };
 
         $scope.toggleEditUserBankAccountView = function (userBankAccount) {
+            $scope.isBankDetailsCollapsed = true;
             if(userBankAccount){
                 vm.getUserBankAccount(userBankAccount);
             } else {
@@ -120,7 +124,7 @@
                     if (res.status === 200) {
                         vm.updatedUserBankAccount = {};
                         $scope.editUserBankAccount = {};
-                        toastr.success('Successfully updated user bank account!');
+                        toastr.success('Successfully updated user bank account');
                         vm.getUserBankAccounts();
                     }
                 }).catch(function (error) {
@@ -128,6 +132,70 @@
                     errorHandler.evaluateErrors(error.data);
                     errorHandler.handleErrors(error);
                 });
+            }
+        };
+
+        $scope.userAddressChanged =  function (field) {
+            vm.updatedUserAddress[field] = $scope.editUserAddress[field];
+        };
+
+        $scope.verifyBankAccountConfirm = function (bank) {
+            $ngConfirm({
+                title: 'Verify user bank account',
+                content: 'Are you sure you want to verify this bank account?',
+                animationBounce: 1,
+                animationSpeed: 100,
+                scope: $scope,
+                buttons: {
+                    close: {
+                        text: "No",
+                        btnClass: 'btn-default pull-left dashboard-btn'
+                    },
+                    ok: {
+                        text: "Yes",
+                        btnClass: 'btn-primary dashboard-btn',
+                        keys: ['enter'], // will trigger when enter is pressed
+                        action: function(scope){
+                            $scope.verifyBankAccount(bank);
+                        }
+                    }
+                }
+            });
+        };
+
+        $scope.verifyBankAccount = function(bank){
+            if(vm.token) {
+                $scope.loadingUserBankAccount = true;
+                $http.patch(environmentConfig.API + '/admin/users/bank-accounts/' + bank.id + '/',{status: 'verified'},{
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': vm.token
+                    }
+                }).then(function (res) {
+                    $scope.loadingUserBankAccount = false;
+                    if (res.status === 200) {
+                        toastr.success('Bank account verified');
+                        vm.getUserBankAccounts();
+                    }
+                }).catch(function (error) {
+                    $scope.loadingUserBankAccount = false;
+                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.handleErrors(error);
+                });
+            }
+        };
+
+        $scope.showCollapsedBankDetails = function (bank) {
+            if(bank.id == $scope.uncollapsedBank.id){
+                $scope.isBankDetailsCollapsed = true;
+            } else {
+                $scope.isBankDetailsCollapsed = false;
+            }
+
+            if($scope.isBankDetailsCollapsed){
+                $scope.uncollapsedBank = {};
+            } else {
+                $scope.uncollapsedBank = bank;
             }
         };
 

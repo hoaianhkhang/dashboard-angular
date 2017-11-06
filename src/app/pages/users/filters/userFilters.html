@@ -45,8 +45,9 @@
         <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12 divider">
             <label><strong>From joined</strong></label>
             <p class="input-group">
-                <input type="text" class="form-control" uib-datepicker-popup="{{dateObj.format}}"
-                       ng-model="usersSearchParams.searchJoinedDateFrom"
+                <input type="text" class="form-control custom-datepicker" uib-datepicker-popup="{{dateObj.format}}"
+                       ng-model="usersSearchParams.searchJoinedDateFrom" popup-placement="bottom-left"
+                       show-button-bar="false" datepicker-options="{showWeeks: false}"
                        placeholder="mm/dd/yyyy" is-open="popup1.opened" close-text="Close" />
                 <span class="input-group-btn">
                     <button type="button" class="btn btn-default" ng-click="open1()"><i class="glyphicon glyphicon-calendar"></i></button>
@@ -56,8 +57,9 @@
         <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12 divider">
             <label><strong>To joined</strong></label>
             <p class="input-group">
-                <input type="text" class="form-control" uib-datepicker-popup="{{dateObj.format}}"
-                       ng-model="usersSearchParams.searchJoinedDateTo"
+                <input type="text" class="form-control custom-datepicker" uib-datepicker-popup="{{dateObj.format}}"
+                       ng-model="usersSearchParams.searchJoinedDateTo" popup-placement="bottom-left"
+                       show-button-bar="false" datepicker-options="{showWeeks: false}"
                        placeholder="mm/dd/yyyy" is-open="popup2.opened" close-text="Close" />
                 <span class="input-group-btn">
                     <button type="button" class="btn btn-default" ng-click="open2()"><i class="glyphicon glyphicon-calendar"></i></button>
@@ -67,8 +69,9 @@
         <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12 divider">
             <label><strong>From last login</strong></label>
             <p class="input-group">
-                <input type="text" class="form-control" uib-datepicker-popup="{{dateObj.format}}"
-                       ng-model="usersSearchParams.searchLastLoginDateFrom"
+                <input type="text" class="form-control custom-datepicker" uib-datepicker-popup="{{dateObj.format}}"
+                       ng-model="usersSearchParams.searchLastLoginDateFrom" popup-placement="bottom-left"
+                       show-button-bar="false" datepicker-options="{showWeeks: false}"
                        placeholder="mm/dd/yyyy" is-open="popup3.opened" close-text="Close" />
                 <span class="input-group-btn">
                     <button type="button" class="btn btn-default" ng-click="open3()"><i class="glyphicon glyphicon-calendar"></i></button>
@@ -78,8 +81,9 @@
         <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12 divider">
             <label><strong>To last login</strong></label>
             <p class="input-group">
-                <input type="text" class="form-control" uib-datepicker-popup="{{dateObj.format}}"
-                       ng-model="usersSearchParams.searchLastLoginDateTo"
+                <input type="text" class="form-control custom-datepicker" uib-datepicker-popup="{{dateObj.format}}"
+                       ng-model="usersSearchParams.searchLastLoginDateTo" popup-placement="bottom-left"
+                       show-button-bar="false" datepicker-options="{showWeeks: false}"
                        placeholder="mm/dd/yyyy" is-open="popup4.opened" close-text="Close" />
                 <span class="input-group-btn">
                     <button type="button" class="btn btn-default" ng-click="open4()"><i class="glyphicon glyphicon-calendar"></i></button>

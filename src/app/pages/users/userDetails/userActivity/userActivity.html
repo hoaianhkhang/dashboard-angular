@@ -1,18 +1,23 @@
-<div ng-hide="loadingUserActivity" ba-panel ba-panel-title="User activity" >
-    <table class="table table-condensed table-striped user-details-table">
-        <tr>
-            <th width="40%"><strong>Joined</strong></th>
-            <th>{{user.date_joined | date:'mediumDate'}}, {{user.date_joined | date:'shortTime'}}</th>
-        </tr>
-        <tr>
-            <th width="40%"><strong>Last login</strong></th>
-            <th>{{user.last_login | date:'mediumDate'}}, {{user.last_login | date:'shortTime'}}</th>
-        </tr>
-        <tr>
-            <th width="40%"><strong>Transactions</strong></th>
-            <th><a  class="pointer" ng-click="goToTransactions(user.identifier)">View</a></th>
-        </tr>
-    </table>
+<div ng-hide="loadingUserActivity" class="panel" >
+    <div class="panel-heading">
+        <span class="user-details-panel-title">User activity</span>
+    </div>
+    <div class="panel-body">
+        <table class="table user-details-table">
+            <tr>
+                <th width="45%">Joined</th>
+                <th>{{user.date_joined | date:'mediumDate'}}, {{user.date_joined | date:'shortTime'}}</th>
+            </tr>
+            <tr>
+                <th width="45%">Last login</th>
+                <th>{{user.last_login | date:'mediumDate'}}, {{user.last_login | date:'shortTime'}}</th>
+            </tr>
+            <tr>
+                <th width="45%">Transactions</th>
+                <th><a  class="pointer" ng-click="goToTransactions(user.identifier)">View</a></th>
+            </tr>
+        </table>
+    </div>
 </div>
 <div ba-panel ng-show="loadingUserActivity">
     <loading-image></loading-image>

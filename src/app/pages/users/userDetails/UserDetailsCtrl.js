@@ -5,7 +5,7 @@
         .controller('UserDetailsCtrl', UserDetailsCtrl);
 
     /** @ngInject */
-    function UserDetailsCtrl($scope,environmentConfig,$http,cookieManagement,$uibModal,_,
+    function UserDetailsCtrl($scope,environmentConfig,$http,cookieManagement,$uibModal,_,toastr,
                              errorHandler,$stateParams,$location,$window,$filter) {
 
         var vm = this;
@@ -31,6 +31,8 @@
                     $scope.loadingUser = false;
                     if (res.status === 200) {
                         $scope.user = res.data.data;
+                        vm.calculateHowLongUserHasBeenWithCompany($scope.user.date_joined);
+                        console.log($scope.user);
                         $window.sessionStorage.userData = JSON.stringify(res.data.data);
                     }
                 }).catch(function (error) {
@@ -41,6 +43,52 @@
             }
         };
         vm.getUser();
+
+        $scope.copiedSuccessfully= function () {
+            toastr.success('Identifier copied successfully');
+        };
+
+        vm.calculateHowLongUserHasBeenWithCompany = function (joinedDate) {
+          var text = '',
+              joiningDate = moment(joinedDate),
+              dateNow = moment(Date.now()),
+              preciseDiff = moment.preciseDiff(dateNow, joiningDate, true);
+
+            if(preciseDiff.years){
+                if(preciseDiff.years === 1){
+                    text = preciseDiff.years + ' year';
+                } else {
+                    text = preciseDiff.years + ' years';
+                }
+            }
+
+            if(preciseDiff.days){
+                if(preciseDiff.years){
+                    text = text + ' and ';
+                }
+                if(preciseDiff.days === 1){
+                    text = text + preciseDiff.days + ' day';
+                } else {
+                    text = text + preciseDiff.days + ' days';
+                }
+            }
+
+            if(preciseDiff.hours){
+                if(preciseDiff.days){
+                    text = text + ' and ';
+                }
+              if(preciseDiff.hours === 1){
+                  text = text + preciseDiff.hours + ' hour';
+              } else {
+                  text = text + preciseDiff.hours + ' hours';
+              }
+            }
+
+            if(text === ''){
+                text = 'less than one hour';
+            }
+          $scope.beenAUser = text;
+        };
 
         $scope.goToSwitchesAndPermissions = function () {
           $location.path('user/' + vm.uuid + '/permissions-settings');

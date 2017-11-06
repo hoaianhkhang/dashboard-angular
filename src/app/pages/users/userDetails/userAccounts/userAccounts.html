@@ -1,36 +1,33 @@
 <div ng-hide="addingCurrencies" ng-repeat="account in accounts">
-    <div ng-hide="loadingUserAccounts" ba-panel
-         ba-panel-title="Account: {{account.name}}">
-        <!--<i ng-show="account.primary" class="fa user-account-primary-icon fa-check-circle" aria-hidden="true"></i>-->
-        <button ng-click="toggleAddAccountCurrency(account)" class="btn btn-success panel-header-button user-accounts-btn">Add</button>
-        <table ng-if="account.currencies.length > 0" class="table fees-table table-condensed table-striped user-details-table">
-            <tr>
-                <th><strong>Currency</strong></th>
-                <th><strong>Available balance</strong></th>
-                <th></th>
-            </tr>
-
-            <tr ng-repeat="acc in account.currencies">
-                <td class="user-accounts-list-element" ng-bind="acc.currency.code"></td>
-                <td class="user-accounts-list-element" title="{{acc.available_balance  | currencyModifiersFilter: acc.currency.divisibility}}"
-                    ng-bind="acc.available_balance  | currencyModifiersFilter: acc.currency.divisibility">
-                </td>
-                <td class="rehive-table-row-last-child">
-                    <button ng-click="goToSettings(acc.currency.code,account.reference)"
-                            class="btn btn-primary pull-right user-accounts-btn">Settings
-                    </button>
-
-                    <button ng-click="goToView('transactions.credit',acc.currency,account.user.email,account.reference)"
-                            class="btn btn-primary pull-right user-accounts-btn margin-right-10">Credit
-                    </button>
-                    <button ng-click="goToView('transactions.debit',acc.currency,account.user.email,account.reference)"
-                            class="btn btn-primary pull-right user-accounts-btn margin-right-10">Debit
-                    </button>
-                </td>
-            </tr>
-        </table>
-        <div ng-if="account.currencies.length == 0" ng-hide="loadingUserAccounts">
-            <i style="margin-top: 10px">No currencies associated with this account yet.</i>
+    <div ng-hide="loadingUserAccounts" class="panel">
+        <div class="panel-heading">
+            <span class="user-details-panel-title">Account: {{account.name}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <span ng-show="account.primary" class="user-primary-account user-address-status">PRIMARY</span></span>
+            <a ng-click="toggleAddAccountCurrency(account)" class="user-details-panel-link pull-right pointer">Add currency</a>
+        </div>
+        <div class="panel-body">
+            <table ng-show="account.currencies.length > 0" class="table">
+                <tr class="user-switches-table-header">
+                    <th>Currency</th>
+                    <th>Available balance</th>
+                    <th></th>
+                </tr>
+                <tr  ng-repeat="acc in account.currencies">
+                    <td width="15%" ng-bind="acc.currency.code"></td>
+                    <td width="30%" title="{{acc.available_balance  | currencyModifiersFilter: acc.currency.divisibility}}"
+                        ng-bind="acc.available_balance  | currencyModifiersFilter: acc.currency.divisibility"></td>
+                    <td class="rehive-table-row-last-child" width="55%">
+                        <a ng-click="goToSettings(acc.currency.code,account.reference)" class="pull-right pointer user-bank-edit">Settings</a>
+                        <a ng-click="goToView('transactions.credit',acc.currency,account.user.email,account.reference)"
+                           class="pull-right pointer user-bank-edit margin-right-30">Credit</a>
+                        <a ng-click="goToView('transactions.debit',acc.currency,account.user.email,account.reference)"
+                           class="pull-right pointer user-bank-edit margin-right-30">Debit</a>
+                        </td>
+                </tr>
+            </table>
+            <div ng-if="account.currencies.length == 0" ng-hide="loadingUserAccounts">
+                <i style="margin-top: 10px">No currencies associated with this account yet.</i>
+            </div>
         </div>
     </div>
 </div>

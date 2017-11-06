@@ -5,11 +5,13 @@
 }
 
 .modal-header {
-  color: $label-text;
+  padding: 25px 25px 22px 25px;
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
   .modal-title {
-    color: $dropdown-text;
+    font-size: 14px;
+    font-weight: bold;
+    color: #222D32;
   }
 }
 
@@ -50,18 +52,22 @@ $modal-input-border: #e7e7e7;
       @include placeholderStyle($dropdown-text, 0.9);
     }
     .modal-body p, .modal-body div, .modal-body span{
+      margin: 0;
       color: $dropdown-text;
     }
   }
   .modal-header {
-    border-bottom: 1px solid $modal-input-border;
+    border-bottom: 1px solid #EAEAEA;
     .close{
       margin-top: -5px;
     }
   }
+  .modal-body{
+    padding: 25px 25px 0 25px;
+  }
   .modal-footer {
+    padding: 25px;
     border: none;
-    padding-top: 0;
   }
   .modal-icon{
     margin-right: 3px;

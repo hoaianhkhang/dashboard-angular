@@ -13,37 +13,37 @@
             <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
                 <div ng-show="(document.document_category == 'Proof Of Identity') || document.document_category == 'Advanced Proof Of Identity'">
                     <h4 class="document-info-header">Basic info</h4>
-                    <table class="table table-condensed table-striped user-details-table">
+                    <table class="table user-details-table">
                         <tr>
-                            <th width="50%"><strong>First name</strong></th>
+                            <th width="50%">First name</th>
                             <th ng-bind="user.first_name || 'None'"></th>
                         </tr>
                         <tr>
-                            <th width="50%"><strong>Last name</strong></th>
+                            <th width="50%">Last name</th>
                             <th ng-bind="user.last_name || 'None'"></th>
                         </tr>
                         <tr>
-                            <th width="50%"><strong>Nationality</strong></th>
+                            <th width="50%">Nationality</th>
                             <th ng-bind="user.nationality | isoCountry"></th>
                         </tr>
                         <tr>
-                            <th width="50%"><strong>Language</strong></th>
+                            <th width="50%">Language</th>
                             <th ng-bind="user.language || 'None'"></th>
                         </tr>
                         <tr>
-                            <th width="50%"><strong>Date of birth</strong></th>
+                            <th width="50%">Date of birth</th>
                             <th ng-bind="user.birth_date"></th>
                         </tr>
                         <tr>
-                            <th width="50%"><strong>Age</strong></th>
+                            <th width="50%">Age</th>
                             <th ng-bind="user.birth_date | ageCalculator"></th>
                         </tr>
                         <tr>
-                            <th width="50%"><strong>Id number</strong></th>
+                            <th width="50%">Id number</th>
                             <th ng-bind="user.id_number || 'None'"></th>
                         </tr>
                         <tr>
-                            <th width="50%"><strong>Basic info status</strong></th>
+                            <th width="50%">Basic info status</th>
                             <th><select class="form-control pointer" ng-model="userInfo.status"
                                         ng-options="statusOption for statusOption in statusTypeOptions">
                             </select></th>
@@ -52,33 +52,33 @@
                 </div>
                 <div ng-show="document.document_category == 'Proof Of Address'">
                     <h4 class="document-info-header">Addresses</h4>
-                    <table class="table table-striped user-details-table divider"  ng-repeat="address in userAddresses">
+                    <table class="table user-details-table divider"  ng-repeat="address in userAddresses">
                         <tr>
-                            <th width="50%"><strong>Line 1</strong></th>
+                            <th width="50%">Line 1</th>
                             <th>{{address.line_1 || 'None'}}</th>
                         </tr>
                         <tr>
-                            <th width="50%"><strong>Line 2</strong></th>
+                            <th width="50%">Line 2</th>
                             <th>{{address.line_2 || 'None'}}</th>
                         </tr>
                         <tr>
-                            <th width="50%"><strong>City</strong></th>
+                            <th width="50%">City</th>
                             <th>{{address.city || 'None'}}</th>
                         </tr>
                         <tr>
-                            <th width="50%"><strong>State/province</strong></th>
+                            <th width="50%">State/province</th>
                             <th>{{address.state_province || 'None'}}</th>
                         </tr>
                         <tr>
-                            <th width="50%"><strong>Country</strong></th>
+                            <th width="50%">Country</th>
                             <th>{{address.country || 'None' | isoCountry}}</th>
                         </tr>
                         <tr>
-                            <th width="50%"><strong>Postal code</strong></th>
+                            <th width="50%">Postal code</th>
                             <th>{{address.postal_code || 'None'}}</th>
                         </tr>
                         <tr>
-                            <th width="50%"><strong>Address status</strong></th>
+                            <th width="50%">Address status</th>
                             <th><select class="form-control pointer" ng-model="address.status" ng-change="addressStatusTracking(address)"
                                         ng-options="statusOption for statusOption in statusTypeOptions">
                             </select></th>
@@ -88,9 +88,9 @@
                 <i ng-show="(document.document_category == 'Proof Of Address') && (userAddresses.length == 0)">No address provided</i>
                 <div ng-show="checkIfMetadataExists()">
                     <h4>Extra</h4>
-                    <table class="table table-striped user-details-table divider">
+                    <table class="table user-details-table divider">
                         <tr ng-repeat="(key, value) in editDocument.metadata">
-                            <th width="50%"><strong>{{key}}</strong></th>
+                            <th width="50%">{{key}}</th>
                             <th>{{value}}</th>
                         </tr>
                     </table>
@@ -102,19 +102,19 @@
                                accept="image/*" ngf-max-size="10MB" required>
                     </fieldset>
                     <div class="form-group">
-                        <label><strong>Document type</strong> <span class="required-icon">*</span></label>
+                        <label>Document type <span class="required-icon">*</span></label>
                         <br>
                         <select class="form-control pointer" ng-change="documentChanged('document_type')" ng-model="editDocument.document_type" ng-options="type for type in documentTypeOptions" required>
                         </select>
                     </div>
                     <div class="form-group">
-                        <label><strong>Document status</strong> <span class="required-icon">*</span></label>
+                        <label>Document status <span class="required-icon">*</span></label>
                         <br>
                         <select class="form-control pointer" ng-change="documentChanged('status')" ng-model="editDocument.status" ng-options="status for status in statusTypeOptions" required>
                         </select>
                     </div>
                     <div class="form-group">
-                        <label><strong>Note</strong></label>
+                        <label>Note</label>
                         <textarea rows="4" type="text" ng-change="documentChanged('note')" ng-model="editDocument.note" class="form-control"  placeholder='Enter note'></textarea>
                     </div>
                 </form>
@@ -128,26 +128,28 @@
                            accept="image/*" ngf-max-size="10MB" required>
                 </fieldset>
                 <div class="form-group">
-                    <label><strong>Document type</strong> <span class="required-icon">*</span></label>
+                    <label>Document type <span class="required-icon">*</span></label>
                     <br>
                     <select class="form-control pointer" ng-change="documentChanged('document_type')" ng-model="editDocument.document_type" ng-options="type for type in documentTypeOptions" required>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label><strong>Status</strong> <span class="required-icon">*</span></label>
+                    <label>Status <span class="required-icon">*</span></label>
                     <br>
                     <select class="form-control pointer" ng-change="documentChanged('status')" ng-model="editDocument.status" ng-options="status for status in statusTypeOptions" required>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label><strong>Note</strong></label>
+                    <label>Note</label>
                     <textarea rows="4" type="text" ng-change="documentChanged('note')" ng-model="editDocument.note" class="form-control"  placeholder='Enter note'></textarea>
                 </div>
             </form>
         </div>
     </div>
     <div class="modal-footer">
-        <button type="button" ng-click="deleteDocumentConfirm()" ng-disabled="updatingDocument" class="btn btn-danger dashboard-btn pull-left">Delete</button>
-        <button ng-click="updateDocument()" ng-disabled="updatingDocument" type="button" class="btn btn-primary dashboard-btn pull-right">Save</button>
+        <div class="user-document-modal-footer">
+            <button type="button" ng-click="deleteDocumentConfirm()" ng-disabled="updatingDocument" class="btn btn-danger dashboard-btn pull-left">Delete</button>
+            <button ng-click="updateDocument()" ng-disabled="updatingDocument" type="button" class="btn btn-primary dashboard-btn pull-right">Save</button>
+        </div>
     </div>
 </div>
