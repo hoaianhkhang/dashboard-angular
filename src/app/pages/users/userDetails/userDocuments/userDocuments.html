@@ -11,7 +11,7 @@
                 <th>Type</th>
                 <th></th>
             </tr>
-            <tr class="pointer user-details-hover" ng-repeat="document in userDocuments" ng-click="openUserDocumentModal('app/pages/users/userDetails/userDocuments/userDocumentModal/userDocumentModal.html',document)">
+            <tr class="pointer user-details-table-hover" ng-repeat="document in userDocuments" ng-click="openUserDocumentModal('app/pages/users/userDetails/userDocuments/userDocumentModal/userDocumentModal.html',document)">
                 <td width="30%">{{document.document_category}}</td>
                 <td width="30%">{{document.document_type}}</td>
                 <td width="30%"><span ng-class="{'status-pending': document.status == 'pending','status-verified': document.status == 'verified',

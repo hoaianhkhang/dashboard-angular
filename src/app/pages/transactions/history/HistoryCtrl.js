@@ -12,6 +12,29 @@
         vm.token = cookieManagement.getCookie('TOKEN');
         vm.currenciesList = JSON.parse($window.sessionStorage.currenciesList || '[]');
         $scope.showingFilters = true;
+        $scope.dateFilterOptions = ['Is in the last','In between','Is equal to','Is after','Is before'];
+        $scope.amountFilterOptions = ['Is equal to','Is between','Is greater than','Is less than']
+        $scope.dateFilterIntervalOptions = ['days','months'];
+        $scope.filtersObj = {
+            dateFilter: false,
+            amountFilter: false,
+            statusFilter: false,
+            transactionTypeFilter: false,
+            transactionIdFilter: false,
+            userFilter: false,
+            currencyFilter: false,
+            pageSizeFilter: false,
+            orderByFilter: false
+        };
+        $scope.applyFiltersObj = {
+            dateFilter: {
+                selectedDateOption: 'Is in the last',
+                selectedDayIntervalOption: 'days'
+            },
+            amountFilter: {
+                selectedAmountOption: 'Is equal to'
+            }
+        };
 
         $scope.pagination = {
             itemsPerPage: 26,
@@ -58,6 +81,8 @@
             $scope.popup2.opened = true;
         };
 
+        // for CSV starts
+
         $scope.getFileName = $filter('date')(Date.now(),'mediumDate') + ' ' + $filter('date')(Date.now(),'shortTime') + '-transactionsHistory.csv';
 
         $scope.getHeader = function () {return ["Id", "User","Balance","Type","Currency", "Amount",
@@ -95,9 +120,7 @@
             return array;
         };
 
-        $scope.showFilters = function () {
-            $scope.showingFilters = !$scope.showingFilters;
-        };
+        // for CSV ends
 
         $scope.orderByFunction = function () {
             return ($scope.searchParams.searchOrderBy == 'Latest' ? '-created' : $scope.searchParams.searchOrderBy == 'Largest' ? '-amount' : $scope.searchParams.searchOrderBy == 'Smallest' ? 'amount' : '');
@@ -129,6 +152,10 @@
             if($scope.pagination.itemsPerPage > 250){
                 $scope.pagination.itemsPerPage = 250;
             }
+        };
+
+        $scope.showFilters = function () {
+            $scope.showingFilters = !$scope.showingFilters;
         };
         
         $scope.clearFilters = function () {
@@ -166,6 +193,9 @@
 
         $scope.getLatestTransactions = function(applyFilter){
             if(vm.token) {
+
+                $scope.showingFilters = true;
+
                 $scope.transactionsStateMessage = '';
                 $scope.loadingTransactions = true;
 
@@ -240,6 +270,10 @@
             }, function(){
             });
         };
+
+        //filter functions start
+
+
 
     }
 })();

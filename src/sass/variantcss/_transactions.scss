@@ -1,3 +1,77 @@
+.margin-left-12{
+  margin-left: 12px !important;
+}
+
+.transactions-btn{
+  width: 70px;
+}
+
+.table-filters{
+  position: absolute;
+  box-shadow: 0 2px 6px #979797;
+  top: 10px;
+  width: 450px;
+  & > .panel-heading{
+    padding: 8px 8px 8px 25px !important;
+    & .table-filter-heading button{
+        padding: 4px 12px;
+    }
+  }
+  & > .panel-body{
+    padding: 8px 8px 14px 25px !important;
+    & .date-filter-view{
+      display: inline-flex;
+    }
+    & select{
+      height: 22px;
+      width: 120px;
+      &.form-control{
+        padding: 0 4px !important;
+      }
+    }
+    & input.transaction-amount-input{
+      height: 22px;
+      width: 100px;
+      margin-left: 12px;
+      padding: 0;
+      text-align: center;
+    }
+    & input.transaction-date-interval-input{
+      height: 22px;
+      width: 30px;
+      margin-left: 12px;
+      padding: 0;
+      text-align: center;
+    }
+    & input.transaction-date-filter-input{
+      height: 22px;
+      width: 100px;
+      margin-left: 12px;
+      padding: 0;
+      text-align: center;
+    }
+    & .date-filter-in-between-view{
+      display: inline-flex;
+      line-height: 0;
+      & .glyphicon{
+        font-size: 12px;
+      }
+    }
+    & .amount-filter-in-between-view{
+      display: inline-flex;
+      height: 22px;
+    }
+    & .calender-button{
+      padding: 0px 6px;
+    }
+  }
+}
+
+.table-filter-heading{
+  line-height: 30px;
+  height: 30px;
+}
+
 .panel-header-filter-icon-hide{
   position: absolute;
   top: 7px;
@@ -42,6 +116,10 @@ a.panel-header-filter-clear{
 
 .margin-right-10{
   margin-right: 10px;
+}
+
+.margin-right-25{
+  margin-right: 25px;
 }
 
 .margin-right-30{
@@ -90,6 +168,7 @@ a.panel-header-filter-clear{
 }
 
 .transaction-details-button{
+  margin: 0 15px;
   width: auto !important;
   padding: 6px !important;
 }
