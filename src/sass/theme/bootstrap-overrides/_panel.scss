@@ -67,6 +67,11 @@ $panel-heading-font-size: 17px;
   > .panel-heading .user-details-panel-link{
     font-size: 14px;
   }
+  > .panel-heading .panel-modal-close-icon em{
+    position: absolute;
+    top: 19px;
+    right: 25px;
+  }
   > .panel-footer {
     color: $default-text;
   }
