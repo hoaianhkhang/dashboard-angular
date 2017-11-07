@@ -35,10 +35,10 @@
                 selectedAmountOption: 'Is equal to'
             },
             statusFilter: {
-                selectedStatusOption: 'Status'
+                selectedStatusOption: 'Pending'
             },
             transactionTypeFilter: {
-                selectedTransactionTypeOption: 'Type'
+                selectedTransactionTypeOption: 'Credit'
             },
             transactionSubtypeFilter: {
                 selectedTransactionSubtypeOption: ''
@@ -50,9 +50,7 @@
                 selectedUserOption: $state.params.code || null
             },
             currencyFilter:{
-                selectedCurrencyOption: {
-                    code: 'Currency'
-                }
+                selectedCurrencyOption: {}
             },
             orderByFilter: {
                 selectedOrderByOption: 'Latest'
@@ -81,8 +79,8 @@
         $scope.transactionsStateMessage = '';
         $scope.transactionsData = {};
         $scope.loadingTransactions = false;
-        $scope.typeOptions = ['Type','Credit','Debit']; //Transfer
-        $scope.statusOptions = ['Status','Pending','Complete','Failed','Deleted'];
+        $scope.typeOptions = ['Credit','Debit']; //Transfer
+        $scope.statusOptions = ['Pending','Complete','Failed','Deleted'];
         $scope.currencyOptions = [];
         $scope.orderByOptions = ['Latest','Largest','Smallest'];
 
@@ -159,7 +157,7 @@
 
         vm.getCompanyCurrencies = function(){
             //adding currency as default value in both results array and ng-model of currency
-            vm.currenciesList.splice(0,0,{code: 'Currency'});
+            $scope.applyFiltersObj.currencyFilter.selectedCurrencyOption = vm.currenciesList[0];
             $scope.currencyOptions = vm.currenciesList;
         };
         vm.getCompanyCurrencies();
@@ -177,17 +175,17 @@
         };
         
         $scope.clearFilters = function () {
-            // $scope.searchParams = {
-            //     searchId: null,
-            //     searchUser: null,
-            //     searchDateFrom: null,
-            //     searchDateTo: null,
-            //     searchType: 'Type',
-            //     searchStatus: 'Status',
-            //     searchCurrency: {code: 'Currency'},
-            //     searchOrderBy: 'Latest',
-            //     searchSubType: ''
-            // };
+            $scope.filtersObj = {
+                dateFilter: false,
+                amountFilter: false,
+                statusFilter: false,
+                transactionTypeFilter: false,
+                transactionIdFilter: false,
+                userFilter: false,
+                currencyFilter: false,
+                pageSizeFilter: false,
+                orderByFilter: false
+            };
         };
 
         vm.getTransactionUrl = function(){
@@ -197,13 +195,13 @@
                 page_size: $scope.pagination.itemsPerPage || 1,
                 created__gt: $scope.searchParams.searchDateFrom ? Date.parse($scope.searchParams.searchDateFrom): null,
                 created__lt: $scope.searchParams.searchDateTo? Date.parse($scope.searchParams.searchDateTo): null,
-                currency: ($scope.searchParams.searchCurrency.code ? ($scope.searchParams.searchCurrency.code == 'Currency' ? null: $scope.searchParams.searchCurrency.code): null),
-                user: ($scope.searchParams.searchUser ? encodeURIComponent($scope.searchParams.searchUser) : null),
-                orderby: ($scope.applyFiltersObj.orderByFilter.selectedOrderByOption == 'Latest' ? '-created' : $scope.applyFiltersObj.orderByFilter.selectedOrderByOption == 'Largest' ? '-amount' : $scope.applyFiltersObj.orderByFilter.selectedOrderByOption == 'Smallest' ? 'amount' : null),
-                id: $scope.searchParams.searchId ? encodeURIComponent($scope.searchParams.searchId) : null,
-                tx_type: ($scope.searchParams.searchType == 'Type' ? null : $scope.searchParams.searchType.toLowerCase()),
-                status: ($scope.searchParams.searchStatus == 'Status' ? null : $scope.searchParams.searchStatus),
-                subtype: $scope.searchParams.searchSubType ? $scope.searchParams.searchSubType: null
+                currency: $scope.filtersObj.currencyFilter ? $scope.applyFiltersObj.currencyFilter.selectedCurrencyOption.code: null,
+                user: $scope.filtersObj.userFilter ? ($scope.applyFiltersObj.userFilter.selectedUserOption ? encodeURIComponent($scope.applyFiltersObj.userFilter.selectedUserOption) : null): null,
+                orderby: $scope.filtersObj.orderByFilter ? ($scope.applyFiltersObj.orderByFilter.selectedOrderByOption == 'Latest' ? '-created' : $scope.applyFiltersObj.orderByFilter.selectedOrderByOption == 'Largest' ? '-amount' : $scope.applyFiltersObj.orderByFilter.selectedOrderByOption == 'Smallest' ? 'amount' : null): null,
+                id: $scope.filtersObj.transactionIdFilter ? ($scope.applyFiltersObj.transactionIdFilter.selectedTransactionIdOption ? encodeURIComponent($scope.applyFiltersObj.transactionIdFilter.selectedTransactionIdOption) : null): null,
+                tx_type: $scope.filtersObj.transactionTypeFilter ? $scope.applyFiltersObj.transactionTypeFilter.selectedTransactionTypeOption.toLowerCase() : null,
+                status: $scope.filtersObj.statusFilter ? $scope.applyFiltersObj.statusFilter.selectedStatusOption: null,
+                subtype: $scope.filtersObj.transactionTypeFilter ? ($scope.applyFiltersObj.transactionSubtypeFilter.selectedTransactionSubtypeOption ? $scope.applyFiltersObj.transactionSubtypeFilter.selectedTransactionSubtypeOption: null): null
             };
 
             return environmentConfig.API + '/admin/transactions/?' + serializeFiltersService.serializeFilters(searchObj);
@@ -272,16 +270,16 @@
 
             vm.theModal.result.then(function(transaction){
                 if(transaction){
-                    $scope.searchParams = {
-                        searchId: null,
-                        searchUser: $state.params.code || null,
-                        searchDateFrom: null,
-                        searchDateTo: null,
-                        searchType: 'Type',
-                        searchStatus: 'Status',
-                        searchCurrency: {code: 'Currency'},
-                        searchOrderBy: 'Latest',
-                        searchSubType: ''
+                    $scope.filtersObj = {
+                        dateFilter: false,
+                        amountFilter: false,
+                        statusFilter: false,
+                        transactionTypeFilter: false,
+                        transactionIdFilter: false,
+                        userFilter: false,
+                        currencyFilter: false,
+                        pageSizeFilter: false,
+                        orderByFilter: false
                     };
                     $scope.getLatestTransactions();
                 }

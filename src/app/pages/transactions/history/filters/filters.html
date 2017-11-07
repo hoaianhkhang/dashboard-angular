@@ -36,7 +36,7 @@
                                     <i class="glyphicon glyphicon-calendar"></i></button>
                             </span>
                         </div>
-                        <span class="margin-left-12">and</span>
+                        <span class="filter-text margin-left-12">and</span>
                         <div class="date-filter-in-between-view">
                             <input type="text" class="form-control transaction-date-filter-input custom-datepicker"
                                    uib-datepicker-popup="{{dateObj.format}}" popup-placement="bottom-left"
@@ -104,7 +104,7 @@
                     </div>
                     <div ng-show="applyFiltersObj.amountFilter.selectedAmountOption == 'Is between'" class="amount-filter-in-between-view">
                         <input type="text" ng-model="searchParams.amount" class="transaction-amount-input">
-                        <span class="margin-left-12">and</span>
+                        <span class="filter-text margin-left-12">and</span>
                         <input type="text" ng-model="searchParams.amount2" class="transaction-amount-input">
                     </div>
                     <div ng-show="applyFiltersObj.amountFilter.selectedAmountOption == 'Is greater than'" class="date-filter-in-between-view">
@@ -143,7 +143,7 @@
                     <select class="form-control pointer" ng-model="applyFiltersObj.transactionTypeFilter.selectedTransactionTypeOption"
                             ng-options="option for option in typeOptions">
                     </select>
-                    <span class="margin-left-12">subtype </span>
+                    <span class="filter-text margin-left-12">subtype </span>
                     <select class="form-control pointer margin-left-12" ng-model="applyFiltersObj.transactionSubtypeFilter.selectedTransactionSubtypeOption"
                             ng-options="subtypeOption for subtypeOption in subtypeOptions">
                     </select>
