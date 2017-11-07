@@ -98,7 +98,7 @@
                     }
             }).then(function (res) {
                 if (res.status === 200) {
-                    if(status == 'complete'){
+                    if(status == 'Complete'){
                         toastr.success('Transaction successfully updated, marked as Complete');
                     } else {
                         toastr.success('Transaction successfully updated, marked as Failed');
