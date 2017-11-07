@@ -50,6 +50,16 @@
       padding: 0;
       text-align: center;
     }
+    & input.transaction-id-input{
+      height: 22px;
+      width: 300px;
+      padding: 0;
+    }
+    & input.transaction-page-size-input{
+      height: 22px;
+      width: 40px;
+      padding: 0;
+    }
     & .date-filter-in-between-view{
       display: inline-flex;
       line-height: 0;

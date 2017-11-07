@@ -11,7 +11,7 @@
         var vm = this;
         vm.token = cookieManagement.getCookie('TOKEN');
         vm.currenciesList = JSON.parse($window.sessionStorage.currenciesList || '[]');
-        $scope.showingFilters = true;
+        $scope.showingFilters = false;
         $scope.dateFilterOptions = ['Is in the last','In between','Is equal to','Is after','Is before'];
         $scope.amountFilterOptions = ['Is equal to','Is between','Is greater than','Is less than']
         $scope.dateFilterIntervalOptions = ['days','months'];
@@ -33,6 +33,29 @@
             },
             amountFilter: {
                 selectedAmountOption: 'Is equal to'
+            },
+            statusFilter: {
+                selectedStatusOption: 'Status'
+            },
+            transactionTypeFilter: {
+                selectedTransactionTypeOption: 'Type'
+            },
+            transactionSubtypeFilter: {
+                selectedTransactionSubtypeOption: ''
+            },
+            transactionIdFilter: {
+                selectedTransactionIdOption: $state.params.transactionId || null
+            },
+            userFilter: {
+                selectedUserOption: $state.params.code || null
+            },
+            currencyFilter:{
+                selectedCurrencyOption: {
+                    code: 'Currency'
+                }
+            },
+            orderByFilter: {
+                selectedOrderByOption: 'Latest'
             }
         };
 
@@ -43,13 +66,13 @@
         };
 
         $scope.searchParams = {
-            searchId: $state.params.transactionId || null,
-            searchUser: $state.params.code || null,
+            searchId: null,
+            searchUser: null,
             searchDateFrom: null,
             searchDateTo: null,
             searchType: 'Type',
             searchStatus: 'Status',
-            searchCurrency: {},
+            searchCurrency: {code: 'Currency'},
             searchOrderBy: 'Latest',
             searchSubType: ''
         };
@@ -123,7 +146,9 @@
         // for CSV ends
 
         $scope.orderByFunction = function () {
-            return ($scope.searchParams.searchOrderBy == 'Latest' ? '-created' : $scope.searchParams.searchOrderBy == 'Largest' ? '-amount' : $scope.searchParams.searchOrderBy == 'Smallest' ? 'amount' : '');
+            return ($scope.applyFiltersObj.orderByFilter.selectedOrderByOption == 'Latest' ? '-created' :
+                $scope.applyFiltersObj.orderByFilter.selectedOrderByOption == 'Largest' ? '-amount' :
+                    $scope.applyFiltersObj.orderByFilter.selectedOrderByOption == 'Smallest' ? 'amount' : '');
         };
 
         $scope.pageSizeChanged =  function () {
@@ -135,7 +160,6 @@
         vm.getCompanyCurrencies = function(){
             //adding currency as default value in both results array and ng-model of currency
             vm.currenciesList.splice(0,0,{code: 'Currency'});
-            $scope.searchParams.searchCurrency.code = 'Currency';
             $scope.currencyOptions = vm.currenciesList;
         };
         vm.getCompanyCurrencies();
@@ -143,33 +167,27 @@
         if($state.params.currencyCode){
             vm.currenciesList.forEach(function (element) {
                 if(element.code == $state.params.currencyCode){
-                    $scope.searchParams.searchCurrency = element;
+                    $scope.applyFiltersObj.currencyFilter.selectedCurrencyOption = element;
                 }
             });
         }
-
-        $scope.pageSizeChanged =  function () {
-            if($scope.pagination.itemsPerPage > 250){
-                $scope.pagination.itemsPerPage = 250;
-            }
-        };
 
         $scope.showFilters = function () {
             $scope.showingFilters = !$scope.showingFilters;
         };
         
         $scope.clearFilters = function () {
-            $scope.searchParams = {
-                searchId: null,
-                searchUser: null,
-                searchDateFrom: null,
-                searchDateTo: null,
-                searchType: 'Type',
-                searchStatus: 'Status',
-                searchCurrency: {code: 'Currency'},
-                searchOrderBy: 'Latest',
-                searchSubType: ''
-            };
+            // $scope.searchParams = {
+            //     searchId: null,
+            //     searchUser: null,
+            //     searchDateFrom: null,
+            //     searchDateTo: null,
+            //     searchType: 'Type',
+            //     searchStatus: 'Status',
+            //     searchCurrency: {code: 'Currency'},
+            //     searchOrderBy: 'Latest',
+            //     searchSubType: ''
+            // };
         };
 
         vm.getTransactionUrl = function(){
@@ -181,7 +199,7 @@
                 created__lt: $scope.searchParams.searchDateTo? Date.parse($scope.searchParams.searchDateTo): null,
                 currency: ($scope.searchParams.searchCurrency.code ? ($scope.searchParams.searchCurrency.code == 'Currency' ? null: $scope.searchParams.searchCurrency.code): null),
                 user: ($scope.searchParams.searchUser ? encodeURIComponent($scope.searchParams.searchUser) : null),
-                orderby: ($scope.searchParams.searchOrderBy == 'Latest' ? '-created' : $scope.searchParams.searchOrderBy == 'Largest' ? '-amount' : $scope.searchParams.searchOrderBy == 'Smallest' ? 'amount' : null),
+                orderby: ($scope.applyFiltersObj.orderByFilter.selectedOrderByOption == 'Latest' ? '-created' : $scope.applyFiltersObj.orderByFilter.selectedOrderByOption == 'Largest' ? '-amount' : $scope.applyFiltersObj.orderByFilter.selectedOrderByOption == 'Smallest' ? 'amount' : null),
                 id: $scope.searchParams.searchId ? encodeURIComponent($scope.searchParams.searchId) : null,
                 tx_type: ($scope.searchParams.searchType == 'Type' ? null : $scope.searchParams.searchType.toLowerCase()),
                 status: ($scope.searchParams.searchStatus == 'Status' ? null : $scope.searchParams.searchStatus),
@@ -194,7 +212,7 @@
         $scope.getLatestTransactions = function(applyFilter){
             if(vm.token) {
 
-                $scope.showingFilters = true;
+                $scope.showingFilters = false;
 
                 $scope.transactionsStateMessage = '';
                 $scope.loadingTransactions = true;
