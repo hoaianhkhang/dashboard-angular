@@ -127,10 +127,10 @@
     </div>
     <div class="modal-footer row">
         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-            <button type="button" ng-hide="transaction.status == 'failed'" ng-disabled="updatingTransaction" class="transaction-details-button btn btn-danger pull-left" ng-click="updateTransactionConfirm('failed')">Cancel Transaction</button>
+            <button type="button" ng-hide="transaction.status == 'failed'" ng-disabled="updatingTransaction" class="transaction-details-button btn btn-danger pull-left" ng-click="updateTransactionConfirm('Failed')">Cancel Transaction</button>
         </div>
         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-            <button type="button" ng-show="transaction.status == 'pending' || transaction.status == 'initiating'" ng-disabled="updatingTransaction" class="transaction-details-button btn btn-primary pull-right" ng-click="updateTransactionConfirm('complete')">Complete Transaction</button>
+            <button type="button" ng-show="transaction.status == 'pending' || transaction.status == 'initiating'" ng-disabled="updatingTransaction" class="transaction-details-button btn btn-primary pull-right" ng-click="updateTransactionConfirm('Complete')">Complete Transaction</button>
         </div>
     </div>
 </div>
