@@ -27,7 +27,7 @@
                 $scope.changingPassword = false;
                 if (res.status === 200) {
                   $scope.passwordChanged = true;
-                  toastr.success('You have successfully changed the password!');
+                  toastr.success('New password has been saved');
                 }
             }).catch(function (error) {
                 $scope.changingPassword = false;

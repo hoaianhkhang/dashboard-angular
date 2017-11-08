@@ -32,7 +32,7 @@
                 if (res.status === 200) {
                     $scope.resettingPassword = false;
                     $scope.passwordResetDone = true;
-                    toastr.success(res.data.message);
+                    toastr.success('Password has been reset with the new password');
                     $location.path('/login');
                 }
             }).catch(function (error) {

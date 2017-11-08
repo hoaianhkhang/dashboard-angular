@@ -13,7 +13,7 @@
                 company: company
             }).then(function (res) {
                 if (res.status === 200) {
-                    toastr.success(res.data.message);
+                    toastr.success('Password reset message has been sent');
                     $location.path('/login');
                 }
             }).catch(function (error) {
