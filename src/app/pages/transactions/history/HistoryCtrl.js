@@ -5,7 +5,7 @@
         .controller('HistoryCtrl', HistoryCtrl);
 
     /** @ngInject */
-    function HistoryCtrl($scope,environmentConfig,$http,cookieManagement,$uibModal,sharedResources,
+    function HistoryCtrl($scope,environmentConfig,$http,cookieManagement,$uibModal,sharedResources,toastr,
                          errorHandler,$state,$window,typeaheadService,$filter,serializeFiltersService) {
 
         var vm = this;
@@ -29,7 +29,11 @@
         $scope.applyFiltersObj = {
             dateFilter: {
                 selectedDateOption: 'Is in the last',
-                selectedDayIntervalOption: 'days'
+                selectedDayIntervalOption: 'days',
+                dayInterval: '',
+                dateFrom: '',
+                dateTo: '',
+                dateEqualTo: ''
             },
             amountFilter: {
                 selectedAmountOption: 'Is equal to'
@@ -61,18 +65,6 @@
             itemsPerPage: 26,
             pageNo: 1,
             maxSize: 5
-        };
-
-        $scope.searchParams = {
-            searchId: null,
-            searchUser: null,
-            searchDateFrom: null,
-            searchDateTo: null,
-            searchType: 'Type',
-            searchStatus: 'Status',
-            searchCurrency: {code: 'Currency'},
-            searchOrderBy: 'Latest',
-            searchSubType: ''
         };
 
         $scope.transactions = [];
@@ -188,13 +180,70 @@
             };
         };
 
+        $scope.dayIntervalChanged = function () {
+            if($scope.applyFiltersObj.dateFilter.dayInterval <= 0){
+                toastr.success('Please enter a positive value');
+            }
+        };
+
+        vm.getDateFilters = function () {
+            var dateObj = {
+                created__lt: null,
+                created__gt: null
+            };
+
+            switch($scope.applyFiltersObj.dateFilter.selectedDateOption) {
+                case 'Is in the last':
+                    if($scope.applyFiltersObj.dateFilter.selectedDayIntervalOption == 'days'){
+                        dateObj.created__lt = moment().add(1,'days').format('YYYY-MM-DD');
+                        dateObj.created__gt = moment().subtract($scope.applyFiltersObj.dateFilter.dayInterval,'days').format('YYYY-MM-DD');
+                    } else {
+                        dateObj.created__lt = moment().add(1,'days').format('YYYY-MM-DD');
+                        dateObj.created__gt = moment().subtract($scope.applyFiltersObj.dateFilter.dayInterval,'months').format('YYYY-MM-DD');
+                    }
+
+                    break;
+                case 'In between':
+                    dateObj.created__lt = moment(new Date($scope.applyFiltersObj.dateFilter.dateTo)).add(1,'days').format('YYYY-MM-DD');
+                    dateObj.created__gt = moment(new Date($scope.applyFiltersObj.dateFilter.dateFrom)).format('YYYY-MM-DD');
+
+                    break;
+                case 'Is equal to':
+                    dateObj.created__lt = moment(new Date($scope.applyFiltersObj.dateFilter.dateEqualTo)).add(1,'days').format('YYYY-MM-DD');
+                    dateObj.created__gt = moment(new Date($scope.applyFiltersObj.dateFilter.dateEqualTo)).format('YYYY-MM-DD');
+
+                    break;
+                case 'Is after':
+                    dateObj.created__lt = null;
+                    dateObj.created__gt = moment(new Date($scope.applyFiltersObj.dateFilter.dateFrom)).add(1,'days').format('YYYY-MM-DD');
+                    break;
+                case 'Is before':
+                    dateObj.created__lt = moment(new Date($scope.applyFiltersObj.dateFilter.dateTo)).format('YYYY-MM-DD');
+                    dateObj.created__gt = null;
+                    break;
+                default:
+                    break;
+            }
+
+            return dateObj;
+        };
+
         vm.getTransactionUrl = function(){
+
+            if($scope.filtersObj.dateFilter){
+                vm.dateObj = vm.getDateFilters();
+            } else{
+                vm.dateObj = {
+                    created__lt: null,
+                    created__gt: null
+                };
+            }
 
             var searchObj = {
                 page: $scope.pagination.pageNo,
                 page_size: $scope.pagination.itemsPerPage || 1,
-                created__gt: $scope.searchParams.searchDateFrom ? Date.parse($scope.searchParams.searchDateFrom): null,
-                created__lt: $scope.searchParams.searchDateTo? Date.parse($scope.searchParams.searchDateTo): null,
+                created__gt: vm.dateObj.created__gt ? Date.parse(vm.dateObj.created__gt) : null,
+                created__lt: vm.dateObj.created__lt ? Date.parse(vm.dateObj.created__lt) : null,
                 currency: $scope.filtersObj.currencyFilter ? $scope.applyFiltersObj.currencyFilter.selectedCurrencyOption.code: null,
                 user: $scope.filtersObj.userFilter ? ($scope.applyFiltersObj.userFilter.selectedUserOption ? encodeURIComponent($scope.applyFiltersObj.userFilter.selectedUserOption) : null): null,
                 orderby: $scope.filtersObj.orderByFilter ? ($scope.applyFiltersObj.orderByFilter.selectedOrderByOption == 'Latest' ? '-created' : $scope.applyFiltersObj.orderByFilter.selectedOrderByOption == 'Largest' ? '-amount' : $scope.applyFiltersObj.orderByFilter.selectedOrderByOption == 'Smallest' ? 'amount' : null): null,
@@ -270,25 +319,12 @@
 
             vm.theModal.result.then(function(transaction){
                 if(transaction){
-                    $scope.filtersObj = {
-                        dateFilter: false,
-                        amountFilter: false,
-                        statusFilter: false,
-                        transactionTypeFilter: false,
-                        transactionIdFilter: false,
-                        userFilter: false,
-                        currencyFilter: false,
-                        pageSizeFilter: false,
-                        orderByFilter: false
-                    };
+                    $scope.clearFilters()
                     $scope.getLatestTransactions();
                 }
             }, function(){
             });
         };
-
-        //filter functions start
-
 
 
     }
