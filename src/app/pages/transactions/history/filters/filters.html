@@ -103,19 +103,29 @@
                             ng-options="option for option in amountFilterOptions">
                     </select>
                     <div ng-show="applyFiltersObj.amountFilter.selectedAmountOption == 'Is equal to'" class="date-filter-in-between-view">
-                        <input type="text" ng-model="searchParams.amount" class="transaction-amount-input">
+                        <input type="text" ng-model="applyFiltersObj.amountFilter.amount" class="transaction-amount-input">
                     </div>
                     <div ng-show="applyFiltersObj.amountFilter.selectedAmountOption == 'Is between'" class="amount-filter-in-between-view">
-                        <input type="text" ng-model="searchParams.amount" class="transaction-amount-input">
+                        <input type="text" ng-model="applyFiltersObj.amountFilter.amount__gt" class="transaction-amount-input">
                         <span class="filter-text margin-left-12">and</span>
-                        <input type="text" ng-model="searchParams.amount2" class="transaction-amount-input">
+                        <input type="text" ng-model="applyFiltersObj.amountFilter.amount__lt" class="transaction-amount-input">
                     </div>
                     <div ng-show="applyFiltersObj.amountFilter.selectedAmountOption == 'Is greater than'" class="date-filter-in-between-view">
-                        <input type="text" ng-model="searchParams.amount" class="transaction-amount-input">
+                        <input type="text" ng-model="applyFiltersObj.amountFilter.amount__gt" class="transaction-amount-input">
                     </div>
                     <div ng-show="applyFiltersObj.amountFilter.selectedAmountOption == 'Is less than'" class="date-filter-in-between-view">
-                        <input type="text" ng-model="searchParams.amount" class="transaction-amount-input">
+                        <input type="text" ng-model="applyFiltersObj.amountFilter.amount__lt" class="transaction-amount-input">
                     </div>
+                    <div ng-hide="applyFiltersObj.amountFilter.selectedAmountOption == 'Is between'">
+                        <select class="form-control pointer margin-left-12" ng-model="applyFiltersObj.currencyFilter.selectedCurrencyOption"
+                                ng-options="currency.code for currency in currencyOptions track by currency.code">
+                        </select>
+                    </div>
+                </div>
+                <div ng-show="applyFiltersObj.amountFilter.selectedAmountOption == 'Is between'" class="col-lg-12 col-md-12 col-sm-12 col-xs-12 divider-top-6">
+                    <select class="form-control pointer" ng-model="applyFiltersObj.currencyFilter.selectedCurrencyOption"
+                            ng-options="currency.code for currency in currencyOptions track by currency.code">
+                    </select>
                 </div>
             </div>
         </div>

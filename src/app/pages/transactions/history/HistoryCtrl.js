@@ -5,7 +5,7 @@
         .controller('HistoryCtrl', HistoryCtrl);
 
     /** @ngInject */
-    function HistoryCtrl($scope,environmentConfig,$http,cookieManagement,$uibModal,sharedResources,toastr,
+    function HistoryCtrl($scope,environmentConfig,$http,cookieManagement,$uibModal,sharedResources,toastr,currencyModifiers,
                          errorHandler,$state,$window,typeaheadService,$filter,serializeFiltersService) {
 
         var vm = this;
@@ -15,6 +15,7 @@
         $scope.dateFilterOptions = ['Is in the last','In between','Is equal to','Is after','Is before'];
         $scope.amountFilterOptions = ['Is equal to','Is between','Is greater than','Is less than']
         $scope.dateFilterIntervalOptions = ['days','months'];
+        $scope.filtersCount = 0;
         $scope.filtersObj = {
             dateFilter: false,
             amountFilter: false,
@@ -36,7 +37,10 @@
                 dateEqualTo: ''
             },
             amountFilter: {
-                selectedAmountOption: 'Is equal to'
+                selectedAmountOption: 'Is equal to',
+                amount: null,
+                amount__lt: null,
+                amount__gt: null
             },
             statusFilter: {
                 selectedStatusOption: 'Pending'
@@ -228,7 +232,63 @@
             return dateObj;
         };
 
+        vm.getAmountFilters = function () {
+            var amountObj = {
+                amount: null,
+                amount__lt: null,
+                amount__gt: null
+            };
+
+            switch($scope.applyFiltersObj.amountFilter.selectedAmountOption) {
+                case 'Is equal to':
+                    amountObj = {
+                        amount: $scope.applyFiltersObj.amountFilter.amount,
+                        amount__lt: null,
+                        amount__gt: null
+                    };
+
+                    break;
+                case 'Is between':
+                    amountObj = {
+                        amount: null,
+                        amount__lt: $scope.applyFiltersObj.amountFilter.amount__lt,
+                        amount__gt: $scope.applyFiltersObj.amountFilter.amount__gt
+                    };
+
+                    break;
+                case 'Is greater than':
+                    amountObj = {
+                        amount: null,
+                        amount__lt: null,
+                        amount__gt: $scope.applyFiltersObj.amountFilter.amount__gt
+                    };
+
+                    break;
+                case 'Is less than':
+                    amountObj = {
+                        amount: null,
+                        amount__lt: $scope.applyFiltersObj.amountFilter.amount__lt,
+                        amount__gt: null
+                    };
+
+                    break;
+                default:
+                    break;
+            }
+
+            return amountObj;
+        };
+
         vm.getTransactionUrl = function(){
+            $scope.filtersCount = 0;
+
+            for(var x in $scope.filtersObj){
+                if($scope.filtersObj.hasOwnProperty(x)){
+                    if($scope.filtersObj[x]){
+                        $scope.filtersCount = $scope.filtersCount + 1;
+                    }
+                }
+            }
 
             if($scope.filtersObj.dateFilter){
                 vm.dateObj = vm.getDateFilters();
@@ -239,12 +299,25 @@
                 };
             }
 
+            if($scope.filtersObj.amountFilter){
+                vm.amountObj = vm.getAmountFilters();
+            } else{
+                vm.amountObj = {
+                    amount: null,
+                    amount__lt: null,
+                    amount__gt: null
+                };
+            }
+
             var searchObj = {
                 page: $scope.pagination.pageNo,
                 page_size: $scope.pagination.itemsPerPage || 1,
+                amount: vm.amountObj.amount ? currencyModifiers.convertToCents(vm.amountObj.amount,$scope.applyFiltersObj.currencyFilter.selectedCurrencyOption.divisibility) : null,
+                amount__lt: vm.amountObj.amount__lt ? currencyModifiers.convertToCents(vm.amountObj.amount__lt,$scope.applyFiltersObj.currencyFilter.selectedCurrencyOption.divisibility) : null,
+                amount__gt: vm.amountObj.amount__gt ? currencyModifiers.convertToCents(vm.amountObj.amount__gt,$scope.applyFiltersObj.currencyFilter.selectedCurrencyOption.divisibility) : null,
                 created__gt: vm.dateObj.created__gt ? Date.parse(vm.dateObj.created__gt) : null,
                 created__lt: vm.dateObj.created__lt ? Date.parse(vm.dateObj.created__lt) : null,
-                currency: $scope.filtersObj.currencyFilter ? $scope.applyFiltersObj.currencyFilter.selectedCurrencyOption.code: null,
+                currency: $scope.filtersObj.currencyFilter || $scope.filtersObj.amountFilter ? $scope.applyFiltersObj.currencyFilter.selectedCurrencyOption.code: null,
                 user: $scope.filtersObj.userFilter ? ($scope.applyFiltersObj.userFilter.selectedUserOption ? encodeURIComponent($scope.applyFiltersObj.userFilter.selectedUserOption) : null): null,
                 orderby: $scope.filtersObj.orderByFilter ? ($scope.applyFiltersObj.orderByFilter.selectedOrderByOption == 'Latest' ? '-created' : $scope.applyFiltersObj.orderByFilter.selectedOrderByOption == 'Largest' ? '-amount' : $scope.applyFiltersObj.orderByFilter.selectedOrderByOption == 'Smallest' ? 'amount' : null): null,
                 id: $scope.filtersObj.transactionIdFilter ? ($scope.applyFiltersObj.transactionIdFilter.selectedTransactionIdOption ? encodeURIComponent($scope.applyFiltersObj.transactionIdFilter.selectedTransactionIdOption) : null): null,

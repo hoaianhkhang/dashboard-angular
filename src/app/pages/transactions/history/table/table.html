@@ -1,7 +1,9 @@
 <div class="panel">
     <div class="panel-heading">
         <div class="table-filter-heading">
-            <button ng-click="showFilters()" class="btn transactions-btn btn-default">Filters</button>
+            <button ng-click="showFilters()" ng-class="{'transactions-filter-btn': (filtersCount > 0), 'transactions-btn': (filtersCount == 0)}"
+            class="btn btn-default">Filters
+                <span ng-show="filtersCount > 0">|</span> <span ng-show="filtersCount > 0" class="filter-count">{{filtersCount}}</span></button>
             <div ng-show="showingFilters">
                 <history-filters></history-filters>
             </div>
