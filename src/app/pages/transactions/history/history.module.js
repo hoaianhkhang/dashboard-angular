@@ -11,7 +11,7 @@
                 url: '/history',
                 templateUrl: 'app/pages/transactions/history/history.html',
                 params: {
-                    code: null,
+                    identifier: null,
                     transactionId: null,
                     currencyCode: null
                 },

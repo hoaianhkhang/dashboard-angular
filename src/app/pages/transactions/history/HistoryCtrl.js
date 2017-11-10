@@ -13,7 +13,7 @@
         vm.currenciesList = JSON.parse($window.sessionStorage.currenciesList || '[]');
         $scope.showingFilters = false;
         $scope.dateFilterOptions = ['Is in the last','In between','Is equal to','Is after','Is before'];
-        $scope.amountFilterOptions = ['Is equal to','Is between','Is greater than','Is less than']
+        $scope.amountFilterOptions = ['Is equal to','Is between','Is greater than','Is less than'];
         $scope.dateFilterIntervalOptions = ['days','months'];
         $scope.filtersCount = 0;
         $scope.filtersObj = {
@@ -55,7 +55,7 @@
                 selectedTransactionIdOption: $state.params.transactionId || null
             },
             userFilter: {
-                selectedUserOption: $state.params.code || null
+                selectedUserOption: $state.params.identifier || null
             },
             currencyFilter:{
                 selectedCurrencyOption: {}
@@ -159,11 +159,20 @@
         vm.getCompanyCurrencies();
 
         if($state.params.currencyCode){
+            $scope.filtersObj.currencyFilter = true;
             vm.currenciesList.forEach(function (element) {
                 if(element.code == $state.params.currencyCode){
                     $scope.applyFiltersObj.currencyFilter.selectedCurrencyOption = element;
                 }
             });
+        }
+
+        if($state.params.transactionId){
+            $scope.filtersObj.transactionIdFilter = true;
+        }
+
+        if($state.params.identifier){
+            $scope.filtersObj.userFilter = true;
         }
 
         $scope.showFilters = function () {
