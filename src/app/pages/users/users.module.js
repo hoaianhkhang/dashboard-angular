@@ -1,7 +1,10 @@
 (function () {
     'use strict';
 
-    angular.module('BlurAdmin.pages.users', [])
+    angular.module('BlurAdmin.pages.users', [
+        'BlurAdmin.pages.users.details',
+        'BlurAdmin.pages.users.transactions'
+    ])
         .config(routeConfig);
 
     /** @ngInject */

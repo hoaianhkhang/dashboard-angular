@@ -6,7 +6,7 @@
             <td><strong>Address</strong></td>
         </tr>
         <tr ng-repeat="user in users" class="editable-row center" >
-            <td><a href="#/user/{{user.identifier}}"><div title="{{user.email}}" ng-bind="user.email"></div></a></td>
+            <td><a href="#/user/{{user.identifier}}/details"><div title="{{user.email}}" ng-bind="user.email"></div></a></td>
             <td title="{{user.identifier}}" ng-bind="user.identifier"></td>
             <td title="{{user.crypto.address}}" ng-bind="user.crypto.address"></td>
         </tr>

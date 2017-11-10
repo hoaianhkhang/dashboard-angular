@@ -11,7 +11,7 @@
 
         $scope.goToUser = function () {
             $uibModalInstance.close();
-            $location.path('/user/' + $scope.quote.user);
+            $location.path('/user/' + $scope.quote.user + '/details');
         }
     }
 

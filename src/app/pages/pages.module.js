@@ -18,7 +18,6 @@
       'BlurAdmin.pages.currency',
       'BlurAdmin.pages.webhooks',
       'BlurAdmin.pages.users',
-      'BlurAdmin.pages.userDetails',
       'BlurAdmin.pages.services',
       'BlurAdmin.pages.login',
       'BlurAdmin.pages.register',

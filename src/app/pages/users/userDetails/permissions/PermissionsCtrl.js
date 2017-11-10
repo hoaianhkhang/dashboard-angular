@@ -15,7 +15,7 @@
         };
 
         $scope.goBackToUser = function () {
-            $location.path('user/' + vm.uuid);
+            $location.path('user/' + vm.uuid + '/details');
         };
 
     }

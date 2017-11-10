@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    angular.module('BlurAdmin.pages.userDetails')
+    angular.module('BlurAdmin.pages.users.details')
         .controller('LastTransactionsModalCtrl', LastTransactionsModalCtrl);
 
     function LastTransactionsModalCtrl($uibModalInstance,$http,$scope,errorHandler,$state,
@@ -134,7 +134,7 @@
 
         $scope.goToUser = function () {
             $uibModalInstance.close();
-            $location.path('/user/' + $scope.transaction.user.identifier);
+            $location.path('/user/' + $scope.transaction.user.identifier + '/details');
         };
 
 

@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    angular.module('BlurAdmin.pages.userDetails')
+    angular.module('BlurAdmin.pages.users.details')
         .controller('UserEmailModalCtrl', UserEmailModalCtrl);
 
     function UserEmailModalCtrl($scope,$uibModalInstance,email,user,toastr,$http,environmentConfig,cookieManagement,errorHandler) {

@@ -10,7 +10,7 @@
 
         $scope.goToUser = function () {
             $uibModalInstance.close();
-            $location.path('/user/' + $scope.transaction.user.identifier);
+            $location.path('/user/' + $scope.transaction.user.identifier + '/details');
         };
 
         $scope.goToTransactions = function(rehiveCode){

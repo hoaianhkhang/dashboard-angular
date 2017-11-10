@@ -17,10 +17,10 @@
     <div class="row">
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <ul class="user-details-nav-bar">
-                <li>Details</li>
-                <li>Currencies</li>
-                <li>Accounts</li>
-                <li>Transactions</li>
+                <li ng-class="{'transaction-location': locationIndicator == 'details'}">Details</li>
+                <li ng-class="{'transaction-location': locationIndicator == 'currencies'}">Currencies</li>
+                <li ng-class="{'transaction-location': locationIndicator == 'accounts'}">Accounts</li>
+                <li ng-class="{'transaction-location': locationIndicator == 'transactions'}">Transactions</li>
             </ul>
         </div>
     </div>
@@ -44,7 +44,9 @@
                     <a ng-click="goToSwitchesAndPermissions()" class="user-details-panel-link pull-right pointer">Settings</a>
                 </div>
             </div>
-            <!--<last-transactions></last-transactions>-->
         </div>
     </div>
+</div>
+<div ba-panel ng-show="loadingUser">
+    <loading-image></loading-image>
 </div>

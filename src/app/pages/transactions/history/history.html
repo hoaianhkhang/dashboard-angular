@@ -1,9 +1,9 @@
 <div class="row">
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <ul class="user-details-nav-bar">
-            <li ng-class="{'transaction-location': locationIndicator == 'history'}">Transactions</li>
-            <li>Analytics</li>
-            <li>Settings</li>
+            <li><a ng-class="{'transaction-location': locationIndicator == 'history'}" href="/#/transactions/history">Transactions</a></li>
+            <li ng-class="{'transaction-location': locationIndicator == 'analytics'}">Analytics</li>
+            <li ng-class="{'transaction-location': locationIndicator == 'settings'}">Settings</li>
         </ul>
     </div>
 </div>

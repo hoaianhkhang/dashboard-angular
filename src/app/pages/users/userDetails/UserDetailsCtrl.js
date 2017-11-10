@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    angular.module('BlurAdmin.pages.userDetails')
+    angular.module('BlurAdmin.pages.users.details')
         .controller('UserDetailsCtrl', UserDetailsCtrl);
 
     /** @ngInject */
@@ -18,6 +18,9 @@
         $scope.profilePictureFile = {
             file: {}
         };
+        vm.location = $location.path();
+        vm.locationArray = vm.location.split('/');
+        $scope.locationIndicator = vm.locationArray[vm.locationArray.length - 1];
 
         vm.getUser = function(){
             if(vm.token) {
@@ -32,7 +35,6 @@
                     if (res.status === 200) {
                         $scope.user = res.data.data;
                         vm.calculateHowLongUserHasBeenWithCompany($scope.user.date_joined);
-                        console.log($scope.user);
                         $window.sessionStorage.userData = JSON.stringify(res.data.data);
                     }
                 }).catch(function (error) {
