@@ -6,7 +6,7 @@
 
     /** @ngInject */
     function HistoryCtrl($scope,environmentConfig,$http,cookieManagement,$uibModal,sharedResources,toastr,currencyModifiers,
-                         errorHandler,$state,$window,typeaheadService,$filter,serializeFiltersService) {
+                         errorHandler,$state,$window,typeaheadService,$filter,serializeFiltersService,$location) {
 
         var vm = this;
         vm.token = cookieManagement.getCookie('TOKEN');
@@ -64,13 +64,14 @@
                 selectedOrderByOption: 'Latest'
             }
         };
-
         $scope.pagination = {
             itemsPerPage: 26,
             pageNo: 1,
             maxSize: 5
         };
-
+        vm.location = $location.path();
+        vm.locationArray = vm.location.split('/');
+        $scope.locationIndicator = vm.locationArray[vm.locationArray.length - 1];
         $scope.transactions = [];
         $scope.transactionsStateMessage = '';
         $scope.transactionsData = {};
