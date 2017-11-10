@@ -1,0 +1,26 @@
+<div ng-hide="loadingUserDocuments" class="panel">
+    <div class="panel-heading">
+        <span class="user-details-panel-title">Documents</span>
+        <a ng-click="openAddUserDocumentModal('app/pages/users/user/userDetails/userDocuments/addUserDocumentModal/addUserDocumentModal.html','lg')"
+           class="user-details-panel-link pull-right pointer">Add</a>
+    </div>
+    <div class="panel-body">
+        <table ng-show="userDocuments.length > 0" class="table">
+            <tr class="user-switches-table-header">
+                <th>Category</th>
+                <th>Type</th>
+                <th></th>
+            </tr>
+            <tr class="pointer user-details-table-hover" ng-repeat="document in userDocuments" ng-click="openUserDocumentModal('app/pages/users/user/userDetails/userDocuments/userDocumentModal/userDocumentModal.html',document)">
+                <td width="30%">{{document.document_category}}</td>
+                <td width="30%">{{document.document_type}}</td>
+                <td width="30%"><span ng-class="{'status-pending': document.status == 'pending','status-verified': document.status == 'verified',
+                    'status-incomplete-declined': document.status == 'incomplete' || document.status == 'declined'}"
+                                      class="user-address-status">{{document.status | uppercase}}</span></td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div ba-panel ng-show="loadingUserDocuments">
+    <loading-image></loading-image>
+</div>

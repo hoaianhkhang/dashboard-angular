@@ -1,0 +1,25 @@
+<div ng-hide="loadingUserPermissionGroups || addingUserPermissionGroup" ba-panel class="setting-bank-accounts" ba-panel-title="User permission groups for {{userData.email}}">
+    <button ng-click="toggleAddUserPermissionGroupView()" class="btn btn-primary pull-right user-accounts-btn panel-header-button">Add</button>
+    <table ng-show="userPermissionGroups.length > 0" class="table fees-table table-striped ">
+        <tr class="black-muted-bg divider">
+            <th><strong>Name</strong></th>
+            <th></th>
+        </tr>
+        <tr ng-repeat="userPermissionGroup in userPermissionGroups">
+            <td class="transactions-list-element" ng-bind="userPermissionGroup.name"></td>
+            <td class="rehive-table-row-last-child">
+                <button ng-click="openUserPermissionGroupModal('app/pages/users/user/userDetails/permissions/userPermissionGroups/userPermissionGroupsModal/userPermissionGroupsModal.html','md',userPermissionGroup)"
+                        class="btn btn-danger pull-right user-accounts-btn">Delete</button>
+            </td>
+        </tr>
+    </table>
+    <div ng-show="userPermissionGroups.length == 0 && !loadingUserPermissionGroups">
+        <i>No user permission groups have been added</i>
+    </div>
+</div>
+<div ng-show="addingUserPermissionGroup">
+    <add-user-permission-group-view></add-user-permission-group-view>
+</div>
+<div ba-panel ng-show="loadingUserPermissionGroups">
+    <loading-image></loading-image>
+</div>

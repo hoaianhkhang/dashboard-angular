@@ -1,0 +1,45 @@
+<div ng-hide="loadingUserBasicInfo" class="panel panel-default">
+    <div class="panel-heading">
+        <span class="user-details-panel-title">Basic info</span>
+        <a ng-click="openUserBasicInfoModal('app/pages/users/user/userDetails/userBasicInfo/basicInfoModal/basicInfoModal.html','md',user)" class="user-details-panel-link pull-right pointer">Edit</a>
+    </div>
+    <div class="panel-body">
+        <table class="table user-details-table">
+            <tr>
+                <th width="45%">First name</th>
+                <th ng-bind="user.first_name"></th>
+            </tr>
+            <tr>
+                <th width="45%">Last name</th>
+                <th ng-bind="user.last_name"></th>
+            </tr>
+            <tr>
+                <th width="45%">Nationality</th>
+                <th ng-bind="user.nationality | isoCountry"></th>
+            </tr>
+            <tr>
+                <th width="45%">Language</th>
+                <th ng-bind="user.language"></th>
+            </tr>
+            <tr>
+                <th width="45%">Date of birth</th>
+                <th ng-bind="user.birth_date"></th>
+            </tr>
+            <tr>
+                <th width="45%">Age</th>
+                <th ng-bind="user.birth_date | ageCalculator"></th>
+            </tr>
+            <tr>
+                <th width="45%">Id number</th>
+                <th ng-bind="user.id_number"></th>
+            </tr>
+            <tr>
+                <th width="45%">Status</th>
+                <th>{{user.status | capitalizeWord}}</th>
+            </tr>
+            </table>
+    </div>
+</div>
+<div ba-panel ng-show="loadingUserBasicInfo">
+    <loading-image></loading-image>
+</div>
