@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    angular.module('BlurAdmin.pages.home')
+    angular.module('BlurAdmin.pages.currencies')
         .controller('CurrenciesCtrl', CurrenciesCtrl);
 
     /** @ngInject */
@@ -10,10 +10,19 @@
         var vm = this;
         vm.token = cookieManagement.getCookie('TOKEN');
         $scope.loadingCurrencies = true;
+        $scope.optionsCode = '';
+
+        $scope.showCurrenciesOptions = function (code) {
+            if($scope.optionsCode == code){
+                $scope.optionsCode = '';
+            } else {
+                $scope.optionsCode = code;
+            }
+        };
 
         vm.getCompanyCurrencies = function(){
             if(vm.token) {
-              $scope.loadingCurrencies = true;
+                $scope.loadingCurrencies = true;
                 $http.get(environmentConfig.API + '/admin/currencies/?enabled=true', {
                     headers: {
                         'Content-Type': 'application/json',
@@ -31,7 +40,7 @@
                         })
                     }
                 }).catch(function (error) {
-                  $scope.loadingCurrencies = false;
+                    $scope.loadingCurrencies = false;
                     errorHandler.evaluateErrors(error.data);
                     errorHandler.handleErrors(error);
                 });

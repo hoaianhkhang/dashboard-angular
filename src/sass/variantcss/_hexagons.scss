@@ -84,31 +84,15 @@
   @include hexagon-hex-over(146px,40px,-92px);
 }
 
-.dashboard-currencies-hexagon-container {
-  position: relative;
-  width: 50px;
-  top: 9.9px;
-}
-
-.dashboard-currencies-hexagon {
-  @include hexagon(50px,28.87px,14.43px 0);
-}
-
-.dashboard-currencies-hexagon:before,
-.dashboard-currencies-hexagon:after {
-  @include hexagon-before-after(25px solid transparent,25px solid transparent);
-}
-
-.dashboard-currencies-hexagon:before {
-  @include hexagon-before(14.43px solid #F8CF51);
-}
-
-.dashboard-currencies-hexagon:after {
-  @include hexagon-after(14.43px solid #F8CF51);
-}
-.dashboard-currencies-hex-over{
-  @include hexagon-hex-over(50px, 15px, -38px);
-  margin: 0 auto;
+.dashboard-currencies-code{
+  background-color: #F8CF51;
+  width: 58px;
+  border-radius: 30px;
+  padding: 20px 0;
+  color: white;
+  text-align: center;
+  font-size: 18px;
+  font-weight: bold;
 }
 
 .long-text{

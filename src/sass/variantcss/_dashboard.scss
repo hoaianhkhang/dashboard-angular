@@ -1,3 +1,10 @@
+.currencies-title{
+  color: $primary;
+  font-size: 16px;
+  font-weight: 600;
+  margin: 9px 0 24px 0;
+}
+
 .main-spinner{
   display: inline-block;
   margin: auto;
@@ -63,4 +70,64 @@
 .home-page-buttons{
   width: 70px;
   padding: 6px 0;
+}
+
+.currencies-page-buttons{
+  line-height: 0;
+  height: 30px;
+  padding: 6px 12px;
+}
+
+.currencies-details-heading{
+  font-size: 12px;
+  color: #979797;
+}
+
+.currencies-options{
+  color: #979797;
+  &:hover{
+    color: $primary;
+  }
+}
+
+.currencies-options-box{
+  z-index: 100;
+  background-color: white;
+  box-shadow: 0 2px 6px #979797;
+  padding: 20px 100px 20px 20px;
+  position: absolute;
+  top: 18px;
+  right: 2px;
+  list-style: none;
+  & li{
+    font-weight: 600;
+    line-height: 24px;
+  }
+  & li:hover{
+    color: $primary;
+    cursor: pointer;
+  }
+
+  i.dropdown-arr {
+    position: absolute;
+    top: -22px;
+    right: 8px;
+    display: block;
+    width: 0;
+    height: 0;
+    border: 11px solid transparent;
+    border-bottom-color: rgba(0, 0, 0, .15);
+    &:after {
+      top: -9px;
+      left: 0px;
+      margin-left: -10px;
+      content: " ";
+      position: absolute;
+      display: block;
+      width: 0;
+      height: 0;
+      border: 10px solid transparent;
+      border-bottom-color: $default;
+    }
+  }
 }

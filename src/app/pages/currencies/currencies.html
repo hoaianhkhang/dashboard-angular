@@ -1,0 +1,72 @@
+<h1 class="currencies-title">Currencies</h1>
+<div ng-hide="loadingCurrencies" class="panel" ba-panel-class=" with-scroll" >
+    <div class="panel-heading">
+        <div class="table-filter-heading">
+            <button ng-click="showFilters()" ng-class="{'transactions-filter-btn': (filtersCount > 0), 'transactions-btn': (filtersCount == 0)}"
+                    class="currencies-page-buttons btn btn-default">Filters
+            </button>
+            <div ng-show="showingFilters">
+                //currencies filter will go here
+            </div>
+            <div>
+                <button class="btn btn-success pull-right panel-header-button currencies-page-buttons" ng-click="goToAddCurrency()">Add currency</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div ng-hide="loadingCurrencies" ng-repeat="currency in currencies">
+    <div class="panel ">
+        <div class="panel-body row">
+            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+                <div class="dashboard-currencies-code"
+                     ng-class="{'long-text': (currency.code.length > 4), 'very-long-text': (currency.code.length > 6)}">{{currency.code}}
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                <div>
+                    <span><strong>{{currency.symbol}} {{currency.available_balance_total | currencyModifiersFilter: currency.divisibility}}</strong></span>
+                    <br>
+                    <span class="currencies-details-heading">Total balance</span>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                <div>
+                    <span><strong>{{currency.symbol}} {{currency.sum_debits_pending | currencyModifiersFilter: currency.divisibility}}</strong></span>
+                    <br>
+                    <span class="currencies-details-heading">Pending debits</span>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                <div>
+                    <span><strong>{{currency.symbol}} {{currency.sum_credits_pending | currencyModifiersFilter: currency.divisibility}}</strong></span>
+                    <br>
+                    <span class="currencies-details-heading">Pending credits</span>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                <div>
+                    <span><strong>{{currency.symbol}} {{currency.balance_24h | currencyModifiersFilter: currency.divisibility}}</strong></span>
+                    <br>
+                    <span class="currencies-details-heading">24h volume</span>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                <div>
+                    <span ng-click="showCurrenciesOptions(currency.code)" class="fa fa-ellipsis-h pull-right pointer currencies-options"></span>
+                    <ul ng-show="currency.code == optionsCode" class="currencies-options-box">
+                        <li ng-click="showCurrenciesOptions(currency.code)"><i class="dropdown-arr"></i></li>
+                        <li ng-click="goToView('/currency/' + currency.code + '/overview')">View more details</li>
+                        <li ng-click="goToUsersState(currency.code)">View users</li>
+                        <li ng-click="goToHistoryState(currency.code)">View transactions</li>
+                        <li ng-click="goToView('/transactions/debit')">Create debit</li>
+                        <li ng-click="goToView('/transactions/credit')">Create credit</li>
+                        <li ng-click="goToView('/currency/' + currency.code + '/settings')">Settings</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div ba-panel ng-show="loadingCurrencies">
+    <loading-image></loading-image>
+</div>
