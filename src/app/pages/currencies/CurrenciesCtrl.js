@@ -5,12 +5,30 @@
         .controller('CurrenciesCtrl', CurrenciesCtrl);
 
     /** @ngInject */
-    function CurrenciesCtrl($scope,$location,cookieManagement,environmentConfig,$http,errorHandler,$state,_) {
+    function CurrenciesCtrl($scope,$location,cookieManagement,environmentConfig,$http,errorHandler,$state,_,serializeFiltersService) {
 
         var vm = this;
         vm.token = cookieManagement.getCookie('TOKEN');
+        $scope.showingFilters = false;
         $scope.loadingCurrencies = true;
         $scope.optionsCode = '';
+        $scope.currencyOptions = [];
+        $scope.filtersObj = {
+            currencyFilter: false,
+            unitFilter: false
+        };
+        $scope.applyFiltersObj = {
+            currencyFilter:{
+                selectedCurrencyOption: {}
+            },
+            unitFilter: {
+                selectedCurrencyOption: {}
+            }
+        };
+
+        $scope.showFilters = function () {
+            $scope.showingFilters = !$scope.showingFilters;
+        };
 
         $scope.showCurrenciesOptions = function (code) {
             if($scope.optionsCode == code){
@@ -20,24 +38,61 @@
             }
         };
 
-        vm.getCompanyCurrencies = function(){
+        $scope.clearFilters = function () {
+            $scope.filtersObj = {
+                currencyFilter: false,
+                unitFilter: false
+            };
+        };
+
+        vm.getCurrenciesUrl = function(){
+
+
+            var searchObj = {
+                enabled: true,
+                code: $scope.filtersObj.currencyFilter ? $scope.applyFiltersObj.currencyFilter.selectedCurrencyOption.code: null,
+                unit: $scope.filtersObj.unitFilter ? $scope.applyFiltersObj.unitFilter.selectedCurrencyOption.unit: null
+            };
+
+            return environmentConfig.API + '/admin/currencies/?' + serializeFiltersService.serializeFilters(searchObj);
+        };
+
+        $scope.getCompanyCurrencies = function(){
+            if($scope.showingFilters) {
+                $scope.showFilters();
+            }
+
+            var currenciesUrl = vm.getCurrenciesUrl();
+
             if(vm.token) {
                 $scope.loadingCurrencies = true;
-                $http.get(environmentConfig.API + '/admin/currencies/?enabled=true', {
+                $http.get(currenciesUrl, {
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': vm.token
                     }
                 }).then(function (res) {
                     if (res.status === 200) {
-                        $scope.currencies = res.data.data.results;
-                        $scope.currencies.forEach(function(element,idx,array){
-                            if(idx === array.length - 1){
-                                vm.getCurrencyOverview(element,'last');
-                                return false;
+                        if(res.data.data.results.length > 0){
+                            $scope.currencies = res.data.data.results;
+                            if($scope.currencyOptions.length == 0){
+                                $scope.currencyOptions = res.data.data.results.slice(0);
                             }
-                            vm.getCurrencyOverview(element);
-                        })
+
+                            $scope.applyFiltersObj.currencyFilter.selectedCurrencyOption = $scope.currencies[0];
+                            $scope.applyFiltersObj.unitFilter.selectedCurrencyOption = $scope.currencies[0];
+                            
+                            $scope.currencies.forEach(function(element,idx,array){
+                                if(idx === array.length - 1){
+                                    vm.getCurrencyOverview(element,'last');
+                                    return false;
+                                }
+                                vm.getCurrencyOverview(element);
+                            });
+                        } else {
+                            $scope.loadingCurrencies = false;
+                            $scope.currencies = res.data.data.results;
+                        }
                     }
                 }).catch(function (error) {
                     $scope.loadingCurrencies = false;
@@ -46,7 +101,7 @@
                 });
             }
         };
-        vm.getCompanyCurrencies();
+        $scope.getCompanyCurrencies();
 
         vm.getCurrencyOverview = function (currency,last) {
             if(vm.token) {

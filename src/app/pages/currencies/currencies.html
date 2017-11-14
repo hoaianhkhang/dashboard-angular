@@ -1,12 +1,10 @@
 <h1 class="currencies-title">Currencies</h1>
-<div ng-hide="loadingCurrencies" class="panel" ba-panel-class=" with-scroll" >
+<div ng-hide="loadingCurrencies" class="panel" >
     <div class="panel-heading">
         <div class="table-filter-heading">
-            <button ng-click="showFilters()" ng-class="{'transactions-filter-btn': (filtersCount > 0), 'transactions-btn': (filtersCount == 0)}"
-                    class="currencies-page-buttons btn btn-default">Filters
-            </button>
+            <button ng-click="showFilters()" class="currencies-page-buttons btn btn-default">Filters</button>
             <div ng-show="showingFilters">
-                //currencies filter will go here
+                <currencies-filter></currencies-filter>
             </div>
             <div>
                 <button class="btn btn-success pull-right panel-header-button currencies-page-buttons" ng-click="goToAddCurrency()">Add currency</button>
@@ -14,7 +12,7 @@
         </div>
     </div>
 </div>
-<div ng-hide="loadingCurrencies" ng-repeat="currency in currencies">
+<div ng-hide="loadingCurrencies || (currencies.length == 0)" ng-repeat="currency in currencies">
     <div class="panel ">
         <div class="panel-body row">
             <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
@@ -64,6 +62,13 @@
                     </ul>
                 </div>
             </div>
+        </div>
+    </div>
+</div>
+<div ng-hide="loadingCurrencies || (currencies.length > 0)">
+    <div class="panel">
+        <div class="panel-heading">
+            <i>No results found</i>
         </div>
     </div>
 </div>
