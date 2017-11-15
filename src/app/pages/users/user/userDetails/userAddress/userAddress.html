@@ -1,10 +1,10 @@
-<div ng-hide="loadingUserAddress || addingUserAddress || editingUserAddress" class="panel">
+<div ng-hide="loadingUserAddress" class="panel">
     <div class="panel-heading">
         <span class="user-details-panel-title">Address</span>
-        <a ng-click="toggleAddUserAddressView()" class="user-details-panel-link pull-right pointer">Add address</a>
+        <a ng-click="openAddUserAddressModal('app/pages/users/user/userDetails/userAddress/addUserAddressModal/addUserAddressModal.html','md')" class="user-details-panel-link pull-right pointer">Add address</a>
     </div>
     <div class="panel-body">
-        <div  ng-repeat="address in userAddresses">
+        <div  ng-repeat="address in userAddresses | orderBy: 'id'">
             <div class="row user-address">
                 <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">
                     {{address.line_1 ? address.line_1  + ',': ''}}
@@ -22,7 +22,7 @@
                 <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
                     <a ng-click="openUserAddressModal('app/pages/users/user/userDetails/userAddress/userAddressModal/userAddressModal.html','md',address)"
                        class="pull-right pointer">Delete</a>
-                    <a ng-click="toggleEditUserAddressView(address)" class="pull-right pointer user-address-edit margin-right-30">Edit</a>
+                    <a ng-click="openEditUserAddressModal('app/pages/users/user/userDetails/userAddress/editUserAddressModal/editUserAddressModal.html','md',address)" class="pull-right pointer user-address-edit margin-right-30">Edit</a>
                     <a ng-show="address.status == 'pending'" ng-click="verifyUserAddressConfirm(address.id,'verified')" class="pull-right pointer user-address-edit margin-right-30">Verify</a>
                 </div>
             </div>
@@ -31,10 +31,4 @@
 </div>
 <div ba-panel ng-show="loadingUserAddress">
     <loading-image></loading-image>
-</div>
-<div ng-show="addingUserAddress">
-    <add-user-address-view></add-user-address-view>
-</div>
-<div ng-show="editingUserAddress">
-    <edit-user-address-view></edit-user-address-view>
 </div>
