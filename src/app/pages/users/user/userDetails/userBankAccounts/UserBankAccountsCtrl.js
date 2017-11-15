@@ -11,13 +11,9 @@
         var vm = this;
         vm.token = cookieManagement.getCookie('TOKEN');
         vm.uuid = $stateParams.uuid;
-        vm.updatedUserBankAccount = {};
         $scope.isBankDetailsCollapsed = true;
         $scope.uncollapsedBank = {};
-        $scope.userBankAccountParams = {status: 'Pending'};
-        $scope.editUserBankAccount = {};
         $scope.loadingUserBankAccount = true;
-        $scope.addingUserBankAccount = false;
         $scope.statusOptions = ['Pending', 'Incomplete', 'Declined', 'Verified'];
 
         vm.getUserBankAccounts = function(){
@@ -42,102 +38,6 @@
             }
         };
         vm.getUserBankAccounts();
-
-        $scope.toggleAddUserBankAccountView = function () {
-            $scope.isBankDetailsCollapsed = true;
-            $scope.addingUserBankAccount = !$scope.addingUserBankAccount;
-        };
-
-        $scope.addUserBankAccount = function(userBankAccountParams){
-            if(vm.token) {
-                userBankAccountParams.user = vm.uuid;
-                $scope.loadingUserBankAccount = true;
-                $scope.toggleAddUserBankAccountView();
-                userBankAccountParams.status = userBankAccountParams.status.toLowerCase();
-                $http.post(environmentConfig.API + '/admin/users/bank-accounts/',userBankAccountParams,{
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
-                    $scope.loadingUserBankAccount = false;
-                    if (res.status === 201) {
-                        $scope.userBankAccountParams = {status: 'pending'};
-                        toastr.success('Successfully added user bank account!');
-                        vm.getUserBankAccounts();
-                    }
-                }).catch(function (error) {
-                    $scope.loadingUserBankAccount = false;
-                    errorHandler.evaluateErrors(error.data);
-                    errorHandler.handleErrors(error);
-                });
-            }
-        };
-
-        $scope.toggleEditUserBankAccountView = function (userBankAccount) {
-            $scope.isBankDetailsCollapsed = true;
-            if(userBankAccount){
-                vm.getUserBankAccount(userBankAccount);
-            } else {
-                $scope.editUserBankAccount = {};
-                vm.getUserBankAccounts();
-            }
-            $scope.editingUserBankAccount = !$scope.editingUserBankAccount;
-        };
-
-        vm.getUserBankAccount = function (userBankAccount) {
-            $scope.loadingUserBankAccount = true;
-            $http.get(environmentConfig.API + '/admin/users/bank-accounts/' + userBankAccount.id + '/', {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': vm.token
-                }
-            }).then(function (res) {
-                $scope.loadingUserBankAccount = false;
-                if (res.status === 200) {
-                    $scope.editUserBankAccount = res.data.data;
-                    $scope.editUserBankAccount.status = $filter('capitalizeWord')(res.data.data.status);
-                }
-            }).catch(function (error) {
-                $scope.loadingUserBankAccount = false;
-                errorHandler.evaluateErrors(error.data);
-                errorHandler.handleErrors(error);
-            });
-        };
-
-        $scope.userBankAccountChanged =  function (field) {
-            vm.updatedUserBankAccount[field] = $scope.editUserBankAccount[field];
-        };
-
-        $scope.updateUserBankAccount = function(){
-            if(vm.token) {
-                $scope.loadingUserBankAccount = true;
-                $scope.editingUserBankAccount = !$scope.editingUserBankAccount;
-                vm.updatedUserBankAccount.status ? vm.updatedUserBankAccount.status = vm.updatedUserBankAccount.status.toLowerCase() : '';
-                $http.patch(environmentConfig.API + '/admin/users/bank-accounts/' + $scope.editUserBankAccount.id + '/',vm.updatedUserBankAccount,{
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
-                    $scope.loadingUserBankAccount = false;
-                    if (res.status === 200) {
-                        vm.updatedUserBankAccount = {};
-                        $scope.editUserBankAccount = {};
-                        toastr.success('Successfully updated user bank account');
-                        vm.getUserBankAccounts();
-                    }
-                }).catch(function (error) {
-                    $scope.loadingUserBankAccount = false;
-                    errorHandler.evaluateErrors(error.data);
-                    errorHandler.handleErrors(error);
-                });
-            }
-        };
-
-        $scope.userAddressChanged =  function (field) {
-            vm.updatedUserAddress[field] = $scope.editUserAddress[field];
-        };
 
         $scope.verifyBankAccountConfirm = function (bank) {
             $ngConfirm({
@@ -199,6 +99,46 @@
             }
         };
 
+        $scope.openAddUserBankAccountModal = function (page, size) {
+            $scope.uncollapsedBank = {};
+            $scope.isBankDetailsCollapsed = true;
+            vm.theModal = $uibModal.open({
+                animation: true,
+                templateUrl: page,
+                size: size,
+                controller: 'AddUserBankAccountModalCtrl',
+                scope: $scope
+            });
+
+            vm.theModal.result.then(function(bankAccount){
+                if(bankAccount){
+                    vm.getUserBankAccounts();
+                }
+            }, function(){
+            });
+        };
+
+        $scope.openEditUserBankAccountModal = function (page, size, bankAccount) {
+            vm.theModal = $uibModal.open({
+                animation: true,
+                templateUrl: page,
+                size: size,
+                controller: 'EditUserBankAccountModalCtrl',
+                scope: $scope,
+                resolve: {
+                    bankAccount: function () {
+                        return bankAccount;
+                    }
+                }
+            });
+
+            vm.theModal.result.then(function(bankAccount){
+                if(bankAccount){
+                    vm.getUserBankAccounts();
+                }
+            }, function(){
+            });
+        };
 
         $scope.openUserBankAccountModal = function (page, size, bankAccount) {
             vm.theModal = $uibModal.open({
@@ -214,8 +154,8 @@
                 }
             });
 
-            vm.theModal.result.then(function(address){
-                if(address){
+            vm.theModal.result.then(function(bankAccount){
+                if(bankAccount){
                     vm.getUserBankAccounts();
                 }
             }, function(){

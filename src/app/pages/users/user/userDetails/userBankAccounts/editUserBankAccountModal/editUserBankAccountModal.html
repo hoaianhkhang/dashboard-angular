@@ -1,6 +1,9 @@
-<div ng-hide="loadingUserBankAccount" ba-panel-title="Edit bank account" class="panel">
+<div ng-hide="editingUserBankAccount" class="panel">
     <div class="panel-heading">
         <span class="user-details-panel-title">Edit bank account</span>
+        <a ng-click="$dismiss()" class="panel-modal-close-icon pull-right pointer">
+            <em class="ion-ios-close-empty sn-link-close"></em>
+        </a>
     </div>
     <div class="panel-body">
         <form name="editUserBankAccountForm" class="custom-form">
@@ -47,8 +50,11 @@
             </div>
             <div class="form-group">
                 <button ng-click="updateUserBankAccount()" ng-disabled="!editUserBankAccountForm.$valid" class="btn btn-primary user-accounts-btn pull-right">Save</button>
-                <button ng-click="toggleEditUserBankAccountView()" class="btn btn-default user-accounts-btn pull-right margin-right-10">Back</button>
+                <button ng-click="$dismiss()" class="btn btn-default pull-left user-accounts-btn">Close</button>
             </div>
         </form>
     </div>
+</div>
+<div ba-panel ng-show="editingUserBankAccount">
+    <loading-image></loading-image>
 </div>
