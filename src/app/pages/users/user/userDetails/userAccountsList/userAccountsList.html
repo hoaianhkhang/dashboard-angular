@@ -1,8 +1,8 @@
-<div ng-hide="addingAccount || editingAccount">
+<div ng-hide="loadingUserAccountsList">
     <div ng-hide="loadingUserAccountsList" class="panel">
         <div class="panel-heading">
             <span class="user-details-panel-title">Accounts list</span>
-            <a ng-click="toggleAddAccount()" class="user-details-panel-link pull-right pointer">Add account</a>
+            <a ng-click="openAddUserAccountsListModal('app/pages/users/user/userDetails/userAccountsList/addUserAccountModal/addUserAccountModal.html','md')" class="user-details-panel-link pull-right pointer">Add account</a>
         </div>
         <div class="panel-body">
             <table ng-if="accounts.length > 0" class="table">
@@ -12,14 +12,14 @@
                     <th></th>
                     <th></th>
                 </tr>
-                <tr ng-repeat="account in accounts | orderBy: '-created'">
+                <tr ng-repeat="account in accounts | orderBy: 'name'">
                     <td class="table-row-center transactions-list-element" title="{{account.name}}" ng-bind="account.name"></td>
                     <td class="table-row-center transactions-list-element" title="{{account.reference}}" ng-bind="account.reference"></td>
                     <td class="table-row-center transactions-list-element">
                         <span ng-show="account.primary" class="user-primary-account user-address-status">PRIMARY</span>
                     </td>
                     <td class="rehive-table-row-last-child">
-                        <a ng-click="toggleEditAccount(account)" class="pull-right pointer user-address-edit">Edit</a>
+                        <a ng-click="openEditUserAccountsListModal('app/pages/users/user/userDetails/userAccountsList/editUserAccountModal/editUserAccountModal.html','md',account)" class="pull-right pointer user-address-edit">Edit</a>
                     </td>
                 </tr>
             </table>
@@ -28,12 +28,6 @@
             </div>
         </div>
     </div>
-</div>
-<div ng-show="addingAccount">
-    <add-user-account></add-user-account>
-</div>
-<div ng-show="editingAccount">
-    <edit-user-account></edit-user-account>
 </div>
 <div ba-panel ng-show="loadingUserAccountsList">
     <loading-image></loading-image>
