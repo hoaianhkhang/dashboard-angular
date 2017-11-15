@@ -1,9 +1,9 @@
-<div ng-hide="addingCurrencies" ng-repeat="account in accounts">
+<div ng-hide="loadingUserAccounts" ng-repeat="account in accounts | orderBy: 'id'">
     <div ng-hide="loadingUserAccounts" class="panel">
         <div class="panel-heading">
             <span class="user-details-panel-title">Account: {{account.name}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <span ng-show="account.primary" class="user-primary-account user-address-status">PRIMARY</span></span>
-            <a ng-click="toggleAddAccountCurrency(account)" class="user-details-panel-link pull-right pointer">Add currency</a>
+            <a ng-click="openAddAccountCurrenciesModal('app/pages/users/user/userDetails/userAccounts/addAccountCurrenciesModal/addAccountCurrenciesModal.html','md',account.reference)" class="user-details-panel-link pull-right pointer">Add currency</a>
         </div>
         <div class="panel-body">
             <table ng-show="account.currencies.length > 0" class="table">
@@ -30,9 +30,6 @@
             </div>
         </div>
     </div>
-</div>
-<div ng-show="addingCurrencies">
-    <add-account-currencies></add-account-currencies>
 </div>
 <div ba-panel ng-show="loadingUserAccounts">
     <loading-image></loading-image>

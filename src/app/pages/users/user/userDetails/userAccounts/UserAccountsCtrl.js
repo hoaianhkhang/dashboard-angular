@@ -5,7 +5,7 @@
         .controller('UserAccountsCtrl', UserAccountsCtrl);
 
     /** @ngInject */
-    function UserAccountsCtrl($scope,environmentConfig,$stateParams,toastr,
+    function UserAccountsCtrl($scope,environmentConfig,$stateParams,$uibModal,
                               $http,cookieManagement,errorHandler,$location,$state) {
 
         var vm = this;
@@ -16,7 +16,7 @@
         $scope.loadingUserAccounts = true;
         $scope.addingCurrencies = false;
 
-        vm.getUser = function(){
+        vm.getUserAccounts = function(){
             if(vm.token) {
                 $scope.loadingUserAccounts = true;
                 $http.get(environmentConfig.API + '/admin/accounts/?user=' + vm.uuid, {
@@ -38,66 +38,28 @@
                 });
             }
         };
-        vm.getUser();
+        vm.getUserAccounts();
 
-        vm.getCompanyCurrencies = function(){
-            if(vm.token){
-                $http.get(environmentConfig.API + '/admin/currencies/?enabled=true', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
+        $scope.openAddAccountCurrenciesModal = function (page, size, reference) {
+            vm.theModal = $uibModal.open({
+                animation: true,
+                templateUrl: page,
+                size: size,
+                controller: 'AddAccountCurrenciesModalCtrl',
+                scope: $scope,
+                resolve: {
+                    reference: function () {
+                        return reference;
                     }
-                }).then(function (res) {
-                    if (res.status === 200) {
-                        $scope.currencyOptions = res.data.data.results;
-                    }
-                }).catch(function (error) {
-                    errorHandler.evaluateErrors(error.data);
-                    errorHandler.handleErrors(error);
-                });
-            }
-        };
-        vm.getCompanyCurrencies();
-
-        $scope.addAccountCurrency = function(listOfCurrencies){
-
-            var arrayOfCurrencies = [];
-
-            listOfCurrencies.forEach(function (element) {
-                arrayOfCurrencies.push({currency: element.code});
+                }
             });
 
-            if(vm.token) {
-                $scope.loadingUserAccounts = true;
-                $http.post(environmentConfig.API + '/admin/accounts/' + vm.reference + '/currencies/',{currencies: arrayOfCurrencies}, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
-                    console.log(res);
-                    if (res.status === 201) {
-                        $scope.newAccountCurrencies = {list: []};
-                        toastr.success('New currencies have been added to the account');
-                        $scope.toggleAddAccountCurrency();
-                        vm.getUser();
-                    }
-                }).catch(function (error) {
-                    $scope.newAccountCurrencies = {list: []};
-                    $scope.loadingUserAccounts = false;
-                    errorHandler.evaluateErrors(error.data);
-                    errorHandler.handleErrors(error);
-                });
-            }
-        };
-
-        $scope.toggleAddAccountCurrency = function (account) {
-            if(account){
-                vm.reference = account.reference;
-            } else {
-                vm.reference = ''
-            }
-            $scope.addingCurrencies = !$scope.addingCurrencies;
+            vm.theModal.result.then(function(account){
+                if(account){
+                    vm.getUserAccounts();
+                }
+            }, function(){
+            });
         };
 
         $scope.goToView = function(state,currency,email,account){
@@ -106,7 +68,7 @@
 
         $scope.goToSettings = function(currencyCode, account){
             $location.path('user/' + vm.uuid + '/account/'+account+'/settings/'+ currencyCode);
-        }
+        };
 
     }
 })();
