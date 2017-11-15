@@ -62,7 +62,7 @@
             });
         };
 
-        $scope.goToView = function(state,currency,email,account){
+        $scope.goToView = function(state,email,account){
           $state.go(state,{"email": email, "account": account});
         };
 

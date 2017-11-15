@@ -1,4 +1,4 @@
-<div ng-hide="loadingUserAccounts" ng-repeat="account in accounts | orderBy: 'id'">
+<div ng-hide="loadingUserAccounts" ng-repeat="account in accounts | orderBy: 'name'">
     <div ng-hide="loadingUserAccounts" class="panel">
         <div class="panel-heading">
             <span class="user-details-panel-title">Account: {{account.name}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -18,9 +18,9 @@
                         ng-bind="acc.available_balance  | currencyModifiersFilter: acc.currency.divisibility"></td>
                     <td class="rehive-table-row-last-child" width="55%">
                         <a ng-click="goToSettings(acc.currency.code,account.reference)" class="pull-right pointer user-bank-edit">Settings</a>
-                        <a ng-click="goToView('transactions.credit',acc.currency,account.user.email,account.reference)"
+                        <a ng-click="goToView('transactions.credit',account.user.email,account.reference)"
                            class="pull-right pointer user-bank-edit margin-right-30">Credit</a>
-                        <a ng-click="goToView('transactions.debit',acc.currency,account.user.email,account.reference)"
+                        <a ng-click="goToView('transactions.debit',account.user.email,account.reference)"
                            class="pull-right pointer user-bank-edit margin-right-30">Debit</a>
                         </td>
                 </tr>
