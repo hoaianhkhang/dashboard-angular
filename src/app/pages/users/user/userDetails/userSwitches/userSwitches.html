@@ -1,7 +1,7 @@
-<div ng-hide="loadingUserSwitches || addingUserSwitches || editingUserSwitches" class="setting-bank-accounts panel">
+<div ng-hide="loadingUserSwitches" class="setting-bank-accounts panel">
     <div class="panel-heading">
         <span class="user-details-panel-title">Switches</span>
-        <a ng-click="toggleAddUserSwitchesView()" class="user-details-panel-link pull-right pointer">Add switch</a>
+        <a ng-click="openAddUserSwitchesModal('app/pages/users/user/userDetails/userSwitches/createUserSwitchModal/createUserSwitchModal.html','md')" class="user-details-panel-link pull-right pointer">Add switch</a>
     </div>
     <div class="panel-body">
         <table ng-show="userSwitchesList.length > 0" class="table">
@@ -22,7 +22,7 @@
                     </div>
                     <a ng-click="openUserSwitchesModal('app/pages/users/user/userDetails/userSwitches/userSwitchesModal/userSwitchesModal.html','md',switches)"
                        class="pull-right pointer margin-right-30">Delete</a>
-                    <a ng-click="toggleUserSwitchesEditView(switches)" class="pull-right pointer user-address-edit margin-right-30">Edit</a>
+                    <a ng-click="openEditUserSwitchesModal('app/pages/users/user/userDetails/userSwitches/editUserSwitchModal/editUserSwitchModal.html','md',switches)" class="pull-right pointer user-address-edit margin-right-30">Edit</a>
                 </td>
             </tr>
         </table>
@@ -30,14 +30,6 @@
             <i>No user switches have been added</i>
         </div>
     </div>
-</div>
-
-
-<div ng-show="addingUserSwitches">
-    <create-user-switch></create-user-switch>
-</div>
-<div ng-show="editingUserSwitches">
-    <edit-user-switch></edit-user-switch>
 </div>
 <div ba-panel ng-show="loadingUserSwitches">
     <loading-image></loading-image>

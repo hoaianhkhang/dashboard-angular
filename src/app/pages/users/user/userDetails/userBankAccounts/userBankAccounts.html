@@ -1,4 +1,4 @@
-<div ng-hide="loadingUserBankAccount || addingUserBankAccount || editingUserBankAccount" class="panel">
+<div ng-hide="loadingUserBankAccount" class="panel">
     <div class="panel-heading">
         <span class="user-details-panel-title">Bank accounts</span>
         <a ng-click="openAddUserBankAccountModal('app/pages/users/user/userDetails/userBankAccounts/addUserBankAccountModal/addUserBankAccountModal.html','md')" class="user-details-panel-link pull-right pointer">Add bank account</a>
@@ -89,7 +89,6 @@
                             <th width="50%"></th>
                         </tr>
                     </table>
-
                 </div>
             </div>
         </div>
