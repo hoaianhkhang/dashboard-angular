@@ -8,8 +8,8 @@
     function userNumbers() {
         return {
             restrict: 'E',
-            require: '^parent',
-            templateUrl: 'app/pages/users/user/userDetails/userAccountInfo/userNumbers/userNumbers.html'
+            controller: 'UserNumbersCtrl',
+            templateUrl: 'app/pages/users/user/userDetails/userNumbers/userNumbers.html'
         };
     }
 })();

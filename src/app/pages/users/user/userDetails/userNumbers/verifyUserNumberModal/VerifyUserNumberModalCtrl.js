@@ -2,12 +2,12 @@
     'use strict';
 
     angular.module('BlurAdmin.pages.users.user')
-        .controller('UserMobileModalCtrl', UserMobileModalCtrl);
+        .controller('VerifyUserNumberModalCtrl', VerifyUserNumberModalCtrl);
 
-    function UserMobileModalCtrl($scope,$uibModalInstance,mobile,user,toastr,$http,environmentConfig,cookieManagement,errorHandler) {
+    function VerifyUserNumberModalCtrl($scope,$uibModalInstance,number,user,toastr,$http,environmentConfig,cookieManagement,errorHandler) {
 
         var vm= this;
-        $scope.mobile = mobile;
+        $scope.mobile = number;
         $scope.user = user;
         vm.token = cookieManagement.getCookie('TOKEN');
         $scope.verifyingMobile = false;
@@ -32,7 +32,7 @@
 
         $scope.verifyMobile = function () {
             $scope.verifyingMobile = true;
-            $http.patch(environmentConfig.API + '/admin/users/mobiles/' + mobile.id + '/', {verified: true}, {
+            $http.patch(environmentConfig.API + '/admin/users/mobiles/' + $scope.mobile.id + '/', {verified: true}, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': vm.token
