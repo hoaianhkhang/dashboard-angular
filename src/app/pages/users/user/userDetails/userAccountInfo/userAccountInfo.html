@@ -1,24 +1,14 @@
-<div ng-hide="loadingUserAccountInfo || showAddUserEmail || showAddUserNumber"
-     ba-panel ba-panel-title="Account info" >
-    <table class="table table-condensed table-striped user-details-table">
-        <tr ng-show="user.identifier">
-            <th width="83%"><strong>Identifier</strong></th>
-            <th></th>
-        </tr>
-        <tr ng-show="user.identifier">
-            <th width="83%" ng-bind="user.identifier"></th>
-            <th class="copy-clipboard">
-                <a ngclipboard ngclipboard-success="copiedSuccessfully()" data-clipboard-text="{{user.identifier}}" class="pull-right pointer">Copy</a>
-            </th>
-        </tr>
-    </table>
+<div ng-hide="loadingUserAccountInfo || showAddUserEmail || showAddUserNumber" class="panel">
+    <div class="panel-heading">
+         <span class="user-details-panel-title">Account info</span>
+    </div>
     <div>
         <user-emails></user-emails>
     </div>
     <div>
         <user-numbers></user-numbers>
     </div>
-    <table class="table table-condensed table-striped user-details-table">
+    <table class="table user-details-table">
         <tr>
             <th width="83%"><strong>KYC status</strong></th>
             <th></th>

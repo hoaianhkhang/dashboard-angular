@@ -61,27 +61,6 @@
         };
         vm.getUser();
 
-        vm.getUserEmails = function(){
-            if(vm.token) {
-                $http.get(environmentConfig.API + '/admin/users/emails/?user=' + vm.uuid, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
-                    if (res.status === 200) {
-                        $scope.emailsList = res.data.data.results;
-                        $window.sessionStorage.userEmails = JSON.stringify(res.data.data.results);
-                        vm.getUserMobileNumbers();
-                    }
-                }).catch(function (error) {
-                    $scope.loadingUserAccountInfo = false;
-                    errorHandler.evaluateErrors(error.data);
-                    errorHandler.handleErrors(error);
-                });
-            }
-        };
-
         vm.getUserMobileNumbers = function(){
             if(vm.token) {
                 $scope.loadingUserAccountInfo = true;
@@ -106,96 +85,6 @@
 
         // intial user and email and mobile number list calling functions end
 
-        // user email functions start
-
-        $scope.createUserEmail = function (newUserEmail) {
-            $scope.loadingUserAccountInfo = true;
-            newUserEmail.user = vm.uuid;
-            newUserEmail.primary = newUserEmail.primary == 'True' ? true:false;
-            newUserEmail.verified = newUserEmail.verified == 'True' ? true:false;
-            $http.post(environmentConfig.API + '/admin/users/emails/',newUserEmail, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': vm.token
-                }
-            }).then(function (res) {
-                if (res.status === 201) {
-                    $scope.newUserEmail = {primary: 'False', verified: 'False'};
-                    toastr.success('Email successfully created');
-                    $scope.toggleAddUserEmailsView();
-                    vm.getUserEmails()
-                }
-            }).catch(function (error) {
-                $scope.newUserEmail = {primary: 'False', verified: 'False'};
-                $scope.loadingUserAccountInfo = false;
-                errorHandler.evaluateErrors(error.data);
-                errorHandler.handleErrors(error);
-            });
-        };
-
-        $scope.updateUserEmail = function (email) {
-            $scope.loadingUserAccountInfo = true;
-            $http.patch(environmentConfig.API + '/admin/users/emails/' + email.id + '/', {primary: true}, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': vm.token
-                }
-            }).then(function (res) {
-                if (res.status === 200) {
-                    toastr.success('Primary email successfully changed');
-                    vm.getUserEmails()
-                }
-            }).catch(function (error) {
-                $scope.loadingUserAccountInfo = false;
-                errorHandler.evaluateErrors(error.data);
-                errorHandler.handleErrors(error);
-            });
-        };
-
-        $scope.deleteUserEmailConfirm = function (email) {
-            $ngConfirm({
-                title: 'Delete email',
-                content: "Are you sure you want to delete this user's email?",
-                animationBounce: 1,
-                animationSpeed: 100,
-                scope: $scope,
-                buttons: {
-                    close: {
-                        text: "No",
-                        btnClass: 'btn-default dashboard-btn'
-                    },
-                    ok: {
-                        text: "Yes",
-                        btnClass: 'btn-primary dashboard-btn',
-                        keys: ['enter'], // will trigger when enter is pressed
-                        action: function(scope){
-                            $scope.deleteUserEmail(email);
-                        }
-                    }
-                }
-            });
-        };
-
-        $scope.deleteUserEmail = function (email) {
-            $scope.loadingUserAccountInfo = true;
-            $http.delete(environmentConfig.API + '/admin/users/emails/' + email.id + '/', {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': vm.token
-                }
-            }).then(function (res) {
-                if (res.status === 200) {
-                    toastr.success('Email successfully deleted');
-                    vm.getUserEmails()
-                }
-            }).catch(function (error) {
-                $scope.loadingUserAccountInfo = false;
-                errorHandler.evaluateErrors(error.data);
-                errorHandler.handleErrors(error);
-            });
-        };
-
-        // user email functions end
 
         // user mobile numbers functions start
 
@@ -287,31 +176,6 @@
         };
 
         // user mobile numbers functions start
-
-        $scope.openUserEmailModal = function (page,size,email) {
-            vm.theModal = $uibModal.open({
-                animation: true,
-                templateUrl: page,
-                size: size,
-                controller: 'UserEmailModalCtrl',
-                scope: $scope,
-                resolve: {
-                    email: function () {
-                        return email;
-                    },
-                    user: function () {
-                        return $scope.user;
-                    }
-                }
-            });
-
-            vm.theModal.result.then(function(email){
-                if(email){
-                    vm.getUserEmails();
-                }
-            }, function(){
-            });
-        };
 
         $scope.openUserMobileModal = function (page, size,mobile) {
             vm.theModal = $uibModal.open({

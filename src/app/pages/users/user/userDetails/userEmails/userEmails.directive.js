@@ -8,8 +8,8 @@
     function userEmails() {
         return {
             restrict: 'E',
-            require: '^parent',
-            templateUrl: 'app/pages/users/user/userDetails/userAccountInfo/userEmails/userEmails.html'
+            controller: 'UserEmailsCtrl',
+            templateUrl: 'app/pages/users/user/userDetails/userEmails/userEmails.html'
         };
     }
 })();

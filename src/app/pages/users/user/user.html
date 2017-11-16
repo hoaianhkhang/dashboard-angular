@@ -9,8 +9,8 @@
                 <span class="user-details-name">{{user.first_name}} {{user.last_name}}</span>
                 <p ngclipboard ngclipboard-success="copiedSuccessfully()" data-clipboard-text="{{user.identifier}}"
                    class="user-details-info pointer">identifier: {{user.identifier}}</p>
-                <p class="user-details-info">user for {{beenAUser}}
-                </p>
+                <p class="user-details-info">user for {{beenAUser}}</p>
+                <p class="user-details-info">kyc status: {{user.kyc.status}}</p>
             </div>
         </div>
     </div>

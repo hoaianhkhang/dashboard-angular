@@ -2,11 +2,11 @@
     'use strict';
 
     angular.module('BlurAdmin.pages.users.user')
-        .controller('UserEmailModalCtrl', UserEmailModalCtrl);
+        .controller('UserVerifyEmailModalCtrl', UserVerifyEmailModalCtrl);
 
-    function UserEmailModalCtrl($scope,$uibModalInstance,email,user,toastr,$http,environmentConfig,cookieManagement,errorHandler) {
+    function UserVerifyEmailModalCtrl($scope,$uibModalInstance,email,user,toastr,$http,environmentConfig,cookieManagement,errorHandler) {
 
-        var vm= this;
+        var vm = this;
 
         $scope.email = email;
         $scope.user = user;

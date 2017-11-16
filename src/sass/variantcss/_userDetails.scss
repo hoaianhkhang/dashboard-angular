@@ -1,3 +1,18 @@
+.verified-icon{
+  position: relative;
+  top: 2px;
+  color: $success;
+  background-color: white;
+  font-size: 20px;
+}
+
+.verified-icon-empty{
+  position: relative;
+  top: 2px;
+  color: #d7dcde;
+  font-size: 21px;
+}
+
 .user-primary-account{
   color: $primary;
   border-color: $primary;
