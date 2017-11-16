@@ -1,8 +1,8 @@
-<div ng-hide="loadingUserCryptoAccounts || addingUserCryptoAccounts || editingUserCryptoAccounts"
+<div ng-hide="loadingUserCryptoAccounts"
      class="panel">
     <div class="panel-heading">
             <span class="user-details-panel-title">Crypto accounts</span>
-        <a ng-click="toggleAddUserCryptoAccountsView()" class="user-details-panel-link pull-right pointer">Add crypto account</a>
+        <a ng-click="openAddUserCryptoAccountsModal('app/pages/users/user/userDetails/userCryptoAccounts/addUserCryptoAccountsModal/addUserCryptoAccountsModal.html','md')" class="user-details-panel-link pull-right pointer">Add crypto account</a>
     </div>
     <div class="panel-body">
         <table ng-show="userCryptoAccountsList.length > 0" class="table">
@@ -12,7 +12,7 @@
                 <th></th>
                 <th></th>
             </tr>
-            <tr ng-repeat="cryptoAccount in userCryptoAccountsList | orderBy: '-created'">
+            <tr ng-repeat="cryptoAccount in userCryptoAccountsList | orderBy: 'crypto_type'">
                 <td class="table-row-center transactions-list-element" title="{{cryptoAccount.address}}" ng-bind="cryptoAccount.address"></td>
                 <td class="table-row-center transactions-list-element" title="{{cryptoAccount.crypto_type}}" ng-bind="cryptoAccount.crypto_type"></td>
                 <td class="table-row-center transactions-list-element">
@@ -23,7 +23,7 @@
                 <td class="rehive-table-row-last-child">
                     <a ng-click="openUserCryptoAccountsModal('app/pages/users/user/userDetails/userCryptoAccounts/userCryptoAccountsModal/userCryptoAccountsModal.html','md',cryptoAccount)"
                        class="pull-right pointer ">Delete</a>
-                    <a ng-click="toggleUserCryptoAccountsEditView(cryptoAccount)" class="pull-right pointer user-address-edit margin-right-30">Edit</a>
+                    <a ng-click="openEditUserCryptoAccountsModal('app/pages/users/user/userDetails/userCryptoAccounts/editUserCryptoAccountsModal/editUserCryptoAccountsModal.html','md',cryptoAccount)" class="pull-right pointer user-address-edit margin-right-30">Edit</a>
                 </td>
             </tr>
         </table>
@@ -31,12 +31,6 @@
             <i>No user crypto accounts are available</i>
         </div>
     </div>
-</div>
-<div ng-show="addingUserCryptoAccounts">
-    <add-user-crypto-accounts></add-user-crypto-accounts>
-</div>
-<div ng-show="editingUserCryptoAccounts">
-    <edit-user-crypto-accounts></edit-user-crypto-accounts>
 </div>
 <div ba-panel ng-show="loadingUserCryptoAccounts">
     <loading-image></loading-image>
