@@ -11,7 +11,7 @@
                 url: '/accounts',
                 views: {
                     'userDetailsView': {
-                        controller: "UserAccountsCtrl",
+                        controller: "UserAccountsOnlyCtrl",
                         templateUrl: 'app/pages/users/user/userAccountsOnly/userAccountsOnly.html'
                     }
                 },

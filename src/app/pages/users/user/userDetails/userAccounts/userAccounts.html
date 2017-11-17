@@ -1,4 +1,4 @@
-<div ng-hide="loadingUserAccounts" ng-repeat="account in accounts | orderBy: 'name'">
+<div ng-hide="loadingUserAccounts" ng-repeat="account in accounts | orderBy: '-primary'">
     <div ng-hide="loadingUserAccounts" class="panel">
         <div class="panel-heading">
             <span class="user-details-panel-title">Account: {{account.name}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -10,12 +10,17 @@
                 <tr class="user-switches-table-header">
                     <th>Currency</th>
                     <th>Available balance</th>
+                    <th>Balance</th>
                     <th></th>
                 </tr>
                 <tr  ng-repeat="acc in account.currencies">
                     <td width="15%" ng-bind="acc.currency.code"></td>
-                    <td width="30%" title="{{acc.available_balance  | currencyModifiersFilter: acc.currency.divisibility}}"
-                        ng-bind="acc.available_balance  | currencyModifiersFilter: acc.currency.divisibility"></td>
+                    <td width="20%" title="{{acc.available_balance  | currencyModifiersFilter: acc.currency.divisibility}}">
+                        {{acc.currency.symbol}} {{acc.available_balance  | currencyModifiersFilter: acc.currency.divisibility}}
+                    </td>
+                    <td width="30%" title="{{acc.balance  | currencyModifiersFilter: acc.currency.divisibility}}">
+                        {{acc.currency.symbol}} {{acc.balance  | currencyModifiersFilter: acc.currency.divisibility}}
+                    </td>
                     <td class="rehive-table-row-last-child" width="55%">
                         <a ng-click="goToSettings(acc.currency.code,account.reference)" class="pull-right pointer user-bank-edit">Settings</a>
                         <a ng-click="goToView('transactions.credit',account.user.email,account.reference)"
