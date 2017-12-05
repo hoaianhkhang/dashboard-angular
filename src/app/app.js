@@ -50,7 +50,8 @@ angular.module('BlurAdmin', [
                 };
                 if(newUrlLastElement != 'change' && newUrlLastElement != 'multi-factor'
                     && newUrl.indexOf('/multi-factor/sms') < 0 && newUrl.indexOf('/multi-factor/verify') < 0
-                    && newUrl.indexOf('password/reset/confirm') < 0 && newUrl.indexOf('email/verify') < 0){
+                    && newUrl.indexOf('password/reset/confirm') < 0 && newUrl.indexOf('email/verify') < 0
+                    && newUrl.indexOf('register') < 0 && newUrl.indexOf('password/reset') < 0){
                     verifyUser();
                 }
 
