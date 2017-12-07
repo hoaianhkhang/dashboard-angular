@@ -132,7 +132,7 @@
             }).then(function (res) {
                 $scope.onGoingTransaction = false;
                 if (res.status === 201) {
-                    toastr.success('You have successfully debited the account!');
+                    toastr.success('You have successfully debited the account');
                     $scope.goToView('completeDebit');
                 }
             }).catch(function (error) {

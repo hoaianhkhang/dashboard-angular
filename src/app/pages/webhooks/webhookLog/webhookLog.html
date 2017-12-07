@@ -1,31 +1,97 @@
 <div ng-hide="loadingWebhooks">
     <div ba-panel class="setting-bank-accounts" ba-panel-title="Webhook log" ba-panel-class="light-text with-scroll">
-        <table class="table fees-table table-striped setting-bank-accounts-table table-hover">
-            <tr class="black-muted-bg divider">
-                <th><strong>Event</strong></th>
-                <th><strong>URL</strong></th>
-                <th><strong>Secret</strong></th>
-                <th><strong>Condition</strong></th>
-                <th><strong>Tries</strong></th>
-                <th><strong>Failed</strong></th>
-                <th><strong>Completed</strong></th>
-                <th><strong>Updated</strong></th>
-                <th><strong>Created</strong></th>
-            </tr>
-            <tr class="pointer" ng-click="openWebhookLogModal('app/pages/webhooks/webhookLog/webhookLogModal/webhookLogModal.html','md',webhookTask)">
-                <td class="table-row-center transactions-list-element" title="{{webhookTask.webhook.event}}" ng-bind="webhookTask.webhook.event | capitalizeDottedSentence"></td>
-                <td class="table-row-center transactions-list-element" title="{{webhookTask.webhook.url}}" ng-bind="webhookTask.webhook.url"></td>
-                <td class="table-row-center transactions-list-element" title="{{webhookTask.webhook.secret}}" ng-bind="webhookTask.webhook.secret"></td>
-                <td class="table-row-center transactions-list-element" title="{{webhookTask.webhook.condition}}" ng-bind="webhookTask.webhook.condition"></td>
-                <td class="table-row-center transactions-list-element" title="{{webhookTask.tries}}" ng-bind="webhookTask.tries"></td>
-                <td class="table-row-center transactions-list-element" title="{{webhookTask.failed}}" ng-bind="webhookTask.failed"></td>
-                <td class="table-row-center transactions-list-element" title="{{webhookTask.completed}}" ng-bind="webhookTask.completed"></td>
-                <td class="table-row-center transactions-list-element" title="{{webhookTask.updated | date:'mediumDate'}} {{webhookTask.updated | date:'shortTime'}}">
-                    {{webhookTask.updated | date:'mediumDate'}} {{webhookTask.updated | date:'shortTime'}}</td>
-                <td class="table-row-center transactions-list-element" title="{{webhookTask.created | date:'mediumDate'}} {{webhookTask.created | date:'shortTime'}}">
-                    {{webhookTask.created | date:'mediumDate'}} {{webhookTask.created | date:'shortTime'}}</td>
-            </tr>
-        </table>
+        <div>
+            <div class="row">
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                    <p><strong>Event: </strong></p>
+                </div>
+                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                    <span ng-bind="webhookTask.data.event | capitalizeDottedSentence"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                    <p><strong>Url: </strong></p>
+                </div>
+                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                    <span ng-bind="webhookTask.webhook.url"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                    <p><strong>Secret: </strong></p>
+                </div>
+                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                    <span ng-bind="webhookTask.webhook.secret"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                    <p><strong>Condition: </strong></p>
+                </div>
+                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                    <span ng-bind="webhookTask.webhook.condition"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                    <p><strong>Tries: </strong></p>
+                </div>
+                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                    <span ng-bind="webhookTask.tries"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                    <p><strong>Failed: </strong></p>
+                </div>
+                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                    <span>
+                        {{webhookTask.failed | date:'mediumDate'}} {{webhookTask.failed | date:'shortTime'}}
+                    </span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                    <p><strong>Completed: </strong></p>
+                </div>
+                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                    <span>
+                        {{webhookTask.completed | date:'mediumDate'}} {{webhookTask.completed | date:'shortTime'}}
+                    </span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                    <p><strong>Updated: </strong></p>
+                </div>
+                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                    <span>
+                        {{webhookTask.updated | date:'mediumDate'}} {{webhookTask.updated | date:'shortTime'}}
+                    </span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                    <p><strong>Created: </strong></p>
+                </div>
+                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                    <span>
+                        {{webhookTask.created | date:'mediumDate'}} {{webhookTask.created | date:'shortTime'}}
+                    </span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                    <p><strong>More details: </strong></p>
+                </div>
+                <div class="mainData col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                    <span>
+                        <pre ng-bind-html="mainData"></pre>
+                    </span>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 <div ba-panel ng-show="loadingWebhooks">
@@ -35,15 +101,15 @@
     <div ng-show="webhookRequests.length > 0" ba-panel class="setting-bank-accounts" ba-panel-title="Webhook requests" ba-panel-class="light-text with-scroll">
         <table class="table fees-table table-striped setting-bank-accounts-table">
             <tr class="black-muted-bg divider">
+                <th><strong>Created</strong></th>
                 <th><strong>Error</strong></th>
                 <th><strong>Response code</strong></th>
-                <th><strong>Created</strong></th>
             </tr>
             <tr ng-repeat="request in webhookRequests | orderBy: '-created'">
-                <td class="table-row-center transactions-list-element" title="{{request.error}}" ng-bind="request.error"></td>
-                <td class="table-row-center transactions-list-element" title="{{request.response_code}}" ng-bind="request.response_code"></td>
                 <td class="table-row-center transactions-list-element" title="{{request.created | date:'mediumDate'}} {{request.created | date:'shortTime'}}">
                     {{request.created | date:'mediumDate'}} {{request.created | date:'shortTime'}}</td>
+                <td class="table-row-center transactions-list-element" title="{{request.error}}" ng-bind="request.error"></td>
+                <td class="table-row-center transactions-list-element" title="{{request.response_code}}" ng-bind="request.response_code"></td>
             </tr>
         </table>
         <div>
