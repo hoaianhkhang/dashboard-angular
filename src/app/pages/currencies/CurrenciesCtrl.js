@@ -30,6 +30,10 @@
             $scope.showingFilters = !$scope.showingFilters;
         };
 
+        $scope.hideFilters = function () {
+            $scope.showingFilters = false;
+        };
+
         $scope.showCurrenciesOptions = function (code) {
             if($scope.optionsCode == code){
                 $scope.optionsCode = '';

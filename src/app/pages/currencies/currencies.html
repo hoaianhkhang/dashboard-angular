@@ -2,9 +2,11 @@
 <div ng-hide="loadingCurrencies" class="panel" >
     <div class="panel-heading">
         <div class="table-filter-heading">
-            <button ng-click="showFilters()" class="currencies-page-buttons btn btn-default">Filters</button>
-            <div ng-show="showingFilters">
-                <currencies-filter></currencies-filter>
+            <div click-outside="hideFilters()">
+                <button ng-click="showFilters()" class="currencies-page-buttons btn btn-default">Filters</button>
+                <div ng-show="showingFilters">
+                    <currencies-filter></currencies-filter>
+                </div>
             </div>
             <div>
                 <button class="btn btn-success pull-right panel-header-button currencies-page-buttons" ng-click="goToAddCurrency()">Add currency</button>

@@ -10,12 +10,18 @@
 
         vm.token = cookieManagement.getCookie('TOKEN');
         $scope.currencies = [];
+        $scope.hideSearchBar = true;
+
         vm.currentLocation = $location.path();
         $rootScope.$on('$locationChangeStart', function (event,newUrl) {
             var newUrlArray = newUrl.split('/'),
                 newUrlLastElement = _.last(newUrlArray);
             vm.currentLocation = newUrlLastElement;
         });
+
+        $scope.hidingSearchBar = function () {
+            $scope.hideSearchBar =  !$scope.hideSearchBar
+        };
 
         vm.getCompanyInfo = function () {
             if(vm.token) {

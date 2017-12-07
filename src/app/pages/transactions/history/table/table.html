@@ -1,11 +1,14 @@
 <div class="panel">
     <div class="panel-heading">
         <div class="table-filter-heading">
-            <button ng-click="showFilters()" ng-class="{'transactions-filter-btn': (filtersCount > 0), 'transactions-btn': (filtersCount == 0)}"
-            class="btn btn-default">Filters
-                <span ng-show="filtersCount > 0">|</span> <span ng-show="filtersCount > 0" class="filter-count">{{filtersCount}}</span></button>
-            <div ng-show="showingFilters">
-                <history-filters></history-filters>
+            <div click-outside="hideFilters()">
+                <button ng-click="showFilters()" ng-class="{'transactions-filter-btn': (filtersCount > 0), 'transactions-btn': (filtersCount == 0)}"
+                        class="btn btn-default">Filters
+                    <span ng-show="filtersCount > 0">|</span> <span ng-show="filtersCount > 0" class="filter-count">{{filtersCount}}</span>
+                </button>
+                <div ng-show="showingFilters">
+                    <history-filters></history-filters>
+                </div>
             </div>
             <button ng-csv="getCSVArray" csv-header="getHeader()" filename="{{getFileName}}"
                     class="btn btn-default transactions-btn panel-header-user-icon">Export</button>
