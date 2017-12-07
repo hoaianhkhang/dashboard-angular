@@ -10,6 +10,7 @@ angular.module('BlurAdmin', [
     'ui.router',
     'toastr',
     'countrySelect',
+    'angular-click-outside',
     'ngCsv',
     'iso-3166-country-codes',
     'ngclipboard',
