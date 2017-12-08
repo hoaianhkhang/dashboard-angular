@@ -9,3 +9,7 @@
 uib-datepicker-popup button.btn-default{
   border: none;
 }
+
+table.uib-daypicker > thead > tr:nth-child(2){
+  display: none;
+}

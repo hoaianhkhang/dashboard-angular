@@ -19,6 +19,12 @@
   width: 70px;
 }
 
+.custom-table{
+  position: relative;
+  top: -13px;
+  left: -6px;
+}
+
 .table-filters{
   z-index: 100;
   position: absolute;
@@ -26,13 +32,13 @@
   top: 10px;
   width: 450px;
   & > .panel-heading{
-    padding: 8px 8px 8px 25px !important;
+    padding: 8px 8px 8px 17px !important;
     & .table-filter-heading button{
         padding: 4px 12px;
     }
   }
   & > .panel-body{
-    padding: 8px 8px 14px 25px !important;
+    padding: 8px 8px 14px 17px !important;
     & .date-filter-view{
       display: inline-flex;
     }
@@ -43,16 +49,20 @@
         padding: 0 4px !important;
       }
     }
+    & input{
+      border: 1px solid #cbcbcb;
+      box-shadow: none;
+    }
     & input.transaction-amount-input{
       height: 22px;
-      width: 100px;
+      width: 120px;
       margin-left: 12px;
       padding: 0;
       text-align: center;
     }
     & input.transaction-date-interval-input{
       height: 22px;
-      width: 30px;
+      width: 120px;
       margin-left: 12px;
       padding: 0;
       text-align: center;
@@ -66,13 +76,13 @@
     }
     & input.transaction-id-input{
       height: 22px;
-      width: 300px;
-      padding: 0;
+      width: 310px;
+      padding: 0 0 0 10px;
     }
     & input.transaction-page-size-input{
       height: 22px;
-      width: 40px;
-      padding: 0;
+      width: 120px;
+      padding: 0 0 0 10px;
     }
     & .date-filter-in-between-view{
       display: inline-flex;
@@ -86,7 +96,7 @@
       height: 22px;
     }
     & .calender-button{
-      padding: 0px 6px;
+      padding: 0 6px;
     }
     & span.filter-text{
       font-size: 14px;
@@ -96,7 +106,7 @@
 }
 
 .table-filter-heading{
-  line-height: 25px;
+  line-height: 30px;
   height: 30px;
 }
 

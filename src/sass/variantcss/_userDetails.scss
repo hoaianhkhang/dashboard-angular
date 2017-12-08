@@ -46,8 +46,8 @@
 
 .user-switch-active, .user-switch-inactive {font-size:40px;cursor:pointer;}
 .user-switch-active, .user-switch-inactive {font-size:40px;cursor:pointer;}
-.user-switch-active { color: $primary}
-.user-switch-inactive {color: #979797}
+.user-switch-active { color: #5EC980;}
+.user-switch-inactive {color: #979797;}
 
 .user-switches-table-header > th{
   color: #979797;
@@ -110,13 +110,14 @@
 
 .user-details-nav-bar{
   margin: 0;
-  font-weight: bold;
   list-style: none;
   padding: 0;
+  position: relative;
+  top:-7px;
   li{
     font-size: 16px;
     display: inline-block;
-    margin:0 25px 20px 0;
+    margin:0 50px 20px 0;
     cursor: pointer;
     & a{
       color: #A8A8A8;
