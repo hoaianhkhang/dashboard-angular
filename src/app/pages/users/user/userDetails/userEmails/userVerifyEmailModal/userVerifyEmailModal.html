@@ -7,9 +7,9 @@
     </div>
     <div class="modal-body">
         <p class="divider">Are you sure you want to manually verify <strong>{{email.email}}</strong>
-            for <strong>{{user.first_name}} {{user.last_name}}</strong></p>
+            for this user</strong></p>
         <p>By verifying this email address the transaction backlog associated to <strong>{{email.email}}</strong>
-            will also be credited to <strong>{{user.first_name}} {{user.last_name}}</strong>.</p>
+            will also be credited to this user.</p>
     </div>
     <div class="modal-footer">
         <button type="button" ng-disabled="verifyingEmail" class="btn btn-primary pull-left" ng-click="resendEmailVerification()">Resend</button>

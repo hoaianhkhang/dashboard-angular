@@ -126,7 +126,7 @@
       margin-left: 12px;
       text-decoration: none;
       &:hover {
-        color: $dropdown-text;
+        color: red;
       }
     }
   }
@@ -220,7 +220,7 @@
         margin-right: 10px;
       }
       &:hover {
-        background: #f4fcff;
+        background: #ececec;
       }
     }
     i.dropdown-arr {

@@ -97,23 +97,23 @@
                 </div>
                 <h4>Document</h4>
                 <form novalidate>
-                    <fieldset class="divider">
+                    <fieldset class="divider-20">
                         <input ng-change="kycDocumentSelected('file')" type="file" ngf-select ng-model="editDocument.file" name="file"
                                accept="image/*" ngf-max-size="10MB" required>
                     </fieldset>
-                    <div class="form-group">
+                    <div class="divider-20">
                         <label>Document type <span class="required-icon">*</span></label>
                         <br>
                         <select class="form-control pointer" ng-change="documentChanged('document_type')" ng-model="editDocument.document_type" ng-options="type for type in documentTypeOptions" required>
                         </select>
                     </div>
-                    <div class="form-group">
+                    <div class="divider-20">
                         <label>Document status <span class="required-icon">*</span></label>
                         <br>
                         <select class="form-control pointer" ng-change="documentChanged('status')" ng-model="editDocument.status" ng-options="status for status in statusTypeOptions" required>
                         </select>
                     </div>
-                    <div class="form-group">
+                    <div class="divider-20">
                         <label>Note</label>
                         <textarea rows="4" type="text" ng-change="documentChanged('note')" ng-model="editDocument.note" class="form-control"  placeholder='Enter note'></textarea>
                     </div>
@@ -121,25 +121,25 @@
             </div>
         </div>
         <div ng-hide="showingDocumentFile" class="divider">
-            <img ngf-thumbnail="editDocument.file" height="500px" width="100%">
+            <img class="divider-20" ngf-thumbnail="editDocument.file" height="500px" width="100%">
             <form novalidate>
-                <fieldset class="divider">
+                <fieldset class="divider-20">
                     <input ng-change="kycDocumentSelected('file')" type="file" ngf-select ng-model="editDocument.file" name="file"
                            accept="image/*" ngf-max-size="10MB" required>
                 </fieldset>
-                <div class="form-group">
+                <div class="divider-20">
                     <label>Document type <span class="required-icon">*</span></label>
                     <br>
                     <select class="form-control pointer" ng-change="documentChanged('document_type')" ng-model="editDocument.document_type" ng-options="type for type in documentTypeOptions" required>
                     </select>
                 </div>
-                <div class="form-group">
+                <div class="divider-20">
                     <label>Status <span class="required-icon">*</span></label>
                     <br>
                     <select class="form-control pointer" ng-change="documentChanged('status')" ng-model="editDocument.status" ng-options="status for status in statusTypeOptions" required>
                     </select>
                 </div>
-                <div class="form-group">
+                <div class="divider-20">
                     <label>Note</label>
                     <textarea rows="4" type="text" ng-change="documentChanged('note')" ng-model="editDocument.note" class="form-control"  placeholder='Enter note'></textarea>
                 </div>

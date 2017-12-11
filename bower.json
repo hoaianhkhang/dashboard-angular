@@ -39,7 +39,8 @@
     "angular-confirm": "angular-confirm1#^1.1.0",
     "ngclipboard": "^1.1.1",
     "ng-csv": "^0.3.6",
-    "angular-click-outside": "^2.10.2"
+    "angular-click-outside": "^2.10.2",
+    "ng-intl-tel-input": "^2.0.0"
   },
   "resolutions": {
     "angular": "~1.5.8",

@@ -2,7 +2,8 @@
     'use strict';
 
     angular.module('BlurAdmin.pages.users', [
-        'BlurAdmin.pages.users.user'
+        'BlurAdmin.pages.users.user',
+        'BlurAdmin.pages.users.addUser'
     ])
         .config(routeConfig);
 

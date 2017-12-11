@@ -5,19 +5,18 @@
         .controller('UsersCtrl', UsersCtrl);
 
     /** @ngInject */
-    function UsersCtrl($state,$scope,environmentConfig,$http,typeaheadService,
+    function UsersCtrl($state,$scope,environmentConfig,$http,typeaheadService,$location,
                        cookieManagement,errorHandler,Upload,$window,toastr,serializeFiltersService) {
 
         var vm = this;
         vm.token = cookieManagement.getCookie('TOKEN');
         vm.currenciesList = JSON.parse($window.sessionStorage.currenciesList || '[]');
+        vm.location = $location.path();
+        vm.locationArray = vm.location.split('/');
+        $scope.locationIndicator = vm.locationArray[vm.locationArray.length - 1];
         $scope.usersStateMessage = '';
         $scope.users = [];
-        $scope.creatingUser = false;
         $scope.showingFilters = true;
-        $scope.newUserParams = {
-            nationality: "US"
-        };
 
         $scope.usersPagination = {
             itemsPerPage: 25,
@@ -164,36 +163,5 @@
         };
         $scope.getAllUsers();
 
-        $scope.addNewUser = function (newUserParams) {
-            $scope.loadingUsers = true;
-            Upload.upload({
-                url: environmentConfig.API + '/admin/users/',
-                data: newUserParams,
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': vm.token},
-                method: "POST"
-            }).then(function (res) {
-                if (res.status === 201) {
-                    $scope.newUserParams = {
-                        nationality: "US"
-                    };
-                    $scope.toggleAddUserView();
-                    $scope.getAllUsers();
-                    toastr.success('User successfully added');
-                }
-            }).catch(function (error) {
-                $scope.loadingUsers = false;
-                errorHandler.evaluateErrors(error.data);
-                errorHandler.handleErrors(error);
-            });
-        };
-
-        $scope.toggleAddUserView = function () {
-            $scope.creatingUser = !$scope.creatingUser;
-            $scope.newUserParams = {
-                nationality: "US"
-            };
-        };
     }
 })();

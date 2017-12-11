@@ -6,21 +6,21 @@
         <h4 class="modal-title" id="myModalLabel">Add document</h4>
     </div>
     <div class="modal-body">
-        <div class="divider">
+        <div class="divider-20">
             <img ng-show="userDocumentParams.file" ngf-thumbnail="userDocumentParams.file" height="500px" width="100%">
         </div>
         <form name="addDocumentForm" novalidate>
-            <fieldset class="divider">
+            <fieldset class="divider-20">
                 <input ng-change="documentChanged()" type="file" ngf-select ng-model="userDocumentParams.file" name="file"
                        accept="image/*" ngf-max-size="10MB" required>
             </fieldset>
-            <div class="form-group divider">
+            <div class="divider-20">
                 <label>Document type <span class="required-icon">*</span></label>
                 <br>
                 <select class="form-control pointer" ng-model="userDocumentParams.document_type" ng-options="type for type in documentTypeOptions" required>
                 </select>
             </div>
-            <div class="form-group">
+            <div class="divider-20">
                 <label>Status <span class="required-icon">*</span></label>
                 <br>
                 <select class="form-control pointer" ng-model="userDocumentParams.status" ng-options="status for status in statusTypeOptions" required>

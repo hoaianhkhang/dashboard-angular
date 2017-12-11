@@ -1,6 +1,27 @@
+.user-company-overview{
+  margin: 15px 15px 0 0;
+  color: white;
+  text-align: right;
+  & p{
+    margin: 0;
+    line-height: 20px;
+  }
+};
+
+.user-company-line-divider{
+  color: white;
+  margin: 25px 1px 0 0;
+  & span{
+    font-weight: 100;
+    font-size: 32px;
+  }
+}
+
+
 .page-top-search{
   height: 40px;
-  margin: 15px 0 15px 74px;
+  margin: 15px auto;
+  display: block;
   border-radius: 5px;
   background-color: #5299C3;
   color: white;

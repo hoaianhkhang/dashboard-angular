@@ -10,6 +10,7 @@
 
         vm.token = cookieManagement.getCookie('TOKEN');
         $scope.currencies = [];
+        $scope.userInfo = {};
         $scope.hideSearchBar = true;
 
         vm.currentLocation = $location.path();
@@ -42,6 +43,31 @@
                     errorHandler.evaluateErrors(error.data);
                     errorHandler.handleErrors(error);
                 });
+            }
+        };
+
+        vm.getUserInfo = function () {
+            if(vm.token) {
+                $http.get(environmentConfig.API + '/user/', {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': vm.token
+                    }
+                }).then(function (res) {
+                    if (res.status === 200) {
+                        $scope.userInfo = res.data.data;
+                    }
+                }).catch(function (error) {
+                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.handleErrors(error);
+                });
+            }
+        };
+        vm.getUserInfo();
+
+        $scope.viewProfile = function () {
+            if($scope.userInfo.identifier){
+                $location.path('/user/' + $scope.userInfo.identifier + '/details');
             }
         };
 

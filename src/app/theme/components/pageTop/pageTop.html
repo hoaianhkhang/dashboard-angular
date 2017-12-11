@@ -10,9 +10,17 @@
           </a>
           <ul  class="top-dropdown-menu profile-dropdown" uib-dropdown-menu>
             <li><i class="dropdown-arr"></i></li>
+            <li ng-click="viewProfile()"><a href class="signout text-center"><i class="ion-search"></i><strong>View profile</strong></a></li>
             <li ng-click="logout()"><a href class="signout text-center"><i class="ion-log-out"></i><strong>Sign out</strong></a></li>
           </ul>
         </div>
+      </div>
+      <div class="user-company-line-divider pull-right">
+        <span>|</span>
+      </div>
+      <div class="user-company-overview pull-right">
+        <p>{{userInfo.email}}</p>
+        <p>{{company.identifier}}</p>
       </div>
       <input type="text" class="page-top-search" placeholder="Search" size="100">
       <div class="search-bar-directive">
