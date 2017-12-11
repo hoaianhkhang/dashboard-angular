@@ -41,12 +41,12 @@
         vm.getCompanyDetails();
 
         $scope.goToTransactionsWebhooks = function(secret){
-            $state.go('webhooks.transactionWebhooks',{"secret": secret,"webhookUrl": vm.webhookUrl});
+            $state.go('webhooks.list',{"secret": secret,"webhookUrl": vm.webhookUrl});
         };
 
 
         $scope.goToGeneralWebhooks = function(secret){
-            $state.go('webhooks.generalWebhooks',{"secret": secret});
+            $state.go('webhooks.list',{"secret": secret});
         };
 
     }

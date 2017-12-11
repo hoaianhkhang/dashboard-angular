@@ -2,8 +2,9 @@
     'use strict';
 
     angular.module('BlurAdmin.pages.webhooks', [
-        'BlurAdmin.pages.webhooks.transactionWebhooks',
-        'BlurAdmin.pages.webhooks.generalWebhooks'
+        'BlurAdmin.pages.webhooks.list',
+        'BlurAdmin.pages.webhooks.logs',
+        'BlurAdmin.pages.webhooks.log'
     ])
         .config(routeConfig);
 

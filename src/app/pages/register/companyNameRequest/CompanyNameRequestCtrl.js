@@ -43,6 +43,9 @@
                 }).catch(function (error) {
                     $rootScope.$pageFinishedLoading = true;
                     errorHandler.evaluateErrors(error.data);
+                    if(error.status == 403){
+                        $location.path('/login');
+                    }
                     errorHandler.handleErrors(error);
                 });
             }

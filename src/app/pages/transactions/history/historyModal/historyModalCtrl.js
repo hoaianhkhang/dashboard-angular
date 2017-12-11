@@ -4,7 +4,8 @@
     angular.module('BlurAdmin.pages.transactions.history')
         .controller('historyModalCtrl', historyModalCtrl);
 
-    function historyModalCtrl($uibModalInstance,$http,$scope,errorHandler,toastr,transaction,metadataTextService,$location,environmentConfig,cookieManagement,$ngConfirm) {
+    function historyModalCtrl($uibModalInstance,$http,$scope,errorHandler,toastr,$timeout,
+                              transaction,metadataTextService,$location,environmentConfig,cookieManagement,$ngConfirm) {
 
         transaction.status = transaction.status.toLowerCase();
         $scope.transaction = transaction;
@@ -117,13 +118,15 @@
                     }
                 }).then(function (res) {
                 if (res.status === 200) {
-                    $scope.updatingTransaction = false;
-                    if(status == 'Complete'){
-                        toastr.success('Transaction successfully updated, marked as Complete');
-                    } else {
-                        toastr.success('Transaction successfully updated, marked as Failed');
-                    }
-                    $uibModalInstance.close($scope.transaction);
+                    $timeout(function () {
+                        if(status == 'Complete'){
+                            toastr.success('Transaction successfully updated, marked as Complete');
+                        } else {
+                            toastr.success('Transaction successfully updated, marked as Failed');
+                        }
+                        $scope.updatingTransaction = false;
+                        $uibModalInstance.close($scope.transaction);
+                    },800);
                 }
             }).catch(function (error) {
                 $scope.updatingTransaction = false;
@@ -135,7 +138,7 @@
         $scope.goToUser = function () {
             $uibModalInstance.close();
             $location.path('/user/' + $scope.transaction.user.identifier + '/details');
-        }
+        };
     }
 
 })();

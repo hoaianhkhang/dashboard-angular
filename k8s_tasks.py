@@ -254,6 +254,9 @@ def live(ctx, config):
     """Checks which version_tag is live"""
     config_dict = get_config(config)
 
+    set_project(ctx, config)
+    set_cluster(ctx, config)
+
     result = ctx.run('kubectl get deployment/{} --output=json --namespace={}'.format('webapp',
                                                                                      config_dict['NAMESPACE']),
                      echo=True,

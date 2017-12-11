@@ -1,0 +1,22 @@
+.webhooks-list-navigation-ul{
+  padding: 0;
+}
+
+.webhooks-list-navigation{
+  display: inline-block;
+  margin-right: 50px;
+  & h1{
+    margin: 4px 0 4px 0 !important;
+  }
+  & h5{
+    font-size: 16px;
+    color: #979797;
+  }
+  & h5:hover{
+    color: $primary;
+  }
+}
+
+.active-webhooks-nav{
+  color: $primary !important ;
+}

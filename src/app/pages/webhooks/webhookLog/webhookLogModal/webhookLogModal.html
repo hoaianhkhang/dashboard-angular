@@ -1,0 +1,185 @@
+<div class="modal-content">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="$dismiss()" aria-label="Close">
+            <em class="ion-ios-close-empty sn-link-close"></em>
+        </button>
+        <h4 class="modal-title" id="myModalLabel">Webhook details</h4>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                <p><strong>Event: </strong></p>
+            </div>
+            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                <span ng-bind="webhookTask.data.event | capitalizeDottedSentence"></span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                <p><strong>Account: </strong></p>
+            </div>
+            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                <span ng-bind="webhookTask.data.data.account"></span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                <p><strong>Company: </strong></p>
+            </div>
+            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                <p ng-bind="webhookTask.data.data.company"></p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                <p><strong>Total amount: </strong></p>
+            </div>
+            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                <p ng-bind="webhookTask.data.data.total_amount | currencyModifiersFilter: webhookTask.data.data.currency.divisibility"></p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                <p><strong>Amount: </strong></p>
+            </div>
+            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                <p ng-bind="webhookTask.data.data.amount | currencyModifiersFilter: webhookTask.data.data.currency.divisibility"></p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                <p><strong>Balance: </strong></p>
+            </div>
+            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                <p ng-bind="webhookTask.data.data.balance | currencyModifiersFilter: webhookTask.data.data.currency.divisibility"></p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                <p><strong>Fee: </strong></p>
+            </div>
+            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                <p ng-bind="webhookTask.data.data.fee | currencyModifiersFilter: webhookTask.data.data.currency.divisibility"></p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                <p><strong>Currency: </strong></p>
+            </div>
+            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                <p ng-bind="webhookTask.data.data.currency.code"></p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                <p><strong>User: </strong></p>
+            </div>
+            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                <pre>{{user}}</pre>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                <p><strong>Transaction id: </strong></p>
+            </div>
+            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                <p ng-bind="webhookTask.data.data.id"></p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                <p><strong>Transaction type: </strong></p>
+            </div>
+            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                <p ng-bind="webhookTask.data.data.tx_type | capitalizeWord">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                <p><strong>Destination transaction: </strong></p>
+            </div>
+            <div ng-show="destination_transaction" class="metadata col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                <pre>{{destination_transaction}}</pre>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                <p><strong>Source transaction: </strong></p>
+            </div>
+            <div ng-show="source_transaction" class="metadata col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                <pre>{{source_transaction}}</pre>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                <p><strong>Subtype: </strong></p>
+            </div>
+            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                <p ng-bind="webhookTask.data.data.subtype"></p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                <p><strong>Messages: </strong></p>
+            </div>
+            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                <div ng-repeat="message in webhookTask.data.data.messages">
+                    <span>{{message}}</span><br>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                <p><strong>Note: </strong></p>
+            </div>
+            <div ng-show="webhookTask.data.data.note" class="metadata col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                <pre ng-bind="webhookTask.data.data.note"></pre>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                <p><strong>Reference: </strong></p>
+            </div>
+            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                <p ng-bind="webhookTask.data.data.reference"></p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                <p><strong>Status: </strong></p>
+            </div>
+            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                <p ng-bind="webhookTask.data.data.status"></p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                <p><strong>Metadata: </strong></p>
+            </div>
+            <div class="metadata col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                <div ng-show="formatted.metadata">
+                    <pre>{{formatted.metadata}}</pre>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                <p><strong>Updated: </strong></p>
+            </div>
+            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                <p>{{webhookTask.updated | date:'mediumDate'}} {{webhookTask.updated | date:'shortTime'}}</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                <p><strong>Created: </strong></p>
+            </div>
+            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                <p>{{webhookTask.created | date:'mediumDate'}} {{webhookTask.created | date:'shortTime'}}</p>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="webhookTask-details-button btn btn-primary pull-right" ng-click="$dismiss()">Close</button>
+    </div>
+</div>

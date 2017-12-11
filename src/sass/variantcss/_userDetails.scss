@@ -108,27 +108,49 @@
   margin-bottom: 0;
 }
 
-.user-details-nav-bar{
+.user-details-nav-bar {
   margin: 0;
   list-style: none;
   padding: 0;
   position: relative;
-  top:-7px;
-  li{
+  top: -7px;
+  li {
     font-size: 16px;
     display: inline-block;
-    margin:0 50px 20px 0;
+    margin: 0 50px 20px 0;
     cursor: pointer;
-    & a{
+    & a {
       color: #A8A8A8;
     }
-    & a:hover{
+    & a:hover {
       color: $primary;
     }
   }
 }
 
+.user-deactivated{
+  background-color: $danger;
+  height: 40px;
+  color: white;
+  font-size: 14px;
+  line-height: 20px;
+  padding: 10px;
+}
+
 .user-btn-export{
+  position: relative;
+  top: -34px;
+  right: 15px;
+}
+
+.user-btn-active{
+  padding: 6px;
+  position: relative;
+  top: -34px;
+}
+
+.user-btn-deactive{
+  padding: 6px;
   position: relative;
   top: -34px;
 }

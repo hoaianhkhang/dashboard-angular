@@ -57,10 +57,10 @@
         };
 
         vm.calculateHowLongUserHasBeenWithCompany = function (joinedDate) {
-          var text = '',
-              joiningDate = moment(joinedDate),
-              dateNow = moment(Date.now()),
-              preciseDiff = moment.preciseDiff(dateNow, joiningDate, true);
+            var text = '',
+                joiningDate = moment(joinedDate),
+                dateNow = moment(Date.now()),
+                preciseDiff = moment.preciseDiff(dateNow, joiningDate, true);
 
             if(preciseDiff.years){
                 if(preciseDiff.years === 1){
@@ -85,28 +85,28 @@
                 if(preciseDiff.days){
                     text = text + ' and ';
                 }
-              if(preciseDiff.hours === 1){
-                  text = text + preciseDiff.hours + ' hour';
-              } else {
-                  text = text + preciseDiff.hours + ' hours';
-              }
+                if(preciseDiff.hours === 1){
+                    text = text + preciseDiff.hours + ' hour';
+                } else {
+                    text = text + preciseDiff.hours + ' hours';
+                }
             }
 
             if(text === ''){
                 text = 'less than one hour';
             }
-          $scope.beenAUser = text;
+            $scope.beenAUser = text;
         };
 
         $scope.getFileName = $filter('date')(Date.now(),'mediumDate') + ' ' + $filter('date')(Date.now(),'shortTime') + '-UserInfo.csv';
 
         $scope.getCSVArray = function () {
             var array = [],
-            userData = JSON.parse($window.sessionStorage.userData),
-            userEmails = JSON.parse($window.sessionStorage.userEmails),
-            userMobiles = JSON.parse($window.sessionStorage.userMobiles),
-            userBanks = JSON.parse($window.sessionStorage.userBanks),
-            userAddresses = JSON.parse($window.sessionStorage.userAddresses);
+                userData = JSON.parse($window.sessionStorage.userData),
+                userEmails = JSON.parse($window.sessionStorage.userEmails),
+                userMobiles = JSON.parse($window.sessionStorage.userMobiles),
+                userBanks = JSON.parse($window.sessionStorage.userBanks),
+                userAddresses = JSON.parse($window.sessionStorage.userAddresses);
 
             userData.age = ($filter('ageCalculator')(userData.birth_date)).toString();
             userData.nationality = $filter('isoCountry')(userData.nationality);

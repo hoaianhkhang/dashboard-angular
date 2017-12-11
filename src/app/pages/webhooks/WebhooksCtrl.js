@@ -5,12 +5,13 @@
         .controller('WebhooksCtrl', WebhooksCtrl);
 
     /** @ngInject */
-    function WebhooksCtrl($scope,environmentConfig,Upload,$http,cookieManagement,errorHandler,$window,$timeout,$location) {
+    function WebhooksCtrl($scope,environmentConfig,$uibModal,toastr,$filter,$http,$location,cookieManagement,errorHandler,$window,$state) {
 
         var vm = this;
+        vm.updatedWebhook = {};
         vm.token = cookieManagement.getCookie('TOKEN');
-        $scope.settingView = 'accountInfo';
-
+        $scope.companyImageUrl = "/assets/img/app/placeholders/hex_grey.svg";
+        $scope.loadingWebhooks = true;
 
         $scope.goToSetting = function(path){
             $scope.settingView = '';
