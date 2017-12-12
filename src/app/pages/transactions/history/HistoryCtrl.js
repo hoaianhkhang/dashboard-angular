@@ -179,10 +179,6 @@
         $scope.showFilters = function () {
             $scope.showingFilters = !$scope.showingFilters;
         };
-
-        $scope.hideFilters = function () {
-            $scope.showingFilters = false;
-        };
         
         $scope.clearFilters = function () {
             $scope.filtersObj = {
