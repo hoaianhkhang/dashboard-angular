@@ -1,4 +1,4 @@
-$sidebar-width: 180px;
+$sidebar-width: 220px;
 $angle-left: "\f100";
 $angle-right: "\f101";
 
@@ -138,16 +138,16 @@ a.al-sidebar-list-link {
       color: #8aa4af;
       padding-left: 20px;
       height: auto;
-      line-height: 29px;
+      line-height: 42px;
       &:hover {
-        color: #ffffff;
+        color: $primary;
       }
     }
     &.selected:not(.with-sub-menu) > a {
       border: none;
       color: $primary;
       &:hover {
-        color: $sidebar-text;
+        color: $primary;
       }
     }
 

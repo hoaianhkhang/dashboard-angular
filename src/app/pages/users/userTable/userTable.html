@@ -24,9 +24,9 @@
                     <td><strong>Last login</strong></td>
                     <td><strong>KYC status</strong></td>
                 </tr>
-                <tr ng-repeat="user in users | orderBy: orderByFunction()" data-toggle="modal"
-                    class="editable-row center pointer user-details-table-hover">
-                    <td><a href="/#/user/{{user.identifier}}/details"><div title="{{user.email}}" ng-bind="user.email"></div></a></td>
+                <tr ng-repeat="user in users | orderBy: orderByFunction" data-toggle="modal"
+                    class="editable-row center pointer user-details-table-hover" ng-click="displayUser(user)">
+                    <td><div title="{{user.email}}" ng-bind="user.email"></div></td>
                     <td><div title="{{user.currency.code}}" class="transactions-list-element" ng-bind="user.currency.code"></div></td>
                     <td><div title="{{user.date_joined | date:'mediumDate'}}, {{user.date_joined | date:'shortTime'}}" class="transactions-list-element">
                         {{user.date_joined | date:'mediumDate'}}, {{user.date_joined | date:'shortTime'}}

@@ -6,7 +6,7 @@
 
     /** @ngInject */
     function UsersCtrl($state,$scope,environmentConfig,$http,typeaheadService,$location,
-                       cookieManagement,errorHandler,Upload,$window,toastr,serializeFiltersService) {
+                       cookieManagement,errorHandler,$window,toastr,serializeFiltersService) {
 
         var vm = this;
         vm.token = cookieManagement.getCookie('TOKEN');
@@ -345,6 +345,10 @@
 
         $scope.goToAddUser = function () {
           $location.path('/users/add');
+        };
+
+        $scope.displayUser = function (user) {
+            $location.path('/user/' + user.identifier + '/details');
         };
 
     }

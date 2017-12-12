@@ -9,7 +9,7 @@
   padding: 0 17px 0 17px;
 
   &.scrolled {
-    background-color: rgba(60, 141, 188, 0.85)
+    background-color: rgba(60, 141, 188, 1)
   }
 }
 
@@ -50,9 +50,9 @@ a.al-logo {
   position: relative;
   a {
     display: block;
-    line-height: 52px;
   }
   img {
+    margin: 10px 0;
     width: 35px;
     height: 35px;
     border-radius: 50%;

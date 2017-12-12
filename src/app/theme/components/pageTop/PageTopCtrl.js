@@ -11,7 +11,7 @@
         vm.token = cookieManagement.getCookie('TOKEN');
         $scope.currencies = [];
         $scope.userInfo = {};
-        $scope.hideSearchBar = true;
+        $scope.hideSearchBar = false;
 
         vm.currentLocation = $location.path();
         $rootScope.$on('$locationChangeStart', function (event,newUrl) {
