@@ -18,7 +18,7 @@
                 </td>
                 <td width="15%" class="transactions-list-element">
                     <span ng-show="email.verified">
-                        <span ng-show="email.verified" class="user-primary-account user-address-status">VERIFIED</span>
+                        <span ng-show="email.verified" class="status-verified user-address-status">VERIFIED</span>
                     </span>
                     <span ng-hide="email.verified">
                         <span ng-hide="email.verified" class="user-primary-account user-address-status status-incomplete-declined">NOT VERIFIED</span>
@@ -42,11 +42,3 @@
 <div ba-panel ng-show="loadingUserEmails">
     <loading-image></loading-image>
 </div>
-
-
-<!--<span ng-show="email.verified">-->
-                        <!--<i class="fa fa-check-square verified-icon"></i>-->
-                    <!--</span>-->
-<!--<span ng-hide="email.verified">-->
-                        <!--<i class="fa fa-square verified-icon-empty"></i>-->
-                    <!--</span>-->

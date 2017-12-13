@@ -1,15 +1,15 @@
 <h1 class="currencies-title">Currencies</h1>
-<div ng-hide="loadingCurrencies" class="panel" >
+<div class="panel" >
     <div class="panel-heading">
         <div class="table-filter-heading">
             <div click-outside="hideFilters()">
-                <button ng-click="showFilters()" class="currencies-page-buttons btn btn-default">Filters</button>
+                <button ng-click="showFilters()" class="currencies-page-button-filter btn btn-default">Filters</button>
                 <div ng-show="showingFilters">
                     <currencies-filter></currencies-filter>
                 </div>
             </div>
             <div>
-                <button class="btn btn-success pull-right panel-header-button currencies-page-buttons" ng-click="goToAddCurrency()">Add currency</button>
+                <button class="btn btn-success pull-right panel-header-button currencies-page-buttons-add" ng-click="goToAddCurrency()">Add currency</button>
             </div>
         </div>
     </div>
