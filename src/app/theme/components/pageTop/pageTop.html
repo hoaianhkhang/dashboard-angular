@@ -20,8 +20,11 @@
         <span>{{userInfo.email}}</span>
         <p>{{company.identifier}}</p>
       </div>
-      <div class="search-bar-main">
-        <input type="text" class="page-top-search" placeholder="Search">
+      <div class="search-bar-main" click-outside="hidingSearchBar()">
+        <input type="text" class="page-top-search" placeholder="Search" ng-model="searchString"
+               ng-keydown="($event.keyCode === 13)  && searchGlobal(searchString)"
+               ng-focus="searchGlobal(searchString)"
+               ng-change="searchGlobal(searchString)" ng-model-options='{ debounce: 800 }'>
         <div class="search-bar-div">
           <search-bar-results></search-bar-results>
         </div>

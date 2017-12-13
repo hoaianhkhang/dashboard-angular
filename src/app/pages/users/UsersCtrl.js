@@ -48,10 +48,10 @@
                 selectedIdentifier: ''
             },
             emailFilter: {
-                selectedEmail: ''
+                selectedEmail: $state.params.email || ''
             },
             mobileFilter: {
-                selectedMobile: ''
+                selectedMobile: $state.params.mobile || ''
             },
             firstNameFilter: {
                 selectedFirstName: ''
@@ -86,6 +86,23 @@
             }
         };
 
+        if($state.params.email){
+            $scope.filtersObj.emailFilter = true;
+        }
+
+        if($state.params.mobile){
+            $scope.filtersObj.mobileFilter = true;
+        }
+
+        if($state.params.currencyCode){
+            $scope.filtersObj.currencyFilter = true;
+            vm.currenciesList.forEach(function (element) {
+                if(element.code == $state.params.currencyCode){
+                    $scope.applyFiltersObj.currencyFilter.selectedCurrency = element;
+                }
+            });
+        }
+
         //for angular datepicker
         $scope.dateObj = {};
         $scope.dateObj.format = 'MM/dd/yyyy';
@@ -109,15 +126,6 @@
             $scope.popup4.opened = true;
         };
         // end
-
-        if($state.params.currencyCode){
-            $scope.filtersObj.currencyFilter = true;
-            vm.currenciesList.forEach(function (element) {
-                if(element.code == $state.params.currencyCode){
-                    $scope.applyFiltersObj.currencyFilter.selectedCurrency = element;
-                }
-            });
-        }
 
         $scope.getUsersEmailTypeahead = typeaheadService.getUsersEmailTypeahead();
         $scope.getUsersMobileTypeahead = typeaheadService.getUsersMobileTypeahead();

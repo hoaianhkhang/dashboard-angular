@@ -14,7 +14,9 @@
                 url: '/users',
                 templateUrl: 'app/pages/users/users.html',
                 params: {
-                    currencyCode: null
+                    currencyCode: null,
+                    email: null,
+                    mobile: null
                 },
                 controller: "UsersCtrl",
                 title: 'Users',
