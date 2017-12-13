@@ -21,7 +21,7 @@
         <p>{{company.identifier}}</p>
       </div>
       <div class="search-bar-main" click-outside="hidingSearchBar()">
-        <input type="text" class="page-top-search" placeholder="Search" ng-model="searchString"
+        <input type="text" class="page-top-search" placeholder="Search by email , mobile number or transaction id" ng-model="searchString"
                ng-keydown="($event.keyCode === 13)  && searchGlobal(searchString)"
                ng-focus="searchGlobal(searchString)"
                ng-change="searchGlobal(searchString)" ng-model-options='{ debounce: 800 }'>
