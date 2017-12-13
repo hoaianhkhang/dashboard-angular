@@ -32,8 +32,9 @@
                     $scope.loadingWebhooks = false;
                     if (res.status === 200) {
                         $scope.webhookTask = res.data.data;
-                        $scope.mainData = JSON.stringify($scope.webhookTask.data.data,null,4);
+                        $scope.mainData = JSON.stringify($scope.webhookTask.data,null,4);
                         $window.scrollTo(0,0);
+                        console.log($scope.webhookTask)
                     }
                 }).catch(function (error) {
                     $scope.loadingWebhooks = false;

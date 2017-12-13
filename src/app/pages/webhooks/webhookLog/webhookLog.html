@@ -1,12 +1,12 @@
 <div ng-hide="loadingWebhooks">
-    <div ba-panel class="setting-bank-accounts" ba-panel-title="Webhook log" ba-panel-class="light-text with-scroll">
+    <div ba-panel class="setting-bank-accounts" ba-panel-title="Webhook log" ba-panel-class="light-text">
         <div>
             <div class="row">
                 <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
                     <p><strong>Event: </strong></p>
                 </div>
                 <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-                    <span ng-bind="webhookTask.data.event | capitalizeDottedSentence"></span>
+                    <span ng-bind="webhookTask.webhook.event | capitalizeDottedSentence"></span>
                 </div>
             </div>
             <div class="row">
