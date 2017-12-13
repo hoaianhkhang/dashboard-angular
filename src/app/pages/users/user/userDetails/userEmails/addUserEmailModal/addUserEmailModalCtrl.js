@@ -9,8 +9,7 @@
         var vm = this;
         $scope.user = user;
         vm.uuid = $stateParams.uuid;
-        $scope.newUserEmail = {primary: 'False', verified: 'False'};
-        $scope.booleanOptions = ['False','True'];
+        $scope.newUserEmail = {primary: false, verified: false};
         vm.token = cookieManagement.getCookie('TOKEN');
         $scope.loadingUserEmails = false;
 
@@ -18,8 +17,6 @@
         $scope.createUserEmail = function (newUserEmail) {
             $scope.loadingUserEmails = true;
             newUserEmail.user = vm.uuid;
-            newUserEmail.primary = newUserEmail.primary == 'True' ? true:false;
-            newUserEmail.verified = newUserEmail.verified == 'True' ? true:false;
             $http.post(environmentConfig.API + '/admin/users/emails/',newUserEmail, {
                 headers: {
                     'Content-Type': 'application/json',

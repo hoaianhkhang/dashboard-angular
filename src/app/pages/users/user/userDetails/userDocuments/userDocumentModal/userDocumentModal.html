@@ -6,7 +6,7 @@
         <h4 class="modal-title" id="myModalLabel">Update document</h4>
     </div>
     <div class="modal-body">
-        <div ng-show="showingDocumentFile" class="row divider">
+        <div ng-show="showingDocumentFile" class="row">
             <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
                 <img class="documentImage" ng-src="{{document.file || defaultImageUrl}}" height="600px" width="100%">
             </div>
@@ -52,7 +52,7 @@
                 </div>
                 <div ng-show="document.document_category == 'Proof Of Address'">
                     <h4 class="document-info-header">Addresses</h4>
-                    <table class="table user-details-table divider"  ng-repeat="address in userAddresses">
+                    <table class="table user-details-table" ng-repeat="address in userAddresses">
                         <tr>
                             <th width="50%">Line 1</th>
                             <th>{{address.line_1 || 'None'}}</th>
@@ -96,54 +96,56 @@
                     </table>
                 </div>
                 <h4>Document</h4>
-                <form novalidate>
+                <form class="custom-form" novalidate>
                     <fieldset class="divider-20">
                         <input ng-change="kycDocumentSelected('file')" type="file" ngf-select ng-model="editDocument.file" name="file"
                                accept="image/*" ngf-max-size="10MB" required>
                     </fieldset>
-                    <div class="divider-20">
+                    <div class="form-group divider-20">
                         <label>Document type <span class="required-icon">*</span></label>
                         <br>
                         <select class="form-control pointer" ng-change="documentChanged('document_type')" ng-model="editDocument.document_type" ng-options="type for type in documentTypeOptions" required>
                         </select>
                     </div>
-                    <div class="divider-20">
+                    <div class="form-group divider-20">
                         <label>Document status <span class="required-icon">*</span></label>
                         <br>
                         <select class="form-control pointer" ng-change="documentChanged('status')" ng-model="editDocument.status" ng-options="status for status in statusTypeOptions" required>
                         </select>
                     </div>
-                    <div class="divider-20">
+                    <div class="form-group">
                         <label>Note</label>
                         <textarea rows="4" type="text" ng-change="documentChanged('note')" ng-model="editDocument.note" class="form-control"  placeholder='Enter note'></textarea>
                     </div>
                 </form>
             </div>
         </div>
-        <div ng-hide="showingDocumentFile" class="divider">
-            <img class="divider-20" ngf-thumbnail="editDocument.file" height="500px" width="100%">
-            <form novalidate>
-                <fieldset class="divider-20">
-                    <input ng-change="kycDocumentSelected('file')" type="file" ngf-select ng-model="editDocument.file" name="file"
-                           accept="image/*" ngf-max-size="10MB" required>
-                </fieldset>
-                <div class="divider-20">
-                    <label>Document type <span class="required-icon">*</span></label>
-                    <br>
-                    <select class="form-control pointer" ng-change="documentChanged('document_type')" ng-model="editDocument.document_type" ng-options="type for type in documentTypeOptions" required>
-                    </select>
-                </div>
-                <div class="divider-20">
-                    <label>Status <span class="required-icon">*</span></label>
-                    <br>
-                    <select class="form-control pointer" ng-change="documentChanged('status')" ng-model="editDocument.status" ng-options="status for status in statusTypeOptions" required>
-                    </select>
-                </div>
-                <div class="divider-20">
-                    <label>Note</label>
-                    <textarea rows="4" type="text" ng-change="documentChanged('note')" ng-model="editDocument.note" class="form-control"  placeholder='Enter note'></textarea>
-                </div>
-            </form>
+        <div class="row">
+            <div ng-hide="showingDocumentFile" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <img class="divider-20" ngf-thumbnail="editDocument.file" height="500px" width="100%">
+                <form class="custom-form" novalidate>
+                    <fieldset class="divider-20">
+                        <input ng-change="kycDocumentSelected('file')" type="file" ngf-select ng-model="editDocument.file" name="file"
+                               accept="image/*" ngf-max-size="10MB" required>
+                    </fieldset>
+                    <div class="form-group divider-20">
+                        <label>Document type <span class="required-icon">*</span></label>
+                        <br>
+                        <select class="form-control pointer" ng-change="documentChanged('document_type')" ng-model="editDocument.document_type" ng-options="type for type in documentTypeOptions" required>
+                        </select>
+                    </div>
+                    <div class="form-group divider-20">
+                        <label>Status <span class="required-icon">*</span></label>
+                        <br>
+                        <select class="form-control pointer" ng-change="documentChanged('status')" ng-model="editDocument.status" ng-options="status for status in statusTypeOptions" required>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Note</label>
+                        <textarea rows="4" type="text" ng-change="documentChanged('note')" ng-model="editDocument.note" class="form-control"  placeholder='Enter note'></textarea>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
     <div class="modal-footer">

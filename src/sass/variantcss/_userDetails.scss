@@ -1,3 +1,37 @@
+.custom-rehive-checkbox{
+  width: 18px;
+  height: 18px;
+  -webkit-appearance: none;
+  background-color: #d7dcde;
+  border: 1px solid #d7dcde;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0px -15px 10px -12px rgba(0,0,0,0.05);
+  padding: 9px;
+  border-radius: 3px;
+  display: inline-block;
+  position: relative;
+  cursor: pointer;
+}
+
+.custom-rehive-checkbox:active, .custom-rehive-checkbox:checked:active {
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0px 1px 3px rgba(0,0,0,0.1);
+}
+
+.custom-rehive-checkbox:checked {
+  background-color: #5EC980;;
+  border: 1px solid #5EC980;;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0px -15px 10px -12px rgba(0,0,0,0.05), inset 15px 10px -12px rgba(255,255,255,0.1);
+  color: #99a1a7;
+}
+
+.custom-rehive-checkbox:checked:after {
+  content: '\2714';
+  font-size: 18px;
+  position: absolute;
+  top: -4px;
+  left: 1px;
+  color: #fff;
+}
+
 .verified-icon{
   position: relative;
   top: 2px;

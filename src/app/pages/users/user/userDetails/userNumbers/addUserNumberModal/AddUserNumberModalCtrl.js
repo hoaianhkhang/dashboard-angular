@@ -9,8 +9,7 @@
         var vm = this;
         $scope.user = user;
         vm.uuid = $stateParams.uuid;
-        $scope.newUserNumber = {primary: 'False', verified: 'False'};
-        $scope.booleanOptions = ['False','True'];
+        $scope.newUserNumber = {primary: false, verified: false};
         vm.token = cookieManagement.getCookie('TOKEN');
         $scope.loadingUserNumbers = false;
 
@@ -18,8 +17,6 @@
         $scope.createUserNumber = function (newUserNumber) {
             $scope.loadingUserNumbers = true;
             newUserNumber.user = vm.uuid;
-            newUserNumber.primary = newUserNumber.primary == 'True' ? true:false;
-            newUserNumber.verified = newUserNumber.verified == 'True' ? true:false;
             $http.post(environmentConfig.API + '/admin/users/mobiles/',newUserNumber, {
                 headers: {
                     'Content-Type': 'application/json',

@@ -8,20 +8,18 @@
     <div class="panel-body">
         <form name="userEmailForm" class="custom-form" novalidate>
             <div class="form-group">
-                <label><strong>Email</strong> <span class="required-icon">*</span></label>
+                <label>Email <span class="required-icon">*</span></label>
                 <input type="email" ng-model="editUserEmailObj.email" class="form-control"  placeholder="Enter email" disabled>
             </div>
             <div class="form-group">
-                <label><strong>Verified</strong> <span class="required-icon">*</span></label>
+                <label>Verified</label>
                 <br>
-                <select class="form-control pointer" ng-model="editUserEmailObj.verified" ng-options="bool for bool in booleanOptions" disabled>
-                </select>
+                <input class="custom-rehive-checkbox" ng-model="editUserEmailObj.verified" type="checkbox" disabled>
             </div>
             <div class="form-group">
-                <label><strong>Primary</strong> <span class="required-icon">*</span></label>
+                <label>Primary</label>
                 <br>
-                <select class="form-control pointer" ng-model="editUserEmailObj.primary" ng-options="bool for bool in booleanOptions" required>
-                </select>
+                <input class="custom-rehive-checkbox" ng-model="editUserEmailObj.primary" type="checkbox">
             </div>
             <div class="form-group">
                 <button ng-disabled="!userEmailForm.$valid" ng-click="editUserEmail(editUserEmailObj)" class="btn btn-primary pull-right user-accounts-btn">Save</button>

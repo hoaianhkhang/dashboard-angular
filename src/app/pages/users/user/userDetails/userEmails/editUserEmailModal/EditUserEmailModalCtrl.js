@@ -12,7 +12,6 @@
         vm.uuid = $stateParams.uuid;
         $scope.editUserEmailObj = {};
         vm.updatedUserEmail = {};
-        $scope.booleanOptions = ['False','True'];
         vm.token = cookieManagement.getCookie('TOKEN');
         $scope.loadingUserEmails = false;
 
@@ -29,8 +28,6 @@
                     $scope.loadingUserEmails = false;
                     if (res.status === 200) {
                         $scope.editUserEmailObj = res.data.data;
-                        $scope.editUserEmailObj.primary = $scope.editUserEmailObj.primary ? 'True' : 'False';
-                        $scope.editUserEmailObj.verified = $scope.editUserEmailObj.verified ? 'True' : 'False';
                     }
                 }).catch(function (error) {
                     $scope.loadingUserEmails = false;
@@ -42,11 +39,6 @@
         vm.getUserEmail();
 
         $scope.editUserEmail =  function (editUserEmailObj) {
-
-            if(editUserEmailObj.primary){
-                editUserEmailObj.primary = editUserEmailObj.primary == 'True' ? true : false;
-            }
-
             if(vm.token) {
                 $scope.loadingUserEmails = true;
                 $http.patch(environmentConfig.API + '/admin/users/emails/' + $scope.email.id + '/',editUserEmailObj, {

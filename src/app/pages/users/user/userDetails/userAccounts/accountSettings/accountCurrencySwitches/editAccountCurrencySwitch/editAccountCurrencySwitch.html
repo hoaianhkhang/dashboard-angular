@@ -19,8 +19,8 @@
         <div class="form-group">
             <label><strong>Enabled</strong></label>
             <br>
-            <select class="form-control pointer" ng-change="accountCurrencySwitchChanged('enabled')" ng-model="editAccountCurrencySwitch.enabled" ng-options="bool for bool in boolOptions" required>
-            </select>
+            <input class="custom-rehive-checkbox" ng-change="accountCurrencySwitchChanged('enabled')"
+                   ng-model="editAccountCurrencySwitch.enabled" type="checkbox">
         </div>
         <div class="form-group">
             <button ng-click="updateAccountCurrencySwitch()" ng-disabled="!editAccountCurrencySwitchForm.$valid" class="btn btn-primary dashboard-btn pull-right">Save</button>

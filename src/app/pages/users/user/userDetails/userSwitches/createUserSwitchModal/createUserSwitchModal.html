@@ -15,17 +15,17 @@
             </div>
             <div ng-hide="loadingSubtypes" class="form-group">
                 <label>Subtype</label>
-                <select class="form-control pointer" ng-model="userSwitchParams.subtype" ng-options="subtypeOption for subtypeOption in subtypeOptions">
+                <select class="form-control pointer" ng-model="userSwitchParams.subtype"
+                        ng-options="subtypeOption for subtypeOption in subtypeOptions">
                 </select>
             </div>
             <div ng-show="loadingSubtypes">
                 <loading-image class="custom-subtype-loading"></loading-image>
             </div>
             <div class="form-group">
-                <label>Enabled <span class="required-icon">*</span></label>
+                <label>Enabled</label>
                 <br>
-                <select class="form-control pointer" ng-model="userSwitchParams.enabled" ng-options="bool for bool in boolOptions" required>
-                </select>
+                <input class="custom-rehive-checkbox" ng-model="userSwitchParams.enabled" type="checkbox">
             </div>
             <div class="form-group">
                 <button ng-click="addUserSwitch(userSwitchParams)" ng-disabled="!userSwitchesForm.$valid" class="btn btn-primary user-accounts-btn pull-right">Add</button>

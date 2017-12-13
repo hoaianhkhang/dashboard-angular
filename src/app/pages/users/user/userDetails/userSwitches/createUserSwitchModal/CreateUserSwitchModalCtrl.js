@@ -11,18 +11,16 @@
 
         $scope.userSwitchParams = {
             tx_type: 'Credit',
-            enabled: 'False',
+            enabled: false,
             subtype: ''
         };
         vm.uuid = $stateParams.uuid;
         $scope.statusOptions = ['Pending', 'Incomplete', 'Declined', 'Verified'];
         $scope.userSwitchesOptions = ['Credit','Debit'];
-        $scope.boolOptions = ['False','True'];
         vm.token = cookieManagement.getCookie('TOKEN');
 
         $scope.addUserSwitch = function(userSwitchParams){
             userSwitchParams.tx_type ? userSwitchParams.tx_type = userSwitchParams.tx_type.toLowerCase() : '';
-            userSwitchParams.enabled ? userSwitchParams.enabled = userSwitchParams.enabled == 'True' ? true: false : '';
             if(vm.token) {
                 $scope.loadingUserSwitches = true;
                 $http.post(environmentConfig.API + '/admin/users/' + vm.uuid + '/switches/', userSwitchParams, {
@@ -36,7 +34,7 @@
                         toastr.success('Successfully created the user switch!');
                         $scope.userSwitchParams = {
                             tx_type: 'Credit',
-                            enabled: 'False',
+                            enabled: false,
                             subtype: ''
                         };
                         $uibModalInstance.close(res.data);
@@ -44,7 +42,7 @@
                 }).catch(function (error) {
                     $scope.userSwitchParams = {
                         tx_type: 'Credit',
-                        enabled: 'False',
+                        enabled: false,
                         subtype: ''
                     };
                     $scope.getSubtypesArray($scope.userSwitchParams);
