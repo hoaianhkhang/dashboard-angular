@@ -114,6 +114,10 @@
 }
 
 .currencies-options{
+  padding: 5px;
+  position: relative;
+  top: -5px;
+  right: -5px;
   color: #979797;
   &:hover{
     color: $primary;

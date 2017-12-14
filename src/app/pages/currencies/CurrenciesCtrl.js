@@ -13,6 +13,7 @@
         $scope.loadingCurrencies = true;
         $scope.optionsCode = '';
         $scope.showingRowsCurrencyCode = '';
+        $scope.codeArray = [];
         $scope.currencyOptions = [];
         $scope.filtersObj = {
             currencyFilter: false,
@@ -27,11 +28,18 @@
             }
         };
 
+        $scope.findIndexOfCode = function (currency) {
+            return $scope.codeArray.findIndex(function (element) {
+                return element == currency.code
+            });
+        };
+
         $scope.toggleRowsVisibility = function (currency) {
-            if($scope.showingRowsCurrencyCode == currency.code){
-                $scope.showingRowsCurrencyCode = '';
+            if($scope.findIndexOfCode(currency) >= 0){
+                var index = $scope.findIndexOfCode(currency);
+                $scope.codeArray.splice(index,1);
             } else {
-                $scope.showingRowsCurrencyCode = currency.code;
+                $scope.codeArray.push(currency.code);
             }
         };
 
@@ -43,12 +51,12 @@
             $scope.showingFilters = false;
         };
 
+        $scope.closeOptionsBox = function () {
+            $scope.optionsCode = '';
+        };
+
         $scope.showCurrenciesOptions = function (code) {
-            if($scope.optionsCode == code){
-                $scope.optionsCode = '';
-            } else {
-                $scope.optionsCode = code;
-            }
+            $scope.optionsCode = code;
         };
 
         $scope.clearFilters = function () {

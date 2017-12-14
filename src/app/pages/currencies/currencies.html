@@ -14,7 +14,7 @@
         </div>
     </div>
 </div>
-<div ng-hide="loadingCurrencies || (currencies.length == 0)" ng-repeat="currency in currencies">
+<div ng-hide="loadingCurrencies || (currencies.length == 0)" ng-repeat="currency in currencies" class="pointer" ng-click="toggleRowsVisibility(currency)">
     <div class="panel ">
         <div class="panel-body">
             <div class="row">
@@ -24,7 +24,7 @@
                     </div>
                 </div>
                 <div class="currencies-page-row">
-                    <div class="pointer" ng-click="toggleRowsVisibility(currency)">
+                    <div>
                         <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
                             <div>
                                 <span><strong>{{currency.symbol}} {{currency.available_balance_total | currencyModifiersFilter: currency.divisibility}}</strong></span>
@@ -61,9 +61,9 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+                    <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1" ng-click="showCurrenciesOptions(currency.code); $event.stopPropagation()" click-outside="closeOptionsBox()">
                         <div>
-                            <span ng-click="showCurrenciesOptions(currency.code)" class="fa fa-ellipsis-h pull-right pointer currencies-options"></span>
+                            <span class="fa fa-ellipsis-h pull-right pointer currencies-options"></span>
                             <ul ng-show="currency.code == optionsCode" class="currencies-options-box">
                                 <li ng-click="showCurrenciesOptions(currency.code)"><i class="dropdown-arr"></i></li>
                                 <li ng-click="goToView('/currency/' + currency.code + '/overview')">View more details</li>
@@ -77,7 +77,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row currency-details-row currencies-page-row" ng-show="showingRowsCurrencyCode == currency.code">
+            <div class="row currency-details-row currencies-page-row" ng-show="findIndexOfCode(currency) >= 0">
                 <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">&nbsp;</div>
                 <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
                     <div>
@@ -115,7 +115,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row currency-details-row currencies-page-row" ng-show="showingRowsCurrencyCode == currency.code">
+            <div class="row currency-details-row currencies-page-row" ng-show="findIndexOfCode(currency) >= 0">
                 <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">&nbsp;</div>
                 <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
                     <div>
@@ -153,7 +153,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row currencies-page-row currencies-panel-last-row" ng-show="showingRowsCurrencyCode == currency.code">
+            <div class="row currencies-page-row currencies-panel-last-row" ng-show="findIndexOfCode(currency) >= 0">
                 <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">&nbsp;</div>
                 <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
                     <div>
