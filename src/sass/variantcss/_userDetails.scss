@@ -56,10 +56,6 @@
   border-color: $primary;
 }
 
-.user-document-modal-footer{
-  padding: 0 15px;
-}
-
 .user-document-update-form{
   padding: 8px;
 }
@@ -247,6 +243,18 @@
 
 .document-modal-window .modal-dialog{
   width: 90vw;
+}
+
+.no-left-padding{
+  padding-left: 0 !important;
+}
+
+.no-right-padding{
+  padding-right: 0 !important;
+}
+
+.no-margin-top{
+  margin-top: 0 !important;
 }
 
 @media screen and (max-width: 1300px) {

@@ -26,7 +26,7 @@
                     <td><strong>Amount</strong></td>
                     <td><strong>Fee</strong></td>
                     <td><strong>Status</strong></td>
-                    <td><strong>Date</strong></td>
+                    <td class="align-right"><strong>Date</strong></td>
                 </tr>
                 <tr ng-repeat="transaction in transactions | orderBy: orderByFunction" data-toggle="modal"
                     ng-click="openModal('app/pages/transactions/history/historyModal/historyModal.html', 'md',transaction)"
@@ -39,7 +39,7 @@
                     <td><div title="{{transaction.fee | currencyModifiersFilter: transaction.currency.divisibility}}"
                              class="transactions-list-element" ng-bind="transaction.fee | currencyModifiersFilter: transaction.currency.divisibility"></div></td>
                     <td><div title="{{transaction.status | capitalizeWord}}" class="transactions-list-element" ng-bind="transaction.status | capitalizeWord"></div></td>
-                    <td><div title="{{transaction.created | date:'mediumDate'}} {{transaction.created | date:'shortTime'}}" class="transactions-list-element">
+                    <td class="align-right"><div title="{{transaction.created | date:'mediumDate'}} {{transaction.created | date:'shortTime'}}">
                         {{transaction.created | date:'mediumDate'}} {{transaction.created | date:'shortTime'}}</div></td>
                 </tr>
             </table>
