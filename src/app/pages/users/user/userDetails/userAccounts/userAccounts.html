@@ -2,7 +2,8 @@
     <div ng-hide="loadingUserAccounts" class="panel">
         <div class="panel-heading">
             <span class="user-details-panel-title">Account: {{account.name}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <span ng-show="account.primary" class="user-primary-account user-address-status">PRIMARY</span></span>
+                <span ng-show="account.primary" class="user-primary-account user-address-status">PRIMARY</span>
+            </span>
             <a ng-click="openAddAccountCurrenciesModal('app/pages/users/user/userDetails/userAccounts/addAccountCurrenciesModal/addAccountCurrenciesModal.html','md',account.reference)" class="user-details-panel-link pull-right pointer">Add currency</a>
         </div>
         <div class="panel-body">
