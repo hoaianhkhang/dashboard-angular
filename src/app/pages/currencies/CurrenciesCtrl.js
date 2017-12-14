@@ -12,6 +12,7 @@
         $scope.showingFilters = false;
         $scope.loadingCurrencies = true;
         $scope.optionsCode = '';
+        $scope.showingRowsCurrencyCode = '';
         $scope.currencyOptions = [];
         $scope.filtersObj = {
             currencyFilter: false,
@@ -23,6 +24,14 @@
             },
             unitFilter: {
                 selectedCurrencyOption: {}
+            }
+        };
+
+        $scope.toggleRowsVisibility = function (currency) {
+            if($scope.showingRowsCurrencyCode == currency.code){
+                $scope.showingRowsCurrencyCode = '';
+            } else {
+                $scope.showingRowsCurrencyCode = currency.code;
             }
         };
 

@@ -83,6 +83,15 @@
   padding: 6px 0;
 }
 
+.currencies-panel-last-row{
+  margin-bottom: 8px;
+}
+
+.currencies-page-row{
+  position: relative;
+  top: 12px;
+}
+
 .currencies-page-button-filter{
   height: 34px;
   width: 70px;
@@ -122,8 +131,8 @@
   right: 2px;
   list-style: none;
   & li{
-    font-weight: 600;
-    line-height: 24px;
+    font-weight: 600 !important;
+    line-height: 24px !important;
   }
   & li:hover{
     color: $primary;
@@ -141,7 +150,7 @@
     border-bottom-color: rgba(0, 0, 0, .15);
     &:after {
       top: -9px;
-      left: 0px;
+      left: 0;
       margin-left: -10px;
       content: " ";
       position: absolute;
