@@ -1,34 +1,51 @@
-<div ba-panel ba-panel-title="Pending credits" class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-    <table class="table table-striped divider col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
-        <tr class="black-muted-bg">
-            <td>24h Volume</td>
-            <td>{{currencyObj.symbol}} {{currencyOverviewData.sum_24h_credits_pending | currencyModifiersFilter: currencyObj.divisibility}}</td>
-        </tr>
-        <tr>
-            <td>Total Volume</td>
-            <td>{{currencyObj.symbol}} {{currencyOverviewData.sum_credits_pending | currencyModifiersFilter: currencyObj.divisibility}}</td>
-        </tr>
-        <tr>
-            <td>Number of transactions</td>
-            <td>{{currencyOverviewData.count_credits_pending}}</td>
-        </tr>
-    </table>
-    <button ng-click="goToPath('/transactions/credit/pending')" class="btn dashboard-btn btn-primary pull-right">Manage</button>
-</div>
-<div ba-panel ba-panel-title="Pending debits" class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-    <table class="table table-striped divider col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
-        <tr class="black-muted-bg">
-            <td>24h Volume</td>
-            <td>{{currencyObj.symbol}} {{currencyOverviewData.sum_24h_debits_pending | currencyModifiersFilter: currencyObj.divisibility}}</td>
-        </tr>
-        <tr>
-            <td>Total Volume</td>
-            <td>{{currencyObj.symbol}} {{currencyOverviewData.sum_debits_pending | currencyModifiersFilter: currencyObj.divisibility}}</td>
-        </tr>
-        <tr>
-            <td>Number of transactions</td>
-            <td>{{currencyOverviewData.count_debits_pending}}</td>
-        </tr>
-    </table>
-    <button ng-click="goToPath('/transactions/debit/pending')" class="btn dashboard-btn btn-primary pull-right">Manage</button>
+<div class="row">
+    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <span class="user-details-panel-title">Pending credits</span>
+            </div>
+            <div class="panel-body">
+                <table class="table user-details-table divider-20">
+                    <tr>
+                        <th>24h volume</th>
+                        <th class="align-right">{{currencyObj.symbol}} {{currencyOverviewData.sum_24h_credits_pending | currencyModifiersFilter: currencyObj.divisibility}}</th>
+                    </tr>
+                    <tr>
+                        <th>Total volume</th>
+                        <th class="align-right">{{currencyObj.symbol}} {{currencyOverviewData.sum_credits_pending | currencyModifiersFilter: currencyObj.divisibility}}</th>
+                    </tr>
+                    <tr>
+                        <th>Number of transactions</th>
+                        <th class="align-right">{{currencyOverviewData.count_credits_pending}}</th>
+                    </tr>
+                </table>
+                <button ng-click="goToPath('/transactions/credit/pending')" class="btn dashboard-btn btn-primary pull-right">Manage</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <span class="user-details-panel-title">Pending debits</span>
+            </div>
+            <div class="panel-body">
+                <table class="table user-details-table divider-20">
+                    <tr>
+                        <th>24h volume</th>
+                        <th class="align-right">{{currencyObj.symbol}} {{currencyOverviewData.sum_24h_debits_pending | currencyModifiersFilter: currencyObj.divisibility}}</th>
+                    </tr>
+                    <tr>
+                        <th>Total volume</th>
+                        <th class="align-right">{{currencyObj.symbol}} {{currencyOverviewData.sum_debits_pending | currencyModifiersFilter: currencyObj.divisibility}}</th>
+                    </tr>
+                    <tr>
+                        <th>Number of transactions</th>
+                        <th class="align-right">{{currencyOverviewData.count_debits_pending}}</th>
+                    </tr>
+                </table>
+                <button ng-click="goToPath('/transactions/debit/pending')" class="btn dashboard-btn btn-primary pull-right">Manage</button>
+            </div>
+        </div>
+    </div>
 </div>

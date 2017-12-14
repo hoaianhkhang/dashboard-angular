@@ -12,6 +12,9 @@
         $scope.currencyCode = $stateParams.currencyCode;
         vm.currenciesList = JSON.parse($window.sessionStorage.currenciesList || '[]');
         $scope.loadingCurrencies = true;
+        vm.location = $location.path();
+        vm.locationArray = vm.location.split('/');
+        $scope.locationIndicator = vm.locationArray[vm.locationArray.length - 1];
         vm.currenciesList.forEach(function (element) {
             if(element.code ==  $scope.currencyCode){
                 $scope.currencyObj = element;

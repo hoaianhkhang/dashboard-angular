@@ -65,7 +65,11 @@
 }
 
 .overview-hexagon {
-  @include hexagon(146px,84.29px,42.15px 0 45px 0);
+  @include hexagon(146px,84.29px,42.15px 0 42.15px 0);
+}
+
+.overview-hexagon-margin-bottom{
+  margin-bottom: 13px;
 }
 
 .overview-hexagon:before,

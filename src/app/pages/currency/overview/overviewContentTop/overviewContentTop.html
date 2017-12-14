@@ -1,12 +1,42 @@
-<div ba-panel ba-panel-title="Users available balances" class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
-    <strong>{{currencyObj.symbol}} {{currencyOverviewData.available_balance_total | currencyModifiersFilter: currencyObj.divisibility}}</strong>
-</div>
-<div ba-panel ba-panel-title="24h volume" class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
-    <strong>{{currencyObj.symbol}} {{currencyOverviewData.balance_24h | currencyModifiersFilter: currencyObj.divisibility}}</strong>
-</div>
-<div ba-panel ba-panel-title="Total users" class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
-    <strong ng-bind="currencyOverviewUsersData.total"></strong>
-</div>
-<div ba-panel ba-panel-title="Active users" class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
-    <strong ng-bind="currencyOverviewUsersData.active"></strong>
+<div class="row">
+    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+        <div class="panel">
+            <div class="panel-heading">
+                <span class="user-details-panel-title">Users available balances</span>
+            </div>
+            <div class="panel-body">
+                <span>{{currencyObj.symbol}} {{currencyOverviewData.available_balance_total | currencyModifiersFilter: currencyObj.divisibility}}</span>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+        <div class="panel">
+            <div class="panel-heading">
+                <span class="user-details-panel-title">24h volume</span>
+            </div>
+            <div class="panel-body">
+                <span>{{currencyObj.symbol}} {{currencyOverviewData.balance_24h | currencyModifiersFilter: currencyObj.divisibility}}</span>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+        <div class="panel">
+            <div class="panel-heading">
+                <span class="user-details-panel-title">Total users</span>
+            </div>
+            <div class="panel-body">
+                <span ng-bind="currencyOverviewUsersData.total"></span>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+        <div class="panel">
+            <div class="panel-heading">
+                <span class="user-details-panel-title">Active users</span>
+            </div>
+            <div class="panel-body">
+                <span ng-bind="currencyOverviewUsersData.active"></span>
+            </div>
+        </div>
+    </div>
 </div>
