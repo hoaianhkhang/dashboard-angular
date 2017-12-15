@@ -135,7 +135,7 @@
             }).then(function (res) {
                 $scope.onGoingTransaction = false;
                 if (res.status === 201) {
-                    toastr.success('You have successfully credited your account!');
+                    toastr.success('You have successfully credited your account');
                     $scope.goToView('completeCredit');
                 }
             }).catch(function (error) {

@@ -77,7 +77,7 @@
                 $scope.loadingBankAccounts = false;
                 if (res.status === 201) {
                     vm.getBankAccounts();
-                    toastr.success('You have successfully added the bank account!');
+                    toastr.success('You have successfully added the bank account');
                     $scope.newBankData = {};
                     $window.scrollTo(0, 0);
                 }
@@ -106,7 +106,7 @@
                 if (res.status === 200) {
                     vm.updatedBankAccount = {};
                     vm.getBankAccounts();
-                    toastr.success('You have successfully updated the bank account!');
+                    toastr.success('You have successfully updated the bank account');
                 }
             }).catch(function (error) {
                 $scope.loadingBankAccounts = false;

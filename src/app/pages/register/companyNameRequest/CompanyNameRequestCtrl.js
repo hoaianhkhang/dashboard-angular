@@ -66,7 +66,7 @@
                     userVerification.verify(function(err,verified){
                         if(verified){
                             $rootScope.userVerified = true;
-                            toastr.success('You have successfully updated the company info!');
+                            toastr.success('You have successfully updated the company info');
                             $location.path('currency/add/initial');
                         } else {
                             $location.path('/verification');

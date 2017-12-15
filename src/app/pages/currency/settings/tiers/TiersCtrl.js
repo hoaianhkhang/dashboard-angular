@@ -80,7 +80,7 @@
                 $scope.loadingTiers = false;
                   if (res.status === 201) {
                     $scope.newTier = {currency: $scope.currencyCode,level: 1};
-                    toastr.success('You have successfully added a tier!');
+                    toastr.success('You have successfully added a tier');
                       vm.getTiers();
                   }
               }).catch(function (error) {
@@ -111,7 +111,7 @@
                   if (res.status === 200) {
                       vm.updatedTier = {};
                       $scope.newTier = {currency: $scope.currencyCode,level: 1};
-                      toastr.success('You have successfully updated a tier!');
+                      toastr.success('You have successfully updated a tier');
                       vm.getTiers();
                   }
               }).catch(function (error) {

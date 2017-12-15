@@ -31,7 +31,7 @@
                 }).then(function (res) {
                     if (res.status === 201) {
                         $scope.addingUserSwitches = false;
-                        toastr.success('Successfully created the user switch!');
+                        toastr.success('Successfully created the user switch');
                         $scope.userSwitchParams = {
                             tx_type: 'Credit',
                             enabled: false,

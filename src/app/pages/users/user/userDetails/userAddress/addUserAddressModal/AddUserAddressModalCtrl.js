@@ -25,7 +25,7 @@
                 }).then(function (res) {
                     if (res.status === 201) {
                         $scope.userAddressParams = {country: 'US', status: 'pending'};
-                        toastr.success('Successfully added user address!');
+                        toastr.success('Successfully added user address');
                         $uibModalInstance.close(res.data);
                     }
                 }).catch(function (error) {

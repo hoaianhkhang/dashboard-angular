@@ -83,7 +83,7 @@
             }).then(function (res) {
                 $scope.onGoingTransaction = false;
                 if (res.status === 201) {
-                    toastr.success('You have successfully transferred the money!');
+                    toastr.success('You have successfully transferred the money');
                     $scope.goToView('completeTransfer');
                 }
             }).catch(function (error) {

@@ -29,7 +29,7 @@
                     if (res.status === 200) {
                         var index = $scope.tokensList.findIndex(vm.findIndexOfToken);
                         $scope.tokensList.splice(index, 1);
-                        toastr.success('You have successfully deleted the token!');
+                        toastr.success('You have successfully deleted the token');
                         $scope.$dismiss();
                     }
                 }).catch(function (error) {

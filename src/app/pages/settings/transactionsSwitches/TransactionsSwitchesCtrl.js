@@ -108,7 +108,7 @@
                 }).then(function (res) {
                     $scope.loadingTransactionsSwitches = false;
                     if (res.status === 201) {
-                        toastr.success('Successfully created the transactions switch!');
+                        toastr.success('Successfully created the transactions switch');
                         $scope.transactionsSwitchParams = {
                             tx_type: 'Credit',
                             enabled: 'False',
@@ -155,7 +155,7 @@
                     if (res.status === 200) {
                         $scope.editingTransactionsSwitches = !$scope.editingTransactionsSwitches;
                         vm.updatedTransactionsSwitch = {};
-                        toastr.success('Successfully updated the transactions switch!');
+                        toastr.success('Successfully updated the transactions switch');
                         vm.getTransactionsSwitches();
                     }
                 }).catch(function (error) {
