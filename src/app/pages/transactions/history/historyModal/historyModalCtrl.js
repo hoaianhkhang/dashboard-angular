@@ -7,7 +7,6 @@
     function historyModalCtrl($uibModalInstance,$http,$scope,errorHandler,toastr,$timeout,
                               transaction,metadataTextService,$location,environmentConfig,cookieManagement,$ngConfirm) {
 
-        transaction.status = transaction.status.toLowerCase();
         $scope.transaction = transaction;
         $scope.updateTransactionObj = {};
         $scope.formatted = {};

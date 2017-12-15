@@ -86,13 +86,13 @@
             }
         };
 
-        if($state.params.email){
-            $scope.filtersObj.emailFilter = true;
-        }
-
-        if($state.params.mobile){
-            $scope.filtersObj.mobileFilter = true;
-        }
+        vm.getCompanyCurrencies = function(){
+            //adding currency as default value in both results array and ng-model of currency
+            vm.currenciesList.splice(0,0,{code: 'Currency'});
+            $scope.applyFiltersObj.currencyFilter.selectedCurrency.code = 'Currency';
+            $scope.currencyOptions = vm.currenciesList;
+        };
+        vm.getCompanyCurrencies();
 
         if($state.params.currencyCode){
             $scope.filtersObj.currencyFilter = true;
@@ -101,6 +101,14 @@
                     $scope.applyFiltersObj.currencyFilter.selectedCurrency = element;
                 }
             });
+        }
+
+        if($state.params.email){
+            $scope.filtersObj.emailFilter = true;
+        }
+
+        if($state.params.mobile){
+            $scope.filtersObj.mobileFilter = true;
         }
 
         //for angular datepicker
@@ -159,14 +167,6 @@
                 toastr.success('Please enter a positive value');
             }
         };
-
-        vm.getCompanyCurrencies = function(){
-            //adding currency as default value in both results array and ng-model of currency
-            vm.currenciesList.splice(0,0,{code: 'Currency'});
-            $scope.applyFiltersObj.currencyFilter.selectedCurrency.code = 'Currency';
-            $scope.currencyOptions = vm.currenciesList;
-        };
-        vm.getCompanyCurrencies();
 
         $scope.pageSizeChanged =  function () {
             if($scope.usersPagination.itemsPerPage > 250){
