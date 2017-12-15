@@ -1,47 +1,52 @@
-<div ng-hide="loadingCurrencies" ba-panel ba-panel-title="Currency details">
-    <h5 class="form-group">You are about to add currency <strong>{{addCurrency.currencyChoice.code}}</strong> to your dashboard:</h5>
-    <div class="row">
-        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-            <p><strong>Code: </strong></p>
-        </div>
-        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-            <p ng-bind="addCurrency.currencyChoice.code"></p>
-        </div>
+<div ng-hide="loadingCurrencies" class="panel panel-default">
+    <div class="panel-heading">
+        <span class="user-details-panel-title">Currency details</span>
     </div>
-    <div class="row">
-        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-            <p><strong>Description: </strong></p>
+    <div class="panel-body">
+        <h5 class="form-group">You are about to add currency <strong>{{addCurrency.currencyChoice.code}}</strong> to your dashboard:</h5>
+        <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                <p class="text-subtle">Code: </p>
+            </div>
+            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                <p ng-bind="addCurrency.currencyChoice.code"></p>
+            </div>
         </div>
-        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-            <p ng-bind="addCurrency.currencyChoice.description"></p>
+        <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                <p class="text-subtle">Description: </p>
+            </div>
+            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                <p ng-bind="addCurrency.currencyChoice.description"></p>
+            </div>
         </div>
+        <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                <p class="text-subtle">Symbol: </p>
+            </div>
+            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                <p ng-bind="addCurrency.currencyChoice.symbol"></p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                <p class="text-subtle">Unit: </p>
+            </div>
+            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                <p ng-bind="addCurrency.currencyChoice.unit"></p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                <p class="text-subtle">Divisibility: </p>
+            </div>
+            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                <p ng-bind="addCurrency.currencyChoice.divisibility"></p>
+            </div>
+        </div>
+        <button class="btn btn-primary dashboard-btn pull-right left-margin-12" ng-click="addCompanyCurrency(addCurrency.currencyChoice)">Add</button>
+        <button ng-click="back()" class="btn btn-default dashboard-btn pull-right" >Back</button>
     </div>
-    <div class="row">
-        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-            <p><strong>Symbol: </strong></p>
-        </div>
-        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-            <p ng-bind="addCurrency.currencyChoice.symbol"></p>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-            <p><strong>Unit: </strong></p>
-        </div>
-        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-            <p ng-bind="addCurrency.currencyChoice.unit"></p>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-            <p><strong>Divisibility: </strong></p>
-        </div>
-        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-            <p ng-bind="addCurrency.currencyChoice.divisibility"></p>
-        </div>
-    </div>
-    <button class="btn btn-primary dashboard-btn pull-right left-margin-12" ng-click="addCompanyCurrency(addCurrency.currencyChoice)">Add</button>
-    <button ng-click="back()" class="btn btn-primary dashboard-btn pull-right" >Back</button>
 </div>
 <div ba-panel ng-show="loadingCurrencies">
     <loading-image></loading-image>
