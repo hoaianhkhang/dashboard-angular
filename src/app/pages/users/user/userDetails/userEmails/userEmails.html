@@ -6,30 +6,24 @@
     <div class="panel-body">
         <table ng-show="emailsList.length > 0" class="table">
             <tr class="user-switches-table-header divider">
-                <th>Email</th>
-                <th></th>
-                <th></th>
+                <th class="rehive-table-row-first-child">Email</th>
                 <th></th>
             </tr>
             <tr ng-repeat="email in emailsList | orderBy: 'email'">
-                <td width="25%" class="transactions-list-element" title="{{email.email}}">{{email.email}}</td>
-                <td width="20%">
-                    <span ng-show="email.primary" class="user-primary-account user-address-status">PRIMARY</span>
-                </td>
-                <td width="15%" class="transactions-list-element">
+                <td width="25%" class="transactions-list-element rehive-table-row-first-child" title="{{email.email}}">{{email.email}}</td>
+                <td class="rehive-table-row-last-child pull-right">
+                    <span ng-show="email.primary" class="user-primary-account user-address-status margin-right-30">PRIMARY</span>
                     <span ng-show="email.verified">
-                        <span ng-show="email.verified" class="status-verified user-address-status">VERIFIED</span>
+                        <span ng-show="email.verified" class="status-verified user-address-status margin-right-30">VERIFIED</span>
                     </span>
                     <span ng-hide="email.verified">
-                        <span ng-hide="email.verified" class="user-primary-account user-address-status status-incomplete-declined">NOT VERIFIED</span>
+                        <span ng-hide="email.verified" class="user-primary-account user-address-status margin-right-30 status-incomplete-declined">NOT VERIFIED</span>
                     </span>
-                </td>
-                <td class="rehive-table-row-last-child">
                     <a ng-click="deleteUserEmailConfirm(email)"
                        class="pull-right pointer ">Delete</a>
                     <a ng-click="openEditUserEmailModal('app/pages/users/user/userDetails/userEmails/editUserEmailModal/editUserEmailModal.html','md',email)"
                        class="pull-right pointer user-address-edit margin-right-30">Edit</a>
-                    <a ng-hide="email.verified" ng-click="openUserVerifyEmailModal('app/pages/users/user/userDetails/userEmails/userVerifyEmailModal/userVerifyEmailModal.html','md',email)"
+                    <a ng-class="{'invisible-element': email.verified == true}" ng-click="openUserVerifyEmailModal('app/pages/users/user/userDetails/userEmails/userVerifyEmailModal/userVerifyEmailModal.html','md',email)"
                        class="pull-right pointer user-address-edit margin-right-30">Verify</a>
                 </td>
             </tr>

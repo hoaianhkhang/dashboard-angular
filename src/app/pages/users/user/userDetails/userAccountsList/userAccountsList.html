@@ -5,20 +5,17 @@
             <a ng-click="openAddUserAccountsListModal('app/pages/users/user/userDetails/userAccountsList/addUserAccountModal/addUserAccountModal.html','md')" class="user-details-panel-link pull-right pointer">Add account</a>
         </div>
         <div class="panel-body">
-            <table ng-if="accounts.length > 0" class="table">
+            <table ng-show="accounts.length > 0" class="table">
                 <tr class="user-switches-table-header divider">
-                    <th>Name</th>
+                    <th class="rehive-table-row-first-child">Name</th>
                     <th>Reference</th>
-                    <th></th>
                     <th></th>
                 </tr>
                 <tr ng-repeat="account in accounts | orderBy: '-primary'">
-                    <td class="table-row-center transactions-list-element" title="{{account.name}}" ng-bind="account.name"></td>
-                    <td class="table-row-center transactions-list-element" title="{{account.reference}}" ng-bind="account.reference"></td>
-                    <td class="table-row-center transactions-list-element">
-                        <span ng-show="account.primary" class="user-primary-account user-address-status">PRIMARY</span>
-                    </td>
-                    <td class="rehive-table-row-last-child">
+                    <td class="transactions-list-element rehive-table-row-first-child" title="{{account.name}}" ng-bind="account.name"></td>
+                    <td class="transactions-list-element" title="{{account.reference}}" ng-bind="account.reference"></td>
+                    <td class="rehive-table-row-last-child pull-right">
+                        <span ng-show="account.primary" class="user-primary-account user-address-status margin-right-30">PRIMARY</span>
                         <a ng-click="openEditUserAccountsListModal('app/pages/users/user/userDetails/userAccountsList/editUserAccountModal/editUserAccountModal.html','md',account)" class="pull-right pointer user-address-edit">Edit</a>
                     </td>
                 </tr>

@@ -61,6 +61,10 @@
   margin: 10px 0 10px 10px;
 }
 
+.table > tbody > tr > .rehive-table-row-first-child:first-child {
+  padding-left: 0;
+}
+
 .table > tbody > tr > .rehive-table-row-last-child:last-child {
   padding-right: 0;
 }

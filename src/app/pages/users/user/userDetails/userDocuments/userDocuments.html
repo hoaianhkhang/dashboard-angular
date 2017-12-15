@@ -7,14 +7,14 @@
     <div class="panel-body">
         <table ng-show="userDocuments.length > 0" class="table">
             <tr class="user-switches-table-header">
-                <th>Category</th>
+                <th class="rehive-table-row-first-child">Category</th>
                 <th>Type</th>
                 <th></th>
             </tr>
             <tr class="pointer user-details-table-hover" ng-repeat="document in userDocuments" ng-click="openUserDocumentModal('app/pages/users/user/userDetails/userDocuments/userDocumentModal/userDocumentModal.html',document)">
-                <td width="30%">{{document.document_category}}</td>
-                <td width="30%">{{document.document_type}}</td>
-                <td width="30%"><span ng-class="{'status-pending': document.status == 'pending','status-verified': document.status == 'verified',
+                <td class="rehive-table-row-first-child">{{document.document_category}}</td>
+                <td>{{document.document_type}}</td>
+                <td class="pull-right rehive-table-row-last-child"><span ng-class="{'status-pending': document.status == 'pending','status-verified': document.status == 'verified',
                     'status-incomplete-declined': document.status == 'incomplete' || document.status == 'declined'}"
                                       class="user-address-status">{{document.status | uppercase}}</span></td>
             </tr>

@@ -7,23 +7,20 @@
     <div class="panel-body">
         <table ng-show="userCryptoAccountsList.length > 0" class="table">
             <tr class="user-switches-table-header divider">
-                <th>Address</th>
+                <th class="rehive-table-row-first-child">Address</th>
                 <th>Type</th>
-                <th></th>
                 <th></th>
             </tr>
             <tr ng-repeat="cryptoAccount in userCryptoAccountsList | orderBy: 'crypto_type'">
-                <td class="table-row-center transactions-list-element" title="{{cryptoAccount.address}}" ng-bind="cryptoAccount.address"></td>
+                <td class="table-row-center transactions-list-element rehive-table-row-first-child" title="{{cryptoAccount.address}}" ng-bind="cryptoAccount.address"></td>
                 <td class="table-row-center transactions-list-element" title="{{cryptoAccount.crypto_type}}" ng-bind="cryptoAccount.crypto_type"></td>
-                <td class="table-row-center transactions-list-element">
-                    <span ng-class="{'status-pending': cryptoAccount.status == 'pending','status-verified': cryptoAccount.status == 'verified',
-                    'status-incomplete-declined': cryptoAccount.status == 'incomplete' || cryptoAccount.status == 'declined'}"
-                          class="user-address-status">{{cryptoAccount.status | uppercase}}</span>
-                </td>
-                <td class="rehive-table-row-last-child">
+                <td class="rehive-table-row-last-child pull-right">
                     <a ng-click="openUserCryptoAccountsModal('app/pages/users/user/userDetails/userCryptoAccounts/userCryptoAccountsModal/userCryptoAccountsModal.html','md',cryptoAccount)"
                        class="pull-right pointer ">Delete</a>
                     <a ng-click="openEditUserCryptoAccountsModal('app/pages/users/user/userDetails/userCryptoAccounts/editUserCryptoAccountsModal/editUserCryptoAccountsModal.html','md',cryptoAccount)" class="pull-right pointer user-address-edit margin-right-30">Edit</a>
+                    <span ng-class="{'status-pending': cryptoAccount.status == 'pending','status-verified': cryptoAccount.status == 'verified',
+                    'status-incomplete-declined': cryptoAccount.status == 'incomplete' || cryptoAccount.status == 'declined'}"
+                          class="user-address-status margin-right-30">{{cryptoAccount.status | uppercase}}</span>
                 </td>
             </tr>
         </table>

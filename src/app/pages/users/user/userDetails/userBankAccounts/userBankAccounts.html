@@ -6,20 +6,19 @@
     <div class="panel-body">
         <div  ng-repeat="bank in userBanks | orderBy: 'id'">
             <div class="row user-address">
-                <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                     <a ng-click="showCollapsedBankDetails(bank)" class="pointer">
                         <i ng-hide="bank.id == uncollapsedBank.id" class="fa fa-chevron-right user-bank-icons"></i><i ng-show="bank.id == uncollapsedBank.id" class="fa fa-chevron-down user-bank-icons"></i> {{bank.name}}</a>
                 </div>
-                <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
-                    <span ng-class="{'status-pending': bank.status == 'pending','status-verified': bank.status == 'verified',
-                    'status-incomplete-declined': bank.status == 'incomplete' || bank.status == 'declined'}"
-                          class="user-address-status">{{bank.status | uppercase}}</span>
-                </div>
-                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                     <a ng-click="openUserBankAccountModal('app/pages/users/user/userDetails/userBankAccounts/userBankAccountModal/userBankAccountModal.html','md',bank)"
                        class="pull-right pointer">Delete</a>
                     <a ng-click="openEditUserBankAccountModal('app/pages/users/user/userDetails/userBankAccounts/editUserBankAccountModal/editUserBankAccountModal.html','md',bank)" class="pull-right pointer user-bank-edit margin-right-30">Edit</a>
-                    <a ng-show="bank.status == 'pending'" ng-click="verifyBankAccountConfirm(bank)" class="pull-right pointer user-bank-edit margin-right-30">Verify</a>
+                    <a ng-class="{'invisible-element': bank.status != 'pending'}" ng-click="verifyBankAccountConfirm(bank)"
+                       class="pull-right pointer margin-right-30">Verify</a>
+                    <span ng-class="{'status-pending': bank.status == 'pending','status-verified': bank.status == 'verified',
+                    'status-incomplete-declined': bank.status == 'incomplete' || bank.status == 'declined'}"
+                          class="user-address-status pull-right margin-right-30">{{bank.status | uppercase}}</span>
                 </div>
             </div>
             <div ng-show="bank.id == uncollapsedBank.id" uib-collapse="isBankDetailsCollapsed" class="row divider">

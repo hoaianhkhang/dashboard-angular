@@ -6,30 +6,24 @@
     <div class="panel-body">
         <table ng-show="mobilesList.length > 0" class="table">
             <tr class="user-switches-table-header divider">
-                <th>Number</th>
-                <th></th>
-                <th></th>
+                <th class="rehive-table-row-first-child">Number</th>
                 <th></th>
             </tr>
             <tr ng-repeat="mobile in mobilesList | orderBy: 'number'">
-                <td width="25%" class="transactions-list-element" title="{{mobile.number}}">{{mobile.number}}</td>
-                <td width="20%">
-                    <span ng-show="mobile.primary" class="user-primary-account user-address-status">PRIMARY</span>
-                </td>
-                <td width="15%" class="transactions-list-element">
+                <td width="25%" class="transactions-list-element rehive-table-row-first-child" title="{{mobile.number}}">{{mobile.number}}</td>
+                <td class="rehive-table-row-last-child pull-right">
+                    <span ng-show="mobile.primary" class="user-primary-account user-address-status margin-right-30">PRIMARY</span>
                     <span ng-show="mobile.verified">
-                        <span ng-show="mobile.verified" class="status-verified user-address-status">VERIFIED</span>
+                        <span ng-show="mobile.verified" class="status-verified user-address-status margin-right-30">VERIFIED</span>
                     </span>
                     <span ng-hide="mobile.verified">
-                        <span ng-hide="mobile.verified" class="user-primary-account user-address-status status-incomplete-declined">NOT VERIFIED</span>
+                        <span ng-hide="mobile.verified" class="user-primary-account user-address-status margin-right-30 status-incomplete-declined">NOT VERIFIED</span>
                     </span>
-                </td>
-                <td class="rehive-table-row-last-child">
                     <a ng-click="deleteUserNumberConfirm(mobile)"
                        class="pull-right pointer ">Delete</a>
                     <a ng-click="openEditUserNumberModal('app/pages/users/user/userDetails/userNumbers/editUserNumberModal/editUserNumberModal.html','md',mobile)"
                        class="pull-right pointer user-address-edit margin-right-30">Edit</a>
-                    <a ng-hide="mobile.verified" ng-click="openVerifyUserMobileModal('app/pages/users/user/userDetails/userNumbers/verifyUserNumberModal/verifyUserNumberModal.html','md',mobile)"
+                    <a ng-class="{'invisible-element': mobile.verified == true}" ng-click="openVerifyUserMobileModal('app/pages/users/user/userDetails/userNumbers/verifyUserNumberModal/verifyUserNumberModal.html','md',mobile)"
                        class="pull-right pointer user-address-edit margin-right-30">Verify</a>
                 </td>
             </tr>

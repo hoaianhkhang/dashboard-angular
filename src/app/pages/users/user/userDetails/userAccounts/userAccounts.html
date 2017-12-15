@@ -9,13 +9,13 @@
         <div class="panel-body">
             <table ng-show="account.currencies.length > 0" class="table">
                 <tr class="user-switches-table-header">
-                    <th>Currency</th>
+                    <th class="rehive-table-row-first-child">Currency</th>
                     <th>Available balance</th>
                     <th>Balance</th>
                     <th></th>
                 </tr>
                 <tr  ng-repeat="acc in account.currencies">
-                    <td width="15%" ng-bind="acc.currency.code"></td>
+                    <td class="rehive-table-row-first-child" width="15%" ng-bind="acc.currency.code"></td>
                     <td width="20%" title="{{acc.available_balance  | currencyModifiersFilter: acc.currency.divisibility}}">
                         {{acc.currency.symbol}} {{acc.available_balance  | currencyModifiersFilter: acc.currency.divisibility}}
                     </td>
