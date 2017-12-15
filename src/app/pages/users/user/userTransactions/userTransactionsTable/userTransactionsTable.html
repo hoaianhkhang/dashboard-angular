@@ -26,7 +26,7 @@
                     <td class="align-right"><strong>Date</strong></td>
                 </tr>
                 <tr ng-repeat="transaction in transactions | orderBy: orderByFunction" data-toggle="modal"
-                    ng-click="openModal('app/pages/transactions/history/historyModal/historyModal.html', 'md',transaction)"
+                    ng-click="openModal('app/pages/users/user/userTransactions/userTransactionsModal/userTransactionsModal.html', 'md',transaction)"
                     class="editable-row center pointer user-details-table-hover">
                     <td><div title="{{transaction.user.email || transaction.user.mobile_number}}" class="transactions-list-element" ng-bind="transaction.user.email || transaction.user.mobile_number | limitTo: '100'"></div></td>
                     <td><div title="{{transaction.tx_type}}" class="transactions-list-element" ng-bind="transaction.tx_type | capitalizeWord"></div></td>

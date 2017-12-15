@@ -23,7 +23,7 @@
             }).then(function (res) {
                 $scope.deletingUserPermissionGroup = false;
                 if (res.status === 200) {
-                    toastr.success('User permission group successfully deleted');
+                    toastr.success('Permission group successfully deleted');
                     $uibModalInstance.close($scope.userPermissionGroup);
                 }
             }).catch(function (error) {

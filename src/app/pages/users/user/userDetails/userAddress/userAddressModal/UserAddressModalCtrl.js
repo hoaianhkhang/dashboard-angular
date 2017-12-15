@@ -22,7 +22,7 @@
             }).then(function (res) {
                 $scope.deletingUserAddress = false;
                 if (res.status === 200) {
-                    toastr.success('User address successfully deleted');
+                    toastr.success('Address successfully deleted');
                     $uibModalInstance.close($scope.userAddress);
                 }
             }).catch(function (error) {

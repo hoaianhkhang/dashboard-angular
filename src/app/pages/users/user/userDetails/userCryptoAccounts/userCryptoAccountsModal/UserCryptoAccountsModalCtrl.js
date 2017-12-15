@@ -24,7 +24,7 @@
             }).then(function (res) {
                 $scope.deletingUserCryptoAccount = false;
                 if (res.status === 200) {
-                    toastr.success('User crypto account successfully deleted');
+                    toastr.success('Crypto account successfully deleted');
                     $uibModalInstance.close($scope.userCryptoAccount);
                 }
             }).catch(function (error) {

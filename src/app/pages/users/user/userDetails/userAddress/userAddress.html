@@ -26,6 +26,9 @@
                 </div>
             </div>
         </div>
+        <div ng-show="userAddresses.length == 0 && !loadingUserAddress">
+            <i>No addresses are available</i>
+        </div>
     </div>
 </div>
 <div ba-panel ng-show="loadingUserAddress">

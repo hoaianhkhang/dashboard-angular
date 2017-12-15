@@ -19,6 +19,9 @@
                                       class="user-address-status">{{document.status | uppercase}}</span></td>
             </tr>
         </table>
+        <div ng-show="userDocuments.length == 0 && !loadingUserDocuments">
+            <i>No documents are available</i>
+        </div>
     </div>
 </div>
 <div ba-panel ng-show="loadingUserDocuments">

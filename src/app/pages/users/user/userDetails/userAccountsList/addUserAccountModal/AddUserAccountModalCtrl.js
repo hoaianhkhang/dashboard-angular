@@ -24,7 +24,7 @@
                 }).then(function (res) {
                     if (res.status === 201) {
                         $scope.newUserAccountParams = {};
-                        toastr.success('User account successfully added');
+                        toastr.success('Account successfully added');
                         $uibModalInstance.close(res.data);
                     }
                 }).catch(function (error) {

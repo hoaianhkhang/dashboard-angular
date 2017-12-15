@@ -23,7 +23,7 @@
             }).then(function (res) {
                 $scope.deletingUserSwitches = false;
                 if (res.status === 200) {
-                    toastr.success('User switch successfully deleted');
+                    toastr.success('Switch successfully deleted');
                     $uibModalInstance.close($scope.userSwitches);
                 }
             }).catch(function (error) {

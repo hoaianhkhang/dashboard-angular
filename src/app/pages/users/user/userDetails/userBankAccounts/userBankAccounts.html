@@ -91,6 +91,9 @@
                 </div>
             </div>
         </div>
+        <div ng-show="userBanks.length == 0 && !loadingUserBankAccount">
+            <i>No banks are available</i>
+        </div>
     </div>
 </div>
 <div ba-panel ng-show="loadingUserBankAccount">

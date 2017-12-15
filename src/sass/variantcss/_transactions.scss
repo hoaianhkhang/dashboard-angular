@@ -50,7 +50,11 @@
     }
     & input{
       border: 1px solid #cbcbcb;
+      font-size: 14px;
       box-shadow: none;
+    }
+    & input::placeholder{
+      font-size: 14px;
     }
     & input.transaction-amount-input{
       height: 22px;
@@ -76,12 +80,12 @@
     & input.transaction-id-input{
       height: 22px;
       width: 310px;
-      padding: 0 0 0 10px;
+      padding: 0 0 0 6px;
     }
     & input.transaction-page-size-input{
       height: 22px;
       width: 120px;
-      padding: 0 0 0 10px;
+      padding: 0 0 0 6px;
     }
     & .date-filter-in-between-view{
       display: inline-flex;
@@ -222,6 +226,8 @@ a.panel-header-filter-clear{
 .tier-form .panel-body h2{
  margin: 0 0 10px 0;
 }
+
+
 
 .transaction-history-pagination{
   margin-bottom: 0;

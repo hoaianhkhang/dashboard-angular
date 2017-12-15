@@ -33,7 +33,7 @@
                 }).then(function (res) {
                     $scope.loadingUserPermissionGroups = false;
                     if (res.status === 201) {
-                        toastr.success('User permission group successfully added');
+                        toastr.success('Permission group successfully added');
                         vm.getUserPermissionGroups();
                         $scope.toggleAddUserPermissionGroupView();
                     }

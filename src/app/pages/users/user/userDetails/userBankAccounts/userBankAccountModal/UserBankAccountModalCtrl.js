@@ -22,7 +22,7 @@
             }).then(function (res) {
                 $scope.deletingUserBankAccount = false;
                 if (res.status === 200) {
-                    toastr.success('User bank account successfully deleted');
+                    toastr.success('Bank account successfully deleted');
                     $uibModalInstance.close($scope.userBankAccount);
                 }
             }).catch(function (error) {
