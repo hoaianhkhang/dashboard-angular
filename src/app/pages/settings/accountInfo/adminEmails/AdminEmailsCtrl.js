@@ -48,6 +48,7 @@
                 }).then(function (res) {
                     $scope.loadingAdminEmails = false;
                     if (res.status === 200) {
+                        toastr.success('Primary email changed successfully');
                         vm.getUserEmails();
                     }
                 }).catch(function (error) {
