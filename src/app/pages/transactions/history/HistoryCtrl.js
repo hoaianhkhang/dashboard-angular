@@ -368,7 +368,6 @@
                     if (res.status === 200) {
                         $scope.transactionsData = res.data.data;
                         $scope.transactions = $scope.transactionsData.results;
-                        console.log($scope.transactions)
                         if ($scope.transactions == 0) {
                             $scope.transactionsStateMessage = 'No transactions have been made';
                             return;

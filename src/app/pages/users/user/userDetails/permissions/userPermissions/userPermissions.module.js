@@ -9,7 +9,7 @@
         $stateProvider
             .state('permissions.userPermissions', {
                 url: '/user-permissions',
-                title: 'User permissions',
+                title: 'Permissions',
                 views:{
                     'permissionsView':{
                         templateUrl: 'app/pages/users/user/userDetails/permissions/userPermissions/userPermissions.html',

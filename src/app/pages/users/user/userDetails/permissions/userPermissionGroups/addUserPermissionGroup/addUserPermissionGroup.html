@@ -3,14 +3,14 @@
         <a href="/#/settings/permissions-and-management">permissions and management</a></i></p>
     <form name="userPermissionGroupForm" class="custom-form">
         <div class="form-group">
-            <label><strong>Name</strong> <span class="required-icon">*</span></label>
+            <label>Name <span class="required-icon">*</span></label>
             <select class="form-control pointer divider" ng-model="userPermissionGroupParams"
                     ng-options="permissionGroup.name for permissionGroup in permissionGroups | orderBy: 'name'" required>
             </select>
         </div>
         <div class="form-group">
-            <button ng-click="addUserPermissionGroup(userPermissionGroupParams)" ng-disabled="!userPermissionGroupForm.$valid" class="btn btn-success user-accounts-btn pull-right">Add</button>
-            <button ng-click="toggleAddUserPermissionGroupView()" class="btn btn-primary user-accounts-btn pull-right margin-right-10">Back</button>
+            <button ng-click="addUserPermissionGroup(userPermissionGroupParams)" ng-disabled="!userPermissionGroupForm.$valid" class="btn btn-primary user-accounts-btn pull-right">Add</button>
+            <button ng-click="toggleAddUserPermissionGroupView()" class="btn btn-default user-accounts-btn pull-right margin-right-10">Back</button>
         </div>
     </form>
 </div>

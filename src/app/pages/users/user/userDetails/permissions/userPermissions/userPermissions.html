@@ -1,27 +1,30 @@
 <div ng-hide="loadingPermissions">
-    <div ba-panel ba-panel-title="User permissions for {{userData.email}}" class="setting-bank-accounts" ba-panel-class="light-text with-scroll">
-        <div>
-            <button ng-click="savePermissionsProcess()" class="btn btn-primary user-accounts-btn panel-header-button">Save</button>
+    <div class="setting-bank-accounts panel">
+        <div class="panel-heading">
+            <span class="user-details-panel-title">User permissions for {{userData.email}}</span>
+            <a ng-click="savePermissionsProcess()" class="user-details-panel-link pull-right pointer">Save</a>
         </div>
-        <div class="permissions-table" ng-repeat="typeOption in typeOptions">
-            <table class="table table-striped">
-                <tr>
-                    <td><strong>{{typeOption.type}}</strong></td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="row">
-                            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6" ng-repeat="level in typeOption.levels">
-                                <label  class="checkbox-inline custom-checkbox nowrap">
-                                    <input type="checkbox" ng-change="trackPermissions(typeOption,level)" ng-model="level.enabled"
-                                           ng-checked="level.enabled">
-                                    <span>{{level.name}}</span>
-                                </label>
+        <div class="panel-body">
+            <div class="permissions-table" ng-repeat="typeOption in typeOptions">
+                <table class="table">
+                    <tr>
+                        <th><strong>{{typeOption.type}}</strong></th>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="row">
+                                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6" ng-repeat="level in typeOption.levels">
+                                    <label  class="checkbox-inline custom-checkbox nowrap">
+                                        <input type="checkbox" ng-change="trackPermissions(typeOption,level)" ng-model="level.enabled"
+                                               ng-checked="level.enabled">
+                                        <span>{{level.name}}</span>
+                                    </label>
+                                </div>
                             </div>
-                        </div>
-                    </td>
-                </tr>
-            </table>
+                        </td>
+                    </tr>
+                </table>
+            </div>
         </div>
     </div>
 </div>
