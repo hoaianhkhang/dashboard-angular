@@ -1,36 +1,41 @@
 <div ng-hide="loadingWebhooks">
-    <div ng-show="webhookTasks.length > 0" ba-panel class="setting-bank-accounts" ba-panel-title="Webhook logs" ba-panel-class="light-text with-scroll">
-        <table class="table fees-table table-striped setting-bank-accounts-table table-hover">
-            <tr class="black-muted-bg divider">
-                <th><strong>Event</strong></th>
-                <th><strong>URL</strong></th>
-                <th><strong>Secret</strong></th>
-                <th><strong>Condition</strong></th>
-                <th><strong>Tries</strong></th>
-                <th><strong>Failed</strong></th>
-                <th><strong>Completed</strong></th>
-                <th><strong>Updated</strong></th>
-                <th><strong>Created</strong></th>
-            </tr>
-            <tr ng-click="goToLog(log)" ng-repeat="log in webhookTasks | orderBy: '-created'" class="pointer">
-                <td class="table-row-center transactions-list-element" title="{{log.webhook.event}}" ng-bind="log.webhook.event | capitalizeDottedSentence | capitalizeUnderscoredSentence"></td>
-                <td class="table-row-center transactions-list-element" title="{{log.webhook.url}}" ng-bind="log.webhook.url"></td>
-                <td class="table-row-center transactions-list-element" title="{{log.webhook.secret}}" ng-bind="log.webhook.secret"></td>
-                <td class="table-row-center transactions-list-element" title="{{log.webhook.condition}}" ng-bind="log.webhook.condition"></td>
-                <td class="table-row-center transactions-list-element" title="{{log.tries}}" ng-bind="log.tries"></td>
-                <td class="table-row-center transactions-list-element" title="{{log.failed}}" ng-bind="log.failed"></td>
-                <td class="table-row-center transactions-list-element" title="{{log.completed}}" ng-bind="log.completed"></td>
-                <td class="table-row-center transactions-list-element" title="{{log.updated | date:'mediumDate'}} {{log.updated | date:'shortTime'}}">
-                    {{log.updated | date:'mediumDate'}} {{log.updated | date:'shortTime'}}</td>
-                <td class="table-row-center transactions-list-element" title="{{log.created | date:'mediumDate'}} {{log.created | date:'shortTime'}}">
-                    {{log.created | date:'mediumDate'}} {{log.created | date:'shortTime'}}</td>
-            </tr>
-        </table>
-        <div>
-            <p uib-pagination boundary-links="true" items-per-page="pagination.itemsPerPage"  total-items="webhookTasksData.count" ng-model="pagination.pageNo"
-               max-size="pagination.maxSize" class="pagination-sm pull-right transaction-history-pagination" force-ellipses="true" ng-change="getWebhookTasks()"
-               previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></p>
+    <div ng-show="webhookTasks.length > 0" class="setting-bank-accounts panel">
+        <div class="panel-heading">
+            <span class="user-details-panel-title">Webhook logs</span>
         </div>
+        <div class="panel-body">
+            <table class="table custom-table">
+                <tr>
+                    <th>Id</th>
+                    <th>Event</th>
+                    <th>Tries</th>
+                    <th>Failed</th>
+                    <th>Completed</th>
+                    <th>Created</th>
+                </tr>
+                <tr ng-click="goToLog(log)" ng-repeat="log in webhookTasks | orderBy: '-created'" class=" user-details-table-hover pointer">
+                    <td class="table-row-center transactions-list-element" title="{{log.id}}" ng-bind="log.id"></td>
+                    <td class="table-row-center transactions-list-element" title="{{log.webhook.event}}" ng-bind="log.webhook.event | capitalizeDottedSentence | capitalizeUnderscoredSentence"></td>
+                    <td class="table-row-center transactions-list-element" title="{{log.tries}}" ng-bind="log.tries"></td>
+                    <td class="table-row-center transactions-list-element" title="{{log.failed | date:'mediumDate'}} {{log.failed | date:'shortTime'}}">
+                        {{log.failed | date:'mediumDate'}} {{log.failed | date:'shortTime'}}
+                    </td>
+                    <td class="table-row-center transactions-list-element" title="{{log.completed | date:'mediumDate'}} {{log.completed | date:'shortTime'}}">
+                        {{log.completed | date:'mediumDate'}} {{log.completed | date:'shortTime'}}
+                    </td>
+                    <td class="table-row-center transactions-list-element" title="{{log.created | date:'mediumDate'}} {{log.created | date:'shortTime'}}">
+                        {{log.created | date:'mediumDate'}} {{log.created | date:'shortTime'}}</td>
+                </tr>
+            </table>
+            <div>
+                <p uib-pagination boundary-links="true" items-per-page="pagination.itemsPerPage"  total-items="webhookTasksData.count" ng-model="pagination.pageNo"
+                   max-size="pagination.maxSize" class="pagination-sm pull-right transaction-history-pagination" force-ellipses="true" ng-change="getWebhookTasks()"
+                   previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></p>
+            </div>
+        </div>
+    </div>
+    <div ba-panel ng-show="webhookTasks.length == 0">
+        <i>No webhook logs available</i>
     </div>
 </div>
 <div ba-panel ng-show="loadingWebhooks">

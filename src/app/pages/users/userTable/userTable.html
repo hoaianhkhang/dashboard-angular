@@ -18,11 +18,11 @@
         <div ng-show="users.length > 0" class="divider custom-table">
             <table class="table">
                 <tr>
-                    <td><strong>Email</strong></td>
-                    <td><strong>Currency</strong></td>
-                    <td><strong>Joined</strong></td>
-                    <td><strong>Last login</strong></td>
-                    <td><strong>KYC status</strong></td>
+                    <th>Email</th>
+                    <th>Currency</th>
+                    <th>Joined</th>
+                    <th>Last login</th>
+                    <th>KYC status</th>
                 </tr>
                 <tr ng-repeat="user in users | orderBy: orderByFunction" data-toggle="modal"
                     class="editable-row center pointer user-details-table-hover" ng-click="displayUser(user)">

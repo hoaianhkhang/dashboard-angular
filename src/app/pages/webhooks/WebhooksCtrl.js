@@ -10,8 +10,8 @@
         var vm = this;
         vm.updatedWebhook = {};
         vm.token = cookieManagement.getCookie('TOKEN');
-        $scope.companyImageUrl = "/assets/img/app/placeholders/hex_grey.svg";
         $scope.loadingWebhooks = true;
+        $location.path('/webhooks/list');
 
         $scope.goToSetting = function(path){
             $scope.settingView = '';

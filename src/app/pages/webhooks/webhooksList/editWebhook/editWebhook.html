@@ -1,26 +1,31 @@
-<div ng-hide="loadingWebhooks" ba-panel ba-panel-title="Edit webhook" ba-panel-class="light-text with-scroll">
-    <form name="editWebhooksForm" class="custom-form" novalidate>
-        <div class="form-group">
-            <label><strong>Event</strong> <span class="required-icon">*</span></label>
-            <br>
-            <select class="form-control pointer" ng-change="webhookChanged('event')" ng-model="editWebhook.event" ng-options="event for event in eventOptions" required>
-            </select>
-        </div>
-        <div class="form-group">
-            <label><strong>Webhook url</strong> <span class="required-icon">*</span></label>
-            <input ng-change="webhookChanged('url')" type="text" ng-model="editWebhook.url" class="form-control"  placeholder="URL" required>
-        </div>
-        <div class="form-group">
-            <label><strong>Webhook secret</strong> <span class="required-icon">*</span></label>
-            <input ng-change="webhookChanged('secret')" type="text" ng-model="editWebhook.secret" class="form-control"  placeholder="Secret" required>
-        </div>
-        <div class="form-group">
-            <label><strong>Condition</strong></label>
-            <input ng-change="webhookChanged('condition')" type="text" ng-model="editWebhook.condition" class="form-control"  placeholder="Condition">
-        </div>
-        <div class="form-group">
-            <button ng-click="updateWebhook()" ng-disabled="!editWebhooksForm.$valid" class="btn btn-primary dashboard-btn pull-right">Save</button>
-            <button ng-click="toggleWebhooksEditView()" class="btn btn-primary dashboard-btn pull-right margin-right-10">Back</button>
-        </div>
-    </form>
+<div ng-hide="loadingWebhooks" class="panel">
+    <div class="panel-heading">
+        <span class="user-details-panel-title">Edit webhook</span>
+    </div>
+    <div class="panel-body">
+        <form name="editWebhooksForm" class="custom-form" novalidate>
+            <div class="form-group">
+                <label>Event <span class="required-icon">*</span></label>
+                <br>
+                <select class="form-control pointer" ng-change="webhookChanged('event')" ng-model="editWebhook.event" ng-options="event for event in eventOptions" required>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Webhook url <span class="required-icon">*</span></label>
+                <input ng-change="webhookChanged('url')" type="text" ng-model="editWebhook.url" class="form-control"  placeholder="URL" required>
+            </div>
+            <div class="form-group">
+                <label>Webhook secret <span class="required-icon">*</span></label>
+                <input ng-change="webhookChanged('secret')" type="text" ng-model="editWebhook.secret" class="form-control"  placeholder="Secret" required>
+            </div>
+            <div class="form-group">
+                <label>Condition</label>
+                <input ng-change="webhookChanged('condition')" type="text" ng-model="editWebhook.condition" class="form-control"  placeholder="Condition">
+            </div>
+            <div class="form-group">
+                <button ng-click="updateWebhook()" ng-disabled="!editWebhooksForm.$valid" class="btn btn-primary dashboard-btn pull-right">Save</button>
+                <button ng-click="toggleWebhooksEditView()" class="btn btn-default dashboard-btn pull-right margin-right-10">Back</button>
+            </div>
+        </form>
+    </div>
 </div>
