@@ -8,7 +8,7 @@
             <div class="permissions-table" ng-repeat="typeOption in typeOptions">
                 <table class="table">
                     <tr>
-                        <th><strong>{{typeOption.type}}</strong></th>
+                        <th>{{typeOption.type}}</th>
                     </tr>
                     <tr>
                         <td>
@@ -17,7 +17,7 @@
                                     <label  class="checkbox-inline custom-checkbox nowrap">
                                         <input type="checkbox" ng-change="trackPermissions(typeOption,level)" ng-model="level.enabled"
                                                ng-checked="level.enabled">
-                                        <span>{{level.name}}</span>
+                                        <span class="account-settings-span">{{level.name}}</span>
                                     </label>
                                 </div>
                             </div>

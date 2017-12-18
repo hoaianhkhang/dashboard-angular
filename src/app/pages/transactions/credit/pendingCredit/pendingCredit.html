@@ -21,14 +21,14 @@
         <a ng-click="getPendingTransactions()" class="user-details-panel-link pull-right pointer">Refresh</a>
     </div>
     <div class="panel-body">
-        <table ng-show="transactions.list.length > 0 || loadingPendingTransactions" class="table">
+        <table ng-hide="transactions.list.length == 0 || loadingPendingTransactions" class="table custom-table">
             <tr>
-                <td><strong>Code</strong></td>
-                <td><strong>User</strong></td>
-                <td><strong>Currency</strong></td>
-                <td><strong>Amount</strong></td>
-                <td><strong>Status</strong></td>
-                <td class="align-right"><strong>Date</strong></td>
+                <th>Code</th>
+                <th>User</th>
+                <th>Currency</th>
+                <th>Amount</th>
+                <th>Status</th>
+                <th class="align-right">Date</th>
             </tr>
             <tr ng-repeat="transaction in transactions.list | orderBy: '-created'" data-toggle="modal"
                 ng-click="openModal('app/pages/transactions/credit/pendingCredit/pendingCreditModal/pendingCreditModal.html', 'md',transaction)"
@@ -41,7 +41,7 @@
                 <td class="table-row-center transactions-list-element pull-right">{{transaction.created | date:'mediumDate'}} {{transaction.created | date:'shortTime'}}</td>
             </tr>
         </table>
-        <div ng-show="transactions.list.length > 0">
+        <div ng-hide="transactions.list.length == 0">
             <p uib-pagination boundary-links="true" items-per-page="pagination.itemsPerPage"  total-items="transactions.data.count" ng-model="pagination.pageNo"
                max-size="pagination.maxSize" class="pagination-sm pull-right transaction-history-pagination divider" force-ellipses="true" ng-change="getPendingTransactions()"
                previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></p>

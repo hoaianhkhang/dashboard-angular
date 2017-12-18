@@ -19,14 +19,14 @@
         <div ng-show="transactions.length > 0" class="divider custom-table">
             <table class="table">
                 <tr>
-                    <td><strong>User</strong></td>
-                    <td><strong>Type</strong></td>
-                    <td><strong>Subtype</strong></td>
-                    <td><strong>Currency</strong></td>
-                    <td><strong>Amount</strong></td>
-                    <td><strong>Fee</strong></td>
-                    <td><strong>Status</strong></td>
-                    <td class="align-right"><strong>Date</strong></td>
+                    <th>User</th>
+                    <th>Type</th>
+                    <th>Subtype</th>
+                    <th>Currency</th>
+                    <th>Amount</th>
+                    <th>Fee</th>
+                    <th>Status</th>
+                    <th class="align-right">Date</th>
                 </tr>
                 <tr ng-repeat="transaction in transactions | orderBy: orderByFunction" data-toggle="modal"
                     ng-click="openModal('app/pages/transactions/history/historyModal/historyModal.html', 'md',transaction)"

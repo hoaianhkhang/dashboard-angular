@@ -5,6 +5,7 @@
       & > th {
         padding: 0;
         border-bottom: 1px solid $border-light;
+        color: #979797 !important;
         white-space: nowrap;
         &:first-child {
           text-align: left;
@@ -17,6 +18,9 @@
   }
   & > tbody {
     & > tr {
+      & > th{
+        color: #979797 !important;
+      }
       & > tr:first-child {
         padding-top: 1px;
       }

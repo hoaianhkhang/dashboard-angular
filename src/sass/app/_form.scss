@@ -294,6 +294,9 @@ label.custom-checkbox {
     cursor: pointer;
     padding-left: 22px;
     width: 100%;
+    &.account-settings-span{
+      color: #222D32 !important;
+    }
     &:before {
       cursor: pointer;
       font-family: fontAwesome;
