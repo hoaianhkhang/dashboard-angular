@@ -144,15 +144,16 @@
 
         $scope.clearFilters = function () {
             $scope.filtersObj = {
-                dateFilter: false,
-                amountFilter: false,
-                statusFilter: false,
-                transactionTypeFilter: false,
-                transactionIdFilter: false,
-                userFilter: false,
+                identifierFilter: false,
+                emailFilter: false,
+                mobileFilter: false,
+                firstNameFilter: false,
+                lastNameFilter: false,
                 currencyFilter: false,
-                pageSizeFilter: false,
-                orderByFilter: false
+                joinedDateFilter: false,
+                lastLoginDateFilter: false,
+                kycFilter:  false,
+                pageSizeFilter: false
             };
         };
 
@@ -300,10 +301,10 @@
                 mobile_number__contains: $scope.filtersObj.mobileFilter ? ($scope.applyFiltersObj.mobileFilter.selectedMobile ?  encodeURIComponent($scope.applyFiltersObj.mobileFilter.selectedMobile) : null): null,
                 first_name__contains: $scope.filtersObj.firstNameFilter ? ($scope.applyFiltersObj.firstNameFilter.selectedFirstName ?  $scope.applyFiltersObj.firstNameFilter.selectedFirstName : null): null,
                 last_name__contains: $scope.filtersObj.lastNameFilter ? ($scope.applyFiltersObj.lastNameFilter.selectedLastName ?  $scope.applyFiltersObj.lastNameFilter.selectedLastName : null): null,
-                date_joined__gt: vm.dateObj.date_joined__gt ? Date.parse(vm.dateObj.date_joined__gt) : null,
-                date_joined__lt: vm.dateObj.date_joined__lt ? Date.parse(vm.dateObj.date_joined__lt) : null,
-                last_login__gt: vm.lastLogindateObj.last_login__gt ? Date.parse(vm.lastLogindateObj.last_login__gt) : null,
-                last_login__lt: vm.lastLogindateObj.last_login__lt ? Date.parse(vm.lastLogindateObj.last_login__lt) : null,
+                date_joined__gt: vm.dateObj.date_joined__gt ? Date.parse(vm.dateObj.date_joined__gt +'T00:00:00') : null,
+                date_joined__lt: vm.dateObj.date_joined__lt ? Date.parse(vm.dateObj.date_joined__lt +'T00:00:00') : null,
+                last_login__gt: vm.lastLogindateObj.last_login__gt ? Date.parse(vm.lastLogindateObj.last_login__gt +'T00:00:00') : null,
+                last_login__lt: vm.lastLogindateObj.last_login__lt ? Date.parse(vm.lastLogindateObj.last_login__lt +'T00:00:00') : null,
                 kyc__status: $scope.filtersObj.kycFilter ? ($scope.applyFiltersObj.kycFilter.selectedKycFilter == 'Status' ? null : $scope.applyFiltersObj.kycFilter.selectedKycFilter.toLowerCase()): null,
                 currency__code: $scope.filtersObj.currencyFilter ? ($scope.applyFiltersObj.currencyFilter.selectedCurrency.code ? ($scope.applyFiltersObj.currencyFilter.selectedCurrency.code == 'Currency' ? null : $scope.applyFiltersObj.currencyFilter.selectedCurrency.code) : null): null
             };

@@ -1,22 +1,69 @@
-<div ng-keydown="($event.keyCode === 13)  && getAllUsers('applyFilter')">
-    <button ng-click="clearFilters()" class="btn btn-primary panel-header-button dashboard-btn">Clear</button>
-    <div class="row">
-        <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12 divider">
-            <label><strong>Email</strong></label>
-            <input type="email" class="form-control" id="from"  placeholder="Enter email address" ng-model="usersSearchParams.searchEmail" size="12">
+<div class="panel table-filters">
+    <div class="panel-heading">
+        <div class="table-filter-heading">
+            <span class="user-details-panel-title pull-left">Create filter</span>
+            <button ng-click="getAllUsers('applyFilter')" class="btn btn-primary pull-right">Done</button>
+            <button ng-click="clearFilters()" class="btn btn-default pull-right clear-filter-btn">Clear</button>
         </div>
-        <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12 divider">
-            <label><strong>Identifier</strong></label>
-            <input type="text" class="form-control" id="identifier"  placeholder="Enter identifier" ng-model="usersSearchParams.searchIdentifier" size="12">
+    </div>
+    <div class="panel-body">
+        <div id="emailFilter">
+            <div>
+                <label class="checkbox-inline custom-checkbox nowrap">
+                    <input type="checkbox" ng-model="filtersObj.emailFilter">
+                    <span>Email</span>
+                </label>
+            </div>
+            <div ng-if="filtersObj.emailFilter" class="row divider-top-6">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 date-filter-view">
+                    <input type="text" ng-model="applyFiltersObj.emailFilter.selectedEmail" ng-model-options='{ debounce: 800 }'
+                           placeholder="Enter email address"
+                           uib-typeahead="email for email in getUsersEmailTypeahead($viewValue)"
+                           class="transaction-id-input" size="12">
+                </div>
+            </div>
         </div>
-        <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12 divider">
-            <label><strong>Address</strong></label>
-            <input type="text" class="form-control" id="address"  placeholder="Enter address" ng-model="usersSearchParams.searchAddress" size="12">
+        <div id="identifierFilter">
+            <div>
+                <label class="checkbox-inline custom-checkbox nowrap">
+                    <input type="checkbox" ng-model="filtersObj.identifierFilter">
+                    <span>Identifier</span>
+                </label>
+            </div>
+            <div ng-if="filtersObj.identifierFilter" class="row divider-top-6">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 date-filter-view">
+                    <input type="text" ng-model="applyFiltersObj.identifierFilter.selectedIdentifier"
+                           placeholder="Enter identifier" class="transaction-id-input">
+                </div>
+            </div>
         </div>
-        <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12 pull-right apply-button">
-            <label>&nbsp;</label>
-            <br>
-            <button ng-disabled="loadingUsers" class="btn btn-primary" ng-click="getAllUsers('applyFilter')">Apply</button>
+        <div id="addressFilter">
+            <div>
+                <label class="checkbox-inline custom-checkbox nowrap">
+                    <input type="checkbox" ng-model="filtersObj.addressFilter">
+                    <span>Address</span>
+                </label>
+            </div>
+            <div ng-if="filtersObj.addressFilter" class="row divider-top-6">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 date-filter-view">
+                    <input type="text" ng-model="applyFiltersObj.addressFilter.selectedAddress"
+                           placeholder="Enter address" class="transaction-id-input">
+                </div>
+            </div>
+        </div>
+        <div id="filterPageSize">
+            <div>
+                <label class="checkbox-inline custom-checkbox nowrap">
+                    <input type="checkbox" ng-model="filtersObj.pageSizeFilter">
+                    <span>Page size</span>
+                </label>
+            </div>
+            <div ng-if="filtersObj.pageSizeFilter" class="row divider-top-6">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 date-filter-view">
+                    <input type="text" ng-model="usersPagination.itemsPerPage" ng-change="pageSizeChanged()"
+                           placeholder="Enter page size" class="transaction-page-size-input">
+                </div>
+            </div>
         </div>
     </div>
 </div>

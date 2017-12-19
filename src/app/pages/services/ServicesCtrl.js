@@ -82,7 +82,7 @@
             });
         };
 
-        $scope.addService = function(){
+        $scope.goToAddService = function(){
             $location.path('/services/add');
         };
 
@@ -91,6 +91,6 @@
           var serviceNameArray = service.name.split(' ');
           var pathName = serviceNameArray[0].toLowerCase();
           $location.path('/services/' + pathName);
-        }
+        };
     }
 })();

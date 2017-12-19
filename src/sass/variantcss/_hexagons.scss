@@ -99,6 +99,33 @@
   font-weight: bold;
 }
 
+.services-hexagon-container {
+  position: relative;
+  width: 50px;
+  top: 9.9px;
+}
+
+.services-hexagon {
+  @include hexagon(50px,28.87px,14.43px 0);
+}
+
+.services-hexagon:before,
+.services-hexagon:after {
+  @include hexagon-before-after(25px solid transparent,25px solid transparent);
+}
+
+.services-hexagon:before {
+  @include hexagon-before(14.43px solid #F8CF51);
+}
+
+.services-hexagon:after {
+  @include hexagon-after(14.43px solid #F8CF51);
+}
+.services-hex-over{
+  @include hexagon-hex-over(50px, 15px, -38px);
+  margin: 0 auto;
+}
+
 .long-text{
   font-size: 11px;
 }

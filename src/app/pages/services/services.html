@@ -1,33 +1,37 @@
 <content-top></content-top>
-<div ng-hide="loadingServices" ba-panel ba-panel-title="Services" ba-panel-class=" with-scroll" >
-    <div>
-        <button class="btn btn-success pull-right dashboard-btn panel-header-button" ng-click="addService()">Add</button>
+<div ng-hide="loadingServices" class="panel">
+    <div class="panel-heading">
+        <span class="user-details-panel-title">Services</span>
+        <a ng-click="goToAddService()" class="user-details-panel-link pull-right pointer">Add</a>
     </div>
-    <div ng-show="servicesList.length > 0">
-        <table class="table">
-            <tr class="black-muted-bg">
-                <td><strong>Logo</strong></td>
-                <td><strong>Name</strong></td>
-                <td><strong>Description</strong></td>
-                <td></td>
-            </tr>
-            <tr ng-repeat="service in servicesList" class="editable-row">
-                <td width="6%">
-                    <div class="hexagon-logo">
-                        <div class="dashboard-currencies-hexagon-container">
-                            <div class="dashboard-currencies-hexagon"></div>
+    <div class="panel-body">
+        <div ng-show="servicesList.length > 0">
+            <table class="table">
+                <tr>
+                    <th class="rehive-table-row-first-child">Logo</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th></th>
+                </tr>
+                <tr ng-repeat="service in servicesList" class="editable-row">
+                    <td class="rehive-table-row-first-child" width="6%">
+                        <div class="hexagon-logo">
+                            <div class="services-hexagon-container">
+                                <div class="services-hexagon"></div>
+                            </div>
                         </div>
-                    </div>
-                </td>
-                <td  width="15%" ng-bind="service.name"></td>
-                <td width="50%" ng-bind="service.description"></td>
-                <td class="rehive-table-row-last-child">
-                    <button ng-click="goToService(service)" class="btn btn-primary pull-right dashboard-btn rehive-button-no-right-margin">Manage</button>
-                    <button ng-click="deactivateServicePrompt(service)" class="btn btn-danger pull-right dashboard-btn rehive-button-no-right-margin">Deactivate</button>
-                </td>
-            </tr>
-        </table>
-        <hr class="no-margin hr-top-border">
+                    </td>
+                    <td  width="15%" ng-bind="service.name"></td>
+                    <td width="50%" ng-bind="service.description"></td>
+                    <td class="rehive-table-row-last-child">
+                        <a ng-click="goToService(service)"
+                           class="pull-right pointer ">Manage</a>
+                        <a ng-click="deactivateServicePrompt(service)"
+                           class="pull-right pointer user-address-edit margin-right-30">Deactivate</a>
+                    </td>
+                </tr>
+            </table>
+        </div>
     </div>
 </div>
 <div ba-panel ng-show="loadingServices">
