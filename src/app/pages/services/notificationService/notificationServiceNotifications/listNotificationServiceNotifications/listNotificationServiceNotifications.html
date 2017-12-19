@@ -1,34 +1,38 @@
 <notification-service-navigation></notification-service-navigation>
-<div ng-hide="loadingNotifications" ba-panel class="service-header" ba-panel-title="Notifications list">
-    <div>
-        <button class="btn btn-success dashboard-btn pull-right panel-header-button" ng-click="goToAddNotificationView()">Add</button>
+<div ng-hide="loadingNotifications" class="panel">
+    <div class="panel-heading">
+        <span class="user-details-panel-title">Notifications list</span>
+        <a ng-click="goToAddNotificationView()" class="user-details-panel-link pull-right pointer">Add</a>
     </div>
-    <div ng-show="notificationsList.length > 0" class="divider">
-        <table class="table table-condensed table-striped">
-            <tr class="black-muted-bg">
-                <td><strong>Name</strong></td>
-                <td><strong>Subject</strong></td>
-                <td><strong>Enabled</strong></td>
-                <td><strong>Event</strong></td>
-                <td><strong></strong></td>
-            </tr>
-            <tr ng-repeat="notification in notificationsList" class="editable-row">
-                <td class="transactions-list-element" title="{{notification.name}}" ng-bind="notification.name"></td>
-                <td class="transactions-list-element" title="{{notification.subject || 'None'}}" ng-bind="notification.subject || 'None'"></td>
-                <td class="transactions-list-element" title="{{notification.enabled | capitalizeWord}}" ng-bind="notification.enabled | capitalizeWord"></td>
-                <td class="transactions-list-element" title="{{notification.event | capitalizeDottedSentence | capitalizeUnderscoredSentence}}"
-                    ng-bind="notification.event | capitalizeDottedSentence | capitalizeUnderscoredSentence"></td>
-                <td class="rehive-table-row-last-child">
-                    <button ng-click="openNotificationModal('app/pages/services/notificationService/notificationServiceNotifications/notificationServiceNotificationModal/notificationServiceNotificationModal.html','md',notification)"
-                            class="btn btn-danger pull-right dashboard-btn rehive-button-no-right-margin">Delete</button>
-                    <button ng-click="goToNotificationEditView(notification)" class="btn btn-primary pull-right rehive-button-no-right-margin">Edit</button>
-                </td>
-            </tr>
-        </table>
-        <div>
-            <p uib-pagination boundary-links="true" items-per-page="pagination.itemsPerPage"  total-items="notificationsListData.count" ng-model="pagination.pageNo"
-               max-size="pagination.maxSize" class="pagination-sm pull-right transaction-history-pagination" force-ellipses="true" ng-change="getNotificationsList()"
-               previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></p>
+    <div class="panel-body">
+        <div ng-show="notificationsList.length > 0" class="divider">
+            <table class="table custom-table">
+                <tr>
+                    <th class="rehive-table-row-first-child">Name</th>
+                    <th>Subject</th>
+                    <th>Enabled</th>
+                    <th>Event</th>
+                    <th></th>
+                </tr>
+                <tr ng-repeat="notification in notificationsList" class="editable-row">
+                    <td class="transactions-list-element rehive-table-row-first-child" title="{{notification.name}}" ng-bind="notification.name"></td>
+                    <td class="transactions-list-element" title="{{notification.subject || 'None'}}" ng-bind="notification.subject || 'None'"></td>
+                    <td class="transactions-list-element" title="{{notification.enabled | capitalizeWord}}" ng-bind="notification.enabled | capitalizeWord"></td>
+                    <td class="transactions-list-element" title="{{notification.event | capitalizeDottedSentence | capitalizeUnderscoredSentence}}"
+                        ng-bind="notification.event | capitalizeDottedSentence | capitalizeUnderscoredSentence"></td>
+                    <td class="rehive-table-row-last-child">
+                        <a ng-click="openNotificationModal('app/pages/services/notificationService/notificationServiceNotifications/notificationServiceNotificationModal/notificationServiceNotificationModal.html','md',notification)"
+                           class="pull-right pointer ">Delete</a>
+                        <a ng-click="goToNotificationEditView(notification)"
+                           class="pull-right pointer user-address-edit margin-right-30">Edit</a>
+                    </td>
+                </tr>
+            </table>
+            <div>
+                <p uib-pagination boundary-links="true" items-per-page="pagination.itemsPerPage"  total-items="notificationsListData.count" ng-model="pagination.pageNo"
+                   max-size="pagination.maxSize" class="pagination-sm pull-right transaction-history-pagination" force-ellipses="true" ng-change="getNotificationsList()"
+                   previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></p>
+            </div>
         </div>
     </div>
 </div>
