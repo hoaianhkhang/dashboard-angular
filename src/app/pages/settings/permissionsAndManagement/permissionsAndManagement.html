@@ -1,31 +1,43 @@
 <div ng-hide="loadingPermissionGroups || editingPermissionGroups">
-    <div ng-show="permissionGroups.length > 0" ba-panel ba-panel-title="Permission groups" ba-panel-class="light-text with-scroll">
-        <table class="table fees-table table-striped ">
-            <tr class="black-muted-bg divider">
-                <th><strong>Name</strong></th>
-                <th></th>
-            </tr>
-            <tr ng-repeat="permissionGroup in permissionGroups">
-                <td class="transactions-list-element" ng-bind="permissionGroup.name"></td>
-                <td class="rehive-table-row-last-child">
-                    <button ng-click="openManagerPermissionsModal('app/pages/settings/permissionsAndManagement/permissionsAndManagementModal/permissionsAndManagementModal.html','md',permissionGroup)"
-                            class="btn btn-danger pull-right rehive-settings-buttons">Delete</button>
-                    <button ng-click="editPermissionToggle(permissionGroup)" class="btn btn-primary pull-right rehive-settings-buttons">Edit</button>
-                    <button ng-click="goToGroupPermissions(permissionGroup.name)" class="btn btn-primary pull-right rehive-settings-buttons">View</button>
-                </td>
-            </tr>
-        </table>
+    <div ng-show="permissionGroups.length > 0" class="panel">
+        <div class="panel-heading">
+            <span class="user-details-panel-title">Permission groups</span>
+        </div>
+        <div class="panel-body">
+            <table class="table">
+                <tr class="divider">
+                    <th class="rehive-table-row-first-child">Name</th>
+                    <th></th>
+                </tr>
+                <tr ng-repeat="permissionGroup in permissionGroups">
+                    <td class="transactions-list-element rehive-table-row-first-child" ng-bind="permissionGroup.name"></td>
+                    <td class="rehive-table-row-last-child">
+                        <a ng-click="openManagerPermissionsModal('app/pages/settings/permissionsAndManagement/permissionsAndManagementModal/permissionsAndManagementModal.html','md',permissionGroup)"
+                           class="pull-right pointer">Delete</a>
+                        <a ng-click="editPermissionToggle(permissionGroup)"
+                           class="pull-right pointer user-address-edit margin-right-30">Edit</a>
+                        <a ng-click="goToGroupPermissions(permissionGroup.name)"
+                           class="pull-right pointer user-address-edit margin-right-30">View</a>
+                    </td>
+                </tr>
+            </table>
+        </div>
     </div>
-    <div ba-panel ba-panel-title="Create permission group" ba-panel-class="light-text with-scroll">
-        <form name="permissionGroupForm" class="custom-form">
-            <div class="form-group">
-                <label><strong>Name</strong> <span class="required-icon">*</span></label>
-                <input type="text" ng-model="permissionGroupsParams.name" class="form-control"  placeholder="Name" required>
-            </div>
-            <div class="form-group">
-                <button ng-click="addPermissionGroup(permissionGroupsParams)" ng-disabled="!permissionGroupForm.$valid" class="btn btn-primary dashboard-btn pull-right">Add</button>
-            </div>
-        </form>
+    <div class="panel">
+        <div class="panel-heading">
+            <span class="user-details-panel-title">Create permission group</span>
+        </div>
+        <div class="panel-body">
+            <form name="permissionGroupForm" class="custom-form">
+                <div class="form-group">
+                    <label>Name <span class="required-icon">*</span></label>
+                    <input type="text" ng-model="permissionGroupsParams.name" class="form-control"  placeholder="Name" required>
+                </div>
+                <div class="form-group">
+                    <button ng-click="addPermissionGroup(permissionGroupsParams)" ng-disabled="!permissionGroupForm.$valid" class="btn btn-primary dashboard-btn pull-right">Add</button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 <div ng-show="editingPermissionGroups && !loadingPermissionGroups">

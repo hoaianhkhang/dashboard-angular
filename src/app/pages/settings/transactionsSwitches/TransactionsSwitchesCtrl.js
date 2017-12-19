@@ -15,11 +15,10 @@
         vm.updatedTransactionsSwitch = {};
         $scope.transactionsSwitchParams = {
             tx_type: 'Credit',
-            enabled: 'False',
+            enabled: false,
             subtype: ''
         };
         $scope.transactionsSwitchesOptions = ['Credit','Debit'];
-        $scope.boolOptions = ['True','False'];
 
         $scope.getSubtypesArray = function(params,editing){
             $scope.loadingSubtypes = true;
@@ -43,7 +42,6 @@
             if(transactionsSwitch) {
                 vm.getTransactionsSwitch(transactionsSwitch);
             } else {
-                $scope.editTransactionsSwitch.enabled == 'True' ? $scope.editTransactionsSwitch.enabled = true : $scope.editTransactionsSwitch.enabled = false;
                 $scope.editTransactionsSwitch = {};
                 vm.getTransactionsSwitches();
             }
@@ -62,7 +60,6 @@
                 if (res.status === 200) {
                     $scope.editTransactionsSwitch = res.data.data;
                     $scope.editTransactionsSwitch.tx_type == 'credit' ? $scope.editTransactionsSwitch.tx_type = 'Credit' : $scope.editTransactionsSwitch.tx_type = 'Debit';
-                    $scope.editTransactionsSwitch.enabled == true ? $scope.editTransactionsSwitch.enabled = 'True' : $scope.editTransactionsSwitch.enabled = 'False';
                     $scope.getSubtypesArray($scope.editTransactionsSwitch,'editing');
                 }
             }).catch(function (error) {
@@ -97,7 +94,6 @@
         $scope.addTransactionsSwitch = function (transactionsSwitchParams) {
             $window.scrollTo(0,0);
             transactionsSwitchParams.tx_type ? transactionsSwitchParams.tx_type = transactionsSwitchParams.tx_type.toLowerCase() : '';
-            transactionsSwitchParams.enabled ? transactionsSwitchParams.enabled = transactionsSwitchParams.enabled == 'True' ? true: false : '';
             if(vm.token) {
                 $scope.loadingTransactionsSwitches = true;
                 $http.post(environmentConfig.API + '/admin/transactions/switches/', transactionsSwitchParams, {
@@ -111,7 +107,7 @@
                         toastr.success('Successfully created the transactions switch');
                         $scope.transactionsSwitchParams = {
                             tx_type: 'Credit',
-                            enabled: 'False',
+                            enabled: false,
                             subtype: ''
                         };
                         $scope.getSubtypesArray($scope.transactionsSwitchParams);
@@ -120,7 +116,7 @@
                 }).catch(function (error) {
                     $scope.transactionsSwitchParams = {
                         tx_type: 'Credit',
-                        enabled: 'False',
+                        enabled: false,
                         subtype: ''
                     };
                     $scope.getSubtypesArray($scope.transactionsSwitchParams);
@@ -142,7 +138,6 @@
                 vm.updatedTransactionsSwitch.subtype = '';
             }
             vm.updatedTransactionsSwitch.tx_type ? vm.updatedTransactionsSwitch.tx_type = vm.updatedTransactionsSwitch.tx_type.toLowerCase() : '';
-            vm.updatedTransactionsSwitch.enabled ? vm.updatedTransactionsSwitch.enabled = vm.updatedTransactionsSwitch.enabled == 'True' ? true: false : '';
             if(vm.token) {
                 $scope.loadingTransactionsSwitches = true;
                 $http.patch(environmentConfig.API + '/admin/transactions/switches/' + $scope.editTransactionsSwitch.id + '/', vm.updatedTransactionsSwitch, {

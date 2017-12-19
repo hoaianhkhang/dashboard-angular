@@ -7,11 +7,11 @@
     </div>
     <div class="modal-body">
         <p>Please copy this key and save it somewhere safe.
-            For security reasons, we cannot show it to you again</p>
+            For security reasons, we cannot show it to you again:</p>
         <p> {{token}}</p>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-primary dashboard-btn pull-left" ng-click="$dismiss()">Close</button>
+        <button type="button" class="btn btn-default dashboard-btn pull-left" ng-click="$dismiss()">Close</button>
         <button ngclipboard ngclipboard-success="copiedSuccessfully()" data-clipboard-text="{{token}}" type="button" class="btn btn-primary dashboard-btn pull-right">Copy</button>
     </div>
 </div>
