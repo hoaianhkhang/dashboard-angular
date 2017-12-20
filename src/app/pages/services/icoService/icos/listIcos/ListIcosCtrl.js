@@ -17,7 +17,7 @@
             searchStatus: 'Status',
             searchCurrency: {code: 'Currency'}
         };
-        $scope.statusOptions = ['Status','True','False'];
+        $scope.statusOptions = ['Status','Open','Closed','Hidden'];
         $scope.currencyOptions = [];
 
         $scope.pagination = {
@@ -52,8 +52,7 @@
         vm.getIcoListUrl = function(){
             vm.filterParams = '?page=' + $scope.pagination.pageNo + '&page_size=' + $scope.pagination.itemsPerPage
             +  '&id=' + ($scope.searchIcoParams.searchId ? $scope.searchIcoParams.searchId : '')
-            +  '&enabled=' + ($scope.searchIcoParams.searchStatus == 'True' ? $scope.searchIcoParams.searchStatus
-                    : $scope.searchIcoParams.searchStatus == 'False' ? $scope.searchIcoParams.searchStatus : '')
+            +  '&status=' + ($scope.searchIcoParams.searchStatus == 'Status' ? '' : $scope.searchIcoParams.searchStatus.toLowerCase())
             +  '&currency__code=' + ($scope.searchIcoParams.searchCurrency.code == 'Currency' ? '' : $scope.searchIcoParams.searchCurrency.code);
 
             return vm.serviceUrl + 'admin/icos/' + vm.filterParams;
