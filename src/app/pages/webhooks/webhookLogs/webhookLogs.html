@@ -1,7 +1,7 @@
 <div ng-hide="loadingWebhooks">
     <div ng-show="webhookTasks.length > 0" class="setting-bank-accounts panel">
         <div class="panel-heading">
-            <span class="user-details-panel-title">Webhook logs</span>
+            <span class="user-details-panel-title">Webhook logs <small class="text-subtle">(logs are only stored for 1 week)</small></span>
         </div>
         <div class="panel-body">
             <table class="table custom-table">
@@ -11,9 +11,9 @@
                     <th>Tries</th>
                     <th>Failed</th>
                     <th>Completed</th>
-                    <th>Created</th>
+                    <th class="align-right">Created</th>
                 </tr>
-                <tr ng-click="goToLog(log)" ng-repeat="log in webhookTasks | orderBy: '-created'" class=" user-details-table-hover pointer">
+                <tr ng-show="webhookTasks.length > 0" ng-click="goToLog(log)" ng-repeat="log in webhookTasks | orderBy: '-created'" class=" user-details-table-hover pointer">
                     <td class="table-row-center transactions-list-element" title="{{log.id}}" ng-bind="log.id"></td>
                     <td class="table-row-center transactions-list-element" title="{{log.webhook.event}}" ng-bind="log.webhook.event | capitalizeDottedSentence | capitalizeUnderscoredSentence"></td>
                     <td class="table-row-center transactions-list-element" title="{{log.tries}}" ng-bind="log.tries"></td>
@@ -23,7 +23,7 @@
                     <td class="table-row-center transactions-list-element" title="{{log.completed | date:'mediumDate'}} {{log.completed | date:'shortTime'}}">
                         {{log.completed | date:'mediumDate'}} {{log.completed | date:'shortTime'}}
                     </td>
-                    <td class="table-row-center transactions-list-element" title="{{log.created | date:'mediumDate'}} {{log.created | date:'shortTime'}}">
+                    <td class="table-row-center transactions-list-element align-right" title="{{log.created | date:'mediumDate'}} {{log.created | date:'shortTime'}}">
                         {{log.created | date:'mediumDate'}} {{log.created | date:'shortTime'}}</td>
                 </tr>
             </table>

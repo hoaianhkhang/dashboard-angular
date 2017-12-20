@@ -110,15 +110,15 @@
         <div class="panel-body">
             <table class="table custom-table">
                 <tr class="divider">
-                    <th class="rehive-table-row-first-child">Error</th>
+                    <th class="rehive-table-row-first-child">Created</th>
+                    <th>Error</th>
                     <th>Response code</th>
-                    <th>Created</th>
                 </tr>
                 <tr ng-repeat="request in webhookRequests | orderBy: '-created'">
-                    <td class="table-row-center transactions-list-element rehive-table-row-first-child" title="{{request.error}}" ng-bind="request.error"></td>
-                    <td class="table-row-center transactions-list-element" title="{{request.response_code}}" ng-bind="request.response_code"></td>
-                    <td class="table-row-center transactions-list-element" title="{{request.created | date:'mediumDate'}} {{request.created | date:'shortTime'}}">
+                    <td class="table-row-center transactions-list-element rehive-table-row-first-child" title="{{request.created | date:'mediumDate'}} {{request.created | date:'shortTime'}}">
                         {{request.created | date:'mediumDate'}} {{request.created | date:'shortTime'}}</td>
+                    <td class="table-row-center transactions-list-element" title="{{request.error}}" ng-bind="request.error"></td>
+                    <td class="table-row-center transactions-list-element" title="{{request.response_code}}" ng-bind="request.response_code"></td>
                 </tr>
             </table>
             <div>
