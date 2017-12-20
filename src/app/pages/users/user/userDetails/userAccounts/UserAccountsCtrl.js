@@ -27,9 +27,15 @@
                 }).then(function (res) {
                     $scope.loadingUserAccounts = false;
                     if (res.status === 200) {
-                        $scope.accounts = res.data.data.results;
-                        $scope.account = res.data.data.results[0].user;
-                        $scope.currencies = res.data.data.results[0].currencies;
+                        if(res.data.data.results.length != 0){
+                            $scope.accounts = res.data.data.results;
+                            $scope.account = res.data.data.results[0].user;
+                            $scope.currencies = res.data.data.results[0].currencies;
+                        } else {
+                            $scope.accounts = [];
+                            $scope.account = {};
+                            $scope.currencies = {};
+                        }
                     }
                 }).catch(function (error) {
                     $scope.loadingUserAccounts = false;

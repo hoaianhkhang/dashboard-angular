@@ -22,10 +22,10 @@
                         <td class="transactions-list-element" title="{{hdKey.address}}" ng-bind="hdKey.address"></td>
                         <td class="transactions-list-element" title="{{hdKey.status}}" ng-bind="hdKey.status"></td>
                         <td class="rehive-table-row-last-child">
-                            <a ng-show="hdKey.status == 'Active'" ng-click="toggleHdKeyStatusPrompt(hdKey,'Disabled')"
-                               class="pull-right pointer ">Disable</a>
-                            <a ng-hide="hdKey.status == 'Active'" ng-click="toggleHdKeyStatus(hdKey,'Active')"
-                               class="pull-right pointer ">Activate</a>
+                            <a ng-click="toggleHdKeyStatus(hdKey,'Active')"
+                               class="pull-right pointer">Activate</a>
+                            <a ng-click="toggleHdKeyStatusPrompt(hdKey,'Disabled')"
+                               class="pull-right pointer  user-address-edit margin-right-30">Disable</a>
                         </td>
                     </tr>
                 </table>

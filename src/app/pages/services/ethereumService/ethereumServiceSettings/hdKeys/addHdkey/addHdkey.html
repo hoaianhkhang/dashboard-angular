@@ -1,20 +1,25 @@
 <div ng-hide="loadingHdkeys">
-    <div ba-panel ba-panel-title="Add public key" class="service-header" ba-panel-class="light-text with-scroll">
-        <form name="hdKeyForm" class="custom-form" novalidate>
-            <div class="form-group">
-                <label><strong>Extended public key for user address generation</strong> <span class="required-icon">*</span></label>
-                <input type="text" ng-model="newHdKey.address" class="form-control"  placeholder="address" required>
-            </div>
-            <div class="form-group">
-                <label><strong>Primary</strong> <span class="required-icon">*</span></label>
-                <br>
-                <select class="form-control pointer" ng-model="newHdKey.primary" ng-options="bool for bool in booleanOptions" required>
-                </select>
-            </div>
-            <div class="form-group">
-                <button ng-disabled="!hdKeyForm.$valid" ng-click="createHdKey(newHdKey)" class="btn btn-primary dashboard-btn pull-right">Add</button>
-                <button ng-click="toggleAddHdkeyView()" class="btn btn-primary dashboard-btn pull-right margin-right-10">Back</button>
-            </div>
-        </form>
+    <div class="panel">
+        <div class="panel-heading">
+            <span class="user-details-panel-title">Add public key</span>
+        </div>
+        <div class="panel-body">
+            <form name="hdKeyForm" class="custom-form" novalidate>
+                <div class="form-group">
+                    <label>Extended public key for user address generation <span class="required-icon">*</span></label>
+                    <input type="text" ng-model="newHdKey.address" class="form-control"  placeholder="address" required>
+                </div>
+                <div class="form-group">
+                    <label>Primary <span class="required-icon">*</span></label>
+                    <br>
+                    <select class="form-control pointer" ng-model="newHdKey.primary" ng-options="bool for bool in booleanOptions" required>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <button ng-disabled="!hdKeyForm.$valid" ng-click="createHdKey(newHdKey)" class="btn btn-primary dashboard-btn pull-right">Add</button>
+                    <button ng-click="toggleAddHdkeyView()" class="btn btn-default dashboard-btn pull-right margin-right-10">Back</button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
