@@ -150,8 +150,8 @@
             var searchObj = {
                 page: $scope.pagination.pageNo,
                 page_size: $scope.pagination.itemsPerPage || 1,
-                created__gt: $scope.searchParams.searchDateFrom ? Date.parse($scope.searchParams.searchDateFrom): null,
-                created__lt: $scope.searchParams.searchDateTo? Date.parse($scope.searchParams.searchDateTo): null,
+                created__gt: $scope.searchParams.searchDateFrom ? Date.parse($scope.searchParams.searchDateFrom + 'T00:00:00'): null,
+                created__lt: $scope.searchParams.searchDateTo? Date.parse($scope.searchParams.searchDateTo + 'T00:00:00'): null,
                 currency: ($scope.searchParams.searchCurrency.code ? ($scope.searchParams.searchCurrency.code == 'Currency' ? null: $scope.searchParams.searchCurrency.code): null),
                 user: ($scope.searchParams.searchUser ? encodeURIComponent($scope.searchParams.searchUser) : null),
                 orderby: ($scope.searchParams.searchOrderBy == 'Latest' ? '-created' : $scope.searchParams.searchOrderBy == 'Largest' ? '-amount' : $scope.searchParams.searchOrderBy == 'Smallest' ? 'amount' : null),

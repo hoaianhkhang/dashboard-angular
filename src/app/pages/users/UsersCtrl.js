@@ -114,10 +114,10 @@
                 mobile_number__contains:($scope.usersSearchParams.searchMobileNumber ?  encodeURIComponent($scope.usersSearchParams.searchMobileNumber) : null),
                 first_name__contains:($scope.usersSearchParams.searchFirstName ?  $scope.usersSearchParams.searchFirstName : null),
                 last_name__contains:($scope.usersSearchParams.searchLastName ?  $scope.usersSearchParams.searchLastName : null),
-                date_joined__gt:($scope.usersSearchParams.searchJoinedDateFrom? Date.parse($scope.usersSearchParams.searchJoinedDateFrom) : null),
-                date_joined__lt:($scope.usersSearchParams.searchJoinedDateTo? Date.parse($scope.usersSearchParams.searchJoinedDateTo) : null),
-                last_login__gt:($scope.usersSearchParams.searchLastLoginDateFrom? Date.parse($scope.usersSearchParams.searchLastLoginDateFrom) : null),
-                last_login__lt: ($scope.usersSearchParams.searchLastLoginDateTo? Date.parse($scope.usersSearchParams.searchLastLoginDateTo) : null),
+                date_joined__gt:($scope.usersSearchParams.searchJoinedDateFrom? Date.parse($scope.usersSearchParams.searchJoinedDateFrom + 'T00:00:00') : null),
+                date_joined__lt:($scope.usersSearchParams.searchJoinedDateTo? Date.parse($scope.usersSearchParams.searchJoinedDateTo + 'T00:00:00') : null),
+                last_login__gt:($scope.usersSearchParams.searchLastLoginDateFrom? Date.parse($scope.usersSearchParams.searchLastLoginDateFrom + 'T00:00:00') : null),
+                last_login__lt: ($scope.usersSearchParams.searchLastLoginDateTo? Date.parse($scope.usersSearchParams.searchLastLoginDateTo + 'T00:00:00') : null),
                 kyc__status:($scope.usersSearchParams.searchKycStatus == 'Status' ? null : $scope.usersSearchParams.searchKycStatus.toLowerCase()),
                 currency__code: ($scope.usersSearchParams.searchCurrency.code ? ($scope.usersSearchParams.searchCurrency.code == 'Currency' ? null : $scope.usersSearchParams.searchCurrency.code) : null)
             };
