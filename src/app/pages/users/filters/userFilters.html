@@ -17,6 +17,7 @@
             <div ng-if="filtersObj.identifierFilter" class="row divider-top-6">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 date-filter-view">
                     <input type="text" ng-model="applyFiltersObj.identifierFilter.selectedIdentifier"
+                           auto-focus="filtersObj.identifierFilter"
                            placeholder="Enter identifier" class="transaction-id-input">
                 </div>
             </div>
@@ -31,7 +32,7 @@
             <div ng-if="filtersObj.emailFilter" class="row divider-top-6">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 date-filter-view">
                     <input type="text" ng-model="applyFiltersObj.emailFilter.selectedEmail" ng-model-options='{ debounce: 800 }'
-                        placeholder="Enter email address"
+                        placeholder="Enter email address" auto-focus="filtersObj.emailFilter"
                         uib-typeahead="email for email in getUsersEmailTypeahead($viewValue)"
                         class="transaction-id-input" size="12">
                 </div>
@@ -47,7 +48,7 @@
             <div ng-if="filtersObj.mobileFilter" class="row divider-top-6">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 date-filter-view">
                     <input type="text" ng-model="applyFiltersObj.mobileFilter.selectedMobile" ng-model-options='{ debounce: 800 }'
-                        placeholder="Enter mobile number"
+                        placeholder="Enter mobile number" auto-focus="filtersObj.mobileFilter"
                         uib-typeahead="mobile for mobile in getUsersMobileTypeahead($viewValue)"
                         class="transaction-id-input" size="12">
                 </div>
@@ -63,6 +64,7 @@
             <div ng-if="filtersObj.firstNameFilter" class="row divider-top-6">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 date-filter-view">
                     <input type="text" ng-model="applyFiltersObj.firstNameFilter.selectedFirstName"
+                           auto-focus="filtersObj.firstNameFilter"
                            placeholder="Enter first name"
                            class="transaction-id-input" size="12">
                 </div>
@@ -78,6 +80,7 @@
             <div ng-if="filtersObj.lastNameFilter" class="row divider-top-6">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 date-filter-view">
                     <input type="text" ng-model="applyFiltersObj.lastNameFilter.selectedLastName"
+                           auto-focus="filtersObj.lastNameFilter"
                            placeholder="Enter last name"
                            class="transaction-id-input" size="12">
                 </div>
@@ -112,6 +115,7 @@
                     </select>
                     <div ng-show="applyFiltersObj.joinedDateFilter.selectedDateOption == 'Is in the last'" class="date-filter-view">
                         <input type="text" ng-model="applyFiltersObj.joinedDateFilter.dayInterval" ng-change="joinedDayIntervalChanged()"
+                               auto-focus="applyFiltersObj.joinedDateFilter.selectedDateOption == 'Is in the last'"
                                class="transaction-date-interval-input">
                         <select class="form-control pointer margin-left-12" ng-model="applyFiltersObj.joinedDateFilter.selectedDayIntervalOption"
                                 ng-options="option for option in dateFilterIntervalOptions">
@@ -195,6 +199,7 @@
                     </select>
                     <div ng-show="applyFiltersObj.lastLoginDateFilter.selectedDateOption == 'Is in the last'" class="date-filter-view">
                         <input type="text" ng-model="applyFiltersObj.lastLoginDateFilter.dayInterval" ng-change="lastLoginDayIntervalChanged()"
+                               auto-focus="applyFiltersObj.lastLoginDateFilter.selectedDateOption == 'Is in the last'"
                                class="transaction-date-interval-input">
                         <select class="form-control pointer margin-left-12" ng-model="applyFiltersObj.lastLoginDateFilter.selectedDayIntervalOption"
                                 ng-options="option for option in dateFilterIntervalOptions">
@@ -288,6 +293,7 @@
             <div ng-if="filtersObj.pageSizeFilter" class="row divider-top-6">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 date-filter-view">
                     <input type="text" ng-model="usersPagination.itemsPerPage" ng-change="pageSizeChanged()"
+                           auto-focus="filtersObj.pageSizeFilter"
                            placeholder="Enter page size" class="transaction-page-size-input">
                 </div>
             </div>
