@@ -10,7 +10,7 @@
         var vm = this;
         vm.token = cookieManagement.getCookie('TOKEN');
         $scope.settingView = 'accountInfo';
-        $scope.companyImageUrl = "/assets/img/app/placeholders/hex_grey.svg";
+        $scope.companyImageUrl = null;
         $scope.currencyOptions = JSON.parse($window.sessionStorage.currenciesList || '[]');
         $scope.updatingLogo = false;
         $scope.imageFile = {
