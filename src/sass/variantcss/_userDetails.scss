@@ -220,6 +220,21 @@
   margin-top: 0 !important;
 }
 
+.user-basic-info-table > tbody > tr {
+  &  > th{
+    font-size: 14px;
+    padding: 2px 0;
+    vertical-align: middle;
+    line-height: 20px;
+  }
+  &  > td{
+    font-size: 14px;
+    padding: 2px 0;
+    vertical-align: middle;
+    line-height: 20px;
+  }
+}
+
 .user-details-table > tbody > tr > th {
   font-size: 14px;
   padding: 2px 0;

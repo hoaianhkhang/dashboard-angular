@@ -4,38 +4,38 @@
         <a ng-click="openUserBasicInfoModal('app/pages/users/user/userDetails/userBasicInfo/basicInfoModal/basicInfoModal.html','md',user)" class="user-details-panel-link pull-right pointer">Edit</a>
     </div>
     <div class="panel-body">
-        <table class="table user-details-table">
+        <table class="table user-basic-info-table">
             <tr>
                 <th width="45%">First name</th>
-                <th ng-bind="user.first_name"></th>
+                <td ng-bind="user.first_name"></td>
             </tr>
             <tr>
                 <th width="45%">Last name</th>
-                <th ng-bind="user.last_name"></th>
+                <td ng-bind="user.last_name"></td>
             </tr>
             <tr>
                 <th width="45%">Nationality</th>
-                <th ng-bind="user.nationality | isoCountry"></th>
+                <td ng-bind="user.nationality | isoCountry"></td>
             </tr>
             <tr>
                 <th width="45%">Language</th>
-                <th ng-bind="user.language"></th>
+                <td ng-bind="user.language"></td>
             </tr>
             <tr>
                 <th width="45%">Date of birth</th>
-                <th ng-bind="user.birth_date"></th>
+                <td ng-bind="user.birth_date"></td>
             </tr>
             <tr>
                 <th width="45%">Age</th>
-                <th ng-bind="user.birth_date | ageCalculator"></th>
+                <td ng-bind="user.birth_date | ageCalculator"></td>
             </tr>
             <tr>
                 <th width="45%">Id number</th>
-                <th ng-bind="user.id_number"></th>
+                <td ng-bind="user.id_number"></td>
             </tr>
             <tr>
                 <th width="45%">Status</th>
-                <th>{{user.status | capitalizeWord}}</th>
+                <td>{{user.status | capitalizeWord}}</td>
             </tr>
             </table>
     </div>

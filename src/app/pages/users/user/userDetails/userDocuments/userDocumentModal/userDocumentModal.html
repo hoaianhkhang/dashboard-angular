@@ -13,85 +13,85 @@
             <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-right-padding">
                 <div ng-show="(document.document_category == 'Proof Of Identity') || document.document_category == 'Advanced Proof Of Identity'">
                     <h4 class="document-info-header">Basic info</h4>
-                    <table class="table user-details-table">
+                    <table class="table user-basic-info-table">
                         <tr>
                             <th width="50%">First name</th>
-                            <th ng-bind="user.first_name || 'None'"></th>
+                            <td ng-bind="user.first_name || 'None'"></td>
                         </tr>
                         <tr>
                             <th width="50%">Last name</th>
-                            <th ng-bind="user.last_name || 'None'"></th>
+                            <td ng-bind="user.last_name || 'None'"></td>
                         </tr>
                         <tr>
                             <th width="50%">Nationality</th>
-                            <th ng-bind="user.nationality | isoCountry"></th>
+                            <td ng-bind="user.nationality | isoCountry"></td>
                         </tr>
                         <tr>
                             <th width="50%">Language</th>
-                            <th ng-bind="user.language || 'None'"></th>
+                            <td ng-bind="user.language || 'None'"></td>
                         </tr>
                         <tr>
                             <th width="50%">Date of birth</th>
-                            <th ng-bind="user.birth_date"></th>
+                            <td ng-bind="user.birth_date"></td>
                         </tr>
                         <tr>
                             <th width="50%">Age</th>
-                            <th ng-bind="user.birth_date | ageCalculator"></th>
+                            <td ng-bind="user.birth_date | ageCalculator"></td>
                         </tr>
                         <tr>
                             <th width="50%">Id number</th>
-                            <th ng-bind="user.id_number || 'None'"></th>
+                            <td ng-bind="user.id_number || 'None'"></td>
                         </tr>
                         <tr>
                             <th width="50%">Basic info status</th>
-                            <th><select class="form-control pointer" ng-model="userInfo.status"
+                            <td><select class="form-control pointer" ng-model="userInfo.status"
                                         ng-options="statusOption for statusOption in statusTypeOptions">
-                            </select></th>
+                            </select></td>
                         </tr>
                     </table>
                 </div>
                 <div ng-show="document.document_category == 'Proof Of Address'">
                     <h4 class="document-info-header">Addresses</h4>
-                    <table class="table user-details-table" ng-repeat="address in userAddresses">
+                    <table class="table user-basic-info-table" ng-repeat="address in userAddresses">
                         <tr>
                             <th width="50%">Line 1</th>
-                            <th>{{address.line_1 || 'None'}}</th>
+                            <td>{{address.line_1 || 'None'}}</td>
                         </tr>
                         <tr>
                             <th width="50%">Line 2</th>
-                            <th>{{address.line_2 || 'None'}}</th>
+                            <td>{{address.line_2 || 'None'}}</td>
                         </tr>
                         <tr>
                             <th width="50%">City</th>
-                            <th>{{address.city || 'None'}}</th>
+                            <td>{{address.city || 'None'}}</td>
                         </tr>
                         <tr>
                             <th width="50%">State/province</th>
-                            <th>{{address.state_province || 'None'}}</th>
+                            <td>{{address.state_province || 'None'}}</td>
                         </tr>
                         <tr>
                             <th width="50%">Country</th>
-                            <th>{{address.country || 'None' | isoCountry}}</th>
+                            <td>{{address.country || 'None' | isoCountry}}</td>
                         </tr>
                         <tr>
                             <th width="50%">Postal code</th>
-                            <th>{{address.postal_code || 'None'}}</th>
+                            <td>{{address.postal_code || 'None'}}</td>
                         </tr>
                         <tr>
                             <th width="50%">Address status</th>
-                            <th><select class="form-control pointer" ng-model="address.status" ng-change="addressStatusTracking(address)"
+                            <td><select class="form-control pointer" ng-model="address.status" ng-change="addressStatusTracking(address)"
                                         ng-options="statusOption for statusOption in statusTypeOptions">
-                            </select></th>
+                            </select></td>
                         </tr>
                     </table>
                 </div>
                 <i ng-show="(document.document_category == 'Proof Of Address') && (userAddresses.length == 0)">No address provided</i>
                 <div ng-show="checkIfMetadataExists()">
                     <h4>Extra</h4>
-                    <table class="table user-details-table divider">
+                    <table class="table user-basic-info-table divider">
                         <tr ng-repeat="(key, value) in editDocument.metadata">
                             <th width="50%">{{key}}</th>
-                            <th>{{value}}</th>
+                            <td>{{value}}</td>
                         </tr>
                     </table>
                 </div>
