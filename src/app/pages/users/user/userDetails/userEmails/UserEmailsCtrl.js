@@ -11,6 +11,15 @@
         var vm = this;
         vm.token = cookieManagement.getCookie('TOKEN');
         vm.uuid = $stateParams.uuid;
+        $scope.optionsId = '';
+
+        $scope.closeEmailOptionsBox = function () {
+            $scope.optionsId = '';
+        };
+
+        $scope.showEmailOptionsBox = function (email) {
+            $scope.optionsId = email.id;
+        };
 
         vm.getUser = function(){
             if(vm.token) {
@@ -65,6 +74,7 @@
                 }
             }).then(function (res) {
                 if (res.status === 200) {
+                    $scope.optionsId = '';
                     toastr.success('Primary email successfully changed');
                     vm.getUserEmails();
                 }
@@ -134,6 +144,7 @@
 
             vm.theModal.result.then(function(email){
                 if(email){
+                    $scope.optionsId = '';
                     vm.getUserEmails();
                 }
             }, function(){
@@ -159,6 +170,7 @@
 
             vm.theModal.result.then(function(email){
                 if(email){
+                    $scope.optionsId = '';
                     vm.getUserEmails();
                 }
             }, function(){
@@ -184,6 +196,7 @@
 
             vm.theModal.result.then(function(email){
                 if(email){
+                    $scope.optionsId = '';
                     vm.getUserEmails();
                 }
             }, function(){

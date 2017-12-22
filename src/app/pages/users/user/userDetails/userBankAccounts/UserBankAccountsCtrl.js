@@ -15,6 +15,15 @@
         $scope.uncollapsedBank = {};
         $scope.loadingUserBankAccount = true;
         $scope.statusOptions = ['Pending', 'Incomplete', 'Declined', 'Verified'];
+        $scope.optionsId = '';
+
+        $scope.closeBankOptionsBox = function () {
+            $scope.optionsId = '';
+        };
+
+        $scope.showBankOptionsBox = function (bank) {
+            $scope.optionsId = bank.id;
+        };
 
         vm.getUserBankAccounts = function(){
             if(vm.token) {
@@ -74,6 +83,7 @@
                 }).then(function (res) {
                     $scope.loadingUserBankAccount = false;
                     if (res.status === 200) {
+                        $scope.optionsId = '';
                         toastr.success('Bank account verified');
                         vm.getUserBankAccounts();
                     }
@@ -112,6 +122,7 @@
 
             vm.theModal.result.then(function(bankAccount){
                 if(bankAccount){
+                    $scope.optionsId = '';
                     vm.getUserBankAccounts();
                 }
             }, function(){
@@ -134,6 +145,7 @@
 
             vm.theModal.result.then(function(bankAccount){
                 if(bankAccount){
+                    $scope.optionsId = '';
                     vm.getUserBankAccounts();
                 }
             }, function(){
@@ -156,6 +168,7 @@
 
             vm.theModal.result.then(function(bankAccount){
                 if(bankAccount){
+                    $scope.optionsId = '';
                     vm.getUserBankAccounts();
                 }
             }, function(){

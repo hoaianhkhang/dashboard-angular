@@ -19,6 +19,15 @@
         $scope.loadingUserAddress = true;
         $scope.editUserAddress = {};
         $scope.statusOptions = ['Pending', 'Incomplete', 'Declined', 'Verified'];
+        $scope.optionsId = '';
+
+        $scope.closeAddressOptionsBox = function () {
+            $scope.optionsId = '';
+        };
+
+        $scope.showAddressOptionsBox = function (address) {
+            $scope.optionsId = address.id;
+        };
 
         vm.getUserAddress = function(){
             if(vm.token) {
@@ -78,6 +87,7 @@
                 }).then(function (res) {
                     $scope.loadingUserAddress = false;
                     if (res.status === 200) {
+                        $scope.optionsId = '';
                         toastr.success('Successfully verified user address');
                         vm.getUserAddress();
                     }
@@ -100,6 +110,7 @@
 
             vm.theModal.result.then(function(address){
                 if(address){
+                    $scope.optionsId = '';
                     vm.getUserAddress();
                 }
             }, function(){
@@ -122,6 +133,7 @@
 
             vm.theModal.result.then(function(address){
                 if(address){
+                    $scope.optionsId = '';
                     vm.getUserAddress();
                 }
             }, function(){
@@ -144,6 +156,8 @@
 
             vm.theModal.result.then(function(address){
                 if(address){
+
+                    $scope.optionsId = '';
                     vm.getUserAddress();
                 }
             }, function(){

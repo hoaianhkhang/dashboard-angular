@@ -11,6 +11,15 @@
         var vm = this;
         vm.token = cookieManagement.getCookie('TOKEN');
         vm.uuid = $stateParams.uuid;
+        $scope.optionsId = '';
+
+        $scope.closeMobileOptionsBox = function () {
+            $scope.optionsId = '';
+        };
+
+        $scope.showMobileOptionsBox = function (mobile) {
+            $scope.optionsId = mobile.id;
+        };
 
         vm.getUser = function(){
             if(vm.token) {
@@ -65,6 +74,7 @@
                 }
             }).then(function (res) {
                 if (res.status === 200) {
+                    $scope.optionsId = '';
                     toastr.success('Primary number successfully changed');
                     vm.getUserNumbers();
                 }
@@ -134,6 +144,7 @@
 
             vm.theModal.result.then(function(number){
                 if(number){
+                    $scope.optionsId = '';
                     vm.getUserNumbers();
                 }
             }, function(){
@@ -159,6 +170,7 @@
 
             vm.theModal.result.then(function(number){
                 if(number){
+                    $scope.optionsId = '';
                     vm.getUserNumbers();
                 }
             }, function(){
@@ -184,6 +196,7 @@
 
             vm.theModal.result.then(function(number){
                 if(number){
+                    $scope.optionsId = '';
                     vm.getUserNumbers();
                 }
             }, function(){

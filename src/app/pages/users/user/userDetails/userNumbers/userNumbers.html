@@ -19,12 +19,16 @@
                     <span ng-hide="mobile.verified">
                         <span ng-hide="mobile.verified" class="user-primary-account user-address-status margin-right-30 status-incomplete-declined">NOT VERIFIED</span>
                     </span>
-                    <a ng-click="deleteUserNumberConfirm(mobile)"
-                       class="pull-right pointer ">Delete</a>
-                    <a ng-click="openEditUserNumberModal('app/pages/users/user/userDetails/userNumbers/editUserNumberModal/editUserNumberModal.html','md',mobile)"
-                       class="pull-right pointer user-address-edit margin-right-30">Edit</a>
-                    <a ng-class="{'invisible-element': mobile.verified == true}" ng-click="openVerifyUserMobileModal('app/pages/users/user/userDetails/userNumbers/verifyUserNumberModal/verifyUserNumberModal.html','md',mobile)"
-                       class="pull-right pointer user-address-edit margin-right-30">Verify</a>
+                    <span class="user-details-currencies-options-container pull-right" ng-click="showMobileOptionsBox(mobile); $event.stopPropagation()" click-outside="closeMobileOptionsBox()">
+                        <span class="fa fa-ellipsis-h pull-right pointer user-details-currencies-options no-margin"></span>
+                            <ul ng-show="mobile.id == optionsId" class="user-details-currencies-options-box">
+                                <li ng-click="showMobileOptionsBox(mobile)"><i class="dropdown-arr"></i></li>
+                                <li ng-hide="mobile.verified" ng-click="openVerifyUserMobileModal('app/pages/users/user/userDetails/userNumbers/verifyUserNumberModal/verifyUserNumberModal.html','md',mobile)">Verify</li>
+                                <li ng-click="updateUserNumber(mobile)">Make primary</li>
+                                <li ng-click="openEditUserNumberModal('app/pages/users/user/userDetails/userNumbers/editUserNumberModal/editUserNumberModal.html','md',mobile)">Edit</li>
+                                <li ng-click="deleteUserNumberConfirm(mobile)">Delete</li>
+                            </ul>
+                    </span>
                 </td>
             </tr>
         </table>

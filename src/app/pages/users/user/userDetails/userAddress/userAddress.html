@@ -5,8 +5,8 @@
     </div>
     <div class="panel-body">
         <div  ng-repeat="address in userAddresses | orderBy: 'id'">
-            <div class="row user-address">
-                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+            <div class="row user-address margin-bottom-10" ng-class="{'no-margin-bottom': $last}">
+                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
                     {{address.line_1 ? address.line_1  + ',': ''}}
                     {{address.line_2 ? address.line_2  + ',': ''}}
                     {{address.city ? address.city  + ',': ''}}
@@ -14,12 +14,16 @@
                     {{address.country ? address.country  + ',': ''}}
                     {{address.postal_code ? address.postal_code: ''}}
                 </div>
-                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <a ng-click="openUserAddressModal('app/pages/users/user/userDetails/userAddress/userAddressModal/userAddressModal.html','md',address)"
-                       class="pull-right pointer">Delete</a>
-                    <a ng-click="openEditUserAddressModal('app/pages/users/user/userDetails/userAddress/editUserAddressModal/editUserAddressModal.html','md',address)" class="pull-right pointer user-address-edit margin-right-30">Edit</a>
-                    <a ng-class="{'invisible-element': address.status != 'pending'}" ng-click="verifyUserAddressConfirm(address.id,'verified')"
-                       class="pull-right pointer user-address-edit margin-right-30">Verify</a>
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                    <span class="user-details-currencies-options-container pull-right" ng-click="showAddressOptionsBox(address); $event.stopPropagation()" click-outside="closeAddressOptionsBox()">
+                        <span class="fa fa-ellipsis-h pull-right pointer user-details-address-options no-margin"></span>
+                            <ul ng-show="address.id == optionsId" class="user-details-address-options-box">
+                                <li ng-click="showAddressOptionsBox(address)"><i class="dropdown-arr"></i></li>
+                                <li ng-hide="address.status != 'pending'" ng-click="verifyUserAddressConfirm(address.id,'verified')">Verify</li>
+                                <li ng-click="openEditUserAddressModal('app/pages/users/user/userDetails/userAddress/editUserAddressModal/editUserAddressModal.html','md',address)">Edit</li>
+                                <li ng-click="openUserAddressModal('app/pages/users/user/userDetails/userAddress/userAddressModal/userAddressModal.html','md',address)">Delete</li>
+                            </ul>
+                    </span>
                     <span ng-class="{'status-pending': address.status == 'pending',
                     'status-verified': address.status == 'verified','status-incomplete-declined': address.status == 'incomplete'
                      || address.status == 'declined'}" class="user-address-status pull-right margin-right-30">{{address.status | uppercase}}</span>

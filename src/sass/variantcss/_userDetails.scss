@@ -1,3 +1,120 @@
+.margin-bottom-10{
+  margin-bottom: 10px;
+}
+
+.no-margin-bottom{
+  margin-bottom: 0!important;
+}
+
+.user-details-currencies-options-container{
+  position: relative;
+}
+
+.user-details-address-options{
+  padding: 4px 0;
+  display: block;
+  color: #979797;
+  &:hover{
+    color: $primary;
+  }
+}
+
+.user-details-address-options-box{
+  position: absolute;
+  top: 22px;
+  right: -14px;
+  width: 123px;
+  z-index: 100;
+  background-color: white;
+  box-shadow: 0 2px 6px #979797;
+  padding: 14px 20px 16px 20px;
+  list-style: none;
+  & li{
+    font-weight: 600 !important;
+    line-height: 24px !important;
+  }
+  & li:hover{
+    color: $primary;
+    cursor: pointer;
+  }
+
+  i.dropdown-arr {
+    position: absolute;
+    top: -22px;
+    right: 8px;
+    display: block;
+    width: 0;
+    height: 0;
+    border: 11px solid transparent;
+    border-bottom-color: rgba(0, 0, 0, .15);
+    &:after {
+      top: -9px;
+      left: 0;
+      margin-left: -10px;
+      content: " ";
+      position: absolute;
+      display: block;
+      width: 0;
+      height: 0;
+      border: 10px solid transparent;
+      border-bottom-color: $default;
+    }
+  }
+}
+
+
+.user-details-currencies-options{
+  padding: 12px 0;
+  display: block;
+  color: #979797;
+  &:hover{
+    color: $primary;
+  }
+}
+
+.user-details-currencies-options-box{
+  position: absolute;
+  top: 30px;
+  right: -14px;
+  width: 123px;
+  z-index: 100;
+  background-color: white;
+  box-shadow: 0 2px 6px #979797;
+  padding: 14px 20px 16px 20px;
+  list-style: none;
+  & li{
+    font-weight: 600 !important;
+    line-height: 24px !important;
+  }
+  & li:hover{
+    color: $primary;
+    cursor: pointer;
+  }
+
+  i.dropdown-arr {
+    position: absolute;
+    top: -22px;
+    right: 8px;
+    display: block;
+    width: 0;
+    height: 0;
+    border: 11px solid transparent;
+    border-bottom-color: rgba(0, 0, 0, .15);
+    &:after {
+      top: -9px;
+      left: 0;
+      margin-left: -10px;
+      content: " ";
+      position: absolute;
+      display: block;
+      width: 0;
+      height: 0;
+      border: 10px solid transparent;
+      border-bottom-color: $default;
+    }
+  }
+}
+
 .invisible-element{
   visibility: hidden;
 }
@@ -115,7 +232,6 @@
 
 .user-address{
   line-height: 17px;
-  height: 40px;
 }
 
 .user-address-edit{

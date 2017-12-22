@@ -15,6 +15,18 @@
         $scope.newAccountCurrencies = {list: []};
         $scope.loadingUserAccounts = true;
         $scope.addingCurrencies = false;
+        $scope.optionsCode = '';
+        $scope.accountRef = '';
+
+        $scope.closeAccountsOptionsBox = function () {
+            $scope.optionsCode = '';
+            $scope.accountRef = '';
+        };
+
+        $scope.showAccountsOptionsBox = function (currency,account) {
+            $scope.optionsCode = currency.code;
+            $scope.accountRef = account.reference;
+        };
 
         vm.getUserAccounts = function(){
             if(vm.token) {
@@ -62,6 +74,8 @@
 
             vm.theModal.result.then(function(account){
                 if(account){
+                    $scope.optionsCode = '';
+                    $scope.accountRef = '';
                     vm.getUserAccounts();
                 }
             }, function(){
