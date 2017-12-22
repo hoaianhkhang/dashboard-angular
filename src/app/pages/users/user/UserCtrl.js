@@ -40,6 +40,7 @@
                     $scope.loadingUser = false;
                     if (res.status === 200) {
                         $scope.user = res.data.data;
+                        console.log($scope.user)
                         vm.calculateHowLongUserHasBeenWithCompany($scope.user.date_joined);
                         $window.sessionStorage.userData = JSON.stringify(res.data.data);
                     }
@@ -150,6 +151,31 @@
 
             return array;
 
+        };
+
+        $scope.toggleActivateUser = function(active){
+            if(vm.token) {
+                $scope.loadingUser = true;
+                $http.patch(environmentConfig.API + '/admin/users/' + vm.uuid + '/', {active: active}, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': vm.token
+                    }
+                }).then(function (res) {
+                    if (res.status === 200) {
+                        if(active){
+                            toastr.success('Successfully activated the user');
+                        } else {
+                            toastr.success('Successfully deactivated the user');
+                        }
+                        vm.getUser();
+                    }
+                }).catch(function (error) {
+                    $scope.loadingUser = false;
+                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.handleErrors(error);
+                });
+            }
         };
 
         $scope.openUserProfilePictureModal = function (page, size, user) {
