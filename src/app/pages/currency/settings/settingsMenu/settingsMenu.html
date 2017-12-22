@@ -1,7 +1,7 @@
 <div ba-panel class="menu-box" ba-panel-title="Currency settings" ba-panel-class="light-text">
     <div class="menu-hex-container">
         <div class="hexagon"></div>
-        <div class="hex-over">{{currencyCode}}</div>
+        <div ng-class="{'long-text': (currencyCode.length > 4), 'very-long-text': (currencyCode.length > 6)}" class="hex-over">{{currencyCode}}</div>
     </div>
     <hr class="no-margin">
     <div ng-click="goToCurrencySetting('/currency/' + currencyCode + '/settings/bank-accounts')" class="pointer menu-box-options">

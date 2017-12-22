@@ -5,7 +5,7 @@
     <div class="panel-body">
         <div class="menu-hex-container">
             <div class="hexagon"></div>
-            <div class="hex-over">{{creditData.currency.code}}</div>
+            <div ng-class="{'long-text': (creditData.currency.code.length > 4), 'very-long-text': (creditData.currency.code.length > 6)}" class="hex-over">{{creditData.currency.code}}</div>
         </div>
         <div class="text-center">
             <h3>{{companyName}} {{creditData.currency.code}}</h3>

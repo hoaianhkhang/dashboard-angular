@@ -61,7 +61,7 @@
   @include hexagon-after(20.21px solid #F8CF51);
 }
 .hex-over{
-  @include hexagon-hex-over(39px,20px,-48px);
+  @include hexagon-hex-over(70px,20px,-48px);
 }
 
 .overview-hexagon {
@@ -128,19 +128,19 @@
 }
 
 .long-text{
-  font-size: 11px;
+  font-size: 11px!important;
 }
 
 .very-long-text{
-  font-size: 9px;
+  font-size: 9px!important;
 }
 
 .long-text-overview{
-  font-size: 28px;
+  font-size: 28px!important;
 }
 
 .very-long-text-overview{
-  font-size: 22px;
+  font-size: 22px!important;
 }
 
 .hexagon-logo{
