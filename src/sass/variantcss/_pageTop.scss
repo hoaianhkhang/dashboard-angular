@@ -30,6 +30,7 @@
   padding: 15px;
   &::placeholder{
     color: white;
+    font-weight: 100;
   }
   &:focus{
     border: none;
