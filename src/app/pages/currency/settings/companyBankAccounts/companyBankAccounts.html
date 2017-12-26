@@ -1,7 +1,6 @@
 <div ng-hide="loadingCompanyBankAccounts" class="panel panel-default">
     <div class="panel-heading">
         <span class="user-details-panel-title">Bank accounts</span>
-        <a ng-click="saveBankAccounts()" class="user-details-panel-link pull-right pointer">Save</a>
     </div>
     <div class="panel-body">
         <div ng-show="companyBankAccounts.length > 0">
@@ -13,12 +12,13 @@
             </div>
             <hr>
             <div>
+                <button ng-click="saveBankAccounts()" class="pull-right dashboard-btn btn btn-primary">Save</button>
                 <sub class="subscript pull-left divider">*Go to <a href="/#/settings/bank-accounts">Settings</a>
                     to edit bank account details or create a new one.</sub>
             </div>
         </div>
         <div ng-show="companyBankAccounts.length == 0">
-            <i>No company banks are available. You can add one in <a href="/#/settings/bank-accounts">Settings > Bank accounts</a></i>
+            <i>No company banks are available. You can add one in <a href="/#/settings/bank-accounts">Settings >Bank accounts</a></i>
         </div>
     </div>
 </div>

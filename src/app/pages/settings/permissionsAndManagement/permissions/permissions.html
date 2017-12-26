@@ -2,11 +2,10 @@
     <div class="panel">
         <div class="panel-heading">
             <span class="user-details-panel-title">Permissions</span>
-            <a ng-click="savePermissionsProcess()" class="user-details-panel-link pull-right pointer">Save</a>
-            <a ng-click="goBackToPermissionGroups()" class="user-details-panel-link pull-right pointer margin-right-30">Back</a>
+            <a ng-click="goBackToPermissionGroups()" class="user-details-panel-link pull-right pointer">Back</a>
         </div>
         <div class="panel-body">
-            <div class="permissions-table" ng-repeat="typeOption in typeOptions">
+            <div class="permissions-table divider-20" ng-repeat="typeOption in typeOptions">
                 <table class="table">
                     <tr>
                         <th>{{typeOption.type}}</th>
@@ -26,6 +25,7 @@
                     </tr>
                 </table>
             </div>
+            <button ng-click="savePermissionsProcess()" class="pull-right dashboard-btn btn btn-primary">Save</button>
         </div>
     </div>
 </div>
