@@ -1,4 +1,4 @@
-<div ng-hide="editingSwitches || loadingSwitches">
+<div ng-hide="loadingSwitches">
     <div ng-show="switchesList.length > 0" class="panel">
         <div class="panel-heading">
             <span class="user-details-panel-title">Global switches</span>
@@ -7,19 +7,19 @@
             <table class="table">
                 <tr class="divider">
                     <th class="rehive-table-row-first-child">Type</th>
-                    <th>Enabled</th>
                     <th></th>
                 </tr>
                 <tr ng-repeat="switches in switchesList">
                     <td class="rehive-table-row-first-child" title="{{switches.switch_label}}" ng-bind="switches.switch_label | limitTo: '50'"></td>
-                    <td>
-                        <input class="custom-rehive-checkbox" ng-model="switches.enabled" type="checkbox" disabled>
-                    </td>
                     <td class="rehive-table-row-last-child">
+                        <div ng-show="switches.enabled">
+                            <i class="fa fa-toggle-on user-switch-active pull-right no-margin"  ng-click="toggleSwitchConfirm(switches)"></i>
+                        </div>
+                        <div ng-hide="switches.enabled">
+                            <i class="fa fa-toggle-on fa-rotate-180 user-switch-inactive pull-right no-margin"  ng-click="toggleSwitchConfirm(switches)"></i>
+                        </div>
                         <a ng-click="openSwitchesModal('app/pages/settings/switches/switchModal/switchModal.html','md',switches)"
-                           class="pull-right pointer">Delete</a>
-                        <a ng-click="toggleSwitchesEditView(switches)"
-                           class="pull-right pointer user-address-edit margin-right-30">Edit</a>
+                           class="pull-right pointer margin-right-30">Delete</a>
                     </td>
                 </tr>
             </table>
@@ -48,9 +48,6 @@
             </form>
         </div>
     </div>
-</div>
-<div ng-show="editingSwitches">
-    <edit-switch></edit-switch>
 </div>
 <div ba-panel ng-show="loadingSwitches">
     <loading-image></loading-image>

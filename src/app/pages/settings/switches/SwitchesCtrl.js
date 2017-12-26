@@ -5,13 +5,12 @@
         .controller('SwitchesCtrl', SwitchesCtrl);
 
     /** @ngInject */
-    function SwitchesCtrl($scope,environmentConfig,$uibModal,toastr,$http,cookieManagement,errorHandler,$window,stringService) {
+    function SwitchesCtrl($scope,environmentConfig,$uibModal,toastr,$http,cookieManagement,errorHandler,$window,stringService,$ngConfirm) {
 
         var vm = this;
         vm.updatedSwitches = {};
         vm.token = cookieManagement.getCookie('TOKEN');
         $scope.loadingSwitches = true;
-        $scope.editSwitches = {};
 
         $scope.switchesParams = {
             switch_label: 'Allow transactions',
@@ -28,35 +27,6 @@
             'auto_confirm': 'Automatically confirm transactions on creation',
             'session_duration': 'Allow custom session duration on authentication',
             'manage_accounts': 'Allow users to manage their accounts'
-        };
-
-        $scope.toggleSwitchesEditView = function(switches){
-            if(switches) {
-                vm.getSwitch(switches);
-            } else {
-                $scope.editSwitches = {};
-                vm.getSwitches();
-            }
-            $scope.editingSwitches = !$scope.editingSwitches;
-        };
-
-        vm.getSwitch = function (switches) {
-            $scope.loadingSwitches = true;
-            $http.get(environmentConfig.API + '/admin/switches/' + switches.id + '/', {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': vm.token
-                }
-            }).then(function (res) {
-                $scope.loadingSwitches = false;
-                if (res.status === 200) {
-                    $scope.editSwitches = res.data.data;
-                }
-            }).catch(function (error) {
-                $scope.loadingSwitches = false;
-                errorHandler.evaluateErrors(error.data);
-                errorHandler.handleErrors(error);
-            });
         };
 
         vm.getSwitches = function () {
@@ -126,17 +96,35 @@
              });
          };
 
-        $scope.switchesChanged = function(field){
-            vm.updatedSwitches[field] = $scope.editSwitches[field];
-        };
+         $scope.toggleSwitchConfirm = function (switches) {
+             $ngConfirm({
+                 title: 'Edit switch',
+                 content: "Are you sure you want to edit <b>" + switches.switch_label + "</b> ?",
+                 animationBounce: 1,
+                 animationSpeed: 100,
+                 scope: $scope,
+                 buttons: {
+                     close: {
+                         text: "No",
+                         btnClass: 'btn-default dashboard-btn'
+                     },
+                     ok: {
+                         text: "Yes",
+                         btnClass: 'btn-primary dashboard-btn',
+                         keys: ['enter'], // will trigger when enter is pressed
+                         action: function(scope){
+                             $scope.updateSwitches(switches);
+                         }
+                     }
+                 }
+             });
+         };
 
-         $scope.updateSwitches = function () {
+         $scope.updateSwitches = function (switches) {
              $window.scrollTo(0, 0);
              $scope.loadingSwitches = true;
-             $scope.editingSwitches = !$scope.editingSwitches;
-             vm.updatedSwitches = vm.getSwitchesApiValues(vm.updatedSwitches);
-             delete vm.updatedSwitches['switch_label'];
-             $http.patch(environmentConfig.API + '/admin/switches/'+ $scope.editSwitches.id + '/', vm.updatedSwitches, {
+             switches.enabled = !switches.enabled;
+             $http.patch(environmentConfig.API + '/admin/switches/'+ switches.id + '/', {enabled: switches.enabled}, {
                  headers: {
                      'Content-Type': 'application/json',
                      'Authorization': vm.token
@@ -144,13 +132,11 @@
              }).then(function (res) {
                  $scope.loadingSwitches = false;
                  if (res.status === 200) {
-                     vm.updatedSwitches = {};
                      vm.getSwitches();
                      toastr.success('You have successfully updated the switch');
                  }
              }).catch(function (error) {
                  $scope.loadingSwitches = false;
-                 vm.updatedSwitches = {};
                  errorHandler.evaluateErrors(error.data);
                  errorHandler.handleErrors(error);
              });
