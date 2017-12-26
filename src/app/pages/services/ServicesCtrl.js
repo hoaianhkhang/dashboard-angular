@@ -8,9 +8,22 @@
     function ServicesCtrl($scope,$location,$http,environmentConfig,errorHandler,$ngConfirm,$timeout,cookieManagement,toastr) {
 
         $scope.loadingServices = true;
+        $scope.showingFilters = false;
 
         var vm = this;
         vm.token = cookieManagement.getCookie('TOKEN');
+
+        $scope.showFilters = function () {
+            $scope.showingFilters = !$scope.showingFilters;
+        };
+
+        $scope.hideFilters = function () {
+            $scope.showingFilters = false;
+        };
+
+        $scope.closeOptionsBox = function () {
+            $scope.optionsCode = '';
+        };
 
         $scope.getServices = function(){
           $scope.loadingServices = true;
