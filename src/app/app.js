@@ -10,13 +10,17 @@ angular.module('BlurAdmin', [
     'ui.router',
     'toastr',
     'countrySelect',
+    'angular-click-outside',
     'ngCsv',
     'iso-3166-country-codes',
     'ngclipboard',
+    'ngIntlTelInput',
     'BlurAdmin.theme',
     'BlurAdmin.pages'
 ])
-
+    .config(function (ngIntlTelInputProvider) {
+    ngIntlTelInputProvider.set({initialCountry: 'us',utilsScript: 'https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/12.0.1/js/utils.js'});
+})
     .run(function($rootScope,cookieManagement,errorHandler,
                   userVerification,$http,environmentConfig,$window,$location,_){
 

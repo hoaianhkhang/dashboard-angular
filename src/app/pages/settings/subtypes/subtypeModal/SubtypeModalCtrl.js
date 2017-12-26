@@ -22,7 +22,7 @@
             }).then(function (res) {
                 $scope.deletingSubtype = false;
                 if (res.status === 200) {
-                  toastr.success('You have successfully deleted the subtype!');
+                  toastr.success('You have successfully deleted the subtype');
                   $uibModalInstance.close($scope.subtype);
                 }
             }).catch(function (error) {

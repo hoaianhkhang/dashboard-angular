@@ -1,47 +1,56 @@
-<div ba-panel  ba-panel-title="Ico List" class="service-header">
-    <div>
-        <button class="btn btn-success pull-right dashboard-btn panel-header-button" ng-click="goToAddIcoView()">Add</button>
+<div class="panel">
+    <div class="panel-heading">
+        <span class="user-details-panel-title">Ico List</span>
+        <a ng-click="goToAddIcoView()" class="user-details-panel-link pull-right pointer">Add</a>
     </div>
-    <table ng-hide="icosList.length == 0 || loadingIcos" class="table table-condensed table-striped">
-        <tr class="black-muted-bg">
-            <td><strong>Currency</strong></td>
-            <td><strong>Amount</strong></td>
-            <td><strong>Base currency</strong></td>
-            <td><strong>Base goal amount</strong></td>
-            <td><strong>Exchange provider</strong></td>
-            <td><strong>Status</strong></td>
-            <td><strong>Created</strong></td>
-            <td></td>
-        </tr>
-        <tr ng-repeat="ico in icosList | orderBy: '-created'"
-            class="editable-row center">
-            <td class="ico-service-list-element" title="{{ico.currency.code}}"
-                ng-bind="ico.currency.code"></td>
-            <td class="ico-service-list-element" title="{{ico.amount  | currencyModifiersFilter: ico.currency.divisibility}}"
-                ng-bind="ico.amount  | currencyModifiersFilter: ico.currency.divisibility"></td>
-            <td class="ico-service-list-element" title="{{ico.base_currency.code}}" ng-bind="ico.base_currency.code"></td>
-            <td class="ico-service-list-element" title="{{ico.base_goal_amount  | currencyModifiersFilter: ico.base_currency.divisibility}}"
-                ng-bind="ico.base_goal_amount  | currencyModifiersFilter: ico.base_currency.divisibility"></td>
-            <td class="ico-service-list-element" title="{{ico.exchange_provider || 'None'}}"
-                ng-bind="ico.exchange_provider || 'None'"></td>
-            <td class="ico-service-list-element" title="{{ico.status | capitalizeWord}}"
-                ng-bind="ico.status | capitalizeWord"></td>
-            <td class="ico-service-list-element" title="{{ico.created | date:'mediumDate'}} {{ico.created | date:'shortTime'}}">
-                {{ico.created | date:'mediumDate'}} {{ico.created | date:'shortTime'}}</td>
-            <td class="rehive-table-row-last-child">
-                <button ng-click="deleteIcoPrompt(ico)" class="btn btn-danger pull-right dashboard-btn rehive-button-no-right-margin">Delete</button>
-                <button ng-click="goToEditView(ico)" class="btn btn-primary pull-right dashboard-btn rehive-button-no-right-margin">Edit</button>
-                <button ng-click="goToIcoView(ico)" class="btn btn-primary pull-right dashboard-btn rehive-button-no-right-margin">View</button>
-            </td>
-        </tr>
-    </table>
-    <div ng-hide="icosList.length == 0 || loadingIcos">
-        <p uib-pagination boundary-links="true" items-per-page="pagination.itemsPerPage"  total-items="icosListData.count" ng-model="pagination.pageNo"
-           max-size="pagination.maxSize" class="pagination-sm pull-right transaction-history-pagination" force-ellipses="true" ng-change="getIcosList()"
-           previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></p>
-    </div>
-    <div ng-show="icosList.length == 0 && !loadingIcos">
-        <i>No icos have been created</i>
+    <div class="panel-body">
+        <table ng-hide="icosList.length == 0 || loadingIcos" class="table">
+            <tr>
+                <th>Id</th>
+                <th>Currency</th>
+                <th>Amount</th>
+                <th>Base currency</th>
+                <th>Base goal amount</th>
+                <th>Exchange provider</th>
+                <th>Status</th>
+                <th>Created</th>
+                <th></th>
+            </tr>
+            <tr ng-repeat="ico in icosList | orderBy: '-created'"
+                class="editable-row center">
+                <td class="ico-service-list-element" title="{{ico.id}}"
+                    ng-bind="ico.id"></td>
+                <td class="ico-service-list-element" title="{{ico.currency.code}}"
+                    ng-bind="ico.currency.code"></td>
+                <td class="ico-service-list-element" title="{{ico.amount  | currencyModifiersFilter: ico.currency.divisibility}}"
+                    ng-bind="ico.amount  | currencyModifiersFilter: ico.currency.divisibility"></td>
+                <td class="ico-service-list-element" title="{{ico.base_currency.code}}" ng-bind="ico.base_currency.code"></td>
+                <td class="ico-service-list-element" title="{{ico.base_goal_amount  | currencyModifiersFilter: ico.base_currency.divisibility}}"
+                    ng-bind="ico.base_goal_amount  | currencyModifiersFilter: ico.base_currency.divisibility"></td>
+                <td class="ico-service-list-element" title="{{ico.exchange_provider || 'None'}}"
+                    ng-bind="ico.exchange_provider || 'None'"></td>
+                <td class="ico-service-list-element" title="{{ico.status | capitalizeWord}}"
+                    ng-bind="ico.status | capitalizeWord"></td>
+                <td class="ico-service-list-element" title="{{ico.created | date:'mediumDate'}} {{ico.created | date:'shortTime'}}">
+                    {{ico.created | date:'mediumDate'}} {{ico.created | date:'shortTime'}}</td>
+                <td class="rehive-table-row-last-child">
+                    <a ng-click="deleteIcoPrompt(ico)"
+                       class="pull-right pointer ">Delete</a>
+                    <a ng-click="goToEditView(ico)"
+                       class="pull-right pointer user-address-edit margin-right-30">Edit</a>
+                    <a ng-click="goToIcoView(ico)"
+                       class="pull-right pointer user-address-edit margin-right-30">View</a>
+                </td>
+            </tr>
+        </table>
+        <div ng-hide="icosList.length == 0 || loadingIcos">
+            <p uib-pagination boundary-links="true" items-per-page="pagination.itemsPerPage"  total-items="icosListData.count" ng-model="pagination.pageNo"
+               max-size="pagination.maxSize" class="pagination-sm pull-right transaction-history-pagination" force-ellipses="true" ng-change="getIcosList()"
+               previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></p>
+        </div>
+        <div ng-show="icosList.length == 0 && !loadingIcos">
+            <i>No icos have been created</i>
+        </div>
     </div>
     <div ng-show="loadingIcos">
         <loading-image></loading-image>

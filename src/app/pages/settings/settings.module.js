@@ -13,8 +13,8 @@
         'BlurAdmin.pages.settings.notifications',
         'BlurAdmin.pages.settings.switches',
         'BlurAdmin.pages.settings.transactionsSwitches',
-        'BlurAdmin.pages.settings.requestLog',
         'BlurAdmin.pages.settings.requestLogs',
+        'BlurAdmin.pages.settings.requestLog',
         'BlurAdmin.pages.settings.security'
     ])
         .config(routeConfig);

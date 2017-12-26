@@ -1,5 +1,10 @@
 <div ba-panel class="menu-box" ba-panel-class="light-text">
-    <img ng-click="goToCompanyLogo('companyLogo')" ng-src="{{companyImageUrl}}" class="image-center pointer" width="90" height="90" alt="token Image">
+    <div ng-show="companyImageUrl == null" ng-click="goToCompanyLogo('companyLogo')" class="menu-hex-container pointer">
+        <div class="hexagon"></div>
+        <div class="hex-over">&nbsp;</div>
+    </div>
+    <img ng-hide="companyImageUrl == null" ng-click="goToCompanyLogo('companyLogo')" ng-src="{{companyImageUrl}}"
+         class="image-center pointer" width="90" height="90" alt="token Image">
     <hr class="no-margin">
     <div ng-click="goToSetting('/settings/account-info')" class="pointer menu-box-options">
         <h5>Account info<i class="pull-right ion-chevron-right"></i></h5>
@@ -38,7 +43,7 @@
     </div>
     <hr class="no-margin">
     <div ng-click="goToSetting('/settings/request-logs')" class="pointer menu-box-options">
-        <h5>Request logs <i class="pull-right ion-chevron-right"></i></h5>
+        <h5>Request Logs <i class="pull-right ion-chevron-right"></i></h5>
     </div>
     <hr class="no-margin">
     <div ng-click="goToSetting('/settings/security')" class="pointer menu-box-options">

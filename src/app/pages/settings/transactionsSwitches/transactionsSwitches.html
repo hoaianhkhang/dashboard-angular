@@ -1,49 +1,62 @@
 <div ng-hide="editingTransactionsSwitches || loadingTransactionsSwitches">
-    <div ng-show="transactionsSwitchesList.length > 0" ba-panel class="setting-bank-accounts" ba-panel-title="Transactions switches" ba-panel-class="light-text with-scroll">
-        <table class="table fees-table table-striped setting-bank-accounts-table">
-            <tr class="black-muted-bg divider">
-                <th><strong>Type</strong></th>
-                <th><strong>Subtype</strong></th>
-                <th><strong>Enabled</strong></th>
-                <th></th>
-            </tr>
-            <tr ng-repeat="transactionsSwitch in transactionsSwitchesList">
-                <td class="table-row-center transactions-list-element" title="{{transactionsSwitch.tx_type}}" ng-bind="transactionsSwitch.tx_type | capitalizeWord"></td>
-                <td class="table-row-center transactions-list-element" title="{{transactionsSwitch.subtype ? transactionsSwitch.subtype : 'None'}}" ng-bind="transactionsSwitch.subtype ? transactionsSwitch.subtype : 'None'"></td>
-                <td class="table-row-center transactions-list-element" title="{{transactionsSwitch.enabled}}" ng-bind="transactionsSwitch.enabled | capitalizeWord"></td>
-                <td class="rehive-table-row-last-child">
-                    <button ng-click="openTransactionsSwitchesModal('app/pages/settings/transactionsSwitches/transactionsSwitchModal/transactionsSwitchModal.html','md',transactionsSwitch)" class="btn btn-danger pull-right rehive-settings-buttons">Delete</button>
-                    <button ng-click="toggleTransactionsSwitchesEditView(transactionsSwitch)" class="btn btn-primary pull-right rehive-settings-buttons">Edit</button>
-                </td>
-            </tr>
-        </table>
+    <div ng-show="transactionsSwitchesList.length > 0" class="panel">
+        <div class="panel-heading">
+            <span class="user-details-panel-title">Transactions switches</span>
+        </div>
+        <div class="panel-body">
+            <table class="table">
+                <tr class="divider">
+                    <th class="rehive-table-row-first-child">Type</th>
+                    <th>Subtype</th>
+                    <th>Enabled</th>
+                    <th></th>
+                </tr>
+                <tr ng-repeat="transactionsSwitch in transactionsSwitchesList">
+                    <td class="table-row-center transactions-list-element rehive-table-row-first-child" title="{{transactionsSwitch.tx_type}}" ng-bind="transactionsSwitch.tx_type | capitalizeWord"></td>
+                    <td class="table-row-center transactions-list-element" title="{{transactionsSwitch.subtype ? transactionsSwitch.subtype : 'None'}}" ng-bind="transactionsSwitch.subtype ? transactionsSwitch.subtype : 'None'"></td>
+                    <td class="table-row-center transactions-list-element">
+                        <input class="custom-rehive-checkbox" ng-model="transactionsSwitch.enabled" type="checkbox" disabled>
+                    </td>
+                    <td class="rehive-table-row-last-child">
+                        <a ng-click="openTransactionsSwitchesModal('app/pages/settings/transactionsSwitches/transactionsSwitchModal/transactionsSwitchModal.html','md',transactionsSwitch)"
+                           class="pull-right pointer">Delete</a>
+                        <a ng-click="toggleTransactionsSwitchesEditView(transactionsSwitch)"
+                           class="pull-right pointer user-address-edit margin-right-30">Edit</a>
+                    </td>
+                </tr>
+            </table>
+        </div>
     </div>
-    <div ba-panel ba-panel-title="Add transactions switch" ba-panel-class="light-text with-scroll">
-        <form name="transactionsSwitchesForm" class="custom-form">
-            <div class="form-group">
-                <label><strong>Transaction type</strong> <span class="required-icon">*</span></label>
-                <br>
-                <select class="form-control pointer" ng-change="getSubtypesArray(transactionsSwitchParams)" ng-model="transactionsSwitchParams.tx_type" ng-options="option for option in transactionsSwitchesOptions" required>
-                </select>
-            </div>
-            <div ng-hide="loadingSubtypes" class="form-group">
-                <label><strong>Subtype</strong></label>
-                <select class="form-control pointer" ng-model="transactionsSwitchParams.subtype" ng-options="subtypeOption for subtypeOption in subtypeOptions">
-                </select>
-            </div>
-            <div ng-show="loadingSubtypes">
-                <loading-image class="custom-subtype-loading"></loading-image>
-            </div>
-            <div class="form-group">
-                <label><strong>Enabled</strong> <span class="required-icon">*</span></label>
-                <br>
-                <select class="form-control pointer" ng-model="transactionsSwitchParams.enabled" ng-options="bool for bool in boolOptions" required>
-                </select>
-            </div>
-            <div class="form-group">
-                <button ng-click="addTransactionsSwitch(transactionsSwitchParams)" ng-disabled="!transactionsSwitchesForm.$valid" class="btn btn-primary dashboard-btn pull-right">Add</button>
-            </div>
-        </form>
+    <div class="panel">
+        <div class="panel-heading">
+            <span class="user-details-panel-title">Add transactions switch</span>
+        </div>
+        <div class="panel-body">
+            <form name="transactionsSwitchesForm" class="custom-form">
+                <div class="form-group">
+                    <label>Transaction type <span class="required-icon">*</span></label>
+                    <br>
+                    <select class="form-control pointer" ng-change="getSubtypesArray(transactionsSwitchParams)" ng-model="transactionsSwitchParams.tx_type" ng-options="option for option in transactionsSwitchesOptions" required>
+                    </select>
+                </div>
+                <div ng-hide="loadingSubtypes" class="form-group">
+                    <label>Subtype</label>
+                    <select class="form-control pointer" ng-model="transactionsSwitchParams.subtype" ng-options="subtypeOption for subtypeOption in subtypeOptions">
+                    </select>
+                </div>
+                <div ng-show="loadingSubtypes">
+                    <loading-image class="custom-subtype-loading"></loading-image>
+                </div>
+                <div class="form-group">
+                    <label>Enabled <span class="required-icon">*</span></label>
+                    <br>
+                    <input class="custom-rehive-checkbox" ng-model="transactionsSwitchParams.enabled" type="checkbox">
+                </div>
+                <div class="form-group">
+                    <button ng-click="addTransactionsSwitch(transactionsSwitchParams)" ng-disabled="!transactionsSwitchesForm.$valid" class="btn btn-primary dashboard-btn pull-right">Add</button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 <div ng-show="editingTransactionsSwitches">

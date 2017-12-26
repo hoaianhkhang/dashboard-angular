@@ -74,7 +74,7 @@
                     vm.updatedCompanyInfo = {};
                     $scope.company = res.data.data;
                     $rootScope.companyName = res.data.data.name;
-                    toastr.success('You have successfully updated the company info!');
+                    toastr.success('You have successfully updated the company info');
                 }
             }).catch(function (error) {
                 $scope.loadingCompanyInfo = false;

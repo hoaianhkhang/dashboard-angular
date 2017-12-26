@@ -15,37 +15,41 @@
         </div>
     </div>
 </div>
-<div ba-panel ba-panel-title="Pending debits" ba-panel-class="with-scroll">
-    <button ng-disabled="!pendingTransactionData.currency.code" ng-click="getPendingTransactions()"
-            class="btn btn-primary dashboard-btn panel-header-button">Refresh</button>
-    <table ng-show="transactions.list.length > 0 || loadingPendingTransactions" class="table table-condensed table-striped table-hover">
-        <tr class="black-muted-bg">
-            <td><strong>Code</strong></td>
-            <td><strong>User</strong></td>
-            <td><strong>Currency</strong></td>
-            <td><strong>Amount</strong></td>
-            <td><strong>Date</strong></td>
-            <td><strong>Status</strong></td>
-        </tr>
-        <tr ng-repeat="transaction in transactions.list " data-toggle="modal"
-            ng-click="openModal('app/pages/transactions/debit/pendingDebit/pendingDebitModal/pendingDebitModal.html', 'md',transaction)"
-            class="editable-row center pointer">
-            <td class="table-row-center transactions-list-element" ng-bind="transaction.id"></td>
-            <td class="table-row-center transactions-list-element" ng-bind="transaction.user.email"></td>
-            <td class="table-row-center transactions-list-element" ng-bind="transaction.currency.code"></td>
-            <td class="table-row-center transactions-list-element" ng-bind="transaction.amount  | currencyModifiersFilter: transaction.currency.divisibility"></td>
-            <td class="table-row-center transactions-list-element" >{{transaction.created | date:'mediumDate'}} {{transaction.created | date:'shortTime'}}</td>
-            <td class="table-row-center transactions-list-element" ng-bind="transaction.status | capitalizeWord"></td>
-        </tr>
-    </table>
-    <div ng-show="transactions.list.length > 0">
-        <p uib-pagination boundary-links="true" items-per-page="pagination.itemsPerPage"  total-items="transactions.data.count" ng-model="pagination.pageNo"
-           max-size="pagination.maxSize" class="pagination-sm pull-right transaction-history-pagination" force-ellipses="true" ng-change="getPendingTransactions()"
-           previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></p>
+<div class="panel">
+    <div class="panel-heading">
+        <span class="user-details-panel-title">Pending debits</span>
+        <a ng-click="getPendingTransactions()" class="user-details-panel-link pull-right pointer">Refresh</a>
     </div>
-    <div ng-show="transactions.list.length == 0">
-        <i ng-hide="transactionsStateMessage == ''" ng-bind="transactionsStateMessage"></i>
-        <i ng-hide="pendingTransactionData.currency.code">Please select a currency and press <strong>Apply</strong></i>
-        <loading-image ng-show="transactionsStateMessage == '' && loadingPendingTransactions"></loading-image>
+    <div class="panel-body">
+        <table ng-hide="transactions.list.length == 0 || loadingPendingTransactions" class="table custom-table">
+            <tr>
+                <th>Code</th>
+                <th>User</th>
+                <th>Currency</th>
+                <th>Amount</th>
+                <th>Status</th>
+                <th class="align-right">Date</th>
+            </tr>
+            <tr ng-repeat="transaction in transactions.list | orderBy: '-created'" data-toggle="modal"
+                ng-click="openModal('app/pages/transactions/debit/pendingDebit/pendingDebitModal/pendingDebitModal.html', 'md',transaction)"
+                class="editable-row center pointer user-details-table-hover">
+                <td class="table-row-center transactions-list-element" ng-bind="transaction.id"></td>
+                <td class="table-row-center transactions-list-element" ng-bind="transaction.user.email"></td>
+                <td class="table-row-center transactions-list-element" ng-bind="transaction.currency.code"></td>
+                <td class="table-row-center transactions-list-element" ng-bind="transaction.amount  | currencyModifiersFilter: transaction.currency.divisibility"></td>
+                <td class="table-row-center transactions-list-element" ng-bind="transaction.status | capitalizeWord"></td>
+                <td class="table-row-center transactions-list-element pull-right">{{transaction.created | date:'mediumDate'}} {{transaction.created | date:'shortTime'}}</td>
+            </tr>
+        </table>
+        <div ng-hide="transactions.list.length == 0">
+            <p uib-pagination boundary-links="true" items-per-page="pagination.itemsPerPage"  total-items="transactions.data.count" ng-model="pagination.pageNo"
+               max-size="pagination.maxSize" class="pagination-sm pull-right transaction-history-pagination divider" force-ellipses="true" ng-change="getPendingTransactions()"
+               previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></p>
+        </div>
+        <div ng-show="transactions.list.length == 0">
+            <i ng-hide="transactionsStateMessage == ''" ng-bind="transactionsStateMessage"></i>
+            <i ng-hide="pendingTransactionData.currency.code">Please select a currency and press <strong>Apply</strong></i>
+            <loading-image ng-show="transactionsStateMessage == '' && loadingPendingTransactions"></loading-image>
+        </div>
     </div>
 </div>

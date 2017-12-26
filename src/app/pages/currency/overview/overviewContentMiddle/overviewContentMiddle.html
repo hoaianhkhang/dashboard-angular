@@ -1,34 +1,51 @@
-<div ba-panel ba-panel-title="Credits" class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-    <table class="table table-striped divider col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
-        <tr class="black-muted-bg">
-            <td>24h volume</td>
-            <td>{{currencyObj.symbol}} {{currencyOverviewData.sum_24h_credits_complete | currencyModifiersFilter: currencyObj.divisibility}}</td>
-        </tr>
-        <tr>
-            <td>Total volume</td>
-            <td>{{currencyObj.symbol}} {{currencyOverviewData.sum_credits_complete | currencyModifiersFilter: currencyObj.divisibility}}</td>
-        </tr>
-        <tr>
-            <td>Number of transactions complete</td>
-            <td>{{currencyOverviewData.count_credits_complete}}</td>
-        </tr>
-    </table>
-    <button ng-click="goToPath('/transactions/credit')" class="btn dashboard-btn btn-primary pull-right">Manage</button>
-</div>
-<div ba-panel ba-panel-title="Debits" class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-    <table class="table table-striped divider col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
-        <tr class="black-muted-bg">
-            <td>24h volume</td>
-            <td>{{currencyObj.symbol}} {{currencyOverviewData.sum_24h_debits_complete | currencyModifiersFilter: currencyObj.divisibility}}</td>
-        </tr>
-        <tr>
-            <td>Total volume</td>
-            <td>{{currencyObj.symbol}} {{currencyOverviewData.sum_debits_complete | currencyModifiersFilter: currencyObj.divisibility}}</td>
-        </tr>
-        <tr>
-            <td>Number of transactions complete</td>
-            <td>{{currencyOverviewData.count_debits_complete}}</td>
-        </tr>
-    </table>
-    <button ng-click="goToPath('/transactions/debit')" class="btn dashboard-btn btn-primary pull-right">Manage</button>
+<div class="row">
+    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <span class="user-details-panel-title">Credits</span>
+                <a ng-click="goToPath('/transactions/credit')" class="user-details-panel-link pull-right pointer">Manage</a>
+            </div>
+            <div class="panel-body">
+                <table class="table user-details-table">
+                    <tr>
+                        <th>24h volume</th>
+                        <td class="align-right rehive-table-row-last-child">{{currencyObj.symbol}} {{currencyOverviewData.sum_24h_credits_complete | currencyModifiersFilter: currencyObj.divisibility}}</td>
+                    </tr>
+                    <tr>
+                        <th>Total volume</th>
+                        <td class="align-right rehive-table-row-last-child">{{currencyObj.symbol}} {{currencyOverviewData.sum_credits_complete | currencyModifiersFilter: currencyObj.divisibility}}</td>
+                    </tr>
+                    <tr>
+                        <th>Number of transactions complete</th>
+                        <td class="align-right rehive-table-row-last-child">{{currencyOverviewData.count_credits_complete}}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <span class="user-details-panel-title">Debits</span>
+                <a ng-click="goToPath('/transactions/debit')" class="user-details-panel-link pull-right pointer">Manage</a>
+            </div>
+            <div class="panel-body">
+                <table class="table user-details-table">
+                    <tr>
+                        <th>24h volume</th>
+                        <td class="align-right rehive-table-row-last-child">{{currencyObj.symbol}} {{currencyOverviewData.sum_24h_debits_complete | currencyModifiersFilter: currencyObj.divisibility}}</td>
+                    </tr>
+                    <tr>
+                        <th>Total volume</th>
+                        <td class="align-right rehive-table-row-last-child">{{currencyObj.symbol}} {{currencyOverviewData.sum_debits_complete | currencyModifiersFilter: currencyObj.divisibility}}</td>
+                    </tr>
+                    <tr>
+                        <th>Number of transactions complete</th>
+                        <td class="align-right rehive-table-row-last-child">{{currencyOverviewData.count_debits_complete}}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
 </div>

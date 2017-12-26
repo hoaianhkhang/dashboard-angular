@@ -83,11 +83,8 @@
 
         $scope.goToUser = function () {
             $uibModalInstance.close();
-            $location.path('/user/' + $scope.transaction.user.identifier);
+            $location.path('/user/' + $scope.transaction.user.identifier + '/details');
         };
-
-        var vm = this;
-        vm.token = cookieManagement.getCookie('TOKEN');
 
         $scope.updateTransaction = function(status){
             $http.patch(environmentConfig.API + '/admin/transactions/' + $scope.transaction.id + '/',{ status: status },

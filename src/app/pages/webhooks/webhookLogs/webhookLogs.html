@@ -1,19 +1,19 @@
 <div ng-hide="loadingWebhooks">
-    <div class="panel">
-        <div class="panel-heading webhook-panel-header">
-            <h3>Webhook logs <small>(logs are only stored for 1 week)</small></h3>
+    <div ng-show="webhookTasks.length > 0" class="setting-bank-accounts panel">
+        <div class="panel-heading">
+            <span class="user-details-panel-title">Webhook logs <small class="text-subtle">(logs are only stored for 1 week)</small></span>
         </div>
-        <div class="panel-body setting-bank-accounts">
-            <table class="table fees-table table-striped setting-bank-accounts-table table-hover">
-                <tr class="black-muted-bg divider">
-                    <th><strong>Id</strong></th>
-                    <th><strong>Event</strong></th>
-                    <th><strong>Tries</strong></th>
-                    <th><strong>Failed</strong></th>
-                    <th><strong>Completed</strong></th>
-                    <th><strong>Created</strong></th>
+        <div class="panel-body">
+            <table class="table custom-table">
+                <tr>
+                    <th>Id</th>
+                    <th>Event</th>
+                    <th>Tries</th>
+                    <th>Failed</th>
+                    <th>Completed</th>
+                    <th class="align-right">Created</th>
                 </tr>
-                <tr ng-show="webhookTasks.length > 0" ng-click="goToLog(log)" ng-repeat="log in webhookTasks | orderBy: '-created'" class="pointer">
+                <tr ng-show="webhookTasks.length > 0" ng-click="goToLog(log)" ng-repeat="log in webhookTasks | orderBy: '-created'" class=" user-details-table-hover pointer">
                     <td class="table-row-center transactions-list-element" title="{{log.id}}" ng-bind="log.id"></td>
                     <td class="table-row-center transactions-list-element" title="{{log.webhook.event}}" ng-bind="log.webhook.event | capitalizeDottedSentence | capitalizeUnderscoredSentence"></td>
                     <td class="table-row-center transactions-list-element" title="{{log.tries}}" ng-bind="log.tries"></td>
@@ -23,7 +23,7 @@
                     <td class="table-row-center transactions-list-element" title="{{log.completed | date:'mediumDate'}} {{log.completed | date:'shortTime'}}">
                         {{log.completed | date:'mediumDate'}} {{log.completed | date:'shortTime'}}
                     </td>
-                    <td class="table-row-center transactions-list-element" title="{{log.created | date:'mediumDate'}} {{log.created | date:'shortTime'}}">
+                    <td class="table-row-center transactions-list-element align-right" title="{{log.created | date:'mediumDate'}} {{log.created | date:'shortTime'}}">
                         {{log.created | date:'mediumDate'}} {{log.created | date:'shortTime'}}</td>
                 </tr>
             </table>
@@ -33,6 +33,9 @@
                    previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></p>
             </div>
         </div>
+    </div>
+    <div ba-panel ng-show="webhookTasks.length == 0">
+        <i>No webhook logs available</i>
     </div>
 </div>
 <div ba-panel ng-show="loadingWebhooks">

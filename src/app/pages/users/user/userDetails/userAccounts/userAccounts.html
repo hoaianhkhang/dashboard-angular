@@ -1,0 +1,46 @@
+<div ng-hide="loadingUserAccounts" ng-repeat="account in accounts | orderBy: '-primary'">
+    <div ng-hide="loadingUserAccounts" class="panel">
+        <div class="panel-heading">
+            <span class="user-details-panel-title">Account: {{account.name}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <span ng-show="account.primary" class="user-primary-account user-address-status">PRIMARY</span>
+            </span>
+            <a ng-click="openAddAccountCurrenciesModal('app/pages/users/user/userDetails/userAccounts/addAccountCurrenciesModal/addAccountCurrenciesModal.html','md',account.reference)" class="user-details-panel-link pull-right pointer">Add currency</a>
+        </div>
+        <div class="panel-body">
+            <table ng-show="account.currencies.length > 0" class="table">
+                <tr class="user-switches-table-header">
+                    <th class="rehive-table-row-first-child">Currency</th>
+                    <th>Available balance</th>
+                    <th>Balance</th>
+                    <th></th>
+                </tr>
+                <tr  ng-repeat="acc in account.currencies">
+                    <td class="rehive-table-row-first-child" width="15%" ng-bind="acc.currency.code"></td>
+                    <td title="{{acc.available_balance  | currencyModifiersFilter: acc.currency.divisibility}}">
+                        {{acc.currency.symbol}} {{acc.available_balance  | currencyModifiersFilter: acc.currency.divisibility}}
+                    </td>
+                    <td title="{{acc.balance  | currencyModifiersFilter: acc.currency.divisibility}}">
+                        {{acc.currency.symbol}} {{acc.balance  | currencyModifiersFilter: acc.currency.divisibility}}
+                    </td>
+                    <td class="rehive-table-row-last-child" width="15%">
+                        <span class="user-details-currencies-options-container pull-right" ng-click="showAccountsOptionsBox(acc.currency,account); $event.stopPropagation()" click-outside="closeAccountsOptionsBox()">
+                            <span class="fa fa-ellipsis-h pull-right pointer user-details-address-options no-margin"></span>
+                                <ul ng-show="((acc.currency.code == optionsCode) && (accountRef == account.reference))" class="user-details-address-options-box">
+                                    <li ng-click="showAccountsOptionsBox(acc.currency,account)"><i class="dropdown-arr"></i></li>
+                                    <li ng-click="goToView('transactions.debit',account.user.email,account.reference)">Debit</li>
+                                    <li ng-click="goToView('transactions.credit',account.user.email,account.reference)">Credit</li>
+                                    <li ng-click="goToSettings(acc.currency.code,account.reference)">Settings</li>
+                                </ul>
+                        </span>
+                    </td>
+                </tr>
+            </table>
+            <div ng-if="account.currencies.length == 0" ng-hide="loadingUserAccounts">
+                <i style="margin-top: 10px">No currencies associated with this account yet.</i>
+            </div>
+        </div>
+    </div>
+</div>
+<div ba-panel ng-show="loadingUserAccounts">
+    <loading-image></loading-image>
+</div>

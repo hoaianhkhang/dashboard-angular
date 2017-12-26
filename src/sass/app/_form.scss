@@ -33,9 +33,9 @@
 .form-group {
   label {
     margin-bottom: 5px;
-    color: $default-text;
-    font-weight: $font-normal;
-    font-size: 13px;
+    color: #979797;
+    font-weight: normal;
+    font-size: 14px;
   }
 }
 
@@ -287,11 +287,16 @@ label.custom-checkbox {
     position: relative;
     display: inline-block;
     margin: 0;
-    line-height: 16px;
+    color: #979797;
+    line-height: 15px;
+    font-size: 14px;
     font-weight: $font-light;
     cursor: pointer;
     padding-left: 22px;
     width: 100%;
+    &.account-settings-span{
+      color: #222D32 !important;
+    }
     &:before {
       cursor: pointer;
       font-family: fontAwesome;

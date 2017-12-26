@@ -1,3 +1,16 @@
+.clear-filter-btn{
+  margin-right: 17px;
+}
+
+.currencies-title{
+  color: $primary;
+  font-size: 16px;
+  font-weight: 400;
+  margin: 0 0 19px 0;
+  position: relative;
+  top: -7px;
+}
+
 .main-spinner{
   display: inline-block;
   margin: auto;
@@ -13,12 +26,20 @@
 
 .panel-header-button{
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 25px;
+  right: 25px;
 }
 
 .divider{
   margin-bottom: 10px !important;
+}
+
+.divider-20{
+  margin-bottom: 20px !important;
+}
+
+.divider-top-6{
+  margin-top: 6px !important;
 }
 
 .currency-logo{
@@ -28,6 +49,7 @@
 }
 
 .table > tbody > tr > td{
+  padding: 0 6px;
   vertical-align: middle;
 }
 
@@ -37,6 +59,10 @@
 
 .rehive-button-no-right-margin{
   margin: 10px 0 10px 10px;
+}
+
+.table > tbody > tr > .rehive-table-row-first-child:first-child {
+  padding-left: 0;
 }
 
 .table > tbody > tr > .rehive-table-row-last-child:last-child {
@@ -59,4 +85,88 @@
 .home-page-buttons{
   width: 70px;
   padding: 6px 0;
+}
+
+.currencies-panel-last-row{
+  margin-bottom: 23px;
+}
+
+.currencies-page-row{
+  position: relative;
+  top: 12px;
+}
+
+.currencies-page-button-filter{
+  height: 34px;
+  width: 70px;
+  padding: 6px 12px;
+}
+
+.currencies-page-buttons-add{
+  line-height: 0;
+  height: 34px;
+  padding: 6px 12px;
+}
+
+.currency-details-row{
+  height: 56px;
+}
+
+.currencies-details-heading{
+  font-size: 12px;
+  color: #979797;
+}
+
+.currencies-options{
+  padding: 5px;
+  position: relative;
+  top: 4px;
+  right: -5px;
+  color: #979797;
+  &:hover{
+    color: $primary;
+  }
+}
+
+.currencies-options-box{
+  width: 230px;
+  z-index: 100;
+  background-color: white;
+  box-shadow: 0 2px 6px #979797;
+  padding: 20px 20px 20px 20px;
+  position: absolute;
+  top: 27px;
+  right: 2px;
+  list-style: none;
+  & li{
+    font-weight: 600 !important;
+    line-height: 24px !important;
+  }
+  & li:hover{
+    color: $primary;
+    cursor: pointer;
+  }
+
+  i.dropdown-arr {
+    position: absolute;
+    top: -22px;
+    right: 8px;
+    display: block;
+    width: 0;
+    height: 0;
+    border: 11px solid transparent;
+    border-bottom-color: rgba(0, 0, 0, .15);
+    &:after {
+      top: -9px;
+      left: 0;
+      margin-left: -10px;
+      content: " ";
+      position: absolute;
+      display: block;
+      width: 0;
+      height: 0;
+      border: 10px solid transparent;
+      border-bottom-color: $default;
+    }
+  }
 }

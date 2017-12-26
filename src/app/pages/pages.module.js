@@ -13,12 +13,11 @@
       'BlurAdmin.pages.multiFactorAuthVerify',
       'BlurAdmin.pages.settings',
       'BlurAdmin.pages.addCurrency',
-      'BlurAdmin.pages.home',
+      'BlurAdmin.pages.currencies',
       'BlurAdmin.pages.transactions',
       'BlurAdmin.pages.currency',
       'BlurAdmin.pages.webhooks',
       'BlurAdmin.pages.users',
-      'BlurAdmin.pages.userDetails',
       'BlurAdmin.pages.services',
       'BlurAdmin.pages.login',
       'BlurAdmin.pages.register',
@@ -35,7 +34,7 @@
 
   /** @ngInject */
   function routeConfig($urlRouterProvider, baSidebarServiceProvider) {
-    $urlRouterProvider.otherwise('/home');
+    $urlRouterProvider.otherwise('/currencies');
   }
 
 })();

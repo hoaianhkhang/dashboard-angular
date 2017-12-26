@@ -18,7 +18,6 @@
                 if(verified){
                     $rootScope.userVerified = true;
                     $location.path('/company/name_request');
-                    $rootScope.$pageFinishedLoading = true;
                 } else {
                     $rootScope.$pageFinishedLoading = true;
                 }

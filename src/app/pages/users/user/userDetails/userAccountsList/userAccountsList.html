@@ -1,0 +1,31 @@
+<div ng-hide="loadingUserAccountsList">
+    <div ng-hide="loadingUserAccountsList" class="panel">
+        <div class="panel-heading">
+            <span class="user-details-panel-title">Accounts list</span>
+            <a ng-click="openAddUserAccountsListModal('app/pages/users/user/userDetails/userAccountsList/addUserAccountModal/addUserAccountModal.html','md')" class="user-details-panel-link pull-right pointer">Add account</a>
+        </div>
+        <div class="panel-body">
+            <table ng-show="accounts.length > 0" class="table">
+                <tr class="user-switches-table-header divider">
+                    <th class="rehive-table-row-first-child">Name</th>
+                    <th>Reference</th>
+                    <th></th>
+                </tr>
+                <tr ng-repeat="account in accounts | orderBy: '-primary'">
+                    <td class="transactions-list-element rehive-table-row-first-child" title="{{account.name}}" ng-bind="account.name"></td>
+                    <td class="transactions-list-element" title="{{account.reference}}" ng-bind="account.reference"></td>
+                    <td class="rehive-table-row-last-child pull-right">
+                        <span ng-show="account.primary" class="user-primary-account user-address-status margin-right-30">PRIMARY</span>
+                        <a ng-click="openEditUserAccountsListModal('app/pages/users/user/userDetails/userAccountsList/editUserAccountModal/editUserAccountModal.html','md',account)" class="pull-right pointer user-address-edit">Edit</a>
+                    </td>
+                </tr>
+            </table>
+            <div ng-if="accounts.length == 0" ng-hide="loadingUserAccountsList">
+                <i style="margin-top: 10px">No account associated with this user yet.</i>
+            </div>
+        </div>
+    </div>
+</div>
+<div ba-panel ng-show="loadingUserAccountsList">
+    <loading-image></loading-image>
+</div>

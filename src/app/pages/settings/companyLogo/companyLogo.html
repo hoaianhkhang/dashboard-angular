@@ -1,13 +1,19 @@
-<div ng-hide="updatingLogo" ba-panel ba-panel-title="Company logo">
-  <form name="myForm">
-    <fieldset>
-      <input type="file" ngf-select ng-model="imageFile.file" name="file"
-             accept="image/*" ngf-max-size="10MB" required>
-     <div class="form-group">
-         <button ng-disabled="!myForm.$valid" ng-click="upload(imageFile.file)" class="btn btn-primary pull-right">Save</button>
-     </div>
-    </fieldset>
-  </form>
+<div ng-hide="updatingLogo" class="panel">
+    <div class="panel-heading">
+        <span class="user-details-panel-title">Company logo</span>
+    </div>
+    <div class="panel-body">
+        <form name="myForm">
+            <fieldset>
+                <input type="file" ngf-select ng-model="imageFile.file" name="file"
+                       accept="image/*" ngf-max-size="10MB" required>
+                <div class="form-group">
+                    <button ng-disabled="!myForm.$valid" ng-click="upload(imageFile.file)"
+                            class="btn btn-primary dashboard-btn pull-right">Save</button>
+                </div>
+            </fieldset>
+        </form>
+    </div>
 </div>
 <div ba-panel ng-show="updatingLogo">
     <loading-image></loading-image>

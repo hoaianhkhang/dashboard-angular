@@ -61,11 +61,15 @@
   @include hexagon-after(20.21px solid #F8CF51);
 }
 .hex-over{
-  @include hexagon-hex-over(39px,20px,-48px);
+  @include hexagon-hex-over(70px,20px,-48px);
 }
 
 .overview-hexagon {
-  @include hexagon(146px,84.29px,42.15px 0 45px 0);
+  @include hexagon(146px,84.29px,42.15px 0 42.15px 0);
+}
+
+.overview-hexagon-margin-bottom{
+  margin-bottom: 13px;
 }
 
 .overview-hexagon:before,
@@ -84,51 +88,63 @@
   @include hexagon-hex-over(146px,40px,-92px);
 }
 
-.dashboard-currencies-hexagon-container {
-  position: relative;
-  width: 50px;
-  top: 9.9px;
+.dashboard-currencies-code{
+  background-color: #F8CF51;
+  width: 58px;
+  border-radius: 30px;
+  padding: 20px 0;
+  color: white;
+  text-align: center;
+  font-size: 18px;
+  font-weight: bold;
 }
 
-.dashboard-currencies-hexagon {
+.services-hexagon-container {
+  position: relative;
+  width: 50px;
+  top: 5px;
+  margin-bottom: 20px;
+}
+
+.services-hexagon {
   @include hexagon(50px,28.87px,14.43px 0);
 }
 
-.dashboard-currencies-hexagon:before,
-.dashboard-currencies-hexagon:after {
+.services-hexagon:before,
+.services-hexagon:after {
   @include hexagon-before-after(25px solid transparent,25px solid transparent);
 }
 
-.dashboard-currencies-hexagon:before {
+.services-hexagon:before {
   @include hexagon-before(14.43px solid #F8CF51);
 }
 
-.dashboard-currencies-hexagon:after {
+.services-hexagon:after {
   @include hexagon-after(14.43px solid #F8CF51);
 }
-.dashboard-currencies-hex-over{
+.services-hex-over{
   @include hexagon-hex-over(50px, 15px, -38px);
   margin: 0 auto;
 }
 
 .long-text{
-  font-size: 11px;
+  font-size: 11px!important;
 }
 
 .very-long-text{
-  font-size: 9px;
+  font-size: 9px!important;
 }
 
 .long-text-overview{
-  font-size: 28px;
+  font-size: 28px!important;
 }
 
 .very-long-text-overview{
-  font-size: 22px;
+  font-size: 22px!important;
 }
 
 .hexagon-logo{
   height: 41px;
   width: 60px;
-  margin: 10px 0;
+  margin: 10px 0 12px 0;
 }

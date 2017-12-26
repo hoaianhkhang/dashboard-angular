@@ -1,0 +1,39 @@
+<div ng-hide="loadingAccountCurrencyLimits" class="panel">
+    <div class="panel-heading">
+        <span class="user-details-panel-title">Edit account currency limit</span>
+    </div>
+    <div class="panel-body">
+        <form name="editAccountCurrencyLimitForm" class="custom-form" novalidate>
+            <div class="form-group">
+                <label>Transaction type <span class="required-icon">*</span></label>
+                <br>
+                <select class="form-control pointer" ng-change="accountCurrencyLimitChanged('tx_type'); getSubtypesArray(editAccountCurrencyLimit);"
+                        ng-model="editAccountCurrencyLimit.tx_type" ng-options="option for option in txTypeOptions" required>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Amount</label>
+                <input type="text" class="form-control" ng-change="accountCurrencyLimitChanged('value')" ng-model="editAccountCurrencyLimit.value" placeholder="Enter value" />
+            </div>
+            <div class="form-group">
+                <label>Type <span class="required-icon">*</span></label>
+                <br>
+                <select class="form-control pointer" ng-change="accountCurrencyLimitChanged('type')" ng-model="editAccountCurrencyLimit.type" ng-options="typeOption for typeOption in typeOptions" required>
+                </select>
+            </div>
+            <div ng-hide="loadingSubtypes" class="form-group">
+                <label>Subtype</label>
+                <select class="form-control pointer" ng-change="accountCurrencyLimitChanged('subtype')" ng-model="editAccountCurrencyLimit.subtype"
+                        ng-options="subtypeOption for subtypeOption in subtypeOptions">
+                </select>
+            </div>
+            <div ng-show="loadingSubtypes">
+                <loading-image class="custom-subtype-loading"></loading-image>
+            </div>
+            <div class="form-group">
+                <button ng-click="updateAccountCurrencyLimit()" ng-disabled="!editAccountCurrencyLimitForm.$valid" class="btn btn-primary dashboard-btn pull-right">Save</button>
+                <button ng-click="toggleAccountCurrencyLimitEditView()" class="btn btn-default dashboard-btn pull-right margin-right-10">Back</button>
+            </div>
+        </form>
+    </div>
+</div>

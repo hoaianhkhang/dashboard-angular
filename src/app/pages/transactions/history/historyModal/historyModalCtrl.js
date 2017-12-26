@@ -7,7 +7,6 @@
     function historyModalCtrl($uibModalInstance,$http,$scope,errorHandler,toastr,$timeout,
                               transaction,metadataTextService,$location,environmentConfig,cookieManagement,$ngConfirm) {
 
-        transaction.status = transaction.status.toLowerCase();
         $scope.transaction = transaction;
         $scope.updateTransactionObj = {};
         $scope.formatted = {};
@@ -137,8 +136,8 @@
 
         $scope.goToUser = function () {
             $uibModalInstance.close();
-            $location.path('/user/' + $scope.transaction.user.identifier);
-        }
+            $location.path('/user/' + $scope.transaction.user.identifier + '/details');
+        };
     }
 
 })();

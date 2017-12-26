@@ -1,11 +1,16 @@
-<div ba-panel  ba-panel-title="Confirm credit" ba-panel-class="light-text">
-    <div class="confirm-transaction">
-        <p>You are about to credit <strong>{{creditData.currency.symbol}} {{creditData.amount}}</strong> to <strong>{{creditData.user}}</strong></p>
+<div class="panel">
+    <div class="panel-heading">
+        <span class="user-details-panel-title">Confirm credit</span>
     </div>
-    <div>
+    <div class="panel-body">
+        <div class="confirm-transaction">
+            <p>You are about to credit <strong>{{creditData.currency.symbol}} {{creditData.amount}}</strong> to <strong>{{creditData.user}}</strong></p>
+        </div>
         <div>
-            <button ng-disabled="onGoingTransaction" ng-click="createCreditTransaction()" class="btn btn-primary dashboard-btn pull-right">Confirm</button>
-            <button ng-disabled="onGoingTransaction" ng-click="goToView('createCredit')" class="btn btn-primary dashboard-btn pull-right margin-right-10">Back</button>
+            <div>
+                <button ng-disabled="onGoingTransaction" ng-click="createCreditTransaction()" class="btn btn-primary dashboard-btn pull-right">Confirm</button>
+                <button ng-disabled="onGoingTransaction" ng-click="goToView('createCredit')" class="btn btn-default dashboard-btn pull-right margin-right-10">Back</button>
+            </div>
         </div>
     </div>
 </div>

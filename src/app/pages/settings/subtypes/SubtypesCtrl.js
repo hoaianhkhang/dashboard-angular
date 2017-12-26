@@ -81,7 +81,7 @@
                 $scope.loadingSubtypes = false;
                 if (res.status === 201) {
                     vm.getSubtypes();
-                    toastr.success('You have successfully added a new subtype!');
+                    toastr.success('You have successfully added a new subtype');
                     $scope.newSubtype = {tx_type: 'Credit'};
                     $window.scrollTo(0, 0);
                 }
@@ -110,7 +110,7 @@
                 if (res.status === 200) {
                     vm.updatedSubtype = {};
                     vm.getSubtypes();
-                    toastr.success('You have successfully updated the subtype!');
+                    toastr.success('You have successfully updated the subtype');
                 }
             }).catch(function (error) {
                 $scope.loadingSubtypes = false;

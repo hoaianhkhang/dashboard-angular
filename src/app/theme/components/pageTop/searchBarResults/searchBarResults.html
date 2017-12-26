@@ -1,0 +1,137 @@
+<div ng-hide="hideSearchBar" class="panel search-bar-results-box">
+    <div class="panel-body" ng-hide="loadingResults">
+        <div ng-show="searchedUsers.length > 0">
+            <div>
+                <div class="search-title">USERS</div>
+            </div>
+            <div class="search-user-body pointer" ng-repeat="user in searchedUsers" ng-click="goToUserProfile(user)">
+                <div class="search-user-result">
+                    <div class="row">
+                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                            <span class="search-user-result-title pull-left">{{user.email}}</span>
+                        </div>
+                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3"></div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            <span class="search-user-result-extra">identifier {{user.identifier}}</span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                            <ul class="search-list-details">
+                                <li>
+                                    <span class="search-list-name">Name</span>
+                                </li>
+                                <li>
+                                    <span class="search-list-name">Created</span>
+                                </li>
+                                <li>
+                                    <span class="search-list-name">Last login</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pul-left">
+                            <ul class="search-list-details">
+                                <li>
+                                    <span class="search-list-value">{{user.first_name}} {{user.last_name}}</span>
+                                </li>
+                                <li>
+                                    <span class="search-list-value">{{user.date_joined | date:'mediumDate'}} {{user.date_joined | date:'shortTime'}}</span>
+                                </li>
+                                <li>
+                                    <span class="search-list-value">{{user.last_login | date:'mediumDate'}} {{user.last_login | date:'shortTime'}}</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="show-more-results pointer" ng-click="goToUsers()">
+                Show more results...
+            </div>
+        </div>
+        <div ng-show="searchedTransactions.length > 0">
+            <div>
+                <div class="search-title">TRANSACTIONS</div>
+            </div>
+            <div class="search-user-body pointer" ng-repeat="transaction in searchedTransactions" ng-click="goToTransactionsHistory(transaction)">
+                <div>
+                    <div class="search-user-result-header pull-left">
+                        <span>{{transaction.tx_type | uppercase}}</span>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                            <span class="search-user-result-title pull-left">{{transaction.amount  | currencyModifiersFilter: transaction.currency.divisibility}}</span>
+                        </div>
+                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3"></div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            <span class="search-user-result-extra">transID {{transaction.id}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                        <ul class="search-list-details">
+                            <li>
+                                <span class="search-list-name">Status</span>
+                            </li>
+                            <li>
+                                <span class="search-list-name">Currency</span>
+                            </li>
+                            <li>
+                                <span class="search-list-name">Created</span>
+                            </li>
+                            <li>
+                                <span class="search-list-name">Subtype</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pul-left">
+                        <ul class="search-list-details">
+                            <li>
+                                <span class="search-list-value">{{transaction.status | capitalizeWord}}</span>
+                            </li>
+                            <li>
+                                <span class="search-list-value">{{transaction.currency.symbol}} {{transaction.currency.code}}</span>
+                            </li>
+                            <li>
+                                <span class="search-list-value">{{transaction.created | date:'mediumDate'}} {{transaction.created | date:'shortTime'}}</span>
+                            </li>
+                            <li>
+                                <span class="search-list-value">{{transaction.subtype}}</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="show-more-results pointer" ng-click="goToTransactionsHistory()">
+                Show more results...
+            </div>
+        </div>
+        <!--<div>-->
+            <!--<div>-->
+                <!--<div class="search-title">Currencies</div>-->
+            <!--</div>-->
+            <!--<div class="search-user-body">-->
+                <!--<div>-->
+                    <!--<div class="search-user-result-header pull-left">-->
+                        <!--<span>South African Rand</span>-->
+                    <!--</div>-->
+                    <!--<div class="row">-->
+                        <!--<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">-->
+                            <!--<span class="search-user-result-title pull-left">ZAR</span>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="show-more-results">-->
+                <!--Show more results...-->
+            <!--</div>-->
+        <!--</div>-->
+    </div>
+    <div class="global-search-loading-panel" ng-show="searchedUsers.length == 0 && searchedTransactions.length == 0 && !loadingResults">
+        <i>No results found for "{{searchString}}"</i>
+    </div>
+    <div class="global-search-loading-panel" ng-show="loadingResults">
+        <loading-image></loading-image>
+    </div>
+</div>

@@ -1,18 +1,32 @@
 <div class="row">
   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
     <div class="page-top clearfix" scroll-position="scrolled" max-height="50" ng-class="{'scrolled': scrolled}">
-      <a href="#/home" class="al-logo clearfix" ng-bind="companyName"></a>
+      <a href="#/currencies" class="al-logo clearfix" ng-bind="companyName"></a>
       <a href class="collapse-menu-link ion-navicon" ba-sidebar-toggle-menu></a>
-
       <div class="user-profile clearfix">
         <div class="al-user-profile" uib-dropdown>
           <a uib-dropdown-toggle class="profile-toggle-link">
-            <img ng-src="{{::( 'profile_nav' | profilePicture )}}">
+            <div class="alternatePhoto-page-top pointer">{{userInfo.first_name | limitTo: 1 | uppercase}}{{userInfo.last_name | uppercase | limitTo: 1}}</div>
           </a>
           <ul  class="top-dropdown-menu profile-dropdown" uib-dropdown-menu>
             <li><i class="dropdown-arr"></i></li>
-            <li ng-click="logout()"><a href class="signout text-center"><i class="ion-log-out"></i><strong>Sign out</strong></a></li>
+            <li ng-click="viewProfile()"><a href class="signout text-center"><i class="profile-navbar-icon ion-person"></i>
+              View profile</a></li>
+            <li ng-click="logout()"><a href class="signout text-center"><i class="profile-navbar-icon ion-log-out"></i>Sign out</a></li>
           </ul>
+        </div>
+      </div>
+      <div class="user-company-overview pull-right">
+        <span>{{userInfo.email}}</span>
+        <p>{{company.identifier}}</p>
+      </div>
+      <div class="search-bar-main" click-outside="hidingSearchBar()">
+        <input type="text" class="page-top-search" placeholder="Search by email, mobile number or transaction id" ng-model="searchString"
+               ng-keydown="($event.keyCode === 13)  && searchGlobal(searchString)"
+               ng-focus="searchGlobal(searchString)"
+               ng-change="searchGlobal(searchString)" ng-model-options='{ debounce: 800 }'>
+        <div class="search-bar-div">
+          <search-bar-results></search-bar-results>
         </div>
       </div>
     </div>

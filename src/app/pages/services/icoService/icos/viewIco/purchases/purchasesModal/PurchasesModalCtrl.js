@@ -12,7 +12,7 @@
 
         $scope.goToUser = function () {
             $uibModalInstance.close();
-            $location.path('/user/' + $scope.purchase.quote.user);
+            $location.path('/user/' + $scope.purchase.quote.user + '/details');
         };
 
         $scope.goToTransactions = function(transactionCode){

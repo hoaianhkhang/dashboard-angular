@@ -13,12 +13,12 @@
             }).then(function (res) {
                 if (res.status === 200) {
                     toastr.success("Email has been verified successfully");
-                    $location.path('/home');
+                    $location.path('/currencies');
                 }
             }).catch(function (error) {
                 errorHandler.evaluateErrors(error.data);
                 errorHandler.handleErrors(error);
-                $location.path('/home');
+                $location.path('/currencies');
             });
         };
         $scope.verifyAdminEmail();

@@ -5,36 +5,63 @@
         .controller('EthereumServiceTransactionsCtrl', EthereumServiceTransactionsCtrl);
 
     /** @ngInject */
-    function EthereumServiceTransactionsCtrl($scope,$http,cookieManagement,$uibModal,errorHandler,$window,$location) {
+    function EthereumServiceTransactionsCtrl($scope,$http,cookieManagement,$uibModal,toastr,
+                                             errorHandler,$state,$window,typeaheadService,serializeFiltersService) {
 
         var vm = this;
         vm.token = cookieManagement.getCookie('TOKEN');
-        vm.currenciesList = JSON.parse($window.sessionStorage.currenciesList);
-
+        vm.currenciesList = JSON.parse($window.sessionStorage.currenciesList || '[]');
+        vm.serviceUrl = cookieManagement.getCookie('SERVICEURL');
+        $scope.showingFilters = false;
+        $scope.dateFilterOptions = ['Is in the last','In between','Is equal to','Is after','Is before'];
+        $scope.amountFilterOptions = ['Is equal to','Is between','Is greater than','Is less than'];
+        $scope.dateFilterIntervalOptions = ['days','months'];
+        $scope.filtersCount = 0;
+        $scope.filtersObj = {
+            dateFilter: false,
+            statusFilter: false,
+            transactionTypeFilter: false,
+            transactionHashFilter: false,
+            transactionIdFilter: false,
+            userFilter: false,
+            pageSizeFilter: false
+        };
+        $scope.applyFiltersObj = {
+            dateFilter: {
+                selectedDateOption: 'Is in the last',
+                selectedDayIntervalOption: 'days',
+                dayInterval: '',
+                dateFrom: '',
+                dateTo: '',
+                dateEqualTo: ''
+            },
+            statusFilter: {
+                selectedStatusOption: 'Pending'
+            },
+            transactionTypeFilter: {
+                selectedTransactionTypeOption: 'Deposit'
+            },
+            transactionHashFilter: {
+                selectedTransactionHashOption: null
+            },
+            transactionIdFilter: {
+                selectedTransactionIdOption: null
+            },
+            userFilter: {
+                selectedUserOption: $state.params.identifier || null
+            }
+        };
         $scope.pagination = {
             itemsPerPage: 26,
             pageNo: 1,
             maxSize: 5
         };
-
-        $scope.searchParams = {
-            searchEmail: '',
-            searchType: 'Type',
-            searchTxHash:'',
-            searchRehiveCode:'',
-            searchDateFrom: '',
-            searchDateTo: '',
-            searchStatus: 'Status',
-            searchOrderBy: 'Latest'
-        };
-
         $scope.transactions = [];
         $scope.transactionsStateMessage = '';
         $scope.transactionsData = {};
         $scope.loadingTransactions = false;
-        $scope.typeOptions = ['Type','Deposit','Send','Withdraw'];
-        $scope.statusOptions = ['Status','Pending','Confirmed','Complete','Failed'];
-        $scope.orderByOptions = ['Largest','Latest','Smallest'];
+        $scope.typeOptions = ['Deposit','Send','Withdraw'];
+        $scope.statusOptions = ['Pending','Confirmed','Complete','Failed'];
 
         //for angular datepicker
         $scope.dateObj = {};
@@ -49,44 +76,125 @@
             $scope.popup2.opened = true;
         };
 
+        $scope.pageSizeChanged =  function () {
+            if($scope.pagination.itemsPerPage > 250){
+                $scope.pagination.itemsPerPage = 250;
+            }
+        };
+
+        $scope.showFilters = function () {
+            $scope.showingFilters = !$scope.showingFilters;
+        };
+
         $scope.clearFilters = function () {
-            $scope.searchParams = {
-                searchEmail: '',
-                searchType: 'Type',
-                searchTxHash:'',
-                searchRehiveCode:'',
-                searchDateFrom: '',
-                searchDateTo: '',
-                searchStatus: 'Status',
-                searchOrderBy: 'Latest'
+            $scope.filtersObj = {
+                dateFilter: false,
+                statusFilter: false,
+                transactionTypeFilter: false,
+                transactionHashFilter: false,
+                transactionIdFilter: false,
+                userFilter: false,
+                pageSizeFilter: false
             };
         };
 
-        vm.getTransactionUrl = function(){
-            vm.filterParams = '?page=' + $scope.pagination.pageNo + '&page_size=' + $scope.pagination.itemsPerPage
-                + '&email=' + ($scope.searchParams.searchEmail? encodeURIComponent($scope.searchParams.searchEmail) : '')
-                + '&tx_type=' + ($scope.searchParams.searchType == 'Type' ? '' : $scope.searchParams.searchType.toLowerCase())
-                + '&transaction_hash=' + $scope.searchParams.searchTxHash
-                + '&rehive_code=' + $scope.searchParams.searchRehiveCode
-                + '&created__gt=' + ($scope.searchParams.searchDateFrom? Date.parse($scope.searchParams.searchDateFrom + 'T00:00:00') : '')
-                + '&created__lt=' + ($scope.searchParams.searchDateTo? Date.parse($scope.searchParams.searchDateTo + 'T00:00:00') : '')
-                + '&status=' + ($scope.searchParams.searchStatus == 'Status' ? '' : $scope.searchParams.searchStatus)
-                + '&orderby=' + ($scope.searchParams.searchOrderBy == 'Latest' ? '-created' : $scope.searchParams.searchOrderBy == 'Largest' ? '-amount' : $scope.searchParams.searchOrderBy == 'Smallest' ? 'amount' : '');
+        $scope.dayIntervalChanged = function () {
+            if($scope.applyFiltersObj.dateFilter.dayInterval <= 0){
+                toastr.success('Please enter a positive value');
+            }
+        };
 
-            return cookieManagement.getCookie('SERVICEURL')+ 'admin/transactions/' + vm.filterParams;
+        vm.getDateFilters = function () {
+            var dateObj = {
+                created__lt: null,
+                created__gt: null
+            };
+
+            switch($scope.applyFiltersObj.dateFilter.selectedDateOption) {
+                case 'Is in the last':
+                    if($scope.applyFiltersObj.dateFilter.selectedDayIntervalOption == 'days'){
+                        dateObj.created__lt = moment().add(1,'days').format('YYYY-MM-DD');
+                        dateObj.created__gt = moment().subtract($scope.applyFiltersObj.dateFilter.dayInterval,'days').format('YYYY-MM-DD');
+                    } else {
+                        dateObj.created__lt = moment().add(1,'days').format('YYYY-MM-DD');
+                        dateObj.created__gt = moment().subtract($scope.applyFiltersObj.dateFilter.dayInterval,'months').format('YYYY-MM-DD');
+                    }
+
+                    break;
+                case 'In between':
+                    dateObj.created__lt = moment(new Date($scope.applyFiltersObj.dateFilter.dateTo)).add(1,'days').format('YYYY-MM-DD');
+                    dateObj.created__gt = moment(new Date($scope.applyFiltersObj.dateFilter.dateFrom)).format('YYYY-MM-DD');
+
+                    break;
+                case 'Is equal to':
+                    dateObj.created__lt = moment(new Date($scope.applyFiltersObj.dateFilter.dateEqualTo)).add(1,'days').format('YYYY-MM-DD');
+                    dateObj.created__gt = moment(new Date($scope.applyFiltersObj.dateFilter.dateEqualTo)).format('YYYY-MM-DD');
+
+                    break;
+                case 'Is after':
+                    dateObj.created__lt = null;
+                    dateObj.created__gt = moment(new Date($scope.applyFiltersObj.dateFilter.dateFrom)).add(1,'days').format('YYYY-MM-DD');
+                    break;
+                case 'Is before':
+                    dateObj.created__lt = moment(new Date($scope.applyFiltersObj.dateFilter.dateTo)).format('YYYY-MM-DD');
+                    dateObj.created__gt = null;
+                    break;
+                default:
+                    break;
+            }
+
+            return dateObj;
+        };
+
+        vm.getTransactionUrl = function(){
+            $scope.filtersCount = 0;
+
+            for(var x in $scope.filtersObj){
+                if($scope.filtersObj.hasOwnProperty(x)){
+                    if($scope.filtersObj[x]){
+                        $scope.filtersCount = $scope.filtersCount + 1;
+                    }
+                }
+            }
+
+            if($scope.filtersObj.dateFilter){
+                vm.dateObj = vm.getDateFilters();
+            } else{
+                vm.dateObj = {
+                    created__lt: null,
+                    created__gt: null
+                };
+            }
+
+            var searchObj = {
+                page: $scope.pagination.pageNo,
+                page_size: $scope.filtersObj.pageSizeFilter? $scope.pagination.itemsPerPage : 26,
+                created__gt: vm.dateObj.created__gt ? Date.parse(vm.dateObj.created__gt +'T00:00:00') : null,
+                created__lt: vm.dateObj.created__lt ? Date.parse(vm.dateObj.created__lt +'T00:00:00') : null,
+                email: $scope.filtersObj.userFilter ? ($scope.applyFiltersObj.userFilter.selectedUserOption ? encodeURIComponent($scope.applyFiltersObj.userFilter.selectedUserOption) : null): null,
+                transaction_hash: $scope.filtersObj.transactionHashFilter ? ($scope.applyFiltersObj.transactionHashFilter.selectedTransactionHashOption ? encodeURIComponent($scope.applyFiltersObj.transactionHashFilter.selectedTransactionHashOption) : null): null,
+                rehive_code: $scope.filtersObj.transactionIdFilter ? ($scope.applyFiltersObj.transactionIdFilter.selectedTransactionIdOption ? encodeURIComponent($scope.applyFiltersObj.transactionIdFilter.selectedTransactionIdOption) : null): null,
+                tx_type: $scope.filtersObj.transactionTypeFilter ? $scope.applyFiltersObj.transactionTypeFilter.selectedTransactionTypeOption.toLowerCase() : null,
+                status: $scope.filtersObj.statusFilter ? $scope.applyFiltersObj.statusFilter.selectedStatusOption: null
+            };
+
+            return vm.serviceUrl + 'transactions/?' + serializeFiltersService.serializeFilters(searchObj);
         };
 
         $scope.getLatestTransactions = function(applyFilter){
-            if(vm.token){
+            if(vm.token) {
+
+                $scope.showingFilters = false;
+
                 $scope.transactionsStateMessage = '';
                 $scope.loadingTransactions = true;
 
-                if(applyFilter){
-                  // if function is called from history-filters directive, then pageNo set to 1
+                if (applyFilter) {
+                    // if function is called from history-filters directive, then pageNo set to 1
                     $scope.pagination.pageNo = 1;
                 }
 
-                if($scope.transactions.length > 0 ){
+                if ($scope.transactions.length > 0) {
                     $scope.transactions.length = 0;
                 }
 
@@ -102,7 +210,7 @@
                     if (res.status === 200) {
                         $scope.transactionsData = res.data.data;
                         $scope.transactions = $scope.transactionsData.results;
-                        if($scope.transactions == 0){
+                        if ($scope.transactions == 0) {
                             $scope.transactionsStateMessage = 'No transactions have been made';
                             return;
                         }
@@ -111,10 +219,6 @@
                     }
                 }).catch(function (error) {
                     $scope.loadingTransactions = false;
-                    if(error.status == 403){
-                        $location.path('/services');
-                        return
-                    }
                     $scope.transactionsStateMessage = 'Failed to load data';
                     errorHandler.evaluateErrors(error.data);
                     errorHandler.handleErrors(error);
@@ -122,6 +226,8 @@
             }
         };
         $scope.getLatestTransactions();
+
+        $scope.getUsersEmailTypeahead = typeaheadService.getUsersEmailTypeahead();
 
         $scope.openModal = function (page, size,transaction) {
             $uibModal.open({
@@ -137,6 +243,6 @@
             });
         };
 
-    }
 
+    }
 })();

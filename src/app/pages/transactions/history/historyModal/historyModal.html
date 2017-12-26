@@ -7,10 +7,10 @@
     </div>
     <div class="modal-body">
         <div class="row">
-            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                <p><strong>Code: </strong></p>
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-left-padding divider">
+                <p class="text-subtle">Code: </p>
             </div>
-            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 no-right-padding">
                 <span ng-bind="transaction.id"></span>
                 <i ng-hide="editingTransaction" ng-click="toggleEditingTransaction()" class="fa fa-pencil-square-o transaction-edit-btn pull-right pointer" aria-hidden="true"></i>
                 <i ng-show="editingTransaction" ng-click="editTransaction()" class="fa fa-floppy-o transaction-edit-btn pull-right pointer" aria-hidden="true"></i>
@@ -18,98 +18,98 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                <p><strong>User: </strong></p>
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-left-padding divider">
+                <p class="text-subtle">User: </p>
             </div>
-            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 no-right-padding">
                 <a class="pointer" ng-click="goToUser()" ng-bind="transaction.user.email || transaction.user.mobile_number"></a>
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                <p><strong>Balance: </strong></p>
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-left-padding divider">
+                <p class="text-subtle">Balance: </p>
             </div>
-            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 no-right-padding">
                 <p ng-bind="transaction.balance | currencyModifiersFilter: transaction.currency.divisibility"></p>
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                <p><strong>Type: </strong></p>
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-left-padding divider">
+                <p class="text-subtle">Type: </p>
             </div>
-            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 no-right-padding">
                 <p ng-bind="transaction.tx_type | capitalizeWord"></p>
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                <p><strong>Currency: </strong></p>
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-left-padding divider">
+                <p class="text-subtle">Currency: </p>
             </div>
-            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 no-right-padding">
                 <p ng-bind="transaction.currency.code"></p>
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                <p><strong>Amount: </strong></p>
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-left-padding divider">
+                <p class="text-subtle">Amount: </p>
             </div>
-            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 no-right-padding">
                 <p ng-bind="transaction.amount  | currencyModifiersFilter: transaction.currency.divisibility"></p>
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                <p><strong>Fee: </strong></p>
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-left-padding divider">
+                <p class="text-subtle">Fee: </p>
             </div>
-            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 no-right-padding">
                 <p ng-bind="transaction.fee | currencyModifiersFilter: transaction.currency.divisibility"></p>
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                <p><strong>Subtype: </strong></p>
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-left-padding divider">
+                <p class="text-subtle">Subtype: </p>
             </div>
-            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 no-right-padding">
                 <p ng-bind="transaction.subtype"></p>
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                <p><strong>Account: </strong></p>
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-left-padding divider">
+                <p class="text-subtle">Account: </p>
             </div>
-            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 no-right-padding">
                 <p ng-bind="transaction.account"></p>
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                <p><strong>Status: </strong></p>
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-left-padding divider">
+                <p class="text-subtle">Status: </p>
             </div>
-            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-                <p ng-bind="transaction.status | capitalizeWord">
+            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 no-right-padding">
+                <p ng-bind="transaction.status">
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                <p><strong>Reference: </strong></p>
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-left-padding divider">
+                <p class="text-subtle">Reference: </p>
             </div>
-            <div ng-show="transaction.reference" class="metadata col-lg-8 col-md-8 col-sm-8 col-xs-8">
+            <div ng-show="transaction.reference" class="metadata col-lg-8 col-md-8 col-sm-8 col-xs-8 no-right-padding">
                 <pre ng-bind="transaction.reference"></pre>
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                <p><strong>Note: </strong></p>
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-left-padding divider">
+                <p class="text-subtle">Note: </p>
             </div>
-            <div ng-show="transaction.note" class="metadata col-lg-8 col-md-8 col-sm-8 col-xs-8">
+            <div ng-show="transaction.note" class="metadata col-lg-8 col-md-8 col-sm-8 col-xs-8 no-right-padding">
                 <pre ng-bind="transaction.note"></pre>
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                <p><strong>Metadata: </strong></p>
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-left-padding divider">
+                <p class="text-subtle">Metadata: </p>
             </div>
-            <div class="metadata col-lg-8 col-md-8 col-sm-8 col-xs-8">
+            <div class="metadata col-lg-8 col-md-8 col-sm-8 col-xs-8 no-right-padding">
                 <div ng-show="formatted.metadata">
                     <pre ng-hide="editingTransaction">{{formatted.metadata}}</pre>
                 </div>
@@ -117,16 +117,20 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                <p><strong>Date: </strong></p>
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-left-padding divider">
+                <p class="text-subtle">Date: </p>
             </div>
-            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 no-right-padding">
                 <p>{{transaction.created | date:'mediumDate'}} {{transaction.created | date:'shortTime'}}</p>
             </div>
         </div>
     </div>
-    <div class="modal-footer">
-        <button type="button" ng-hide="transaction.status == 'failed'" ng-disabled="updatingTransaction" class="transaction-details-button btn btn-danger pull-left" ng-click="updateTransactionConfirm('Failed')">Cancel Transaction</button>
-        <button type="button" ng-show="transaction.status == 'pending' || transaction.status == 'initiating'" ng-disabled="updatingTransaction" class="transaction-details-button btn btn-primary pull-right" ng-click="updateTransactionConfirm('Complete')">Complete Transaction</button>
+    <div class="modal-footer row">
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 no-left-padding">
+            <button type="button" ng-hide="transaction.status == 'Failed'" ng-disabled="updatingTransaction" class="transaction-details-button btn btn-danger pull-left" ng-click="updateTransactionConfirm('Failed')">Cancel Transaction</button>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 no-right-padding">
+            <button type="button" ng-show="transaction.status == 'Pending' || transaction.status == 'Initiating'" ng-disabled="updatingTransaction" class="transaction-details-button btn btn-primary pull-right" ng-click="updateTransactionConfirm('Complete')">Complete Transaction</button>
+        </div>
     </div>
 </div>

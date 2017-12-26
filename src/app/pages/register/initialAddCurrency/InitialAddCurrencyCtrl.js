@@ -51,7 +51,7 @@
                     if (res.status === 200) {
                         if(!res.data.data.results.length == 0){
                             $rootScope.intialCurrency = true;
-                            $location.path('/home');
+                            $location.path('/currencies');
                         } else {
                             $rootScope.intialCurrency = false;
                         }
@@ -82,7 +82,7 @@
                         $rootScope.userFullyVerified = true;
                     }
                     toastr.success('Initial currency added successfully');
-                    $location.path('/home');
+                    $location.path('/currencies');
                     $rootScope.$pageFinishedLoading = true;
                 }
             }).catch(function (error) {

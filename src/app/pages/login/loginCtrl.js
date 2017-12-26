@@ -52,6 +52,7 @@
                             $rootScope.$pageFinishedLoading = true;
                             $location.path('/authentication/multi-factor/verify/' + enabledObj.key).search({prevUrl: 'login'});
                         } else {
+                            $rootScope.$pageFinishedLoading = false;
                             $location.path('/verification');
                         }
 

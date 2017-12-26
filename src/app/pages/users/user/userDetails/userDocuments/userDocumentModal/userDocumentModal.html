@@ -1,0 +1,157 @@
+<div class="modal-content">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="$dismiss()" aria-label="Close">
+            <em class="ion-ios-close-empty sn-link-close"></em>
+        </button>
+        <h4 class="modal-title" id="myModalLabel">Update document</h4>
+    </div>
+    <div class="modal-body">
+        <div ng-show="showingDocumentFile" class="row">
+            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 no-left-padding">
+                <img class="documentImage" ng-src="{{document.file || defaultImageUrl}}" height="600px" width="100%">
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-right-padding">
+                <div ng-show="(document.document_category == 'Proof Of Identity') || document.document_category == 'Advanced Proof Of Identity'">
+                    <h4 class="document-info-header">Basic info</h4>
+                    <table class="table user-basic-info-table">
+                        <tr>
+                            <th width="50%">First name</th>
+                            <td ng-bind="user.first_name || 'None'"></td>
+                        </tr>
+                        <tr>
+                            <th width="50%">Last name</th>
+                            <td ng-bind="user.last_name || 'None'"></td>
+                        </tr>
+                        <tr>
+                            <th width="50%">Nationality</th>
+                            <td ng-bind="user.nationality | isoCountry"></td>
+                        </tr>
+                        <tr>
+                            <th width="50%">Language</th>
+                            <td ng-bind="user.language || 'None'"></td>
+                        </tr>
+                        <tr>
+                            <th width="50%">Date of birth</th>
+                            <td ng-bind="user.birth_date"></td>
+                        </tr>
+                        <tr>
+                            <th width="50%">Age</th>
+                            <td ng-bind="user.birth_date | ageCalculator"></td>
+                        </tr>
+                        <tr>
+                            <th width="50%">Id number</th>
+                            <td ng-bind="user.id_number || 'None'"></td>
+                        </tr>
+                        <tr>
+                            <th width="50%">Basic info status</th>
+                            <td><select class="form-control pointer" ng-model="userInfo.status"
+                                        ng-options="statusOption for statusOption in statusTypeOptions">
+                            </select></td>
+                        </tr>
+                    </table>
+                </div>
+                <div ng-show="document.document_category == 'Proof Of Address'">
+                    <h4 class="document-info-header">Addresses</h4>
+                    <table class="table user-basic-info-table" ng-repeat="address in userAddresses">
+                        <tr>
+                            <th width="50%">Line 1</th>
+                            <td>{{address.line_1 || 'None'}}</td>
+                        </tr>
+                        <tr>
+                            <th width="50%">Line 2</th>
+                            <td>{{address.line_2 || 'None'}}</td>
+                        </tr>
+                        <tr>
+                            <th width="50%">City</th>
+                            <td>{{address.city || 'None'}}</td>
+                        </tr>
+                        <tr>
+                            <th width="50%">State/province</th>
+                            <td>{{address.state_province || 'None'}}</td>
+                        </tr>
+                        <tr>
+                            <th width="50%">Country</th>
+                            <td>{{address.country || 'None' | isoCountry}}</td>
+                        </tr>
+                        <tr>
+                            <th width="50%">Postal code</th>
+                            <td>{{address.postal_code || 'None'}}</td>
+                        </tr>
+                        <tr>
+                            <th width="50%">Address status</th>
+                            <td><select class="form-control pointer" ng-model="address.status" ng-change="addressStatusTracking(address)"
+                                        ng-options="statusOption for statusOption in statusTypeOptions">
+                            </select></td>
+                        </tr>
+                    </table>
+                </div>
+                <i ng-show="(document.document_category == 'Proof Of Address') && (userAddresses.length == 0)">No address provided</i>
+                <div ng-show="checkIfMetadataExists()">
+                    <h4>Extra</h4>
+                    <table class="table user-basic-info-table divider">
+                        <tr ng-repeat="(key, value) in editDocument.metadata">
+                            <th width="50%">{{key}}</th>
+                            <td>{{value}}</td>
+                        </tr>
+                    </table>
+                </div>
+                <h4 ng-class="{'no-margin-top': document.document_category == 'Other'}">Document</h4>
+                <form class="custom-form" novalidate>
+                    <fieldset class="divider-20">
+                        <input ng-change="kycDocumentSelected('file')" type="file" ngf-select ng-model="editDocument.file" name="file"
+                               accept="image/*" ngf-max-size="10MB" required>
+                    </fieldset>
+                    <div class="form-group divider-20">
+                        <label>Document type <span class="required-icon">*</span></label>
+                        <br>
+                        <select class="form-control pointer" ng-change="documentChanged('document_type')" ng-model="editDocument.document_type" ng-options="type for type in documentTypeOptions" required>
+                        </select>
+                    </div>
+                    <div class="form-group divider-20">
+                        <label>Document status <span class="required-icon">*</span></label>
+                        <br>
+                        <select class="form-control pointer" ng-change="documentChanged('status')" ng-model="editDocument.status" ng-options="status for status in statusTypeOptions" required>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Note</label>
+                        <textarea rows="4" type="text" ng-change="documentChanged('note')" ng-model="editDocument.note" class="form-control"  placeholder='Enter note'></textarea>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            <div ng-hide="showingDocumentFile" class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-left-padding no-right-padding">
+                <img class="divider-20" ngf-thumbnail="editDocument.file" height="500px" width="100%">
+                <form class="custom-form" novalidate>
+                    <fieldset class="divider-20">
+                        <input ng-change="kycDocumentSelected('file')" type="file" ngf-select ng-model="editDocument.file" name="file"
+                               accept="image/*" ngf-max-size="10MB" required>
+                    </fieldset>
+                    <div class="form-group divider-20">
+                        <label>Document type <span class="required-icon">*</span></label>
+                        <br>
+                        <select class="form-control pointer" ng-change="documentChanged('document_type')" ng-model="editDocument.document_type" ng-options="type for type in documentTypeOptions" required>
+                        </select>
+                    </div>
+                    <div class="form-group divider-20">
+                        <label>Status <span class="required-icon">*</span></label>
+                        <br>
+                        <select class="form-control pointer" ng-change="documentChanged('status')" ng-model="editDocument.status" ng-options="status for status in statusTypeOptions" required>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Note</label>
+                        <textarea rows="4" type="text" ng-change="documentChanged('note')" ng-model="editDocument.note" class="form-control"  placeholder='Enter note'></textarea>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <div>
+            <button type="button" ng-click="deleteDocumentConfirm()" ng-disabled="updatingDocument" class="btn btn-danger no-left-padding dashboard-btn pull-left">Delete</button>
+            <button ng-click="updateDocument()" ng-disabled="updatingDocument" type="button" class="btn btn-primary no-right-padding dashboard-btn pull-right">Save</button>
+        </div>
+    </div>
+</div>

@@ -1,7 +1,10 @@
 (function () {
     'use strict';
 
-    angular.module('BlurAdmin.pages.users', [])
+    angular.module('BlurAdmin.pages.users', [
+        'BlurAdmin.pages.users.user',
+        'BlurAdmin.pages.users.addUser'
+    ])
         .config(routeConfig);
 
     /** @ngInject */
@@ -11,7 +14,9 @@
                 url: '/users',
                 templateUrl: 'app/pages/users/users.html',
                 params: {
-                    currencyCode: null
+                    currencyCode: null,
+                    email: null,
+                    mobile: null
                 },
                 controller: "UsersCtrl",
                 title: 'Users',

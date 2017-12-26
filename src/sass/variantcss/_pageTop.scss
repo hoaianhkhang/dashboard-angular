@@ -1,3 +1,61 @@
+.alternatePhoto-page-top{
+  display: block;
+  width:35px;
+  height: 35px;
+  margin: 11px 0 0 0;
+  border: 2px solid #979797;
+  background-color: #979797;
+  border-radius: 80px;
+  color: white;
+  font-size: 16px;
+  vertical-align: middle;
+  text-align: center;
+  line-height: 30px;
+}
+
+.profile-navbar-icon{
+  position: relative;
+  top: 1px;
+}
+
+.user-company-overview{
+  margin: 17px 10px 0 0;
+  color: white;
+  text-align: right;
+  & span{
+    margin: 0;
+    line-height: 16px;
+    font-size: 16px;
+    font-weight: 500;
+  }
+  & p{
+    margin: 0;
+    line-height: 20px;
+    font-weight: 300;
+  }
+};
+
+.page-top-search{
+  width: 730px;
+  height: 40px;
+  border-radius: 5px;
+  background-color: #5299C3;
+  color: white;
+  border: none;
+  padding: 15px;
+  &::placeholder{
+    color: white;
+    font-weight: 100;
+  }
+  &:focus{
+    border: none;
+    outline: none;
+  }
+  &:active{
+    border: none;
+  }
+}
+
 .user-currency-item-list .user-currency-item {
   font-size: 16px;
   padding: 8px 20px;
@@ -15,7 +73,7 @@
 }
 
 .no-margin{
-  margin: 0;
+  margin: 0 !important;
 }
 
 .user-currency-dropdown{

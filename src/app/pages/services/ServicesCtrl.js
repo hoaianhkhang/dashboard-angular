@@ -8,9 +8,18 @@
     function ServicesCtrl($scope,$location,$http,environmentConfig,errorHandler,$ngConfirm,$timeout,cookieManagement,toastr) {
 
         $scope.loadingServices = true;
+        $scope.showingFilters = false;
 
         var vm = this;
         vm.token = cookieManagement.getCookie('TOKEN');
+
+        $scope.showFilters = function () {
+            $scope.showingFilters = !$scope.showingFilters;
+        };
+
+        $scope.closeOptionsBox = function () {
+            $scope.optionsCode = '';
+        };
 
         $scope.getServices = function(){
           $scope.loadingServices = true;
@@ -82,7 +91,7 @@
             });
         };
 
-        $scope.addService = function(){
+        $scope.goToAddService = function(){
             $location.path('/services/add');
         };
 
@@ -91,6 +100,6 @@
           var serviceNameArray = service.name.split(' ');
           var pathName = serviceNameArray[0].toLowerCase();
           $location.path('/services/' + pathName);
-        }
+        };
     }
 })();

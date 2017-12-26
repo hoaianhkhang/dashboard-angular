@@ -27,9 +27,9 @@
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 verification-text">
                     <img ng-src="{{qrCodeUrl}}">
                 </div>
-                <table class="table table-fees table-striped user-details-table divider">
+                <table class="table divider">
                     <tr ng-repeat="(key,value) in tokenAuthenticationDetails">
-                        <th width="40%"><strong ng-bind="key"></strong></th>
+                        <th class="divider" width="40%" ng-bind="key"></th>
                         <th ng-bind="value"></th>
                     </tr>
                 </table>

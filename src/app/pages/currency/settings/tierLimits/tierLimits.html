@@ -2,62 +2,77 @@
     <uib-tabset active="activeTabIndex">
         <uib-tab ng-repeat="tierLevel in tierLevelsForLimits" select="selectTier(tierLevel)" heading="Tier {{tierLevel}}">
           <div ng-hide="editingTierLimits">
-            <div ng-show="tiersLimitsList.length > 0" ba-panel class="setting-bank-accounts" ba-panel-title="Tier limits" ba-panel-class="light-text with-scroll">
-                <table class="table fees-table table-striped setting-bank-accounts-table">
-                    <tr class="black-muted-bg divider">
-                        <th><strong>Tx type</strong></th>
-                        <th><strong>Amount</strong></th>
-                        <th><strong>Type</strong></th>
-                        <th><strong>Subtype</strong></th>
-                        <th></th>
-                    </tr>
-                    <tr ng-repeat="tierLimit in tiersLimitsList">
-                        <th title="{{tierLimit.tx_type | capitalizeWord}}" ng-bind="tierLimit.tx_type | capitalizeWord | limitTo: '35'"></th>
-                        <th title="{{tierLimit.value | currencyModifiersFilter: currencyObj.divisibility}}"
-                            ng-bind="tierLimit.value | currencyModifiersFilter: currencyObj.divisibility"></th>
-                        <th title="{{tierLimit.type}}" ng-bind="tierLimit.type | capitalizeWord | limitTo: '35'"></th>
-                        <th title="{{tierLimit.subtype ? tierLimit.subtype : 'None'}}" ng-bind="tierLimit.subtype ? tierLimit.subtype : 'None'| limitTo: '35'"></th>
-                        <th class="rehive-table-row-last-child">
-                            <button ng-click="openTierLimitsModal('app/pages/currency/settings/tierLimits/tierLimitsModal/tierLimitsModal.html','md',tierLimit)" class="btn btn-danger pull-right rehive-settings-buttons">Delete</button>
-                            <button ng-click="toggleTierLimitEditView(tierLimit)" class="btn btn-primary pull-right rehive-settings-buttons">Edit</button>
-                        </th>
-                    </tr>
-                </table>
-            </div>
-            <div ba-panel ng-show="tiersLimitsList.length == 0">
-              <i>No limits are available for this tier.</i>
-            </div>
-            <div ba-panel ba-panel-title="Add tier limit" ba-panel-class="light-text with-scroll">
-                <form name="tierLimitForm" class="custom-form">
-                    <div class="form-group">
-                        <label><strong>Transaction type</strong> <span class="required-icon">*</span></label>
-                        <br>
-                        <select class="form-control pointer" ng-change="getSubtypesArray(tierLimitsParams)" ng-model="tierLimitsParams.tx_type" ng-options="option for option in txTypeOptions" required>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label><strong>Amount</strong></label>
-                        <input type="text" class="form-control" ng-model="tierLimitsParams.value" placeholder="Enter value" />
-                    </div>
-                    <div class="form-group">
-                        <label><strong>Type</strong> <span class="required-icon">*</span></label>
-                        <br>
-                        <select class="form-control pointer" ng-model="tierLimitsParams.type" ng-options="typeOption for typeOption in typeOptions" required>
-                        </select>
-                    </div>
-                    <div ng-hide="loadingSubtypes" class="form-group">
-                        <label><strong>Subtype</strong></label>
-                        <select class="form-control pointer" ng-model="tierLimitsParams.subtype" ng-options="subtypeOption for subtypeOption in subtypeOptions">
-                        </select>
-                    </div>
-                    <div ng-show="loadingSubtypes">
-                        <loading-image class="custom-subtype-loading"></loading-image>
-                    </div>
-                    <div class="form-group">
-                        <button ng-click="addTierLimit(tierLimitsParams)" ng-disabled="!tierLimitForm.$valid" class="btn btn-primary dashboard-btn pull-right">Add</button>
-                    </div>
-                </form>
-            </div>
+              <div ng-show="tiersLimitsList.length > 0" class="panel">
+                  <div class="panel-heading">
+                      <span class="user-details-panel-title">Tier limits</span>
+                  </div>
+                  <div class="panel-body">
+                      <table class="table">
+                          <tr class="user-switches-table-header divider">
+                              <th class="rehive-table-row-first-child">Tx type</th>
+                              <th>Amount</th>
+                              <th>Type</th>
+                              <th>Subtype</th>
+                              <th></th>
+                          </tr>
+                          <tr ng-repeat="tierLimit in tiersLimitsList">
+                              <td class="transactions-list-element rehive-table-row-first-child"
+                                  title="{{tierLimit.tx_type | capitalizeWord}}" ng-bind="tierLimit.tx_type | capitalizeWord | limitTo: '35'"></td>
+                              <td title="{{tierLimit.value | currencyModifiersFilter: currencyObj.divisibility}}"
+                                  ng-bind="tierLimit.value | currencyModifiersFilter: currencyObj.divisibility"></td>
+                              <td title="{{tierLimit.type}}"
+                                  ng-bind="tierLimit.type | capitalizeWord | limitTo: '35'"></td>
+                              <td title="{{tierLimit.subtype ? tierLimit.subtype : 'None'}}"
+                                  ng-bind="tierLimit.subtype ? tierLimit.subtype : 'None'| limitTo: '35'"></td>
+                              <td class="rehive-table-row-last-child pull-right">
+                                  <a ng-click="openTierLimitsModal('app/pages/currency/settings/tierLimits/tierLimitsModal/tierLimitsModal.html','md',tierLimit)"
+                                     class="pull-right pointer ">Delete</a>
+                                  <a ng-click="toggleTierLimitEditView(tierLimit)"
+                                     class="pull-right pointer user-address-edit margin-right-30">Edit</a>
+                              </td>
+                          </tr>
+                      </table>
+                  </div>
+              </div>
+              <div ba-panel ng-show="tiersLimitsList.length == 0">
+                <i>No limits are available for this tier.</i>
+              </div>
+              <div class="panel">
+                  <div class="panel-heading">
+                      <span class="user-details-panel-title">Add tier limit</span>
+                  </div>
+                  <div class="panel-body">
+                      <form name="tierLimitForm" class="custom-form">
+                          <div class="form-group">
+                              <label>Transaction type <span class="required-icon">*</span></label>
+                              <br>
+                              <select class="form-control pointer" ng-change="getSubtypesArray(tierLimitsParams)" ng-model="tierLimitsParams.tx_type" ng-options="option for option in txTypeOptions" required>
+                              </select>
+                          </div>
+                          <div class="form-group">
+                              <label>Amount</label>
+                              <input type="text" class="form-control" ng-model="tierLimitsParams.value" placeholder="Enter value" />
+                          </div>
+                          <div class="form-group">
+                              <label>Type <span class="required-icon">*</span></label>
+                              <br>
+                              <select class="form-control pointer" ng-model="tierLimitsParams.type" ng-options="typeOption for typeOption in typeOptions" required>
+                              </select>
+                          </div>
+                          <div ng-hide="loadingSubtypes" class="form-group">
+                              <label>Subtype</label>
+                              <select class="form-control pointer" ng-model="tierLimitsParams.subtype" ng-options="subtypeOption for subtypeOption in subtypeOptions">
+                              </select>
+                          </div>
+                          <div ng-show="loadingSubtypes">
+                              <loading-image class="custom-subtype-loading"></loading-image>
+                          </div>
+                          <div class="form-group">
+                              <button ng-click="addTierLimit(tierLimitsParams)" ng-disabled="!tierLimitForm.$valid" class="btn btn-primary dashboard-btn pull-right">Add</button>
+                          </div>
+                      </form>
+                  </div>
+              </div>
           </div>
           <div ng-show="editingTierLimits">
               <edit-tier-limits></edit-tier-limits>

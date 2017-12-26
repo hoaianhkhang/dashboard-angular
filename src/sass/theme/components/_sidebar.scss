@@ -1,4 +1,4 @@
-$sidebar-width: 180px;
+$sidebar-width: 220px;
 $angle-left: "\f100";
 $angle-right: "\f101";
 
@@ -16,7 +16,7 @@ $angle-right: "\f101";
 
 .al-sidebar-list {
   margin: 0;
-  padding: 15px 0 0 0;
+  padding: 12px 0 0 0;
   list-style: none;
 }
 
@@ -36,11 +36,11 @@ $angle-right: "\f101";
   float: none;
   padding: 0;
   &.selected:not(.with-sub-menu) {
-    background-color: $primary;
+    color: $primary;
     a.al-sidebar-list-link {
-      color: $sidebar-text;
+      color: $primary;
       b {
-        color: $sidebar-text;
+        color: $primary;
       }
     }
   }
@@ -63,11 +63,11 @@ $angle-right: "\f101";
 a.al-sidebar-list-link {
   display: block;
   height: 42px;
+  line-height: 42px;
   text-shadow: none;
-  font-size: 13px;
+  font-size: 14px;
   text-decoration: none;
   color: $sidebar-text;
-  line-height: 42px;
   white-space: nowrap;
   overflow: hidden;
   cursor: pointer;
@@ -92,7 +92,7 @@ a.al-sidebar-list-link {
     font-size: 18px;
     position: absolute;
     right: 10px;
-    top: 14px;
+    top: 12px;
     padding: 0;
     text-align: center;
     color: $sidebar-text;
@@ -138,16 +138,16 @@ a.al-sidebar-list-link {
       color: #8aa4af;
       padding-left: 20px;
       height: auto;
-      line-height: 29px;
+      line-height: 27px;
       &:hover {
-        color: #ffffff;
+        color: $primary;
       }
     }
     &.selected:not(.with-sub-menu) > a {
       border: none;
-      background-color: $primary;
+      color: $primary;
       &:hover {
-        color: $sidebar-text;
+        color: $primary;
       }
     }
 

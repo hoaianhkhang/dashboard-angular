@@ -1,17 +1,12 @@
-<content-top></content-top>
+<div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <ul class="user-details-nav-bar">
+            <li><a ng-class="{'transaction-location': locationIndicator == 'history'}" href="/#/transactions/history">Transactions</a></li>
+            <!--<li ng-class="{'transaction-location': locationIndicator == 'analytics'}"><a>Analytics</a></li>-->
+            <!--<li ng-class="{'transaction-location': locationIndicator == 'settings'}"><a>Settings</a></li>-->
+        </ul>
+    </div>
+</div>
 <div>
-    <div ba-panel ba-panel-title="Filters">
-        <history-filters></history-filters>
-    </div>
-    <div class="row">
-        <div ba-panel ba-panel-title="Transactions" ba-panel-class="with-scroll" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            <div>
-                <button ng-csv="getCSVArray" csv-header="getHeader()" filename="{{getFileName}}"
-                        class="btn btn-primary dashboard-btn panel-header-user-icon">Export</button>
-                <button ng-click="getLatestTransactions('applyFilter')" class="btn btn-primary dashboard-btn panel-header-button">Refresh</button>
-                <!--<i class="fa fa-refresh panel-header-button refresh-icon pointer" aria-hidden="true"></i>-->
-            </div>
-            <history-table></history-table>
-        </div>
-    </div>
+    <history-table></history-table>
 </div>

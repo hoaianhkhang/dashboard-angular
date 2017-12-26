@@ -1,30 +1,50 @@
-<div ng-hide="users.length == 0" class="divider">
-    <table class="table table-condensed table-striped">
-        <tr class="black-muted-bg">
-            <td><strong>Email</strong></td>
-            <td><strong>Currency</strong></td>
-            <td><strong>Joined</strong></td>
-            <td><strong>Last login</strong></td>
-            <td><strong>KYC status</strong></td>
-        </tr>
-        <tr ng-repeat="user in users" class="editable-row center">
-            <td><a href="/#/user/{{user.identifier}}"><div title="{{user.email}}" ng-bind="user.email"></div></a></td>
-            <td><div title="{{user.currency.code}}" class="transactions-list-element" ng-bind="user.currency.code"></div></td>
-            <td><div title="{{user.date_joined | date:'mediumDate'}}, {{user.date_joined | date:'shortTime'}}" class="transactions-list-element">
-                {{user.date_joined | date:'mediumDate'}}, {{user.date_joined | date:'shortTime'}}
-            </div></td>
-            <td><div title="{{user.last_login | date:'mediumDate'}}, {{user.last_login | date:'shortTime'}}" class="transactions-list-element">
-                {{user.last_login | date:'mediumDate'}}, {{user.last_login | date:'shortTime'}}</div></td>
-            <td><div title="{{user.kyc.status | capitalizeWord}}" class="transactions-list-element" ng-bind="user.kyc.status | capitalizeWord"></div></td>
-        </tr>
-    </table>
-    <div >
-        <p uib-pagination boundary-links="true" items-per-page="usersPagination.itemsPerPage"  total-items="usersData.count" ng-model="usersPagination.pageNo"
-           max-size="usersPagination.maxSize" class="pagination-sm pull-right transaction-history-pagination" force-ellipses="true" ng-change="getAllUsers()"
-           previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></p>
+<div class="panel">
+    <div class="panel-heading">
+        <div class="table-filter-heading">
+            <div>
+                <button ng-click="showFilters()" ng-class="{'transactions-filter-btn': (filtersCount > 0), 'transactions-btn': (filtersCount == 0)}"
+                        class="btn btn-default">Filters
+                    <span ng-show="filtersCount > 0">|</span> <span ng-show="filtersCount > 0" class="filter-count">{{filtersCount}}</span>
+                </button>
+                <div ng-show="showingFilters">
+                    <user-filters></user-filters>
+                </div>
+            </div>
+            <button ng-click="goToAddUser()" class="btn btn-default transactions-btn panel-header-user-icon">Add</button>
+            <button ng-click="getAllUsers('applyFilter')" class="btn btn-default transactions-btn panel-header-button">Refresh</button>
+        </div>
     </div>
-</div>
-<div ng-show="users.length == 0">
-    <i ng-hide="usersStateMessage == ''" ng-bind="usersStateMessage"></i>
-    <loading-image ng-show="usersStateMessage == ''"></loading-image>
+    <div class="panel-body">
+        <div ng-show="users.length > 0" class="divider">
+            <table class="table custom-table">
+                <tr>
+                    <th>Email</th>
+                    <th>Currency</th>
+                    <th>Joined</th>
+                    <th>Last login</th>
+                    <th>KYC status</th>
+                </tr>
+                <tr ng-repeat="user in users | orderBy: orderByFunction" data-toggle="modal"
+                    class="editable-row center pointer user-details-table-hover" ng-click="displayUser(user)">
+                    <td><div title="{{user.email}}" ng-bind="user.email"></div></td>
+                    <td><div title="{{user.currency.code}}" class="transactions-list-element" ng-bind="user.currency.code"></div></td>
+                    <td><div title="{{user.date_joined | date:'mediumDate'}}, {{user.date_joined | date:'shortTime'}}" class="transactions-list-element">
+                        {{user.date_joined | date:'mediumDate'}}, {{user.date_joined | date:'shortTime'}}
+                    </div></td>
+                    <td><div title="{{user.last_login | date:'mediumDate'}}, {{user.last_login | date:'shortTime'}}" class="transactions-list-element">
+                        {{user.last_login | date:'mediumDate'}}, {{user.last_login | date:'shortTime'}}</div></td>
+                    <td><div title="{{user.kyc.status | capitalizeWord}}" class="transactions-list-element" ng-bind="user.kyc.status | capitalizeWord"></div></td>
+                </tr>
+            </table>
+            <div>
+                <p uib-pagination boundary-links="true" items-per-page="usersPagination.itemsPerPage"  total-items="usersData.count" ng-model="usersPagination.pageNo"
+                   max-size="usersPagination.maxSize" class="pagination-sm pull-right transaction-history-pagination" force-ellipses="true" ng-change="getAllUsers()"
+                   previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></p>
+            </div>
+        </div>
+        <div ng-show="users.length == 0">
+            <i ng-hide="usersStateMessage == ''" ng-bind="usersStateMessage"></i>
+            <loading-image ng-show="usersStateMessage == ''"></loading-image>
+        </div>
+    </div>
 </div>

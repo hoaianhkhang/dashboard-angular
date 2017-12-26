@@ -5,9 +5,17 @@
         .controller('EthereumServiceUsersCtrl', EthereumServiceUsersCtrl);
 
     /** @ngInject */
-    function EthereumServiceUsersCtrl($scope,$http,cookieManagement,$uibModal,errorHandler,$location) {
+    function EthereumServiceUsersCtrl($scope,$http,typeaheadService,
+                                     cookieManagement,errorHandler,serializeFiltersService) {
+
         var vm = this;
         vm.token = cookieManagement.getCookie('TOKEN');
+        vm.serviceUrl = cookieManagement.getCookie('SERVICEURL');
+        $scope.usersStateMessage = '';
+        $scope.users = [];
+        $scope.usersData = {};
+        $scope.showingFilters = false;
+        $scope.filtersCount = 0;
 
         $scope.usersPagination = {
             itemsPerPage: 25,
@@ -15,35 +23,72 @@
             maxSize: 5
         };
 
-        $scope.usersSearchParams = {
-            searchEmail:'',
-            searchIdentifier: '',
-            searchAddress: ''
+        $scope.filtersObj = {
+            identifierFilter: false,
+            emailFilter: false,
+            addressFilter: false,
+            pageSizeFilter: false
+        };
+        $scope.applyFiltersObj = {
+            identifierFilter: {
+                selectedIdentifier: ''
+            },
+            emailFilter: {
+                selectedEmail: ''
+            },
+            addressFilter: {
+                selectedAddress: ''
+            }
         };
 
-        $scope.users = [];
-        $scope.loadingUsers = true;
+        $scope.getUsersEmailTypeahead = typeaheadService.getUsersEmailTypeahead();
+
+        $scope.showFilters = function () {
+            $scope.showingFilters = !$scope.showingFilters;
+        };
 
         $scope.clearFilters = function () {
-            $scope.usersSearchParams = {
-                searchEmail:'',
-                searchIdentifier: '',
-                searchAddress: ''
+            $scope.filtersObj = {
+                identifierFilter: false,
+                emailFilter: false,
+                addressFilter: false,
+                pageSizeFilter: false
             };
         };
 
-        vm.getUsersUrl = function(){
-            vm.filterParams = '?page=' + $scope.usersPagination.pageNo + '&page_size=' + $scope.usersPagination.itemsPerPage
-            + '&email=' + ($scope.usersSearchParams.searchEmail? encodeURIComponent($scope.usersSearchParams.searchEmail) : '')
-            + '&identifier=' + ($scope.usersSearchParams.searchIdentifier?$scope.usersSearchParams.searchIdentifier: '')
-            + '&address=' + $scope.usersSearchParams.searchAddress;
+        $scope.pageSizeChanged =  function () {
+            if($scope.usersPagination.itemsPerPage > 250){
+                $scope.usersPagination.itemsPerPage = 250;
+            }
+        };
 
-            return cookieManagement.getCookie('SERVICEURL')+ 'admin/users/' + vm.filterParams;
+        vm.getUsersUrl = function(){
+            $scope.filtersCount = 0;
+
+            for(var x in $scope.filtersObj){
+                if($scope.filtersObj.hasOwnProperty(x)){
+                    if($scope.filtersObj[x]){
+                        $scope.filtersCount = $scope.filtersCount + 1;
+                    }
+                }
+            }
+
+
+            var searchObj = {
+                page: $scope.usersPagination.pageNo,
+                page_size: $scope.filtersObj.pageSizeFilter? $scope.usersPagination.itemsPerPage : 25,
+                identifier: $scope.filtersObj.identifierFilter ? ($scope.applyFiltersObj.identifierFilter.selectedIdentifier ?  $scope.applyFiltersObj.identifierFilter.selectedIdentifier : null): null,
+                email: $scope.filtersObj.emailFilter ?($scope.applyFiltersObj.emailFilter.selectedEmail ?  encodeURIComponent($scope.applyFiltersObj.emailFilter.selectedEmail) : null): null,
+                address: $scope.filtersObj.addressFilter ? ($scope.applyFiltersObj.addressFilter.selectedAddress ?  $scope.applyFiltersObj.addressFilter.selectedAddress: null) : null
+            };
+
+            return vm.serviceUrl + 'admin/users/?' + serializeFiltersService.serializeFilters(searchObj);
         };
 
         $scope.getAllUsers = function(applyFilter){
             $scope.usersStateMessage = '';
             $scope.loadingUsers = true;
+            $scope.showingFilters = false;
 
             if(applyFilter){
                 $scope.usersPagination.pageNo = 1;
@@ -73,10 +118,6 @@
                 }
             }).catch(function (error) {
                 $scope.loadingUsers = false;
-                if(error.status == 403){
-                    $location.path('/services');
-                    return
-                }
                 $scope.usersStateMessage = 'Failed to load data';
                 errorHandler.evaluateErrors(error.data);
                 errorHandler.handleErrors(error);
