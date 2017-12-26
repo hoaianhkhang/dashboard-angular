@@ -10,7 +10,10 @@
     </div>
     <div class="row">
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 user-details-first-row">
-            <img class="pointer user-profile-picture" ng-click="openUserProfilePictureModal('app/pages/users/user/userProfilePictureModal/userProfilePictureModal.html','md',user)"
+            <div ng-hide="user.profile">
+                <div class="alternatePhoto pointer" ng-click="openUserProfilePictureModal('app/pages/users/user/userProfilePictureModal/userProfilePictureModal.html','md',user)">{{user.first_name | limitTo: 1 | uppercase}}{{user.last_name | uppercase | limitTo: 1}}</div>
+            </div>
+            <img ng-show="user.profile" class="pointer user-profile-picture" ng-click="openUserProfilePictureModal('app/pages/users/user/userProfilePictureModal/userProfilePictureModal.html','md',user)"
                  ng-src="{{user.profile}}"  width="130" height="130" alt="token Image">
             <div>
                 <span class="user-details-name">{{user.first_name}} {{user.last_name}}</span>

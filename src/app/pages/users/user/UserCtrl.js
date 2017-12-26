@@ -12,7 +12,6 @@
         vm.token = cookieManagement.getCookie('TOKEN');
         vm.uuid = $stateParams.uuid;
         $scope.user = {};
-        $scope.user.profile = "/assets/img/app/profile/profile_user.svg";
         $scope.loadingUser = true;
         $scope.headerArray = [];
         $scope.profilePictureFile = {

@@ -14,28 +14,30 @@
         </div>
     </div>
 </div>
-<div ng-hide="loadingServices" class="panel">
-    <div class="panel-body">
-        <div ng-show="servicesList.length > 0">
-            <table class="table">
-                <tr ng-repeat="service in servicesList" class="editable-row">
-                    <td class="rehive-table-row-first-child" width="6%">
-                        <div class="hexagon-logo">
-                            <div class="services-hexagon-container">
-                                <div class="services-hexagon"></div>
+<div class="services-panels">
+    <div ng-hide="loadingServices" ng-show="servicesList.length > 0" class="panel" ng-repeat="service in servicesList">
+        <div class="panel-body">
+            <div>
+                <table class="table">
+                    <tr class="editable-row">
+                        <td class="rehive-table-row-first-child" width="6%">
+                            <div class="hexagon-logo">
+                                <div class="services-hexagon-container">
+                                    <div class="services-hexagon"></div>
+                                </div>
                             </div>
-                        </div>
-                    </td>
-                    <td  width="15%" ng-bind="service.name"></td>
-                    <td width="50%" ng-bind="service.description"></td>
-                    <td class="rehive-table-row-last-child">
-                        <a ng-click="goToService(service)"
-                           class="pull-right pointer ">Manage</a>
-                        <a ng-click="deactivateServicePrompt(service)"
-                           class="pull-right pointer user-address-edit margin-right-30">Deactivate</a>
-                    </td>
-                </tr>
-            </table>
+                        </td>
+                        <td  width="15%" ng-bind="service.name"></td>
+                        <td width="50%" ng-bind="service.description"></td>
+                        <td class="rehive-table-row-last-child">
+                            <a ng-click="goToService(service)"
+                               class="pull-right pointer ">Manage</a>
+                            <a ng-click="deactivateServicePrompt(service)"
+                               class="pull-right pointer user-address-edit margin-right-30">Deactivate</a>
+                        </td>
+                    </tr>
+                </table>
+            </div>
         </div>
     </div>
 </div>
