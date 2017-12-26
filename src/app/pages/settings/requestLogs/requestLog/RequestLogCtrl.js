@@ -15,7 +15,7 @@
             $scope.loadingRequestLog = true;
 
             if(vm.token) {
-                $http.get(environmentConfig.API + '/admin/requests/' + vm.requestLogId + '', {
+                $http.get(environmentConfig.API + '/admin/requests/' + vm.requestLogId + '/', {
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': vm.token
