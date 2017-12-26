@@ -3,23 +3,23 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 <span class="user-details-panel-title">Credits</span>
+                <a ng-click="goToPath('/transactions/credit')" class="user-details-panel-link pull-right pointer">Manage</a>
             </div>
             <div class="panel-body">
-                <table class="table user-details-table divider-20">
+                <table class="table user-details-table">
                     <tr>
                         <th>24h volume</th>
-                        <th class="align-right">{{currencyObj.symbol}} {{currencyOverviewData.sum_24h_credits_complete | currencyModifiersFilter: currencyObj.divisibility}}</th>
+                        <td class="align-right rehive-table-row-last-child">{{currencyObj.symbol}} {{currencyOverviewData.sum_24h_credits_complete | currencyModifiersFilter: currencyObj.divisibility}}</td>
                     </tr>
                     <tr>
                         <th>Total volume</th>
-                        <th class="align-right">{{currencyObj.symbol}} {{currencyOverviewData.sum_credits_complete | currencyModifiersFilter: currencyObj.divisibility}}</th>
+                        <td class="align-right rehive-table-row-last-child">{{currencyObj.symbol}} {{currencyOverviewData.sum_credits_complete | currencyModifiersFilter: currencyObj.divisibility}}</td>
                     </tr>
                     <tr>
                         <th>Number of transactions complete</th>
-                        <th class="align-right">{{currencyOverviewData.count_credits_complete}}</th>
+                        <td class="align-right rehive-table-row-last-child">{{currencyOverviewData.count_credits_complete}}</td>
                     </tr>
                 </table>
-                <button ng-click="goToPath('/transactions/credit')" class="btn dashboard-btn btn-primary pull-right">Manage</button>
             </div>
         </div>
     </div>
@@ -28,23 +28,23 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 <span class="user-details-panel-title">Debits</span>
+                <a ng-click="goToPath('/transactions/debit')" class="user-details-panel-link pull-right pointer">Manage</a>
             </div>
             <div class="panel-body">
-                <table class="table user-details-table divider-20">
+                <table class="table user-details-table">
                     <tr>
                         <th>24h volume</th>
-                        <th class="align-right">{{currencyObj.symbol}} {{currencyOverviewData.sum_24h_debits_complete | currencyModifiersFilter: currencyObj.divisibility}}</th>
+                        <td class="align-right rehive-table-row-last-child">{{currencyObj.symbol}} {{currencyOverviewData.sum_24h_debits_complete | currencyModifiersFilter: currencyObj.divisibility}}</td>
                     </tr>
                     <tr>
                         <th>Total volume</th>
-                        <th class="align-right">{{currencyObj.symbol}} {{currencyOverviewData.sum_debits_complete | currencyModifiersFilter: currencyObj.divisibility}}</th>
+                        <td class="align-right rehive-table-row-last-child">{{currencyObj.symbol}} {{currencyOverviewData.sum_debits_complete | currencyModifiersFilter: currencyObj.divisibility}}</td>
                     </tr>
                     <tr>
                         <th>Number of transactions complete</th>
-                        <th class="align-right">{{currencyOverviewData.count_debits_complete}}</th>
+                        <td class="align-right rehive-table-row-last-child">{{currencyOverviewData.count_debits_complete}}</td>
                     </tr>
                 </table>
-                <button ng-click="goToPath('/transactions/debit')" class="btn dashboard-btn btn-primary pull-right">Manage</button>
             </div>
         </div>
     </div>
