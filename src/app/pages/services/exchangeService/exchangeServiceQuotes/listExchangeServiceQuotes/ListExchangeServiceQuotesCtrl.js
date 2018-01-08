@@ -87,7 +87,7 @@
             $scope.loadingQuotes =  true;
 
             if(applyFilter) {
-                // if function is called from history-filters directive, then pageNo set to 1
+                // if function is called from exchange-filters directive, then pageNo set to 1
                 $scope.pagination.pageNo = 1;
             }
 

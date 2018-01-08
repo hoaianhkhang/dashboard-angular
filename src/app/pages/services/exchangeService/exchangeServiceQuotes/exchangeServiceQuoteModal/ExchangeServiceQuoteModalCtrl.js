@@ -4,7 +4,8 @@
     angular.module('BlurAdmin.pages.services.exchangeService.listExchangeServiceQuotes')
         .controller('ExchangeServiceQuoteModalCtrl', ExchangeServiceQuoteModalCtrl);
 
-    function ExchangeServiceQuoteModalCtrl($scope,environmentConfig,$uibModalInstance,quote,toastr,$http,cookieManagement,errorHandler) {
+    function ExchangeServiceQuoteModalCtrl($scope,environmentConfig,$uibModalInstance,$location,$state,
+                                           quote,toastr,$http,cookieManagement,errorHandler) {
 
         var vm = this;
 
@@ -32,6 +33,17 @@
                 });
         };
         vm.getTransactions();
- 
+
+        $scope.goToTransactionHistoryFromExchange = function (id) {
+            $uibModalInstance.close();
+            $state.go('transactions.history',{"transactionId": id});
+        };
+
+        $scope.goToUserFromExchange = function (identifier) {
+            $uibModalInstance.close();
+            $location.path('/user/' + identifier + '/details');
+        };
+
+
     }
 })();
