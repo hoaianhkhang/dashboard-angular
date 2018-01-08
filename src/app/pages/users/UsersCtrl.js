@@ -37,6 +37,7 @@
             mobileFilter: false,
             firstNameFilter: false,
             lastNameFilter: false,
+            accountReferenceFilter: false,
             currencyFilter: false,
             joinedDateFilter: false,
             lastLoginDateFilter: false,
@@ -58,6 +59,9 @@
             },
             lastNameFilter: {
                 selectedLastName: ''
+            },
+            accountReferenceFilter: {
+                selectedAccountReference: ''
             },
             currencyFilter: {
                 selectedCurrency: {}
@@ -149,6 +153,7 @@
                 mobileFilter: false,
                 firstNameFilter: false,
                 lastNameFilter: false,
+                accountReferenceFilter: false,
                 currencyFilter: false,
                 joinedDateFilter: false,
                 lastLoginDateFilter: false,
@@ -301,6 +306,7 @@
                 mobile_number__contains: $scope.filtersObj.mobileFilter ? ($scope.applyFiltersObj.mobileFilter.selectedMobile ?  encodeURIComponent($scope.applyFiltersObj.mobileFilter.selectedMobile) : null): null,
                 first_name__contains: $scope.filtersObj.firstNameFilter ? ($scope.applyFiltersObj.firstNameFilter.selectedFirstName ?  $scope.applyFiltersObj.firstNameFilter.selectedFirstName : null): null,
                 last_name__contains: $scope.filtersObj.lastNameFilter ? ($scope.applyFiltersObj.lastNameFilter.selectedLastName ?  $scope.applyFiltersObj.lastNameFilter.selectedLastName : null): null,
+                account: $scope.filtersObj.accountReferenceFilter ? ($scope.applyFiltersObj.accountReferenceFilter.selectedAccountReference ?  $scope.applyFiltersObj.accountReferenceFilter.selectedAccountReference : null): null,
                 date_joined__gt: vm.dateObj.date_joined__gt ? Date.parse(vm.dateObj.date_joined__gt +'T00:00:00') : null,
                 date_joined__lt: vm.dateObj.date_joined__lt ? Date.parse(vm.dateObj.date_joined__lt +'T00:00:00') : null,
                 last_login__gt: vm.lastLogindateObj.last_login__gt ? Date.parse(vm.lastLogindateObj.last_login__gt +'T00:00:00') : null,

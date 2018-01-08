@@ -86,6 +86,22 @@
                 </div>
             </div>
         </div>
+        <div id="accountReferenceFilter">
+            <div>
+                <label class="checkbox-inline custom-checkbox nowrap">
+                    <input type="checkbox" ng-model="filtersObj.accountReferenceFilter">
+                    <span>Account reference</span>
+                </label>
+            </div>
+            <div ng-if="filtersObj.accountReferenceFilter" class="row divider-top-6">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 date-filter-view">
+                    <input type="text" ng-model="applyFiltersObj.accountReferenceFilter.selectedAccountReference"
+                           auto-focus="filtersObj.accountReferenceFilter"
+                           placeholder="Enter account reference"
+                           class="transaction-id-input" size="12">
+                </div>
+            </div>
+        </div>
         <div id="currencyFilter">
             <div>
                 <label class="checkbox-inline custom-checkbox nowrap">
