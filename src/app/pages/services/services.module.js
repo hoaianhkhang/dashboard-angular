@@ -6,6 +6,7 @@
         "BlurAdmin.pages.services.bitcoinService",
         "BlurAdmin.pages.services.stellarService",
         'BlurAdmin.pages.services.notificationService',
+        'BlurAdmin.pages.services.exchangeService',
         'BlurAdmin.pages.services.icoService',
         'BlurAdmin.pages.services.addService'
     ])

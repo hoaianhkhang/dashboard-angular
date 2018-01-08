@@ -1,0 +1,51 @@
+<exchange-service-navigation></exchange-service-navigation>
+<div ng-hide="loadingQuotes" ba-panel class="service-header" ba-panel-title="Quotes list">
+    <div ng-hide="true">
+        <button class="btn btn-success dashboard-btn pull-right panel-header-button" ng-click="goToAddQuoteView()">Add</button>
+    </div>
+    <div>
+      <form>
+      Filter by Email: <input type="text" ng-model="filters.email" style="margin-left:10px;" /> 
+      <button type="submit" ng-click="getQuotesList()">Filter</button>
+      </form>
+      <br />
+    </div>
+      <div class="divider">
+        <table class="table" ng-hide="quotesList.length == 0">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Date</th>
+              <th>Sender</th>
+              <th>Sent Amount</th>
+              <th>Recipient</th>
+              <th>Recieved Amount</th>
+              <th>Conversion Rate</th>
+              <th>Status</th>
+            </tr>
+          </thead> 
+          <tbody ng-repeat="quote in quotesList"> 
+            <tr ng-click="openTransactionsModal('app/pages/services/exchangeService/exchangeServiceQuotes/exchangeServiceQuoteModal/exchangeServiceQuoteModal.html','lg',quote)" style="cursor: pointer">
+              <td>{{quote.id}}</td>
+              <td>{{quote.created}}</td>
+              <td>{{quote.user_email}}</td>
+              <td>{{quote.from_currency.symbol}} {{quote.from_amount}}</td>
+              <td>{{quote.recipient_email}}</td>
+              <td>{{quote.to_currency.symbol}} {{quote.to_amount}}</td>
+              <td>{{quote.exchange_rate.toString()}}</td>
+              <td>{{quote.status}}</td>
+            </tr>
+          </thead> 
+          </tbody> 
+        </table>
+
+        <div>
+            <p uib-pagination boundary-links="true" items-per-page="pagination.itemsPerPage"  total-items="quotesListData.count" ng-model="pagination.pageNo"
+               max-size="pagination.maxSize" class="pagination-sm pull-right transaction-history-pagination" force-ellipses="true" ng-change="getQuotesList()"
+               previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></p>
+        </div>
+    </div>
+</div>
+<div ng-show="loadingQuotes" class="service-header" ba-panel>
+    <loading-image></loading-image>
+</div>
