@@ -5,14 +5,26 @@
         .controller('ListExchangeServiceQuotesCtrl', ListExchangeServiceQuotesCtrl);
 
     /** @ngInject */
-    function ListExchangeServiceQuotesCtrl($scope,environmentConfig,$http,cookieManagement,$uibModal,errorHandler,$location,toastr) {
+    function ListExchangeServiceQuotesCtrl($scope,$http,cookieManagement,$uibModal,errorHandler,serializeFiltersService,
+                                           typeaheadService,toastr) {
 
         var vm = this;
         vm.token = cookieManagement.getCookie('TOKEN');
         vm.baseUrl = cookieManagement.getCookie('SERVICEURL');
+        $scope.showingFilters = false;
         $scope.loadingQuotes =  false;
+        $scope.filtersCount = 0;
         $scope.quotesList =  [];
-        $scope.filters = {email: ""};
+        $scope.quotesListData = {};
+        $scope.quotesListStateMessage = '';
+        $scope.filtersObj = {
+            emailFilter: false
+        };
+        $scope.applyFiltersObj = {
+            emailFilter: {
+                selectedEmailFilter: ''
+            }
+        };
 
         $scope.pagination = {
             itemsPerPage: 20,
@@ -36,26 +48,53 @@
             "unit": "naira",
             "divisibility": 2,
             "enabled": true
-          },
+          }
         ];      
 
         vm.getCurrency = function(code) {
           var result = $.grep(vm.currencies, function(e){ return e.code == code; });
           return result.length == 0 ? {} : result[0];
-        }
-
-        vm.getQuoteListUrl = function(){
-            vm.filterParams = '?page=' + $scope.pagination.pageNo + '&page_size=' + $scope.pagination.itemsPerPage; // all the params of the filtering
-            if($scope.filters.email) {
-              vm.filterParams += "&email="+$scope.filters.email.replace("+","%2B");
-            }
-
-            return 'http://45.55.183.106:8000/api/admin/quotes/' + vm.filterParams;
-            //return vm.baseUrl + 'admin/quotes/' + vm.filterParams;
         };
 
-        $scope.getQuotesList = function () {
+        $scope.showFilters = function () {
+            $scope.showingFilters = !$scope.showingFilters;
+        };
+
+        $scope.clearFilters = function () {
+            $scope.filtersObj = {
+                emailFilter: false
+            };
+        };
+
+        vm.getQuoteListUrl = function(){
+
+            var searchObj = {
+                page: $scope.pagination.pageNo,
+                page_size: $scope.pagination.itemsPerPage,
+                email: $scope.filtersObj.emailFilter ? ($scope.applyFiltersObj.emailFilter.selectedEmailFilter ? encodeURIComponent($scope.applyFiltersObj.emailFilter.selectedEmailFilter) : null): null
+              };
+
+            return 'http://45.55.183.106:8000/api/admin/quotes/?' + serializeFiltersService.serializeFilters(searchObj);
+
+            //return vm.baseUrl + 'admin/quotes/?' + serializeFiltersService.serializeFilters(searchObj);
+        };
+
+        $scope.getQuotesList = function (applyFilter) {
+
+            $scope.showingFilters = false;
+
+            $scope.quotesListStateMessage = '';
             $scope.loadingQuotes =  true;
+
+            if(applyFilter) {
+                // if function is called from history-filters directive, then pageNo set to 1
+                $scope.pagination.pageNo = 1;
+            }
+
+            if ($scope.quotesList.length > 0) {
+                $scope.quotesList.length = 0;
+            }
+
             $scope.quotesList = [];
 
             var quoteListUrl = vm.getQuoteListUrl();
@@ -69,17 +108,19 @@
                 }).then(function (res) {
                     $scope.loadingQuotes =  false;
                     if (res.status === 200) {
-                        $scope.quotesListData = res.data.data;
-                        var quotes = res.data.data.results;
-                        for(var i=0;i<quotes.length;i++) {
-                          var quote = quotes[i];
-                          quote.from_currency = vm.getCurrency(quote.from_currency);
-                          quote.to_currency = vm.getCurrency(quote.to_currency);
-                          quote.from_amount = quote.from_amount / Math.pow(10, quote.from_currency.divisibility);
-                          quote.to_amount = quote.to_amount / Math.pow(10, quote.to_currency.divisibility);
-                        }
+                        if(res.data.data.results.length > 0){
+                            $scope.quotesListData = res.data.data;
+                            var quotes = res.data.data.results;
+                            for(var i=0;i<quotes.length;i++) {
+                                var quote = quotes[i];
+                                quote.from_currency = vm.getCurrency(quote.from_currency);
+                                quote.to_currency = vm.getCurrency(quote.to_currency);
+                            }
 
-                        $scope.quotesList = quotes;
+                            $scope.quotesList = quotes;
+                        } else {
+                            $scope.quotesListStateMessage = 'No quotes are available';
+                        }
                     }
                 }).catch(function (error) {
                     $scope.loadingQuotes =  false;
@@ -89,6 +130,8 @@
             }
         };
         $scope.getQuotesList();
+
+        $scope.getUsersEmailTypeahead = typeaheadService.getUsersEmailTypeahead();
 
         $scope.openTransactionsModal = function (page, size,quote ) {
             vm.theModal = $uibModal.open({

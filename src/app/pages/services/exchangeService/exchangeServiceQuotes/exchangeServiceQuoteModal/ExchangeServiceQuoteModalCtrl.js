@@ -30,7 +30,7 @@
                     errorHandler.evaluateErrors(error.data);
                     errorHandler.handleErrors(error);
                 });
-        }
+        };
         vm.getTransactions();
  
     }
