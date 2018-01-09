@@ -3,8 +3,7 @@
 
     angular.module('BlurAdmin.pages.accountSettings', [
             'BlurAdmin.pages.accountSettings.accountCurrencyLimits',
-            'BlurAdmin.pages.accountSettings.accountCurrencyFees',
-            'BlurAdmin.pages.accountSettings.accountCurrencySwitches'
+            'BlurAdmin.pages.accountSettings.accountCurrencyFees'
     ])
         .config(routeConfig);
 

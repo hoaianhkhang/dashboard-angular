@@ -7,7 +7,6 @@
       'BlurAdmin.pages.currency.settings.tierRequirements',
       'BlurAdmin.pages.currency.settings.tierLimits',
       'BlurAdmin.pages.currency.settings.tierFees',
-      'BlurAdmin.pages.currency.settings.tierSwitches'
     ])
         .config(routeConfig);
 

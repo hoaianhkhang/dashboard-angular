@@ -38,6 +38,7 @@
                     if (res.status === 200) {
                         if(!res.data.data.results.length == 0){
                             $rootScope.intialCurrency = true;
+                            $rootScope.$pageFinishedLoading = true;
                             $location.path('/currencies');
                         } else {
                             $rootScope.intialCurrency = false;
