@@ -87,33 +87,6 @@
             });
         };
 
-        $scope.addInitialCustomCompanyCurrency = function(newCurrencyParams){
-
-            $rootScope.$pageFinishedLoading = false;
-            $scope.addCurrency = {};
-            newCurrencyParams.enabled = true;
-            $http.post(environmentConfig.API + '/admin/currencies/', newCurrencyParams, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': vm.token
-                }
-            }).then(function (res) {
-                if (res.status === 201) {
-                    $rootScope.intialCurrency = true;
-                    if($rootScope.intialCurrency && $rootScope.haveCompanyName && $rootScope.userVerified) {
-                        $rootScope.userFullyVerified = true;
-                    }
-                    toastr.success('New custom currency has been created successfully');
-                    $location.path('/currencies');
-                    $rootScope.$pageFinishedLoading = true;
-                }
-            }).catch(function (error) {
-                $rootScope.$pageFinishedLoading = true;
-                errorHandler.evaluateErrors(error.data);
-                errorHandler.handleErrors(error);
-            });
-        };
-
         $scope.showCustomCurrencyView = function(){
             $scope.showCustomCurrency = true;
         };
