@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    angular.module('BlurAdmin.pages.settings.permissions')
+    angular.module('BlurAdmin.pages.group.permissions')
         .controller('GeneralPermissionsCtrl', GeneralPermissionsCtrl);
 
     /** @ngInject */
@@ -9,7 +9,7 @@
 
         var vm = this;
         vm.token = cookieManagement.getCookie('TOKEN');
-        vm.permissionGroupName = $stateParams.permissionGroupName;
+        vm.groupName = $stateParams.groupName;
         vm.checkedLevels = [];
         $scope.loadingPermissions = true;
         $scope.typeOptionsObj = {
@@ -48,7 +48,7 @@
         };
 
         $scope.goBackToPermissionGroups = function () {
-            $location.path('/settings/permissions-and-management');
+            $location.path('/settings/groups-management/' + vm.groupName);
         };
 
         $scope.typeOptions = [
@@ -89,7 +89,7 @@
         vm.getPermissions = function () {
             if(vm.token) {
                 $scope.loadingPermissions = true;
-                $http.get(environmentConfig.API + '/admin/permission-groups/' + vm.permissionGroupName + '/permissions/?page_size=200', {
+                $http.get(environmentConfig.API + '/admin/groups/' + vm.groupName + '/permissions/?page_size=200', {
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': vm.token
@@ -146,19 +146,19 @@
                 var index = findIndexOfLevel();
                 if(index > -1){
                     vm.checkedLevels.splice(index,1);
-                    return
+                    return;
                 } else {
                     vm.checkedLevels.push({type: typeOption.type,level: level.name,id: level.id});
-                    return
+                    return;
                 }
             } else if(!level.enabled && level.id){
                 var index = findIndexOfLevel();
                 if(index > -1){
                     vm.checkedLevels.splice(index,1);
-                    return
+                    return;
                 } else {
                     vm.checkedLevels.push({type: typeOption.type,level: level.name,id: level.id});
-                    return
+                    return;
                 }
             }
 
@@ -180,7 +180,7 @@
                 type = type.replace(/ /g, '_');
                 if(idx === array.length - 1){
                     if(element.id){
-                        vm.deletePermission(element,'last')
+                        vm.deletePermission(element,'last');
                     } else {
                         vm.addPermissions({type: $scope.typeOptionsObj[type],level: element.level},'last');
                     }
@@ -189,7 +189,7 @@
                 }
 
                 if(element.id){
-                    vm.deletePermission(element)
+                    vm.deletePermission(element);
                 } else {
                     vm.addPermissions({type: $scope.typeOptionsObj[type],level: element.level});
                 }
@@ -200,7 +200,7 @@
         vm.addPermissions = function (newPermissionObj,last) {
             if(vm.token) {
                 $scope.loadingPermissions = true;
-                $http.post(environmentConfig.API + '/admin/permission-groups/' + vm.permissionGroupName + '/permissions/', newPermissionObj, {
+                $http.post(environmentConfig.API + '/admin/groups/' + vm.groupName + '/permissions/', newPermissionObj, {
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': vm.token
@@ -226,7 +226,7 @@
         vm.deletePermission = function (permission,last) {
             if(vm.token) {
                 $scope.deletingPermission = true;
-                $http.delete(environmentConfig.API + '/admin/permission-groups/' + vm.permissionGroupName + '/permissions/' + permission.id + '/', {
+                $http.delete(environmentConfig.API + '/admin/groups/' + vm.groupName + '/permissions/' + permission.id + '/', {
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': vm.token

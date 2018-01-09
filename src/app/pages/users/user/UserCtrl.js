@@ -39,6 +39,7 @@
                     $scope.loadingUser = false;
                     if (res.status === 200) {
                         $scope.user = res.data.data;
+                        console.log($scope.user)
                         vm.calculateHowLongUserHasBeenWithCompany($scope.user.date_joined);
                         $window.sessionStorage.userData = JSON.stringify(res.data.data);
                     }

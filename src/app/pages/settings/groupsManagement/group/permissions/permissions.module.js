@@ -1,18 +1,18 @@
 (function () {
     'use strict';
 
-    angular.module('BlurAdmin.pages.settings.permissions', [])
+    angular.module('BlurAdmin.pages.group.permissions', [])
         .config(routeConfig);
 
     /** @ngInject */
     function routeConfig($stateProvider,$urlRouterProvider) {
         $stateProvider
-            .state('settings.permissions', {
-                url: '/permissions-and-management/:permissionGroupName/permissions',
+            .state('group.permissions', {
+                url: '/permissions',
                 views: {
-                    'generalSettings': {
+                    'groupViewManagement': {
                         controller: 'GeneralPermissionsCtrl',
-                        templateUrl: 'app/pages/settings/permissionsAndManagement/permissions/permissions.html'
+                        templateUrl: 'app/pages/settings/groupsManagement/group/permissions/permissions.html'
                     }
                 },
                 title: "Permissions"
