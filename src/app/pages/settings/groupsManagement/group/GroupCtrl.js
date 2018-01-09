@@ -16,5 +16,9 @@
             $location.path('/settings/groups-management/' + vm.groupName + path);
         };
 
+        $scope.backToSettings = function () {
+            $location.path('/settings/groups-management');
+        };
+
     }
 })();

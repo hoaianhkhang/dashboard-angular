@@ -1,14 +1,14 @@
 (function () {
     'use strict';
 
-    angular.module('BlurAdmin.pages.currency.settings.tiers')
+    angular.module('BlurAdmin.pages.groupTiers.list')
         .controller('TiersCtrl', TiersCtrl);
 
     function TiersCtrl($scope,$stateParams,$uibModal,$http,cookieManagement,environmentConfig,toastr,errorHandler,$window) {
 
         var vm = this;
         vm.token = cookieManagement.getCookie('TOKEN');
-        $scope.currencyCode = $stateParams.currencyCode;
+        vm.groupName = $stateParams.groupName;
         $scope.loadingTiers = true;
         $scope.newTier = {currency: $scope.currencyCode,level: 1};
         $scope.tierLevels = [1,2,3,4,5,6,7];
@@ -16,7 +16,7 @@
 
           $scope.toggleTierEditView = function(tier){
               if(tier){
-                  vm.getTier(tier)
+                  vm.getTier(tier);
               } else {
                   $scope.editTier = {};
                   vm.getTiers();
@@ -27,7 +27,7 @@
         vm.getTier = function(tier){
             if(vm.token) {
                 $scope.loadingTiers = true;
-                $http.get(environmentConfig.API + '/admin/tiers/' + tier.id + '/' ,{
+                $http.get(environmentConfig.API + '/admin/groups/' + vm.groupName + '/tiers/' + tier.id + '/' ,{
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': vm.token
@@ -49,7 +49,7 @@
       vm.getTiers = function(){
           if(vm.token) {
               $scope.loadingTiers = true;
-              $http.get(environmentConfig.API + '/admin/tiers/?currency=' + $scope.currencyCode, {
+              $http.get(environmentConfig.API + '/admin/groups/' + vm.groupName + '/tiers/', {
                   headers: {
                       'Content-Type': 'application/json',
                       'Authorization': vm.token
@@ -71,7 +71,7 @@
       $scope.addTier = function(){
           if(vm.token) {
               $scope.loadingTiers = true;
-              $http.post(environmentConfig.API + '/admin/tiers/', $scope.newTier ,{
+              $http.post(environmentConfig.API + '/admin/groups/' + vm.groupName + '/tiers/', $scope.newTier ,{
                   headers: {
                       'Content-Type': 'application/json',
                       'Authorization': vm.token
@@ -101,7 +101,7 @@
             $scope.editingTiers = !$scope.editingTiers;
             vm.updatedTier.level = $scope.editTier.level;
             $scope.loadingTiers = true;
-              $http.patch(environmentConfig.API + '/admin/tiers/' + $scope.editTier.id + '/', vm.updatedTier, {
+              $http.patch(environmentConfig.API + '/admin/groups/' + vm.groupName + '/tiers/' + $scope.editTier.id + '/', vm.updatedTier, {
                   headers: {
                       'Content-Type': 'application/json',
                       'Authorization': vm.token
@@ -137,6 +137,9 @@
               resolve: {
                   tier: function () {
                       return tier;
+                  },
+                  groupName: function () {
+                      return vm.groupName;
                   }
               }
           });

@@ -26,6 +26,7 @@
       'BlurAdmin.pages.verifyAdminEmail',
       'BlurAdmin.pages.accountSettings',
       'BlurAdmin.pages.group',
+      'BlurAdmin.pages.groupTiers',
       'BlurAdmin.pages.permissions',
       'BlurAdmin.pages.verification',
       'BlurAdmin.pages.companyNameRequest',

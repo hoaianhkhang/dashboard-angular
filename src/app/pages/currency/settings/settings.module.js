@@ -2,11 +2,7 @@
     'use strict';
 
     angular.module('BlurAdmin.pages.currency.settings', [
-      'BlurAdmin.pages.currency.settings.companyBankAccounts',
-      'BlurAdmin.pages.currency.settings.tiers',
-      'BlurAdmin.pages.currency.settings.tierRequirements',
-      'BlurAdmin.pages.currency.settings.tierLimits',
-      'BlurAdmin.pages.currency.settings.tierFees',
+      'BlurAdmin.pages.currency.settings.companyBankAccounts'
     ])
         .config(routeConfig);
 

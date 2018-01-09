@@ -1,21 +1,22 @@
 (function () {
     'use strict';
 
-    angular.module('BlurAdmin.pages.currency.settings.tiers')
+    angular.module('BlurAdmin.pages.groupTiers.list')
         .controller('TierModalCtrl', TierModalCtrl);
 
-    function TierModalCtrl($scope,tier,$uibModalInstance,toastr,$http,environmentConfig,cookieManagement,errorHandler) {
+    function TierModalCtrl($scope,tier,groupName,$uibModalInstance,toastr,$http,environmentConfig,cookieManagement,errorHandler) {
 
         var vm = this;
 
         $scope.tier = tier;
         vm.token = cookieManagement.getCookie('TOKEN');
+        vm.groupName = groupName;
         $scope.deletingTier = false;
 
         $scope.deleteTier = function(tier){
             if(vm.token) {
                 $scope.deletingTier = true;
-                $http.delete(environmentConfig.API + '/admin/tiers/' + $scope.tier.id + '/' ,{
+                $http.delete(environmentConfig.API + '/admin/groups/' + vm.groupName + '/tiers/' + $scope.tier.id + '/' ,{
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': vm.token
