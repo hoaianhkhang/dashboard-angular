@@ -1,16 +1,26 @@
 <div class="auth-main">
     <div class="auth-block">
-        <div class="text-center divider">
-            <h1>Account verification</h1>
-            <p>Before proceeding, please verify your account</p>
+        <div class="text-left divider verification-text">
+            <h2>
+                Verify email
+            </h2>
+            <div style='border-bottom:1px solid #ccc;margin-left:-20px;margin-right: -20px;'></div>
+            <p>Before proceeding, please verify your account.Please check your inbox for an email
+                from rehive.</p>
         </div>
         <div class="verification-text divider">
-            <p>In order to maintain high security standards Rehive requires a verified email. Please check your inbox for an email from Rehive.</p>
-            <p>Haven't received a verification email? <a ng-click="resendEmail()" class="verification-link">Resend email</a></p>
+            <p style="margin-top: 0px;">Haven't received an email? <a ng-click="resendEmail()" class="verification-link">Click
+                here to resend email.</a></p>
+        </div>
+        <div class="verification-text divider" style="padding-bottom: 2px;">
+            <p style="margin-top: 0px;"><a ng-click="resendEmail()" class="verification-link">Still haven't received an
+                email?</a></p>
         </div>
         <div class="row form-group verification-btn-box">
             <div class="col-sm-12">
-                <button ng-disabled="verifyingEmail" ng-click="verifyUser()" class="btn btn-primary btn-auth verification-button">Continue</button>
+                <button ng-disabled="verifyingEmail" ng-click="verifyUser()"
+                        class="btn btn-primary btn-auth verification-button">Continue
+                </button>
             </div>
         </div>
     </div>

@@ -17,7 +17,7 @@
             userVerification.verify(function(err,verified){
                 if(verified){
                     $rootScope.userVerified = true;
-                    $location.path('/company/name_request');
+                    $location.path('/welcome_rehive');
                 } else {
                     $rootScope.$pageFinishedLoading = true;
                 }
@@ -31,7 +31,7 @@
                 if(verified){
                     $scope.verifyingEmail = false;
                     $rootScope.userVerified = true;
-                    $location.path('/company/name_request');
+                    $location.path('/welcome_rehive');
                 } else {
                     $scope.verifyingEmail = false;
                     toastr.error('Please verify your account','Message');

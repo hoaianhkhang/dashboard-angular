@@ -14,6 +14,11 @@
             name: ''
         };
 
+        $scope.goToNextView = function(){
+            $rootScope.userVerified = true;
+            $location.path('currency/add/initial');
+        }
+
         vm.getCompanyInfo = function () {
             if(vm.token) {
                 $http.get(environmentConfig.API + '/admin/company/', {

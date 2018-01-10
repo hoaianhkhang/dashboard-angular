@@ -70,12 +70,11 @@ angular.module('BlurAdmin', [
                             }
                         }).then(function (res) {
                             if (res.status === 200) {
-                                if(res.data.data && res.data.data.name){
+                                console.log(newUrl.indexOf('/company/name_request'))
+                                if(newUrl.indexOf('/company/name_request')<0 && newUrl.indexOf('/welcome_rehive')<0){
                                     $rootScope.haveCompanyName = true;
                                     $rootScope.companyName = res.data.data.name;
                                     getCompanyCurrencies(token);
-                                } else {
-                                    $location.path('/company/name_request');
                                 }
                             }
                         }).catch(function (error) {
@@ -137,7 +136,7 @@ angular.module('BlurAdmin', [
                 if(newUrl.indexOf('password/reset/confirm') > 0 || newUrl.indexOf('email/verify') > 0) {
                     $rootScope.securityConfigured = false;
                 } else if(newUrlLastElement == 'register' || newUrlLastElement == 'reset'
-                    || newUrlLastElement == 'verification' || newUrlLastElement == 'name_request'){
+                    || newUrlLastElement == 'verification' || newUrlLastElement == 'name_request' || newUrlLastElement == 'welcome_rehive'){
                     $rootScope.securityConfigured = false;
                 } else if(token){
                     $rootScope.gotToken = true;
