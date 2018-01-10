@@ -4,7 +4,8 @@
     angular.module('BlurAdmin.pages.groupTiers', [
         'BlurAdmin.pages.groupTiers.list',
         'BlurAdmin.pages.groupTiers.tierRequirements',
-        'BlurAdmin.pages.groupTiers.tierLimits'
+        'BlurAdmin.pages.groupTiers.tierLimits',
+        'BlurAdmin.pages.groupTiers.tierFees'
     ])
         .config(routeConfig);
 

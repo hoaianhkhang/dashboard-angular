@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    angular.module('BlurAdmin.pages.currency.settings.tierFees')
+    angular.module('BlurAdmin.pages.groupTiers.tierFees')
         .controller('TierFeesCtrl', TierFeesCtrl);
 
     /** @ngInject */
@@ -10,8 +10,8 @@
 
         var vm = this;
         vm.token = cookieManagement.getCookie('TOKEN');
-        $scope.currencyCode = $stateParams.currencyCode;
-        vm.currenciesList = JSON.parse($window.sessionStorage.currenciesList || '[]');
+        vm.groupName = $stateParams.groupName;
+        $scope.currenciesList = JSON.parse($window.sessionStorage.currenciesList || '[]');
         $scope.activeTabIndex = 0;
         $scope.loadingTierFees = true;
         $scope.loadingSubtypes = false;
@@ -22,11 +22,12 @@
             subtype: ''
         };
         $scope.txTypeOptions = ['Credit','Debit'];
-        vm.currenciesList.forEach(function (element) {
-            if(element.code ==  $scope.currencyCode){
-                $scope.currencyObj = element;
-            }
-        });
+
+        vm.returnCurrencyObj = function (currencyCode) {
+            return $scope.currenciesList.find(function (element) {
+                return (element.code == currencyCode);
+            });
+        };
 
         $scope.getSubtypesArray = function(params,editing){
             $scope.loadingSubtypes = true;
@@ -58,7 +59,7 @@
 
         vm.getTierFee = function (tierFee) {
             $scope.loadingTierFees = true;
-            $http.get(environmentConfig.API + '/admin/tiers/' + $scope.selectedTier.id + '/fees/' + tierFee.id + '/', {
+            $http.get(environmentConfig.API + '/admin/groups/' + vm.groupName + '/tiers/' + $scope.selectedTier.id + '/fees/' + tierFee.id + '/', {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': vm.token
@@ -66,8 +67,9 @@
             }).then(function (res) {
                 $scope.loadingTierFees = false;
                 if (res.status === 200) {
+                    res.data.data.currency = vm.returnCurrencyObj(res.data.data.currency);
                     $scope.editTierFee = res.data.data;
-                    $scope.editTierFee.value = currencyModifiers.convertFromCents($scope.editTierFee.value,$scope.currencyObj.divisibility);
+                    $scope.editTierFee.value = currencyModifiers.convertFromCents($scope.editTierFee.value,$scope.editTierFee.currency.divisibility);
                     $scope.editTierFee.tx_type == 'credit' ? $scope.editTierFee.tx_type = 'Credit' : $scope.editTierFee.tx_type = 'Debit';
                     $scope.getSubtypesArray($scope.editTierFee,'editing');
                 }
@@ -81,7 +83,7 @@
         $scope.getAllTiers = function(tierLevel){
             if(vm.token) {
                 $scope.loadingTierFees = true;
-                $http.get(environmentConfig.API + '/admin/tiers/?currency=' + $scope.currencyCode, {
+                $http.get(environmentConfig.API + '/admin/groups/' + vm.groupName + '/tiers/', {
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': vm.token
@@ -131,7 +133,7 @@
         $scope.getTierFees = function(){
             if(vm.token) {
                 $scope.loadingTierFees = true;
-                $http.get(environmentConfig.API + '/admin/tiers/' + $scope.selectedTier.id + '/fees/',{
+                $http.get(environmentConfig.API + '/admin/groups/' + vm.groupName + '/tiers/' + $scope.selectedTier.id + '/fees/',{
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': vm.token
@@ -139,6 +141,10 @@
                 }).then(function (res) {
                     $scope.loadingTierFees = false;
                     if (res.status === 200) {
+                        res.data.data.forEach(function (element) {
+                            element.currency = vm.returnCurrencyObj(element.currency);
+                        });
+
                         $scope.tiersFeesList = res.data.data;
                     }
                 }).catch(function (error) {
@@ -151,10 +157,10 @@
 
         $scope.addTierFee = function(tierFeesParams){
             if(tierFeesParams.value){
-                if(currencyModifiers.validateCurrency(tierFeesParams.value,$scope.currencyObj.divisibility)){
-                    tierFeesParams.value = currencyModifiers.convertToCents(tierFeesParams.value,$scope.currencyObj.divisibility);
+                if(currencyModifiers.validateCurrency(tierFeesParams.value,tierFeesParams.currency.divisibility)){
+                    tierFeesParams.value = currencyModifiers.convertToCents(tierFeesParams.value,tierFeesParams.currency.divisibility);
                 } else {
-                    toastr.error('Please input amount to ' + $scope.currencyObj.divisibility + ' decimal places');
+                    toastr.error('Please input amount to ' + tierFeesParams.currency.divisibility + ' decimal places');
                     return;
                 }
             }
@@ -165,7 +171,9 @@
             if(vm.token) {
                 $scope.loadingTierFees = true;
                 tierFeesParams.tx_type = tierFeesParams.tx_type.toLowerCase();
-                $http.post(environmentConfig.API + '/admin/tiers/' + $scope.selectedTier.id + '/fees/',tierFeesParams,{
+                tierFeesParams.currency = tierFeesParams.currency.code;
+
+                $http.post(environmentConfig.API + '/admin/groups/' + vm.groupName + '/tiers/' + $scope.selectedTier.id + '/fees/',tierFeesParams,{
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': vm.token
@@ -204,11 +212,15 @@
                 vm.updatedTierFee.subtype = '';
             }
 
+            if(vm.updatedTierFee.currency){
+                vm.updatedTierFee.currency = vm.updatedTierFee.currency.code;
+            }
+
             if($scope.editTierFee.value){
-                if(currencyModifiers.validateCurrency($scope.editTierFee.value,$scope.currencyObj.divisibility)){
-                    vm.updatedTierFee.value = currencyModifiers.convertToCents($scope.editTierFee.value,$scope.currencyObj.divisibility);
+                if(currencyModifiers.validateCurrency($scope.editTierFee.value,$scope.editTierFee.currency.divisibility)){
+                    vm.updatedTierFee.value = currencyModifiers.convertToCents($scope.editTierFee.value,$scope.editTierFee.currency.divisibility);
                 } else {
-                    toastr.error('Please input amount to ' + $scope.currencyObj.divisibility + ' decimal places');
+                    toastr.error('Please input amount to ' + $scope.editTierFee.currency.divisibility + ' decimal places');
                     return;
                 }
             } else {
@@ -224,7 +236,7 @@
                 $scope.editingTierFees = !$scope.editingTierFees;
                 vm.updatedTierFee.tx_type ? vm.updatedTierFee.tx_type = vm.updatedTierFee.tx_type.toLowerCase() : '';
 
-                $http.patch(environmentConfig.API + '/admin/tiers/' + $scope.selectedTier.id + '/fees/' + $scope.editTierFee.id + '/',vm.updatedTierFee,{
+                $http.patch(environmentConfig.API + '/admin/groups/' + vm.groupName + '/tiers/' + $scope.selectedTier.id + '/fees/' + $scope.editTierFee.id + '/',vm.updatedTierFee,{
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': vm.token

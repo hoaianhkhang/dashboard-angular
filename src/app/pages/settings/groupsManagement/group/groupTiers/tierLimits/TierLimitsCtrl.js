@@ -222,8 +222,8 @@
                 vm.updatedTierLimit.subtype = '';
             }
 
-            if($scope.editTierLimit.currency){
-                vm.updatedTierLimit.currency = $scope.editTierLimit.currency.code;
+            if(vm.updatedTierLimit.currency){
+                vm.updatedTierLimit.currency = vm.updatedTierLimit.currency.code;
             }
 
             if($scope.editTierLimit.value){
