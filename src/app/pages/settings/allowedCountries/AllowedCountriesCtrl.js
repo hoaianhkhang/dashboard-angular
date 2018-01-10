@@ -5,7 +5,7 @@
         .controller('AllowedCountriesCtrl', AllowedCountriesCtrl);
 
     /** @ngInject */
-    function AllowedCountriesCtrl($scope,environmentConfig,$http,cookieManagement,errorHandler,toastr) {
+    function AllowedCountriesCtrl($scope,environmentConfig,$http,cookieManagement,errorHandler,toastr,$window) {
         var vm = this;
         vm.token = cookieManagement.getCookie('TOKEN');
         $scope.loadingAllowedCountries = false;
@@ -260,7 +260,7 @@
         $scope.getAllowedCountries = function () {
             if(vm.token) {
                 $scope.loadingAllowedCountries = true;
-                $http.get(environmentConfig.API + '/admin/company/', {
+                $http.get(environmentConfig.API + '/admin/company/settings/', {
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': vm.token
@@ -302,7 +302,7 @@
         $scope.saveAllowedCountries = function () {
             if(vm.token) {
                 $scope.loadingAllowedCountries = true;
-                $http.patch(environmentConfig.API + '/admin/company/',{nationalities: $scope.trackedCountries}, {
+                $http.patch(environmentConfig.API + '/admin/company/settings/',{nationalities: $scope.trackedCountries}, {
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': vm.token
@@ -311,6 +311,7 @@
                     if (res.status === 200) {
                         $scope.trackedCountries = [];
                         toastr.success('List of allowed countries have been saved');
+                        $window.scroll(0,0);
                         $scope.getAllowedCountries();
                     }
                 }).catch(function (error) {

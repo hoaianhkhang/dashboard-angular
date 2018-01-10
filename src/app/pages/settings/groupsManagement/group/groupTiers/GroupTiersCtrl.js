@@ -16,5 +16,9 @@
             $location.path('/settings/groups-management/' + vm.groupName + '/tiers/' + path);
         };
 
+        $scope.goBackToGroupSettings = function () {
+            $location.path('/settings/groups-management/' + vm.groupName);
+        };
+
     }
 })();
