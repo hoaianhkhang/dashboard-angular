@@ -99,7 +99,6 @@
           if(vm.token) {
             $window.scrollTo(0, 0);
             $scope.editingTiers = !$scope.editingTiers;
-            vm.updatedTier.level = $scope.editTier.level;
             $scope.loadingTiers = true;
               $http.patch(environmentConfig.API + '/admin/groups/' + vm.groupName + '/tiers/' + $scope.editTier.id + '/', vm.updatedTier, {
                   headers: {

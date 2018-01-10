@@ -1,14 +1,14 @@
 (function () {
     'use strict';
 
-    angular.module('BlurAdmin.pages.currency.settings.tierRequirements')
+    angular.module('BlurAdmin.pages.groupTiers.tierRequirements')
         .directive('tierRequirementsForm', tierRequirementsForm);
 
     /** @ngInject */
     function tierRequirementsForm() {
         return {
             restrict: 'E',
-            templateUrl: 'app/pages/currency/settings/tierRequirements/tierRequirementsForm/tierRequirementsForm.html'
+            templateUrl: 'app/pages/settings/groupsManagement/group/groupTiers/tierRequirements/tierRequirementsForm/tierRequirementsForm.html'
         };
     }
 })();
