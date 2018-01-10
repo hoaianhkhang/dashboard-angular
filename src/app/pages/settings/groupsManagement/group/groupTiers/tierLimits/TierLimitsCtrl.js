@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    angular.module('BlurAdmin.pages.currency.settings.tierLimits')
+    angular.module('BlurAdmin.pages.groupTiers.tierLimits')
         .controller('TierLimitsCtrl', TierLimitsCtrl);
 
     /** @ngInject */
@@ -10,8 +10,8 @@
 
         var vm = this;
         vm.token = cookieManagement.getCookie('TOKEN');
-        $scope.currencyCode = $stateParams.currencyCode;
-        vm.currenciesList = JSON.parse($window.sessionStorage.currenciesList || '[]');
+        vm.groupName = $stateParams.groupName;
+        $scope.currenciesList = JSON.parse($window.sessionStorage.currenciesList || '[]');
         $scope.activeTabIndex = 0;
         $scope.loadingTierLimits = true;
         $scope.loadingSubtypes = false;
@@ -24,11 +24,12 @@
         };
         $scope.txTypeOptions = ['Credit','Debit'];
         $scope.typeOptions = ['Maximum','Maximum per day','Maximum per month','Minimum','Overdraft'];
-        vm.currenciesList.forEach(function (element) {
-            if(element.code ==  $scope.currencyCode){
-                $scope.currencyObj = element;
-            }
-        });
+
+        vm.returnCurrencyObj = function (currencyCode) {
+            return $scope.currenciesList.find(function (element) {
+                return (element.code == currencyCode);
+            });
+        };
 
 
         $scope.getSubtypesArray = function(params,editing){
@@ -61,7 +62,7 @@
 
         vm.getTierLimit = function (tierLimit) {
             $scope.loadingTierLimits = true;
-            $http.get(environmentConfig.API + '/admin/tiers/' + $scope.selectedTier.id + '/limits/' + tierLimit.id + '/', {
+            $http.get(environmentConfig.API + '/admin/groups/' + vm.groupName + '/tiers/' + $scope.selectedTier.id + '/limits/' + tierLimit.id + '/', {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': vm.token
@@ -69,8 +70,9 @@
             }).then(function (res) {
                 $scope.loadingTierLimits = false;
                 if (res.status === 200) {
+                    res.data.data.currency = vm.returnCurrencyObj(res.data.data.currency);
                     $scope.editTierLimit = res.data.data;
-                    $scope.editTierLimit.value = currencyModifiers.convertFromCents($scope.editTierLimit.value,$scope.currencyObj.divisibility);
+                    $scope.editTierLimit.value = currencyModifiers.convertFromCents($scope.editTierLimit.value,$scope.editTierLimit.currency.divisibility);
                     $scope.editTierLimit.tx_type == 'credit' ? $scope.editTierLimit.tx_type = 'Credit' : $scope.editTierLimit.tx_type = 'Debit';
                     $scope.getSubtypesArray($scope.editTierLimit,'editing');
                 }
@@ -84,7 +86,7 @@
         $scope.getAllTiers = function(tierLevel){
             if(vm.token) {
                 $scope.loadingTierLimits = true;
-                $http.get(environmentConfig.API + '/admin/tiers/?currency=' + $scope.currencyObj.code , {
+                $http.get(environmentConfig.API + '/admin/groups/' + vm.groupName + '/tiers/', {
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': vm.token
@@ -134,7 +136,7 @@
         $scope.getTierLimits = function(){
             if(vm.token) {
                 $scope.loadingTierLimits = true;
-                $http.get(environmentConfig.API + '/admin/tiers/' + $scope.selectedTier.id + '/limits/',{
+                $http.get(environmentConfig.API + '/admin/groups/' + vm.groupName + '/tiers/' + $scope.selectedTier.id + '/limits/',{
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': vm.token
@@ -142,7 +144,12 @@
                 }).then(function (res) {
                     $scope.loadingTierLimits = false;
                     if (res.status === 200) {
+                        res.data.data.forEach(function (element) {
+                           element.currency = vm.returnCurrencyObj(element.currency);
+                        });
+
                         $scope.tiersLimitsList = res.data.data;
+
                     }
                 }).catch(function (error) {
                     $scope.loadingTierLimits = false;
@@ -153,11 +160,12 @@
         };
 
         $scope.addTierLimit = function(tierLimitsParams){
+
             if(tierLimitsParams.value){
-                if(currencyModifiers.validateCurrency(tierLimitsParams.value,$scope.currencyObj.divisibility)){
-                    tierLimitsParams.value = currencyModifiers.convertToCents(tierLimitsParams.value,$scope.currencyObj.divisibility);
+                if(currencyModifiers.validateCurrency(tierLimitsParams.value,tierLimitsParams.currency.divisibility)){
+                    tierLimitsParams.value = currencyModifiers.convertToCents(tierLimitsParams.value,tierLimitsParams.currency.divisibility);
                 } else {
-                    toastr.error('Please input amount to ' + $scope.currencyObj.divisibility + ' decimal places');
+                    toastr.error('Please input amount to ' + tierLimitsParams.currency.divisibility + ' decimal places');
                     return;
                 }
             } else {
@@ -168,7 +176,10 @@
                 tierLimitsParams.tx_type = tierLimitsParams.tx_type.toLowerCase();
                 tierLimitsParams.type = tierLimitsParams.type == 'Maximum' ? 'max': tierLimitsParams.type == 'Maximum per day' ? 'day_max':
                                                                   tierLimitsParams.type == 'Maximum per month' ? 'month_max': tierLimitsParams.type == 'Minimum' ? 'min': 'overdraft';
-                $http.post(environmentConfig.API + '/admin/tiers/' + $scope.selectedTier.id + '/limits/',tierLimitsParams,{
+
+                tierLimitsParams.currency = tierLimitsParams.currency.code;
+
+                $http.post(environmentConfig.API + '/admin/groups/' + vm.groupName + '/tiers/' + $scope.selectedTier.id + '/limits/',tierLimitsParams,{
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': vm.token
@@ -211,11 +222,15 @@
                 vm.updatedTierLimit.subtype = '';
             }
 
+            if($scope.editTierLimit.currency){
+                vm.updatedTierLimit.currency = $scope.editTierLimit.currency.code;
+            }
+
             if($scope.editTierLimit.value){
-                if(currencyModifiers.validateCurrency($scope.editTierLimit.value,$scope.currencyObj.divisibility)){
-                    vm.updatedTierLimit.value = currencyModifiers.convertToCents($scope.editTierLimit.value,$scope.currencyObj.divisibility);
+                if(currencyModifiers.validateCurrency($scope.editTierLimit.value,$scope.editTierLimit.currency.divisibility)){
+                    vm.updatedTierLimit.value = currencyModifiers.convertToCents($scope.editTierLimit.value,$scope.editTierLimit.currency.divisibility);
                 } else {
-                    toastr.error('Please input amount to ' + $scope.currencyObj.divisibility + ' decimal places');
+                    toastr.error('Please input amount to ' + $scope.editTierLimit.currency.divisibility + ' decimal places');
                     return;
                 }
             } else {
@@ -229,7 +244,7 @@
                 vm.updatedTierLimit.type ? vm.updatedTierLimit.type = vm.updatedTierLimit.type == 'Maximum' ? 'max': vm.updatedTierLimit.type == 'Maximum per day' ? 'day_max':
                     vm.updatedTierLimit.type == 'Maximum per month' ? 'month_max': vm.updatedTierLimit.type == 'Minimum' ? 'min': 'overdraft' : '';
 
-                $http.patch(environmentConfig.API + '/admin/tiers/' + $scope.selectedTier.id + '/limits/' + $scope.editTierLimit.id + '/',vm.updatedTierLimit,{
+                $http.patch(environmentConfig.API + '/admin/groups/' + vm.groupName + '/tiers/' + $scope.selectedTier.id + '/limits/' + $scope.editTierLimit.id + '/',vm.updatedTierLimit,{
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': vm.token

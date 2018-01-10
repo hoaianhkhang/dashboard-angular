@@ -9,7 +9,8 @@
         <p class="divider"><span class="text-subtle">Tx type:</span> {{tierLimit.tx_type | capitalizeWord}}</p>
         <p class="divider"><span class="text-subtle">Type:</span> {{tierLimit.type | capitalizeWord}}</p>
         <p class="divider"><span class="text-subtle">Subtype:</span> {{tierLimit.subtype ? tierLimit.subtype : 'None'}}</p>
-        <p><span class="text-subtle">Value:</span> {{tierLimit.value | currencyModifiersFilter: currencyObj.divisibility}}</p>
+        <p class="divider"><span class="text-subtle">Type:</span> {{tierLimit.currency.code}}</p>
+        <p><span class="text-subtle">Value:</span> {{tierLimit.value | currencyModifiersFilter: tierLimit.currency.divisibility}}</p>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-default dashboard-btn pull-left" ng-click="$dismiss()">Close</button>
