@@ -3,7 +3,8 @@
 
     angular.module('BlurAdmin.pages.group', [
         'BlurAdmin.pages.group.permissions',
-        'BlurAdmin.pages.group.settings'
+        'BlurAdmin.pages.group.settings',
+        'BlurAdmin.pages.group.accountConfigurations'
     ])
         .config(routeConfig);
 

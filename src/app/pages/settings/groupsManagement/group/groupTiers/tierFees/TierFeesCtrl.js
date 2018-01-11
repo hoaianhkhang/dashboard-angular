@@ -227,7 +227,7 @@
                 vm.updatedTierFee.value = 0;
             }
 
-            if(!vm.updatedTierFee.percentage){
+            if($scope.editTierFee.percentage == ""){
                 vm.updatedTierFee.percentage = 0;
             }
 
