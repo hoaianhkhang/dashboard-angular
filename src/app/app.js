@@ -139,7 +139,7 @@ angular.module('BlurAdmin', [
                     || newUrlLastElement == 'verification' || newUrlLastElement == 'name_request' || newUrlLastElement == 'welcome_rehive'){
                     $rootScope.securityConfigured = false;
                 } else if(token){
-                    $rootScope.gotToken = true;
+                    $rootScope.gotToken = false;
                     $rootScope.securityConfigured = true;
                 } else {
                     $rootScope.securityConfigured = true;
