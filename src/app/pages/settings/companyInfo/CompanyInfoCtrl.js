@@ -72,14 +72,9 @@
 
         $scope.updateCompanySettings = function () {
             if(Object.keys(vm.updatedCompanySettings.settings).length != 0){
-                console.log(vm.updatedCompanySettings.settings)
-
-                var formData = new FormData();
-
-                formData = vm.updatedCompanySettings.settings;
 
                 $scope.loadingCompanyInfo = true;
-                $http.patch(environmentConfig.API + '/admin/company/settings/',formData, {
+                $http.patch(environmentConfig.API + '/admin/company/settings/',vm.updatedCompanySettings.settings, {
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': vm.token
