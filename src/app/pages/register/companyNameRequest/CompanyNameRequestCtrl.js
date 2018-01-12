@@ -16,7 +16,7 @@
 
         $scope.goToNextView = function(){
             $rootScope.userVerified = true;
-            $location.path('currency/add/initial');
+            $location.path('company/setup/initial');
         }
 
         vm.getCompanyInfo = function () {
@@ -34,7 +34,7 @@
                             userVerification.verify(function(err,verified){
                                 if(verified){
                                     $rootScope.userVerified = true;
-                                    $location.path('currency/add/initial');
+                                    $location.path('company/setup/initial');
                                 } else {
                                     $location.path('/verification');
                                     toastr.error('Please verify your account','Message');
@@ -72,7 +72,7 @@
                         if(verified){
                             $rootScope.userVerified = true;
                             toastr.success('You have successfully updated the company info');
-                            $location.path('currency/add/initial');
+                            $location.path('company/setup/initial');
                         } else {
                             $location.path('/verification');
                             toastr.error('Please verify your account','Message');

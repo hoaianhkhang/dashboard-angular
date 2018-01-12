@@ -71,7 +71,7 @@ angular.module('BlurAdmin', [
                         }).then(function (res) {
                             if (res.status === 200) {
                                 console.log(newUrl.indexOf('/company/name_request'))
-                                if(newUrl.indexOf('/company/name_request')<0 && newUrl.indexOf('/welcome_rehive')<0){
+                                if(newUrl.indexOf('/company/name_request')<0 && newUrl.indexOf('/welcome_rehive')<0 && newUrl.indexOf('/company/setup')){
                                     $rootScope.haveCompanyName = true;
                                     $rootScope.companyName = res.data.data.name;
                                     getCompanyCurrencies(token);

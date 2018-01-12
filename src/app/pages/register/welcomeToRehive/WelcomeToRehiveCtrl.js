@@ -14,7 +14,7 @@
         $rootScope.$pageFinishedLoading = true;
 
         $scope.goToNextView = function () {
-            $location.path('/company/setup/initial');
+            $location.path('/company/name_request');
         }
     }
 })();

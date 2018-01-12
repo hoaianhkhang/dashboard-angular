@@ -10,8 +10,11 @@
                         <p>Create users group to categorize users, configure settings and control permissions.</p>
                     </div>
                     <div>
-                        <input type="text" class="form-control"
-                               placeholder="Name*" auto-focus="!havePersonalDetails" required>
+                        <input type="text" class="form-control" ng-model="name"
+                               placeholder="Name*" required>
+                        <button ng-click="addUser(name)"
+                            class="btn btn-auth btn-primary pull-right add-new">Add new group
+                        </button>
                     </div>
 
                 </div>
@@ -20,6 +23,18 @@
                             class="btn btn-auth btn-primary pull-right dashboard-btn">Next
                     </button>
                 </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+        <div class="panel">
+            <div class="panel-heading">
+                <span class="company-setup-title">Added user groups</span>
+            </div>
+            <div class="panel-body">
+                <ul class="list-group">
+                    <li class="list-group-item" ng-repeat="group in addedGroups">{{group.label}}</li>
+                </ul>
             </div>
         </div>
     </div>
