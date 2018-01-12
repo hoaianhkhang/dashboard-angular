@@ -3,7 +3,8 @@
 
     angular.module('BlurAdmin.pages.newCompanySetup',[
         'BlurAdmin.pages.newCompanySetup.initialSetupScreen',
-        'BlurAdmin.pages.newCompanySetup.setupUsers'
+        'BlurAdmin.pages.newCompanySetup.setupUsers',
+        'BlurAdmin.pages.newCompanySetup.setupAccounts'
     ])
         .config(routeConfig)
 

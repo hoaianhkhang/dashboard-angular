@@ -9,6 +9,7 @@
         var vm=this;
         vm.token=cookieManagement.getCookie("TOKEN");
         $scope.addedGroups = [];
+        $scope.name="";
         $rootScope.$pageFinishedLoading=true;
 
         $scope.goToNextView=function () {
@@ -47,6 +48,7 @@
                 }
             }).then(function (res) {
                 if (res.status === 201) {
+                    $scope.name="";
                     vm.getGroups();
                 }
             }).catch(function (error) {
