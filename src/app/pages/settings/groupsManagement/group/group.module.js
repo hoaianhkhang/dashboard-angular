@@ -4,7 +4,8 @@
     angular.module('BlurAdmin.pages.group', [
         'BlurAdmin.pages.group.permissions',
         'BlurAdmin.pages.group.settings',
-        'BlurAdmin.pages.group.accountConfigurations'
+        'BlurAdmin.pages.group.accountConfigurations',
+        'BlurAdmin.pages.group.accountConfiguration'
     ])
         .config(routeConfig);
 

@@ -5,7 +5,7 @@
         .controller('GroupAccountConfigurationsCtrl', GroupAccountConfigurationsCtrl);
 
     /** @ngInject */
-    function GroupAccountConfigurationsCtrl($scope,environmentConfig,$http,$stateParams,$uibModal,
+    function GroupAccountConfigurationsCtrl($scope,environmentConfig,$http,$stateParams,$uibModal,$location,
                                             cookieManagement,errorHandler,toastr,serializeFiltersService) {
 
         var vm = this;
@@ -140,6 +140,10 @@
                 errorHandler.evaluateErrors(error.data);
                 errorHandler.handleErrors(error);
             });
+        };
+
+        $scope.goToGroupAccountConfigurationView = function (accountConfiguration) {
+            $location.path('/settings/groups-management/' + vm.groupName + '/account-configurations/' + accountConfiguration.name + '/currencies');
         };
 
         $scope.openGroupAccountConfigurationsModal = function (page, size,accountConfiguration) {

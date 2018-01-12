@@ -15,7 +15,7 @@
                         templateUrl: 'app/pages/settings/groupsManagement/group/groupAccountConfigurations/groupAccountConfigurations.html'
                     }
                 },
-                title: "Group settings"
+                title: "Group account configurations"
             });
     }
 
