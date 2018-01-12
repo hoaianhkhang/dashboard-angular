@@ -1,0 +1,51 @@
+<div class="row">
+    <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
+        <div class="panel">
+            <div class="panel-heading">
+                <span class="company-setup-title">Add transaction subtypes</span>
+            </div>
+            <div class="panel-body">
+                <p class="divider-40">Transaction subtypes are a way of marking certain transactions in order to
+                    categorize and sort specific kinds of transaction.</p>
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <ul class="currency-setup-ul">
+                            <li class="divider-20"><span>Choose whether this subtype applies to a credits or a debit transaction type</span>
+                            </li>
+                            <li class="divider-20"><span>Give your subtype a label</span></li>
+                            <li class="divider-20"><span>Add as many subtypes as you want</span></li>
+                            <li class="divider-20"><span>You can add more subtypes later</span></li>
+                            <li class="divider-20"><span>You can edit added subtypes later</span></li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 form-group">
+                        <label>Select transactiont type <span class="required-icon"></span></label>
+                        <form action="" class="divider-20">
+                            <input type="radio" name="gender" value="male"> Credit
+                            <input type="radio" name="gender" value="female"> Debit
+                        </form>
+                        <label>Subtype label <span class="required-icon"></span></label>
+                        <br>
+                        <input type="text" class="form-control"
+                               placeholder="Name" auto-focus="!havePersonalDetails" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <button ng-click="goToNextView()"
+                            class="btn btn-auth btn-primary pull-right dashboard-btn">Next
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+        <div class="panel">
+            <div class="panel-heading">
+                <span class="company-setup-title" style="font-size: 14px">Added transaction subtypes</span>
+            </div>
+            <div class="panel-body">
+                <p>No transaction subtype added yet.</p>
+            </div>
+        </div>
+    </div>
+</div>

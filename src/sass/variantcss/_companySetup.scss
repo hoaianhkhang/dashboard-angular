@@ -24,3 +24,15 @@
   color: black!important;
   background-color: white!important;
 }
+
+.currency-setup-ul{
+  padding-left: 16px!important;
+  & > li{
+    color: #F8CF51;
+    font-size: 16px;
+    & > span{
+      font-size: 16px;
+      color: #222D32
+    }
+  }
+}
