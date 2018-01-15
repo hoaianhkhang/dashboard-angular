@@ -16,7 +16,7 @@
 
         $scope.goToNextView=function () {
             $rootScope.userVerified=true;
-            $location.path('/currencies');
+            $location.path('/company/setup/subtypes');
         }
         $scope.goToPrevView=function () {
             $rootScope.userVerified=true;

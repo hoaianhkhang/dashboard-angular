@@ -5,7 +5,8 @@
         'BlurAdmin.pages.newCompanySetup.initialSetupScreen',
         'BlurAdmin.pages.newCompanySetup.setupUsers',
         'BlurAdmin.pages.newCompanySetup.setupCurrencies',
-        'BlurAdmin.pages.newCompanySetup.setupAccounts'
+        'BlurAdmin.pages.newCompanySetup.setupAccounts',
+        'BlurAdmin.pages.newCompanySetup.setupTransactionSubtypes'
     ])
         .config(routeConfig)
 
