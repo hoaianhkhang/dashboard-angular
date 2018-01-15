@@ -23,34 +23,8 @@
             maxSize: 5
         };
 
-        $scope.toggleGroupAccountConfigurationEditView = function(accountConfiguration){
-            $scope.editingGroupAccountConfiguration = !$scope.editingGroupAccountConfiguration;
-            if(accountConfiguration) {
-                vm.getAccountConfiguration(accountConfiguration);
-            } else {
-                $scope.editGroupAccountConfigurationObj = {};
-                $scope.getGroupAccountConfigurations();
-            }
-        };
-
-        vm.getAccountConfiguration = function (accountConfiguration) {
-            $scope.loadingGroupAccountConfigurations = true;
-            $http.get(environmentConfig.API + '/admin/groups/' + vm.groupName + '/account-configurations/' + accountConfiguration.name + '/', {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': vm.token
-                }
-            }).then(function (res) {
-                $scope.loadingGroupAccountConfigurations = false;
-                if (res.status === 200) {
-                    $scope.editGroupAccountConfigurationObj = res.data.data;
-                    $scope.editGroupAccountConfigurationObj.prevName = res.data.data.name;
-                }
-            }).catch(function (error) {
-                $scope.loadingGroupAccountConfigurations = false;
-                errorHandler.evaluateErrors(error.data);
-                errorHandler.handleErrors(error);
-            });
+        $scope.goToGroupAccountConfigurationEditView = function (groupAccountConfiguration) {
+          $location.path('/settings/groups-management/' + vm.groupName + '/account-configurations/' + groupAccountConfiguration.name + '/edit');
         };
 
         vm.getGroupAccountConfigurationsUrl = function(){
@@ -112,7 +86,6 @@
                         $scope.getGroupAccountConfigurations();
                     }
                 }).catch(function (error) {
-                    console.log(error);
                     $scope.loadingGroupAccountConfigurations = false;
                     errorHandler.evaluateErrors(error.data);
                     errorHandler.handleErrors(error);
@@ -120,31 +93,7 @@
             }
         };
 
-        $scope.updateAccountConfiguration = function (editGroupAccountConfigurationObj) {
-            $scope.loadingGroupAccountConfigurations = true;
-            $scope.editingGroupAccountConfiguration = !$scope.editingGroupAccountConfiguration;
-            $http.patch(environmentConfig.API + '/admin/groups/' + vm.groupName + '/account-configurations/' + editGroupAccountConfigurationObj.prevName + '/',editGroupAccountConfigurationObj, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': vm.token
-                }
-            }).then(function (res) {
-                $scope.loadingGroupAccountConfigurations = false;
-                if (res.status === 200) {
-                    $scope.editGroupAccountConfigurationObj = {};
-                    toastr.success('Account configuration successfully updated');
-                    $scope.getGroupAccountConfigurations();
-                }
-            }).catch(function (error) {
-                $scope.loadingGroupAccountConfigurations = false;
-                errorHandler.evaluateErrors(error.data);
-                errorHandler.handleErrors(error);
-            });
-        };
 
-        $scope.goToGroupAccountConfigurationView = function (accountConfiguration) {
-            $location.path('/settings/groups-management/' + vm.groupName + '/account-configurations/' + accountConfiguration.name + '/currencies');
-        };
 
         $scope.openGroupAccountConfigurationsModal = function (page, size,accountConfiguration) {
             vm.theModal = $uibModal.open({

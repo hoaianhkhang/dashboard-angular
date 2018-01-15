@@ -5,7 +5,7 @@
         'BlurAdmin.pages.group.permissions',
         'BlurAdmin.pages.group.settings',
         'BlurAdmin.pages.group.accountConfigurations',
-        'BlurAdmin.pages.group.accountConfiguration',
+        'BlurAdmin.pages.group.editAccountConfigurations',
         'BlurAdmin.pages.group.details'
     ])
         .config(routeConfig);
