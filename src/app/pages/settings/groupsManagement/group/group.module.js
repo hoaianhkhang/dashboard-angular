@@ -16,7 +16,7 @@
                 url: '/settings/groups-management/:groupName',
                 controller: 'GroupCtrl',
                 templateUrl: 'app/pages/settings/groupsManagement/group/group.html',
-                title: "Group"
+                title: "Group configurations"
             });
     }
 

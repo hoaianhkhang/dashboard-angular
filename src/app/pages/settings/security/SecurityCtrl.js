@@ -13,6 +13,7 @@
         $scope.addingToken = false;
         $scope.createTokenData = {};
         $scope.createTokenData.tokenPassword = '';
+        $scope.createTokenData.tokenDuration = '';
         $scope.activatedMfa = 'None';
 
         vm.checkMultiFactorAuthEnabled = function () {
@@ -65,13 +66,14 @@
         $scope.addToken = function(){
             if(vm.token) {
               $scope.loadingAPITokens = true;
-                $http.post(environmentConfig.API + '/auth/tokens/',{password: $scope.createTokenData.tokenPassword}, {
+                $http.post(environmentConfig.API + '/auth/tokens/',{password: $scope.createTokenData.tokenPassword,duration: $scope.createTokenData.tokenDuration ? $scope.createTokenData.tokenDuration: 0}, {
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': vm.token
                     }
                 }).then(function (res) {
                     if (res.status === 201) {
+                        $scope.createTokenData.tokenDuration = '';
                         $scope.createTokenData.tokenPassword = '';
                         $scope.addingToken = false;
                         vm.getTokensList();
