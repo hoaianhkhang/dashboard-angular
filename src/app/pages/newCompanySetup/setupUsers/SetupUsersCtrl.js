@@ -14,7 +14,7 @@
 
         $scope.goToNextView=function () {
             $rootScope.userVerified=true;
-            $location.path('currency/add/initial');
+            $location.path('company/setup/currencysetup');
         }
 
         vm.getGroups = function(){

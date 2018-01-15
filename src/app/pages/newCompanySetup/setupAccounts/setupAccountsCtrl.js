@@ -20,7 +20,7 @@
         }
         $scope.goToPrevView=function () {
             $rootScope.userVerified=true;
-            $location.path('/company/setup/currencies');
+            $location.path('/company/setup/currencysetup');
         }
         
         vm.initializeAccount = function () {
