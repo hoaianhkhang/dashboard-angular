@@ -10,73 +10,10 @@
         var vm = this;
         vm.token = cookieManagement.getCookie('TOKEN');
         $scope.loadingGroups = true;
-        $scope.editingGroup = false;
         $scope.groupsParams = {};
-        $scope.editGroupObj = {};
-        vm.updatedGroup = {};
 
         $scope.goToGroup = function(groupName){
-            $location.path('/settings/groups-management/' + groupName);
-        };
-
-        $scope.editGroupToggle = function (group) {
-            if(group){
-                vm.getGroup(group);
-            } else {
-                vm.getGroups();
-            }
-
-            $scope.editingGroup = !$scope.editingGroup;
-        };
-
-        $scope.groupChanged = function(field){
-            vm.updatedGroup[field] = $scope.editGroupObj[field];
-        };
-
-        $scope.editGroup = function (editGroupObj) {
-
-            if(vm.token) {
-                $scope.loadingGroups = true;
-                $http.patch(environmentConfig.API + '/admin/groups/' + editGroupObj.prevName + '/',vm.updatedGroup, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
-                    $scope.loadingGroups = false;
-                    if (res.status === 200) {
-                        toastr.success('Group successfully edited');
-                        $scope.editingGroup = !$scope.editingGroup;
-                        vm.getGroups();
-                    }
-                }).catch(function (error) {
-                    $scope.loadingGroups = false;
-                    errorHandler.evaluateErrors(error.data);
-                    errorHandler.handleErrors(error);
-                });
-            }
-        };
-
-        vm.getGroup = function (group) {
-            if(vm.token) {
-                $scope.loadingGroups = true;
-                $http.get(environmentConfig.API + '/admin/groups/' + group.name + '/', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
-                    $scope.loadingGroups = false;
-                    if (res.status === 200) {
-                        $scope.editGroupObj = res.data.data;
-                        $scope.editGroupObj.prevName = res.data.data.name;
-                    }
-                }).catch(function (error) {
-                    $scope.loadingGroups = false;
-                    errorHandler.evaluateErrors(error.data);
-                    errorHandler.handleErrors(error);
-                });
-            }
+            $location.path('/settings/groups-management/' + groupName + '/details');
         };
 
         vm.getGroups = function () {
