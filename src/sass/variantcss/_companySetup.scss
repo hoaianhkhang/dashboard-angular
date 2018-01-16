@@ -1,0 +1,38 @@
+.panel {
+  & > .panel-heading > .company-setup-title{
+      font-size: 18px;
+      font-weight: bold;
+      color: #222D32;
+  }
+}
+.company-setup-container{
+  padding:64px;
+}
+
+.list-group-item {
+  border: 0px;
+}
+
+.add-new {
+  margin-top: 10px;
+  width: 200px!important;
+}
+
+.setup-back-btn {
+  margin-right: 10px;
+  border-color: lightgray!important;
+  color: black!important;
+  background-color: white!important;
+}
+
+.currency-setup-ul{
+  padding-left: 16px!important;
+  & > li{
+    color: #F8CF51;
+    font-size: 16px;
+    & > span{
+      font-size: 16px;
+      color: #222D32
+    }
+  }
+}

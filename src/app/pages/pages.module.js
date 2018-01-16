@@ -30,7 +30,9 @@
       'BlurAdmin.pages.permissions',
       'BlurAdmin.pages.verification',
       'BlurAdmin.pages.companyNameRequest',
-      'BlurAdmin.pages.initialAddCurrency'
+      'BlurAdmin.pages.initialAddCurrency',
+      'BlurAdmin.pages.welcomeToRehive',
+      'BlurAdmin.pages.newCompanySetup'
   ])
       .config(routeConfig);
 

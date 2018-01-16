@@ -1,18 +1,23 @@
 <div class="auth-main">
     <div class="auth-block">
-        <div class="text-center">
-            <h1>Welcome to Rehive</h1>
-            <p>Please tell us more about you.</p>
+        <div class="text-left">
+            <h2 style="text-align: left;font-size: 18px;
+                color:#222D32;font-weight: bold;
+                margin-top: 25px;
+                margin-bottom: 25px;
+                margin-left: 5px;
+                margin-right: 5px">Company</h2>
         </div>
+        <div style='border-bottom:1px solid #ccc;margin-left:-20px;margin-right: -20px;'></div>
         <div class="company-name-request-text divider" ng-keydown="($event.keyCode === 13) && company.name && updateCompanyInfo()">
-            <p>What is your company's name?</p>
+            <p style="padding-bottom: 5px;">Tell us a bit about you. You can always skip this step and do it later.</p>
             <input class="form-control" ng-model="company.name" type="text" placeholder="Company name">
         </div>
         <div class="row form-group verification-btn-box">
             <div class="col-sm-12">
-                <button ng-disabled="!company.name" ng-click="updateCompanyInfo()" class="btn btn-auth btn-primary pull-right">Next</button>
+                <button ng-click="goToNextView()" class="btn btn-auth btn-danger pull-left dashboard-btn">Skip</button>
+                <button ng-disabled="!company.name" ng-click="updateCompanyInfo()" class="btn btn-auth btn-primary pull-right dashboard-btn">Next</button>
             </div>
         </div>
     </div>
-
 </div>

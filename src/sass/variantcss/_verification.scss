@@ -1,15 +1,28 @@
 .verification-text{
   box-sizing: border-box;
-  padding: 10px;
  & > p{
-   text-align: center;
    color:#666;
    font-size: 14px;
+   line-height: 17px;
+   margin-left: 5px;
+   margin-right: 5px;
+   margin-top: 25px;
+  }
+  & > h2{
+    text-align: left;
+    font-size: 18px;
+    color:#222D32;
+    font-weight: bold;
+    margin-top: 25px;
+    margin-bottom: 25px;
+    margin-left: 5px;
+    margin-right: 5px
   }
 }
 
 .verification-link{
   cursor: pointer;
+  font-weight: bold;
 }
 
 .verification-button{
