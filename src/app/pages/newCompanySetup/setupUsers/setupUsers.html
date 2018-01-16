@@ -36,9 +36,9 @@
                 <span class="company-setup-title">Added user groups</span>
             </div>
             <div class="panel-body">
-                <ul class="list-group">
-                    <li class="list-group-item" ng-repeat="group in addedGroups">{{group.label}}</li>
-                </ul>
+                <div class="list-group-item" ng-repeat="group in addedGroups" ng-class="{'no-margin-bottom': $last}">
+                    <span >{{group.label}}</span>
+                </div>
             </div>
         </div>
     </div>

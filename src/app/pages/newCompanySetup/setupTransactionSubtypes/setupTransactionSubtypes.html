@@ -50,9 +50,9 @@
                 <span class="company-setup-title" style="font-size: 14px">Added transaction subtypes</span>
             </div>
             <div class="panel-body">
-                <ul class="list-group" ng-hide="subtypes.length==0">
-                    <li class="list-group-item" ng-repeat="subtype in subtypes">{{subtype.name}}</li>
-                </ul>
+                <div class="list-group-item" ng-repeat="subtype in subtypes" ng-class="{'no-margin-bottom': $last}" ng-hide="subtypes.length==0">
+                    <span >{{subtype.name}}</span>
+                </div>
                 <span ng-show="subtypes.length==0">No subtypes added yet.</span>
             </div>
         </div>
