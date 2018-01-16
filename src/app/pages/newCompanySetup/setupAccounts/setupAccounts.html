@@ -63,10 +63,10 @@
                 <span class="company-setup-title" style="font-size: 14px">Added accounts</span>
             </div>
             <div class="panel-body">
-                <ul class="list-group">
+                <ul class="list-group" ng-hide="accounts.length==0">
                     <li class="list-group-item" ng-repeat="account in accounts">{{account.label}}</li>
                 </ul>
-                <p ng-show="accounts.length==0">No accounts added yet.</p>
+                <span ng-show="accounts.length==0">No accounts added yet.</span>
             </div>
         </div>
     </div>

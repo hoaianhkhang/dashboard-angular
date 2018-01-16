@@ -49,10 +49,10 @@
                 <span class="company-setup-title" style="font-size: 14px">Added currencies</span>
             </div>
             <div class="panel-body">
-                <ul class="list-group">
+                <ul class="list-group" ng-hide="currencies.length==0">
                     <li class="list-group-item" ng-repeat="currency in currencies">{{currency.code}}</li>
                 </ul>
-                <p ng-show="currencies.length==0">No currencies added yet.</p>
+                <span ng-show="currencies.length==0">No currencies added yet.</span>
             </div>
         </div>
     </div>
