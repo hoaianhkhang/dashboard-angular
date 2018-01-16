@@ -30,7 +30,8 @@
                     }
                 }).then(function (res) {
                     if (res.status === 200) {
-                        $scope.subtypes = res.data.data.results;
+                        $scope.subtypes = res.data.data;
+                        console.log($scope.subtypes);
                     }
                 }).catch(function (error) {
                     errorHandler.evaluateErrors(error.data);
@@ -40,12 +41,8 @@
         };
         vm.getSubtypes();
         
-        $scope.addSubtypes = function (subtype) {
-            var newGroup = {
-                "name": label.toLowerCase().replace(/ /g, "_"),
-                "label": label
-            };
-            $http.post(environmentConfig.API + '/admin/subtypes/',newGroup, {
+        $scope.addSubtype = function (subtype) {
+            $http.post(environmentConfig.API + '/admin/subtypes/',subtype, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': vm.token

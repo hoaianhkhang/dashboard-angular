@@ -134,11 +134,15 @@ angular.module('BlurAdmin', [
             } else{
                 if(newUrl.indexOf('password/reset/confirm') > 0 || newUrl.indexOf('email/verify') > 0) {
                     $rootScope.securityConfigured = false;
+                }
+                else if(newUrl.indexOf('company/setup/') > 0) {
+                    $rootScope.gotToken = false;
+                    $rootScope.securityConfigured = true;
                 } else if(newUrlLastElement == 'register' || newUrlLastElement == 'reset'
                     || newUrlLastElement == 'verification' || newUrlLastElement == 'name_request' || newUrlLastElement == 'welcome_rehive'){
                     $rootScope.securityConfigured = false;
                 } else if(token){
-                    $rootScope.gotToken = false;
+                    $rootScope.gotToken = true;
                     $rootScope.securityConfigured = true;
                 } else {
                     $rootScope.securityConfigured = true;
