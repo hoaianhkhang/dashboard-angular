@@ -1,22 +1,13 @@
 <div ba-panel class="menu-box" ba-panel-class="light-text">
     <div class="menu-hex-container pointer">
-        <h3 style="padding-left:5px;font-weight:bold">Create fintech app</h3>
+        <h5 style="padding-left:10px;font-weight:bold">Create fintech app</h5>
     </div>
-    <hr class="no-margin">
-    <div ng-click="goToView('/company/setup/users')" class="pointer menu-box-options">
-        <h5>Users<i class="pull-right ion-chevron-right"></i></h5>
-    </div>
-    <hr class="no-margin">
-    <div ng-click="goToView('/company/setup/currencysetup')" class="pointer menu-box-options">
-        <h5>Currencies <i class="pull-right ion-chevron-right"></i></h5>
-    </div>
-    <hr class="no-margin">
-    <div ng-click="goToView('/company/setup/accounts')" class="pointer menu-box-options">
-        <h5>Accounts <i class="pull-right ion-chevron-right"></i></h5>
-    </div>
-    <hr class="no-margin">
-    <div ng-click="goToView('/company/setup/subtypes')" class="pointer menu-box-options">
-        <h5>Transaction subtypes <i class="pull-right ion-chevron-right"></i></h5>
-    </div>
-    <hr class="no-margin">
+
+
+    <ul class="numbered-list">
+        <li class="pointer" ng-click="goToView('/company/setup/users')">Users</li>
+        <li class="pointer" ng-click="goToView('/company/setup/currencysetup')">Currencies</li>
+        <li class="pointer" ng-click="goToView('/company/setup/accounts')">Accounts</li>
+        <li class="pointer" ng-click="goToView('/company/setup/subtypes')">Transaction subtypes</li>
+    </ul>
 </div>
