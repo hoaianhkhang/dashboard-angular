@@ -102,7 +102,7 @@
                 if (res.status === 201) {
                     vm.initializeAccount();
                     $scope.accounts.push(res.data.data);
-                    account.currencies.forEach(element => {
+                    account.currencies.forEach(function(element) {
                         $http.post(environmentConfig.API + '/admin/groups/'+ account.groupName.name +"/account-configurations/"+account.name+"/currencies/", 
                         {
                             "currency": element.code
