@@ -172,6 +172,10 @@
   color: #fff;
 }
 
+input.custom-rehive-checkbox:disabled{
+  cursor: default;
+}
+
 .verified-icon{
   position: relative;
   top: 2px;

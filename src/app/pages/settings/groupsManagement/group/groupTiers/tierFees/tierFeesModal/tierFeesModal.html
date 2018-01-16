@@ -7,7 +7,8 @@
     </div>
     <div class="modal-body">
         <p class="divider"><span class="text-subtle">Tx type:</span> {{tierFee.tx_type | capitalizeWord}}</p>
-        <p class="divider"><span class="text-subtle">Value:</span> {{tierFee.value | currencyModifiersFilter: currencyObj.divisibility}}</p>
+        <p class="divider"><span class="text-subtle">Currency:</span> {{tierFee.currency.code}}</p>
+        <p class="divider"><span class="text-subtle">Value:</span> {{tierFee.value | currencyModifiersFilter: tierFee.currency.divisibility}}</p>
         <p class="divider"><span class="text-subtle">Percenage:</span> {{tierFee.percentage ? tierFee.percentage + '%' : 'None'}}</p>
         <p><span class="text-subtle">Subtype:</span> {{tierFee.subtype ? tierFee.subtype : 'None'}}</p>
 

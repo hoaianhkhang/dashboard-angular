@@ -14,11 +14,11 @@
         $scope.currenciesToAdd = [];
         $scope.initialCurrencies = currenciesList;
         $scope.goToNextView=function () {
-            $rootScope.userVerified=true;
+            $rootScope.userFullyVerified = true;
             $location.path('company/setup/accounts');
         }
         $scope.goToPrevView=function () {
-            $rootScope.userVerified=true;
+            $rootScope.userFullyVerified = true;
             $location.path('/company/setup/users');
         }
 

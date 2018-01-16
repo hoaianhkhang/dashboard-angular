@@ -24,7 +24,7 @@
                         </label>
                         <br>
                         <select class="form-control pointer divider" ng-model="currenciesToAdd" multiple
-                                ng-options="currency.code for currency in initialCurrencies track by currency.code"
+                                ng-options="currency.code + ' - ' + currency.description for currency in initialCurrencies track by currency.code"
                                 required>
                         </select>
                         <button ng-click="addCurrencies(currenciesToAdd)"

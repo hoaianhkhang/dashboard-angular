@@ -1,0 +1,19 @@
+<div class="modal-content">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="$dismiss()" aria-label="Close">
+            <em class="ion-ios-close-empty sn-link-close"></em>
+        </button>
+        <h4 class="modal-title" id="myModalLabel">Delete account configuration</h4>
+    </div>
+    <div class="modal-body">
+        <p class="divider"><span class="text-subtle">Name:</span> {{accountConfiguration.name}}</p>
+        <p class="divider"><span class="text-subtle">Label:</span> {{accountConfiguration.label}}</p>
+        <p class="divider"><span class="text-subtle">Default:</span> {{accountConfiguration.default | capitalizeWord}}</p>
+        <p class="divider"><span class="text-subtle">Primary:</span> {{accountConfiguration.primary | capitalizeWord}}</p>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default dashboard-btn pull-left" ng-click="$dismiss()">Close</button>
+        <button ng-click="deleteAccountConfiguration()" ng-disabled="deletingAccountConfiguration" type="button"
+                class="btn btn-danger dashboard-btn pull-right">Delete</button>
+    </div>
+</div>

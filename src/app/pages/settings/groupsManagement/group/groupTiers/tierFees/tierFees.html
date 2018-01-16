@@ -10,6 +10,7 @@
                         <table class="table">
                             <tr class="user-switches-table-header divider">
                                 <th class="rehive-table-row-first-child">Tx type</th>
+                                <th>Currency</th>
                                 <th>Amount</th>
                                 <th>Percentage</th>
                                 <th>Subtype</th>
@@ -18,14 +19,16 @@
                             <tr ng-repeat="tierFee in tiersFeesList">
                                 <td class="transactions-list-element rehive-table-row-first-child"
                                     title="{{tierFee.tx_type | capitalizeWord}}" ng-bind="tierFee.tx_type | capitalizeWord | limitTo: '35'"></td>
-                                <td title="{{tierFee.value | currencyModifiersFilter: currencyObj.divisibility}}"
-                                    ng-bind="tierFee.value | currencyModifiersFilter: currencyObj.divisibility"></td>
+                                <td title="{{tierFee.currency.code}}"
+                                    ng-bind="tierFee.currency.code"></td>
+                                <td title="{{tierFee.value | currencyModifiersFilter: tierFee.currency.divisibility}}"
+                                    ng-bind="tierFee.value | currencyModifiersFilter: tierFee.currency.divisibility"></td>
                                 <td title="{{tierFee.percentage}}"
                                     ng-bind="tierFee.percentage ? tierFee.percentage + '%' : 'None'"></td>
                                 <td title="{{tierFee.subtype ? tierFee.subtype : 'None'}}"
                                     ng-bind="tierFee.subtype ? tierFee.subtype : 'None'| limitTo: '35'"></td>
                                 <td class="rehive-table-row-last-child pull-right">
-                                    <a ng-click="openTierFeesModal('app/pages/currency/settings/tierFees/tierFeesModal/tierFeesModal.html','md',tierFee)"
+                                    <a ng-click="openTierFeesModal('app/pages/settings/groupsManagement/group/groupTiers/tierFees/tierFeesModal/tierFeesModal.html','md',tierFee)"
                                        class="pull-right pointer ">Delete</a>
                                     <a ng-click="toggleTierFeeEditView(tierFee)"
                                        class="pull-right pointer user-address-edit margin-right-30">Edit</a>
@@ -47,6 +50,12 @@
                                 <label>Transaction type <span class="required-icon">*</span></label>
                                 <br>
                                 <select class="form-control pointer" ng-change="getSubtypesArray(tierFeesParams)" ng-model="tierFeesParams.tx_type" ng-options="option for option in txTypeOptions" required>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Currency <span class="required-icon">*</span></label>
+                                <select class="form-control pointer" ng-model="tierFeesParams.currency"
+                                        ng-options="currency.code for currency in currenciesList track by currency.code" required>
                                 </select>
                             </div>
                             <div class="form-group">
@@ -81,7 +90,7 @@
     </uib-tabset>
 </div>
 <div ba-panel ng-show="!loadingTierFees && tierLevelsForFees.length == 0">
-    <i>No tiers are available for this currency.</i>
+    <i>No tiers are available for this group.</i>
 </div>
 <div ba-panel ng-show="loadingTierFees">
     <loading-image></loading-image>

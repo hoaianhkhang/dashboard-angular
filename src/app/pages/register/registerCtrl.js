@@ -36,7 +36,7 @@
                     if (res.status === 201) {
                         cookieManagement.setCookie('TOKEN','Token ' + res.data.data.token);
                         $rootScope.$pageFinishedLoading = true;
-                        $rootScope.userVerified = false;
+                        $rootScope.userFullyVerified = false;
                     $location.path('/verification');
                     } else {
 

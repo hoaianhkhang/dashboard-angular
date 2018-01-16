@@ -1,4 +1,4 @@
-<div class="panel">
+<div class="panel" ng-hide="loadingGroups">
     <div class="panel-heading">
         <span class="user-details-panel-title">Edit group</span>
     </div>
@@ -29,8 +29,10 @@
             <div class="form-group">
                 <button ng-click="editGroup(editGroupObj)"
                         ng-disabled="!editGroupForm.$valid" class="btn btn-primary dashboard-btn pull-right">Save</button>
-                <button ng-click="editGroupToggle()" class="btn btn-default dashboard-btn pull-right margin-right-10">Back</button>
             </div>
         </form>
     </div>
+</div>
+<div ba-panel ng-show="loadingGroups">
+    <loading-image></loading-image>
 </div>

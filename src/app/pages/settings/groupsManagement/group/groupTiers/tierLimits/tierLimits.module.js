@@ -1,18 +1,18 @@
 (function () {
     'use strict';
 
-    angular.module('BlurAdmin.pages.currency.settings.tierLimits', [])
+    angular.module('BlurAdmin.pages.groupTiers.tierLimits', [])
         .config(routeConfig);
 
     /** @ngInject */
     function routeConfig($stateProvider,$urlRouterProvider) {
         $stateProvider
-            .state('currency.settings.tierLimits', {
-                url: '/tier/limits',
+            .state('groupTiers.tierLimits', {
+                url: '/limits',
                 views:{
-                    'currencySettings':{
-                      templateUrl: 'app/pages/currency/settings/tierLimits/tierLimits.html',
-                      controller: "TierLimitsCtrl",
+                    'groupTiersView':{
+                      templateUrl: 'app/pages/settings/groupsManagement/group/groupTiers/tierLimits/tierLimits.html',
+                      controller: "TierLimitsCtrl"
                     }
                 },
                 title: 'Tier limits'

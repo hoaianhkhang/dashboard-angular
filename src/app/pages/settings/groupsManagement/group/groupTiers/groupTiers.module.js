@@ -2,7 +2,11 @@
     'use strict';
 
     angular.module('BlurAdmin.pages.groupTiers', [
-        'BlurAdmin.pages.groupTiers.list'
+        'BlurAdmin.pages.groupTiers.list',
+        'BlurAdmin.pages.groupTiers.tierRequirements',
+        'BlurAdmin.pages.groupTiers.tierLimits',
+        'BlurAdmin.pages.groupTiers.tierFees',
+        'BlurAdmin.pages.groupTiers.tierSettings'
     ])
         .config(routeConfig);
 

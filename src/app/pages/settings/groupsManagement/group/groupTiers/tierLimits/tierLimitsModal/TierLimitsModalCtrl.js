@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    angular.module('BlurAdmin.pages.currency.settings.tierLimits')
+    angular.module('BlurAdmin.pages.groupTiers.tierLimits')
         .controller('TierLimitsModalCtrl', TierLimitsModalCtrl);
 
     function TierLimitsModalCtrl($scope,$uibModalInstance,tierLimit,selectedTier,toastr,$http,environmentConfig,cookieManagement,errorHandler) {
@@ -15,7 +15,7 @@
 
         $scope.deleteTierLimit = function () {
             $scope.deletingTierLimits = true;
-            $http.delete(environmentConfig.API + '/admin/tiers/' + $scope.selectedTier.id + '/limits/' + $scope.tierLimit.id + '/', {
+            $http.delete(environmentConfig.API + '/admin/groups/' + vm.groupName + '/tiers/' + $scope.selectedTier.id + '/limits/' + $scope.tierLimit.id + '/', {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': vm.token

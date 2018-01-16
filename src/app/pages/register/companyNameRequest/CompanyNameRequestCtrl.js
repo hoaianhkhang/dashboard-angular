@@ -15,7 +15,7 @@
         };
 
         $scope.goToNextView = function(){
-            $rootScope.userVerified = true;
+            $rootScope.userFullyVerified = true;
             $location.path('company/setup/initial');
         }
 
@@ -29,11 +29,10 @@
                 }).then(function (res) {
                     if (res.status === 200) {
                         if(res.data.data && res.data.data.name){
-                            $rootScope.haveCompanyName = true;
                             $rootScope.companyName = res.data.data.name;
                             userVerification.verify(function(err,verified){
                                 if(verified){
-                                    $rootScope.userVerified = true;
+                                    $rootScope.userFullyVerified = true;
                                     $location.path('company/setup/initial');
                                 } else {
                                     $location.path('/verification');
@@ -66,11 +65,10 @@
                 }
             }).then(function (res) {
                 if (res.status === 200) {
-                    $rootScope.haveCompanyName = true;
                     $rootScope.companyName = res.data.data.name;
                     userVerification.verify(function(err,verified){
                         if(verified){
-                            $rootScope.userVerified = true;
+                            $rootScope.userFullyVerified = true;
                             toastr.success('You have successfully updated the company info');
                             $location.path('company/setup/initial');
                         } else {

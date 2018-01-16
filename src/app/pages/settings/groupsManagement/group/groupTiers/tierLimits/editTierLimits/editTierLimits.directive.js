@@ -1,14 +1,14 @@
 (function () {
     'use strict';
 
-    angular.module('BlurAdmin.pages.currency.settings.tierLimits')
+    angular.module('BlurAdmin.pages.groupTiers.tierLimits')
         .directive('editTierLimits', editTierLimits);
 
     /** @ngInject */
     function editTierLimits() {
         return {
             restrict: 'E',
-            templateUrl: 'app/pages/currency/settings/tierLimits/editTierLimits/editTierLimits.html'
+            templateUrl: 'app/pages/settings/groupsManagement/group/groupTiers/tierLimits/editTierLimits/editTierLimits.html'
         };
     }
 })();

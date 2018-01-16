@@ -3,7 +3,10 @@
 
     angular.module('BlurAdmin.pages.group', [
         'BlurAdmin.pages.group.permissions',
-        'BlurAdmin.pages.group.settings'
+        'BlurAdmin.pages.group.settings',
+        'BlurAdmin.pages.group.accountConfigurations',
+        'BlurAdmin.pages.group.editAccountConfigurations',
+        'BlurAdmin.pages.group.details'
     ])
         .config(routeConfig);
 
@@ -14,7 +17,7 @@
                 url: '/settings/groups-management/:groupName',
                 controller: 'GroupCtrl',
                 templateUrl: 'app/pages/settings/groupsManagement/group/group.html',
-                title: "Group"
+                title: "Group configurations"
             });
     }
 

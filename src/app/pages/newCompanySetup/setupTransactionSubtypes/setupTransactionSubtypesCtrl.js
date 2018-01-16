@@ -13,11 +13,9 @@
         $rootScope.$pageFinishedLoading=true;
 
         $scope.goToNextView=function () {
-            $rootScope.userVerified=true;
             $location.path('/currencies');
         }
         $scope.goToPrevView=function () {
-            $rootScope.userVerified=true;
             $location.path('company/setup/accounts');
         }
 
@@ -31,7 +29,6 @@
                 }).then(function (res) {
                     if (res.status === 200) {
                         $scope.subtypes = res.data.data;
-                        console.log($scope.subtypes);
                     }
                 }).catch(function (error) {
                     errorHandler.evaluateErrors(error.data);

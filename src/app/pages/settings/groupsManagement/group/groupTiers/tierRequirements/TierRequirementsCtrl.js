@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    angular.module('BlurAdmin.pages.currency.settings.tierRequirements')
+    angular.module('BlurAdmin.pages.groupTiers.tierRequirements')
         .controller('TierRequirementsCtrl', TierRequirementsCtrl);
 
     /** @ngInject */
@@ -9,7 +9,7 @@
 
         var vm = this;
         vm.token = cookieManagement.getCookie('TOKEN');
-        $scope.currencyCode = $stateParams.currencyCode;
+        vm.groupName = $stateParams.groupName;
         $scope.activeTabIndex = 0;
         $scope.loadingTierRequirements = true;
         $scope.tierRequirementFields = {};
@@ -18,7 +18,7 @@
         $scope.getAllTiers = function(tierLevel){
             if(vm.token) {
                 $scope.loadingTierRequirements = true;
-                $http.get(environmentConfig.API + '/admin/tiers/?currency=' + $scope.currencyCode, {
+                $http.get(environmentConfig.API + '/admin/groups/' + vm.groupName + '/tiers/', {
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': vm.token
@@ -67,7 +67,7 @@
         $scope.getTierRequirements = function(){
             if(vm.token) {
                 $scope.loadingTierRequirements = true;
-                $http.get(environmentConfig.API + '/admin/tiers/' + $scope.selectedTier.id + '/requirements/',{
+                $http.get(environmentConfig.API + '/admin/groups/' + vm.groupName + '/tiers/' + $scope.selectedTier.id + '/requirements/',{
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': vm.token
@@ -126,7 +126,7 @@
 
         $scope.saveTierRequirements = function(fieldName,last){
             if(vm.token) {
-                $http.post(environmentConfig.API + '/admin/tiers/' + $scope.selectedTier.id + '/requirements/' , {"requirement": fieldName} ,{
+                $http.post(environmentConfig.API + '/admin/groups/' + vm.groupName + '/tiers/' + $scope.selectedTier.id + '/requirements/' , {"requirement": fieldName} ,{
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': vm.token
@@ -160,7 +160,7 @@
         $scope.deleteTierRequirements = function(fieldName,last){
             var requirementId = vm.findRequirementId(fieldName);
             if(vm.token) {
-                $http.delete(environmentConfig.API + '/admin/tiers/' + $scope.selectedTier.id + '/requirements/' + requirementId + '/',{
+                $http.delete(environmentConfig.API + '/admin/groups/' + vm.groupName + '/tiers/' + $scope.selectedTier.id + '/requirements/' + requirementId + '/',{
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': vm.token

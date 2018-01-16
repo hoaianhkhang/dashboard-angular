@@ -1,17 +1,17 @@
 (function () {
     'use strict';
 
-    angular.module('BlurAdmin.pages.currency.settings.tierRequirements', [])
+    angular.module('BlurAdmin.pages.groupTiers.tierRequirements', [])
         .config(routeConfig);
 
     /** @ngInject */
     function routeConfig($stateProvider,$urlRouterProvider) {
         $stateProvider
-            .state('currency.settings.tierRequirements', {
-                url: '/tier/requirements',
+            .state('groupTiers.tierRequirements', {
+                url: '/requirements',
                 views:{
-                    'currencySettings':{
-                      templateUrl: 'app/pages/currency/settings/tierRequirements/tierRequirements.html',
+                    'groupTiersView':{
+                      templateUrl: 'app/pages/settings/groupsManagement/group/groupTiers/tierRequirements/tierRequirements.html',
                       controller: "TierRequirementsCtrl"
                     }
                 },
