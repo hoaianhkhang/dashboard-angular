@@ -9,7 +9,6 @@
 
         var vm = this;
         cookieManagement.deleteCookie('TOKEN');
-        $scope.gotCompanyName = false;
         $scope.path = $location.path();
         $scope.showLoginPassword = false;
 
@@ -31,7 +30,6 @@
 
                 }
             }).catch(function (error) {
-                $scope.gotCompanyName = false;
                 $rootScope.$pageFinishedLoading = true;
                 errorHandler.evaluateErrors(error.data);
                 errorHandler.handleErrors(error);
@@ -53,7 +51,17 @@
                             $location.path('/authentication/multi-factor/verify/' + enabledObj.key).search({prevUrl: 'login'});
                         } else {
                             $rootScope.$pageFinishedLoading = false;
-                            $location.path('/verification');
+                            userVerification.verify(function(err,verified){
+                                if(verified){
+                                    $rootScope.userFullyVerified = true;
+                                    $rootScope.$pageFinishedLoading = true;
+                                    $location.path('/currencies');
+                                } else {
+                                    $rootScope.userFullyVerified = false;
+                                    $rootScope.$pageFinishedLoading = false;
+                                    $location.path('/verification');
+                                }
+                            });
                         }
 
                     }

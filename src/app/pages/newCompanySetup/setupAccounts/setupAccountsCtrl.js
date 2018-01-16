@@ -15,11 +15,9 @@
         $scope.accounts = [];
 
         $scope.goToNextView=function () {
-            $rootScope.userVerified=true;
             $location.path('/company/setup/subtypes');
         }
         $scope.goToPrevView=function () {
-            $rootScope.userVerified=true;
             $location.path('/company/setup/currencysetup');
         }
         
@@ -32,7 +30,7 @@
                 primary: false,
                 default: false
             };
-        }
+        };
         vm.initializeAccount();
 
         vm.getGroups = function(){
@@ -45,7 +43,7 @@
                 }).then(function (res) {
                     if (res.status === 200) {
                         $scope.groups = res.data.data.results;
-                        $scope.groups.forEach(element => {
+                        $scope.groups.forEach(function (element) {
                             $http.get(environmentConfig.API + '/admin/groups/'+ element.name +"/account-configurations/", {
                                 headers: {
                                     'Content-Type': 'application/json',
@@ -54,7 +52,6 @@
                             }).then(function (res) {
                                 if (res.status === 200) {
                                     $scope.accounts = $scope.accounts.concat(res.data.data.results);
-                                    console.log($scope.accounts);
                                 }
                             }).catch(function (error) {
                                 errorHandler.evaluateErrors(error.data);
@@ -90,7 +87,6 @@
         vm.getCurrencies();
         
         $scope.addAccount = function (account) {
-            console.log(account);
             var newaccount = {
                 "name": account.name,
                 "label": account.label,

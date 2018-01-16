@@ -8,7 +8,7 @@
     function routeConfig($stateProvider) {
         $stateProvider
             .state('welcomeToRehive', {
-                url: '/welcome_rehive',
+                url: '/welcome_to_rehive',
                 views:{
                     'admin':{
                         templateUrl: 'app/pages/register/welcomeToRehive/welcomeToRehive.html',

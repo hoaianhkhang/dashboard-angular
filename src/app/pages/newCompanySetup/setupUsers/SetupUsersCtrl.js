@@ -13,7 +13,7 @@
         $rootScope.$pageFinishedLoading=true;
 
         $scope.goToNextView=function () {
-            $rootScope.userVerified=true;
+            $rootScope.userFullyVerified = true;
             $location.path('company/setup/currencysetup');
         }
 

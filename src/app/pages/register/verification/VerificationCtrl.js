@@ -16,8 +16,8 @@
         vm.checkIfUserVerified = function(){
             userVerification.verify(function(err,verified){
                 if(verified){
-                    $rootScope.userVerified = true;
-                    $location.path('/welcome_rehive');
+                    $rootScope.userFullyVerified = true;
+                    $location.path('/welcome_to_rehive');
                 } else {
                     $rootScope.$pageFinishedLoading = true;
                 }
@@ -30,8 +30,8 @@
             userVerification.verify(function(err,verified){
                 if(verified){
                     $scope.verifyingEmail = false;
-                    $rootScope.userVerified = true;
-                    $location.path('/welcome_rehive');
+                    $rootScope.userFullyVerified = true;
+                    $location.path('/welcome_to_rehive');
                 } else {
                     $scope.verifyingEmail = false;
                     toastr.error('Please verify your account','Message');
