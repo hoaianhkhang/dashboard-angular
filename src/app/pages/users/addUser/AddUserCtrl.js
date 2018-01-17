@@ -18,7 +18,7 @@
             mobile: '',
             id_number: '',
             language: '',
-            metadata: {},
+            metadata: '',
             timezone: '',
             nationality: "US"
         };
@@ -30,6 +30,11 @@
                 return;
             }
             $scope.loadingUsers = true;
+
+            if(newUserParams.metadata == ''){
+                newUserParams.metadata = {};
+            }
+
             Upload.upload({
                 url: environmentConfig.API + '/admin/users/',
                 data: newUserParams,
