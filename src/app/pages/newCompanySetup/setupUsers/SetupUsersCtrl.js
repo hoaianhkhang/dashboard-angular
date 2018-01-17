@@ -36,12 +36,8 @@
         };
         vm.getGroups();
         
-        $scope.addUser = function (label) {
-            var newGroup = {
-                "name": label.toLowerCase().replace(/ /g, "_"),
-                "label": label
-            };
-            $http.post(environmentConfig.API + '/admin/groups/',newGroup, {
+        $scope.addUser = function (group) {
+            $http.post(environmentConfig.API + '/admin/groups/',group, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': vm.token

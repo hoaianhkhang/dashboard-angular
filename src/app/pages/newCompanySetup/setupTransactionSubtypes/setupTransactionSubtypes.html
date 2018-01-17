@@ -7,7 +7,7 @@
             <div class="panel-body">
                 <p class="divider-40">Transaction subtypes are a way of marking certain transactions in order to
                     categorize and sort specific kinds of transaction.</p>
-                <div class="row">
+                <div class="row divider-40">
                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                         <ul class="currency-setup-ul">
                             <li class="divider-20"><span>Choose whether this subtype applies to a credits or a debit transaction type</span>
@@ -20,16 +20,24 @@
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 form-group">
                         <label>Select transactiont type <span class="required-icon"></span></label>
-                        <form action="" class="divider-20">
+                        <div class="divider-20">
                             <input type="radio" ng-model="subtype.tx_type" name="gender" value="credit"> Credit
-                            <input type="radio" ng-model="subtype.tx_type" name="gender" value="debit"> Debit
-                        </form>
+                            <input class="horizontal-divider-40" type="radio" ng-model="subtype.tx_type"
+                                   name="gender" value="debit"> Debit
+                        </div>
                         <label>Subtype name <span class="required-icon"></span></label>
                         <br>
                         <input type="text" class="form-control" ng-model="subtype.name"
-                               placeholder="Name" auto-focus="!havePersonalDetails" required>
+                               placeholder="Subtype name eg. purchase, withdraw, deposit"
+                               auto-focus="!havePersonalDetails" required>
+                        <br>
+                        <label>Subtype label <span class="required-icon"></span></label>
+                        <br>
+                        <input type="text" class="form-control" ng-model="subtype.label"
+                               placeholder="Subtype label">
                         <button ng-click="addSubtype(subtype)"
-                            class="btn btn-auth btn-primary pull-right add-new" ng-disabled="!subtype.tx_type || !subtype.name">Add subtype
+                                class="btn btn-auth btn-primary pull-right add-new"
+                                ng-disabled="!subtype.tx_type || !subtype.name">Add subtype
                         </button>
                     </div>
                 </div>
@@ -50,8 +58,9 @@
                 <span class="company-setup-title" style="font-size: 14px">Added transaction subtypes</span>
             </div>
             <div class="panel-body">
-                <div class="list-group-item" ng-repeat="subtype in subtypes" ng-class="{'no-margin-bottom': $last}" ng-hide="subtypes.length==0">
-                    <span >{{subtype.name}}</span>
+                <div class="list-group-item" ng-repeat="subtype in subtypes" ng-class="{'no-margin-bottom': $last}"
+                     ng-hide="subtypes.length==0">
+                    <span>{{subtype.name}}</span>
                 </div>
                 <span ng-show="subtypes.length==0">No subtypes added yet.</span>
             </div>

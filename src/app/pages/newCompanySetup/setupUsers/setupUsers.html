@@ -5,16 +5,26 @@
                 <span class="company-setup-title">Users</span>
             </div>
             <div class="panel-body">
-                <div class=" row divider-20">
+                <div class=" row divider-40">
                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                         <p>Create users group to categorize users, configure settings and control permissions.</p>
                         <p class="divider-20">&#10004; &nbsp; Note 1<br>&#10004; &nbsp; Note 2<br>&#10004; &nbsp; Note 3
                         <p>
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                        <input type="text" class="form-control" ng-model="name"
+                        <input type="text" class="form-control" ng-model="user.name"
                                placeholder="Name*" required>
-                        <button ng-click="addUser(name)"
+                        <div class="checkbox divider-20">
+                            <input type="text" class="form-control" ng-model="user.label"
+                                   placeholder="label" >
+                        </div>
+                        <div class="checkbox" data-tip="Allows users to allocate themselves to the group">
+                            <label><input type="checkbox" ng-model="user.public"> Public</label>
+                        </div>
+                        <div class="checkbox" data-tip="Users will be allocated to the  default group automatically on registration">
+                            <label><input type="checkbox" ng-model="user.default"> Default</label>
+                        </div>
+                        <button ng-click="addUser(user)" ng-disabled="!user.name"
                             class="btn btn-auth btn-primary pull-right add-new">Add new group
                         </button>
                     </div>
@@ -37,7 +47,7 @@
             </div>
             <div class="panel-body">
                 <div class="list-group-item" ng-repeat="group in addedGroups" ng-class="{'no-margin-bottom': $last}">
-                    <span >{{group.label}}</span>
+                    <span >{{group.name}}</span>
                 </div>
             </div>
         </div>

@@ -5,7 +5,7 @@
                 <span class="company-setup-title">Add currencies</span>
             </div>
             <div class="panel-body">
-                <div class=" row divider-20">
+                <div class=" row divider-40">
                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                         <p>Add currencies which your company will transact in.</p>
                         <ul class="currency-setup-ul">
@@ -27,7 +27,7 @@
                                 ng-options="currency.code + ' - ' + currency.description for currency in initialCurrencies track by currency.code"
                                 required>
                         </select>
-                        <button ng-click="addCurrencies(currenciesToAdd)"
+                        <button ng-click="addCurrencies(currenciesToAdd)" ng-disabled="currenciesToAdd.length==0"
                             class="btn btn-auth btn-primary pull-right add-new">Add currencies
                         </button>
                     </div>

@@ -5,7 +5,7 @@
                 <span class="company-setup-title">Accounts</span>
             </div>
             <div class="panel-body">
-                <div class=" row divider-20">
+                <div class=" row divider-40">
                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                         <p>Assign accounts to user groups. Set which account users are added to by default and what
                             their primary account is. Assign currencies to your accounts.</p>
@@ -20,14 +20,14 @@
                         </div>
                         <div class="form-group">
                             <label>2-Configure</label>
-                            <input type="text" class="form-control" ng-model="account.name" placeholder="Enter name" >
-                            <div class="checkbox"> 
+                            <input type="text" class="form-control" ng-model="account.name" placeholder="Account name, eg. default, savings, loans etc" >
+                            <div class="checkbox divider-20">
                                 <input type="text" class="form-control" ng-model="account.label" placeholder="Enter label" >
                             </div>
-                            <div class="checkbox">
-                                <label><input type="checkbox" ng-model="account.primary"> Primary</label>
+                            <div class="checkbox" data-tip="Set as the main account, only one account can be the primary account per group">
+                                <label ><input type="checkbox" ng-model="account.primary"> Primary</label>
                             </div>
-                            <div class="checkbox">
+                            <div class="checkbox" data-tip="A default account will be created automatically upon registration">
                                 <label><input type="checkbox" ng-model="account.default"> Default</label>
                             </div>
                         </div>
@@ -64,7 +64,7 @@
             </div>
             <div class="panel-body">
                 <div class="list-group-item"  ng-repeat="account in accounts" ng-hide="accounts.length==0" ng-class="{'no-margin-bottom': $last}">
-                    <span>{{account.label}}</span>
+                    <span>{{account.name}}</span>
                 </div>
                 <span ng-show="accounts.length==0">No accounts added yet.</span>
             </div>
