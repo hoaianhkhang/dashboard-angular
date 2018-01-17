@@ -18,7 +18,7 @@
             mobile: '',
             id_number: '',
             language: '',
-            metadata: {},
+            metadata: '',
             timezone: '',
             nationality: "US"
         };
@@ -30,6 +30,11 @@
                 return;
             }
             $scope.loadingUsers = true;
+
+            if(newUserParams.metadata == ''){
+                newUserParams.metadata = {};
+            }
+
             Upload.upload({
                 url: environmentConfig.API + '/admin/users/',
                 data: newUserParams,
@@ -40,7 +45,8 @@
             }).then(function (res) {
                 if (res.status === 201) {
                     $scope.newUserParams = {
-                        nationality: "US"
+                        nationality: "US",
+                        metadata: ''
                     };
                     $scope.backToUsers();
                     toastr.success('User successfully added');
