@@ -1,0 +1,30 @@
+<div ng-hide="loadingUserGroups || addingUserGroup" class="panel setting-bank-accounts">
+    <div class="panel-heading">
+        <span class="user-details-panel-title">User groups for {{userData.email}}</span>
+        <a ng-click="toggleAddUserGroupView()" class="user-details-panel-link pull-right pointer">Add</a>
+    </div>
+    <div class="panel-body">
+        <table ng-show="userGroups.length > 0" class="table">
+            <tr class="divider">
+                <th class="rehive-table-row-first-child">Name</th>
+                <th></th>
+            </tr>
+            <tr ng-repeat="userGroup in userGroups">
+                <td class="transactions-list-element rehive-table-row-first-child" ng-bind="userGroup.name"></td>
+                <td class="rehive-table-row-last-child">
+                    <a ng-click="openUserGroupModal('app/pages/users/user/userDetails/permissions/userGroups/userGroupsModal/userGroupsModal.html','md',userGroup)"
+                       class="pull-right pointer">Delete</a>
+                </td>
+            </tr>
+        </table>
+        <div ng-show="userGroups.length == 0 && !loadingUserGroups">
+            <i>No user groups have been added</i>
+        </div>
+    </div>
+</div>
+<div ng-show="addingUserGroup">
+    <add-user-group-view></add-user-group-view>
+</div>
+<div ba-panel ng-show="loadingUserGroups">
+    <loading-image></loading-image>
+</div>

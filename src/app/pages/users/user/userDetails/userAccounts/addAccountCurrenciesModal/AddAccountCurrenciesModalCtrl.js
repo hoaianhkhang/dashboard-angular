@@ -36,33 +36,31 @@
 
         $scope.addAccountCurrency = function(listOfCurrencies){
 
-            var arrayOfCurrencies = [];
-
-            listOfCurrencies.forEach(function (element) {
-                arrayOfCurrencies.push({currency: element.code});
-            });
-
-            if(vm.token) {
-                $scope.loadingUserAccounts = true;
-                $http.post(environmentConfig.API + '/admin/accounts/' + vm.reference + '/currencies/',{currencies: arrayOfCurrencies}, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
-                    if (res.status === 201) {
-                        $scope.loadingUserAccounts = false;
+            listOfCurrencies.forEach(function (element,index,array) {
+                if(vm.token) {
+                    $scope.loadingUserAccounts = true;
+                    $http.post(environmentConfig.API + '/admin/accounts/' + vm.reference + '/currencies/',{currency: element.code}, {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': vm.token
+                        }
+                    }).then(function (res) {
+                        if (res.status === 201) {
+                            if(index == (array.length - 1)) {
+                                $scope.loadingUserAccounts = false;
+                                $scope.newAccountCurrencies = {list: []};
+                                toastr.success('New currencies have been added to the account');
+                                $uibModalInstance.close(res.data);
+                            }
+                        }
+                    }).catch(function (error) {
                         $scope.newAccountCurrencies = {list: []};
-                        toastr.success('New currencies have been added to the account');
-                        $uibModalInstance.close(res.data);
-                    }
-                }).catch(function (error) {
-                    $scope.newAccountCurrencies = {list: []};
-                    $scope.loadingUserAccounts = false;
-                    errorHandler.evaluateErrors(error.data);
-                    errorHandler.handleErrors(error);
-                });
-            }
+                        $scope.loadingUserAccounts = false;
+                        errorHandler.evaluateErrors(error.data);
+                        errorHandler.handleErrors(error);
+                    });
+                }
+            });
         };
 
 

@@ -18,7 +18,7 @@
             mobile: '',
             id_number: '',
             language: '',
-            metadata: '',
+            metadata: {},
             timezone: '',
             nationality: "US"
         };
@@ -42,8 +42,7 @@
                     $scope.newUserParams = {
                         nationality: "US"
                     };
-                    $scope.toggleAddUserView();
-                    $scope.getAllUsers();
+                    $scope.backToUsers();
                     toastr.success('User successfully added');
                 }
             }).catch(function (error) {
