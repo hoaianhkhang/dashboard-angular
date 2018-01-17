@@ -26,6 +26,11 @@
                     </td>
                 </tr>
             </table>
+            <div ng-show="groups.length > 0">
+                <p uib-pagination boundary-links="true" items-per-page="pagination.itemsPerPage"  total-items="groupsData.count" ng-model="pagination.pageNo"
+                   max-size="pagination.maxSize" class="pagination-sm pull-right transaction-history-pagination" force-ellipses="true" ng-change="getGroups()"
+                   previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></p>
+            </div>
         </div>
     </div>
     <div class="panel">

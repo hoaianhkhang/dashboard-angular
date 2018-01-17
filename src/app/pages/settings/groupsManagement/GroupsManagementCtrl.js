@@ -5,21 +5,52 @@
         .controller('GroupsManagementCtrl', GroupsManagementCtrl);
 
     /** @ngInject */
-    function GroupsManagementCtrl($scope,environmentConfig,$http,cookieManagement,errorHandler,toastr,$uibModal,$location) {
+    function GroupsManagementCtrl($scope,environmentConfig,$http,cookieManagement,
+                                  serializeFiltersService,errorHandler,toastr,$uibModal,$location) {
 
         var vm = this;
         vm.token = cookieManagement.getCookie('TOKEN');
         $scope.loadingGroups = true;
         $scope.groupsParams = {};
+        $scope.groups = [];
+
+        $scope.pagination = {
+            itemsPerPage: 8,
+            pageNo: 1,
+            maxSize: 5
+        };
 
         $scope.goToGroup = function(groupName){
             $location.path('/settings/groups-management/' + groupName + '/details');
         };
 
-        vm.getGroups = function () {
+        vm.getGroupsUrl = function(){
+
+            var searchObj = {
+                page: $scope.pagination.pageNo,
+                page_size: $scope.pagination.itemsPerPage
+            };
+
+            return environmentConfig.API + '/admin/groups/?' + serializeFiltersService.serializeFilters(searchObj);
+        };
+
+
+        $scope.getGroups = function (fromModalDelete) {
             if(vm.token) {
                 $scope.loadingGroups = true;
-                $http.get(environmentConfig.API + '/admin/groups/', {
+
+                if ($scope.groups.length > 0) {
+                    $scope.groups.length = 0;
+                }
+
+                if(fromModalDelete){
+                    $scope.pagination.pageNo = 1;
+                }
+
+                var groupsUrl = vm.getGroupsUrl();
+
+
+                $http.get(groupsUrl, {
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': vm.token
@@ -27,6 +58,7 @@
                 }).then(function (res) {
                     $scope.loadingGroups = false;
                     if (res.status === 200) {
+                        $scope.groupsData = res.data.data;
                         $scope.groups = res.data.data.results;
                     }
                 }).catch(function (error) {
@@ -36,7 +68,7 @@
                 });
             }
         };
-        vm.getGroups();
+        $scope.getGroups();
 
         $scope.addGroup = function (groupsParams) {
             if(vm.token) {
@@ -51,7 +83,7 @@
                     if (res.status === 201) {
                         $scope.groupsParams = {};
                         toastr.success('Group successfully added');
-                        vm.getGroups();
+                        $scope.getGroups();
                     }
                 }).catch(function (error) {
                     $scope.groupsParams = {};
@@ -77,7 +109,7 @@
 
             vm.theModal.result.then(function(group){
                 if(group){
-                    vm.getGroups();
+                    $scope.getGroups('fromModalDelete');
                 }
             }, function(){
             });
