@@ -18,7 +18,7 @@ ul.numbered-list {
 
   li {
     position: relative;
-    padding: 5px 0 5px 30px;
+    padding: 8px 0 8px 30px;
 
     &:before {
       content: counter(li);
@@ -47,7 +47,7 @@ ul.numbered-list {
 .add-new {
   margin-top: 10px;
   padding:6px 0 !important;
-  width: 200px!important;
+  width: 150px!important;
 }
 
 .setup-back-btn {
@@ -55,6 +55,16 @@ ul.numbered-list {
   border-color: lightgray!important;
   color: black!important;
   background-color: white!important;
+}
+
+.setup-back-btn-top{
+  margin-right:30px;
+}
+
+.setup-skip-btn{
+  border-color: lightgray!important;
+  color: white!important;
+  background-color: lightgrey!important;
 }
 
 .currency-setup-ul{

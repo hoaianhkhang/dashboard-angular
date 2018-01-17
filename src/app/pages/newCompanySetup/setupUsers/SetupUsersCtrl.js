@@ -53,5 +53,24 @@
                 errorHandler.handleErrors(error);
             });
         }
+
+        $scope.deleteGroup = function (name) {
+            if(vm.token) {
+                $scope.deletingGroups = true;
+                $http.delete(environmentConfig.API + '/admin/groups/' + name + '/', {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': vm.token
+                    }
+                }).then(function (res) {
+                    if (res.status === 200) {
+                        vm.getGroups()
+                    }
+                }).catch(function (error) {
+                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.handleErrors(error);
+                });
+            }
+        };
     }
 })();

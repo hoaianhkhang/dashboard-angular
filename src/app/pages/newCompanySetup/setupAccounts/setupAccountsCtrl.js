@@ -51,6 +51,9 @@
                                 }
                             }).then(function (res) {
                                 if (res.status === 200) {
+                                    res.data.data.results.forEach(function(node){
+                                        node.group = element.name;
+                                    });
                                     $scope.accounts = $scope.accounts.concat(res.data.data.results);
                                 }
                             }).catch(function (error) {
@@ -101,6 +104,7 @@
             }).then(function (res) {
                 if (res.status === 201) {
                     vm.initializeAccount();
+                    res.data.data.group = account.groupName.name;
                     $scope.accounts.push(res.data.data);
                     account.currencies.forEach(function(element) {
                         $http.post(environmentConfig.API + '/admin/groups/'+ account.groupName.name +"/account-configurations/"+account.name+"/currencies/", 
@@ -125,6 +129,23 @@
                 }
             }).catch(function (error) {
                 $rootScope.$pageFinishedLoading = true;
+                errorHandler.evaluateErrors(error.data);
+                errorHandler.handleErrors(error);
+            });
+        }
+
+        $scope.deleteAccount = function (account) {
+            $http.delete(environmentConfig.API + '/admin/groups/'+ account.group +"/account-configurations/" + account.name + "/", {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': vm.token
+                }
+            }).then(function (res) {
+                if (res.status === 200) {
+                    var index = $scope.accounts.indexOf(account);
+                    $scope.accounts.splice(index,1);
+                }
+            }).catch(function (error) {
                 errorHandler.evaluateErrors(error.data);
                 errorHandler.handleErrors(error);
             });

@@ -63,5 +63,23 @@
             
             $scope.currenciesToAdd = [];
         }
+
+        $scope.deleteCurrency = function(code){
+            if(vm.token){
+                $http.delete(environmentConfig.API + '/admin/currencies/'+code+'/', {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': vm.token
+                    }
+                }).then(function (res) {
+                    if (res.status === 200) {
+                        vm.getCurrencies()
+                    }
+                }).catch(function (error) {
+                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.handleErrors(error);
+                });
+            }
+        };
     }
 })();

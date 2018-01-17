@@ -19,6 +19,7 @@
             $location.path('company/setup/accounts');
         }
 
+
         vm.getSubtypes = function(){
             if(vm.token){
                 $http.get(environmentConfig.API + '/admin/subtypes/', {
@@ -51,6 +52,22 @@
                 }
             }).catch(function (error) {
                 $rootScope.$pageFinishedLoading = true;
+                errorHandler.evaluateErrors(error.data);
+                errorHandler.handleErrors(error);
+            });
+        }
+
+        $scope.deleteSelectedItem=function (id) {
+            $http.delete(environmentConfig.API + '/admin/subtypes/' + id + '/', {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': vm.token
+                }
+            }).then(function (res) {
+                if (res.status === 200) {
+                    vm.getSubtypes();
+                }
+            }).catch(function (error) {
                 errorHandler.evaluateErrors(error.data);
                 errorHandler.handleErrors(error);
             });
