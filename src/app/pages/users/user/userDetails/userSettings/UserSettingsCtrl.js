@@ -16,7 +16,7 @@
         vm.getUserSettings = function () {
             if(vm.token) {
                 $scope.loadingUserSettings = true;
-                $http.get(environmentConfig.API + '/admin/users/' + vm.uuid + '/settings', {
+                $http.get(environmentConfig.API + '/admin/users/' + vm.uuid + '/settings/', {
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': vm.token
@@ -41,7 +41,7 @@
             updatedSetting[type] = !groupSetting;
 
             if(vm.token) {
-                $http.patch(environmentConfig.API + '/admin/users/' + vm.uuid + '/settings',updatedSetting, {
+                $http.patch(environmentConfig.API + '/admin/users/' + vm.uuid + '/settings/',updatedSetting, {
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': vm.token

@@ -30,6 +30,11 @@
                 return;
             }
             $scope.loadingUsers = true;
+
+            if(newUserParams.metadata == ''){
+                newUserParams.metadata = {};
+            }
+
             Upload.upload({
                 url: environmentConfig.API + '/admin/users/',
                 data: newUserParams,
@@ -42,8 +47,7 @@
                     $scope.newUserParams = {
                         nationality: "US"
                     };
-                    $scope.toggleAddUserView();
-                    $scope.getAllUsers();
+                    $scope.backToUsers();
                     toastr.success('User successfully added');
                 }
             }).catch(function (error) {
