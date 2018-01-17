@@ -54,10 +54,14 @@
                 }
             }).then(function (res) {
                 if (res.status === 200) {
-                    if($scope.company.details.default_currency == null){
-                        $scope.company.details.default_currency = res.data.data.results[0].code;
+                    if(res.data.data.results.length > 0){
+                        if($scope.company.details.default_currency == null){
+                            $scope.company.details.default_currency = res.data.data.results[0].code;
+                        }
+                        $scope.currencies = _.pluck(res.data.data.results,'code');
+                    } else {
+                        $scope.currencies = [];
                     }
-                    $scope.currencies = _.pluck(res.data.data.results,'code');
                 }
             }).catch(function (error) {
                 $scope.loadingCompanyInfo = false;
