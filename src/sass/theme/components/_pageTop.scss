@@ -84,7 +84,7 @@ a.collapse-menu-link {
   color: $sidebar-text;
   padding: 0;
   float: left;
-  margin: 10px 0 0 17px;
+  margin: 20px 0 0 17px;
 
   &:hover {
     text-decoration: none;
@@ -161,7 +161,7 @@ a.collapse-menu-link {
 @media (max-width: 1200px) {
   a.collapse-menu-link {
     display: block;
-    margin-left: 10px;
+    margin-left: 17px;
   }
 }
 

@@ -35,7 +35,6 @@
                     if (res.status === 200) {
                         $scope.company.details = res.data.data;
                         $scope.companySettingsObj = $scope.company.details.settings;
-                        vm.getCurrencies();
                     }
                 }).catch(function (error) {
                     $scope.loadingCompanyInfo = false;
@@ -45,30 +44,6 @@
             }
         };
         vm.getCompanyInfo();
-
-        vm.getCurrencies = function(){
-            $http.get(environmentConfig.API + '/admin/currencies/?enabled=true', {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': vm.token
-                }
-            }).then(function (res) {
-                if (res.status === 200) {
-                    if(res.data.data.results.length > 0){
-                        if($scope.company.details.default_currency == null){
-                            $scope.company.details.default_currency = res.data.data.results[0].code;
-                        }
-                        $scope.currencies = _.pluck(res.data.data.results,'code');
-                    } else {
-                        $scope.currencies = [];
-                    }
-                }
-            }).catch(function (error) {
-                $scope.loadingCompanyInfo = false;
-                errorHandler.evaluateErrors(error.data);
-                errorHandler.handleErrors(error);
-            });
-        };
 
         $scope.companySettingsChanged = function(field){
             vm.updatedCompanySettings.settings[field] = $scope.company.details.settings[field];

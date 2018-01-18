@@ -25,12 +25,6 @@
                 <input type="text" ng-change="companySettingsChanged('email_confirmation_url')" ng-model="company.details.settings.email_confirmation_url" class="form-control" placeholder="e.g. http://www.rehive.com/verify/email/">
             </div>
             <div class="form-group">
-                <label>Default currency</label>
-                <br>
-                <select class="form-control pointer" ng-change="companyInfoChanged('default_currency')"  ng-model="company.details.default_currency" ng-options="code for code in currencies">
-                </select>
-            </div>
-            <div class="form-group">
                 <button ng-click="updateCompanyInfo()" class="btn btn-primary dashboard-btn pull-right">Save</button>
             </div>
         </div>

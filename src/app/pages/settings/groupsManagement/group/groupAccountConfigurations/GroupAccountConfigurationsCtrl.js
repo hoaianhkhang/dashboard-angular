@@ -23,6 +23,12 @@
             maxSize: 5
         };
 
+        $scope.groupAccountConfigurationNameToLowercase = function () {
+            if($scope.groupAccountConfigurationParams.name){
+                $scope.groupAccountConfigurationParams.name = $scope.groupAccountConfigurationParams.name.toLowerCase();
+            }
+        };
+
         $scope.goToGroupAccountConfigurationEditView = function (groupAccountConfiguration) {
           $location.path('/settings/groups-management/' + vm.groupName + '/account-configurations/' + groupAccountConfiguration.name + '/edit');
         };

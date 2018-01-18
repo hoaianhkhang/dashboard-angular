@@ -24,6 +24,12 @@
             $location.path('/settings/groups-management/' + groupName + '/details');
         };
 
+        $scope.groupNameToLowercase = function () {
+            if($scope.groupsParams.name){
+                $scope.groupsParams.name = $scope.groupsParams.name.toLowerCase();
+            }
+        };
+
         vm.getGroupsUrl = function(){
 
             var searchObj = {

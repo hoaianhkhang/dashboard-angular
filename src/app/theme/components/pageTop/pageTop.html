@@ -17,7 +17,7 @@
         </div>
       </div>
       <div class="user-company-overview pull-right">
-        <span>{{userInfo.email}}</span>
+        <span ng-class="{'long-text': (userInfo.email.length > 25), 'very-long-text': (userInfo.email.length > 35)}">{{userInfo.email}}</span>
         <p>{{company.identifier}}</p>
       </div>
       <div class="search-bar-main" click-outside="hidingSearchBar()">
