@@ -13,6 +13,7 @@
         $rootScope.$pageFinishedLoading=true;
         $scope.account = {};
         $scope.accounts = [];
+        $rootScope.activeSetupRoute = 2;
 
         $scope.goToNextView=function () {
             $location.path('/company/setup/subtypes');
@@ -55,6 +56,11 @@
                                         node.group = element.name;
                                     });
                                     $scope.accounts = $scope.accounts.concat(res.data.data.results);
+                                    if($scope.accounts.length==0) {
+                                        $rootScope.setupAccounts = 0;
+                                    } else {
+                                        $rootScope.setupAccounts = 1;
+                                    }
                                 }
                             }).catch(function (error) {
                                 errorHandler.evaluateErrors(error.data);
@@ -106,6 +112,11 @@
                     vm.initializeAccount();
                     res.data.data.group = account.groupName.name;
                     $scope.accounts.push(res.data.data);
+                    if($scope.accounts.length==0) {
+                        $rootScope.setupAccounts = 0;
+                    } else {
+                        $rootScope.setupAccounts = 1;
+                    }
                     account.currencies.forEach(function(element) {
                         $http.post(environmentConfig.API + '/admin/groups/'+ account.groupName.name +"/account-configurations/"+account.name+"/currencies/", 
                         {
@@ -144,6 +155,11 @@
                 if (res.status === 200) {
                     var index = $scope.accounts.indexOf(account);
                     $scope.accounts.splice(index,1);
+                    if($scope.accounts.length==0) {
+                        $rootScope.setupAccounts = 0;
+                    } else {
+                        $rootScope.setupAccounts = 1;
+                    }
                 }
             }).catch(function (error) {
                 errorHandler.evaluateErrors(error.data);

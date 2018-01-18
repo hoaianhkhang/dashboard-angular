@@ -11,6 +11,7 @@
         $scope.subtypes = [];
         $scope.subtype={};
         $rootScope.$pageFinishedLoading=true;
+        $rootScope.activeSetupRoute = 3;
 
         $scope.goToNextView=function () {
             $location.path('/currencies');
@@ -30,6 +31,12 @@
                 }).then(function (res) {
                     if (res.status === 200) {
                         $scope.subtypes = res.data.data;
+                        if($scope.subtypes.length==0){
+                            $rootScope.setupSubtypes = 0;
+                        }
+                        else {
+                            $rootScope.setupSubtypes = 1;
+                        }
                     }
                 }).catch(function (error) {
                     errorHandler.evaluateErrors(error.data);

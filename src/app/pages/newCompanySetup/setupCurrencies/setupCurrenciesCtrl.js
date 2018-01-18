@@ -12,6 +12,7 @@
         $scope.name="";
         $rootScope.$pageFinishedLoading=true;
         $scope.currenciesToAdd = [];
+        $rootScope.activeSetupRoute = 1;
         $scope.initialCurrencies = currenciesList;
         $scope.goToNextView=function () {
             $rootScope.userFullyVerified = true;
@@ -32,6 +33,12 @@
                 }).then(function (res) {
                     if (res.status === 200) {
                         $scope.currencies = res.data.data.results;
+                        if($scope.currencies.length==0){
+                            $rootScope.setupCurrencies = 0;
+                        }
+                        else {
+                            $rootScope.setupCurrencies = 1;
+                        }
                     }
                 }).catch(function (error) {
                     errorHandler.evaluateErrors(error.data);

@@ -11,6 +11,7 @@
         $scope.addedGroups = [];
         $scope.name="";
         $rootScope.$pageFinishedLoading=true;
+        $rootScope.activeSetupRoute = 0;
 
         $scope.goToNextView=function () {
             $rootScope.userFullyVerified = true;
@@ -27,6 +28,12 @@
                 }).then(function (res) {
                     if (res.status === 200) {
                         $scope.addedGroups = res.data.data.results;
+                        if($scope.addedGroups.length==0){
+                            $rootScope.setupUsers = 0;
+                        }
+                        else {
+                            $rootScope.setupUsers = 1;
+                        }
                     }
                 }).catch(function (error) {
                     errorHandler.evaluateErrors(error.data);
