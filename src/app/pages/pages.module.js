@@ -31,7 +31,8 @@
       'BlurAdmin.pages.verification',
       'BlurAdmin.pages.companyNameRequest',
       'BlurAdmin.pages.welcomeToRehive',
-      'BlurAdmin.pages.newCompanySetup'
+      'BlurAdmin.pages.newCompanySetup',
+      'BlurAdmin.pages.buildAFintechApp'
   ])
       .config(routeConfig);
 
