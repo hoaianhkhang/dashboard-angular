@@ -17,5 +17,8 @@
             $scope.companySetupView = '';
             $location.path(path);
         };
+        $rootScope.skipAllView=function () {
+            $location.path('/currencies');
+        }
     }
 })();

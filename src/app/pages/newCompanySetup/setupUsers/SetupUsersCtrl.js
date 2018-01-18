@@ -18,6 +18,7 @@
             $location.path('company/setup/currencysetup');
         }
 
+
         vm.getGroups = function(){
             if(vm.token){
                 $http.get(environmentConfig.API + '/admin/groups/', {
