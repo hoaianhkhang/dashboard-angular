@@ -2,7 +2,6 @@
     'use strict';
 
     angular.module('BlurAdmin.pages.newCompanySetup',[
-        'BlurAdmin.pages.newCompanySetup.initialSetupScreen',
         'BlurAdmin.pages.newCompanySetup.setupUsers',
         'BlurAdmin.pages.newCompanySetup.setupCurrencies',
         'BlurAdmin.pages.newCompanySetup.setupAccounts',
