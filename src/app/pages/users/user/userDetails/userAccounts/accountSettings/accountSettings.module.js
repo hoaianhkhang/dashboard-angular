@@ -2,9 +2,9 @@
     'use strict';
 
     angular.module('BlurAdmin.pages.accountSettings', [
-            'BlurAdmin.pages.accountSettings.accountCurrencyLimits',
-            'BlurAdmin.pages.accountSettings.accountCurrencyFees',
-            'BlurAdmin.pages.accountSettings.accountCurrencySwitches'
+        'BlurAdmin.pages.accountSettings.accountCurrencyLimits',
+        'BlurAdmin.pages.accountSettings.accountCurrencyFees',
+        'BlurAdmin.pages.accountSettings.accountCurrencySettings'
     ])
         .config(routeConfig);
 

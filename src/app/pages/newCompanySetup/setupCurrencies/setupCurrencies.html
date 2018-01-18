@@ -1,0 +1,64 @@
+<div class="row">
+    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+        <div class="panel">
+            <div class="panel-heading">
+                <span class="company-setup-title">Add currencies</span>
+                <a ng-click="goToNextView()"
+                   class="user-details-panel-link pull-right pointer">Next
+                </a>
+                <a ng-click="goToPrevView()"
+                   class="user-details-panel-link pull-right pointer setup-back-btn-top">Back
+                </a>
+            </div>
+            <div class="panel-body">
+                <div class=" row divider-40">
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <p>Add currencies which your company will transact in.</p>
+                        <ul class="currency-setup-ul">
+                            <li class="divider-20"><span>Choose currencies to transact in</span></li>
+                            <li class="divider-20"><span>Add cryptocurrencies</span></li>
+                            <li class="divider-20"><span>You can add custom currencies for e.g. loyalty or rewards programs</span>
+                            </li>
+                            <li class="divider-20"><span>Add as many currencies as you want</span></li>
+                            <li class="divider-20"><span>You can add more currencies later</span></li>
+                            <li class="divider-20"><span>You can edit added currencies later</span></li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 form-group">
+                        <label>Currency <span class="required-icon">*</span>
+                            <small class="text-muted">(To select multiple currencies, hold CTRL while selecting)</small>
+                        </label>
+                        <br>
+                        <select class="form-control pointer divider" ng-model="currenciesToAdd" multiple
+                                ng-options="currency.code + ' - ' + currency.description for currency in initialCurrencies track by currency.code"
+                                required>
+                        </select>
+                        <button ng-click="addCurrencies(currenciesToAdd)" ng-disabled="currenciesToAdd.length==0"
+                                class="btn btn-auth btn-primary pull-right add-new">Add currencies
+                        </button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <button ng-click="goToNextView()"
+                            class="btn btn-auth setup-skip-btn pull-left dashboard-btn">Skip
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+        <div class="panel">
+            <div class="panel-heading">
+                <span class="company-setup-title">Added currencies</span>
+            </div>
+            <div class="panel-body">
+                <div class="list-group-item" ng-repeat="currency in currencies" ng-class="{'no-margin-bottom': $last}"
+                     ng-hide="currencies.length==0">
+                    <span>{{currency.code}}</span>
+                    <span class="pull-right pointer" ng-click="deleteCurrency(currency.code)">&#10006;</span>
+                </div>
+                <span ng-show="currencies.length==0">No currencies added yet.</span>
+            </div>
+        </div>
+    </div>
+</div>

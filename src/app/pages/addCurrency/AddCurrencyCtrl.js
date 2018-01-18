@@ -5,59 +5,51 @@
         .controller('AddCurrencyCtrl', AddCurrencyCtrl);
 
     /** @ngInject */
-    function AddCurrencyCtrl($scope,$http,environmentConfig,cookieManagement,$window,errorHandler,toastr) {
+    function AddCurrencyCtrl($scope,$http,environmentConfig,cookieManagement,$window,currenciesList,errorHandler,toastr) {
 
         var vm = this;
         vm.token = cookieManagement.getCookie('TOKEN');
 
         $scope.addCurrency = {};
         $scope.addCurrency.currencyChoice = {};
+        vm.currenciesList = currenciesList;
         $scope.showConfirmCurrency = false;
         $scope.showCompleteCurrency = false;
         $scope.showCustomCurrency = false;
         $scope.loadingCurrencies = true;
 
         vm.getCurrencies = function(){
-            if(vm.token) {
-                $scope.loadingCurrencies = true;
-                $http.get(environmentConfig.API + '/admin/currencies/?page_size=250', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
-                    if (res.status === 200) {
-                        $scope.addCurrency.currencyChoice = res.data.data.results.find(function (currency) {
-                            return currency.code == 'USD';
-                        });
-                        $scope.currencyOptions = res.data.data.results;
-                        $scope.loadingCurrencies = false;
-                    }
-                }).catch(function (error) {
-                    $scope.loadingCurrencies = false;
-                    errorHandler.evaluateErrors(error.data);
-                    errorHandler.handleErrors(error);
-                });
-            }
+            $scope.addCurrency.currencyChoice = vm.currenciesList.find(function (currency) {
+                return currency.code == 'USD';
+            });
+            $scope.currencyOptions = vm.currenciesList;
+            $scope.loadingCurrencies = false;
         };
         vm.getCurrencies();
 
         $scope.addCompanyCurrency = function(currency){
 
-            var code = currency.code;
+            var newCurrency = {
+                code: currency.code,
+                description: currency.description,
+                divisibility: currency.divisibility,
+                symbol: currency.symbol,
+                unit: currency.unit,
+                enabled: true
+            };
 
             $scope.loadingCurrencies = true;
-            $http.patch(environmentConfig.API + '/admin/currencies/' + code+'/', {enabled: true}, {
+            $http.post(environmentConfig.API + '/admin/currencies/',newCurrency, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': vm.token
                 }
             }).then(function (res) {
                 $scope.loadingCurrencies = false;
-                if (res.status === 200) {
+                if (res.status === 201) {
+                    vm.getCompanyCurrencies();
                     $scope.showConfirmCurrency = false;
                     $scope.showCompleteCurrency = true;
-                    vm.getCompanyCurrencies();
                 }
             }).catch(function (error) {
                 $scope.loadingCurrencies = false;
@@ -70,6 +62,7 @@
 
             $scope.loadingCurrencies = true;
             $scope.addCurrency = {};
+            newCurrencyParams.enabled = true;
             $http.post(environmentConfig.API + '/admin/currencies/', newCurrencyParams, {
                 headers: {
                     'Content-Type': 'application/json',
@@ -78,8 +71,11 @@
             }).then(function (res) {
                 $scope.loadingCurrencies = false;
                 if (res.status === 201) {
+                    vm.getCompanyCurrencies();
+                    $scope.addCurrency.currencyChoice = newCurrencyParams;
                     $scope.showCustomCurrency = false;
-                    $scope.addCompanyCurrency(res.data.data);
+                    $scope.showConfirmCurrency = false;
+                    $scope.showCompleteCurrency = true;
                     toastr.success('New custom currency has been created successfully');
                 }
             }).catch(function (error) {
@@ -120,6 +116,9 @@
         };
 
         $scope.backToAddCurrency = function () {
+            $scope.addCurrency.currencyChoice = vm.currenciesList.find(function (currency) {
+                return currency.code == 'USD';
+            });
             $scope.showCustomCurrency = false;
             $scope.showConfirmCurrency = false;
             $scope.showCompleteCurrency = false;

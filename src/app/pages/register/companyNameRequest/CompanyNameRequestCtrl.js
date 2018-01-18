@@ -14,6 +14,11 @@
             name: ''
         };
 
+        $scope.goToNextView = function(){
+            $rootScope.userFullyVerified = true;
+            $location.path('company/setup/initial');
+        }
+
         vm.getCompanyInfo = function () {
             if(vm.token) {
                 $http.get(environmentConfig.API + '/admin/company/', {
@@ -24,12 +29,11 @@
                 }).then(function (res) {
                     if (res.status === 200) {
                         if(res.data.data && res.data.data.name){
-                            $rootScope.haveCompanyName = true;
                             $rootScope.companyName = res.data.data.name;
                             userVerification.verify(function(err,verified){
                                 if(verified){
-                                    $rootScope.userVerified = true;
-                                    $location.path('currency/add/initial');
+                                    $rootScope.userFullyVerified = true;
+                                    $location.path('company/setup/initial');
                                 } else {
                                     $location.path('/verification');
                                     toastr.error('Please verify your account','Message');
@@ -61,13 +65,12 @@
                 }
             }).then(function (res) {
                 if (res.status === 200) {
-                    $rootScope.haveCompanyName = true;
                     $rootScope.companyName = res.data.data.name;
                     userVerification.verify(function(err,verified){
                         if(verified){
-                            $rootScope.userVerified = true;
+                            $rootScope.userFullyVerified = true;
                             toastr.success('You have successfully updated the company info');
-                            $location.path('currency/add/initial');
+                            $location.path('company/setup/initial');
                         } else {
                             $location.path('/verification');
                             toastr.error('Please verify your account','Message');

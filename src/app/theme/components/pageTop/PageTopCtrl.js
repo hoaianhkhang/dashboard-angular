@@ -19,10 +19,9 @@
         $scope.loadingResults = false;
 
         vm.currentLocation = $location.path();
-        $rootScope.$on('$locationChangeStart', function (event,newUrl) {
-            var newUrlArray = newUrl.split('/'),
-                newUrlLastElement = _.last(newUrlArray);
-            vm.currentLocation = newUrlLastElement;
+        $rootScope.$on('$locationChangeStart', function (event,newUrl,oldURl) {
+            vm.currentLocation = $location.path();
+            vm.callCompanyInfoFunctionIfNotInTheseRoutes(vm.currentLocation);
         });
 
         $scope.hidingSearchBar = function () {
@@ -45,6 +44,7 @@
                     $scope.loadingCompanyInfo = false;
                     if (res.status === 200) {
                         $scope.company = res.data.data;
+                        $rootScope.companyName = res.data.data.name;
                         vm.getCompanyCurrencies();
                     }
                 }).catch(function (error) {
@@ -80,13 +80,17 @@
             }
         };
 
-        if(vm.currentLocation != '/login' && vm.currentLocation != '/verification' &&
-            vm.currentLocation != '/company/name_request' && vm.currentLocation != '/register' &&
-            vm.currentLocation != '/password/reset' && vm.currentLocation != '/authentication/multi-factor/verify/sms' &&
-            vm.currentLocation != '/authentication/multi-factor/verify/token' && vm.currentLocation != '/currency/add/initial'
-        ){
-            vm.getCompanyInfo();
-        }
+        vm.callCompanyInfoFunctionIfNotInTheseRoutes = function (currentLocation) {
+            if(currentLocation.indexOf('login') < 0 && currentLocation.indexOf('verification') < 0 &&
+                currentLocation.indexOf('company/name_request') < 0 && currentLocation.indexOf('register') < 0 &&
+                currentLocation.indexOf('password/reset') < 0 && currentLocation.indexOf('authentication/multi-factor/verify/sms') < 0 &&
+                currentLocation.indexOf('authentication/multi-factor/verify/token') < 0 && currentLocation.indexOf('/currency/add/initial') < 0
+                && currentLocation.indexOf('company/setup/') < 0 && currentLocation.indexOf('welcome_to_rehive') < 0
+            ){
+                vm.getCompanyInfo();
+            }
+        };
+        vm.callCompanyInfoFunctionIfNotInTheseRoutes(vm.currentLocation);
 
 
         vm.getCompanyCurrencies = function(){
@@ -220,7 +224,6 @@
             $rootScope.gotToken = false;
             $rootScope.securityConfigured = true;
             $rootScope.companyName = null;
-            $rootScope.haveCompanyName = false;
             $rootScope.userFullyVerified = false;
             cookieManagement.deleteCookie('TOKEN');
             $location.path('/login');

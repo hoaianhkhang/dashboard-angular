@@ -13,7 +13,6 @@
         vm.addressTracking = {};
         vm.token = cookieManagement.getCookie('TOKEN');
         $scope.document = document;
-        console.log(document)
         $scope.updatingDocument = false;
         $scope.showingDocumentFile = true;
         $scope.defaultImageUrl = "/assets/img/app/placeholders/hex_grey.svg";

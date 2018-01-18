@@ -13,7 +13,7 @@
             }).then(function (res) {
                 if (res.status === 200) {
                     toastr.success("Email has been verified successfully");
-                    $location.path('/currencies');
+                    $location.path('/verification');
                 }
             }).catch(function (error) {
                 errorHandler.evaluateErrors(error.data);

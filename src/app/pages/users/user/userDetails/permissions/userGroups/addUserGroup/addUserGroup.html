@@ -1,0 +1,21 @@
+<div ng-hide="loadingUserGroups" class="panel">
+    <div class="panel-heading">
+        <span class="user-details-panel-title">Add group</span>
+    </div>
+    <div class="panel-body">
+        <p class="divider"><i>Create more groups from
+            <a href="/#/settings/groups-management">groups management</a></i></p>
+        <form name="userGroupForm" class="custom-form">
+            <div class="form-group">
+                <label>Name <span class="required-icon">*</span></label>
+                <select class="form-control pointer divider" ng-model="userGroupParams"
+                        ng-options="group.name for group in groups | orderBy: 'name'" required>
+                </select>
+            </div>
+            <div class="form-group">
+                <button ng-click="addUserGroup(userGroupParams)" ng-disabled="!userGroupForm.$valid" class="btn btn-primary user-accounts-btn pull-right">Add</button>
+                <button ng-click="toggleAddUserGroupView()" class="btn btn-default user-accounts-btn pull-right margin-right-10">Back</button>
+            </div>
+        </form>
+    </div>
+</div>

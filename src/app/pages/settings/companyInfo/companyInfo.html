@@ -6,28 +6,28 @@
         <div>
             <div class="form-group">
                 <label>Company name</label>
-                <input type="text" ng-change="companyInfoChanged('name')" ng-model="company.name" class="form-control" placeholder="Company">
+                <input type="text" ng-change="companyInfoChanged('name')" ng-model="company.details.name" class="form-control" placeholder="Company">
             </div>
             <div class="form-group">
                 <label>Company description</label>
-                <textarea rows="4" ng-change="companyInfoChanged('description')" ng-model="company.description" class="form-control" placeholder="e.g. Currency Corp is a registered financial services provider."></textarea>
+                <textarea rows="4" ng-change="companyInfoChanged('description')" ng-model="company.details.description" class="form-control" placeholder="e.g. Currency Corp is a registered financial services provider."></textarea>
             </div>
             <div class="form-group">
                 <label>Website url</label>
-                <input type="text" ng-change="companyInfoChanged('website')" ng-model="company.website" class="form-control" placeholder="e.g. http://www.zapgo.co">
+                <input type="text" ng-change="companyInfoChanged('website')" ng-model="company.details.website" class="form-control" placeholder="e.g. http://www.zapgo.co">
             </div>
             <div class="form-group">
                 <label>Password reset url</label>
-                <input type="text" ng-change="companyInfoChanged('password_reset_url')" ng-model="company.password_reset_url" class="form-control" placeholder="e.g. http://www.rehive.com/reset/password/">
+                <input type="text" ng-change="companySettingsChanged('password_reset_url')" ng-model="company.details.settings.password_reset_url" class="form-control" placeholder="e.g. http://www.rehive.com/reset/password/">
             </div>
             <div class="form-group">
                 <label>Email confirmation url</label>
-                <input type="text" ng-change="companyInfoChanged('email_confirmation_url')" ng-model="company.email_confirmation_url" class="form-control" placeholder="e.g. http://www.rehive.com/verify/email/">
+                <input type="text" ng-change="companySettingsChanged('email_confirmation_url')" ng-model="company.details.settings.email_confirmation_url" class="form-control" placeholder="e.g. http://www.rehive.com/verify/email/">
             </div>
             <div class="form-group">
                 <label>Default currency</label>
                 <br>
-                <select class="form-control pointer" ng-change="companyInfoChanged('default_currency')"  ng-model="company.default_currency" ng-options="code for code in currencies">
+                <select class="form-control pointer" ng-change="companyInfoChanged('default_currency')"  ng-model="company.details.default_currency" ng-options="code for code in currencies">
                 </select>
             </div>
             <div class="form-group">
@@ -36,34 +36,135 @@
         </div>
     </div>
 </div>
+<div ng-hide="loadingCompanyInfo" class="panel">
+    <div class="panel-heading">
+        <span class="user-details-panel-title">Company settings</span>
+    </div>
+    <div class="panel-body">
+        <table class="table">
+            <tr>
+                <td class="table-row-center transactions-list-element rehive-table-row-first-child">
+                    Allow transactions
+                </td>
+                <td class="rehive-table-row-last-child">
+                    <div ng-show="companySettingsObj.allow_transactions">
+                        <i class="fa fa-toggle-on user-switch-active pull-right no-margin"  ng-click="toggleCompanySettings(companySettingsObj.allow_transactions,'allow_transactions')"></i>
+                    </div>
+                    <div ng-hide="companySettingsObj.allow_transactions">
+                        <i class="fa fa-toggle-on fa-rotate-180 user-switch-inactive pull-right no-margin"  ng-click="toggleCompanySettings(companySettingsObj.allow_transactions,'allow_transactions')"></i>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="table-row-center transactions-list-element rehive-table-row-first-child">
+                    Allow debit transactions
+                </td>
+                <td class="rehive-table-row-last-child">
+                    <div ng-show="companySettingsObj.allow_debit_transactions">
+                        <i class="fa fa-toggle-on user-switch-active pull-right no-margin"  ng-click="toggleCompanySettings(companySettingsObj.allow_debit_transactions,'allow_debit_transactions')"></i>
+                    </div>
+                    <div ng-hide="companySettingsObj.allow_debit_transactions">
+                        <i class="fa fa-toggle-on fa-rotate-180 user-switch-inactive pull-right no-margin"  ng-click="toggleCompanySettings(companySettingsObj.allow_debit_transactions,'allow_debit_transactions')"></i>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="table-row-center transactions-list-element rehive-table-row-first-child">
+                    Allow credit transactions
+                </td>
+                <td class="rehive-table-row-last-child">
+                    <div ng-show="companySettingsObj.allow_credit_transactions">
+                        <i class="fa fa-toggle-on user-switch-active pull-right no-margin"  ng-click="toggleCompanySettings(companySettingsObj.allow_credit_transactions,'allow_credit_transactions')"></i>
+                    </div>
+                    <div ng-hide="companySettingsObj.allow_credit_transactions">
+                        <i class="fa fa-toggle-on fa-rotate-180 user-switch-inactive pull-right no-margin"  ng-click="toggleCompanySettings(companySettingsObj.allow_credit_transactions,'allow_credit_transactions')"></i>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="table-row-center transactions-list-element rehive-table-row-first-child">
+                    Require verification
+                </td>
+                <td class="rehive-table-row-last-child">
+                    <div ng-show="companySettingsObj.require_verification">
+                        <i class="fa fa-toggle-on user-switch-active pull-right no-margin"  ng-click="toggleCompanySettings(companySettingsObj.require_verification,'require_verification')"></i>
+                    </div>
+                    <div ng-hide="companySettingsObj.require_verification">
+                        <i class="fa fa-toggle-on fa-rotate-180 user-switch-inactive pull-right no-margin"  ng-click="toggleCompanySettings(companySettingsObj.require_verification,'require_verification')"></i>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="table-row-center transactions-list-element rehive-table-row-first-child">
+                    Allow registrations
+                </td>
+                <td class="rehive-table-row-last-child">
+                    <div ng-show="companySettingsObj.allow_registrations">
+                        <i class="fa fa-toggle-on user-switch-active pull-right no-margin"  ng-click="toggleCompanySettings(companySettingsObj.allow_registrations,'allow_registrations')"></i>
+                    </div>
+                    <div ng-hide="companySettingsObj.allow_registrations">
+                        <i class="fa fa-toggle-on fa-rotate-180 user-switch-inactive pull-right no-margin"  ng-click="toggleCompanySettings(companySettingsObj.allow_registrations,'allow_registrations')"></i>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="table-row-center transactions-list-element rehive-table-row-first-child">
+                    Allow overdrafts
+                </td>
+                <td class="rehive-table-row-last-child">
+                    <div ng-show="companySettingsObj.allow_overdrafts">
+                        <i class="fa fa-toggle-on user-switch-active pull-right no-margin"  ng-click="toggleCompanySettings(companySettingsObj.allow_overdrafts,'allow_overdrafts')"></i>
+                    </div>
+                    <div ng-hide="companySettingsObj.allow_overdrafts">
+                        <i class="fa fa-toggle-on fa-rotate-180 user-switch-inactive pull-right no-margin"  ng-click="toggleCompanySettings(companySettingsObj.allow_overdrafts,'allow_overdrafts')"></i>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="table-row-center transactions-list-element rehive-table-row-first-child">
+                    Auto complete transactions
+                </td>
+                <td class="rehive-table-row-last-child">
+                    <div ng-show="companySettingsObj.auto_complete_transactions">
+                        <i class="fa fa-toggle-on user-switch-active pull-right no-margin"  ng-click="toggleCompanySettings(companySettingsObj.auto_complete_transactions,'auto_complete_transactions')"></i>
+                    </div>
+                    <div ng-hide="companySettingsObj.auto_complete_transactions">
+                        <i class="fa fa-toggle-on fa-rotate-180 user-switch-inactive pull-right no-margin"  ng-click="toggleCompanySettings(companySettingsObj.auto_complete_transactions,'auto_complete_transactions')"></i>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="table-row-center transactions-list-element rehive-table-row-first-child">
+                    Allow session durations
+                </td>
+                <td class="rehive-table-row-last-child">
+                    <div ng-show="companySettingsObj.allow_session_durations">
+                        <i class="fa fa-toggle-on user-switch-active pull-right no-margin"  ng-click="toggleCompanySettings(companySettingsObj.allow_session_durations,'allow_session_durations')"></i>
+                    </div>
+                    <div ng-hide="companySettingsObj.allow_session_durations">
+                        <i class="fa fa-toggle-on fa-rotate-180 user-switch-inactive pull-right no-margin"  ng-click="toggleCompanySettings(companySettingsObj.allow_session_durations,'allow_session_durations')"></i>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="table-row-center transactions-list-element rehive-table-row-first-child">
+                    Require terms and conditions
+                </td>
+                <td class="rehive-table-row-last-child">
+                    <div ng-show="companySettingsObj.require_terms_and_conditions">
+                        <i class="fa fa-toggle-on user-switch-active pull-right no-margin"  ng-click="toggleCompanySettings(companySettingsObj.require_terms_and_conditions,'require_terms_and_conditions')"></i>
+                    </div>
+                    <div ng-hide="companySettingsObj.require_terms_and_conditions">
+                        <i class="fa fa-toggle-on fa-rotate-180 user-switch-inactive pull-right no-margin"  ng-click="toggleCompanySettings(companySettingsObj.require_terms_and_conditions,'require_terms_and_conditions')"></i>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
 
-<!--<div ng-hide="loadingCompanyInfo" ba-panel ba-panel-title="Company Address">-->
-    <!--<div>-->
-        <!--<div class="form-group">-->
-            <!--<label>Address Line 1</label>-->
-            <!--<input type="text"  ng-model="company.address1" class="form-control" placeholder="Address Line 1">-->
-        <!--</div>-->
-        <!--<div class="form-group">-->
-            <!--<label>Address Line 2</label>-->
-            <!--<input type="text" ng-model="company.address2" class="form-control" placeholder="Address Line 2">-->
-        <!--</div>-->
-        <!--<div class="form-group">-->
-            <!--<label>City</label>-->
-            <!--<input type="text" ng-model="company.city" class="form-control" placeholder="City">-->
-        <!--</div>-->
-        <!--<div class="form-group">-->
-            <!--<label>Country</label>-->
-            <!--<country-select class="form-control pointer" data-ng-model="company.country"></country-select>-->
-        <!--</div>-->
-        <!--<div class="form-group">-->
-            <!--<label>Code/Zipcode</label>-->
-            <!--<input type="text" ng-model="company.zipcode" class="form-control" placeholder="Code/Zipcode">-->
-        <!--</div>-->
-        <!--<div class="form-group">-->
-            <!--<button ng-click="goToView('confirmDeposit')" class="btn btn-primary pull-right">Save</button>-->
-        <!--</div>-->
-    <!--</div>-->
-<!--</div>-->
+
+
 <div ba-panel ng-show="loadingCompanyInfo">
     <loading-image></loading-image>
 </div>
