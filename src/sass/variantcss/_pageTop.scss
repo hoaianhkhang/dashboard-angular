@@ -1,3 +1,20 @@
+a.al-dashboard-version{
+  color: $sidebar-text;
+  display: block;
+  font-size: 14px;
+  font-weight: $font-normal;
+  font-family: $font-family;
+  white-space: nowrap;
+  float: left;
+  outline: none !important;
+  line-height: 72px;
+  cursor: default;
+  margin-left: 17px;
+  &:hover{
+    color:$sidebar-text;
+  }
+}
+
 .alternatePhoto-page-top{
   display: block;
   width:35px;
