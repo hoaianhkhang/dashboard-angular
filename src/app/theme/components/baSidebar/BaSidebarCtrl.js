@@ -22,7 +22,7 @@
     };
 
     $scope.$on('$stateChangeSuccess', function () {
-      if (baSidebarService.canSidebarBeHidden()) {
+      if (baSidebarService.canSidebarBeHidden() || window.innerWidth < 1201) {
         baSidebarService.setMenuCollapsed(true);
       }
     });
