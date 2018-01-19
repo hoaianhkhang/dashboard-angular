@@ -3,7 +3,7 @@ $panel-heading-font-size: 17px;
 
 .panel {
   @include scrollbars(.4em, rgba(0, 0, 0, 0.6), rgba(255, 255, 255, 0.7));
-  color: #222D32;
+  color: #022b36;
   background-color: $default;
   border: none;
   border-radius: 0;
@@ -62,7 +62,7 @@ $panel-heading-font-size: 17px;
   > .panel-heading .user-details-panel-title{
     font-size: 14px;
     font-weight: bold;
-    color: #222D32;
+    color: #022b36;
   }
   > .panel-heading .user-details-panel-link{
     font-size: 14px;

@@ -3,8 +3,8 @@
   width:130px;
   height: 130px;
   margin: 0 30px 30px 0;
-  border: 2px solid #979797;
-  background-color: #979797;
+  border: 2px solid #A8A8A8;
+  background-color: #A8A8A8;
   border-radius: 80px;
   color: white;
   font-size: 54px;
@@ -28,7 +28,7 @@
 .user-details-address-options{
   padding: 4px 0;
   display: block;
-  color: #979797;
+  color: #A8A8A8;
   &:hover{
     color: $primary;
   }
@@ -41,7 +41,7 @@
   width: 123px;
   z-index: 100;
   background-color: white;
-  box-shadow: 0 2px 6px #979797;
+  box-shadow: 0 2px 6px #A8A8A8;
   padding: 14px 20px 16px 20px;
   list-style: none;
   & li{
@@ -81,7 +81,7 @@
 .user-details-currencies-options{
   padding: 12px 0;
   display: block;
-  color: #979797;
+  color: #A8A8A8;
   &:hover{
     color: $primary;
   }
@@ -94,7 +94,7 @@
   width: 123px;
   z-index: 100;
   background-color: white;
-  box-shadow: 0 2px 6px #979797;
+  box-shadow: 0 2px 6px #A8A8A8;
   padding: 14px 20px 16px 20px;
   list-style: none;
   & li{
@@ -206,7 +206,7 @@ input.custom-rehive-checkbox:disabled{
 
 .user-bank-table-th-title{
   text-align: right;
-  color: #979797;
+  color: #A8A8A8;
 }
 
 .user-bank-table-th{
@@ -221,10 +221,10 @@ input.custom-rehive-checkbox:disabled{
 .user-switch-active, .user-switch-inactive {font-size:40px;cursor:pointer;}
 .user-switch-active, .user-switch-inactive {font-size:40px;cursor:pointer;}
 .user-switch-active { color: #5EC980;}
-.user-switch-inactive {color: #979797;}
+.user-switch-inactive {color: #A8A8A8;}
 
 .user-switches-table-header > th{
-  color: #979797;
+  color: #A8A8A8;
 }
 
 .user-address-status{
@@ -235,8 +235,8 @@ input.custom-rehive-checkbox:disabled{
 }
 
 .status-pending{
-  color: #979797;
-  border-color: #979797;
+  color: #A8A8A8;
+  border-color: #A8A8A8;
 }
 
 .status-verified{
@@ -271,7 +271,7 @@ input.custom-rehive-checkbox:disabled{
   font-size: 20px;
   line-height: 24px;
   font-weight: bold;
-  color: #222D32;
+  color: #022b36;
   margin-bottom: 8px;
 }
 

@@ -20,7 +20,7 @@
   width: 550px;
   max-height: 400px;
   overflow-y: auto;
-  box-shadow: 0 2px 6px #979797;
+  box-shadow: 0 2px 6px #A8A8A8;
   & .panel-body{
     padding: 0!important;
   }
@@ -29,7 +29,7 @@
     height: 50px;
     line-height: 22px;
     vertical-align: middle;
-    color: #979797;
+    color: #A8A8A8;
     background-color: #ECF0F5;
     font-size: 14px;
     font-weight: bold;
@@ -49,7 +49,7 @@
   & .search-user-result-extra{
     font-size: 12px;
     font-weight: 600;
-    color: #979797;
+    color: #A8A8A8;
   }
   & .search-list-details{
     list-style: none;
@@ -58,7 +58,7 @@
     margin: 0;
   }
   & .search-list-name{
-    color: #979797;
+    color: #A8A8A8;
     font-size: 12px;
   }
   & .search-list-value{

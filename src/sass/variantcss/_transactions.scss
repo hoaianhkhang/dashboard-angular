@@ -27,7 +27,7 @@
 .table-filters{
   z-index: 100;
   position: absolute;
-  box-shadow: 0 2px 6px #979797;
+  box-shadow: 0 2px 6px #A8A8A8;
   top: 10px;
   width: 450px;
   & > .panel-heading{
@@ -103,7 +103,7 @@
     }
     & span.filter-text{
       font-size: 14px;
-      color: #979797;
+      color: #A8A8A8;
     }
   }
 }
@@ -117,7 +117,7 @@
   position: absolute;
   top: 7px;
   right: 10px;
-  color: #979797;
+  color: #A8A8A8;
   &:hover{
     color: $primary;
   }
@@ -134,7 +134,7 @@ a.panel-header-filter-clear{
   position: absolute;
   top: 6px;
   right: 34px;
-  color: #979797;
+  color: #A8A8A8;
   &.panel-header-filter-clear:hover{
     color: #c53321;
   }

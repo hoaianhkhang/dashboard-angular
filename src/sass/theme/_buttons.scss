@@ -69,7 +69,7 @@ button.btn.btn-primary {
 
 button.btn.btn-default {
   border-width: 1px;
-  color: #979797;
+  color: #A8A8A8;
   @include buttonColor(transparent, $border);
   &:active, &:target {
     background-color: rgba(0, 0, 0, 0.2);
