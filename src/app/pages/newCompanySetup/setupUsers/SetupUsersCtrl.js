@@ -15,7 +15,7 @@
 
         $scope.goToNextView=function () {
             $rootScope.userFullyVerified = true;
-            $location.path('company/setup/currencysetup');
+            $location.path('company/setup/currency-setup');
         }
 
 
