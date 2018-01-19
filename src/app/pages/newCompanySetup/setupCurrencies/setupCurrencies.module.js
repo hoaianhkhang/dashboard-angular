@@ -9,7 +9,7 @@
     function routeConfig ($stateProvider) {
         $stateProvider
             .state('newCompanySetup.setupCurrencies',{
-                url:'/currencysetup',
+                url:'/currency-setup',
                 views:{
                     'companySetupView': {
                         templateUrl: 'app/pages/newCompanySetup/setupCurrencies/setupCurrencies.html',

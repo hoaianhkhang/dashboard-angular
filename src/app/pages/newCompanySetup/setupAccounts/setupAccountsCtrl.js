@@ -19,7 +19,7 @@
             $location.path('/company/setup/subtypes');
         }
         $scope.goToPrevView=function () {
-            $location.path('/company/setup/currencysetup');
+            $location.path('/company/setup/currency-setup');
         }
         
         vm.initializeAccount = function () {
