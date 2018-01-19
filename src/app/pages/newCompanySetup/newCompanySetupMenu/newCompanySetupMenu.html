@@ -21,8 +21,8 @@
             </div>
         </div>
 
-        <div class="row pointer divider-20" ng-click="goToView('/company/setup/currencysetup')">
-            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+        <div class="pointer divider-20" ng-click="goToView('/company/setup/currencysetup')">
+            <div class="company-setup-menu-navigation-div">
                 <div ng-show="setupCurrencies==0 && activeSetupRoute<1" class="menu-number">
                     <span class="menu-number-text">2</span>
                 </div>
@@ -35,17 +35,13 @@
                 <div ng-show="setupCurrencies==1 && activeSetupRoute!=1" class="menu-mark">
                     <span class="menu-mark-text">&#10003;</span>
                 </div>
+                <span class="company-setup-menu-navigation-title">Currencies</span>
             </div>
 
-            <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 margin-top-5">
-            <span class="menu-text">
-                Currencies
-            </span>
-            </div>
         </div>
 
-        <div class="row pointer divider-20" ng-click="goToView('/company/setup/accounts')">
-            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+        <div class="pointer divider-20" ng-click="goToView('/company/setup/accounts')">
+            <div class="company-setup-menu-navigation-div">
                 <div ng-show="setupAccounts==0 && activeSetupRoute<2" class="menu-number">
                     <span class="menu-number-text">3</span>
                 </div>
@@ -58,11 +54,7 @@
                 <div ng-show="setupAccounts==1 && activeSetupRoute!=2" class="menu-mark">
                     <span class="menu-mark-text">&#10003;</span>
                 </div>
-            </div>
-            <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 margin-top-5">
-            <span class="menu-text">
-                Accounts
-            </span>
+                <span class="company-setup-menu-navigation-title">Accounts</span>
             </div>
         </div>
 
