@@ -5,6 +5,23 @@ a.al-rehive-logo{
   line-height: 70px;
 }
 
+a.al-dashboard-version-inside{
+  color: $sidebar-text;
+  font-size: 14px;
+  font-weight: $font-normal;
+  font-family: $font-family;
+  white-space: nowrap;
+  float: left;
+  outline: none !important;
+  cursor: default;
+  position: absolute;
+  top: 37px;
+  left: 17px;
+  &:hover{
+    color:$sidebar-text;
+  }
+}
+
 a.al-dashboard-version{
   color: $sidebar-text;
   display: block;
