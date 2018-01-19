@@ -9,7 +9,7 @@
         var vm=this;
         vm.token=cookieManagement.getCookie("TOKEN");
         $scope.addedGroups = [];
-        $scope.name="";
+        $scope.user = {};
         $rootScope.$pageFinishedLoading=true;
         $rootScope.activeSetupRoute = 0;
 
@@ -52,7 +52,7 @@
                 }
             }).then(function (res) {
                 if (res.status === 201) {
-                    $scope.name="";
+                    $scope.user={};
                     vm.getGroups();
                 }
             }).catch(function (error) {

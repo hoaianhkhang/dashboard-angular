@@ -38,13 +38,13 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <button ng-click="goToNextView()"
+                    <button ng-click="goToNextView()" ng-disabled="setupCurrencies==1"
                             class="btn btn-primary setup-skip-btn pull-left dashboard-btn">Skip
                     </button>
                     <button ng-click="skipAllView()"
                             class="btn btn-primary setup-skip-btn pull-left dashboard-btn margin-left-10">Skip all
                     </button>
-                    <button ng-click="goToNextView()"
+                    <button ng-click="goToNextView()" ng-disabled="setupCurrencies==0"
                             class="btn btn-primary setup-next-btn pull-right dashboard-btn">Next
                     </button>
                     <button ng-click="goToPrevView()"
@@ -61,7 +61,7 @@
             </div>
             <div class="panel-body">
                 <div class="divider-20" ng-repeat="currency in currencies" ng-hide="currencies.length==0" ng-class="{'no-margin-bottom': $last}">
-                    <span>{{currency.name}}</span>
+                    <span>{{currency.code}}</span>
                     <span class="pull-right pointer" ng-click="deleteSelectedItem(currency.id)">&#10006;</span>
                 </div>
                 <span ng-show="currencies.length==0">No currencies added yet.</span>

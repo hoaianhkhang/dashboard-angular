@@ -20,7 +20,7 @@
                     <div class="form-group">
                         <label>2 - Configure</label>
                         <input type="text" class="form-control" ng-model="account.name"
-                               placeholder="Account name, eg. default, savings, loans etc">
+                               placeholder="Account name, eg. default, savings, loans etc" ng-change="account.name? account.name = account.name.toLowerCase():null;">
                         <div class="checkbox divider-20">
                             <input type="text" class="form-control" ng-model="account.label"
                                    placeholder="Enter label">
@@ -56,13 +56,13 @@
                 </div>
             </div>
             <div class="form-group">
-                <button ng-click="goToNextView()"
+                <button ng-click="goToNextView()" ng-disabled="setupAccounts==1"
                         class="btn btn-primary setup-skip-btn pull-left dashboard-btn">Skip
                 </button>
                 <button ng-click="skipAllView()"
                         class="btn btn-primary setup-skip-btn pull-left dashboard-btn margin-left-10">Skip all
                 </button>
-                <button ng-click="goToNextView()"
+                <button ng-click="goToNextView()" ng-disabled="setupAccounts==0"
                         class="btn btn-primary setup-next-btn pull-right dashboard-btn">Next
                 </button>
                 <button ng-click="goToPrevView()"

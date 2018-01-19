@@ -12,7 +12,7 @@
                     <div class="form-group">
                         <label>Group name <span class="required-icon"></span></label>
                         <input type="text" class="form-control" ng-model="user.name"
-                               placeholder="E.g. merchants" required>
+                               placeholder="E.g. merchants" required ng-change="user.name? user.name = user.name.toLowerCase():null;">
                     </div>
                     <div class="form-group">
                         <label>Group label <span class="required-icon"></span></label>
@@ -36,7 +36,7 @@
                             </span>
                         </label>
                         <br>
-                        <input class="custom-rehive-checkbox" ng-model="user.default" type="checkbox">
+                        <input class="custom-rehive-checkbox" ng-change="user.default? user.public=true:null" ng-model="user.default" type="checkbox">
                     </div>
                     <button ng-click="addUser(user)" ng-disabled="!user.name"
                             class="btn btn-primary add-new pull-right dashboard-btn">Add
@@ -44,13 +44,13 @@
                 </div>
             </div>
             <div class="form-group">
-                <button ng-click="goToNextView()"
+                <button ng-click="goToNextView()" ng-disabled="setupUsers==1"
                         class="btn btn-primary setup-skip-btn pull-left dashboard-btn">Skip
                 </button>
                 <button ng-click="skipAllView()"
                         class="btn btn-primary setup-skip-btn pull-left dashboard-btn margin-left-10">Skip all
                 </button>
-                 <button ng-click="goToNextView()"
+                 <button ng-click="goToNextView()" ng-disabled="setupUsers==0"
                         class="btn btn-primary setup-next-btn pull-right dashboard-btn">Next
                 </button>
             </div>

@@ -28,7 +28,7 @@
                     <br>
                     <input type="text" class="form-control" ng-model="subtype.name"
                             placeholder="Subtype name eg. purchase, withdraw, deposit"
-                            auto-focus="!havePersonalDetails" required>
+                            auto-focus="!havePersonalDetails" required ng-change="subtype.name? subtype.name = subtype.name.toLowerCase():null;">
                     <br>
                     <label>Subtype label <span class="required-icon"></span></label>
                     <br>
@@ -41,13 +41,13 @@
                 </div>
             </div>
             <div class="form-group">
-                <button ng-click="goToNextView()"
+                <button ng-click="goToNextView()" ng-disabled="setupSubtypes==1"
                         class="btn btn-primary setup-skip-btn pull-left dashboard-btn">Skip
                 </button>
                 <button ng-click="skipAllView()"
                         class="btn btn-primary setup-skip-btn pull-left dashboard-btn margin-left-10">Skip all
                 </button>
-                <button ng-click="goToNextView()"
+                <button ng-click="goToNextView()" ng-disabled="setupSubtypes==0"
                         class="btn btn-primary setup-next-btn pull-right dashboard-btn">Next
                 </button>
                 <button ng-click="goToPrevView()"
