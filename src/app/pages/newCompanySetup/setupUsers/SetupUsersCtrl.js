@@ -12,6 +12,7 @@
         $scope.user = {};
         $rootScope.$pageFinishedLoading=true;
         $rootScope.activeSetupRoute = 0;
+        $scope.editingUser = false;
 
         $scope.goToNextView=function () {
             $rootScope.userFullyVerified = true;
@@ -60,6 +61,31 @@
                 errorHandler.evaluateErrors(error.data);
                 errorHandler.handleErrors(error);
             });
+        }
+
+        $scope.updateUser = function (group) {
+            $http.patch(environmentConfig.API + '/admin/groups/' + group.prevName + "/",group, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': vm.token
+                }
+            }).then(function (res) {
+                if (res.status === 200) {
+                    $scope.user={};
+                    $scope.editingUser = false;
+                }
+            }).catch(function (error) {
+                $rootScope.$pageFinishedLoading = true;
+                errorHandler.evaluateErrors(error.data);
+                errorHandler.handleErrors(error);
+            });
+        }
+
+        $scope.editUser = function(group) {
+            $scope.user = group;
+            $scope.user.prevName = group.name;
+            $scope.editingUser = true;
+
         }
 
         $scope.deleteGroup = function (name) {

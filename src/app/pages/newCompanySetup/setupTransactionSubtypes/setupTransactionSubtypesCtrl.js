@@ -12,6 +12,7 @@
         $scope.subtype={};
         $rootScope.$pageFinishedLoading=true;
         $rootScope.activeSetupRoute = 3;
+        $scope.editingSubtypes = false;
 
         $scope.goToNextView=function () {
             $location.path('/currencies');
@@ -64,6 +65,31 @@
             });
         }
 
+        $scope.updateSubtype = function (subtype) {
+            var newSubtype = {
+                tx_type: subtype.tx_type,
+                label: subtype.label
+            };
+            if(subtype.prevName!==subtype.name){
+                newSubtype.name = subtype.name;
+            }
+            $http.patch(environmentConfig.API + '/admin/subtypes/' + subtype.id + '/', newSubtype, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': vm.token
+                }
+            }).then(function (res) {
+                if (res.status === 200) {
+                    $scope.subtype={};
+                    $scope.editingSubtypes = false;
+                }
+            }).catch(function (error) {
+                $rootScope.$pageFinishedLoading = true;
+                errorHandler.evaluateErrors(error.data);
+                errorHandler.handleErrors(error);
+            });
+        }
+
         $scope.deleteSelectedItem=function (id) {
             $http.delete(environmentConfig.API + '/admin/subtypes/' + id + '/', {
                 headers: {
@@ -78,6 +104,12 @@
                 errorHandler.evaluateErrors(error.data);
                 errorHandler.handleErrors(error);
             });
+        }
+
+        $scope.editSubtype = function(subtype) {
+            $scope.subtype = subtype;
+            $scope.editingSubtypes = true;
+            $scope.subtype.prevName = subtype.name;
         }
     }
 })();
