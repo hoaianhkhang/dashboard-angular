@@ -11,12 +11,23 @@
         <div style='border-bottom:1px solid #ccc;margin-left:-20px;margin-right: -20px;'></div>
         <div class="company-name-request-text divider" ng-keydown="($event.keyCode === 13) && company.name && updateCompanyInfo()">
             <p style="padding-bottom: 5px;">Tell us a bit about you. You can always skip this step and do it later.</p>
-            <input class="form-control" ng-model="company.name" type="text" placeholder="Company name">
+        </div>
+        <div class="form-group">
+            <label>Company name</label>
+            <input type="text" ng-model="company.name" class="form-control" placeholder="Company">
+        </div>
+        <div class="form-group">
+            <label>Company description</label>
+            <textarea rows="4" class="form-control" ng-model="company.description" placeholder="e.g. Currency Corp is a registered financial services provider."></textarea>
+        </div>
+        <div class="form-group divider-25">
+            <label>Website url</label>
+            <input type="text" class="form-control" ng-model="company.website" placeholder="e.g. http://www.zapgo.co">
         </div>
         <div class="row form-group verification-btn-box">
             <div class="col-sm-12">
                 <button ng-click="goToNextView()" class="btn btn-primary setup-skip-btn pull-left dashboard-btn">Skip</button>
-                <button ng-disabled="!company.name" ng-click="updateCompanyInfo()" class="btn btn-primary pull-right dashboard-btn">Next</button>
+                <button ng-disabled="!company.name" ng-click="updateCompanyInfo(company)" class="btn btn-primary pull-right dashboard-btn">Next</button>
             </div>
         </div>
     </div>
