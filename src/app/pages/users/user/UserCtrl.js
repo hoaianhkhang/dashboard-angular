@@ -61,6 +61,8 @@
                 dateNow = moment(Date.now()),
                 preciseDiff = moment.preciseDiff(dateNow, joiningDate, true);
 
+            console.log(preciseDiff)
+
             if(preciseDiff.years){
                 if(preciseDiff.years === 1){
                     text = preciseDiff.years + ' year';
@@ -69,8 +71,19 @@
                 }
             }
 
-            if(preciseDiff.days){
+            if(preciseDiff.months){
                 if(preciseDiff.years){
+                    text = text + ' and ';
+                }
+                if(preciseDiff.months === 1){
+                    text = preciseDiff.months + ' month';
+                } else {
+                    text = preciseDiff.months + ' months';
+                }
+            }
+
+            if(preciseDiff.days){
+                if(preciseDiff.years || preciseDiff.months){
                     text = text + ' and ';
                 }
                 if(preciseDiff.days === 1){
@@ -81,7 +94,7 @@
             }
 
             if(preciseDiff.hours){
-                if(preciseDiff.days){
+                if(preciseDiff.years || preciseDiff.months || preciseDiff.days){
                     text = text + ' and ';
                 }
                 if(preciseDiff.hours === 1){
