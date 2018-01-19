@@ -1,7 +1,9 @@
 <div class="row">
   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
     <div class="page-top clearfix" scroll-position="scrolled" max-height="50" ng-class="{'scrolled': scrolled}">
-      <a href="#/currencies" class="al-logo clearfix" ng-bind="companyName"></a>
+      <a ng-show="inCompanySetupViews" class="al-rehive-logo clearfix"><img style="width: 80px;
+      height:30px" src="assets/img/no_padding_med_white.png"></a>
+      <a ng-hide="inCompanySetupViews" href="#/currencies" class="al-logo clearfix" ng-bind="companyName"></a>
       <a class="al-dashboard-version clearfix">Beta</a>
       <a href class="collapse-menu-link ion-navicon" ba-sidebar-toggle-menu></a>
       <div class="user-profile clearfix">
@@ -21,7 +23,7 @@
         <span ng-class="{'long-text': (userInfo.email.length > 25), 'very-long-text': (userInfo.email.length > 35)}">{{userInfo.email}}</span>
         <p>{{company.identifier}}</p>
       </div>
-      <div class="search-bar-main" click-outside="hidingSearchBar()">
+      <div ng-hide="inCompanySetupViews" class="search-bar-main" click-outside="hidingSearchBar()">
         <input type="text" class="page-top-search" placeholder="Search by email, mobile number or transaction id" ng-model="searchString"
                ng-keydown="($event.keyCode === 13)  && searchGlobal(searchString)"
                ng-focus="searchGlobal(searchString)"

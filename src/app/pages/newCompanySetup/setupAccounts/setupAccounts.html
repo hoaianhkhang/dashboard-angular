@@ -87,7 +87,7 @@
                  ng-class="{'no-margin-bottom': $last}">
                  <div class="pull-left">
                     <span ng-class="{'long-text': (userInfo.email.length > 16), 'very-long-text': (userInfo.email.length > 25)}" ng-show="account.label">{{account.label}}</span>
-                    <span ng-class="{'long-text': (userInfo.email.length > 16), 'very-long-text': (userInfo.email.length > 25)}" ng-hide="account.label" class="font-italic">No label provided</span>
+                    <span class="font-italic">No label provided</span>
                     <p>{{account.name}}</p>
                  </div>
                  <div class="pull-right pointer add-new">

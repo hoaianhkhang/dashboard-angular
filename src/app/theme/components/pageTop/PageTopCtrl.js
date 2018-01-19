@@ -17,12 +17,23 @@
         $scope.searchedTransactions = [];
         $scope.searchedUsers = [];
         $scope.loadingResults = false;
+        $scope.inCompanySetupViews = false;
 
         vm.currentLocation = $location.path();
         $rootScope.$on('$locationChangeStart', function (event,newUrl,oldURl) {
             vm.currentLocation = $location.path();
             vm.callCompanyInfoFunctionIfNotInTheseRoutes(vm.currentLocation);
+            vm.checkIfInCompanySetup(vm.currentLocation);
         });
+
+        vm.checkIfInCompanySetup = function (currentLocation) {
+            if(currentLocation.indexOf('company/setup') > 0){
+                $scope.inCompanySetupViews = true;
+            } else {
+                $scope.inCompanySetupViews = false;
+            }
+        };
+        vm.checkIfInCompanySetup(vm.currentLocation);
 
         $scope.hidingSearchBar = function () {
             $scope.hideSearchBar =  true;
