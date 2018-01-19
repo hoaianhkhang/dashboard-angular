@@ -148,6 +148,11 @@
   margin-left: 10px;
 }
 
+.no-margin-horizontal{
+  margin-left:-25px;
+  margin-right:-25px;
+}
+
 .currency-setup-ul {
   padding-left: 16px !important;
   & > li {
@@ -167,15 +172,14 @@
 
 [data-tip]:before {
   content: '';
-  /* hides the tooltip when not hovered */
   display: none;
   content: '';
-  border-left: 5px solid transparent;
-  border-right: 5px solid transparent;
-  border-top: 5px solid #d6d6d6;
+  border-left: 5px solid #A8A8A8;
+  border-bottom: 5px solid transparent;
+  border-top: 5px solid transparent;
   position: absolute;
-  top: -4px;
-  left: 1px;
+  top: 3px;
+  left: -8px;
   z-index: 8;
   font-size: 0;
   line-height: 0;
@@ -187,11 +191,11 @@
   display: none;
   content: attr(data-tip);
   position: absolute;
-  top: -34px;
-  left: -39px;
+  top: -8px;
+  right: 25px;
   padding: 5px 8px;
-  background: #d6d6d6;
-  color: #fff;
+  background: #A8A8A8;
+  color: white;
   z-index: 9;
   font-size: 1em;
   height: 30px;

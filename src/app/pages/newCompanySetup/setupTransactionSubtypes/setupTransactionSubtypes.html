@@ -1,45 +1,51 @@
 <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
     <div class="panel">
         <div class="panel-heading">
-            <span class="company-setup-title">Add transaction subtypes</span>
+            <span class="user-details-panel-title">Add transaction subtypes</span>
         </div>
         <div class="panel-body">
-            <div class="row divider-40">
+            <div class="row divider-25">
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                     <p class="divider-20">Transaction subtypes are a way of marking certain transactions in order to
                         categorize and sort specific kinds of transaction.</p>
-                    <ul class="currency-setup-ul">
+                    <!--<ul class="currency-setup-ul">
                         <li class="divider-20"><span>Choose whether this subtype applies to a credits or a debit transaction type</span>
                         </li>
                         <li class="divider-20"><span>Give your subtype a label</span></li>
                         <li class="divider-20"><span>Add as many subtypes as you want</span></li>
                         <li class="divider-20"><span>You can add more subtypes later</span></li>
                         <li class="divider-20"><span>You can edit added subtypes later</span></li>
-                    </ul>
+                    </ul>-->
                 </div>
-                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 form-group">
-                    <label>Select transactiont type <span class="required-icon"></span></label>
-                    <div class="divider-20">
-                        <input type="radio" ng-model="subtype.tx_type" name="gender" value="credit"> Credit
-                        <input class="horizontal-divider-40" type="radio" ng-model="subtype.tx_type"
-                                name="gender" value="debit"> Debit
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 ">
+                    <div class="form-group">
+                        <label>Select transactiont type <span class="required-icon"></span></label>
+                        <div class="divider-20">
+                            <input type="radio" ng-model="subtype.tx_type" name="gender" value="credit"> Credit
+                            <input class="horizontal-divider-40" type="radio" ng-model="subtype.tx_type"
+                                   name="gender" value="debit"> Debit
+                        </div>
                     </div>
-                    <label>Subtype name <span class="required-icon"></span></label>
-                    <br>
-                    <input type="text" class="form-control" ng-model="subtype.name"
-                            placeholder="Subtype name eg. purchase, withdraw, deposit"
-                            auto-focus="!havePersonalDetails" required>
-                    <br>
-                    <label>Subtype label <span class="required-icon"></span></label>
-                    <br>
-                    <input type="text" class="form-control" ng-model="subtype.label"
-                            placeholder="Subtype label">
-                    <button ng-click="addSubtype(subtype)"
-                            class="btn btn-primary add-new pull-right dashboard-btn"
-                            ng-disabled="!subtype.tx_type || !subtype.name">Add
-                    </button>
+                    <div class="form-group">
+                        <label>Subtype name <span class="required-icon"></span></label>
+                        <input type="text" class="form-control" ng-model="subtype.name"
+                               placeholder="Subtype name eg. purchase, withdraw, deposit"
+                               auto-focus="!havePersonalDetails" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Subtype label <span class="required-icon"></span></label>
+                        <input type="text" class="form-control" ng-model="subtype.label"
+                               placeholder="Subtype label">
+                    </div>
+                    <div class="form-group">
+                        <button ng-click="addSubtype(subtype)"
+                                class="btn btn-primary pull-right dashboard-btn"
+                                ng-disabled="!subtype.tx_type || !subtype.name">Add
+                        </button>
+                    </div>
                 </div>
             </div>
+            <hr class="no-margin-horizontal divider-25">
             <div class="form-group">
                 <button ng-click="goToNextView()"
                         class="btn btn-primary setup-skip-btn pull-left dashboard-btn">Skip
@@ -63,7 +69,8 @@
             <span class="user-details-panel-title">Added transaction subtypes</span>
         </div>
         <div class="panel-body">
-            <div class="divider-20" ng-repeat="subtype in subtypes" ng-hide="subtypes.length==0" ng-class="{'no-margin-bottom': $last}">
+            <div class="divider-20" ng-repeat="subtype in subtypes" ng-hide="subtypes.length==0"
+                 ng-class="{'no-margin-bottom': $last}">
                 <span>{{subtype.name}}</span>
                 <span class="pull-right pointer" ng-click="deleteSelectedItem(subtype.id)">&#10006;</span>
             </div>
