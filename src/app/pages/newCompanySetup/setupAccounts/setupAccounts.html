@@ -1,10 +1,10 @@
 <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
     <div class="panel">
         <div class="panel-heading">
-            <span class="company-setup-title">Accounts</span>
+            <span class="user-details-panel-title">Accounts</span>
         </div>
         <div class="panel-body">
-            <div class=" row divider-40">
+            <div class=" row divider-25">
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                     <p>Accounts can be added to user groups and assigned to a set of currencies for that account. Define
                         primary accounts for a specific user group and setup default accounts for user groups and
@@ -25,22 +25,22 @@
                             <input type="text" class="form-control" ng-model="account.label"
                                    placeholder="Enter label">
                         </div>
-                        <div class="form-group"
-                             data-tip="Set as the main account, only one account can be the primary account per group">
-                            <label>Primary</label>
-                            <br>
-                            <input class="custom-rehive-checkbox" ng-model="account.primary" type="checkbox">
-                        </div>
-                        <div class="form-group"
-                             data-tip="A default account will be created automatically upon registration">
-                            <label>Default</label>
-                            <br>
-                            <input class="custom-rehive-checkbox" ng-model="account.default" type="checkbox">
-                        </div>
+                    </div>
+                    <div class="form-group"
+                         data-tip="Set as the main account, only one account can be the primary account per group">
+                        <label>Primary</label>
+                        <br>
+                        <input class="custom-rehive-checkbox" ng-model="account.primary" type="checkbox">
+                    </div>
+                    <div class="form-group"
+                         data-tip="A default account will be created automatically upon registration">
+                        <label>Default</label>
+                        <br>
+                        <input class="custom-rehive-checkbox" ng-model="account.default" type="checkbox">
                     </div>
                     <div class="form-group">
                         <label>3 - Select currencies</label>
-                        <select multiple class="form-control" ng-model="account.currencies"
+                        <select multiple class="form-control divider" ng-model="account.currencies"
                                 ng-options="currency.code for currency in currencies track by currency.code">
                         </select>
                         <p>Currencies selected:
@@ -49,12 +49,16 @@
                             </span>
                         </p>
                     </div>
-                    <button ng-click="addAccount(account)"
-                            class="btn btn-primary add-new pull-right dashboard-btn"
-                            ng-disabled="!account.groupName || !account.name || !account.label">Add
-                    </button>
+                    <div class="form-group">
+                        <button ng-click="addAccount(account)"
+                                class="btn btn-primary pull-right dashboard-btn"
+                                ng-disabled="!account.groupName || !account.name">Add
+                        </button>
+                    </div>
+
                 </div>
             </div>
+            <hr class="no-margin-horizontal divider-25">
             <div class="form-group">
                 <button ng-click="goToNextView()" ng-disabled="setupAccounts==1"
                         class="btn btn-primary setup-skip-btn pull-left dashboard-btn">Skip
@@ -79,9 +83,16 @@
             <span class="user-details-panel-title">Added accounts</span>
         </div>
         <div class="panel-body">
-            <div class="divider-20" ng-repeat="account in accounts" ng-hide="accounts.length==0" ng-class="{'no-margin-bottom': $last}">
-                <span>{{account.name}}</span>
-                <span class="pull-right pointer" ng-click="deleteAccount(account)">&#10006;</span>
+            <div class="divider-20 added-options-overview user-company-overview row" ng-repeat="account in accounts" ng-hide="accounts.length==0"
+                 ng-class="{'no-margin-bottom': $last}">
+                 <div class="pull-left">
+                    <span ng-class="{'long-text': (userInfo.email.length > 16), 'very-long-text': (userInfo.email.length > 25)}" ng-show="account.label">{{account.label}}</span>
+                    <span ng-class="{'long-text': (userInfo.email.length > 16), 'very-long-text': (userInfo.email.length > 25)}" ng-hide="account.label" class="font-italic">No label provided</span>
+                    <p>{{account.name}}</p>
+                 </div>
+                 <div class="pull-right pointer add-new">
+                    <span ng-click="deleteAccount(account)">&#10006;</span>
+                 </div>
             </div>
             <span ng-show="accounts.length==0">No accounts added yet.</span>
         </div>

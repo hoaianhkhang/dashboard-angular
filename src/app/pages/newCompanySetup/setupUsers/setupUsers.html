@@ -4,7 +4,7 @@
             <span class="user-details-panel-title">User groups</span>
         </div>
         <div class="panel-body">
-            <div class=" row divider-40">
+            <div class=" row divider-25">
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                     <p>Create user groups to categorise users to meet your requirements. </p>
                 </div>
@@ -16,33 +16,28 @@
                     </div>
                     <div class="form-group">
                         <label>Group label <span class="required-icon"></span></label>
-                        <br>
                         <input type="text" class="form-control" ng-model="user.label"
-                                placeholder="Merchants">
+                               placeholder="Merchants">
                     </div>
                     <div class="form-group">
-                        <label>Public
-                            <span data-tip="Allows users to allocate themselves to the group">
-                                <i class="ion-information-circled"></i>
-                            </span>
-                        </label>
+                        <label>Public</label>
                         <br>
-                        <input class="custom-rehive-checkbox" ng-model="user.public" type="checkbox">
+                        <input data-tip="Allows users to allocate themselves to the group" class="custom-rehive-checkbox" ng-model="user.public" type="checkbox">
                     </div>
                     <div class="form-group">
-                        <label>Default
-                            <span data-tip="Users will be allocated to the  default group automatically on registration">
-                                <i class="ion-information-circled"></i>
-                            </span>
-                        </label>
+                        <label>Default</label>
                         <br>
-                        <input class="custom-rehive-checkbox" ng-change="user.default? user.public=true:null" ng-model="user.default" type="checkbox">
+                        <input data-tip="Users will be allocated to the  default group automatically on registration" class="custom-rehive-checkbox" ng-change="user.default? user.public=true:null" ng-model="user.default" type="checkbox">
                     </div>
-                    <button ng-click="addUser(user)" ng-disabled="!user.name"
-                            class="btn btn-primary add-new pull-right dashboard-btn">Add
-                    </button>
+                    <div class="form-group">
+                        <button ng-click="addUser(user)" ng-disabled="!user.name"
+                                class="btn btn-primary pull-right dashboard-btn">Add
+                        </button>
+                    </div>
+
                 </div>
             </div>
+            <hr class="no-margin-horizontal divider-25">
             <div class="form-group">
                 <button ng-click="goToNextView()" ng-disabled="setupUsers==1"
                         class="btn btn-primary setup-skip-btn pull-left dashboard-btn">Skip
@@ -65,7 +60,8 @@
         <div class="panel-body">
             <div class="divider-20" ng-repeat="group in addedGroups" ng-class="{'no-margin-bottom': $last}">
                 <span>{{group.name}}</span>
-                <span class="pull-right pointer" ng-hide="group.name=='admin' || group.name=='service'" ng-click="deleteGroup(group.name)">&#10006;</span>
+                <span class="pull-right pointer" ng-hide="group.name=='admin' || group.name=='service'"
+                      ng-click="deleteGroup(group.name)">&#10006;</span>
             </div>
         </div>
     </div>

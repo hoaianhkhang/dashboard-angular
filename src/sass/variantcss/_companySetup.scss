@@ -91,6 +91,19 @@
 
 }
 
+.added-options-overview {
+  margin: 0px!important;
+  color: #022b36!important;
+  text-align: left!important;
+  & p {
+    margin: 0px;
+  }
+}
+
+.font-italic {
+  font-style: italic!important;
+}
+
 /*li {
   position: relative;
   padding: 8px 0 8px 30px;
@@ -123,9 +136,8 @@
 }
 
 .setup-back-btn {
-  margin-right: 10px;
-  border-color: #d6d6d6 !important;
-  color: #022b36 !important;
+  border-color: #A8A8A8 !important;
+  color: #A8A8A8 !important;
   background-color: white !important;
 }
 
@@ -134,8 +146,8 @@
 }
 
 .setup-skip-btn {
-  border-color: #d6d6d6 !important;
-  color: #d6d6d6 !important;
+  border-color: #A8A8A8 !important;
+  color: #A8A8A8 !important;
   background-color: white !important;
 }
 
@@ -147,6 +159,11 @@
 
 .margin-left-10{
   margin-left: 10px;
+}
+
+.no-margin-horizontal{
+  margin-left:-25px;
+  margin-right:-25px;
 }
 
 .currency-setup-ul {
@@ -168,15 +185,14 @@
 
 [data-tip]:before {
   content: '';
-  /* hides the tooltip when not hovered */
   display: none;
   content: '';
-  border-left: 5px solid transparent;
-  border-right: 5px solid transparent;
-  border-top: 5px solid #d6d6d6;
+  border-left: 5px solid #A8A8A8;
+  border-bottom: 5px solid transparent;
+  border-top: 5px solid transparent;
   position: absolute;
-  top: -4px;
-  left: 1px;
+  top: 3px;
+  left: -8px;
   z-index: 8;
   font-size: 0;
   line-height: 0;
@@ -188,11 +204,11 @@
   display: none;
   content: attr(data-tip);
   position: absolute;
-  top: -34px;
-  left: -39px;
+  top: -8px;
+  right: 25px;
   padding: 5px 8px;
-  background: #d6d6d6;
-  color: #fff;
+  background: #A8A8A8;
+  color: white;
   z-index: 9;
   font-size: 1em;
   height: 30px;
