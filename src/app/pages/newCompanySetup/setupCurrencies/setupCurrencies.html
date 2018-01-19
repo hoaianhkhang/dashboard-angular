@@ -57,13 +57,12 @@
     <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
         <div class="panel">
             <div class="panel-heading">
-                <span class="company-setup-title">Added currencies</span>
+                <span class="user-details-panel-title">Added currencies</span>
             </div>
             <div class="panel-body">
-                <div class="list-group-item" ng-repeat="currency in currencies" ng-class="{'no-margin-bottom': $last}"
-                     ng-hide="currencies.length==0">
-                    <span>{{currency.code}}</span>
-                    <!--<span class="pull-right pointer" ng-click="deleteCurrency(currency.code)">&#10006;</span>-->
+                <div class="divider-20" ng-repeat="currency in currencies" ng-hide="currencies.length==0" ng-class="{'no-margin-bottom': $last}">
+                    <span>{{currency.name}}</span>
+                    <span class="pull-right pointer" ng-click="deleteSelectedItem(currency.id)">&#10006;</span>
                 </div>
                 <span ng-show="currencies.length==0">No currencies added yet.</span>
             </div>
