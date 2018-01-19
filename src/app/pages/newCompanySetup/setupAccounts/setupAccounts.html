@@ -13,7 +13,7 @@
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                     <div class="form-group">
                         <label>1 - Choose a group</label>
-                        <select class="form-control" ng-model="account.groupName"
+                        <select ng-disabled="editingAccount" class="form-control" ng-model="account.groupName"
                                 ng-options="group.name for group in groups track by group.name">
                         </select>
                     </div>
@@ -45,7 +45,7 @@
                     <div class="form-group">
                         <label>3 - Select currencies</label>
                         <select multiple class="form-control divider" ng-model="account.currencies"
-                                ng-options="currency.code for currency in currencies track by currency.code">
+                                ng-options="currency.code for currency in currencies | orderBy: 'code'">
                         </select>
                         <p>Currencies selected:
                             <span ng-repeat="currency in account.currencies">
@@ -54,9 +54,13 @@
                         </p>
                     </div>
                     <div class="form-group">
-                        <button ng-click="addAccount(account)"
+                        <button ng-hide="editingAccount" ng-click="addAccount(account)"
                                 class="btn btn-primary pull-right dashboard-btn"
                                 ng-disabled="!account.groupName || !account.name">Add
+                        </button>
+                        <button ng-show="editingAccount" ng-click="editAccountCompanySetup(account)"
+                                class="btn btn-primary pull-right dashboard-btn"
+                                ng-disabled="!account.groupName || !account.name">Save
                         </button>
                     </div>
 
@@ -90,9 +94,9 @@
             <div class="divider-20 added-options-overview user-company-overview row" ng-repeat="account in accounts"
                  ng-hide="accounts.length==0"
                  ng-class="{'no-margin-bottom': $last}">
-                 <div class="pull-left">
+                 <div ng-click="editingAccountCompanySetup(account)" class="pointer pull-left">
                     <span ng-class="{'long-text': (userInfo.email.length > 16), 'very-long-text': (userInfo.email.length > 25)}" ng-show="account.label">{{account.label}}</span>
-                    <span class="font-italic">No label provided</span>
+                    <span ng-hide="account.label" class="font-italic">No label provided</span>
                     <p>{{account.name}}</p>
                 </div>
                 <div class="pull-right pointer add-new">
