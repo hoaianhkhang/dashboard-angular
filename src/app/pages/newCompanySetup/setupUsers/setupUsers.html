@@ -12,7 +12,8 @@
                     <div class="form-group">
                         <label>Group name <span class="required-icon"></span></label>
                         <input type="text" class="form-control" ng-model="user.name"
-                               placeholder="E.g. merchants" required ng-change="user.name? user.name = user.name.toLowerCase():null;">
+                               placeholder="E.g. merchants" required
+                               ng-change="user.name? user.name = user.name.toLowerCase():null;">
                     </div>
                     <div class="form-group">
                         <label>Group label <span class="required-icon"></span></label>
@@ -22,12 +23,18 @@
                     <div class="form-group">
                         <label>Public</label>
                         <br>
-                        <input data-tip="Allows users to allocate themselves to the group" class="custom-rehive-checkbox" ng-model="user.public" type="checkbox">
+                        <div data-tip="Allows users to allocate themselves to the group">
+                            <input class="custom-rehive-checkbox" ng-model="user.public" type="checkbox">
+                        </div>
+
                     </div>
                     <div class="form-group">
                         <label>Default</label>
                         <br>
-                        <input data-tip="Users will be allocated to the  default group automatically on registration" class="custom-rehive-checkbox" ng-change="user.default? user.public=true:null" ng-model="user.default" type="checkbox">
+                        <div data-tip="Users will be allocated to the  default group automatically on registration">
+                            <input class="custom-rehive-checkbox" ng-change="user.default? user.public=true:null"
+                                   ng-model="user.default" type="checkbox">
+                        </div>
                     </div>
                     <div class="form-group">
                         <button ng-click="addUser(user)" ng-disabled="!user.name"
@@ -45,7 +52,7 @@
                 <button ng-click="skipAllView()"
                         class="btn btn-primary setup-skip-btn pull-left dashboard-btn margin-left-10">Skip all
                 </button>
-                 <button ng-click="goToNextView()" ng-disabled="setupUsers==0"
+                <button ng-click="goToNextView()" ng-disabled="setupUsers==0"
                         class="btn btn-primary setup-next-btn pull-right dashboard-btn">Next
                 </button>
             </div>

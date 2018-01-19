@@ -20,23 +20,27 @@
                     <div class="form-group">
                         <label>2 - Configure</label>
                         <input type="text" class="form-control" ng-model="account.name"
-                               placeholder="Account name, eg. default, savings, loans etc" ng-change="account.name? account.name = account.name.toLowerCase():null;">
+                               placeholder="Account name, e.g. default, savings, loans, etc."
+                               ng-change="account.name? account.name = account.name.toLowerCase():null;">
                         <div class="checkbox divider-20">
                             <input type="text" class="form-control" ng-model="account.label"
-                                   placeholder="Enter label">
+                                   placeholder="Account label, e.g. Default, Savings, Loans, etc.">
                         </div>
                     </div>
-                    <div class="form-group"
-                         data-tip="Set as the main account, only one account can be the primary account per group">
+                    <div class="form-group">
                         <label>Primary</label>
                         <br>
-                        <input class="custom-rehive-checkbox" ng-model="account.primary" type="checkbox">
+                        <div data-tip="Set as the main account, only one account can be the primary account per group">
+                            <input class="custom-rehive-checkbox" ng-model="account.primary" type="checkbox">
+                        </div>
                     </div>
-                    <div class="form-group"
-                         data-tip="A default account will be created automatically upon registration">
+                    <div class="form-group">
                         <label>Default</label>
                         <br>
-                        <input class="custom-rehive-checkbox" ng-model="account.default" type="checkbox">
+                        <div data-tip="A default account will be created automatically upon registration">
+                            <input class="custom-rehive-checkbox" ng-model="account.default" type="checkbox">
+                        </div>
+
                     </div>
                     <div class="form-group">
                         <label>3 - Select currencies</label>
@@ -83,16 +87,17 @@
             <span class="user-details-panel-title">Added accounts</span>
         </div>
         <div class="panel-body">
-            <div class="divider-20 added-options-overview user-company-overview row" ng-repeat="account in accounts" ng-hide="accounts.length==0"
+            <div class="divider-20 added-options-overview user-company-overview row" ng-repeat="account in accounts"
+                 ng-hide="accounts.length==0"
                  ng-class="{'no-margin-bottom': $last}">
                  <div class="pull-left">
                     <span ng-class="{'long-text': (userInfo.email.length > 16), 'very-long-text': (userInfo.email.length > 25)}" ng-show="account.label">{{account.label}}</span>
                     <span class="font-italic">No label provided</span>
                     <p>{{account.name}}</p>
-                 </div>
-                 <div class="pull-right pointer add-new">
+                </div>
+                <div class="pull-right pointer add-new">
                     <span ng-click="deleteAccount(account)">&#10006;</span>
-                 </div>
+                </div>
             </div>
             <span ng-show="accounts.length==0">No accounts added yet.</span>
         </div>
