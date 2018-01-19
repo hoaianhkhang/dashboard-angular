@@ -35,9 +35,9 @@
                 .then(function (res) {
                     if (res.status === 201) {
                         cookieManagement.setCookie('TOKEN','Token ' + res.data.data.token);
+                        $location.path('/verification');
                         $rootScope.$pageFinishedLoading = true;
                         $rootScope.userFullyVerified = false;
-                    $location.path('/verification');
                     } else {
 
                     }

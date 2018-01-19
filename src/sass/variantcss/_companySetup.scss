@@ -9,7 +9,7 @@
 }
 
 .company-setup-container {
-  padding: 64px;
+  padding: 100px 64px 64px 64px;
 }
 
 .company-setup-menu-navigation-div{
@@ -63,8 +63,8 @@
 }
 .menu-arrow-text{
   position: absolute;
-  top: 50%;
-  left: 50%;
+  top: 10px;
+  left: 12px;
   transform: translate(-50%, -50%);
   color: #F8CF51;
 };
