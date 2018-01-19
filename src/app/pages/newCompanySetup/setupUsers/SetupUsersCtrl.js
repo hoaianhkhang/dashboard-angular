@@ -29,7 +29,7 @@
                 }).then(function (res) {
                     if (res.status === 200) {
                         $scope.addedGroups = res.data.data.results;
-                        if($scope.addedGroups.length==0){
+                        if($scope.addedGroups.length==2){
                             $rootScope.setupUsers = 0;
                         }
                         else {
