@@ -12,29 +12,29 @@
                     <div class="form-group">
                         <label>Group name <span class="required-icon"></span></label>
                         <input type="text" class="form-control" ng-model="user.name"
-                               placeholder="E.g. merchants" required
+                               placeholder="Group name e.g. merchants" required
                                ng-change="user.name? user.name = user.name.toLowerCase():null;">
                     </div>
                     <div class="form-group">
                         <label>Group label <span class="required-icon"></span></label>
                         <input type="text" class="form-control" ng-model="user.label"
-                               placeholder="Merchants">
+                               placeholder="Group label e.g. Merchants">
                     </div>
                     <div class="form-group">
                         <label>Public</label>
                         <br>
-                        <div data-tip="Allows users to allocate themselves to the group">
+                        <span data-tip="Allows users to allocate themselves to the group">
                             <input class="custom-rehive-checkbox" ng-model="user.public" type="checkbox">
-                        </div>
+                        </span>
 
                     </div>
                     <div class="form-group">
                         <label>Default</label>
                         <br>
-                        <div data-tip="Users will be allocated to the  default group automatically on registration">
+                        <span data-tip="Users will be allocated to the  default group automatically on registration">
                             <input class="custom-rehive-checkbox" ng-change="user.default? user.public=true:null"
                                    ng-model="user.default" type="checkbox">
-                        </div>
+                        </span>
                     </div>
                     <div class="form-group">
                         <button ng-click="addUser(user)" ng-disabled="!user.name"
