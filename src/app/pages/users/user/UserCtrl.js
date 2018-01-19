@@ -61,8 +61,6 @@
                 dateNow = moment(Date.now()),
                 preciseDiff = moment.preciseDiff(dateNow, joiningDate, true);
 
-            console.log(preciseDiff)
-
             if(preciseDiff.years){
                 if(preciseDiff.years === 1){
                     text = preciseDiff.years + ' year';
