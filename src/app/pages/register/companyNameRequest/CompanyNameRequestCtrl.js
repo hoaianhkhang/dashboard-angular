@@ -56,9 +56,9 @@
         };
         vm.getCompanyInfo();
 
-        $scope.updateCompanyInfo = function () {
+        $scope.updateCompanyInfo = function (company) {
             $rootScope.$pageFinishedLoading = false;
-            $http.patch(environmentConfig.API + '/admin/company/',{name: $scope.company.name}, {
+            $http.patch(environmentConfig.API + '/admin/company/',company, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': vm.token
