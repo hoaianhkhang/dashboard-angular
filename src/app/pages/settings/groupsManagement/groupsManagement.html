@@ -9,6 +9,7 @@
                     <th class="rehive-table-row-first-child">Name</th>
                     <th>Label</th>
                     <th>Default</th>
+                    <th>Public</th>
                     <th></th>
                 </tr>
                 <tr ng-repeat="group in groups">
@@ -16,6 +17,9 @@
                     <td class="transactions-list-element" ng-bind="group.label || 'None'"></td>
                     <td class="transactions-list-element">
                         <input class="custom-rehive-checkbox" ng-model="group.default" type="checkbox" disabled>
+                    </td>
+                    <td class="transactions-list-element">
+                        <input class="custom-rehive-checkbox" ng-model="group.public" type="checkbox" disabled>
                     </td>
                     <td class="rehive-table-row-last-child">
                         <a ng-hide="group.name == 'admin' || group.name == 'service'"
@@ -48,14 +52,14 @@
                     <input type="text" ng-model="groupsParams.label" class="form-control"  placeholder="Label">
                 </div>
                 <div class="form-group">
-                    <label>Default</label>
-                    <br>
-                    <input class="custom-rehive-checkbox" ng-model="groupsParams.default" type="checkbox">
-                </div>
-                <div class="form-group">
                     <label>Public</label>
                     <br>
-                    <input class="custom-rehive-checkbox" ng-model="groupsParams.public" type="checkbox">
+                    <input class="custom-rehive-checkbox" ng-change="groupsParams.public ? null: groupsParams.default=false" ng-model="groupsParams.public" type="checkbox">
+                </div>
+                <div class="form-group">
+                    <label>Default</label>
+                    <br>
+                    <input class="custom-rehive-checkbox" ng-change="groupsParams.default? groupsParams.public=true:null" ng-model="groupsParams.default" type="checkbox">
                 </div>
                 <div class="form-group">
                     <button ng-click="addGroup(groupsParams)" ng-disabled="!groupForm.$valid" class="btn btn-primary dashboard-btn pull-right">Add</button>

@@ -17,23 +17,24 @@
                         <li class="divider-20"><span>You can edit added subtypes later</span></li>
                     </ul>-->
                 </div>
-                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 ">
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 custom-form">
                     <div class="form-group">
-                        <label>Select transactiont type <span class="required-icon"></span></label>
+                        <label>Select transaction type <span class="required-icon">*</span></label>
                         <div class="divider-20">
-                            <input class="margin-right-10" type="radio" ng-model="subtype.tx_type" name="gender" value="credit"> Credit
-                            <input class="horizontal-divider-40 margin-right-10" type="radio" ng-model="subtype.tx_type"
-                                   name="gender" value="debit"> Debit
+                            <input class="margin-right-10 pointer" type="radio" ng-model="subtype.tx_type" value="credit">
+                            <span class="company-setup-tx-type-credit">Credit</span>
+                            <input class="horizontal-divider-40 margin-right-10 pointer" type="radio" ng-model="subtype.tx_type"
+                                    value="debit"> <span class="company-setup-tx-type-debit">Debit</span>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label>Subtype name <span class="required-icon"></span></label>
+                        <label>Subtype name <span class="required-icon">*</span></label>
                         <input type="text" class="form-control" ng-model="subtype.name"
                                placeholder="Subtype name eg. purchase, withdraw, deposit"
                                auto-focus="!havePersonalDetails" required ng-change="subtype.name? subtype.name = subtype.name.toLowerCase():null;">
                     </div>
                     <div class="form-group">
-                        <label>Subtype label <span class="required-icon"></span></label>
+                        <label>Subtype label </label>
                         <input type="text" class="form-control" ng-model="subtype.label"
                                placeholder="Subtype label">
                     </div>

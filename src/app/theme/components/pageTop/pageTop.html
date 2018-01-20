@@ -8,9 +8,11 @@
         <a ng-hide="inCompanySetupViews" href="#/currencies" class="al-logo clearfix" ng-bind="companyName"></a>
         <a ng-hide="inCompanySetupViews" class="al-dashboard-version-inside clearfix">Beta</a>
       </div>
+      <div>
+        <a ng-hide="inCompanySetupViews" href class="collapse-menu-link ion-navicon" ba-sidebar-toggle-menu></a>
+      </div>
       <!--<a ng-hide="inCompanySetupViews" href="#/currencies" class="al-logo clearfix" ng-bind="companyName"></a>-->
       <!--<a ng-hide="inCompanySetupViews" class="al-dashboard-version-inside clearfix">Beta</a>-->
-      <a href class="collapse-menu-link ion-navicon" ba-sidebar-toggle-menu></a>
       <div class="user-profile clearfix">
         <div class="al-user-profile" uib-dropdown>
           <a uib-dropdown-toggle class="profile-toggle-link">
@@ -25,7 +27,7 @@
         </div>
       </div>
       <div class="user-company-overview pull-right">
-        <span ng-class="{'long-text': (userInfo.email.length > 25), 'very-long-text': (userInfo.email.length > 35)}">{{userInfo.email}}</span>
+        <span ng-class="{'long-text': (userInfo.email.length > 22), 'very-long-text': (userInfo.email.length > 35)}">{{userInfo.email}}</span>
         <p>{{company.identifier}}</p>
       </div>
       <div ng-hide="inCompanySetupViews" class="search-bar-main" click-outside="hidingSearchBar()">

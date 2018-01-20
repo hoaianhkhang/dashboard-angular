@@ -13,7 +13,7 @@
           controller: 'CurrenciesCtrl',
           title: 'Currencies',
           sidebarMeta: {
-            order: 100
+            order: 0
           }
         });
   }

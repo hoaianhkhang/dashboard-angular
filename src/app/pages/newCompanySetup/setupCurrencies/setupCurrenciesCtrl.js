@@ -57,6 +57,7 @@
                         }
                     }).then(function (res) {
                         if (res.status === 201) {
+                            $rootScope.setupCurrencies = 1;
                             $scope.currencies.push(currency);
                         }
                     }).catch(function (error) {

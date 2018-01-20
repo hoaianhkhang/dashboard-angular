@@ -8,9 +8,9 @@
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                     <p>Create user groups to categorise users to meet your requirements. </p>
                 </div>
-                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 custom-form">
                     <div class="form-group">
-                        <label>Group name <span class="required-icon"></span></label>
+                        <label>Group name <span class="required-icon">*</span></label>
                         <input type="text" class="form-control" ng-model="user.name"
                                placeholder="Group name e.g. merchants" required
                                ng-change="user.name? user.name = user.name.toLowerCase():null;">
@@ -24,7 +24,9 @@
                         <label>Public</label>
                         <br>
                         <span data-tip="Allows users to allocate themselves to the group">
-                            <input class="custom-rehive-checkbox" ng-model="user.public" type="checkbox">
+                            <input class="custom-rehive-checkbox"
+                                   ng-change="user.public ? null: user.default=false"
+                                   ng-model="user.public" type="checkbox">
                         </span>
 
                     </div>
@@ -37,11 +39,11 @@
                         </span>
                     </div>
                     <div class="form-group">
-                        <button ng-click="addUser(user)" ng-disabled="!user.name"
+                        <button ng-click="addUserGroupCompanySetup(user)" ng-disabled="!user.name"
                                 ng-hide="editingUser"
                                 class="btn btn-primary pull-right dashboard-btn">Add
                         </button>
-                        <button ng-click="updateUser(user)" ng-disabled="!user.name"
+                        <button ng-click="updateUserGroupCompanySetup(user)" ng-disabled="!user.name"
                                 ng-show="editingUser"
                                 class="btn btn-primary pull-right dashboard-btn">Save
                         </button>
@@ -70,8 +72,8 @@
             <span class="user-details-panel-title">Added user groups</span>
         </div>
         <div class="panel-body">
-            <div class="divider-20 pointer" ng-click="group.name!='admin' && group.name!='service' ? editUser(group):null" ng-repeat="group in addedGroups" ng-class="{'no-margin-bottom': $last}">
-                <span>{{group.name}}</span>
+            <div class="divider-20" ng-repeat="group in addedGroups" ng-class="{'no-margin-bottom': $last}">
+                <span class="pointer" ng-click="group.name!='admin' && group.name!='service' ? editUser(group):null">{{group.name}}</span>
                 <span class="pull-right pointer" ng-hide="group.name=='admin' || group.name=='service'"
                       ng-click="deleteGroup(group.name)">&#10006;</span>
             </div>

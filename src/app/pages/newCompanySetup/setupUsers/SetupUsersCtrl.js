@@ -14,10 +14,10 @@
         $rootScope.activeSetupRoute = 0;
         $scope.editingUser = false;
 
-        $scope.goToNextView=function () {
+        $scope.goToNextView = function () {
             $rootScope.userFullyVerified = true;
             $location.path('company/setup/currency-setup');
-        }
+        };
 
 
         vm.getGroups = function(){
@@ -30,7 +30,7 @@
                 }).then(function (res) {
                     if (res.status === 200) {
                         $scope.addedGroups = res.data.data.results;
-                        if($scope.addedGroups.length==2){
+                        if($scope.addedGroups.length == 2){
                             $rootScope.setupUsers = 0;
                         }
                         else {
@@ -45,7 +45,7 @@
         };
         vm.getGroups();
         
-        $scope.addUser = function (group) {
+        $scope.addUserGroupCompanySetup = function (group) {
             $http.post(environmentConfig.API + '/admin/groups/',group, {
                 headers: {
                     'Content-Type': 'application/json',
@@ -61,9 +61,9 @@
                 errorHandler.evaluateErrors(error.data);
                 errorHandler.handleErrors(error);
             });
-        }
+        };
 
-        $scope.updateUser = function (group) {
+        $scope.updateUserGroupCompanySetup = function (group) {
             $http.patch(environmentConfig.API + '/admin/groups/' + group.prevName + "/",group, {
                 headers: {
                     'Content-Type': 'application/json',

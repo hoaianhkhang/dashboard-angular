@@ -18,7 +18,7 @@
                 abstract: true,
                 title: 'Transactions',
                 sidebarMeta: {
-                    order: 200
+                    order: 100
                 }
             });
     }

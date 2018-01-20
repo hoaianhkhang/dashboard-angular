@@ -6,9 +6,10 @@ a.al-rehive-logo{
 }
 
 a.al-dashboard-version-inside{
+  display: block;
   color: $sidebar-text;
   font-size: 14px;
-  font-weight: $font-normal;
+  font-weight: 300;
   font-family: $font-family;
   white-space: nowrap;
   float: left;
@@ -26,7 +27,7 @@ a.al-dashboard-version{
   color: $sidebar-text;
   display: block;
   font-size: 14px;
-  font-weight: $font-normal;
+  font-weight: 300;
   font-family: $font-family;
   white-space: nowrap;
   float: left;

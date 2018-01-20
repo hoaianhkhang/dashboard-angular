@@ -10,15 +10,15 @@
                         primary accounts for a specific user group and setup default accounts for user groups and
                         associated currencies. Default accounts are automatically added to a user group.</p>
                 </div>
-                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 custom-form">
                     <div class="form-group">
-                        <label>1 - Choose a group</label>
+                        <label>1 - Choose a group <span class="required-icon">*</span></label>
                         <select ng-disabled="editingAccount" class="form-control" ng-model="account.groupName"
                                 ng-options="group.name for group in groups track by group.name">
                         </select>
                     </div>
                     <div class="form-group">
-                        <label>2 - Configure</label>
+                        <label>2 - Configure <span class="required-icon">*</span></label>
                         <input type="text" class="form-control" ng-model="account.name"
                                placeholder="Account name, e.g. default, savings, loans, etc."
                                ng-change="account.name? account.name = account.name.toLowerCase():null;">
@@ -49,18 +49,18 @@
                         </select>
                         <p>Currencies selected:
                             <span ng-repeat="currency in account.currencies">
-                                {{currency.code}}, 
+                                {{currency.code}},&nbsp;
                             </span>
                         </p>
                     </div>
                     <div class="form-group">
                         <button ng-hide="editingAccount" ng-click="addAccount(account)"
                                 class="btn btn-primary pull-right dashboard-btn"
-                                ng-disabled="!account.groupName || !account.name">Add
+                                ng-disabled="!account.groupName.name || !account.name">Add
                         </button>
                         <button ng-show="editingAccount" ng-click="editAccountCompanySetup(account)"
                                 class="btn btn-primary pull-right dashboard-btn"
-                                ng-disabled="!account.groupName || !account.name">Save
+                                ng-disabled="!account.groupName.name || !account.name">Save
                         </button>
                     </div>
 
@@ -95,7 +95,7 @@
                  ng-hide="accounts.length==0"
                  ng-class="{'no-margin-bottom': $last}">
                  <div ng-click="editingAccountCompanySetup(account)" class="pointer pull-left">
-                    <span ng-class="{'long-text': (userInfo.email.length > 16), 'very-long-text': (userInfo.email.length > 25)}" ng-show="account.label">{{account.label}}</span>
+                    <span ng-class="{'long-text': (account.label.length > 16), 'very-long-text': (account.label.length > 25)}" ng-show="account.label">{{account.label}}</span>
                     <span ng-hide="account.label" class="font-italic">No label provided</span>
                     <p>{{account.name}}</p>
                 </div>

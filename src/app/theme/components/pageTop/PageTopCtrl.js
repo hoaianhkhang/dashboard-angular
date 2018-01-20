@@ -96,7 +96,7 @@
                 currentLocation.indexOf('company/name_request') < 0 && currentLocation.indexOf('register') < 0 &&
                 currentLocation.indexOf('password/reset') < 0 && currentLocation.indexOf('authentication/multi-factor/verify/sms') < 0 &&
                 currentLocation.indexOf('authentication/multi-factor/verify/token') < 0 && currentLocation.indexOf('/currency/add/initial') < 0
-                && currentLocation.indexOf('company/setup/') < 0 && currentLocation.indexOf('welcome_to_rehive') < 0
+                && currentLocation.indexOf('welcome_to_rehive') < 0
             ){
                 vm.getCompanyInfo();
             }
