@@ -98,6 +98,7 @@
                 currentLocation.indexOf('authentication/multi-factor/verify/token') < 0 && currentLocation.indexOf('/currency/add/initial') < 0
                 && currentLocation.indexOf('welcome_to_rehive') < 0
             ){
+                vm.token = cookieManagement.getCookie('TOKEN');
                 vm.getCompanyInfo();
             }
         };

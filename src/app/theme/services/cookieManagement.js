@@ -15,7 +15,7 @@
                 $cookies.put(cookieName, cookieValue);
             },
             deleteCookie: function (cookieName) {
-                $cookies.remove(cookieName);
+                $cookies.remove(cookieName,{expires: Date.now(),path: '/'});
             }
         }
     }

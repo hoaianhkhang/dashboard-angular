@@ -57,7 +57,6 @@
                                         node.group = element;
                                     });
                                     $scope.accounts = $scope.accounts.concat(res.data.data.results);
-                                    console.log($scope.accounts)
                                     if($scope.accounts.length==0) {
                                         $rootScope.setupAccounts = 0;
                                     } else {
@@ -184,7 +183,7 @@
         };
 
         $scope.deleteAccount = function (account) {
-            $http.delete(environmentConfig.API + '/admin/groups/'+ account.group +"/account-configurations/" + account.name + "/", {
+            $http.delete(environmentConfig.API + '/admin/groups/'+ account.group.name +"/account-configurations/" + account.name + "/", {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': vm.token

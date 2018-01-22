@@ -5,7 +5,7 @@
         .factory('errorHandler', errorHandler);
 
     /** @ngInject */
-    function errorHandler(toastr,$location) {
+    function errorHandler(toastr,$location,cookieManagement,$rootScope) {
 
         return {
             evaluateErrors: function (errors) {
@@ -17,7 +17,7 @@
                                 key = 'error';
                             }
                             toastr.error(error, (key.charAt(0).toUpperCase() + key.slice(1)));
-                        })
+                        });
                     }
                 }
               } else{
@@ -31,6 +31,11 @@
             handleErrors: function(errors){
                 if(errors && errors.status){
                     if(errors.status == 401){
+                        $rootScope.gotToken = false;
+                        $rootScope.securityConfigured = true;
+                        $rootScope.companyName = null;
+                        $rootScope.userFullyVerified = false;
+                        cookieManagement.deleteCookie('TOKEN');
                         $location.path('/login');
                     }
                 }

@@ -34,6 +34,9 @@
                    previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></p>
             </div>
         </div>
+        <div ng-hide="notificationsList.length > 0">
+            <i>No notifications are available</i>
+        </div>
     </div>
 </div>
 <div ng-show="loadingNotifications" class="service-header" ba-panel>
