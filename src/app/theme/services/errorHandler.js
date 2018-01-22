@@ -33,7 +33,7 @@
                     if(errors.status == 401){
                         $rootScope.gotToken = false;
                         $rootScope.securityConfigured = true;
-                        $rootScope.companyName = null;
+                        $rootScope.pageTopObj = {};
                         $rootScope.userFullyVerified = false;
                         cookieManagement.deleteCookie('TOKEN');
                         $location.path('/login');

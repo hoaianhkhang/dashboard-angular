@@ -5,7 +5,7 @@
       height:30px" src="assets/img/no_padding_med_white.png"></a>
       <a ng-show="inCompanySetupViews" class="al-dashboard-version clearfix">Beta</a>
       <div>
-        <a ng-hide="inCompanySetupViews" href="#/currencies" class="al-logo clearfix" ng-bind="companyName"></a>
+        <a ng-hide="inCompanySetupViews" href="#/currencies" class="al-logo clearfix" ng-bind="pageTopObj.companyObj.name"></a>
         <a ng-hide="inCompanySetupViews" class="al-dashboard-version-inside clearfix">Beta</a>
       </div>
       <div>
@@ -16,7 +16,7 @@
       <div class="user-profile clearfix">
         <div class="al-user-profile" uib-dropdown>
           <a uib-dropdown-toggle class="profile-toggle-link">
-            <div class="alternatePhoto-page-top pointer">{{userInfo.first_name | limitTo: 1 | uppercase}}{{userInfo.last_name | uppercase | limitTo: 1}}</div>
+            <div class="alternatePhoto-page-top pointer">{{pageTopObj.userInfoObj.first_name | limitTo: 1 | uppercase}}{{pageTopObj.userInfoObj.last_name | uppercase | limitTo: 1}}</div>
           </a>
           <ul  class="top-dropdown-menu profile-dropdown" uib-dropdown-menu>
             <li><i class="dropdown-arr"></i></li>
@@ -27,8 +27,8 @@
         </div>
       </div>
       <div class="user-company-overview pull-right">
-        <span ng-class="{'long-text': (userInfo.email.length > 22), 'very-long-text': (userInfo.email.length > 35)}">{{userInfo.email}}</span>
-        <p>{{company.identifier}}</p>
+        <span ng-class="{'long-text': (pageTopObj.userInfoObj.email.length > 22), 'very-long-text': (pageTopObj.userInfoObj.email.length > 35)}">{{pageTopObj.userInfoObj.email}}</span>
+        <p>{{pageTopObj.companyObj.identifier}}</p>
       </div>
       <div ng-hide="inCompanySetupViews" class="search-bar-main" click-outside="hidingSearchBar()">
         <input type="text" class="page-top-search" placeholder="Search by email, mobile number or transaction id" ng-model="searchString"

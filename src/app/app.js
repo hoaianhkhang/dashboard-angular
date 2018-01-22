@@ -28,6 +28,9 @@ angular.module('BlurAdmin', [
             $rootScope.$pageFinishedLoading = true;
         };
 
+
+        $rootScope.pageTopObj = {};
+
         //using to check if user is in changing password or setting up 2 factor authentication
         $rootScope.securityConfigured = true;
 
@@ -67,6 +70,48 @@ angular.module('BlurAdmin', [
             var token = cookieManagement.getCookie('TOKEN'),
                 newUrlArray = newUrl.split('/'),
                 newUrlLastElement = _.last(newUrlArray);
+
+            if(!$rootScope.pageTopObj.companyObj){
+                var getCompanyInfo = function () {
+                    if(token) {
+                        $http.get(environmentConfig.API + '/admin/company/', {
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': token
+                            }
+                        }).then(function (res) {
+                            if (res.status === 200) {
+                                $rootScope.pageTopObj.companyObj = res.data.data;
+                            }
+                        }).catch(function (error) {
+                            errorHandler.evaluateErrors(error.data);
+                            errorHandler.handleErrors(error);
+                        });
+                    }
+                };
+                getCompanyInfo();
+            }
+
+            if(!$rootScope.pageTopObj.userInfoObj){
+                var getUserInfo = function () {
+                    if(token) {
+                        $http.get(environmentConfig.API + '/user/', {
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': token
+                            }
+                        }).then(function (res) {
+                            if (res.status === 200) {
+                                $rootScope.pageTopObj.userInfoObj = res.data.data;
+                            }
+                        }).catch(function (error) {
+                            errorHandler.evaluateErrors(error.data);
+                            errorHandler.handleErrors(error);
+                        });
+                    }
+                };
+                getUserInfo();
+            }
 
             if(newUrlLastElement == 'login'){
                 cookieManagement.deleteCookie('TOKEN');

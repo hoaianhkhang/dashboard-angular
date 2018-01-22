@@ -61,8 +61,6 @@
                 }).then(function (res) {
                     if (res.status === 200) {
                         vm.updatedCompanySettings.settings = {};
-                        $scope.company.details = {};
-                        $rootScope.companyName = res.data.data.name;
                         vm.getCompanyInfo();
                         toastr.success('You have successfully updated the company info');
                     }
@@ -93,7 +91,7 @@
                 if (res.status === 200) {
                     vm.updatedCompanyInfo = {};
                     $scope.company.details = {};
-                    $rootScope.companyName = res.data.data.name;
+                    $rootScope.pageTopObj.companyObj = res.data.data;
                     $scope.updateCompanySettings();
                 }
             }).catch(function (error) {

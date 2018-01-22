@@ -11,7 +11,6 @@
 
         vm.token = cookieManagement.getCookie('TOKEN');
         $scope.currencies = [];
-        $scope.userInfo = {};
         $scope.hideSearchBar = true;
         $scope.searchString = '';
         $scope.searchedTransactions = [];
@@ -22,7 +21,6 @@
         vm.currentLocation = $location.path();
         $rootScope.$on('$locationChangeStart', function (event,newUrl,oldURl) {
             vm.currentLocation = $location.path();
-            vm.callCompanyInfoFunctionIfNotInTheseRoutes(vm.currentLocation);
             vm.checkIfInCompanySetup(vm.currentLocation);
         });
 
@@ -43,67 +41,11 @@
             $scope.hideSearchBar =  false;
         };
 
-        vm.getCompanyInfo = function () {
-            if(vm.token) {
-                $scope.loadingCompanyInfo = true;
-                $http.get(environmentConfig.API + '/admin/company/', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
-                    $scope.loadingCompanyInfo = false;
-                    if (res.status === 200) {
-                        $scope.company = res.data.data;
-                        $rootScope.companyName = res.data.data.name;
-                        vm.getCompanyCurrencies();
-                    }
-                }).catch(function (error) {
-                    $scope.loadingCompanyInfo = false;
-                    errorHandler.evaluateErrors(error.data);
-                    errorHandler.handleErrors(error);
-                });
-            }
-        };
-
-        vm.getUserInfo = function () {
-            if(vm.token) {
-                $http.get(environmentConfig.API + '/user/', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
-                    if (res.status === 200) {
-                        $scope.userInfo = res.data.data;
-                    }
-                }).catch(function (error) {
-                    errorHandler.evaluateErrors(error.data);
-                    errorHandler.handleErrors(error);
-                });
-            }
-        };
-        vm.getUserInfo();
-
         $scope.viewProfile = function () {
-            if($scope.userInfo.identifier){
-                $location.path('/user/' + $scope.userInfo.identifier + '/details');
+            if($rootScope.pageTopObj.userInfoObj.identifier){
+                $location.path('/user/' + $rootScope.pageTopObj.userInfoObj.identifier + '/details');
             }
         };
-
-        vm.callCompanyInfoFunctionIfNotInTheseRoutes = function (currentLocation) {
-            if(currentLocation.indexOf('login') < 0 && currentLocation.indexOf('verification') < 0 &&
-                currentLocation.indexOf('company/info_request') < 0 && currentLocation.indexOf('register') < 0 &&
-                currentLocation.indexOf('password/reset') < 0 && currentLocation.indexOf('authentication/multi-factor/verify/sms') < 0 &&
-                currentLocation.indexOf('authentication/multi-factor/verify/token') < 0 && currentLocation.indexOf('/currency/add/initial') < 0
-                && currentLocation.indexOf('welcome_to_rehive') < 0
-            ){
-                vm.token = cookieManagement.getCookie('TOKEN');
-                vm.getCompanyInfo();
-            }
-        };
-        vm.callCompanyInfoFunctionIfNotInTheseRoutes(vm.currentLocation);
-
 
         vm.getCompanyCurrencies = function(){
             if(vm.token){
@@ -114,7 +56,9 @@
                     }
                 }).then(function (res) {
                     if (res.status === 200) {
-                        $window.sessionStorage.currenciesList = JSON.stringify(res.data.data.results);
+                        if(res.data.data.results.length > 0){
+                            $window.sessionStorage.currenciesList = JSON.stringify(res.data.data.results);
+                        }
                     }
                 }).catch(function (error) {
                     errorHandler.evaluateErrors(error.data);
@@ -122,6 +66,7 @@
                 });
             }
         };
+        vm.getCompanyCurrencies();
 
         $scope.searchGlobal = function (searchString) {
             if($scope.loadingResults){
@@ -214,9 +159,9 @@
         $scope.goToUsers = function () {
             $scope.hidingSearchBar();
             if(identifySearchInput.isMobile($scope.searchString)){
-                $state.go('users',{mobile: $scope.searchString})
+                $state.go('users',{mobile: $scope.searchString});
             } else {
-                $state.go('users',{email: $scope.searchString})
+                $state.go('users',{email: $scope.searchString});
             }
 
         };
@@ -235,7 +180,7 @@
         $scope.logout = function(){
             $rootScope.gotToken = false;
             $rootScope.securityConfigured = true;
-            $rootScope.companyName = null;
+            $rootScope.pageTopObj = {};
             $rootScope.userFullyVerified = false;
             cookieManagement.deleteCookie('TOKEN');
             $location.path('/login');
