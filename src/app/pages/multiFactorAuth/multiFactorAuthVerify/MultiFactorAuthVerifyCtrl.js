@@ -119,7 +119,7 @@
                         $location.search('prevUrl', null);
                         toastr.success('Token successfully verified');
                         if($scope.prevLocation == 'login'){
-                            $location.path('/verification');
+                            $location.path('/currencies');
                         } else {
                             $scope.loadingVerifyAuth = false;
                             $location.path('/settings/security');
