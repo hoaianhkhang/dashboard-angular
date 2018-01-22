@@ -29,7 +29,7 @@
       'BlurAdmin.pages.groupTiers',
       'BlurAdmin.pages.permissions',
       'BlurAdmin.pages.verification',
-      'BlurAdmin.pages.companyNameRequest',
+      'BlurAdmin.pages.companyInfoRequest',
       'BlurAdmin.pages.welcomeToRehive',
       'BlurAdmin.pages.newCompanySetup',
       'BlurAdmin.pages.buildAFintechApp',

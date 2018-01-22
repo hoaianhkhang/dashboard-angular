@@ -14,7 +14,7 @@
         $rootScope.$pageFinishedLoading = true;
 
         $scope.goToNextView = function () {
-            $location.path('/company/name_request');
+            $location.path('/company/info_request');
         }
     }
 })();

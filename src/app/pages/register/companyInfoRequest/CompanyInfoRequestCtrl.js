@@ -1,11 +1,11 @@
 (function () {
     'use strict';
 
-    angular.module('BlurAdmin.pages.companyNameRequest')
-        .controller('CompanyNameRequestCtrl', CompanyNameRequestCtrl);
+    angular.module('BlurAdmin.pages.companyInfoRequest')
+        .controller('CompanyInfoRequestCtrl', CompanyInfoRequestCtrl);
 
     /** @ngInject */
-    function CompanyNameRequestCtrl($rootScope,$scope,$http,toastr,cookieManagement,environmentConfig,$location,errorHandler,userVerification) {
+    function CompanyInfoRequestCtrl($rootScope,$scope,$http,toastr,cookieManagement,environmentConfig,$location,errorHandler,userVerification) {
 
         var vm = this;
         vm.token = cookieManagement.getCookie('TOKEN');

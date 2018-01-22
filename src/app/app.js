@@ -78,7 +78,7 @@ angular.module('BlurAdmin', [
                 if(newUrl.indexOf('password/reset/confirm') > 0 || newUrl.indexOf('email/verify') > 0) {
                     $rootScope.securityConfigured = false;
                 } else if(newUrlLastElement == 'register' || newUrlLastElement == 'reset'
-                    || newUrlLastElement == 'verification' || newUrlLastElement == 'name_request' || newUrlLastElement == 'welcome_to_rehive'
+                    || newUrlLastElement == 'verification' || newUrlLastElement == 'info_request' || newUrlLastElement == 'welcome_to_rehive'
                     || newUrl.indexOf('company/setup/') > 0){
                     $rootScope.securityConfigured = false;
                 } else if(token){

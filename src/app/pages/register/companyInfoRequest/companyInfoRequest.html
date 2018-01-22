@@ -1,5 +1,5 @@
 <div class="auth-main">
-    <div class="auth-block">
+    <div ng-keydown="($event.keyCode === 13) && company.name && updateCompanyInfo(company)" class="auth-block">
         <div class="text-left">
             <h2 style="text-align: left;font-size: 18px;
                 color:#222D32;font-weight: bold;
@@ -14,7 +14,7 @@
         </div>
         <div class="form-group">
             <label>Company name</label>
-            <input type="text" ng-model="company.name" class="form-control" placeholder="Company">
+            <input type="text" ng-model="company.name" class="form-control" placeholder="Company" auto-focus="!company.name">
         </div>
         <div class="form-group">
             <label>Company description</label>
