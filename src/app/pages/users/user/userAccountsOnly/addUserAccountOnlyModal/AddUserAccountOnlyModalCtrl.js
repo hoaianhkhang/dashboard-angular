@@ -4,65 +4,35 @@
     angular.module('BlurAdmin.pages.users.user.accounts')
         .controller('AddUserAccountOnlyModalCtrl', AddUserAccountOnlyModalCtrl);
 
-    function AddUserAccountOnlyModalCtrl($scope,$uibModalInstance,toastr,reference,$http,environmentConfig,cookieManagement,errorHandler) {
+    function AddUserAccountOnlyModalCtrl($scope,$uibModalInstance,toastr,uuid,$http,environmentConfig,cookieManagement,errorHandler) {
 
         var vm = this;
-        vm.reference = reference;
-        $scope.loadingUserAccounts = true;
-        $scope.newAccountCurrencies = {list: []};
+
+        $scope.newUserAccountParams = {};
+        vm.uuid = uuid;
         vm.token = cookieManagement.getCookie('TOKEN');
 
-        vm.getCompanyCurrencies = function(){
-            $scope.loadingUserAccounts = true;
-            if(vm.token){
-                $http.get(environmentConfig.API + '/admin/currencies/?enabled=true', {
+        $scope.addNewUserAccountOnly = function(newUserAccountParams){
+            if(vm.token) {
+                newUserAccountParams.user = vm.uuid;
+                $scope.loadingUserAccountsList = true;
+                $http.post(environmentConfig.API + '/admin/accounts/', newUserAccountParams, {
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': vm.token
                     }
                 }).then(function (res) {
-                    if (res.status === 200) {
-                        $scope.loadingUserAccounts = false;
-                        $scope.currencyOptions = res.data.data.results;
+                    if (res.status === 201) {
+                        $scope.newUserAccountParams = {};
+                        toastr.success('Account successfully added');
+                        $uibModalInstance.close(res.data);
                     }
                 }).catch(function (error) {
-                    $scope.loadingUserAccounts = false;
+                    $scope.loadingUserAccountsList = false;
                     errorHandler.evaluateErrors(error.data);
                     errorHandler.handleErrors(error);
                 });
             }
-        };
-        vm.getCompanyCurrencies();
-
-        $scope.addAccountCurrency = function(listOfCurrencies){
-
-            listOfCurrencies.forEach(function (element,index,array) {
-                if(vm.token) {
-                    $scope.loadingUserAccounts = true;
-                    $http.post(environmentConfig.API + '/admin/accounts/' + vm.reference + '/currencies/',{currency: element.code}, {
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': vm.token
-                        }
-                    }).then(function (res) {
-                        if (res.status === 201) {
-                            if(index == (array.length - 1)) {
-                                $scope.loadingUserAccounts = false;
-                                $scope.newAccountCurrencies = {list: []};
-                                toastr.success('New currencies have been added to the account');
-                                $uibModalInstance.close(res.data);
-                            }
-                        }
-                    }).catch(function (error) {
-                        $scope.newAccountCurrencies = {list: []};
-                        $scope.loadingUserAccounts = false;
-                        errorHandler.evaluateErrors(error.data);
-                        errorHandler.handleErrors(error);
-                    });
-                }
-            });
-
-
         };
 
 

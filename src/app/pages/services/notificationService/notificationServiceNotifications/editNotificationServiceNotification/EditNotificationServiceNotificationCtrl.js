@@ -72,6 +72,10 @@
 
 
         $scope.notificationChanged = function (field) {
+            if(field == 'name'){
+                $scope.editNotification.name = $scope.editNotification.name.toLowerCase();
+            }
+
             vm.updatedNotification[field] = $scope.editNotification[field];
         };
 

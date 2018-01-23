@@ -14,7 +14,6 @@
         vm.reference = '';
         $scope.newAccountCurrencies = {list: []};
         $scope.loadingUserAccounts = true;
-        $scope.addingCurrencies = false;
 
         vm.getUserAccounts = function(){
             if(vm.token) {
@@ -27,9 +26,14 @@
                 }).then(function (res) {
                     $scope.loadingUserAccounts = false;
                     if (res.status === 200) {
-                        $scope.accounts = res.data.data.results;
-                        $scope.account = res.data.data.results[0].user;
-                        $scope.currencies = res.data.data.results[0].currencies;
+                        if(res.data.data.results.length > 0 ){
+                            $scope.accounts = res.data.data.results;
+                            $scope.account = res.data.data.results[0].user;
+                            $scope.currencies = res.data.data.results[0].currencies;
+                        } else {
+                            $scope.accounts = [];
+                        }
+
                     }
                 }).catch(function (error) {
                     $scope.loadingUserAccounts = false;
@@ -67,12 +71,34 @@
             $location.path('user/' + vm.uuid + '/account/'+account+'/settings/'+ currencyCode);
         };
 
-        $scope.openAddAccountCurrenciesModal = function (page, size, reference) {
+        $scope.openAddUserAccountOnlyModal = function (page, size) {
             vm.theModal = $uibModal.open({
                 animation: true,
                 templateUrl: page,
                 size: size,
                 controller: 'AddUserAccountOnlyModalCtrl',
+                scope: $scope,
+                resolve: {
+                    uuid: function () {
+                        return vm.uuid;
+                    }
+                }
+            });
+
+            vm.theModal.result.then(function(account){
+                if(account){
+                    vm.getUserAccounts();
+                }
+            }, function(){
+            });
+        };
+
+        $scope.openAddAccountCurrenciesModal = function (page, size, reference) {
+            vm.theModal = $uibModal.open({
+                animation: true,
+                templateUrl: page,
+                size: size,
+                controller: 'AddUserAccountOnlyCurrenciesModalCtrl',
                 scope: $scope,
                 resolve: {
                     reference: function () {

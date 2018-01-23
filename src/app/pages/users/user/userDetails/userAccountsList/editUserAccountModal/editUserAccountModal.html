@@ -9,7 +9,9 @@
         <form name="userAccountForm" class="custom-form" novalidate>
             <div class="form-group">
                 <label>Name  <span class="required-icon">*</span></label>
-                <input type="text" class="form-control" ng-model="editUserAccountParams.name" placeholder="Enter account name" required/>
+                <input type="text" class="form-control"
+                       ng-change="editUserAccountParams.name = editUserAccountParams.name.toLowerCase()"
+                       ng-model="editUserAccountParams.name" placeholder="Enter account name" required/>
             </div>
             <div class="form-group">
                 <label>Primary</label>

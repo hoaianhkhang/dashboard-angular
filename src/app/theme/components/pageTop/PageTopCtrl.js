@@ -24,6 +24,51 @@
             vm.checkIfInCompanySetup(vm.currentLocation);
         });
 
+        //when page refreshed
+        if(!$rootScope.pageTopObj.companyObj){
+            vm.getCompanyInfo = function () {
+                if(vm.token) {
+                    $http.get(environmentConfig.API + '/admin/company/', {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': vm.token
+                        }
+                    }).then(function (res) {
+                        if (res.status === 200) {
+                            $rootScope.pageTopObj.companyObj = res.data.data;
+                        }
+                    }).catch(function (error) {
+                        errorHandler.evaluateErrors(error.data);
+                        errorHandler.handleErrors(error);
+                    });
+                }
+            };
+            vm.getCompanyInfo();
+        }
+
+        if(!$rootScope.pageTopObj.userInfoObj){
+            vm.getUserInfo = function () {
+                if(vm.token) {
+                    $http.get(environmentConfig.API + '/user/', {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': vm.token
+                        }
+                    }).then(function (res) {
+                        if (res.status === 200) {
+                            $rootScope.pageTopObj.userInfoObj = res.data.data;
+                        }
+                    }).catch(function (error) {
+                        errorHandler.evaluateErrors(error.data);
+                        errorHandler.handleErrors(error);
+                    });
+                }
+            };
+            vm.getUserInfo();
+        }
+
+        //when page refreshed
+
         vm.checkIfInCompanySetup = function (currentLocation) {
             if(currentLocation.indexOf('company/setup') > 0){
                 $scope.inCompanySetupViews = true;
@@ -48,7 +93,7 @@
         };
 
         vm.getCompanyCurrencies = function(){
-            if(vm.token){
+            if($rootScope.userFullyVerified && vm.token){
                 $http.get(environmentConfig.API + '/admin/currencies/?enabled=true', {
                     headers: {
                         'Content-Type': 'application/json',

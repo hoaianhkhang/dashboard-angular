@@ -37,6 +37,7 @@ angular.module('BlurAdmin', [
         //using to check if user is in changing password or setting up 2 factor authentication
         $rootScope.userFullyVerified = false;
 
+
         var locationChangeStart = $rootScope.$on('$locationChangeStart', function (event,newUrl) {
 
             var newUrlArray = newUrl.split('/'),
@@ -71,7 +72,7 @@ angular.module('BlurAdmin', [
                 newUrlArray = newUrl.split('/'),
                 newUrlLastElement = _.last(newUrlArray);
 
-            if(!$rootScope.pageTopObj.companyObj){
+            if($rootScope.userFullyVerified && !$rootScope.pageTopObj.companyObj){
                 var getCompanyInfo = function () {
                     if(token) {
                         $http.get(environmentConfig.API + '/admin/company/', {
@@ -92,7 +93,7 @@ angular.module('BlurAdmin', [
                 getCompanyInfo();
             }
 
-            if(!$rootScope.pageTopObj.userInfoObj){
+            if($rootScope.userFullyVerified && !$rootScope.pageTopObj.userInfoObj){
                 var getUserInfo = function () {
                     if(token) {
                         $http.get(environmentConfig.API + '/user/', {

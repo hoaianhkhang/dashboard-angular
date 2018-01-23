@@ -1,10 +1,10 @@
 <div class="row">
-    <div ng-hide="addingCurrencies" class="col-lg-12 col-md-12 col-sm-12 col-xs-12" ng-repeat="account in accounts | orderBy: '-primary'">
+    <div ng-hide="loadingUserAccounts || accounts.length < 0" class="col-lg-12 col-md-12 col-sm-12 col-xs-12" ng-repeat="account in accounts | orderBy: '-primary'">
         <div ng-hide="loadingUserAccounts" class="panel">
             <div class="panel-heading">
         <span class="user-details-panel-title">{{account.name}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <span ng-show="account.primary" class="user-primary-account user-address-status">PRIMARY</span></span>
-                <a ng-click="openAddAccountCurrenciesModal('app/pages/users/user/userAccountsOnly/addUserAccountOnlyModal/addUserAccountOnlyModal.html','md',account.reference)" class="user-details-panel-link pull-right pointer">Add currency</a>
+                <a ng-click="openAddAccountCurrenciesModal('app/pages/users/user/userAccountsOnly/addUserAccountOnlyCurrenciesModal/addUserAccountOnlyCurrenciesModal.html','md',account.reference)" class="user-details-panel-link pull-right pointer">Add currency</a>
             </div>
             <div class="panel-body">
                 <table ng-show="account.currencies.length > 0" class="table">
@@ -37,10 +37,14 @@
             </div>
         </div>
     </div>
-</div>
-<div class="row">
-    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" ng-show="addingCurrencies">
-        <add-account-currencies></add-account-currencies>
+    <div ng-show="!loadingUserAccounts && accounts.length == 0" class="panel">
+        <div class="panel-heading">
+            <span class="user-details-panel-title">Accounts list</span>
+            <a ng-click="openAddUserAccountOnlyModal('app/pages/users/user/userAccountsOnly/addUserAccountOnlyModal/addUserAccountOnlyModal.html','md')" class="user-details-panel-link pull-right pointer">Add account</a>
+        </div>
+        <div class="panel-body">
+            <i>No accounts are available</i>
+        </div>
     </div>
 </div>
 <div ba-panel ng-show="loadingUserAccounts">

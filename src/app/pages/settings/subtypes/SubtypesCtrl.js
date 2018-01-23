@@ -93,6 +93,10 @@
         };
 
         $scope.subtypeChanged = function(field){
+            if(field == 'name'){
+                $scope.editSubtype.name = $scope.editSubtype.name.toLowerCase();
+            }
+
             vm.updatedSubtype[field] = $scope.editSubtype[field];
         };
 

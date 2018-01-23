@@ -17,7 +17,7 @@
         $scope.goToNextView = function(){
             $rootScope.userFullyVerified = true;
             $location.path('company/setup/initial');
-        }
+        };
 
         vm.getCompanyInfo = function () {
             if(vm.token) {
@@ -29,7 +29,7 @@
                 }).then(function (res) {
                     if (res.status === 200) {
                         if(res.data.data && res.data.data.name){
-                            $rootScope.companyName = res.data.data.name;
+                            $rootScope.pageTopObj.companyObj = res.data.data;
                             userVerification.verify(function(err,verified){
                                 if(verified){
                                     $rootScope.userFullyVerified = true;
@@ -65,7 +65,7 @@
                 }
             }).then(function (res) {
                 if (res.status === 200) {
-                    $rootScope.companyName = res.data.data.name;
+                    $rootScope.pageTopObj.companyObj = res.data.data;
                     userVerification.verify(function(err,verified){
                         if(verified){
                             $rootScope.userFullyVerified = true;

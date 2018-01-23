@@ -15,6 +15,10 @@
         vm.updatedGroup = {};
 
         $scope.groupChanged = function(field){
+            if(field == 'name'){
+                $scope.editGroupObj.name = $scope.editGroupObj.name.toLowerCase();
+            }
+
             vm.updatedGroup[field] = $scope.editGroupObj[field];
         };
 
