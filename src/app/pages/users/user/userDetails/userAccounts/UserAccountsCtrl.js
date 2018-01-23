@@ -68,6 +68,9 @@
                 resolve: {
                     reference: function () {
                         return reference;
+                    },
+                    currenciesList: function () {
+                        return $scope.currencies;
                     }
                 }
             });

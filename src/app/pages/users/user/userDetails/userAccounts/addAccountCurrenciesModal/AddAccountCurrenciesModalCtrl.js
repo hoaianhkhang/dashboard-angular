@@ -4,10 +4,13 @@
     angular.module('BlurAdmin.pages.users.user')
         .controller('AddAccountCurrenciesModalCtrl', AddAccountCurrenciesModalCtrl);
 
-    function AddAccountCurrenciesModalCtrl($scope,$uibModalInstance,toastr,reference,$http,environmentConfig,cookieManagement,errorHandler) {
+    function AddAccountCurrenciesModalCtrl($scope,$uibModalInstance,toastr,reference,$http,
+                                           currenciesList,environmentConfig,cookieManagement,errorHandler) {
 
         var vm = this;
         vm.reference = reference;
+        $scope.currenciesList = currenciesList;
+        console.log(currenciesList)
         $scope.loadingUserAccounts = true;
         $scope.newAccountCurrencies = {list: []};
         vm.token = cookieManagement.getCookie('TOKEN');

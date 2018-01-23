@@ -36,6 +36,9 @@
         vm.initializeAccount();
 
         vm.getGroups = function(){
+            vm.initializeAccount();
+            $scope.groups = [];
+            $scope.accounts = [];
             if(vm.token){
                 $http.get(environmentConfig.API + '/admin/groups/', {
                     headers: {
@@ -110,7 +113,6 @@
                 }
             }).then(function (res) {
                 if (res.status === 201) {
-                    vm.initializeAccount();
                     res.data.data.group = account.groupName;
                     $scope.accounts.push(res.data.data);
                     if($scope.accounts.length==0) {
@@ -160,26 +162,34 @@
         };
 
         vm.addCurrenciesToAccount = function (account) {
-            account.currencies.forEach(function(element) {
-                $http.post(environmentConfig.API + '/admin/groups/'+ account.groupName.name +"/account-configurations/"+account.name+"/currencies/",
-                    {
-                        "currency": element.code
-                    },
-                    {
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': vm.token
+            if(account.currencies.length > 0){
+                account.currencies.forEach(function(element,i,array) {
+                    $http.post(environmentConfig.API + '/admin/groups/'+ account.groupName.name +"/account-configurations/"+account.name+"/currencies/",
+                        {
+                            "currency": element.code
+                        },
+                        {
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': vm.token
+                            }
+                        }).then(function (res) {
+                        if (res.status === 201) {
+                            if(i == (array.length - 1)){
+                                $scope.alreadySelectedCurrencies = [];
+                                vm.getGroups();
+                            }
                         }
-                    }).then(function (res) {
-                    if (res.status === 201) {
-
-                    }
-                }).catch(function (error) {
-                    $rootScope.$pageFinishedLoading = true;
-                    errorHandler.evaluateErrors(error.data);
-                    errorHandler.handleErrors(error);
+                    }).catch(function (error) {
+                        $rootScope.$pageFinishedLoading = true;
+                        errorHandler.evaluateErrors(error.data);
+                        errorHandler.handleErrors(error);
+                    });
                 });
-            })
+            } else {
+                account.currencies = $scope.alreadySelectedCurrencies;
+                $scope.alreadySelectedCurrencies = [];
+            }
         };
 
         $scope.deleteAccount = function (account) {
@@ -202,14 +212,18 @@
                 errorHandler.evaluateErrors(error.data);
                 errorHandler.handleErrors(error);
             });
-        }
+        };
 
         $scope.editingAccountCompanySetup = function (account) {
-            $scope.editingAccount = true;
-            $scope.account = account;
-            $scope.account.prevName = account.name;
-            $scope.account.groupName = account.group;
-            $scope.account.currencies = [];
-        }
+            if($scope.account.name != account.name){
+                $scope.account.currencies = $scope.alreadySelectedCurrencies;
+                $scope.editingAccount = true;
+                $scope.account = account;
+                $scope.alreadySelectedCurrencies = account.currencies;
+                $scope.account.prevName = account.name;
+                $scope.account.groupName = account.group;
+                $scope.account.currencies = [];
+            }
+        };
     }
 })();

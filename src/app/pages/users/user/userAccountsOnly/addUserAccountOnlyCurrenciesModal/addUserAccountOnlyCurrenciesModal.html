@@ -18,6 +18,11 @@
                     {{currency.code}},&nbsp;
                 </span>
                 </p>
+                <p>Currencies already selected:
+                    <span ng-repeat="currencyObj in currenciesList">
+                    {{currencyObj.currency.code}},&nbsp;
+                </span>
+                </p>
             </div>
             <div class="form-group">
                 <button ng-click="addAccountCurrency(newAccountCurrencies.list)" ng-disabled="!userAccountCurrency.$valid" class="btn btn-primary user-accounts-btn pull-right">Add</button>

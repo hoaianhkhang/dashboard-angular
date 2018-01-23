@@ -52,6 +52,11 @@
                                 {{currency.code}},&nbsp;
                             </span>
                         </p>
+                        <p ng-show="alreadySelectedCurrencies.length > 0">Currencies already selected:
+                            <span ng-repeat="currency in alreadySelectedCurrencies">
+                                {{currency.code}},&nbsp;
+                            </span>
+                        </p>
                     </div>
                     <div class="form-group">
                         <button ng-hide="editingAccount" ng-click="addAccount(account)"
@@ -91,16 +96,17 @@
             <span class="user-details-panel-title">Added accounts</span>
         </div>
         <div class="panel-body">
-            <div class="divider-20 added-options-overview user-company-overview row" ng-repeat="account in accounts"
+            <div class="divider-20 added-options-overview user-company-overview row" ng-repeat="account in accounts | orderBy: '-account.group.name'"
                  ng-hide="accounts.length==0"
                  ng-class="{'no-margin-bottom': $last}">
                  <div ng-click="editingAccountCompanySetup(account)" class="pointer pull-left">
                     <span ng-class="{'long-text': (account.label.length > 16), 'very-long-text': (account.label.length > 25)}" ng-show="account.label">{{account.label}}</span>
                     <span ng-hide="account.label" class="font-italic">No label provided</span>
                     <p>{{account.name}}</p>
+                     <p>{{account.group.name}}</p>
                 </div>
                 <div class="pull-right pointer add-new">
-                    <span ng-click="deleteAccount(account)">&#10006;</span>
+                    <span ng-click="deleteAccount(account)">x</span>
                 </div>
             </div>
             <span ng-show="accounts.length==0">No accounts added yet.</span>

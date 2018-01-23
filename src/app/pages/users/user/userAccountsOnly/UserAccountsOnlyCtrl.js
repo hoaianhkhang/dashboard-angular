@@ -93,7 +93,7 @@
             });
         };
 
-        $scope.openAddAccountCurrenciesModal = function (page, size, reference) {
+        $scope.openAddAccountCurrenciesModal = function (page, size, reference,currencies) {
             vm.theModal = $uibModal.open({
                 animation: true,
                 templateUrl: page,
@@ -103,6 +103,9 @@
                 resolve: {
                     reference: function () {
                         return reference;
+                    },
+                    currenciesList: function () {
+                        return currencies;
                     }
                 }
             });
