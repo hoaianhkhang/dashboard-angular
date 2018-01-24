@@ -80,37 +80,41 @@
         vm.getAccountConfigurations = function(){
             if(vm.token){
                 $scope.loadingCompanySetupAccounts = true;
-                $scope.groups.forEach(function (element,ind,array) {
-                    $http.get(environmentConfig.API + '/admin/groups/'+ element.name +"/account-configurations/", {
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': vm.token
-                        }
-                    }).then(function (res) {
-                        if (res.status === 200) {
-                            element.accConfigCount = res.data.data.count;
-                            res.data.data.results.forEach(function(node){
-                                node.group = element;
-                            });
-                            $scope.accounts = $scope.accounts.concat(res.data.data.results);
-                            if($scope.accounts.length == 0) {
-                                $rootScope.setupAccounts = 0;
-                                localStorageManagement.setValue('setupAccounts',0);
-                            } else {
-                                $rootScope.setupAccounts = 1;
-                                localStorageManagement.setValue('setupAccounts',1);
+                if($scope.groups.length > 0){
+                    $scope.groups.forEach(function (element,ind,array) {
+                        $http.get(environmentConfig.API + '/admin/groups/'+ element.name +"/account-configurations/", {
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': vm.token
                             }
+                        }).then(function (res) {
+                            if (res.status === 200) {
+                                element.accConfigCount = res.data.data.count;
+                                res.data.data.results.forEach(function(node){
+                                    node.group = element;
+                                });
+                                $scope.accounts = $scope.accounts.concat(res.data.data.results);
+                                if($scope.accounts.length == 0) {
+                                    $rootScope.setupAccounts = 0;
+                                    localStorageManagement.setValue('setupAccounts',0);
+                                } else {
+                                    $rootScope.setupAccounts = 1;
+                                    localStorageManagement.setValue('setupAccounts',1);
+                                }
 
-                            if(ind == (array.length - 1)){
-                                $scope.loadingCompanySetupAccounts = false;
+                                if(ind == (array.length - 1)){
+                                    $scope.loadingCompanySetupAccounts = false;
+                                }
                             }
-                        }
-                    }).catch(function (error) {
-                        $scope.loadingCompanySetupAccounts = false;
-                        errorHandler.evaluateErrors(error.data);
-                        errorHandler.handleErrors(error);
+                        }).catch(function (error) {
+                            $scope.loadingCompanySetupAccounts = false;
+                            errorHandler.evaluateErrors(error.data);
+                            errorHandler.handleErrors(error);
+                        });
                     });
-                });
+                } else {
+                    $scope.loadingCompanySetupAccounts = false;
+                }
             }
         };
 
