@@ -14,6 +14,7 @@
         $rootScope.activeSetupRoute = 0;
         localStorageManagement.setValue('activeSetupRoute',0);
         $scope.editingUser = false;
+        $scope.loadingUsersGroups = true;
 
         $scope.goToNextView = function () {
             $rootScope.userFullyVerified = true;
@@ -23,6 +24,7 @@
 
         vm.getGroups = function(){
             if(vm.token){
+                $scope.loadingUsersGroups = true;
                 $http.get(environmentConfig.API + '/admin/groups/', {
                     headers: {
                         'Content-Type': 'application/json',
@@ -39,8 +41,10 @@
                             $rootScope.setupUsers = 1;
                             localStorageManagement.setValue('setupUsers',1);
                         }
+                        $scope.loadingUsersGroups = false;
                     }
                 }).catch(function (error) {
+                    $scope.loadingUsersGroups = false;
                     errorHandler.evaluateErrors(error.data);
                     errorHandler.handleErrors(error);
                 });
@@ -49,6 +53,7 @@
         vm.getGroups();
         
         $scope.addUserGroupCompanySetup = function (group) {
+            $scope.loadingUsersGroups = true;
             $http.post(environmentConfig.API + '/admin/groups/',group, {
                 headers: {
                     'Content-Type': 'application/json',
@@ -60,6 +65,7 @@
                     vm.getGroups();
                 }
             }).catch(function (error) {
+                $scope.loadingUsersGroups = false;
                 $rootScope.$pageFinishedLoading = true;
                 errorHandler.evaluateErrors(error.data);
                 errorHandler.handleErrors(error);
@@ -67,6 +73,7 @@
         };
 
         $scope.updateUserGroupCompanySetup = function (group) {
+            $scope.loadingUsersGroups = true;
             $http.patch(environmentConfig.API + '/admin/groups/' + group.prevName + "/",group, {
                 headers: {
                     'Content-Type': 'application/json',
@@ -76,8 +83,10 @@
                 if (res.status === 200) {
                     $scope.user={};
                     $scope.editingUser = false;
+                    $scope.loadingUsersGroups = false;
                 }
             }).catch(function (error) {
+                $scope.loadingUsersGroups = false;
                 $rootScope.$pageFinishedLoading = true;
                 errorHandler.evaluateErrors(error.data);
                 errorHandler.handleErrors(error);
@@ -93,7 +102,7 @@
 
         $scope.deleteGroup = function (name) {
             if(vm.token) {
-                $scope.deletingGroups = true;
+                $scope.loadingUsersGroups = true;
                 $http.delete(environmentConfig.API + '/admin/groups/' + name + '/', {
                     headers: {
                         'Content-Type': 'application/json',
@@ -104,6 +113,7 @@
                         vm.getGroups();
                     }
                 }).catch(function (error) {
+                    $scope.loadingUsersGroups = false;
                     errorHandler.evaluateErrors(error.data);
                     errorHandler.handleErrors(error);
                 });

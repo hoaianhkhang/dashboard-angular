@@ -71,7 +71,7 @@
     </div>
 </div>
 <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 company-setup-col-2">
-    <div class="panel">
+    <div ng-hide="loadingSetupSubtypes" class="panel">
         <div class="panel-heading">
             <span class="user-details-panel-title">Added transaction subtypes</span>
         </div>
@@ -83,5 +83,8 @@
             </div>
             <span ng-show="subtypes.length==0">No subtypes added yet.</span>
         </div>
+    </div>
+    <div ba-panel ng-show="loadingSetupSubtypes">
+        <loading-image></loading-image>
     </div>
 </div>

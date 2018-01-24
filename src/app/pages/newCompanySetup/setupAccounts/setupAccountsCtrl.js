@@ -17,6 +17,7 @@
         $scope.showAccountConfigsOfGroup = -1;
         $rootScope.activeSetupRoute = 2;
         localStorageManagement.setValue('activeSetupRoute',2);
+        $scope.loadingCompanySetupAccounts = true;
 
         $scope.showAccountConfigs = function (index) {
             if($scope.showAccountConfigsOfGroup == index){
@@ -50,6 +51,7 @@
             $scope.groups = [];
             $scope.accounts = [];
             if(vm.token){
+                $scope.loadingCompanySetupAccounts = true;
                 $http.get(environmentConfig.API + '/admin/groups/', {
                     headers: {
                         'Content-Type': 'application/json',
@@ -67,6 +69,7 @@
 
                     }
                 }).catch(function (error) {
+                    $scope.loadingCompanySetupAccounts = false;
                     errorHandler.evaluateErrors(error.data);
                     errorHandler.handleErrors(error);
                 });
@@ -76,7 +79,8 @@
 
         vm.getAccountConfigurations = function(){
             if(vm.token){
-                $scope.groups.forEach(function (element) {
+                $scope.loadingCompanySetupAccounts = true;
+                $scope.groups.forEach(function (element,ind,array) {
                     $http.get(environmentConfig.API + '/admin/groups/'+ element.name +"/account-configurations/", {
                         headers: {
                             'Content-Type': 'application/json',
@@ -96,8 +100,13 @@
                                 $rootScope.setupAccounts = 1;
                                 localStorageManagement.setValue('setupAccounts',1);
                             }
+
+                            if(ind == (array.length - 1)){
+                                $scope.loadingCompanySetupAccounts = false;
+                            }
                         }
                     }).catch(function (error) {
+                        $scope.loadingCompanySetupAccounts = false;
                         errorHandler.evaluateErrors(error.data);
                         errorHandler.handleErrors(error);
                     });
@@ -125,6 +134,7 @@
         vm.getCurrencies();
         
         $scope.addAccount = function (account) {
+            $scope.loadingCompanySetupAccounts = true;
             var newaccount = {
                 "name": account.name,
                 "label": account.label,
@@ -151,12 +161,14 @@
                 }
             }).catch(function (error) {
                 $rootScope.$pageFinishedLoading = true;
+                $scope.loadingCompanySetupAccounts = false;
                 errorHandler.evaluateErrors(error.data);
                 errorHandler.handleErrors(error);
             });
         };
 
         $scope.editAccountCompanySetup = function (account) {
+            $scope.loadingCompanySetupAccounts = true;
             var newaccount = {
                 "name": account.name,
                 "label": account.label,
@@ -184,6 +196,7 @@
                     vm.addCurrenciesToAccount(account);
                 }
             }).catch(function (error) {
+                $scope.loadingCompanySetupAccounts = false;
                 $rootScope.$pageFinishedLoading = true;
                 errorHandler.evaluateErrors(error.data);
                 errorHandler.handleErrors(error);
@@ -191,6 +204,7 @@
         };
 
         vm.addCurrenciesToAccount = function (account) {
+            $scope.loadingCompanySetupAccounts = true;
             if(account.currencies.length > 0){
                 account.currencies.forEach(function(element,i,array) {
                     $http.post(environmentConfig.API + '/admin/groups/'+ account.groupName.name +"/account-configurations/"+account.name+"/currencies/",
@@ -210,6 +224,7 @@
                             }
                         }
                     }).catch(function (error) {
+                        $scope.loadingCompanySetupAccounts = false;
                         $rootScope.$pageFinishedLoading = true;
                         errorHandler.evaluateErrors(error.data);
                         errorHandler.handleErrors(error);
@@ -223,6 +238,7 @@
         };
 
         $scope.deleteAccount = function (account) {
+            $scope.loadingCompanySetupAccounts = true;
             $http.delete(environmentConfig.API + '/admin/groups/'+ account.group.name +"/account-configurations/" + account.name + "/", {
                 headers: {
                     'Content-Type': 'application/json',
@@ -230,6 +246,7 @@
                 }
             }).then(function (res) {
                 if (res.status === 200) {
+                    $scope.alreadySelectedCurrencies = [];
                     var index = $scope.accounts.indexOf(account);
                     $scope.accounts.splice(index,1);
                     if($scope.accounts.length==0) {
@@ -242,6 +259,7 @@
                     vm.getGroups();
                 }
             }).catch(function (error) {
+                $scope.loadingCompanySetupAccounts = false;
                 errorHandler.evaluateErrors(error.data);
                 errorHandler.handleErrors(error);
             });

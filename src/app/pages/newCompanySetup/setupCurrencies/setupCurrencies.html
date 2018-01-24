@@ -62,7 +62,7 @@
         </div>
     </div>
     <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 company-setup-col-2">
-        <div class="panel">
+        <div ng-hide="loadingCurrencies" class="panel">
             <div class="panel-heading">
                 <span class="user-details-panel-title">Added currencies</span>
             </div>
@@ -74,5 +74,8 @@
                 </div>
                 <span ng-show="currencies.length==0">No currencies added yet.</span>
             </div>
+        </div>
+        <div ba-panel ng-show="loadingCurrencies">
+            <loading-image></loading-image>
         </div>
     </div>

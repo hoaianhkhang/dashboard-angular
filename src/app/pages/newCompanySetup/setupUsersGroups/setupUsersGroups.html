@@ -67,7 +67,7 @@
     </div>
 </div>
 <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 company-setup-col-2">
-    <div class="panel">
+    <div ng-hide="loadingUsersGroups" class="panel">
         <div class="panel-heading">
             <span class="user-details-panel-title">Added user groups</span>
         </div>
@@ -79,5 +79,8 @@
                       ng-click="deleteGroup(group.name)">x</span>
             </div>
         </div>
+    </div>
+    <div ba-panel ng-show="loadingUsersGroups">
+        <loading-image></loading-image>
     </div>
 </div>

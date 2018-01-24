@@ -13,6 +13,7 @@
         $rootScope.activeSetupRoute = 1;
         localStorageManagement.setValue('activeSetupRoute',1);
         $scope.initialCurrencies = currenciesList;
+        $scope.loadingCurrencies = true;
 
         $scope.goToNextView=function () {
             $location.path('company/setup/accounts');
@@ -23,6 +24,7 @@
         };
 
         vm.getCurrencies = function(){
+            $scope.loadingCurrencies = true;
             if(vm.token){
                 $http.get(environmentConfig.API + '/admin/currencies/?enabled=true', {
                     headers: {
@@ -40,8 +42,10 @@
                             $rootScope.setupCurrencies = 1;
                             localStorageManagement.setValue('setupCurrencies',1);
                         }
+                        $scope.loadingCurrencies = false;
                     }
                 }).catch(function (error) {
+                    $scope.loadingCurrencies = false;
                     errorHandler.evaluateErrors(error.data);
                     errorHandler.handleErrors(error);
                 });
@@ -51,7 +55,8 @@
         
         $scope.addCurrencies = function (currencies) {
             if(currencies && currencies.length > 0){
-                currencies.forEach(function(currency){
+                $scope.loadingCurrencies = true;
+                currencies.forEach(function(currency,index,array){
                     currency.enabled = true;
                     $http.post(environmentConfig.API + '/admin/currencies/',currency, {
                         headers: {
@@ -63,8 +68,12 @@
                             $rootScope.setupCurrencies = 1;
                             localStorageManagement.setValue('setupCurrencies',1);
                             $scope.currencies.push(currency);
+                            if(index == (array.length - 1)){
+                                $scope.loadingCurrencies = false;
+                            }
                         }
                     }).catch(function (error) {
+                        $scope.loadingCurrencies = false;
                         $rootScope.$pageFinishedLoading = true;
                         errorHandler.evaluateErrors(error.data);
                         errorHandler.handleErrors(error);
@@ -79,6 +88,7 @@
 
         $scope.deleteCurrency = function(code){
             if(vm.token){
+                $scope.loadingCurrencies = true;
                 $http.delete(environmentConfig.API + '/admin/currencies/'+code+'/', {
                     headers: {
                         'Content-Type': 'application/json',
@@ -89,6 +99,7 @@
                         vm.getCurrencies();
                     }
                 }).catch(function (error) {
+                    $scope.loadingCurrencies = false;
                     errorHandler.evaluateErrors(error.data);
                     errorHandler.handleErrors(error);
                 });
