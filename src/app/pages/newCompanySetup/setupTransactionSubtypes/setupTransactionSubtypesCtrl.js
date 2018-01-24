@@ -5,21 +5,22 @@
         .controller("SetupTransactionSubtypesCtrl", SetupTransactionSubtypesCtrl);
 
     function SetupTransactionSubtypesCtrl($rootScope,$scope,$http,toastr,cookieManagement,
-        environmentConfig,$location,errorHandler) {
+        environmentConfig,$location,errorHandler,localStorageManagement) {
         var vm=this;
         vm.token=cookieManagement.getCookie("TOKEN");
         $scope.subtypes = [];
         $scope.subtype={};
         $rootScope.$pageFinishedLoading=true;
         $rootScope.activeSetupRoute = 3;
+        localStorageManagement.setValue('activeSetupRoute',3);
         $scope.editingSubtypes = false;
 
         $scope.goToNextView=function () {
             $location.path('/currencies');
-        }
+        };
         $scope.goToPrevView=function () {
             $location.path('company/setup/accounts');
-        }
+        };
 
 
         vm.getSubtypes = function(){
@@ -34,9 +35,11 @@
                         $scope.subtypes = res.data.data;
                         if($scope.subtypes.length==0){
                             $rootScope.setupSubtypes = 0;
+                            localStorageManagement.setValue('setupSubtypes',0);
                         }
                         else {
                             $rootScope.setupSubtypes = 1;
+                            localStorageManagement.setValue('setupSubtypes',1);
                         }
                     }
                 }).catch(function (error) {
@@ -63,7 +66,7 @@
                 errorHandler.evaluateErrors(error.data);
                 errorHandler.handleErrors(error);
             });
-        }
+        };
 
         $scope.updateSubtype = function (subtype) {
             var newSubtype = {
@@ -88,7 +91,7 @@
                 errorHandler.evaluateErrors(error.data);
                 errorHandler.handleErrors(error);
             });
-        }
+        };
 
         $scope.deleteSelectedItem=function (id) {
             $http.delete(environmentConfig.API + '/admin/subtypes/' + id + '/', {
@@ -104,12 +107,12 @@
                 errorHandler.evaluateErrors(error.data);
                 errorHandler.handleErrors(error);
             });
-        }
+        };
 
         $scope.editSubtype = function(subtype) {
             $scope.subtype = subtype;
             $scope.editingSubtypes = true;
             $scope.subtype.prevName = subtype.name;
-        }
+        };
     }
 })();

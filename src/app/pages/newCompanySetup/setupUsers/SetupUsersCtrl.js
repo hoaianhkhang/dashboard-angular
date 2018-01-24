@@ -5,13 +5,14 @@
         .controller("SetupUsersCtrl", SetupUsersCtrl);
 
     function SetupUsersCtrl($rootScope,$scope,$http,toastr,cookieManagement,currenciesList,
-        environmentConfig,$location,errorHandler) {
+        environmentConfig,$location,errorHandler,localStorageManagement) {
         var vm=this;
         vm.token=cookieManagement.getCookie("TOKEN");
         $scope.addedGroups = [];
         $scope.user = {};
         $rootScope.$pageFinishedLoading=true;
         $rootScope.activeSetupRoute = 0;
+        localStorageManagement.setValue('activeSetupRoute',0);
         $scope.editingUser = false;
 
         $scope.goToNextView = function () {
@@ -32,9 +33,11 @@
                         $scope.addedGroups = res.data.data.results;
                         if($scope.addedGroups.length == 2){
                             $rootScope.setupUsers = 0;
+                            localStorageManagement.setValue('setupUsers',0);
                         }
                         else {
                             $rootScope.setupUsers = 1;
+                            localStorageManagement.setValue('setupUsers',1);
                         }
                     }
                 }).catch(function (error) {
@@ -79,14 +82,14 @@
                 errorHandler.evaluateErrors(error.data);
                 errorHandler.handleErrors(error);
             });
-        }
+        };
 
         $scope.editUser = function(group) {
             $scope.user = group;
             $scope.user.prevName = group.name;
             $scope.editingUser = true;
 
-        }
+        };
 
         $scope.deleteGroup = function (name) {
             if(vm.token) {
@@ -98,7 +101,7 @@
                     }
                 }).then(function (res) {
                     if (res.status === 200) {
-                        vm.getGroups()
+                        vm.getGroups();
                     }
                 }).catch(function (error) {
                     errorHandler.evaluateErrors(error.data);

@@ -5,7 +5,7 @@
         .controller("SetupAccountsCtrl", SetupAccountsCtrl);
 
     function SetupAccountsCtrl($rootScope,$scope,$http,toastr,cookieManagement,currenciesList,
-        environmentConfig,$location,errorHandler) {
+        environmentConfig,$location,errorHandler,localStorageManagement) {
         var vm=this;
         vm.token=cookieManagement.getCookie("TOKEN");
         $scope.groups = [];
@@ -16,6 +16,7 @@
         $scope.editingAccount= false;
         $scope.showAccountConfigsOfGroup = -1;
         $rootScope.activeSetupRoute = 2;
+        localStorageManagement.setValue('activeSetupRoute',2);
 
         $scope.showAccountConfigs = function (index) {
             if($scope.showAccountConfigsOfGroup == index){
@@ -88,10 +89,12 @@
                                 node.group = element;
                             });
                             $scope.accounts = $scope.accounts.concat(res.data.data.results);
-                            if($scope.accounts.length==0) {
+                            if($scope.accounts.length == 0) {
                                 $rootScope.setupAccounts = 0;
+                                localStorageManagement.setValue('setupAccounts',0);
                             } else {
                                 $rootScope.setupAccounts = 1;
+                                localStorageManagement.setValue('setupAccounts',1);
                             }
                         }
                     }).catch(function (error) {
@@ -139,8 +142,10 @@
                     $scope.accounts.push(res.data.data);
                     if($scope.accounts.length==0) {
                         $rootScope.setupAccounts = 0;
+                        localStorageManagement.setValue('setupAccounts',0);
                     } else {
                         $rootScope.setupAccounts = 1;
+                        localStorageManagement.setValue('setupAccounts',1);
                     }
                     vm.addCurrenciesToAccount(account);
                 }
@@ -171,8 +176,10 @@
                     res.data.data.group = account.groupName;
                     if($scope.accounts.length==0) {
                         $rootScope.setupAccounts = 0;
+                        localStorageManagement.setValue('setupAccounts',0);
                     } else {
                         $rootScope.setupAccounts = 1;
+                        localStorageManagement.setValue('setupAccounts',1);
                     }
                     vm.addCurrenciesToAccount(account);
                 }
@@ -227,8 +234,10 @@
                     $scope.accounts.splice(index,1);
                     if($scope.accounts.length==0) {
                         $rootScope.setupAccounts = 0;
+                        localStorageManagement.setValue('setupAccounts',0);
                     } else {
                         $rootScope.setupAccounts = 1;
+                        localStorageManagement.setValue('setupAccounts',1);
                     }
                     vm.getGroups();
                 }

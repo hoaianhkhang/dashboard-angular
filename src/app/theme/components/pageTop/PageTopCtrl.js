@@ -26,6 +26,7 @@
 
         //when page refreshed
         if(!$rootScope.pageTopObj.companyObj){
+            console.log('hell')
             vm.getCompanyInfo = function () {
                 if(vm.token) {
                     $http.get(environmentConfig.API + '/admin/company/', {
@@ -38,8 +39,6 @@
                             $rootScope.pageTopObj.companyObj = res.data.data;
                         }
                     }).catch(function (error) {
-                        errorHandler.evaluateErrors(error.data);
-                        errorHandler.handleErrors(error);
                     });
                 }
             };
@@ -59,8 +58,6 @@
                             $rootScope.pageTopObj.userInfoObj = res.data.data;
                         }
                     }).catch(function (error) {
-                        errorHandler.evaluateErrors(error.data);
-                        errorHandler.handleErrors(error);
                     });
                 }
             };

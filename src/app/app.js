@@ -21,7 +21,7 @@ angular.module('BlurAdmin', [
     .config(function (ngIntlTelInputProvider) {
     ngIntlTelInputProvider.set({initialCountry: 'us',utilsScript: 'https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/12.0.1/js/utils.js'});
 })
-    .run(function($rootScope,cookieManagement,errorHandler,
+    .run(function($rootScope,cookieManagement,errorHandler,localStorageManagement,
                   userVerification,$http,environmentConfig,$window,$location,_){
 
         $window.onload = function(){
@@ -128,6 +128,11 @@ angular.module('BlurAdmin', [
                     || newUrl.indexOf('company/setup/') > 0){
                     $rootScope.securityConfigured = false;
                 } else if(token){
+                    localStorageManagement.deleteValue('setupUsers');
+                    localStorageManagement.deleteValue('setupCurrencies');
+                    localStorageManagement.deleteValue('setupAccounts');
+                    localStorageManagement.deleteValue('setupSubtypes');
+                    localStorageManagement.deleteValue('activeSetupRoute');
                     $rootScope.gotToken = true;
                     $rootScope.securityConfigured = true;
                 } else {

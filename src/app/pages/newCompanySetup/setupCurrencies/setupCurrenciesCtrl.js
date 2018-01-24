@@ -5,12 +5,13 @@
         .controller("SetupCurrenciesCtrl", SetupCurrenciesCtrl);
 
     function SetupCurrenciesCtrl($rootScope,$scope,$http,toastr,cookieManagement,currenciesList,
-        environmentConfig,$location,errorHandler,$uibModal) {
+        environmentConfig,$location,errorHandler,$uibModal,localStorageManagement) {
 
         var vm = this;
         vm.token=cookieManagement.getCookie("TOKEN");
         $scope.currenciesToAdd = [];
         $rootScope.activeSetupRoute = 1;
+        localStorageManagement.setValue('activeSetupRoute',1);
         $scope.initialCurrencies = currenciesList;
 
         $scope.goToNextView=function () {
@@ -33,9 +34,11 @@
                         $scope.currencies = res.data.data.results;
                         if($scope.currencies.length==0){
                             $rootScope.setupCurrencies = 0;
+                            localStorageManagement.setValue('setupCurrencies',0);
                         }
                         else {
                             $rootScope.setupCurrencies = 1;
+                            localStorageManagement.setValue('setupCurrencies',1);
                         }
                     }
                 }).catch(function (error) {
@@ -58,6 +61,7 @@
                     }).then(function (res) {
                         if (res.status === 201) {
                             $rootScope.setupCurrencies = 1;
+                            localStorageManagement.setValue('setupCurrencies',1);
                             $scope.currencies.push(currency);
                         }
                     }).catch(function (error) {
