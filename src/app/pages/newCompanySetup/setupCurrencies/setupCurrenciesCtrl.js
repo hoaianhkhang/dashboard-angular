@@ -19,7 +19,7 @@
         };
 
         $scope.goToPrevView=function () {
-            $location.path('/company/setup/users');
+            $location.path('/company/setup/user-groups');
         };
 
         vm.getCurrencies = function(){

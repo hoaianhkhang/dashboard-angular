@@ -1,10 +1,10 @@
 (function () {
     'use strict';
 
-    angular.module('BlurAdmin.pages.newCompanySetup.setupUsers')
-        .controller("SetupUsersCtrl", SetupUsersCtrl);
+    angular.module('BlurAdmin.pages.newCompanySetup.setupUsersGroups')
+        .controller("SetupUsersGroupsCtrl", SetupUsersGroupsCtrl);
 
-    function SetupUsersCtrl($rootScope,$scope,$http,toastr,cookieManagement,currenciesList,
+    function SetupUsersGroupsCtrl($rootScope,$scope,$http,cookieManagement,
         environmentConfig,$location,errorHandler,localStorageManagement) {
         var vm=this;
         vm.token=cookieManagement.getCookie("TOKEN");

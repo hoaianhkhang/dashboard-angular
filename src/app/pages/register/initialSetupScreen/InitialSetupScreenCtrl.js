@@ -11,7 +11,7 @@
 
         $scope.goToNextView=function () {
             $rootScope.userFullyVerified = true;
-            $location.path('company/setup/users');
-        }
+            $location.path('company/setup/user-groups');
+        };
     }
 })();
