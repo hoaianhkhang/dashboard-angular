@@ -74,8 +74,9 @@
         <div class="panel-body">
             <div class="divider-20" ng-repeat="group in addedGroups" ng-class="{'no-margin-bottom': $last}">
                 <span class="pointer" ng-click="group.name!='admin' && group.name!='service' ? editUser(group):null">{{group.name}}</span>
-                <span class="pull-right pointer" ng-hide="group.name=='admin' || group.name=='service'"
-                      ng-click="deleteGroup(group.name)">&#10006;</span>
+                <span class="pull-right pointer" style="font-size: 16px;line-height: 16px;font-weight: 500;"
+                      ng-hide="group.name=='admin' || group.name=='service'"
+                      ng-click="deleteGroup(group.name)">x</span>
             </div>
         </div>
     </div>

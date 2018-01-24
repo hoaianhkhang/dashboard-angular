@@ -96,20 +96,30 @@
             <span class="user-details-panel-title">Added accounts</span>
         </div>
         <div class="panel-body">
-            <div class="divider-20 added-options-overview user-company-overview row" ng-repeat="account in accounts | orderBy: '-account.group.name'"
-                 ng-hide="accounts.length==0"
-                 ng-class="{'no-margin-bottom': $last}">
-                 <div ng-click="editingAccountCompanySetup(account)" class="pointer pull-left">
-                    <span ng-class="{'long-text': (account.label.length > 16), 'very-long-text': (account.label.length > 25)}" ng-show="account.label">{{account.label}}</span>
-                    <span ng-hide="account.label" class="font-italic">No label provided</span>
-                    <p>{{account.name}}</p>
-                     <p>{{account.group.name}}</p>
+            <div class="divider-20" ng-class="{'no-margin-bottom': $last}" ng-repeat="group in groups | orderBy: 'name'">
+                <div class="pointer" ng-click="showAccountConfigs($index)">
+                    <span class="text-subtle">{{group.name}} ({{group.accConfigCount}})</span>
+                    <span ng-show="showAccountConfigsOfGroup != $index"  class="company-setup-plus-icon pull-right">+</span>
+                    <span ng-show="showAccountConfigsOfGroup == $index" class="company-setup-minus-icon pull-right">-</span>
                 </div>
-                <div class="pull-right pointer add-new">
-                    <span ng-click="deleteAccount(account)">x</span>
+                <div ng-show="showAccountConfigsOfGroup == $index">
+                    <div class="added-options-overview user-company-overview row" ng-repeat="account in accounts | orderBy: '-account.group.name'"
+                         ng-hide="accounts.length==0"
+                         ng-class="{'no-margin-bottom': $last}">
+                        <div ng-show="group.name ==  account.group.name" class="account-config-company-setup">
+                            <div ng-click="editingAccountCompanySetup(account)" class="pointer pull-left">
+                                <span ng-class="{'long-text': (account.label.length > 16), 'very-long-text': (account.label.length > 25)}" ng-show="account.label">{{account.label}}</span>
+                                <span ng-hide="account.label" class="font-italic">No label provided</span>
+                                <p>{{account.name}}</p>
+                            </div>
+                            <div ng-show="group.name ==  account.group.name" class="pull-right pointer add-new">
+                                <span ng-click="deleteAccount(account)">x</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <span ng-show="accounts.length==0">No accounts added yet.</span>
+            <span ng-show="accounts.length==0">No accounts added yet</span>
         </div>
     </div>
 </div>

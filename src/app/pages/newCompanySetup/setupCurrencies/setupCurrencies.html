@@ -69,7 +69,8 @@
             <div class="panel-body">
                 <div class="divider-20" ng-repeat="currency in currencies | orderBy: 'code'" ng-hide="currencies.length==0" ng-class="{'no-margin-bottom': $last}">
                     <span>{{currency.code}}</span>
-                    <span class="pull-right pointer" ng-click="deleteCurrency(currency.code)">&#10006;</span>
+                    <span style="font-size: 16px;line-height: 16px;font-weight: 500;"
+                          class="pull-right pointer" ng-click="deleteCurrency(currency.code)">x</span>
                 </div>
                 <span ng-show="currencies.length==0">No currencies added yet.</span>
             </div>

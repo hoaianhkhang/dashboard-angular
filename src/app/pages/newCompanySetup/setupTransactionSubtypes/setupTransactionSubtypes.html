@@ -79,7 +79,7 @@
             <div class="divider-20 pointer" ng-click="editSubtype(subtype)" ng-repeat="subtype in subtypes" ng-hide="subtypes.length==0"
                  ng-class="{'no-margin-bottom': $last}">
                 <span>{{subtype.name}}</span>
-                <span class="pull-right pointer" ng-click="deleteSelectedItem(subtype.id)">&#10006;</span>
+                <span class="pull-right pointer" ng-click="deleteSelectedItem(subtype.id)">x</span>
             </div>
             <span ng-show="subtypes.length==0">No subtypes added yet.</span>
         </div>

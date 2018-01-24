@@ -102,12 +102,26 @@
 }
 
 .added-options-overview {
-  margin: 0px!important;
+  margin: 0!important;
   color: #022b36!important;
   text-align: left!important;
   & p {
     margin: 0px;
   }
+}
+
+.company-setup-plus-icon{
+  font-size: 20px;
+  color: #03DBBB;
+}
+
+.company-setup-minus-icon{
+  font-size: 30px;
+  color: #ed675A;
+}
+
+.account-config-company-setup{
+  margin: 10px 0;
 }
 
 .font-italic {
