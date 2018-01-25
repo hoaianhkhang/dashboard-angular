@@ -26,7 +26,6 @@
 
         //when page refreshed
         if(!$rootScope.pageTopObj.companyObj){
-            console.log('hell')
             vm.getCompanyInfo = function () {
                 if(vm.token) {
                     $http.get(environmentConfig.API + '/admin/company/', {

@@ -5,7 +5,7 @@
         .controller("SetupCurrenciesCtrl", SetupCurrenciesCtrl);
 
     function SetupCurrenciesCtrl($rootScope,$scope,$http,toastr,cookieManagement,currenciesList,
-        environmentConfig,$location,errorHandler,$uibModal,localStorageManagement) {
+        environmentConfig,$location,errorHandler,$uibModal,localStorageManagement,$window) {
 
         var vm = this;
         vm.token=cookieManagement.getCookie("TOKEN");
@@ -39,6 +39,7 @@
                             localStorageManagement.setValue('setupCurrencies',0);
                         }
                         else {
+                            $window.sessionStorage.currenciesList = JSON.stringify(res.data.data.results);
                             $rootScope.setupCurrencies = 1;
                             localStorageManagement.setValue('setupCurrencies',1);
                         }
@@ -52,6 +53,24 @@
             }
         };
         vm.getCurrencies();
+
+        vm.getCompanyCurrencies = function(){
+            if(vm.token){
+                $http.get(environmentConfig.API + '/admin/currencies/?enabled=true', {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': vm.token
+                    }
+                }).then(function (res) {
+                    if (res.status === 200) {
+                        $window.sessionStorage.currenciesList = JSON.stringify(res.data.data.results);
+                    }
+                }).catch(function (error) {
+                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.handleErrors(error);
+                });
+            }
+        };
         
         $scope.addCurrencies = function (currencies) {
             if(currencies && currencies.length > 0){
@@ -65,6 +84,7 @@
                         }
                     }).then(function (res) {
                         if (res.status === 201) {
+                            vm.getCompanyCurrencies();
                             $rootScope.setupCurrencies = 1;
                             localStorageManagement.setValue('setupCurrencies',1);
                             $scope.currencies.push(currency);
