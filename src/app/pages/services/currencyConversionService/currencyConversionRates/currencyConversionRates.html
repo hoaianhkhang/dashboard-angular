@@ -19,7 +19,7 @@
                 <tr ng-repeat="rate in ratesList" class="editable-row">
                     <td class="transactions-list-element rehive-table-row-first-child" title="{{rate.from_currency.code}}" ng-bind="rate.from_currency.code"></td>
                     <td class="transactions-list-element" title="{{rate.to_currency.code}}" ng-bind="rate.to_currency.code"></td>
-                    <td class="transactions-list-element" title="{{rate.from_percentage_fee}}" ng-bind="rate.from_percentage_fee + '%'"></td>
+                    <td class="transactions-list-element" title="{{rate.from_percentage_fee}}" ng-bind="rate.from_percentage_fee ? rate.from_percentage_fee + '%' : 'None'"></td>
                     <td><div title="{{rate.from_value_fee  | currencyModifiersFilter: rate.from_currency.divisibility}}" class="transactions-list-element">
                         {{rate.from_currency.symbol}} {{rate.from_value_fee  | currencyModifiersFilter: rate.from_currency.divisibility}}
                     </div></td>

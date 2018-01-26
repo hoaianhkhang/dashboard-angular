@@ -4,7 +4,8 @@
     angular.module('BlurAdmin.pages.services.currencyConversionService.currencyConversionRates')
         .controller('AddCurrencyConversionRatesModalCtrl', AddCurrencyConversionRatesModalCtrl);
 
-    function AddCurrencyConversionRatesModalCtrl($scope,$uibModalInstance,toastr,currencyModifiers,$http,cookieManagement,errorHandler) {
+    function AddCurrencyConversionRatesModalCtrl($scope,$uibModalInstance,currenciesList,toastr,cleanObject,
+                                                 currencyModifiers,$http,cookieManagement,errorHandler) {
 
         var vm = this;
         vm.token = cookieManagement.getCookie('TOKEN');
@@ -19,27 +20,7 @@
                 code: ''
             }
         };
-        $scope.currenciesList = [];
-
-        $scope.getCurrencies = function () {
-            $scope.addingRate = true;
-            $http.get(vm.baseUrl + 'admin/currencies/', {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': vm.token
-                }
-            }).then(function (res) {
-                $scope.addingRate = false;
-                if (res.status === 200) {
-                    $scope.currenciesList = res.data.data.results;
-                }
-            }).catch(function (error) {
-                $scope.addingRate = false;
-                errorHandler.evaluateErrors(error.data);
-                errorHandler.handleErrors(error);
-            });
-        };
-        $scope.getCurrencies();
+        $scope.currenciesList = currenciesList;
 
         $scope.validateNumberInput = function (value,currencyType) {
             var validAmount = currencyModifiers.validateCurrency(value,$scope.rateParams[currencyType].divisibility);
@@ -62,7 +43,9 @@
                 fixed_rate: $scope.rateParams.fixed_rate ? currencyModifiers.convertToCents($scope.rateParams.fixed_rate,$scope.rateParams.toCurrency.divisibility) : null
             };
 
-            $http.post(vm.baseUrl + 'admin/rates/', newRate, {
+            var cleanRate = cleanObject.cleanObj(newRate);
+
+            $http.post(vm.baseUrl + 'admin/rates/', cleanRate, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': vm.token

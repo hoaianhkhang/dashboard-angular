@@ -25,6 +25,23 @@
             return vm.baseUrl + 'admin/rates/' + vm.filterParams;
         };
 
+        $scope.getCurrencies = function () {
+            $http.get(vm.baseUrl + 'admin/currencies/', {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': vm.token
+                }
+            }).then(function (res) {
+                if (res.status === 200) {
+                    $scope.currenciesList = res.data.data.results;
+                }
+            }).catch(function (error) {
+                errorHandler.evaluateErrors(error.data);
+                errorHandler.handleErrors(error);
+            });
+        };
+        $scope.getCurrencies();
+
         $scope.getRatesList = function () {
             $scope.loadingRates =  true;
             $scope.ratesList = [];
@@ -58,7 +75,12 @@
                 templateUrl: page,
                 size: size,
                 controller: 'AddCurrencyConversionRatesModalCtrl',
-                scope: $scope
+                scope: $scope,
+                resolve: {
+                    currenciesList: function () {
+                        return $scope.currenciesList;
+                    }
+                }
             });
 
             vm.theAddModal.result.then(function(rates){
