@@ -8,7 +8,8 @@
         'BlurAdmin.pages.services.notificationService',
         'BlurAdmin.pages.services.exchangeService',
         'BlurAdmin.pages.services.icoService',
-        'BlurAdmin.pages.services.addService'
+        'BlurAdmin.pages.services.addService',
+        'BlurAdmin.pages.services.currencyConversionService'
     ])
         .config(routeConfig);
 
