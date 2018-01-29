@@ -3,7 +3,7 @@
         <button type="button" class="close" ng-click="$dismiss()" aria-label="Close">
             <em class="ion-ios-close-empty sn-link-close"></em>
         </button>
-        <h4 class="modal-title" id="myModalLabel">Quote details</h4>
+        <h4 class="modal-title" id="myModalLabel">Conversion details</h4>
     </div>
     <div class="modal-body">
         <div>
@@ -12,7 +12,7 @@
                     <p class="text-subtle">Quote id:</p>
                 </div>
                 <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-                    <span ng-bind="quote.id"></span>
+                    <span ng-bind="conversion.quote.id"></span>
                 </div>
             </div>
             <div class="row">
@@ -20,7 +20,7 @@
                     <p class="text-subtle">User:</p>
                 </div>
                 <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-                    <span ng-bind="quote.user"></span>
+                    <span ng-bind="conversion.quote.user"></span>
                 </div>
             </div>
             <div class="row">
@@ -28,7 +28,23 @@
                     <p class="text-subtle">Recipient:</p>
                 </div>
                 <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-                    <span ng-bind="quote.recipient"></span>
+                    <span ng-bind="conversion.quote.recipient"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-left-padding divider">
+                    <p class="text-subtle">Debit tx:</p>
+                </div>
+                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                    <span ng-bind="conversion.debit_tx"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-left-padding divider">
+                    <p class="text-subtle">Credit tx:</p>
+                </div>
+                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                    <span ng-bind="conversion.credit_tx"></span>
                 </div>
             </div>
             <div class="row">
@@ -36,7 +52,7 @@
                     <p class="text-subtle">From currency:</p>
                 </div>
                 <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-                    <span ng-bind="quote.from_currency.code"></span>
+                    <span ng-bind="conversion.quote.from_currency.code"></span>
                 </div>
             </div>
             <div class="row">
@@ -44,7 +60,7 @@
                     <p class="text-subtle">To currency:</p>
                 </div>
                 <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-                    <span ng-bind="quote.to_currency.code"></span>
+                    <span ng-bind="conversion.quote.to_currency.code"></span>
                 </div>
             </div>
             <div class="row">
@@ -52,7 +68,7 @@
                     <p class="text-subtle">From total amount:</p>
                 </div>
                 <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-                    <span>{{quote.from_currency.symbol}} {{quote.from_total_amount  | currencyModifiersFilter: quote.from_currency.divisibility}}</span>
+                    <span>{{conversion.quote.from_currency.symbol}} {{conversion.quote.from_total_amount  | currencyModifiersFilter: conversion.quote.from_currency.divisibility}}</span>
                 </div>
             </div>
             <div class="row">
@@ -60,7 +76,7 @@
                     <p class="text-subtle">From amount:</p>
                 </div>
                 <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-                    <span>{{quote.from_currency.symbol}} {{quote.from_amount  | currencyModifiersFilter: quote.from_currency.divisibility}}</span>
+                    <span>{{conversion.quote.from_currency.symbol}} {{conversion.quote.from_amount  | currencyModifiersFilter: conversion.quote.from_currency.divisibility}}</span>
                 </div>
             </div>
             <div class="row">
@@ -68,7 +84,7 @@
                     <p class="text-subtle">From fee:</p>
                 </div>
                 <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-                    <span>{{quote.from_currency.symbol}} {{quote.from_fee  | currencyModifiersFilter: quote.from_currency.divisibility}}</span>
+                    <span>{{conversion.quote.from_currency.symbol}} {{conversion.quote.from_fee  | currencyModifiersFilter: conversion.quote.from_currency.divisibility}}</span>
                 </div>
             </div>
             <div class="row">
@@ -76,7 +92,7 @@
                     <p class="text-subtle">To amount:</p>
                 </div>
                 <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-                    <span>{{quote.to_currency.symbol}} {{quote.to_amount  | currencyModifiersFilter: quote.to_currency.divisibility}}</span>
+                    <span>{{conversion.quote.to_currency.symbol}} {{conversion.quote.to_amount  | currencyModifiersFilter: conversion.quote.to_currency.divisibility}}</span>
                 </div>
             </div>
             <div class="row">
@@ -84,7 +100,7 @@
                     <p class="text-subtle">Rate:</p>
                 </div>
                 <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-                    <span>{{quote.to_currency.symbol}} {{quote.rate  | currencyModifiersFilter: quote.to_currency.divisibility}}</span>
+                    <span>{{conversion.quote.to_currency.symbol}} {{conversion.quote.rate  | currencyModifiersFilter: conversion.quote.to_currency.divisibility}}</span>
                 </div>
             </div>
             <div class="row">

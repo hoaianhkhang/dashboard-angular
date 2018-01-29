@@ -1,0 +1,63 @@
+<currency-conversion-service-navigation></currency-conversion-service-navigation>
+
+<div ng-hide="loadingConversions" class="panel">
+    <div class="panel-heading">
+        <span class="user-details-panel-title">Conversion list</span>
+        <a ng-click="goToAddConversionView('app/pages/services/currencyConversionService/currencyConversionConversions/addCurrencyConversionConversionsModal/addCurrencyConversionConversionsModal.html','md')" class="user-details-panel-link pull-right pointer">Add</a>
+    </div>
+    <div class="panel-body">
+        <div ng-show="conversionList.length > 0" class="divider">
+            <table class="table custom-table">
+                <tr>
+                    <th>Quote id</th>
+                    <th>User</th>
+                    <th>Recipient</th>
+                    <th>Debit tx</th>
+                    <th>Credit tx</th>
+                    <th>User</th>
+                    <th>From currency</th>
+                    <th>To currency</th>
+                    <th>From amount</th>
+                    <th>To amount</th>
+                    <th class="pull-right">Rate</th>
+                </tr>
+                <tr ng-repeat="conversion in conversionList"  class="editable-row pointer user-details-table-hover"
+                    ng-click="goToConversionView('app/pages/services/currencyConversionService/currencyConversionConversions/showCurrencyConversionConversionsModal/showCurrencyConversionConversionsModal.html','md',conversion)">
+                    <td class="transactions-list-element" title="{{conversion.quote.id}}" ng-bind="conversion.quote.id"></td>
+                    <td class="transactions-list-element" title="{{conversion.quote.user}}" ng-bind="conversion.quote.user"></td>
+                    <td class="transactions-list-element" title="{{conversion.quote.recipient}}" ng-bind="conversion.quote.recipient"></td>
+                    <td class="transactions-list-element" title="{{conversion.debit_tx}}" ng-bind="conversion.debit_tx"></td>
+                    <td class="transactions-list-element" title="{{conversion.credit_tx}}" ng-bind="conversion.credit_tx"></td>
+                    <td class="transactions-list-element rehive-table-row-first-child" title="{{conversion.quote.from_currency.code}}" ng-bind="conversion.quote.from_currency.code"></td>
+                    <td class="transactions-list-element" title="{{conversion.quote.to_currency.code}}" ng-bind="conversion.quote.to_currency.code"></td>
+                    <td><div class="transactions-list-element">
+                        {{conversion.quote.from_currency.symbol}} {{conversion.quote.from_total_amount  | currencyModifiersFilter: conversion.quote.from_currency.divisibility}}
+                    </div></td>
+                    <td><div class="transactions-list-element">
+                        {{conversion.quote.from_currency.symbol}} {{conversion.quote.from_amount  | currencyModifiersFilter: conversion.quote.from_currency.divisibility}}
+                    </div></td>
+                    <td><div class="transactions-list-element">
+                        {{conversion.quote.from_currency.symbol}} {{conversion.quote.from_fee  | currencyModifiersFilter: conversion.quote.from_currency.divisibility}}
+                    </div></td>
+                    <td><div class="transactions-list-element">
+                        {{conversion.quote.to_currency.symbol}} {{conversion.quote.to_amount  | currencyModifiersFilter: conversion.quote.to_currency.divisibility}}
+                    </div></td>
+                    <td class="pull-right"><div class="transactions-list-element">
+                        {{conversion.quote.to_currency.symbol}} {{conversion.quote.rate  | currencyModifiersFilter: conversion.quote.to_currency.divisibility}}
+                    </div></td>
+                </tr>
+            </table>
+            <div>
+                <p uib-pagination boundary-links="true" items-per-page="pagination.itemsPerPage"  total-items="conversionListData.count" ng-model="pagination.pageNo"
+                   max-size="pagination.maxSize" class="pagination-sm pull-right transaction-history-pagination" force-ellipses="true" ng-change="getConversionsList()"
+                   previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></p>
+            </div>
+        </div>
+        <div ng-hide="conversionList.length > 0">
+            <i>No conversions are available</i>
+        </div>
+    </div>
+</div>
+<div ng-show="loadingConversions" class="service-header" ba-panel>
+    <loading-image></loading-image>
+</div>

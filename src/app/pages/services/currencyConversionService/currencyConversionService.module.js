@@ -3,7 +3,8 @@
 
     angular.module('BlurAdmin.pages.services.currencyConversionService', [
         'BlurAdmin.pages.services.currencyConversionService.currencyConversionRates',
-        'BlurAdmin.pages.services.currencyConversionService.currencyConversionQuotes'
+        'BlurAdmin.pages.services.currencyConversionService.currencyConversionQuotes',
+        'BlurAdmin.pages.services.currencyConversionService.currencyConversionList'
     ])
         .config(routeConfig);
 
