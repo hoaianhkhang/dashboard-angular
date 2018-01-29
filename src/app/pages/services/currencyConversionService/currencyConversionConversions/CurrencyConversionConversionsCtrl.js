@@ -42,7 +42,6 @@
                     if (res.status === 200) {
                         $scope.conversionListData = res.data.data;
                         $scope.conversionList = res.data.data.results;
-                        $scope.conversionList = [{debit_tx: 'sadkadsjaslks'}]
                     }
                 }).catch(function (error) {
                     $scope.loadingConversions =  false;
