@@ -10,7 +10,7 @@
         var vm = this;
         vm.token = cookieManagement.getCookie('TOKEN');
         vm.baseUrl = cookieManagement.getCookie('SERVICEURL');
-        $scope.addingRate = true;
+        $scope.addingRate = false;
         $scope.invalidAmount = false;
         $scope.rateParams = {
             fromCurrency: {

@@ -2,8 +2,8 @@
     'use strict';
 
     angular.module('BlurAdmin.pages.services.currencyConversionService', [
-        'BlurAdmin.pages.services.currencyConversionService.currencyConversionRates'
-        // 'BlurAdmin.pages.services.currencyConversionService.currencyConversionServiceLogs',
+        'BlurAdmin.pages.services.currencyConversionService.currencyConversionRates',
+        'BlurAdmin.pages.services.currencyConversionService.currencyConversionQuotes'
     ])
         .config(routeConfig);
 

@@ -1,0 +1,49 @@
+<currency-conversion-service-navigation></currency-conversion-service-navigation>
+
+<div ng-hide="loadingQuotes" class="panel">
+    <div class="panel-heading">
+        <span class="user-details-panel-title">Quotes list</span>
+    </div>
+    <div class="panel-body">
+        <div ng-show="quotesList.length > 0" class="divider">
+            <table class="table custom-table">
+                <tr>
+                    <th>User</th>
+                    <th>Recipient</th>
+                    <th>From currency</th>
+                    <th>To currency</th>
+                    <th>From amount</th>
+                    <th>To amount</th>
+                    <th class="pull-right">Rate</th>
+                </tr>
+                <tr ng-repeat="quote in quotesList"  class="editable-row pointer user-details-table-hover"
+                    ng-click="goToQuotesView('app/pages/services/currencyConversionService/currencyConversionQuotes/currencyConversionQuotesModal/currencyConversionQuotesModal.html','md',quote)">
+                    <td class="transactions-list-element" title="{{quote.user}}" ng-bind="quote.user"></td>
+                    <td class="transactions-list-element" title="{{quote.recipient}}" ng-bind="quote.recipient"></td>
+                    <td class="transactions-list-element rehive-table-row-first-child" title="{{quote.from_currency.code}}" ng-bind="quote.from_currency.code"></td>
+                    <td class="transactions-list-element" title="{{quote.to_currency.code}}" ng-bind="quote.to_currency.code"></td>
+                    <td><div class="transactions-list-element">
+                        {{quote.from_currency.symbol}} {{quote.from_amount  | currencyModifiersFilter: quote.from_currency.divisibility}}
+                    </div></td>
+                    <td><div class="transactions-list-element">
+                        {{quote.to_currency.symbol}} {{quote.to_amount  | currencyModifiersFilter: quote.to_currency.divisibility}}
+                    </div></td>
+                    <td class="pull-right"><div class="transactions-list-element">
+                        {{quote.to_currency.symbol}} {{quote.rate  | currencyModifiersFilter: quote.to_currency.divisibility}}
+                    </div></td>
+                </tr>
+            </table>
+            <div>
+                <p uib-pagination boundary-links="true" items-per-page="pagination.itemsPerPage"  total-items="quotesListData.count" ng-model="pagination.pageNo"
+                   max-size="pagination.maxSize" class="pagination-sm pull-right transaction-history-pagination" force-ellipses="true" ng-change="getQuotesList()"
+                   previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></p>
+            </div>
+        </div>
+        <div ng-hide="quotesList.length > 0">
+            <i>No quotes are available</i>
+        </div>
+    </div>
+</div>
+<div ng-show="loadingQuotes" class="service-header" ba-panel>
+    <loading-image></loading-image>
+</div>
