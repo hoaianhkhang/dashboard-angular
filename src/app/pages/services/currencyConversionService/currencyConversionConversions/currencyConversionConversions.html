@@ -14,7 +14,6 @@
                     <th>Recipient</th>
                     <th>Debit tx</th>
                     <th>Credit tx</th>
-                    <th>User</th>
                     <th>From currency</th>
                     <th>To currency</th>
                     <th>From amount</th>
@@ -31,13 +30,7 @@
                     <td class="transactions-list-element rehive-table-row-first-child" title="{{conversion.quote.from_currency.code}}" ng-bind="conversion.quote.from_currency.code"></td>
                     <td class="transactions-list-element" title="{{conversion.quote.to_currency.code}}" ng-bind="conversion.quote.to_currency.code"></td>
                     <td><div class="transactions-list-element">
-                        {{conversion.quote.from_currency.symbol}} {{conversion.quote.from_total_amount  | currencyModifiersFilter: conversion.quote.from_currency.divisibility}}
-                    </div></td>
-                    <td><div class="transactions-list-element">
                         {{conversion.quote.from_currency.symbol}} {{conversion.quote.from_amount  | currencyModifiersFilter: conversion.quote.from_currency.divisibility}}
-                    </div></td>
-                    <td><div class="transactions-list-element">
-                        {{conversion.quote.from_currency.symbol}} {{conversion.quote.from_fee  | currencyModifiersFilter: conversion.quote.from_currency.divisibility}}
                     </div></td>
                     <td><div class="transactions-list-element">
                         {{conversion.quote.to_currency.symbol}} {{conversion.quote.to_amount  | currencyModifiersFilter: conversion.quote.to_currency.divisibility}}
