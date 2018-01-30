@@ -5,8 +5,8 @@
         .controller('AddUserCtrl', AddUserCtrl);
 
     /** @ngInject */
-    function AddUserCtrl($scope,environmentConfig,$location,
-                       cookieManagement,errorHandler,Upload,toastr) {
+    function AddUserCtrl($scope,environmentConfig,$location,cleanObject,
+                       cookieManagement,errorHandler,$http,Upload,toastr) {
 
         var vm = this;
         vm.token = cookieManagement.getCookie('TOKEN');
@@ -20,8 +20,29 @@
             language: '',
             metadata: '',
             timezone: '',
+            groups: '',
             nationality: "US"
         };
+
+        vm.getGroups = function () {
+            if(vm.token){
+                $http.get(environmentConfig.API + '/admin/groups/?page_size=250', {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': vm.token
+                    }
+                }).then(function (res) {
+                    $scope.loadingUsers = false;
+                    if (res.status === 200) {
+                        $scope.groups = res.data.data.results;
+                    }
+                }).catch(function (error) {
+                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.handleErrors(error);
+                });
+            }
+        };
+        vm.getGroups();
 
 
         $scope.addNewUser = function (newUserParams) {
@@ -35,9 +56,15 @@
                 newUserParams.metadata = {};
             }
 
+            if(newUserParams.groups && newUserParams.groups.name){
+                newUserParams.groups = newUserParams.groups.name;
+            }
+
+            var cleanUserParams = cleanObject.cleanObj(newUserParams);
+
             Upload.upload({
                 url: environmentConfig.API + '/admin/users/',
-                data: newUserParams,
+                data: cleanUserParams,
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': vm.token},

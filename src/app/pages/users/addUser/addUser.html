@@ -35,6 +35,12 @@
                     <label>Nationality</label>
                     <country-select class="form-control pointer" data-ng-model="newUserParams.nationality"></country-select>
                 </div>
+                <div class="form-group">
+                    <label>Group</label><br>
+                    <select class="form-control pointer" ng-model="newUserParams.groups"
+                            ng-options="group.name for group in groups">
+                    </select>
+                </div>
                 <a ng-hide="showingMoreDetails" ng-click="toggleMoreDetails()" class="pull-left pointer">Show more details</a>
                 <div ng-show="showingMoreDetails">
                     <div class="form-group">
