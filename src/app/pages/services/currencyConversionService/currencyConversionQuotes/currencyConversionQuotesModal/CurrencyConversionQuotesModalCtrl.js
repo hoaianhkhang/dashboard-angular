@@ -4,8 +4,7 @@
     angular.module('BlurAdmin.pages.services.currencyConversionService.currencyConversionQuotes')
         .controller('CurrencyConversionQuotesModalCtrl', CurrencyConversionQuotesModalCtrl);
 
-    function CurrencyConversionQuotesModalCtrl($scope,$uibModalInstance,metadataTextService,quote,toastr,cleanObject,
-                                                 currencyModifiers,$http,cookieManagement,errorHandler) {
+    function CurrencyConversionQuotesModalCtrl($scope,metadataTextService,quote,cookieManagement) {
 
         var vm = this;
         vm.token = cookieManagement.getCookie('TOKEN');

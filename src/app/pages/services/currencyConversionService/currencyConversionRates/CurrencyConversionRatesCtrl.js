@@ -5,7 +5,7 @@
         .controller('CurrencyConversionRatesCtrl', CurrencyConversionRatesCtrl);
 
     /** @ngInject */
-    function CurrencyConversionRatesCtrl($scope,$http,cookieManagement,toastr,errorHandler,$state,$uibModal) {
+    function CurrencyConversionRatesCtrl($scope,$http,cookieManagement,errorHandler,$uibModal) {
 
         var vm = this;
         vm.token = cookieManagement.getCookie('TOKEN');

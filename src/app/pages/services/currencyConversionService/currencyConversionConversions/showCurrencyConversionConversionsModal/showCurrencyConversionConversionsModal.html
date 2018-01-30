@@ -28,7 +28,7 @@
                     <p class="text-subtle">User:</p>
                 </div>
                 <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-                    <span ng-bind="conversion.quote.user"></span>
+                    <a class="pointer" ng-bind="conversion.quote.user" ng-click="goToUserView(conversion.quote.user)"></a>
                 </div>
             </div>
             <div class="row">
@@ -44,7 +44,7 @@
                     <p class="text-subtle">Debit tx:</p>
                 </div>
                 <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-                    <span ng-bind="conversion.debit_tx"></span>
+                    <a class="pointer" ng-bind="conversion.debit_tx" ng-click="goToTransactionsHistoryView(conversion.debit_tx)"></a>
                 </div>
             </div>
             <div class="row">
@@ -52,7 +52,7 @@
                     <p class="text-subtle">Credit tx:</p>
                 </div>
                 <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-                    <span ng-bind="conversion.credit_tx"></span>
+                    <a class="pointer" ng-bind="conversion.credit_tx" ng-click="goToTransactionsHistoryView(conversion.credit_tx)"></a>
                 </div>
             </div>
             <div class="row">
