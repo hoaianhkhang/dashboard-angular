@@ -153,6 +153,17 @@
                     </div>
                 </td>
             </tr>
+            <tr>
+                <td class="table-row-center transactions-list-element rehive-table-row-first-child">
+                    Default transaction status
+                </td>
+                <td class="rehive-table-row-last-child">
+                    <select class="form-control pointer pull-right company-setting-dropdown"  ng-model="companySettingsObj.default_transaction_status"
+                    ng-change="toggleCompanySettings(companySettingsObj.default_transaction_status,'default_transaction_status')"
+                    ng-options="status for status in statusOptions">
+                    </select>
+                </td>
+            </tr>
         </table>
     </div>
 </div>

@@ -21,6 +21,7 @@
             settings: {}
         };
         $scope.companySettingsObj = {};
+        $scope.statusOptions = ['Pending','Complete'];
 
         vm.getCompanyInfo = function () {
             if(vm.token) {
@@ -106,7 +107,12 @@
         $scope.toggleCompanySettings = function (groupSetting,type) {
 
             var updatedSetting = {};
-            updatedSetting[type] = !groupSetting;
+
+            if(type == 'default_transaction_status'){
+                updatedSetting[type] = groupSetting;
+            } else {
+                updatedSetting[type] = !groupSetting;
+            }
 
             if(vm.token) {
                 $http.patch(environmentConfig.API + '/admin/company/settings/',updatedSetting, {
@@ -118,6 +124,7 @@
                     if (res.status === 200) {
                         $scope.companySettingsObj = {};
                         $scope.companySettingsObj = res.data.data;
+                        toastr.success("Company setting successfully updated");
                     }
                 }).catch(function (error) {
                     errorHandler.evaluateErrors(error.data);
