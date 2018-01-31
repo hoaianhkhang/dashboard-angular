@@ -1,0 +1,52 @@
+<div ng-show="hotwalletObjLength == 0 && !loadingColdstorage" class="panel">
+    <div class="panel-body">
+        <i>No active hotwallet created. To enable this feature please create a hotwallet.</i>
+        <a ng-click="openAddHotwalletModal('app/pages/services/bitcoinService/bitcoinServiceAccounts/bitcoinHotwallet/addBitcoinHotwalletModal/addBitcoinHotwalletModal.html','md')" class="pull-right pointer">Create</a>
+    </div>
+</div>
+
+<div ng-show="hotwalletObjLength > 0 && !loadingColdstorage" class="panel">
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                <div class="dashboard-currencies-code">
+                    XBT
+                </div>
+            </div>
+            <div class="currencies-page-row">
+                <div>
+                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                        <div>
+                            <span><strong>{{hotwalletObj.rehive_account_reference}}</strong></span>
+                            <br>
+                            <span class="currencies-details-heading">Account reference</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                        <div>
+                            <span><strong>{{bitcoinCurrency.symbol}} {{hotwalletObj.balance | currencyModifiersFilter: bitcoinCurrency.divisibility}}</strong></span>
+                            <br>
+                            <span class="currencies-details-heading">Total</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                        <div>
+                            <span><strong>{{hotwalletObj.low_balance_percentage + '%'}}</strong></span>
+                            <br>
+                            <span class="currencies-details-heading">Low balance percentage</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                        <button class="btn btn-primary dashboard-btn pull-right"
+                          ng-click="openFundHotwalletModal('app/pages/services/bitcoinService/bitcoinServiceAccounts/bitcoinHotwallet/fundBitcoinHotwalletModal/fundBitcoinHotwalletModal.html','md')">
+                            Fund
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div ba-panel ng-show="loadingColdstorage">
+    <loading-image></loading-image>
+</div>
