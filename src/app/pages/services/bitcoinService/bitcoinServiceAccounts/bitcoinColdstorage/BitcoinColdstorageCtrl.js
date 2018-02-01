@@ -102,36 +102,36 @@
         $scope.transactionsColdstorage = [];
         $scope.transactionsColdstorageStateMessage = '';
         $scope.transactionsColdstorageData = {};
-        $scope.typeOptions = ['Credit','Debit']; //Transfer
-        $scope.statusOptions = ['Pending','Complete','Failed','Deleted'];
-        $scope.orderByOptions = ['Latest','Largest','Smallest'];
+        $scope.typeOptionsColdstorage = ['Credit','Debit']; //Transfer
+        $scope.statusOptionsColdstorage = ['Pending','Complete','Failed','Deleted'];
+        $scope.orderByOptionsColdstorage = ['Latest','Largest','Smallest'];
 
         sharedResources.getSubtypes().then(function (res) {
-            $scope.subtypeOptions = _.pluck(res.data.data,'name');
-            $scope.subtypeOptions.unshift('');
+            $scope.subtypeOptionsColdstorage = _.pluck(res.data.data,'name');
+            $scope.subtypeOptionsColdstorage.unshift('');
         });
 
         //for angular datepicker
-        $scope.dateObj = {};
-        $scope.dateObj.format = 'MM/dd/yyyy';
-        $scope.popup1 = {};
-        $scope.open1 = function() {
-            $scope.popup1.opened = true;
+        $scope.dateObjColdstorage = {};
+        $scope.dateObjColdstorage.format = 'MM/dd/yyyy';
+        $scope.popup1Coldstorage = {};
+        $scope.open1Coldstorage = function() {
+            $scope.popup1Coldstorage.opened = true;
         };
 
-        $scope.popup2 = {};
-        $scope.open2 = function() {
-            $scope.popup2.opened = true;
+        $scope.popup2Coldstorage = {};
+        $scope.open2Coldstorage = function() {
+            $scope.popup2Coldstorage.opened = true;
         };
         //for angular datepicker end
 
-        $scope.orderByFunction = function () {
+        $scope.orderByFunctionColdstorage = function () {
             return ($scope.applyFiltersColdstorageObj.orderByFilter.selectedOrderByOption == 'Latest' ? '-created' :
                 $scope.applyFiltersColdstorageObj.orderByFilter.selectedOrderByOption == 'Largest' ? '-amount' :
                     $scope.applyFiltersColdstorageObj.orderByFilter.selectedOrderByOption == 'Smallest' ? 'amount' : '');
         };
 
-        $scope.pageSizeChanged =  function () {
+        $scope.pageSizeChangedColdstorage =  function () {
             if($scope.coldstoragePagination.itemsPerPage > 250){
                 $scope.coldstoragePagination.itemsPerPage = 250;
             }
@@ -141,7 +141,7 @@
             $scope.showingColdstorageFilters = !$scope.showingColdstorageFilters;
         };
 
-        $scope.clearFilters = function () {
+        $scope.clearColdstorageFilters = function () {
             $scope.filtersColdstorageObj = {
                 dateFilter: false,
                 amountFilter: false,
@@ -154,14 +154,14 @@
             };
         };
 
-        $scope.dayIntervalChanged = function () {
+        $scope.dayIntervalChangedColdstorage = function () {
             if($scope.applyFiltersColdstorageObj.dateFilter.dayInterval <= 0){
                 toastr.success('Please enter a positive value');
             }
         };
 
-        vm.getDateFilters = function () {
-            var dateObj = {
+        vm.getDateFiltersColdstorageObj = function () {
+            var dateObjColdstorage = {
                 created__lt: null,
                 created__gt: null
             };
@@ -169,40 +169,40 @@
             switch($scope.applyFiltersColdstorageObj.dateFilter.selectedDateOption) {
                 case 'Is in the last':
                     if($scope.applyFiltersColdstorageObj.dateFilter.selectedDayIntervalOption == 'days'){
-                        dateObj.created__lt = moment().add(1,'days').format('YYYY-MM-DD');
-                        dateObj.created__gt = moment().subtract($scope.applyFiltersColdstorageObj.dateFilter.dayInterval,'days').format('YYYY-MM-DD');
+                        dateObjColdstorage.created__lt = moment().add(1,'days').format('YYYY-MM-DD');
+                        dateObjColdstorage.created__gt = moment().subtract($scope.applyFiltersColdstorageObj.dateFilter.dayInterval,'days').format('YYYY-MM-DD');
                     } else {
-                        dateObj.created__lt = moment().add(1,'days').format('YYYY-MM-DD');
-                        dateObj.created__gt = moment().subtract($scope.applyFiltersColdstorageObj.dateFilter.dayInterval,'months').format('YYYY-MM-DD');
+                        dateObjColdstorage.created__lt = moment().add(1,'days').format('YYYY-MM-DD');
+                        dateObjColdstorage.created__gt = moment().subtract($scope.applyFiltersColdstorageObj.dateFilter.dayInterval,'months').format('YYYY-MM-DD');
                     }
 
                     break;
                 case 'In between':
-                    dateObj.created__lt = moment(new Date($scope.applyFiltersColdstorageObj.dateFilter.dateTo)).add(1,'days').format('YYYY-MM-DD');
-                    dateObj.created__gt = moment(new Date($scope.applyFiltersColdstorageObj.dateFilter.dateFrom)).format('YYYY-MM-DD');
+                    dateObjColdstorage.created__lt = moment(new Date($scope.applyFiltersColdstorageObj.dateFilter.dateTo)).add(1,'days').format('YYYY-MM-DD');
+                    dateObjColdstorage.created__gt = moment(new Date($scope.applyFiltersColdstorageObj.dateFilter.dateFrom)).format('YYYY-MM-DD');
 
                     break;
                 case 'Is equal to':
-                    dateObj.created__lt = moment(new Date($scope.applyFiltersColdstorageObj.dateFilter.dateEqualTo)).add(1,'days').format('YYYY-MM-DD');
-                    dateObj.created__gt = moment(new Date($scope.applyFiltersColdstorageObj.dateFilter.dateEqualTo)).format('YYYY-MM-DD');
+                    dateObjColdstorage.created__lt = moment(new Date($scope.applyFiltersColdstorageObj.dateFilter.dateEqualTo)).add(1,'days').format('YYYY-MM-DD');
+                    dateObjColdstorage.created__gt = moment(new Date($scope.applyFiltersColdstorageObj.dateFilter.dateEqualTo)).format('YYYY-MM-DD');
 
                     break;
                 case 'Is after':
-                    dateObj.created__lt = null;
-                    dateObj.created__gt = moment(new Date($scope.applyFiltersColdstorageObj.dateFilter.dateFrom)).add(1,'days').format('YYYY-MM-DD');
+                    dateObjColdstorage.created__lt = null;
+                    dateObjColdstorage.created__gt = moment(new Date($scope.applyFiltersColdstorageObj.dateFilter.dateFrom)).add(1,'days').format('YYYY-MM-DD');
                     break;
                 case 'Is before':
-                    dateObj.created__lt = moment(new Date($scope.applyFiltersColdstorageObj.dateFilter.dateTo)).format('YYYY-MM-DD');
-                    dateObj.created__gt = null;
+                    dateObjColdstorage.created__lt = moment(new Date($scope.applyFiltersColdstorageObj.dateFilter.dateTo)).format('YYYY-MM-DD');
+                    dateObjColdstorage.created__gt = null;
                     break;
                 default:
                     break;
             }
 
-            return dateObj;
+            return dateObjColdstorage;
         };
 
-        vm.getAmountFilters = function () {
+        vm.getAmountFiltersColdstorage = function () {
             var amountObj = {
                 amount: null,
                 amount__lt: null,
@@ -249,7 +249,7 @@
             return amountObj;
         };
 
-        vm.getTransactionUrl = function(){
+        vm.getTransactionColdstorageUrl = function(){
             $scope.filtersColdstorageCount = 0;
 
             for(var x in $scope.filtersColdstorageObj){
@@ -261,16 +261,16 @@
             }
 
             if($scope.filtersColdstorageObj.dateFilter){
-                vm.dateObj = vm.getDateFilters();
+                vm.dateObjColdstorage = vm.getDateFiltersColdstorageObj();
             } else{
-                vm.dateObj = {
+                vm.dateObjColdstorage = {
                     created__lt: null,
                     created__gt: null
                 };
             }
 
             if($scope.filtersColdstorageObj.amountFilter){
-                vm.amountObj = vm.getAmountFilters();
+                vm.amountObj = vm.getAmountFiltersColdstorage();
             } else{
                 vm.amountObj = {
                     amount: null,
@@ -285,8 +285,8 @@
                 amount: vm.amountObj.amount ? currencyModifiers.convertToCents(vm.amountObj.amount,8) : null,
                 amount__lt: vm.amountObj.amount__lt ? currencyModifiers.convertToCents(vm.amountObj.amount__lt,8) : null,
                 amount__gt: vm.amountObj.amount__gt ? currencyModifiers.convertToCents(vm.amountObj.amount__gt,8) : null,
-                created__gt: vm.dateObj.created__gt ? Date.parse(vm.dateObj.created__gt +'T00:00:00') : null,
-                created__lt: vm.dateObj.created__lt ? Date.parse(vm.dateObj.created__lt +'T00:00:00') : null,
+                created__gt: vm.dateObjColdstorage.created__gt ? Date.parse(vm.dateObjColdstorage.created__gt +'T00:00:00') : null,
+                created__lt: vm.dateObjColdstorage.created__lt ? Date.parse(vm.dateObjColdstorage.created__lt +'T00:00:00') : null,
                 account: $scope.coldstorageObj.rehive_account_reference,
                 orderby: $scope.filtersColdstorageObj.orderByFilter ? ($scope.applyFiltersColdstorageObj.orderByFilter.selectedOrderByOption == 'Latest' ? '-created' : $scope.applyFiltersColdstorageObj.orderByFilter.selectedOrderByOption == 'Largest' ? '-amount' : $scope.applyFiltersColdstorageObj.orderByFilter.selectedOrderByOption == 'Smallest' ? 'amount' : null): null,
                 id: $scope.filtersColdstorageObj.transactionIdFilter ? ($scope.applyFiltersColdstorageObj.transactionIdFilter.selectedTransactionIdOption ? encodeURIComponent($scope.applyFiltersColdstorageObj.transactionIdFilter.selectedTransactionIdOption) : null): null,
@@ -315,7 +315,7 @@
                     $scope.transactionsColdstorage.length = 0;
                 }
 
-                var transactionsUrl = vm.getTransactionUrl();
+                var transactionsUrl = vm.getTransactionColdstorageUrl();
 
                 $http.get(transactionsUrl, {
                     headers: {
@@ -345,7 +345,7 @@
             }
         };
 
-        $scope.openModal = function (page, size,transaction) {
+        $scope.openColdstorageModal = function (page, size,transaction) {
             vm.theModal = $uibModal.open({
                 animation: true,
                 templateUrl: page,
@@ -360,7 +360,7 @@
 
             vm.theModal.result.then(function(transaction){
                 if(transaction){
-                    $scope.clearFilters();
+                    $scope.clearColdstorageFilters();
                     $scope.getLatestColdstorageTransactions();
                 }
             }, function(){

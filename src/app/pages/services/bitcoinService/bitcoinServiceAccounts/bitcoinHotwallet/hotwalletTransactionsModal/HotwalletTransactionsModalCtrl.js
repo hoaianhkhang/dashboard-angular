@@ -2,10 +2,10 @@
     'use strict';
 
     angular.module('BlurAdmin.pages.services.bitcoinService.bitcoinServiceAccounts')
-        .controller('ColdstorageTransactionModalCtrl', ColdstorageTransactionModalCtrl);
+        .controller('HotwalletTransactionsModalCtrl', HotwalletTransactionsModalCtrl);
 
-    function ColdstorageTransactionModalCtrl($uibModalInstance,$scope,
-                              transaction,metadataTextService,$location,cookieManagement) {
+    function HotwalletTransactionsModalCtrl($uibModalInstance,$scope,cookieManagement,
+                                             transaction,metadataTextService,$location) {
 
         $scope.transaction = transaction;
         $scope.updateTransactionObj = {};

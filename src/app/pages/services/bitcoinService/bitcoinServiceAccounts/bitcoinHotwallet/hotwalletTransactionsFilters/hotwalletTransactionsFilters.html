@@ -1,0 +1,210 @@
+<div class="panel table-filters">
+    <div class="panel-heading">
+        <div class="table-filter-heading">
+            <span class="user-details-panel-title pull-left">Create filter</span>
+            <button ng-click="getLatestHotwalletTransactions('applyFilter')" class="btn btn-primary pull-right">Done</button>
+            <button ng-click="clearHotwalletFilters()" class="btn btn-default pull-right clear-filter-btn">Clear</button>
+        </div>
+    </div>
+    <div class="panel-body">
+        <div id="filterDate">
+            <div>
+                <label class="checkbox-inline custom-checkbox nowrap">
+                    <input type="checkbox" ng-model="filtersHotwalletObj.dateFilter">
+                    <span>Date</span>
+                </label>
+            </div>
+            <div ng-if="filtersHotwalletObj.dateFilter" class="row divider-top-6">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 date-filter-view">
+                    <select class="form-control pointer" ng-model="applyFiltersHotwalletObj.dateFilter.selectedDateOption"
+                            ng-options="option for option in dateFilterHotwalletOptions">
+                    </select>
+                    <div ng-show="applyFiltersHotwalletObj.dateFilter.selectedDateOption == 'Is in the last'" class="date-filter-view">
+                        <input type="text" ng-model="applyFiltersHotwalletObj.dateFilter.dayInterval" ng-change="dayIntervalChangedHotwallet()"
+                               auto-focus="applyFiltersHotwalletObj.dateFilter.selectedDateOption == 'Is in the last'" class="transaction-date-interval-input">
+                        <select class="form-control pointer margin-left-12" ng-model="applyFiltersHotwalletObj.dateFilter.selectedDayIntervalOption"
+                                ng-options="option for option in dateFilterIntervalHotwalletOptions">
+                        </select>
+                    </div>
+                    <div ng-show="applyFiltersHotwalletObj.dateFilter.selectedDateOption == 'In between'" class="date-filter-view">
+                        <div class="date-filter-in-between-view">
+                            <input type="text" class="form-control transaction-date-filter-input custom-datepicker"
+                                   uib-datepicker-popup="{{dateObjHotwallet.format}}" popup-placement="bottom-left"
+                                   ng-model="applyFiltersHotwalletObj.dateFilter.dateFrom"
+                                   show-button-bar="false" datepicker-options="{showWeeks: false}"
+                                   placeholder="mm/dd/yyyy" is-open="popup1Hotwallet.opened" close-text="Close" />
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-default calender-button" ng-click="open1Hotwallet()">
+                                    <i class="glyphicon glyphicon-calendar"></i></button>
+                            </span>
+                        </div>
+                        <span class="filter-text margin-left-12">and</span>
+                        <div class="date-filter-in-between-view">
+                            <input type="text" class="form-control transaction-date-filter-input custom-datepicker"
+                                   uib-datepicker-popup="{{dateObjHotwallet.format}}" popup-placement="bottom-left"
+                                   ng-model="applyFiltersHotwalletObj.dateFilter.dateTo"
+                                   show-button-bar="false" datepicker-options="{showWeeks: false}"
+                                   placeholder="mm/dd/yyyy" is-open="popup2Hotwallet.opened" close-text="Close" />
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-default calender-button" ng-click="open2Hotwallet()">
+                                    <i class="glyphicon glyphicon-calendar"></i></button>
+                            </span>
+                        </div>
+                    </div>
+                    <div ng-show="applyFiltersHotwalletObj.dateFilter.selectedDateOption == 'Is equal to'" class="date-filter-view">
+                        <div class="date-filter-in-between-view">
+                            <input type="text" class="form-control transaction-date-filter-input custom-datepicker"
+                                   uib-datepicker-popup="{{dateObjHotwallet.format}}" popup-placement="bottom-left"
+                                   ng-model="applyFiltersHotwalletObj.dateFilter.dateEqualTo" show-button-bar="false" datepicker-options="{showWeeks: false}"
+                                   placeholder="mm/dd/yyyy" is-open="popup1Hotwallet.opened" close-text="Close" />
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-default calender-button" ng-click="open1Hotwallet()">
+                                    <i class="glyphicon glyphicon-calendar"></i></button>
+                            </span>
+                        </div>
+                    </div>
+                    <div ng-show="applyFiltersHotwalletObj.dateFilter.selectedDateOption == 'Is after'" class="date-filter-view">
+                        <div class="date-filter-in-between-view">
+                            <input type="text" class="form-control transaction-date-filter-input custom-datepicker"
+                                   uib-datepicker-popup="{{dateObjHotwallet.format}}" popup-placement="bottom-left"
+                                   ng-model="applyFiltersHotwalletObj.dateFilter.dateFrom" show-button-bar="false" datepicker-options="{showWeeks: false}"
+                                   placeholder="mm/dd/yyyy" is-open="popup1Hotwallet.opened" close-text="Close" />
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-default calender-button" ng-click="open1Hotwallet()">
+                                    <i class="glyphicon glyphicon-calendar"></i></button>
+                            </span>
+                        </div>
+                    </div>
+                    <div ng-show="applyFiltersHotwalletObj.dateFilter.selectedDateOption == 'Is before'" class="date-filter-view">
+                        <div class="date-filter-in-between-view">
+                            <input type="text" class="form-control transaction-date-filter-input custom-datepicker"
+                                   uib-datepicker-popup="{{dateObjHotwallet.format}}" popup-placement="bottom-left"
+                                   ng-model="applyFiltersHotwalletObj.dateFilter.dateTo" show-button-bar="false" datepicker-options="{showWeeks: false}"
+                                   placeholder="mm/dd/yyyy" is-open="popup2Hotwallet.opened" close-text="Close" />
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-default calender-button" ng-click="open2Hotwallet()">
+                                    <i class="glyphicon glyphicon-calendar"></i></button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="filterAmount">
+            <div>
+                <label class="checkbox-inline custom-checkbox nowrap">
+                    <input type="checkbox" ng-model="filtersHotwalletObj.amountFilter">
+                    <span>Amount</span>
+                </label>
+            </div>
+            <div ng-if="filtersHotwalletObj.amountFilter" class="row divider-top-6">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 date-filter-view">
+                    <select class="form-control pointer" ng-model="applyFiltersHotwalletObj.amountFilter.selectedAmountOption"
+                            ng-options="option for option in amountFilterHotwalletOptions">
+                    </select>
+                    <div ng-show="applyFiltersHotwalletObj.amountFilter.selectedAmountOption == 'Is equal to'" class="date-filter-in-between-view">
+                        <input type="text" ng-model="applyFiltersHotwalletObj.amountFilter.amount"
+                               auto-focus="applyFiltersHotwalletObj.amountFilter.selectedAmountOption == 'Is equal to'"
+                               class="transaction-amount-input">
+                    </div>
+                    <div ng-show="applyFiltersHotwalletObj.amountFilter.selectedAmountOption == 'Is between'" class="amount-filter-in-between-view">
+                        <input type="text" ng-model="applyFiltersHotwalletObj.amountFilter.amount__gt"
+                               auto-focus="applyFiltersHotwalletObj.amountFilter.selectedAmountOption == 'Is between'"
+                               class="transaction-amount-input">
+                        <span class="filter-text margin-left-12">and</span>
+                        <input type="text" ng-model="applyFiltersHotwalletObj.amountFilter.amount__lt" class="transaction-amount-input">
+                    </div>
+                    <div ng-show="applyFiltersHotwalletObj.amountFilter.selectedAmountOption == 'Is greater than'" class="date-filter-in-between-view">
+                        <input type="text" ng-model="applyFiltersHotwalletObj.amountFilter.amount__gt"
+                               auto-focus="applyFiltersHotwalletObj.amountFilter.selectedAmountOption == 'Is greater than'"
+                               class="transaction-amount-input">
+                    </div>
+                    <div ng-show="applyFiltersHotwalletObj.amountFilter.selectedAmountOption == 'Is less than'" class="date-filter-in-between-view">
+                        <input type="text" ng-model="applyFiltersHotwalletObj.amountFilter.amount__lt"
+                               auto-focus="applyFiltersHotwalletObj.amountFilter.selectedAmountOption == 'Is less than'"
+                               class="transaction-amount-input">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="filterStatus">
+            <div>
+                <label class="checkbox-inline custom-checkbox nowrap">
+                    <input type="checkbox" ng-model="filtersHotwalletObj.statusFilter">
+                    <span>Status</span>
+                </label>
+            </div>
+            <div ng-if="filtersHotwalletObj.statusFilter" class="row divider-top-6">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 date-filter-view">
+                    <select class="form-control pointer" ng-model="applyFiltersHotwalletObj.statusFilter.selectedStatusOption"
+                            ng-options="option for option in statusOptionsHotwallet">
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div id="filterTransactionType">
+            <div>
+                <label class="checkbox-inline custom-checkbox nowrap">
+                    <input type="checkbox" ng-model="filtersHotwalletObj.transactionTypeFilter">
+                    <span>Transaction type</span>
+                </label>
+            </div>
+            <div ng-if="filtersHotwalletObj.transactionTypeFilter" class="row divider-top-6">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 date-filter-view">
+                    <select class="form-control pointer" ng-model="applyFiltersHotwalletObj.transactionTypeFilter.selectedTransactionTypeOption"
+                            ng-options="option for option in typeOptionsHotwallet">
+                    </select>
+                    <span class="filter-text margin-left-12">subtype </span>
+                    <select class="form-control pointer margin-left-12" ng-model="applyFiltersHotwalletObj.transactionSubtypeFilter.selectedTransactionSubtypeOption"
+                            ng-options="subtypeOption for subtypeOption in subtypeOptionsHotwallet">
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div id="filterTransactionID">
+            <div>
+                <label class="checkbox-inline custom-checkbox nowrap">
+                    <input type="checkbox" ng-model="filtersHotwalletObj.transactionIdFilter">
+                    <span>Transaction id</span>
+                </label>
+            </div>
+            <div ng-if="filtersHotwalletObj.transactionIdFilter" class="row divider-top-6">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 date-filter-view">
+                    <input type="text" ng-model="applyFiltersHotwalletObj.transactionIdFilter.selectedTransactionIdOption"
+                           auto-focus="filtersHotwalletObj.transactionIdFilter"
+                           placeholder="Transaction id" class="transaction-id-input">
+                </div>
+            </div>
+        </div>
+        <div id="filterPageSize">
+            <div>
+                <label class="checkbox-inline custom-checkbox nowrap">
+                    <input type="checkbox" ng-model="filtersHotwalletObj.pageSizeFilter">
+                    <span>Page size</span>
+                </label>
+            </div>
+            <div ng-if="filtersHotwalletObj.pageSizeFilter" class="row divider-top-6">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 date-filter-view">
+                    <input type="text" ng-model="hotwalletPagination.itemsPerPage" ng-change="pageSizeChangedHotwallet()"
+                           auto-focus="filtersHotwalletObj.pageSizeFilter"
+                           placeholder="Enter page size" class="transaction-page-size-input">
+                </div>
+            </div>
+        </div>
+        <div id="filterOrderBy">
+            <div>
+                <label class="checkbox-inline custom-checkbox nowrap">
+                    <input type="checkbox" ng-model="filtersHotwalletObj.orderByFilter">
+                    <span>Order by</span>
+                </label>
+            </div>
+            <div ng-if="filtersHotwalletObj.orderByFilter" class="row divider-top-6">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 date-filter-view">
+                    <select class="form-control pointer" ng-model="applyFiltersHotwalletObj.orderByFilter.selectedOrderByOption"
+                            ng-options="orderBy for orderBy in orderByOptionsHotwallet">
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
