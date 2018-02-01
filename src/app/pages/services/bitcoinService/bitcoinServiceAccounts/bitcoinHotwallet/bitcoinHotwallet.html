@@ -1,11 +1,11 @@
-<div ng-show="hotwalletObjLength == 0 && !loadingColdstorage" class="panel">
+<div ng-show="hotwalletObjLength == 0 && !loadingHotwallet" class="panel">
     <div class="panel-body">
         <i>No active hotwallet created. To enable this feature please create a hotwallet.</i>
         <a ng-click="openAddHotwalletModal('app/pages/services/bitcoinService/bitcoinServiceAccounts/bitcoinHotwallet/addBitcoinHotwalletModal/addBitcoinHotwalletModal.html','md')" class="pull-right pointer">Create</a>
     </div>
 </div>
 
-<div ng-show="hotwalletObjLength > 0 && !loadingColdstorage" class="panel">
+<div ng-show="hotwalletObjLength > 0 && !loadingHotwallet" class="panel">
     <div class="panel-body">
         <div class="row">
             <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
@@ -47,6 +47,6 @@
         </div>
     </div>
 </div>
-<div ba-panel ng-show="loadingColdstorage">
+<div ba-panel ng-show="loadingHotwallet">
     <loading-image></loading-image>
 </div>

@@ -2,35 +2,35 @@
     <div class="panel-heading">
         <div class="table-filter-heading">
             <span class="user-details-panel-title pull-left">Create filter</span>
-            <button ng-click="getLatestTransactions('applyFilter')" class="btn btn-primary pull-right">Done</button>
-            <button ng-click="clearFilters()" class="btn btn-default pull-right margin-right-25">Clear</button>
+            <button ng-click="getLatestColdstorageTransactions('applyFilter')" class="btn btn-primary pull-right">Done</button>
+            <button ng-click="clearFilters()" class="btn btn-default pull-right clear-filter-btn">Clear</button>
         </div>
     </div>
     <div class="panel-body">
         <div id="filterDate">
             <div>
                 <label class="checkbox-inline custom-checkbox nowrap">
-                    <input type="checkbox" ng-model="filtersObj.dateFilter">
+                    <input type="checkbox" ng-model="filtersColdstorageObj.dateFilter">
                     <span>Date</span>
                 </label>
             </div>
-            <div ng-if="filtersObj.dateFilter" class="row divider-top-6">
+            <div ng-if="filtersColdstorageObj.dateFilter" class="row divider-top-6">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 date-filter-view">
-                    <select class="form-control pointer" ng-model="applyFiltersObj.dateFilter.selectedDateOption"
-                            ng-options="option for option in dateFilterOptions">
+                    <select class="form-control pointer" ng-model="applyFiltersColdstorageObj.dateFilter.selectedDateOption"
+                            ng-options="option for option in dateFilterColdstorageOptions">
                     </select>
-                    <div ng-show="applyFiltersObj.dateFilter.selectedDateOption == 'Is in the last'" class="date-filter-view">
-                        <input type="text" ng-model="applyFiltersObj.dateFilter.dayInterval" ng-change="dayIntervalChanged()"
-                               class="transaction-date-interval-input">
-                        <select class="form-control pointer margin-left-12" ng-model="applyFiltersObj.dateFilter.selectedDayIntervalOption"
-                                ng-options="option for option in dateFilterIntervalOptions">
+                    <div ng-show="applyFiltersColdstorageObj.dateFilter.selectedDateOption == 'Is in the last'" class="date-filter-view">
+                        <input type="text" ng-model="applyFiltersColdstorageObj.dateFilter.dayInterval" ng-change="dayIntervalChanged()"
+                               auto-focus="applyFiltersColdstorageObj.dateFilter.selectedDateOption == 'Is in the last'" class="transaction-date-interval-input">
+                        <select class="form-control pointer margin-left-12" ng-model="applyFiltersColdstorageObj.dateFilter.selectedDayIntervalOption"
+                                ng-options="option for option in dateFilterIntervalColdstorageOptions">
                         </select>
                     </div>
-                    <div ng-show="applyFiltersObj.dateFilter.selectedDateOption == 'In between'" class="date-filter-view">
+                    <div ng-show="applyFiltersColdstorageObj.dateFilter.selectedDateOption == 'In between'" class="date-filter-view">
                         <div class="date-filter-in-between-view">
                             <input type="text" class="form-control transaction-date-filter-input custom-datepicker"
                                    uib-datepicker-popup="{{dateObj.format}}" popup-placement="bottom-left"
-                                   ng-model="applyFiltersObj.dateFilter.dateFrom"
+                                   ng-model="applyFiltersColdstorageObj.dateFilter.dateFrom"
                                    show-button-bar="false" datepicker-options="{showWeeks: false}"
                                    placeholder="mm/dd/yyyy" is-open="popup1.opened" close-text="Close" />
                             <span class="input-group-btn">
@@ -42,7 +42,7 @@
                         <div class="date-filter-in-between-view">
                             <input type="text" class="form-control transaction-date-filter-input custom-datepicker"
                                    uib-datepicker-popup="{{dateObj.format}}" popup-placement="bottom-left"
-                                   ng-model="applyFiltersObj.dateFilter.dateTo"
+                                   ng-model="applyFiltersColdstorageObj.dateFilter.dateTo"
                                    show-button-bar="false" datepicker-options="{showWeeks: false}"
                                    placeholder="mm/dd/yyyy" is-open="popup2.opened" close-text="Close" />
                             <span class="input-group-btn">
@@ -51,11 +51,11 @@
                             </span>
                         </div>
                     </div>
-                    <div ng-show="applyFiltersObj.dateFilter.selectedDateOption == 'Is equal to'" class="date-filter-view">
+                    <div ng-show="applyFiltersColdstorageObj.dateFilter.selectedDateOption == 'Is equal to'" class="date-filter-view">
                         <div class="date-filter-in-between-view">
                             <input type="text" class="form-control transaction-date-filter-input custom-datepicker"
                                    uib-datepicker-popup="{{dateObj.format}}" popup-placement="bottom-left"
-                                   ng-model="applyFiltersObj.dateFilter.dateEqualTo" show-button-bar="false" datepicker-options="{showWeeks: false}"
+                                   ng-model="applyFiltersColdstorageObj.dateFilter.dateEqualTo" show-button-bar="false" datepicker-options="{showWeeks: false}"
                                    placeholder="mm/dd/yyyy" is-open="popup1.opened" close-text="Close" />
                             <span class="input-group-btn">
                                 <button type="button" class="btn btn-default calender-button" ng-click="open1()">
@@ -63,11 +63,11 @@
                             </span>
                         </div>
                     </div>
-                    <div ng-show="applyFiltersObj.dateFilter.selectedDateOption == 'Is after'" class="date-filter-view">
+                    <div ng-show="applyFiltersColdstorageObj.dateFilter.selectedDateOption == 'Is after'" class="date-filter-view">
                         <div class="date-filter-in-between-view">
                             <input type="text" class="form-control transaction-date-filter-input custom-datepicker"
                                    uib-datepicker-popup="{{dateObj.format}}" popup-placement="bottom-left"
-                                   ng-model="applyFiltersObj.dateFilter.dateFrom" show-button-bar="false" datepicker-options="{showWeeks: false}"
+                                   ng-model="applyFiltersColdstorageObj.dateFilter.dateFrom" show-button-bar="false" datepicker-options="{showWeeks: false}"
                                    placeholder="mm/dd/yyyy" is-open="popup1.opened" close-text="Close" />
                             <span class="input-group-btn">
                                 <button type="button" class="btn btn-default calender-button" ng-click="open1()">
@@ -75,11 +75,11 @@
                             </span>
                         </div>
                     </div>
-                    <div ng-show="applyFiltersObj.dateFilter.selectedDateOption == 'Is before'" class="date-filter-view">
+                    <div ng-show="applyFiltersColdstorageObj.dateFilter.selectedDateOption == 'Is before'" class="date-filter-view">
                         <div class="date-filter-in-between-view">
                             <input type="text" class="form-control transaction-date-filter-input custom-datepicker"
                                    uib-datepicker-popup="{{dateObj.format}}" popup-placement="bottom-left"
-                                   ng-model="applyFiltersObj.dateFilter.dateTo" show-button-bar="false" datepicker-options="{showWeeks: false}"
+                                   ng-model="applyFiltersColdstorageObj.dateFilter.dateTo" show-button-bar="false" datepicker-options="{showWeeks: false}"
                                    placeholder="mm/dd/yyyy" is-open="popup2.opened" close-text="Close" />
                             <span class="input-group-btn">
                                 <button type="button" class="btn btn-default calender-button" ng-click="open2()">
@@ -93,52 +93,50 @@
         <div id="filterAmount">
             <div>
                 <label class="checkbox-inline custom-checkbox nowrap">
-                    <input type="checkbox" ng-model="filtersObj.amountFilter">
+                    <input type="checkbox" ng-model="filtersColdstorageObj.amountFilter">
                     <span>Amount</span>
                 </label>
             </div>
-            <div ng-if="filtersObj.amountFilter" class="row divider-top-6">
+            <div ng-if="filtersColdstorageObj.amountFilter" class="row divider-top-6">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 date-filter-view">
-                    <select class="form-control pointer" ng-model="applyFiltersObj.amountFilter.selectedAmountOption"
-                            ng-options="option for option in amountFilterOptions">
+                    <select class="form-control pointer" ng-model="applyFiltersColdstorageObj.amountFilter.selectedAmountOption"
+                            ng-options="option for option in amountFilterColdstorageOptions">
                     </select>
-                    <div ng-show="applyFiltersObj.amountFilter.selectedAmountOption == 'Is equal to'" class="date-filter-in-between-view">
-                        <input type="text" ng-model="applyFiltersObj.amountFilter.amount" class="transaction-amount-input">
+                    <div ng-show="applyFiltersColdstorageObj.amountFilter.selectedAmountOption == 'Is equal to'" class="date-filter-in-between-view">
+                        <input type="text" ng-model="applyFiltersColdstorageObj.amountFilter.amount"
+                               auto-focus="applyFiltersColdstorageObj.amountFilter.selectedAmountOption == 'Is equal to'"
+                               class="transaction-amount-input">
                     </div>
-                    <div ng-show="applyFiltersObj.amountFilter.selectedAmountOption == 'Is between'" class="amount-filter-in-between-view">
-                        <input type="text" ng-model="applyFiltersObj.amountFilter.amount__gt" class="transaction-amount-input">
+                    <div ng-show="applyFiltersColdstorageObj.amountFilter.selectedAmountOption == 'Is between'" class="amount-filter-in-between-view">
+                        <input type="text" ng-model="applyFiltersColdstorageObj.amountFilter.amount__gt"
+                               auto-focus="applyFiltersColdstorageObj.amountFilter.selectedAmountOption == 'Is between'"
+                               class="transaction-amount-input">
                         <span class="filter-text margin-left-12">and</span>
-                        <input type="text" ng-model="applyFiltersObj.amountFilter.amount__lt" class="transaction-amount-input">
+                        <input type="text" ng-model="applyFiltersColdstorageObj.amountFilter.amount__lt" class="transaction-amount-input">
                     </div>
-                    <div ng-show="applyFiltersObj.amountFilter.selectedAmountOption == 'Is greater than'" class="date-filter-in-between-view">
-                        <input type="text" ng-model="applyFiltersObj.amountFilter.amount__gt" class="transaction-amount-input">
+                    <div ng-show="applyFiltersColdstorageObj.amountFilter.selectedAmountOption == 'Is greater than'" class="date-filter-in-between-view">
+                        <input type="text" ng-model="applyFiltersColdstorageObj.amountFilter.amount__gt"
+                               auto-focus="applyFiltersColdstorageObj.amountFilter.selectedAmountOption == 'Is greater than'"
+                               class="transaction-amount-input">
                     </div>
-                    <div ng-show="applyFiltersObj.amountFilter.selectedAmountOption == 'Is less than'" class="date-filter-in-between-view">
-                        <input type="text" ng-model="applyFiltersObj.amountFilter.amount__lt" class="transaction-amount-input">
+                    <div ng-show="applyFiltersColdstorageObj.amountFilter.selectedAmountOption == 'Is less than'" class="date-filter-in-between-view">
+                        <input type="text" ng-model="applyFiltersColdstorageObj.amountFilter.amount__lt"
+                               auto-focus="applyFiltersColdstorageObj.amountFilter.selectedAmountOption == 'Is less than'"
+                               class="transaction-amount-input">
                     </div>
-                    <div ng-hide="applyFiltersObj.amountFilter.selectedAmountOption == 'Is between'">
-                        <select class="form-control pointer margin-left-12" ng-model="applyFiltersObj.currencyFilter.selectedCurrencyOption"
-                                ng-options="currency.code for currency in currencyOptions track by currency.code">
-                        </select>
-                    </div>
-                </div>
-                <div ng-show="applyFiltersObj.amountFilter.selectedAmountOption == 'Is between'" class="col-lg-12 col-md-12 col-sm-12 col-xs-12 divider-top-6">
-                    <select class="form-control pointer" ng-model="applyFiltersObj.currencyFilter.selectedCurrencyOption"
-                            ng-options="currency.code for currency in currencyOptions track by currency.code">
-                    </select>
                 </div>
             </div>
         </div>
         <div id="filterStatus">
             <div>
                 <label class="checkbox-inline custom-checkbox nowrap">
-                    <input type="checkbox" ng-model="filtersObj.statusFilter">
+                    <input type="checkbox" ng-model="filtersColdstorageObj.statusFilter">
                     <span>Status</span>
                 </label>
             </div>
-            <div ng-if="filtersObj.statusFilter" class="row divider-top-6">
+            <div ng-if="filtersColdstorageObj.statusFilter" class="row divider-top-6">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 date-filter-view">
-                    <select class="form-control pointer" ng-model="applyFiltersObj.statusFilter.selectedStatusOption"
+                    <select class="form-control pointer" ng-model="applyFiltersColdstorageObj.statusFilter.selectedStatusOption"
                             ng-options="option for option in statusOptions">
                     </select>
                 </div>
@@ -147,17 +145,17 @@
         <div id="filterTransactionType">
             <div>
                 <label class="checkbox-inline custom-checkbox nowrap">
-                    <input type="checkbox" ng-model="filtersObj.transactionTypeFilter">
+                    <input type="checkbox" ng-model="filtersColdstorageObj.transactionTypeFilter">
                     <span>Transaction type</span>
                 </label>
             </div>
-            <div ng-if="filtersObj.transactionTypeFilter" class="row divider-top-6">
+            <div ng-if="filtersColdstorageObj.transactionTypeFilter" class="row divider-top-6">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 date-filter-view">
-                    <select class="form-control pointer" ng-model="applyFiltersObj.transactionTypeFilter.selectedTransactionTypeOption"
+                    <select class="form-control pointer" ng-model="applyFiltersColdstorageObj.transactionTypeFilter.selectedTransactionTypeOption"
                             ng-options="option for option in typeOptions">
                     </select>
                     <span class="filter-text margin-left-12">subtype </span>
-                    <select class="form-control pointer margin-left-12" ng-model="applyFiltersObj.transactionSubtypeFilter.selectedTransactionSubtypeOption"
+                    <select class="form-control pointer margin-left-12" ng-model="applyFiltersColdstorageObj.transactionSubtypeFilter.selectedTransactionSubtypeOption"
                             ng-options="subtypeOption for subtypeOption in subtypeOptions">
                     </select>
                 </div>
@@ -166,57 +164,29 @@
         <div id="filterTransactionID">
             <div>
                 <label class="checkbox-inline custom-checkbox nowrap">
-                    <input type="checkbox" ng-model="filtersObj.transactionIdFilter">
+                    <input type="checkbox" ng-model="filtersColdstorageObj.transactionIdFilter">
                     <span>Transaction id</span>
                 </label>
             </div>
-            <div ng-if="filtersObj.transactionIdFilter" class="row divider-top-6">
+            <div ng-if="filtersColdstorageObj.transactionIdFilter" class="row divider-top-6">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 date-filter-view">
-                    <input type="text" ng-model="applyFiltersObj.transactionIdFilter.selectedTransactionIdOption"
+                    <input type="text" ng-model="applyFiltersColdstorageObj.transactionIdFilter.selectedTransactionIdOption"
+                           auto-focus="filtersColdstorageObj.transactionIdFilter"
                            placeholder="Transaction id" class="transaction-id-input">
-                </div>
-            </div>
-        </div>
-        <div id="filterAccount">
-            <div>
-                <label class="checkbox-inline custom-checkbox nowrap">
-                    <input type="checkbox" ng-model="filtersObj.accountFilter">
-                    <span>Account</span>
-                </label>
-            </div>
-            <div ng-if="filtersObj.accountFilter" class="row divider-top-6">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 date-filter-view">
-                    <input type="text" ng-model="applyFiltersObj.accountFilter.selectedAccount" placeholder="Enter account reference"
-                           auto-focus="filtersObj.accountFilter"
-                           class="transaction-id-input">
-                </div>
-            </div>
-        </div>
-        <div id="filterCurrency">
-            <div>
-                <label class="checkbox-inline custom-checkbox nowrap">
-                    <input type="checkbox" ng-model="filtersObj.currencyFilter">
-                    <span>Currency</span>
-                </label>
-            </div>
-            <div ng-if="filtersObj.currencyFilter" class="row divider-top-6">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 date-filter-view">
-                    <select class="form-control pointer" ng-model="applyFiltersObj.currencyFilter.selectedCurrencyOption"
-                            ng-options="currency.code for currency in currencyOptions track by currency.code">
-                    </select>
                 </div>
             </div>
         </div>
         <div id="filterPageSize">
             <div>
                 <label class="checkbox-inline custom-checkbox nowrap">
-                    <input type="checkbox" ng-model="filtersObj.pageSizeFilter">
+                    <input type="checkbox" ng-model="filtersColdstorageObj.pageSizeFilter">
                     <span>Page size</span>
                 </label>
             </div>
-            <div ng-if="filtersObj.pageSizeFilter" class="row divider-top-6">
+            <div ng-if="filtersColdstorageObj.pageSizeFilter" class="row divider-top-6">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 date-filter-view">
-                    <input type="text" ng-model="pagination.itemsPerPage" ng-change="pageSizeChanged()"
+                    <input type="text" ng-model="coldstoragePagination.itemsPerPage" ng-change="pageSizeChanged()"
+                           auto-focus="filtersColdstorageObj.pageSizeFilter"
                            placeholder="Enter page size" class="transaction-page-size-input">
                 </div>
             </div>
@@ -224,13 +194,13 @@
         <div id="filterOrderBy">
             <div>
                 <label class="checkbox-inline custom-checkbox nowrap">
-                    <input type="checkbox" ng-model="filtersObj.orderByFilter">
+                    <input type="checkbox" ng-model="filtersColdstorageObj.orderByFilter">
                     <span>Order by</span>
                 </label>
             </div>
-            <div ng-if="filtersObj.orderByFilter" class="row divider-top-6">
+            <div ng-if="filtersColdstorageObj.orderByFilter" class="row divider-top-6">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 date-filter-view">
-                    <select class="form-control pointer" ng-model="applyFiltersObj.orderByFilter.selectedOrderByOption"
+                    <select class="form-control pointer" ng-model="applyFiltersColdstorageObj.orderByFilter.selectedOrderByOption"
                             ng-options="orderBy for orderBy in orderByOptions">
                     </select>
                 </div>
