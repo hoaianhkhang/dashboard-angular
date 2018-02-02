@@ -26,7 +26,9 @@
             vm.filterParams = {
                 page: $scope.pagination.pageNo,
                 page_size: $scope.pagination.itemsPerPage,
-                id: $scope.filterObj.quoteId ? $scope.filterObj.quoteId : null
+                id: $scope.filterObj.quoteId ? $scope.filterObj.quoteId : null,
+                from_currency__code: $scope.filterObj.from_currency__code ? $scope.filterObj.from_currency__code : null,
+                to_currency__code: $scope.filterObj.to_currency__code ? $scope.filterObj.to_currency__code : null
             };
 
             return vm.baseUrl + 'admin/quotes/?' + serializeFiltersService.serializeFilters(cleanObject.cleanObj(vm.filterParams));
@@ -37,8 +39,6 @@
             $scope.quotesList = [];
 
             var quotesListUrl = vm.getQuotesListUrl();
-
-            console.log(quotesListUrl)
 
             if(vm.token) {
                 $http.get(quotesListUrl, {
@@ -51,7 +51,6 @@
                     if (res.status === 200) {
                         $scope.quotesListData = res.data.data;
                         $scope.quotesList = res.data.data.results;
-                        console.log($scope.quotesList[0])
                     }
                 }).catch(function (error) {
                     $scope.loadingQuotes =  false;
@@ -74,6 +73,13 @@
                         return quote;
                     }
                 }
+            });
+
+            vm.theAddModal.result.then(function(quote){
+                if(quote){
+                    $scope.getQuotesList();
+                }
+            }, function(){
             });
         };
 

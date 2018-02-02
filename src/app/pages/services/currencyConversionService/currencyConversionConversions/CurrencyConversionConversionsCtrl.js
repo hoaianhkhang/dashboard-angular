@@ -42,7 +42,6 @@
                     if (res.status === 200) {
                         $scope.conversionListData = res.data.data;
                         $scope.conversionList = res.data.data.results;
-                        console.log($scope.conversionList[0]);
                     }
                 }).catch(function (error) {
                     $scope.loadingConversions =  false;
@@ -52,23 +51,6 @@
             }
         };
         $scope.getConversionsList();
-
-        $scope.goToAddConversionView = function (page, size) {
-            vm.theAddModal = $uibModal.open({
-                animation: true,
-                templateUrl: page,
-                size: size,
-                controller: 'AddCurrencyConversionConversionsModalCtrl',
-                scope: $scope
-            });
-
-            vm.theAddModal.result.then(function(conversion){
-                if(conversion){
-                    $scope.getConversionsList();
-                }
-            }, function(){
-            });
-        };
 
         $scope.goToConversionView = function (page, size,conversion) {
             vm.theModal = $uibModal.open({
