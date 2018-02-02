@@ -228,6 +228,22 @@
         };
         $scope.getLatestTransactions();
 
+        $scope.getBitcoinInfo = function(){
+            $http.get(vm.serviceUrl + 'info/', {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }).then(function (res) {
+                if (res.status === 200) {
+                    $scope.bitcoinInfoObj = res.data.data;
+                }
+            }).catch(function (error) {
+                errorHandler.evaluateErrors(error.data);
+                errorHandler.handleErrors(error);
+            });
+        };
+        $scope.getBitcoinInfo();
+
         $scope.getUsersEmailTypeahead = typeaheadService.getUsersEmailTypeahead();
 
         $scope.openModal = function (page, size,transaction) {
@@ -239,6 +255,9 @@
                 resolve: {
                     transaction: function () {
                         return transaction;
+                    },
+                    bitcoinInfoUrl: function () {
+                        return $scope.bitcoinInfoObj.insight_node_url;
                     }
                 }
             });
