@@ -376,6 +376,9 @@
                 resolve: {
                     transaction: function () {
                         return transaction;
+                    },
+                    uuid: function () {
+                        return $scope.hotwalletObj.user_account_identifier;
                     }
                 }
             });

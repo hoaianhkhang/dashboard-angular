@@ -5,7 +5,7 @@
         .controller('BitcoinColdstorageCtrl', BitcoinColdstorageCtrl);
 
     /** @ngInject */
-    function BitcoinColdstorageCtrl($scope,cookieManagement,errorHandler,currenciesList,$http,$uibModal,
+    function BitcoinColdstorageCtrl($scope,cookieManagement,errorHandler,currenciesList,$http,$uibModal,$state,
                                     sharedResources,_,environmentConfig,currencyModifiers,toastr,serializeFiltersService) {
 
         var vm = this;
@@ -345,6 +345,18 @@
             }
         };
 
+        $scope.goToCredit = function () {
+            $state.go('transactions.credit',{"email": $scope.coldstorageObj.user_account_identifier,
+                "account": $scope.coldstorageObj.rehive_account_reference,
+                "currencyCode": 'XBT'});
+        };
+
+        $scope.goToDebit = function () {
+            $state.go('transactions.debit',{"email": $scope.coldstorageObj.user_account_identifier,
+                "account": $scope.coldstorageObj.rehive_account_reference,
+                "currencyCode": 'XBT'});
+        };
+
         $scope.openColdstorageModal = function (page, size,transaction) {
             vm.theModal = $uibModal.open({
                 animation: true,
@@ -354,6 +366,9 @@
                 resolve: {
                     transaction: function () {
                         return transaction;
+                    },
+                    uuid: function () {
+                        return $scope.coldstorageObj.user_account_identifier;
                     }
                 }
             });

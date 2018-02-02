@@ -15,7 +15,8 @@
                 controller: "DebitCtrl",
                 params: {
                     email: null,
-                    account: null
+                    account: null,
+                    currencyCode: null
                 },
                 title: 'Debits',
                 sidebarMeta: {

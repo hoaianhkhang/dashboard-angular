@@ -11,7 +11,7 @@
                 <p class="text-subtle">Code: </p>
             </div>
             <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 no-right-padding">
-                <span ng-bind="transaction.id"></span>
+                <a class="pointer" ng-click="goToColdstorageTransaction()" ng-bind="transaction.id"></a>
             </div>
         </div>
         <div class="row">
@@ -67,7 +67,7 @@
                 <p class="text-subtle">Account: </p>
             </div>
             <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 no-right-padding">
-                <p ng-bind="transaction.account"></p>
+                <a class="pointer" ng-click="goToColdstorageUser()" ng-bind="transaction.account"></a>
             </div>
         </div>
         <div class="row">

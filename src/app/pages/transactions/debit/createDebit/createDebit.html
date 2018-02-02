@@ -6,7 +6,7 @@
         <form name="debitForm" class="custom-form">
             <div class="form-group">
                 <label>User <span class="required-icon">*</span></label>
-                <input type="email" ng-model="debitData.user" placeholder="e.g. email@domain.com"
+                <input type="text" ng-model="debitData.user" placeholder="e.g. email@domain.com"
                        uib-typeahead="email for email in getUsersEmailTypeahead($viewValue)" ng-model-options='{ debounce: 800 }'
                        class="form-control" size="12" required>
             </div>

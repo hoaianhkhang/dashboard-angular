@@ -27,8 +27,8 @@
                             <span class="fa fa-ellipsis-h pull-right pointer currencies-options"></span>
                             <ul ng-show="showOptionsAccountRef" class="currencies-options-box">
                                 <li ng-click="toggleCurrenciesOptions()"><i class="dropdown-arr"></i></li>
-                                <li ng-click="goToView('/currency/' + currency.code + '/overview')">Create debit</li>
-                                <li ng-click="goToUsersState(currency.code)">Create credit</li>
+                                <li ng-click="goToDebit()">Create debit</li>
+                                <li ng-click="goToCredit()">Create credit</li>
                             </ul>
                         </div>
                     </div>
