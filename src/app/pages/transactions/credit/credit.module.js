@@ -15,7 +15,8 @@
                 controller: "CreditCtrl",
                 params: {
                     email: null,
-                    account: null
+                    account: null,
+                    currencyCode: null
                 },
                 title: 'Credits',
                 sidebarMeta: {

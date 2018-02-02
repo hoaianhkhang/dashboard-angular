@@ -30,8 +30,8 @@
                     ng-click="openModal('app/pages/services/bitcoinService/bitcoinServiceTransactions/bitcoinServiceTransactionsModal/bitcoinServiceTransactionsModal.html', 'lg',transaction)"
                     class="editable-row center pointer user-details-table-hover">
                     <td class="transactions-list-element" title="{{transaction.user.email}}"  ng-bind="transaction.user.email"></td>
-                    <td  class="transactions-list-element" title="{{transaction.amount | currencyModifiersFilter: transaction.currency.divisibility || 7}}"
-                         ng-bind="transaction.amount | currencyModifiersFilter: transaction.currency.divisibility || 7"></td>
+                    <td  class="transactions-list-element" title="{{transaction.amount | currencyModifiersFilter: transaction.currency.divisibility || 8}}"
+                         ng-bind="transaction.amount | currencyModifiersFilter: transaction.currency.divisibility || 8"></td>
                     <td class="transactions-list-element" title="{{transaction.tx_type}}"  ng-bind="transaction.tx_type | capitalizeWord"></td>
                     <td class="transactions-list-element" title="{{transaction.transaction_hash}}"  ng-bind="transaction.transaction_hash"></td>
                     <td class="transactions-list-element" title="{{transaction.confirmations}}"  ng-bind="transaction.confirmations"></td>

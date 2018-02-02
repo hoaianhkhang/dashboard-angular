@@ -23,6 +23,7 @@
             statusFilter: false,
             transactionTypeFilter: false,
             transactionIdFilter: false,
+            accountFilter:false,
             currencyFilter: false,
             pageSizeFilter: false,
             orderByFilter: false
@@ -53,6 +54,9 @@
             },
             transactionIdFilter: {
                 selectedTransactionIdOption: $state.params.transactionId || null
+            },
+            accountFilter: {
+                selectedAccount: null
             },
             currencyFilter:{
                 selectedCurrencyOption: {}
@@ -323,6 +327,7 @@
                 created__lt: vm.dateObj.created__lt ? Date.parse(vm.dateObj.created__lt +'T00:00:00') : null,
                 currency: $scope.filtersObj.currencyFilter || $scope.filtersObj.amountFilter ? $scope.applyFiltersObj.currencyFilter.selectedCurrencyOption.code: null,
                 user: vm.uuid,
+                account: $scope.filtersObj.accountFilter ? $scope.applyFiltersObj.accountFilter.selectedAccount: null,
                 orderby: $scope.filtersObj.orderByFilter ? ($scope.applyFiltersObj.orderByFilter.selectedOrderByOption == 'Latest' ? '-created' : $scope.applyFiltersObj.orderByFilter.selectedOrderByOption == 'Largest' ? '-amount' : $scope.applyFiltersObj.orderByFilter.selectedOrderByOption == 'Smallest' ? 'amount' : null): null,
                 id: $scope.filtersObj.transactionIdFilter ? ($scope.applyFiltersObj.transactionIdFilter.selectedTransactionIdOption ? encodeURIComponent($scope.applyFiltersObj.transactionIdFilter.selectedTransactionIdOption) : null): null,
                 tx_type: $scope.filtersObj.transactionTypeFilter ? $scope.applyFiltersObj.transactionTypeFilter.selectedTransactionTypeOption.toLowerCase() : null,
@@ -363,7 +368,7 @@
                         $scope.transactionsData = res.data.data;
                         $scope.transactions = $scope.transactionsData.results;
                         if ($scope.transactions == 0) {
-                            $scope.transactionsStateMessage = 'No transactions have been made';
+                            $scope.transactionsStateMessage = 'No transactions have been found';
                             return;
                         }
 

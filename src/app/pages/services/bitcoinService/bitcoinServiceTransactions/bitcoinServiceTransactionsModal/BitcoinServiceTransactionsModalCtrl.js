@@ -4,9 +4,12 @@
     angular.module('BlurAdmin.pages.services.bitcoinService.bitcoinServiceTransactions')
         .controller('BitcoinServiceTransactionsModalCtrl', BitcoinServiceTransactionsModalCtrl);
 
-    function BitcoinServiceTransactionsModalCtrl($uibModalInstance,$scope,transaction,metadataTextService,$state,$location) {
+    function BitcoinServiceTransactionsModalCtrl($uibModalInstance,$scope,transaction,bitcoinInfoUrl,metadataTextService,$state,$location) {
+
         $scope.rehive_response = metadataTextService.convertToText(transaction.rehive_response);
         $scope.transaction = transaction;
+        $scope.bitcoinInfoUrl = bitcoinInfoUrl;
+
 
         $scope.goToUser = function () {
             $uibModalInstance.close();
@@ -16,6 +19,6 @@
         $scope.goToTransactions = function(rehiveCode){
             $uibModalInstance.close();
             $state.go('transactions.history',{"transactionId": rehiveCode});
-        }
+        };
     }
 })();

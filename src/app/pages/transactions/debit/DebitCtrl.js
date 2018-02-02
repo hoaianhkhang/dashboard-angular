@@ -46,6 +46,11 @@
                 }).then(function (res) {
                     if (res.status === 200) {
                         $scope.currencyOptions = res.data.data.results;
+                        if ($state.params.currencyCode) {
+                            $scope.debitData.currency = $scope.currencyOptions.find(function (element) {
+                                return element.code == $state.params.currencyCode;
+                            });
+                        }
                     }
                 }).catch(function (error) {
                     errorHandler.evaluateErrors(error.data);

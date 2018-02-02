@@ -176,7 +176,6 @@
                 </div>
             </div>
         </div>
-
         <div id="filterUser">
             <div>
                 <label class="checkbox-inline custom-checkbox nowrap">
@@ -189,6 +188,21 @@
                     <input type="text" ng-model="applyFiltersObj.userFilter.selectedUserOption" placeholder="Enter email, mobile or identifier"
                            uib-typeahead="email for email in getUsersEmailTypeahead($viewValue)" ng-model-options='{ debounce: 800 }'
                            auto-focus="filtersObj.userFilter"
+                           class="transaction-id-input">
+                </div>
+            </div>
+        </div>
+        <div id="filterAccount">
+            <div>
+                <label class="checkbox-inline custom-checkbox nowrap">
+                    <input type="checkbox" ng-model="filtersObj.accountFilter">
+                    <span>Account</span>
+                </label>
+            </div>
+            <div ng-if="filtersObj.accountFilter" class="row divider-top-6">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 date-filter-view">
+                    <input type="text" ng-model="applyFiltersObj.accountFilter.selectedAccount" placeholder="Enter account reference"
+                           auto-focus="filtersObj.accountFilter"
                            class="transaction-id-input">
                 </div>
             </div>
