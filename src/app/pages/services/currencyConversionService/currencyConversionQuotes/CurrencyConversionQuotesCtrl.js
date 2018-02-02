@@ -5,12 +5,15 @@
         .controller('CurrencyConversionQuotesCtrl', CurrencyConversionQuotesCtrl);
 
     /** @ngInject */
-    function CurrencyConversionQuotesCtrl($scope,$http,cookieManagement,errorHandler,$uibModal) {
+    function CurrencyConversionQuotesCtrl($scope,$http,cookieManagement,errorHandler,$uibModal,cleanObject,serializeFiltersService) {
 
         var vm = this;
         vm.token = cookieManagement.getCookie('TOKEN');
         vm.baseUrl = cookieManagement.getCookie('SERVICEURL');
         $scope.loadingQuotes =  true;
+        $scope.filterObj = {
+            quoteId: ''
+        };
 
         $scope.pagination = {
             itemsPerPage: 20,
@@ -20,9 +23,13 @@
 
         vm.getQuotesListUrl = function(){
 
-            vm.filterParams = '?page=' + $scope.pagination.pageNo + '&page_size=' + $scope.pagination.itemsPerPage; // all the params of the filtering
+            vm.filterParams = {
+                page: $scope.pagination.pageNo,
+                page_size: $scope.pagination.itemsPerPage,
+                id: $scope.filterObj.quoteId ? $scope.filterObj.quoteId : null
+            };
 
-            return vm.baseUrl + 'admin/quotes/' + vm.filterParams;
+            return vm.baseUrl + 'admin/quotes/?' + serializeFiltersService.serializeFilters(cleanObject.cleanObj(vm.filterParams));
         };
 
         $scope.getQuotesList = function () {
@@ -30,6 +37,8 @@
             $scope.quotesList = [];
 
             var quotesListUrl = vm.getQuotesListUrl();
+
+            console.log(quotesListUrl)
 
             if(vm.token) {
                 $http.get(quotesListUrl, {
@@ -42,6 +51,7 @@
                     if (res.status === 200) {
                         $scope.quotesListData = res.data.data;
                         $scope.quotesList = res.data.data.results;
+                        console.log($scope.quotesList[0])
                     }
                 }).catch(function (error) {
                     $scope.loadingQuotes =  false;

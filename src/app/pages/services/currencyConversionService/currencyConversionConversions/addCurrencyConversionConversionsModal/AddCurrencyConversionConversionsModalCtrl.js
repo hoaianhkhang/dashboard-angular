@@ -16,7 +16,7 @@
         $scope.addConversion = function (conversionParams) {
             $scope.addingConversion = true;
 
-            $http.post(vm.baseUrl + 'admin/conversions/', {quote: conversionParams.quoteId}, {
+            $http.post(vm.baseUrl + 'admin/conversions/', {quote: conversionParams.quoteId,recipient: conversionParams.recipient}, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': vm.token

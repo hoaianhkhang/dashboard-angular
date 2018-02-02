@@ -42,6 +42,7 @@
                     if (res.status === 200) {
                         $scope.conversionListData = res.data.data;
                         $scope.conversionList = res.data.data.results;
+                        console.log($scope.conversionList[0]);
                     }
                 }).catch(function (error) {
                     $scope.loadingConversions =  false;
