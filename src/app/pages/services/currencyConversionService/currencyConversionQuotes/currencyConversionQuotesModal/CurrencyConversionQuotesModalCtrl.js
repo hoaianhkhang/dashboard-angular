@@ -13,6 +13,78 @@
         $scope.quote = quote;
         $scope.formatted = {};
         $scope.formatted.metadata = metadataTextService.convertToText(quote.metadata);
+        $scope.updateQuoteObj = {};
+        $scope.editingQuote = false;
+        $scope.deletingQuote = false;
+
+        $scope.editQuote = function(){
+            $scope.deletingQuote = true;
+            var metaData;
+            if($scope.updateQuoteObj.metadata){
+                if(vm.isJson($scope.updateQuoteObj.metadata)){
+                    metaData =  JSON.parse($scope.updateQuoteObj.metadata);
+                } else {
+                    toastr.error('Incorrect format');
+                    return false;
+                }
+            } else {
+                metaData = " ";
+            }
+
+            if(vm.token) {
+                $http.patch(vm.baseUrl + 'admin/quotes/' + $scope.quote.id + '/',
+                    {
+                        metadata: metaData
+                    }, {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': vm.token
+                        }
+                    }).then(function (res) {
+                    if (res.status === 200) {
+                        if(metaData == " "){
+                            delete $scope.formatted.metadata;
+                            delete $scope.quote.metadata;
+                        } else {
+                            $scope.quote.metadata = metaData;
+                            $scope.formatted.metadata = metadataTextService.convertToText(metaData);
+                        }
+
+                        $scope.toggleEditingQuote();
+                        toastr.success('Quote successfully updated');
+                        $scope.deletingQuote = false;
+                    }
+                }).catch(function (error) {
+                    $scope.deletingQuote = false;
+                    $uibModalInstance.close();
+                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.handleErrors(error);
+                });
+            }
+        };
+
+        vm.isJson = function (str) {
+            try {
+                JSON.parse(str);
+            } catch (e) {
+                return false;
+            }
+            return true;
+        };
+
+        $scope.toggleEditingQuote = function () {
+            if(!$scope.editingQuote){
+                if($scope.formatted.metadata){
+                    $scope.updateQuoteObj.metadata = JSON.stringify($scope.quote.metadata);
+                } else {
+                    $scope.updateQuoteObj.metadata = '';
+                }
+            } else {
+                delete $scope.updateQuoteObj.metadata;
+            }
+
+            $scope.editingQuote = !$scope.editingQuote;
+        };
 
         $scope.goToConvertQuoteView = function (page, size) {
             vm.theSecondModal = $uibModal.open({
@@ -29,7 +101,7 @@
             });
         };
 
-        $scope.deleteQuoteConfirm = function (bank) {
+        $scope.deleteQuoteConfirm = function () {
             $ngConfirm({
                 title: 'Delete quote',
                 content: 'Are you sure you want to delete this quote?',

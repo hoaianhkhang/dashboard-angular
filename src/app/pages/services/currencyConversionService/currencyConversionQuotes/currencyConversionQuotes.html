@@ -54,7 +54,7 @@
                     <th>To amount</th>
                     <th class="pull-right">Rate</th>
                 </tr>
-                <tr ng-repeat="quote in quotesList"  class="editable-row pointer user-details-table-hover"
+                <tr ng-repeat="quote in quotesList | orderBy: 'id'"  class="editable-row pointer user-details-table-hover"
                     ng-click="goToQuotesView('app/pages/services/currencyConversionService/currencyConversionQuotes/currencyConversionQuotesModal/currencyConversionQuotesModal.html','md',quote)">
                     <td class="transactions-list-element" title="{{quote.id}}" ng-bind="quote.id"></td>
                     <td class="transactions-list-element" title="{{quote.user}}" ng-bind="quote.user"></td>

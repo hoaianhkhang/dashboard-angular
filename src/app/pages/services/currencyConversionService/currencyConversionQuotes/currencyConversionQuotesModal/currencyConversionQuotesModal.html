@@ -13,6 +13,9 @@
                 </div>
                 <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
                     <span ng-bind="quote.id"></span>
+                    <i ng-hide="editingQuote" ng-click="toggleEditingQuote()" class="fa fa-pencil-square-o transaction-edit-btn pull-right pointer" aria-hidden="true"></i>
+                    <i ng-show="editingQuote" ng-click="editQuote()" class="fa fa-floppy-o transaction-edit-btn pull-right pointer" aria-hidden="true"></i>
+                    <i ng-show="editingQuote" ng-click="toggleEditingQuote()" class="fa fa-arrow-circle-o-left transaction-edit-btn pull-right pointer margin-right-10" aria-hidden="true"></i>
                 </div>
             </div>
             <div class="row">
@@ -85,8 +88,9 @@
                 </div>
                 <div class="metadata col-lg-8 col-md-8 col-sm-8 col-xs-8 no-right-padding">
                     <div ng-show="formatted.metadata">
-                        <pre class="no-margin">{{formatted.metadata}}</pre>
+                        <pre ng-hide="editingQuote">{{formatted.metadata}}</pre>
                     </div>
+                    <textarea ng-show="editingQuote" rows="4" type="text" ng-model="updateQuoteObj.metadata" class="form-control"  placeholder='e.g. {"Hello" : "World"}'></textarea>
                 </div>
             </div>
         </div>
