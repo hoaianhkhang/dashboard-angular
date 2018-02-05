@@ -5,7 +5,7 @@
         .controller('CurrencyConversionQuotesModalCtrl', CurrencyConversionQuotesModalCtrl);
 
     function CurrencyConversionQuotesModalCtrl($scope,metadataTextService,quote,cookieManagement,$uibModal,$http,
-                                               $uibModalInstance,toastr,errorHandler) {
+                                               $uibModalInstance,toastr,errorHandler,$ngConfirm) {
 
         var vm = this;
         vm.token = cookieManagement.getCookie('TOKEN');
@@ -24,6 +24,30 @@
                 resolve: {
                     quote: function () {
                         return quote;
+                    }
+                }
+            });
+        };
+
+        $scope.deleteQuoteConfirm = function (bank) {
+            $ngConfirm({
+                title: 'Delete quote',
+                content: 'Are you sure you want to delete this quote?',
+                animationBounce: 1,
+                animationSpeed: 100,
+                scope: $scope,
+                buttons: {
+                    close: {
+                        text: "No",
+                        btnClass: 'btn-default pull-left dashboard-btn'
+                    },
+                    ok: {
+                        text: "Yes",
+                        btnClass: 'btn-primary dashboard-btn',
+                        keys: ['enter'], // will trigger when enter is pressed
+                        action: function(scope){
+                            $scope.deleteQuote();
+                        }
                     }
                 }
             });
