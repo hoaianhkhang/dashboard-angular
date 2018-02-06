@@ -27,7 +27,7 @@
                     return false;
                 }
             } else {
-                metaData = " ";
+                metaData = {};
             }
 
             if(vm.token) {

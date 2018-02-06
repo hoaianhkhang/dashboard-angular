@@ -121,7 +121,7 @@
                 amount: currencyModifiers.convertToCents($scope.debitData.amount, $scope.debitData.currency.divisibility),
                 reference: $scope.debitData.reference,
                 status: $scope.debitData.status,
-                metadata: $scope.debitData.metadata,
+                metadata: $scope.debitData.metadata ? JSON.parse($scope.debitData.metadata) : {},
                 currency: $scope.debitData.currency.code,
                 subtype: $scope.debitData.subtype,
                 note: $scope.debitData.note,

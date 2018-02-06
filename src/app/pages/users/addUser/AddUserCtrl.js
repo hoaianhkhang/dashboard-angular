@@ -44,17 +44,33 @@
         };
         vm.getGroups();
 
+        vm.isJson = function (str) {
+            try {
+                JSON.parse(str);
+            } catch (e) {
+                return false;
+            }
+            return true;
+        };
 
         $scope.addNewUser = function (newUserParams) {
             if(!newUserParams.email && !newUserParams.mobile){
                 toastr.error('Please enter a valid email or mobile number');
                 return;
             }
-            $scope.loadingUsers = true;
 
             if(newUserParams.metadata == ''){
                 newUserParams.metadata = {};
+            } else {
+                if(vm.isJson(newUserParams.metadata)){
+                    newUserParams.metadata = JSON.parse(newUserParams.metadata);
+                } else {
+                    toastr.error('Invalid metadata format');
+                    return;
+                }
             }
+
+            $scope.loadingUsers = true;
 
             if(newUserParams.groups && newUserParams.groups.name){
                 newUserParams.groups = newUserParams.groups.name;

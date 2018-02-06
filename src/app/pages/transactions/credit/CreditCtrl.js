@@ -122,7 +122,7 @@
                 amount: currencyModifiers.convertToCents($scope.creditData.amount,$scope.creditData.currency.divisibility),
                 reference: $scope.creditData.reference,
                 status: $scope.creditData.status,
-                metadata: $scope.creditData.metadata,
+                metadata: $scope.creditData.metadata ? JSON.parse($scope.creditData.metadata) : {},
                 currency: $scope.creditData.currency.code,
                 subtype: $scope.creditData.subtype,
                 note: $scope.creditData.note,
