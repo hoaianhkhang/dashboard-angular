@@ -10,7 +10,7 @@
         var vm = this;
         vm.reference = reference;
         $scope.currenciesList = currenciesList;
-        console.log(currenciesList)
+        console.log($scope.currenciesList)
         $scope.loadingUserAccounts = true;
         $scope.newAccountCurrencies = {list: []};
         vm.token = cookieManagement.getCookie('TOKEN');
