@@ -1,4 +1,4 @@
-<div class="panel">
+<div ng-hide="loadingHotwalletTransactions" class="panel">
     <div class="panel-heading">
         <div class="table-filter-heading">
             <div>
@@ -10,11 +10,11 @@
                     <hotwallet-transactions-filters></hotwallet-transactions-filters>
                 </div>
             </div>
-            <button ng-click="getLatestHotwalletTransactions('applyFilter')" class="btn btn-default transactions-btn panel-header-button">Refresh</button>
+            <button ng-click="refreshHotwalletPage()" class="btn btn-default transactions-btn panel-header-button">Refresh</button>
         </div>
     </div>
     <div class="panel-body">
-        <div ng-hide="loadingHotwallet || transactionsHotwallet.length == 0" class="divider">
+        <div ng-hide="transactionsHotwallet.length == 0" class="divider">
             <table class="table custom-table">
                 <tr>
                     <th>Type</th>

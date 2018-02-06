@@ -18,7 +18,7 @@
         $scope.loadingHotwalletTransactions = true;
         $scope.hotwalletObjLength = 0;
 
-        vm.getHotwalletActive = function () {
+        vm.getHotwalletActive = function (applyFilter) {
             $scope.loadingHotwalletTransactions =  true;
             if(vm.token) {
                 $http.get(vm.serviceUrl + 'admin/hotwallet/active/', {
@@ -31,12 +31,20 @@
                     if (res.status === 200) {
                         $scope.hotwalletObj = res.data.data;
                         $scope.hotwalletObjLength = Object.keys($scope.hotwalletObj).length;
-                        $scope.getLatestHotwalletTransactions();
+                        if(applyFilter){
+                            $scope.getLatestHotwalletTransactions('applyFilter');
+                        } else {
+                            $scope.getLatestHotwalletTransactions();
+                        }
                     }
                 }).catch(function (error) {
                     $scope.loadingHotwalletTransactions =  false;
-                    errorHandler.evaluateErrors(error.data);
-                    errorHandler.handleErrors(error);
+                    if(error.status == 404){
+                        $scope.transactionsHotwalletStateMessage = 'No active hotwallet created.';
+                    } else {
+                        errorHandler.evaluateErrors(error.data);
+                        errorHandler.handleErrors(error);
+                    }
                 });
             }
         };
@@ -326,7 +334,6 @@
                 $scope.showingHotwalletFilters = false;
 
                 $scope.transactionsHotwalletStateMessage = '';
-                $scope.loadingHotwallet =  true;
 
                 if (applyFilter) {
                     // if function is called from history-filters directive, then pageNo set to 1
@@ -345,7 +352,6 @@
                         'Authorization': vm.token
                     }
                 }).then(function (res) {
-                    $scope.loadingHotwallet =  false;
                     $scope.loadingHotwalletTransactions =  false;
                     if (res.status === 200) {
                         $scope.transactionsHotwalletData = res.data.data;
@@ -358,13 +364,16 @@
                         $scope.transactionsHotwalletStateMessage = '';
                     }
                 }).catch(function (error) {
-                    $scope.loadingHotwallet =  false;
                     $scope.loadingHotwalletTransactions =  false;
                     $scope.transactionsHotwalletStateMessage = 'Failed to load data';
                     errorHandler.evaluateErrors(error.data);
                     errorHandler.handleErrors(error);
                 });
             }
+        };
+
+        $scope.refreshHotwalletPage = function () {
+            vm.getHotwalletActive('applyFilter');
         };
 
         $scope.openHotwalletModal = function (page, size,transaction) {

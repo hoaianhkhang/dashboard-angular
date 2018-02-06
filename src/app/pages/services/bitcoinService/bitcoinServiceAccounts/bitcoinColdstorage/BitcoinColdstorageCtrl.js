@@ -25,7 +25,7 @@
             $scope.showOptionsAccountRef = !$scope.showOptionsAccountRef;
         };
 
-        vm.getColdstorage = function () {
+        vm.getColdstorage = function (applyFilter) {
             $scope.loadingColdstorage =  true;
             if(vm.token) {
                 $http.get(vm.serviceUrl + 'admin/coldstorage/', {
@@ -36,7 +36,11 @@
                 }).then(function (res) {
                     if (res.status === 200) {
                         $scope.coldstorageObj = res.data.data;
-                        $scope.getLatestColdstorageTransactions();
+                        if(applyFilter){
+                            $scope.getLatestColdstorageTransactions('applyFilter');
+                        } else {
+                            $scope.getLatestColdstorageTransactions();
+                        }
                     }
                 }).catch(function (error) {
                     $scope.loadingColdstorage =  false;
@@ -304,7 +308,6 @@
                 $scope.showingColdstorageFilters = false;
 
                 $scope.transactionsColdstorageStateMessage = '';
-                $scope.loadingColdstorageTransactions =  true;
 
                 if (applyFilter) {
                     // if function is called from history-filters directive, then pageNo set to 1
@@ -324,7 +327,6 @@
                     }
                 }).then(function (res) {
                     $scope.loadingColdstorage =  false;
-                    $scope.loadingColdstorageTransactions =  false;
                     if (res.status === 200) {
                         $scope.transactionsColdstorageData = res.data.data;
                         $scope.transactionsColdstorage = $scope.transactionsColdstorageData.results;
@@ -337,12 +339,15 @@
                     }
                 }).catch(function (error) {
                     $scope.loadingColdstorage =  false;
-                    $scope.loadingColdstorageTransactions =  false;
                     $scope.transactionsColdstorageStateMessage = 'Failed to load data';
                     errorHandler.evaluateErrors(error.data);
                     errorHandler.handleErrors(error);
                 });
             }
+        };
+
+        $scope.refreshColdstoragePage = function () {
+            vm.getColdstorage('applyFilter');
         };
 
         $scope.goToCredit = function () {
