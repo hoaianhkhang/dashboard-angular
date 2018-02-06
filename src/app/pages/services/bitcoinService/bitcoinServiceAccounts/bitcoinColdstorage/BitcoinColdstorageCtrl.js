@@ -5,7 +5,7 @@
         .controller('BitcoinColdstorageCtrl', BitcoinColdstorageCtrl);
 
     /** @ngInject */
-    function BitcoinColdstorageCtrl($scope,cookieManagement,errorHandler,currenciesList,$http,$uibModal,$state,
+    function BitcoinColdstorageCtrl($scope,cookieManagement,errorHandler,currenciesList,$http,$uibModal,$state,cleanObject,
                                     sharedResources,_,environmentConfig,currencyModifiers,toastr,serializeFiltersService) {
 
         var vm = this;
@@ -50,6 +50,52 @@
             }
         };
         vm.getColdstorage();
+
+        //Public address logic
+
+        $scope.publicAddressPagination = {
+            itemsPerPage: 3,
+            pageNo: 1,
+            maxSize: 5
+        };
+
+        vm.getPublicAddressUrl = function(){
+
+            var searchObj = {
+                page: $scope.publicAddressPagination.pageNo,
+                page_size: $scope.publicAddressPagination.itemsPerPage
+            };
+
+            return vm.serviceUrl + 'admin/coldstorage/public-addresses/?' +
+                serializeFiltersService.serializeFilters(cleanObject.cleanObj(searchObj));
+        };
+
+        $scope.getPublicAddresses = function () {
+            if(vm.token) {
+                $scope.loadingPublicAddresses = true;
+                var publicAddressUrl = vm.getPublicAddressUrl();
+
+                $http.get(publicAddressUrl, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': vm.token
+                    }
+                }).then(function (res) {
+                    if (res.status === 200) {
+                        $scope.loadingPublicAddresses = false;
+                        $scope.publicAddressData = res.data.data;
+                        $scope.publicAddressesList = $scope.publicAddressData.results;
+                    }
+                }).catch(function (error) {
+                    $scope.loadingPublicAddresses = false;
+                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.handleErrors(error);
+                });
+            }
+        };
+        $scope.getPublicAddresses();
+
+        //Public address logic ends
 
         //transactions logic
 
@@ -99,7 +145,7 @@
             }
         };
         $scope.coldstoragePagination = {
-            itemsPerPage: 26,
+            itemsPerPage: 8,
             pageNo: 1,
             maxSize: 5
         };
@@ -285,7 +331,7 @@
 
             var searchObj = {
                 page: $scope.coldstoragePagination.pageNo,
-                page_size: $scope.filtersColdstorageObj.pageSizeFilter? $scope.coldstoragePagination.itemsPerPage : 26,
+                page_size: $scope.filtersColdstorageObj.pageSizeFilter? $scope.coldstoragePagination.itemsPerPage : 8,
                 amount: vm.amountObj.amount ? currencyModifiers.convertToCents(vm.amountObj.amount,8) : null,
                 amount__lt: vm.amountObj.amount__lt ? currencyModifiers.convertToCents(vm.amountObj.amount__lt,8) : null,
                 amount__gt: vm.amountObj.amount__gt ? currencyModifiers.convertToCents(vm.amountObj.amount__gt,8) : null,
@@ -299,7 +345,7 @@
                 subtype: $scope.filtersColdstorageObj.transactionTypeFilter ? ($scope.applyFiltersColdstorageObj.transactionSubtypeFilter.selectedTransactionSubtypeOption ? $scope.applyFiltersColdstorageObj.transactionSubtypeFilter.selectedTransactionSubtypeOption: null): null
             };
 
-            return environmentConfig.API + '/admin/transactions/?' + serializeFiltersService.serializeFilters(searchObj);
+            return environmentConfig.API + '/admin/transactions/?' + serializeFiltersService.serializeFilters(cleanObject.cleanObj(searchObj));
         };
 
         $scope.getLatestColdstorageTransactions = function(applyFilter){

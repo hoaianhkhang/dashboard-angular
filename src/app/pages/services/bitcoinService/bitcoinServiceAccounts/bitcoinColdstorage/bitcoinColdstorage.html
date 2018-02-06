@@ -37,6 +37,32 @@
         </div>
     </div>
 </div>
+<div class="panel">
+    <div class="panel-heading">
+        <span class="user-details-panel-title">Public addresses</span>
+    </div>
+    <div class="panel-body">
+        <div ng-hide="loadingPublicAddresses">
+            <table class="table custom-table">
+                <tr>
+                    <th class="no-left-padding">Address</th>
+                </tr>
+                <tr ng-repeat="publicAddress in publicAddressesList" data-toggle="modal"
+                    class="editable-row center">
+                    <td class="no-left-padding"><div title="{{publicAddress.address}}" ng-bind="publicAddress.address"></div></td>
+                </tr>
+            </table>
+            <div>
+                <p uib-pagination boundary-links="true" items-per-page="publicAddressPagination.itemsPerPage"  total-items="publicAddressData.count" ng-model="publicAddressPagination.pageNo"
+                   max-size="publicAddressPagination.maxSize" class="pagination-sm pull-right transaction-history-pagination" force-ellipses="true" ng-change="getPublicAddresses()"
+                   previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></p>
+            </div>
+        </div>
+        <div ba-panel ng-show="loadingPublicAddresses">
+            <loading-image></loading-image>
+        </div>
+    </div>
+</div>
 <coldstorage-transactions-table ng-hide="loadingColdstorage"></coldstorage-transactions-table>
 <div ba-panel ng-show="loadingColdstorage">
     <loading-image></loading-image>

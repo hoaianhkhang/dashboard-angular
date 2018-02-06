@@ -1,0 +1,210 @@
+<div class="panel table-filters">
+    <div class="panel-heading">
+        <div class="table-filter-heading">
+            <span class="user-details-panel-title pull-left">Create filter</span>
+            <button ng-click="getLatestWarmstorageTransactions('applyFilter')" class="btn btn-primary pull-right">Done</button>
+            <button ng-click="clearWarmstorageFilters()" class="btn btn-default pull-right clear-filter-btn">Clear</button>
+        </div>
+    </div>
+    <div class="panel-body">
+        <div id="filterDate">
+            <div>
+                <label class="checkbox-inline custom-checkbox nowrap">
+                    <input type="checkbox" ng-model="filtersWarmstorageObj.dateFilter">
+                    <span>Date</span>
+                </label>
+            </div>
+            <div ng-if="filtersWarmstorageObj.dateFilter" class="row divider-top-6">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 date-filter-view">
+                    <select class="form-control pointer" ng-model="applyFiltersWarmstorageObj.dateFilter.selectedDateOption"
+                            ng-options="option for option in dateFilterWarmstorageOptions">
+                    </select>
+                    <div ng-show="applyFiltersWarmstorageObj.dateFilter.selectedDateOption == 'Is in the last'" class="date-filter-view">
+                        <input type="text" ng-model="applyFiltersWarmstorageObj.dateFilter.dayInterval" ng-change="dayIntervalChangedWarmstorage()"
+                               auto-focus="applyFiltersWarmstorageObj.dateFilter.selectedDateOption == 'Is in the last'" class="transaction-date-interval-input">
+                        <select class="form-control pointer margin-left-12" ng-model="applyFiltersWarmstorageObj.dateFilter.selectedDayIntervalOption"
+                                ng-options="option for option in dateFilterIntervalWarmstorageOptions">
+                        </select>
+                    </div>
+                    <div ng-show="applyFiltersWarmstorageObj.dateFilter.selectedDateOption == 'In between'" class="date-filter-view">
+                        <div class="date-filter-in-between-view">
+                            <input type="text" class="form-control transaction-date-filter-input custom-datepicker"
+                                   uib-datepicker-popup="{{dateObjWarmstorage.format}}" popup-placement="bottom-left"
+                                   ng-model="applyFiltersWarmstorageObj.dateFilter.dateFrom"
+                                   show-button-bar="false" datepicker-options="{showWeeks: false}"
+                                   placeholder="mm/dd/yyyy" is-open="popup1Warmstorage.opened" close-text="Close" />
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-default calender-button" ng-click="open1Warmstorage()">
+                                    <i class="glyphicon glyphicon-calendar"></i></button>
+                            </span>
+                        </div>
+                        <span class="filter-text margin-left-12">and</span>
+                        <div class="date-filter-in-between-view">
+                            <input type="text" class="form-control transaction-date-filter-input custom-datepicker"
+                                   uib-datepicker-popup="{{dateObjWarmstorage.format}}" popup-placement="bottom-left"
+                                   ng-model="applyFiltersWarmstorageObj.dateFilter.dateTo"
+                                   show-button-bar="false" datepicker-options="{showWeeks: false}"
+                                   placeholder="mm/dd/yyyy" is-open="popup2Warmstorage.opened" close-text="Close" />
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-default calender-button" ng-click="open2Warmstorage()">
+                                    <i class="glyphicon glyphicon-calendar"></i></button>
+                            </span>
+                        </div>
+                    </div>
+                    <div ng-show="applyFiltersWarmstorageObj.dateFilter.selectedDateOption == 'Is equal to'" class="date-filter-view">
+                        <div class="date-filter-in-between-view">
+                            <input type="text" class="form-control transaction-date-filter-input custom-datepicker"
+                                   uib-datepicker-popup="{{dateObjWarmstorage.format}}" popup-placement="bottom-left"
+                                   ng-model="applyFiltersWarmstorageObj.dateFilter.dateEqualTo" show-button-bar="false" datepicker-options="{showWeeks: false}"
+                                   placeholder="mm/dd/yyyy" is-open="popup1Warmstorage.opened" close-text="Close" />
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-default calender-button" ng-click="open1Warmstorage()">
+                                    <i class="glyphicon glyphicon-calendar"></i></button>
+                            </span>
+                        </div>
+                    </div>
+                    <div ng-show="applyFiltersWarmstorageObj.dateFilter.selectedDateOption == 'Is after'" class="date-filter-view">
+                        <div class="date-filter-in-between-view">
+                            <input type="text" class="form-control transaction-date-filter-input custom-datepicker"
+                                   uib-datepicker-popup="{{dateObjWarmstorage.format}}" popup-placement="bottom-left"
+                                   ng-model="applyFiltersWarmstorageObj.dateFilter.dateFrom" show-button-bar="false" datepicker-options="{showWeeks: false}"
+                                   placeholder="mm/dd/yyyy" is-open="popup1Warmstorage.opened" close-text="Close" />
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-default calender-button" ng-click="open1Warmstorage()">
+                                    <i class="glyphicon glyphicon-calendar"></i></button>
+                            </span>
+                        </div>
+                    </div>
+                    <div ng-show="applyFiltersWarmstorageObj.dateFilter.selectedDateOption == 'Is before'" class="date-filter-view">
+                        <div class="date-filter-in-between-view">
+                            <input type="text" class="form-control transaction-date-filter-input custom-datepicker"
+                                   uib-datepicker-popup="{{dateObjWarmstorage.format}}" popup-placement="bottom-left"
+                                   ng-model="applyFiltersWarmstorageObj.dateFilter.dateTo" show-button-bar="false" datepicker-options="{showWeeks: false}"
+                                   placeholder="mm/dd/yyyy" is-open="popup2Warmstorage.opened" close-text="Close" />
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-default calender-button" ng-click="open2Warmstorage()">
+                                    <i class="glyphicon glyphicon-calendar"></i></button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="filterAmount">
+            <div>
+                <label class="checkbox-inline custom-checkbox nowrap">
+                    <input type="checkbox" ng-model="filtersWarmstorageObj.amountFilter">
+                    <span>Amount</span>
+                </label>
+            </div>
+            <div ng-if="filtersWarmstorageObj.amountFilter" class="row divider-top-6">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 date-filter-view">
+                    <select class="form-control pointer" ng-model="applyFiltersWarmstorageObj.amountFilter.selectedAmountOption"
+                            ng-options="option for option in amountFilterWarmstorageOptions">
+                    </select>
+                    <div ng-show="applyFiltersWarmstorageObj.amountFilter.selectedAmountOption == 'Is equal to'" class="date-filter-in-between-view">
+                        <input type="text" ng-model="applyFiltersWarmstorageObj.amountFilter.amount"
+                               auto-focus="applyFiltersWarmstorageObj.amountFilter.selectedAmountOption == 'Is equal to'"
+                               class="transaction-amount-input">
+                    </div>
+                    <div ng-show="applyFiltersWarmstorageObj.amountFilter.selectedAmountOption == 'Is between'" class="amount-filter-in-between-view">
+                        <input type="text" ng-model="applyFiltersWarmstorageObj.amountFilter.amount__gt"
+                               auto-focus="applyFiltersWarmstorageObj.amountFilter.selectedAmountOption == 'Is between'"
+                               class="transaction-amount-input">
+                        <span class="filter-text margin-left-12">and</span>
+                        <input type="text" ng-model="applyFiltersWarmstorageObj.amountFilter.amount__lt" class="transaction-amount-input">
+                    </div>
+                    <div ng-show="applyFiltersWarmstorageObj.amountFilter.selectedAmountOption == 'Is greater than'" class="date-filter-in-between-view">
+                        <input type="text" ng-model="applyFiltersWarmstorageObj.amountFilter.amount__gt"
+                               auto-focus="applyFiltersWarmstorageObj.amountFilter.selectedAmountOption == 'Is greater than'"
+                               class="transaction-amount-input">
+                    </div>
+                    <div ng-show="applyFiltersWarmstorageObj.amountFilter.selectedAmountOption == 'Is less than'" class="date-filter-in-between-view">
+                        <input type="text" ng-model="applyFiltersWarmstorageObj.amountFilter.amount__lt"
+                               auto-focus="applyFiltersWarmstorageObj.amountFilter.selectedAmountOption == 'Is less than'"
+                               class="transaction-amount-input">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="filterStatus">
+            <div>
+                <label class="checkbox-inline custom-checkbox nowrap">
+                    <input type="checkbox" ng-model="filtersWarmstorageObj.statusFilter">
+                    <span>Status</span>
+                </label>
+            </div>
+            <div ng-if="filtersWarmstorageObj.statusFilter" class="row divider-top-6">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 date-filter-view">
+                    <select class="form-control pointer" ng-model="applyFiltersWarmstorageObj.statusFilter.selectedStatusOption"
+                            ng-options="option for option in statusOptionsWarmstorage">
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div id="filterTransactionType">
+            <div>
+                <label class="checkbox-inline custom-checkbox nowrap">
+                    <input type="checkbox" ng-model="filtersWarmstorageObj.transactionTypeFilter">
+                    <span>Transaction type</span>
+                </label>
+            </div>
+            <div ng-if="filtersWarmstorageObj.transactionTypeFilter" class="row divider-top-6">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 date-filter-view">
+                    <select class="form-control pointer" ng-model="applyFiltersWarmstorageObj.transactionTypeFilter.selectedTransactionTypeOption"
+                            ng-options="option for option in typeOptionsWarmstorage">
+                    </select>
+                    <span class="filter-text margin-left-12">subtype </span>
+                    <select class="form-control pointer margin-left-12" ng-model="applyFiltersWarmstorageObj.transactionSubtypeFilter.selectedTransactionSubtypeOption"
+                            ng-options="subtypeOption for subtypeOption in subtypeOptionsWarmstorage">
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div id="filterTransactionID">
+            <div>
+                <label class="checkbox-inline custom-checkbox nowrap">
+                    <input type="checkbox" ng-model="filtersWarmstorageObj.transactionIdFilter">
+                    <span>Transaction id</span>
+                </label>
+            </div>
+            <div ng-if="filtersWarmstorageObj.transactionIdFilter" class="row divider-top-6">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 date-filter-view">
+                    <input type="text" ng-model="applyFiltersWarmstorageObj.transactionIdFilter.selectedTransactionIdOption"
+                           auto-focus="filtersWarmstorageObj.transactionIdFilter"
+                           placeholder="Transaction id" class="transaction-id-input">
+                </div>
+            </div>
+        </div>
+        <div id="filterPageSize">
+            <div>
+                <label class="checkbox-inline custom-checkbox nowrap">
+                    <input type="checkbox" ng-model="filtersWarmstorageObj.pageSizeFilter">
+                    <span>Page size</span>
+                </label>
+            </div>
+            <div ng-if="filtersWarmstorageObj.pageSizeFilter" class="row divider-top-6">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 date-filter-view">
+                    <input type="text" ng-model="warmstoragePagination.itemsPerPage" ng-change="pageSizeChangedWarmstorage()"
+                           auto-focus="filtersWarmstorageObj.pageSizeFilter"
+                           placeholder="Enter page size" class="transaction-page-size-input">
+                </div>
+            </div>
+        </div>
+        <div id="filterOrderBy">
+            <div>
+                <label class="checkbox-inline custom-checkbox nowrap">
+                    <input type="checkbox" ng-model="filtersWarmstorageObj.orderByFilter">
+                    <span>Order by</span>
+                </label>
+            </div>
+            <div ng-if="filtersWarmstorageObj.orderByFilter" class="row divider-top-6">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 date-filter-view">
+                    <select class="form-control pointer" ng-model="applyFiltersWarmstorageObj.orderByFilter.selectedOrderByOption"
+                            ng-options="orderBy for orderBy in orderByOptionsWarmstorage">
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
