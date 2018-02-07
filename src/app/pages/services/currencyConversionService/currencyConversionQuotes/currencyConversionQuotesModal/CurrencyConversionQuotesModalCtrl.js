@@ -5,7 +5,7 @@
         .controller('CurrencyConversionQuotesModalCtrl', CurrencyConversionQuotesModalCtrl);
 
     function CurrencyConversionQuotesModalCtrl($scope,metadataTextService,quote,cookieManagement,$uibModal,$http,
-                                               $uibModalInstance,toastr,errorHandler,$ngConfirm) {
+                                               $uibModalInstance,toastr,errorHandler,$ngConfirm,$window) {
 
         var vm = this;
         vm.token = cookieManagement.getCookie('TOKEN');
@@ -17,8 +17,12 @@
         $scope.editingQuote = false;
         $scope.deletingQuote = false;
 
+        $scope.goToUserView =  function (uuid) {
+            var url = '/#/user/' + uuid + '/details';
+            $window.open(url,'_blank');
+        };
+
         $scope.editQuote = function(){
-            $scope.deletingQuote = true;
             var metaData;
             if($scope.updateQuoteObj.metadata){
                 if(vm.isJson($scope.updateQuoteObj.metadata)){
@@ -31,6 +35,7 @@
                 metaData = {};
             }
 
+            $scope.deletingQuote = true;
             if(vm.token) {
                 $http.patch(vm.baseUrl + 'admin/quotes/' + $scope.quote.id + '/',
                     {

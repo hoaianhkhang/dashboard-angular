@@ -23,7 +23,7 @@
                     <p class="text-subtle">User:</p>
                 </div>
                 <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-                    <span ng-bind="quote.user"></span>
+                    <a class="pointer" ng-bind="quote.user" ng-click="goToUserView(quote.user)"></a>
                 </div>
             </div>
             <div class="row">
