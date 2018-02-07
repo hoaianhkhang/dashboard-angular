@@ -9,7 +9,7 @@
         return {
             restrict: 'E',
             require: '^parent',
-            templateUrl: 'app/pages/services/bitcoinService/bitcoinServiceAccounts/bitcoinColdstorage/warmstorageTransactionsTable/warmstorageTransactionsTable.html'
+            templateUrl: 'app/pages/services/bitcoinService/bitcoinServiceAccounts/bitcoinWarmstorage/warmstorageTransactionsTable/warmstorageTransactionsTable.html'
         };
     }
 })();
