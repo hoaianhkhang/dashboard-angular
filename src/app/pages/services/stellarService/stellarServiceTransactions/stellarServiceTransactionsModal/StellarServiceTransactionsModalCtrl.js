@@ -16,6 +16,6 @@
         $scope.goToTransactions = function(rehiveCode){
             $uibModalInstance.close();
             $state.go('transactions.history',{"transactionId": rehiveCode});
-        }
+        };
     }
 })();

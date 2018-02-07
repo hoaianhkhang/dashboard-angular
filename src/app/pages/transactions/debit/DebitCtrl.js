@@ -74,11 +74,25 @@
             $scope.debitData.account = $state.params.account;
         }
 
+        vm.isJson = function (str) {
+            try {
+                JSON.parse(str);
+            } catch (e) {
+                return false;
+            }
+            return true;
+        };
+
         $scope.goToView = function (view) {
             if ($scope.debitData.amount) {
                 var validAmount = currencyModifiers.validateCurrency($scope.debitData.amount, $scope.debitData.currency.divisibility);
                 if (validAmount) {
-                    $scope.showView = view;
+                    if(vm.isJson($scope.debitData.metadata)){
+                        $scope.showView = view;
+                    } else {
+                        toastr.error('Incorrect metadata format');
+                        return false;
+                    }
                 } else {
                     toastr.error('Please input amount to ' + $scope.debitData.currency.divisibility + ' decimal places');
                 }

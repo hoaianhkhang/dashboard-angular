@@ -23,7 +23,7 @@
                 if(vm.isJson($scope.updateTransactionObj.metadata)){
                     metaData =  JSON.parse($scope.updateTransactionObj.metadata);
                 } else {
-                    toastr.error('Incorrect format');
+                    toastr.error('Incorrect metadata format');
                     return false;
                 }
             } else {
@@ -41,7 +41,7 @@
                         }
                     }).then(function (res) {
                     if (res.status === 200) {
-                        if(metaData == " "){
+                        if(metaData == {}){
                             delete $scope.formatted.metadata;
                             delete $scope.transaction.metadata;
                         } else {

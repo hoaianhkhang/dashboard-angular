@@ -96,6 +96,7 @@
                 }
             }).catch(function (error) {
                 $scope.loadingUsers = false;
+                newUserParams.metadata = JSON.stringify(newUserParams.metadata);
                 errorHandler.evaluateErrors(error.data);
                 errorHandler.handleErrors(error);
             });

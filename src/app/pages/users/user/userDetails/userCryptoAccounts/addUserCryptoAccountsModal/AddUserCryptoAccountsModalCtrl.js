@@ -18,12 +18,42 @@
         $scope.statusOptions = ['Pending', 'Incomplete', 'Declined', 'Verified'];
         vm.token = cookieManagement.getCookie('TOKEN');
 
+        vm.isJson = function (str) {
+            try {
+                JSON.parse(str);
+            } catch (e) {
+                return false;
+            }
+            return true;
+        };
+
         $scope.addUserCryptoAccount = function(userCryptoAccountParams){
             if(vm.token) {
+                var metaData;
+                if(userCryptoAccountParams.metadata){
+                    if(vm.isJson(userCryptoAccountParams.metadata)){
+                        metaData =  JSON.parse(userCryptoAccountParams.metadata);
+                    } else {
+                        toastr.error('Incorrect metadata format');
+                        return false;
+                    }
+                } else {
+                    metaData = {};
+                }
+
                 $scope.loadingUserCryptoAccounts = true;
                 userCryptoAccountParams.crypto_type = userCryptoAccountParams.crypto_type.toLowerCase();
                 userCryptoAccountParams.status = userCryptoAccountParams.status.toLowerCase();
-                $http.post(environmentConfig.API + '/admin/users/crypto-accounts/',userCryptoAccountParams, {
+
+                var newCryptoAccount = {
+                    crypto_type: userCryptoAccountParams.crypto_type,
+                    user: vm.uuid,
+                    address: userCryptoAccountParams.address,
+                    metadata: metaData,
+                    status: userCryptoAccountParams.status
+                };
+
+                $http.post(environmentConfig.API + '/admin/users/crypto-accounts/',newCryptoAccount, {
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': vm.token

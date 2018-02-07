@@ -35,7 +35,7 @@
             status: $filter('capitalizeWord')($scope.user.status)
         };
         $scope.userAddresses.forEach(function (element,index) {
-            $scope.userAddresses[index].status = $filter('capitalizeWord')($scope.userAddresses[index].status)
+            $scope.userAddresses[index].status = $filter('capitalizeWord')($scope.userAddresses[index].status);
         });
 
         $scope.documentTypeOptions = ['Utility Bill','Bank Statement','Lease Or Rental Agreement',

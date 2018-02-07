@@ -47,11 +47,32 @@
         };
         vm.getUserCryptoAccount();
 
+        vm.isJson = function (str) {
+            try {
+                JSON.parse(str);
+            } catch (e) {
+                return false;
+            }
+            return true;
+        };
+
         $scope.userCryptoAccountChanged =  function (field) {
             vm.updatedUserCryptoAccount[field] = $scope.editUserCryptoAccountParams[field];
         };
 
         $scope.editUserCryptoAccount =  function () {
+
+            if($scope.editUserCryptoAccountParams.metadata){
+                if(vm.isJson($scope.editUserCryptoAccountParams.metadata)){
+                    vm.updatedUserCryptoAccount.metadata =  JSON.parse($scope.editUserCryptoAccountParams.metadata);
+                } else {
+                    toastr.error('Incorrect metadata format');
+                    return false;
+                }
+            } else {
+                vm.updatedUserCryptoAccount.metadata = {};
+            }
+
             if(vm.updatedUserCryptoAccount.status){
                 vm.updatedUserCryptoAccount.status = vm.updatedUserCryptoAccount.status.toLowerCase();
             }
@@ -59,6 +80,7 @@
             if(vm.updatedUserCryptoAccount.crypto_type){
                 vm.updatedUserCryptoAccount.crypto_type = vm.updatedUserCryptoAccount.crypto_type.toLowerCase();
             }
+
             if(vm.token) {
                 $scope.loadingUserCryptoAccounts = true;
                 $http.patch(environmentConfig.API + '/admin/users/crypto-accounts/' + $scope.editUserCryptoAccountParams.id + '/',vm.updatedUserCryptoAccount, {

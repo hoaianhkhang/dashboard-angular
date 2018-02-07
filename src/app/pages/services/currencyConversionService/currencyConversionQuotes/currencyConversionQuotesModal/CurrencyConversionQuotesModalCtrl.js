@@ -24,11 +24,11 @@
                 if(vm.isJson($scope.updateQuoteObj.metadata)){
                     metaData =  JSON.parse($scope.updateQuoteObj.metadata);
                 } else {
-                    toastr.error('Incorrect format');
+                    toastr.error('Incorrect metadata format');
                     return false;
                 }
             } else {
-                metaData = " ";
+                metaData = {};
             }
 
             if(vm.token) {
@@ -42,7 +42,7 @@
                         }
                     }).then(function (res) {
                     if (res.status === 200) {
-                        if(metaData == " "){
+                        if(metaData == {}){
                             delete $scope.formatted.metadata;
                             delete $scope.quote.metadata;
                         } else {
