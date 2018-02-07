@@ -27,6 +27,8 @@
                             <span class="fa fa-ellipsis-h pull-right pointer currencies-options"></span>
                             <ul ng-show="showOptionsAccountRef" class="currencies-options-box">
                                 <li ng-click="toggleCurrenciesOptions()"><i class="dropdown-arr"></i></li>
+                                <li ng-click="addPublicAddressModal('app/pages/services/bitcoinService/bitcoinServiceAccounts/bitcoinColdstorage/addPublicAddressModal/addPublicAddressModal.html', 'md')">
+                                    Add address</li>
                                 <li ng-click="goToDebit()">Create debit</li>
                                 <li ng-click="goToCredit()">Create credit</li>
                             </ul>
@@ -58,7 +60,7 @@
                    previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></p>
             </div>
         </div>
-        <div ba-panel ng-show="loadingPublicAddresses">
+        <div ng-show="loadingPublicAddresses">
             <loading-image></loading-image>
         </div>
     </div>

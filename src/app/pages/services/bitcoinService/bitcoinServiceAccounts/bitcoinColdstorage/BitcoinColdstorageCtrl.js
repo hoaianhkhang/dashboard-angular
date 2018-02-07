@@ -95,6 +95,22 @@
         };
         $scope.getPublicAddresses();
 
+        $scope.addPublicAddressModal = function (page,size) {
+            vm.thePublicAddressModal = $uibModal.open({
+                animation: true,
+                templateUrl: page,
+                size: size,
+                controller: 'AddPublicAddressModalCtrl'
+            });
+
+            vm.thePublicAddressModal.result.then(function(address){
+                if(address){
+                    $scope.getPublicAddresses();
+                }
+            }, function(){
+            });
+        };
+
         //Public address logic ends
 
         //transactions logic
