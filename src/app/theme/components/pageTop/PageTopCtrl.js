@@ -24,6 +24,11 @@
             vm.checkIfInCompanySetup(vm.currentLocation);
         });
 
+        $scope.goToCreditUser = function (email) {
+            $scope.hidingSearchBar();
+            $state.go('transactions.credit',{"email": email});
+        };
+
         //when page refreshed
         if(!$rootScope.pageTopObj.companyObj){
             vm.getCompanyInfo = function () {
