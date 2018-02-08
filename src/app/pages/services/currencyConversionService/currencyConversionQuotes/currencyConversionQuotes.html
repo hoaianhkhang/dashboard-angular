@@ -1,30 +1,5 @@
 <currency-conversion-service-navigation></currency-conversion-service-navigation>
 
-<!--<div class="panel">-->
-    <!--<div class="panel-body">-->
-        <!--<div class="row">-->
-            <!--<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12 divider">-->
-                <!--<label><strong>Filter by quote id</strong></label>-->
-                <!--<input class="form-control" ng-model="filterObj.quoteId">-->
-            <!--</div>-->
-            <!--<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12 divider">-->
-                <!--<label><strong>From currency code</strong></label>-->
-                <!--<input class="form-control" ng-model="filterObj.from_currency__code">-->
-            <!--</div>-->
-            <!--<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12 divider">-->
-                <!--<label><strong>To currency code</strong></label>-->
-                <!--<input class="form-control" ng-model="filterObj.to_currency__code">-->
-            <!--</div>-->
-            <!--<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12 pull-right apply-button">-->
-                <!--<label>&nbsp;</label>-->
-                <!--<br>-->
-                <!--<button ng-disabled="loadingQuotes" class="btn btn-default dashboard-btn pull-right"-->
-                        <!--ng-click="getQuotesList()">Apply</button>-->
-            <!--</div>-->
-        <!--</div>-->
-    <!--</div>-->
-<!--</div>-->
-
 <div ng-hide="loadingQuotes" class="panel">
     <div class="panel-heading">
         <div class="table-filter-heading">
@@ -73,7 +48,7 @@
                         {{quote.to_currency.symbol}} {{quote.to_amount  | currencyModifiersFilter: quote.to_currency.divisibility}}
                     </div></td>
                     <td class="pull-right"><div class="transactions-list-element">
-                        {{quote.to_currency.symbol}} {{quote.rate  | currencyModifiersFilter: quote.to_currency.divisibility}}
+                        {{quote.rate}}
                     </div></td>
                 </tr>
             </table>

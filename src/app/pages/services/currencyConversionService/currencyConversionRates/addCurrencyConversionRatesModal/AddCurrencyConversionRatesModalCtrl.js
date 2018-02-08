@@ -40,7 +40,7 @@
                 to_currency: $scope.rateParams.toCurrency.code,
                 from_percentage_fee: $scope.rateParams.from_percentage_fee || null,
                 from_value_fee: $scope.rateParams.from_value_fee ? currencyModifiers.convertToCents($scope.rateParams.from_value_fee,$scope.rateParams.fromCurrency.divisibility) : null,
-                fixed_rate: $scope.rateParams.fixed_rate ? currencyModifiers.convertToCents($scope.rateParams.fixed_rate,$scope.rateParams.toCurrency.divisibility) : null
+                fixed_rate: $scope.rateParams.fixed_rate ? $scope.rateParams.fixed_rate: null
             };
 
             var cleanRate = cleanObject.cleanObj(newRate);
