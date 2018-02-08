@@ -20,19 +20,18 @@
             <table class="table custom-table">
                 <tr>
                     <th>Quote id</th>
-                    <th>User</th>
+                    <th>Conversion id</th>
                     <th>From currency</th>
                     <th>To currency</th>
                     <th>From total amount</th>
                     <th>From amount</th>
-                    <th>From fee</th>
                     <th>To amount</th>
                     <th class="pull-right">Rate</th>
                 </tr>
                 <tr ng-repeat="quote in quotesList | orderBy: 'id'"  class="editable-row pointer user-details-table-hover"
                     ng-click="goToQuotesView('app/pages/services/currencyConversionService/currencyConversionQuotes/currencyConversionQuotesModal/currencyConversionQuotesModal.html','md',quote)">
                     <td class="transactions-list-element" title="{{quote.id}}" ng-bind="quote.id"></td>
-                    <td class="transactions-list-element" title="{{quote.user}}" ng-bind="quote.user"></td>
+                    <td class="transactions-list-element" title="{{quote.conversion}}" ng-bind="quote.conversion || 'None'"></td>
                     <td class="transactions-list-element rehive-table-row-first-child" title="{{quote.from_currency.code}}" ng-bind="quote.from_currency.code"></td>
                     <td class="transactions-list-element" title="{{quote.to_currency.code}}" ng-bind="quote.to_currency.code"></td>
                     <td><div class="transactions-list-element">
@@ -40,9 +39,6 @@
                     </div></td>
                     <td><div class="transactions-list-element">
                         {{quote.from_currency.symbol}} {{quote.from_amount  | currencyModifiersFilter: quote.from_currency.divisibility}}
-                    </div></td>
-                    <td><div class="transactions-list-element">
-                        {{quote.from_currency.symbol}} {{quote.from_fee  | currencyModifiersFilter: quote.from_currency.divisibility}}
                     </div></td>
                     <td><div class="transactions-list-element">
                         {{quote.to_currency.symbol}} {{quote.to_amount  | currencyModifiersFilter: quote.to_currency.divisibility}}

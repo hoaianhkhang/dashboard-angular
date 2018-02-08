@@ -123,6 +123,8 @@
                     if (res.status === 200) {
                         $scope.quotesListData = res.data.data;
                         $scope.quotesList = res.data.data.results;
+
+                        console.log($scope.quotesList)
                     }
                 }).catch(function (error) {
                     $scope.loadingQuotes =  false;
