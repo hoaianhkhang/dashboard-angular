@@ -88,11 +88,15 @@
             if($scope.creditData.amount){
                 var validAmount = currencyModifiers.validateCurrency($scope.creditData.amount,$scope.creditData.currency.divisibility);
                 if(validAmount){
-                    if(vm.isJson($scope.creditData.metadata)){
-                        $scope.showView = view;
+                    if($scope.creditData.metadata){
+                        if(vm.isJson($scope.creditData.metadata)){
+                            $scope.showView = view;
+                        } else {
+                            toastr.error('Incorrect metadata format');
+                            return false;
+                        }
                     } else {
-                        toastr.error('Incorrect metadata format');
-                        return false;
+                        $scope.showView = view;
                     }
                 } else {
                     toastr.error('Please input amount to ' + $scope.creditData.currency.divisibility + ' decimal places');

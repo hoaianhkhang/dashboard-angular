@@ -11,7 +11,7 @@
   },
   "production": {
     "environmentConfig": {
-      "API": "https://rehive.com/api/3"
+      "API": "https://api.rehive.com/3"
     }
   }
 }
