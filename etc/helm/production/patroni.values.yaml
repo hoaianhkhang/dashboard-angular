@@ -1,0 +1,79 @@
+image:
+  repository: registry.opensource.zalan.do/acid/spilo-10
+  tag: 1.3-p9
+  pullPolicy: Always
+
+# How many postgres containers to spawn
+replicas: 1
+debug: false
+
+podAntiAffinity: soft
+
+nodeSelector:
+  cloud.google.com/gke-nodepool: postgres-pool
+
+tolerations:
+  - key: "dedicated"
+    operator: "Equal"
+    value: "postgres"
+    effect: "NoSchedule"
+
+
+# Resource requests and limits per pod
+resources:
+  limits:
+    cpu: 7.5
+    memory: 25G
+  requests:
+    cpu: 7.5
+    memory: 25G
+
+credentials:
+  # Leave blank to autogenerate
+  superuser:
+  admin:
+  standby:
+
+useConfigMaps: false
+
+postgresParameters:
+  bin_dir: /usr/lib/postgresql/9.6/bin
+  pg_hba:
+    - host all all 0.0.0.0/0 md5
+    - host replication replicator 127.0.0.1/32 md5
+
+walE:
+  enable: true
+  scheduleCronJob: 00 01 * * *
+  retainBackups: 2
+  s3Bucket:
+  kubernetesSecret: gcloud-wale
+  gcsBucket: rehive-core-pgbackup-production
+  backupThresholdMegabytes: 1024
+  backupThresholdPercentage: 30
+
+cloneWithWale:
+  enable: true
+  cloneWaleEnvDir: /home/postgres/clone-wal.e/env
+  cloneWalGcsBucket: rehive-core-pgbackup-production
+  cloneScope: oldserver
+
+persistentVolume:
+  enabled: true
+  ## If defined, storageClassName: <storageClass>
+  ## If set to "-", storageClassName: "", which disables dynamic provisioning
+  ## If undefined (the default) or set to null, no storageClassName spec is
+  ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
+  ##   GKE, AWS & OpenStack)
+  ##
+  storageClass: "ssd"
+  accessModes:
+    - ReadWriteOnce
+  size: 100Gi
+  annotations: {}
+
+cleanup:
+  image:
+    repository: quay.io/coreos/hyperkube
+    tag: v1.8.4_coreos.0
+    pullPolicy: IfNotPresent

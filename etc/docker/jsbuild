@@ -9,4 +9,5 @@ WORKDIR /app
 # TODO: figure out user/ permission issues
 RUN npm install && bower install --allow-root
 COPY src/ /app/src/
+CMD bash -c 'gulp clean && gulp build'
 
