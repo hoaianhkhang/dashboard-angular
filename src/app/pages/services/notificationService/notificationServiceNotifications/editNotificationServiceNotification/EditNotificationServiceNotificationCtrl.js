@@ -13,8 +13,6 @@
         vm.updatedNotification = {};
         $scope.loadingNotifications =  false;
 
-        $scope.boolOptions = ['True','False'];
-
         vm.eventOptionsObj = {
             USER_CREATE: 'user.create',
             USER_UPDATE: 'user.update',
@@ -55,7 +53,6 @@
                         $scope.editNotification = res.data.data;
                         $scope.editNotification.event = $filter('capitalizeDottedSentence')(res.data.data.event);
                         $scope.editNotification.event = $filter('capitalizeUnderscoredSentence')($scope.editNotification.event);
-                        $scope.editNotification.enabled = $scope.editNotification.enabled == true ? 'True' : 'False';
                     }
                 }).catch(function (error) {
                     $scope.loadingNotifications =  false;
@@ -81,9 +78,6 @@
 
         $scope.updateNotification = function () {
             $scope.loadingNotifications =  true;
-            if(vm.updatedNotification.enabled){
-                vm.updatedNotification.enabled = vm.updatedNotification.enabled == 'True' ? true : false;
-            }
             if(vm.updatedNotification.event){
                 var event = vm.updatedNotification.event.toUpperCase();
                 event = event.replace(/ /g, '_');
@@ -99,7 +93,7 @@
                 }).then(function (res) {
                     if (res.status === 200) {
                         toastr.success('Notification updated successfully');
-                        $location.path('/services/notifications/list')
+                        $location.path('/services/notifications/list');
                     }
                 }).catch(function (error) {
                     $scope.loadingNotifications =  false;

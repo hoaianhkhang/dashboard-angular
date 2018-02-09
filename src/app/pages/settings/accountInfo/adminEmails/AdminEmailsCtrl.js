@@ -11,9 +11,7 @@
         vm.token = cookieManagement.getCookie('TOKEN');
         $scope.addingEmail = false;
         $scope.loadingAdminEmails = true;
-        $scope.newEmail = {primary: 'True'};
-        $scope.booleanOptions = ['True','False'];
-
+        $scope.newEmail = {primary: true};
 
         vm.getUserEmails = function () {
             $scope.loadingAdminEmails = true;
@@ -61,7 +59,6 @@
 
         $scope.createEmail = function (newEmail) {
             $scope.loadingAdminEmails = true;
-            newEmail.primary = newEmail.primary == 'True' ? true:false;
             if(vm.token) {
                 $http.post(environmentConfig.API + '/user/emails/', newEmail , {
                     headers: {
@@ -73,7 +70,7 @@
                     if (res.status === 201) {
                         toastr.success('Email added successfully');
                         $scope.toggleAddEmailView();
-                        $scope.newEmail = {primary: 'True'};
+                        $scope.newEmail = {primary: true};
                         vm.getUserEmails();
                     }
                 }).catch(function (error) {
@@ -112,7 +109,7 @@
 
         $scope.goToAccountInfo = function(){
             $location.path('/settings/account-info');
-        }
+        };
 
     }
 })();

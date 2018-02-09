@@ -15,10 +15,8 @@
                         <th></th>
                     </tr>
                     <tr ng-repeat="hdKey in hdKeysList | filter: {key_type : 'xpub'}">
-                        <td class="transactions-list-element no-left-padding" width="10%"><label  class="checkbox-inline custom-checkbox nowrap">
-                            <input type="checkbox" ng-change="toggleHdKeyPrimaryStatus(hdKey)" ng-model="hdKey.primary" ng-checked="hdKey.primary">
-                            <span></span>
-                        </label>
+                        <td class="transactions-list-element no-left-padding" width="10%">
+                            <input class="custom-rehive-checkbox" ng-change="toggleHdKeyPrimaryStatus(hdKey)" ng-model="hdKey.primary" type="checkbox">
                         </td>
                         <td class="transactions-list-element" title="{{hdKey.address}}" ng-bind="hdKey.address"></td>
                         <td class="transactions-list-element" title="{{hdKey.key_type}}" ng-bind="hdKey.key_type"></td>

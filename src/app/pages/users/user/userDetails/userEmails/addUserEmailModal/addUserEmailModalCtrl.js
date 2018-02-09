@@ -25,12 +25,12 @@
             }).then(function (res) {
                 if (res.status === 201) {
                     $scope.loadingUserEmails = true;
-                    $scope.newUserEmail = {primary: 'False', verified: 'False'};
+                    $scope.newUserEmail = {primary: false, verified: false};
                     toastr.success('Email successfully created');
                     $uibModalInstance.close(res.data);
                 }
             }).catch(function (error) {
-                $scope.newUserEmail = {primary: 'False', verified: 'False'};
+                $scope.newUserEmail = {primary: false, verified: false};
                 $scope.loadingUserEmails = false;
                 errorHandler.evaluateErrors(error.data);
                 errorHandler.handleErrors(error);

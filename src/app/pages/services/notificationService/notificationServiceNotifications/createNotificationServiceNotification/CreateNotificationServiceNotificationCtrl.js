@@ -13,12 +13,10 @@
         vm.updatedNotification = {};
         $scope.loadingNotifications =  false;
         $scope.notificationParams = {
-            enabled: 'False',
+            enabled: false,
             preference_enabled: false,
             event: 'User Create'
         };
-
-        $scope.boolOptions = ['True','False'];
 
         vm.eventOptionsObj = {
             USER_CREATE: 'user.create',
@@ -52,7 +50,6 @@
             event = event.replace(/ /g, '_');
             notificationParams.event = vm.eventOptionsObj[event];
             $scope.loadingNotifications =  true;
-            $scope.notificationParams.enabled = $scope.notificationParams.enabled == 'True' ? true : false;
             if(vm.token) {
                 $http.post(vm.baseUrl + 'admin/notifications/',notificationParams, {
                     headers: {
@@ -73,7 +70,7 @@
         };
 
         $scope.goToListView = function () {
-            $location.path('/services/notifications/list')
+            $location.path('/services/notifications/list');
         };
 
     }

@@ -14,10 +14,9 @@
         $scope.loadingHdkeys =  true;
         $scope.addingHdkey =  false;
         $scope.newHdKey = {
-            primary: 'False',
+            primary: false,
             key_type: 'xpub'
         };
-        $scope.booleanOptions = ['True','False'];
         $scope.keyTypeOptions = ['xpub','xpriv'];
 
         vm.getHdkeys = function () {
@@ -122,7 +121,6 @@
 
         $scope.createHdKey = function(newHdKey){
             $scope.loadingHdkeys =  true;
-            newHdKey.primary = newHdKey.primary == 'True';
             newHdKey.key_type = 'xpub';
             if(vm.token) {
                 $http.post(vm.serviceUrl + 'admin/hdkeys/',newHdKey, {
@@ -135,7 +133,7 @@
                     $scope.loadingHdkeys =  false;
                     if (res.status === 201) {
                         $scope.newHdKey = {
-                            primary: 'False',
+                            primary: false,
                             key_type: 'xpub'
                         };
                         toastr.success('Public key primary status successfully created');
@@ -143,7 +141,7 @@
                     }
                 }).catch(function (error) {
                     $scope.newHdKey = {
-                        primary: 'False',
+                        primary: false,
                         key_type: 'xpub'
                     };
                     $scope.loadingHdkeys =  false;

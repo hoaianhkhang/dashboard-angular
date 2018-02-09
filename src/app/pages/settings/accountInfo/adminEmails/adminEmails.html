@@ -2,6 +2,7 @@
     <div ng-hide="loadingAdminEmails || addingEmail" class="panel">
         <div class="panel-heading">
             <span class="user-details-panel-title">Admin emails</span>
+            <a ng-click="toggleAddEmailView()" class="user-details-panel-link pull-right pointer">Add</a>
         </div>
         <div class="panel-body">
             <div class="divider admin-emails">
@@ -13,13 +14,18 @@
                         <th></th>
                     </tr>
                     <tr ng-repeat="email in adminEmailsList">
-                        <td><label  class="checkbox-inline custom-checkbox nowrap">
-                            <input type="checkbox" ng-change="updateEmail(email)" ng-model="email.primary" ng-checked="email.primary">
-                            <span></span>
-                        </label>
+                        <td>
+                            <input class="custom-rehive-checkbox" ng-change="updateEmail(email)" ng-model="email.primary" type="checkbox">
                         </td>
                         <td title="{{email.email}}" ng-bind="email.email | limitTo: '24'"></td>
-                        <td ng-bind="email.verified ? 'True': 'False'"></td>
+                        <td>
+                            <span ng-show="email.verified">
+                                <span ng-show="email.verified" class="status-verified user-address-status margin-right-30">VERIFIED</span>
+                            </span>
+                            <span ng-hide="email.verified">
+                                <span ng-hide="email.verified" class="user-primary-account user-address-status margin-right-30 status-incomplete-declined">NOT VERIFIED</span>
+                            </span>
+                        </td>
                         <td class="rehive-table-row-last-child">
                             <a ng-click="deleteEmail(email)"
                                class="pull-right pointer ">Delete
@@ -29,8 +35,7 @@
                 </table>
             </div>
             <div>
-                <button ng-click="toggleAddEmailView()" class="btn btn-primary dashboard-btn pull-right">Add</button>
-                <button ng-click="goToAccountInfo()" class="btn btn-default dashboard-btn pull-right margin-right-10">Back</button>
+                <button ng-click="goToAccountInfo()" class="btn btn-default dashboard-btn pull-right">Back</button>
             </div>
         </div>
     </div>

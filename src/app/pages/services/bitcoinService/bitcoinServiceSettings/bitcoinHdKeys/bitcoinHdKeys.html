@@ -14,10 +14,8 @@
                         <th></th>
                     </tr>
                     <tr ng-repeat="hdKey in hdKeysList">
-                        <td width="10%" class="transactions-list-element rehive-table-row-first-child"><label  class="checkbox-inline custom-checkbox nowrap">
-                            <input type="checkbox" ng-change="toggleHdKeyPrimaryStatus(hdKey)" ng-model="hdKey.primary" ng-checked="hdKey.primary">
-                            <span></span>
-                        </label>
+                        <td width="10%" class="transactions-list-element rehive-table-row-first-child">
+                            <input class="custom-rehive-checkbox" ng-change="toggleHdKeyPrimaryStatus(hdKey)" ng-model="hdKey.primary" type="checkbox">
                         </td>
                         <td class="transactions-list-element" title="{{hdKey.address}}" ng-bind="hdKey.address"></td>
                         <td class="transactions-list-element" title="{{hdKey.status}}" ng-bind="hdKey.status"></td>

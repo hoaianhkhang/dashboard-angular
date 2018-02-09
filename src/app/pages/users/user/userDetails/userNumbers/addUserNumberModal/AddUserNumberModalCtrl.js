@@ -25,12 +25,12 @@
             }).then(function (res) {
                 if (res.status === 201) {
                     $scope.loadingUserNumbers = true;
-                    $scope.newUserNumber = {primary: 'False', verified: 'False'};
+                    $scope.newUserNumber = {primary: false, verified: false};
                     toastr.success('Number successfully created');
                     $uibModalInstance.close(res.data);
                 }
             }).catch(function (error) {
-                $scope.newUserNumber = {primary: 'False', verified: 'False'};
+                $scope.newUserNumber = {primary: false, verified: false};
                 $scope.loadingUserNumbers = false;
                 errorHandler.evaluateErrors(error.data);
                 errorHandler.handleErrors(error);
