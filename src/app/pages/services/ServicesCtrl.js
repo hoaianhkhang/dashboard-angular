@@ -5,13 +5,13 @@
         .controller('ServicesCtrl', ServicesCtrl);
 
     /** @ngInject */
-    function ServicesCtrl($scope,$location,$http,environmentConfig,errorHandler,$ngConfirm,$timeout,cookieManagement,toastr) {
-
-        $scope.loadingServices = true;
-        $scope.showingFilters = false;
+    function ServicesCtrl($rootScope,$scope,$location,$http,environmentConfig,errorHandler,$ngConfirm,$timeout,cookieManagement,toastr) {
 
         var vm = this;
         vm.token = cookieManagement.getCookie('TOKEN');
+        $rootScope.dashboardTitle = 'Rehive | Services';
+        $scope.loadingServices = true;
+        $scope.showingFilters = false;
 
         $scope.showFilters = function () {
             $scope.showingFilters = !$scope.showingFilters;

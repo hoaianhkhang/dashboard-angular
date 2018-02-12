@@ -9,7 +9,7 @@
     function routeConfig ($stateProvider) {
         $stateProvider
             .state('newCompanySetup.setupUsersGroups',{
-                url:'/user-groups',
+                url:'/groups',
                 views:{
                     'companySetupView': {
                         templateUrl: 'app/pages/newCompanySetup/setupUsersGroups/setupUsersGroups.html',

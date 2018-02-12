@@ -5,11 +5,12 @@
         .controller('SettingsCtrl', SettingsCtrl);
 
     /** @ngInject */
-    function SettingsCtrl($scope,environmentConfig,Upload,$http,cookieManagement,errorHandler,$window,$timeout,$location) {
+    function SettingsCtrl($rootScope,$scope,environmentConfig,Upload,$http,cookieManagement,errorHandler,$window,$timeout,$location) {
 
         var vm = this;
         vm.token = cookieManagement.getCookie('TOKEN');
         $scope.settingView = 'accountInfo';
+        $rootScope.dashboardTitle = 'Rehive | Settings';
         $scope.companyImageUrl = null;
         $scope.currencyOptions = JSON.parse($window.sessionStorage.currenciesList || '[]');
         $scope.updatingLogo = false;

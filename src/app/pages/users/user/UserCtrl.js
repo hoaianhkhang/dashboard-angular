@@ -10,6 +10,7 @@
 
         var vm = this;
         vm.token = cookieManagement.getCookie('TOKEN');
+        $rootScope.dashboardTitle = 'Rehive | User';
         vm.uuid = $stateParams.uuid;
         $scope.user = {};
         $scope.loadingUser = true;

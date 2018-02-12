@@ -5,11 +5,12 @@
         .controller('CreditCtrl', CreditCtrl);
 
     /** @ngInject */
-    function CreditCtrl($scope,$http,environmentConfig,cookieManagement,toastr,_,
+    function CreditCtrl($scope,$http,environmentConfig,cookieManagement,toastr,_,$rootScope,
                         errorHandler,sharedResources,$location,$state,currencyModifiers,typeaheadService) {
 
         var vm = this;
         vm.token = cookieManagement.getCookie('TOKEN');
+        $rootScope.dashboardTitle = 'Rehive | Credits';
 
         $scope.creditData = {
             user: null,

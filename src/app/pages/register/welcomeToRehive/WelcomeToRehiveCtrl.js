@@ -5,11 +5,12 @@
         .controller('WelcomeToRehiveCtrl', WelcomeToRehiveCtrl);
 
     /** @ngInject */
-    function WelcomeToRehiveCtrl($rootScope,$scope,$http,toastr,cookieManagement,environmentConfig,$location,errorHandler,userVerification,_) {
+    function WelcomeToRehiveCtrl($rootScope,$scope,cookieManagement,$location) {
 
         var vm = this;
         vm.user = {};
         vm.token = cookieManagement.getCookie('TOKEN');
+        $rootScope.dashboardTitle = 'Rehive | Setup';
         $scope.verifyingEmail = false;
         $rootScope.$pageFinishedLoading = true;
 

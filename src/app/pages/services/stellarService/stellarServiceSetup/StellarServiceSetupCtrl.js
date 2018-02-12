@@ -5,11 +5,12 @@
         .controller('StellarServiceSetupCtrl', StellarServiceSetupCtrl);
 
     /** @ngInject */
-    function StellarServiceSetupCtrl($scope,$http,environmentConfig,cookieManagement,$uibModal,toastr,errorHandler,$window,$location) {
+    function StellarServiceSetupCtrl($rootScope,$scope,$http,cookieManagement,toastr,errorHandler,$location) {
 
         var vm = this;
         vm.token = cookieManagement.getCookie('TOKEN');
         vm.serviceUrl = cookieManagement.getCookie('SERVICEURL');
+        $rootScope.dashboardTitle = 'Rehive | Stellar service';
         $scope.serviceSetupParams = {};
         $scope.loadingStellarService = true;
 

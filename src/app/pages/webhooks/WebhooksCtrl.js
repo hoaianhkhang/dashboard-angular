@@ -5,11 +5,12 @@
         .controller('WebhooksCtrl', WebhooksCtrl);
 
     /** @ngInject */
-    function WebhooksCtrl($scope,environmentConfig,$uibModal,toastr,$filter,$http,$location,cookieManagement,errorHandler,$window,$state) {
+    function WebhooksCtrl($rootScope,$scope,$location,cookieManagement) {
 
         var vm = this;
         vm.updatedWebhook = {};
         vm.token = cookieManagement.getCookie('TOKEN');
+        $rootScope.dashboardTitle = 'Rehive | Webhooks';
         $scope.loadingWebhooks = true;
 
         $scope.goToSetting = function(path){
