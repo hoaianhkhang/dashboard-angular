@@ -1,6 +1,6 @@
 <div ng-hide="loadingUserGroups || addingUserGroup" class="panel setting-bank-accounts">
     <div class="panel-heading">
-        <span class="user-details-panel-title">User groups for {{userData.email}}</span>
+        <span class="user-details-panel-title">Groups for {{userData.email}}</span>
         <a ng-click="toggleAddUserGroupView()" class="user-details-panel-link pull-right pointer">Add</a>
     </div>
     <div class="panel-body">
@@ -18,7 +18,7 @@
             </tr>
         </table>
         <div ng-show="userGroups.length == 0 && !loadingUserGroups">
-            <i>No user groups have been added</i>
+            <i>No groups have been added</i>
         </div>
     </div>
 </div>
