@@ -2,7 +2,7 @@ project_name: rehive-dashboard
 docker_image: gcr.io/rehive-services/rehive-dashboard-staging
 venv_python: ~/anaconda/envs/zapgo-core/bin/python3.5
 helm_chart: rehive/rehive-service
-helm_chart_version: 0.1.25
+helm_chart_version: 0.1.31
 configs:
     staging:
       project: rehive-services

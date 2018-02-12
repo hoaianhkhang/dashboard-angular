@@ -13,5 +13,10 @@
     "environmentConfig": {
       "API": "https://api.rehive.com/3"
     }
+  },
+  "placeholder": {
+    "environmentConfig": {
+      "API": "{{API_URL}}"
+    }
   }
 }

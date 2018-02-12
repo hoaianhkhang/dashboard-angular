@@ -26,9 +26,9 @@ Rehive's back office dashboard is an open sourced project in Angular JS which ad
 
 ### Deployment
 * commit all changes
-* run `inv local.git_release` to increment the version and tag the release
-* run `inv local.docker_release production` to build and upload the latest docker image
-* run `inv k8s.deploy production` to add the latest image to kubernetes deployment
+* run `inv git_release` to increment the version and tag the release
+* wait for the build trigger or run `inv cloudbuild <version>` to build and upload the latest docker image
+* run `inv upgrade production` to add the latest image to kubernetes deployment
 
 ### Where can I learn more ?
 

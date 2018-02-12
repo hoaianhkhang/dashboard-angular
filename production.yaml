@@ -1,7 +1,0 @@
-PROJECT_NAME: rehive-dashboard
-HOST_NAME: rehive-build-server
-NAMESPACE: rehive-dashboard
-IMAGE: rehive/dashboard
-VIRTUAL_HOST: dashboard.rehive.com
-CLUSTER: production
-CLUSTER_PROJECT: rehive-services

@@ -2,7 +2,6 @@
 
 set -e
 
-if [ "$ENV" == 'staging' ]; then
-    perl -pi -e 's/rehive.com/staging.rehive.com/g' /usr/share/nginx/html/scripts/*
-fi
+perl -pi -e 's/\{\{API_URL\}\}/$ENV{'API_URL'}/g' /usr/share/nginx/html/scripts/*
+
 exec "$@"
