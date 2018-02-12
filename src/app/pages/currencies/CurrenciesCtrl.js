@@ -5,10 +5,11 @@
         .controller('CurrenciesCtrl', CurrenciesCtrl);
 
     /** @ngInject */
-    function CurrenciesCtrl($scope,$location,cookieManagement,environmentConfig,$http,errorHandler,$state,_,serializeFiltersService) {
+    function CurrenciesCtrl($rootScope,$scope,$location,cookieManagement,environmentConfig,$http,errorHandler,$state,_,serializeFiltersService) {
 
         var vm = this;
         vm.token = cookieManagement.getCookie('TOKEN');
+        $rootScope.dashboardTitle = 'Rehive | Currencies';
         $scope.showingFilters = false;
         $scope.loadingCurrencies = true;
         $scope.optionsCode = '';

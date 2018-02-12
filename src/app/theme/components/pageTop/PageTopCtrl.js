@@ -224,6 +224,7 @@
         };
 
         $scope.logout = function(){
+            $rootScope.dashboardTitle = 'Rehive';
             $rootScope.gotToken = false;
             $rootScope.securityConfigured = true;
             $rootScope.pageTopObj = {};

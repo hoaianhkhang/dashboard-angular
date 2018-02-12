@@ -5,10 +5,11 @@
         .controller('EthereumServiceSettingsCtrl', EthereumServiceSettingsCtrl);
 
     /** @ngInject */
-    function EthereumServiceSettingsCtrl($scope,$http,cookieManagement,toastr,errorHandler,$state) {
+    function EthereumServiceSettingsCtrl($rootScope,$scope,cookieManagement) {
 
         var vm = this;
         vm.token = cookieManagement.getCookie('TOKEN');
+        $rootScope.dashboardTitle = 'Rehive | Ethereum service';
         $scope.ethereumSettingView = '';
         $scope.loadingHdkeys =  true;
         $scope.addingHdkey =  false;

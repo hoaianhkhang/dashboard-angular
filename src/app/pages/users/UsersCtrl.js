@@ -5,11 +5,12 @@
         .controller('UsersCtrl', UsersCtrl);
 
     /** @ngInject */
-    function UsersCtrl($state,$scope,environmentConfig,$http,typeaheadService,$location,
+    function UsersCtrl($rootScope,$state,$scope,environmentConfig,$http,typeaheadService,$location,
                        cookieManagement,errorHandler,$window,toastr,serializeFiltersService) {
 
         var vm = this;
         vm.token = cookieManagement.getCookie('TOKEN');
+        $rootScope.dashboardTitle = 'Rehive | Users';
         vm.currenciesList = JSON.parse($window.sessionStorage.currenciesList || '[]');
         vm.location = $location.path();
         vm.locationArray = vm.location.split('/');

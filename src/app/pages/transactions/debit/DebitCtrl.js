@@ -5,12 +5,13 @@
         .controller('DebitCtrl', DebitCtrl);
 
     /** @ngInject */
-    function DebitCtrl($scope, $http, environmentConfig,_,
+    function DebitCtrl($scope, $http, environmentConfig,_,$rootScope,
                        cookieManagement, toastr, errorHandler,
                        $location, $state,sharedResources,currencyModifiers,typeaheadService) {
 
         var vm = this;
         vm.token = cookieManagement.getCookie('TOKEN');
+        $rootScope.dashboardTitle = 'Rehive | Debits';
 
         $scope.debitData = {
             user: null,

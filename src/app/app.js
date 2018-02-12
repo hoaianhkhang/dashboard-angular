@@ -28,6 +28,7 @@ angular.module('BlurAdmin', [
             $rootScope.$pageFinishedLoading = true;
         };
 
+        $rootScope.dashboardTitle = 'Rehive';
 
         $rootScope.pageTopObj = {};
 
