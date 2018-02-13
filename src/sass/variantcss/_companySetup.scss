@@ -1,3 +1,10 @@
+.group-setup-ul{
+  padding-left: 17px;
+  & > li {
+    margin-bottom: 10px;
+  }
+}
+
 .company-setup-title-div{
   padding: 25px;
 }

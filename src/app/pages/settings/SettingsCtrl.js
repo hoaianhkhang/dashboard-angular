@@ -10,7 +10,7 @@
         var vm = this;
         vm.token = cookieManagement.getCookie('TOKEN');
         $scope.settingView = 'accountInfo';
-        $rootScope.dashboardTitle = 'Rehive | Settings';
+        $rootScope.dashboardTitle = 'Settings | Rehive';
         $scope.companyImageUrl = null;
         $scope.currencyOptions = JSON.parse($window.sessionStorage.currenciesList || '[]');
         $scope.updatingLogo = false;

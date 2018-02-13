@@ -9,7 +9,7 @@
 
         var vm = this;
         vm.token = cookieManagement.getCookie('TOKEN');
-        $rootScope.dashboardTitle = 'Rehive | Currencies';
+        $rootScope.dashboardTitle = 'Currencies | Rehive';
         $scope.showingFilters = false;
         $scope.loadingCurrencies = true;
         $scope.optionsCode = '';

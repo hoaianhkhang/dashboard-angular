@@ -9,7 +9,7 @@
 
         var vm = this;
         vm.token = cookieManagement.getCookie('TOKEN');
-        $rootScope.dashboardTitle = 'Rehive | Transfers';
+        $rootScope.dashboardTitle = 'Transfers | Rehive';
 
         $scope.transferData = {
             user: null,

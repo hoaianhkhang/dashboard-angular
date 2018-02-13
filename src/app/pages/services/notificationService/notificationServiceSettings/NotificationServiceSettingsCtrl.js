@@ -10,7 +10,7 @@
         var vm = this;
         vm.token = cookieManagement.getCookie('TOKEN');
         vm.baseUrl = cookieManagement.getCookie('SERVICEURL');
-        $rootScope.dashboardTitle = 'Rehive | Notification service';
+        $rootScope.dashboardTitle = 'Notification service | Rehive';
         $scope.notificationSettingView = '';
         $scope.updatingCompanyDetails =  false;
         vm.updatedCompany = {};

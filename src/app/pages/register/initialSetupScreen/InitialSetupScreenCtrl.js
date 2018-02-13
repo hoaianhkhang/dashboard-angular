@@ -7,7 +7,7 @@
     function InitialSetupScreenCtrl($rootScope, $scope, $location,cookieManagement) {
         var vm=this;
         vm.token=cookieManagement.getCookie("TOKEN");
-        $rootScope.dashboardTitle = 'Rehive | Setup';
+        $rootScope.dashboardTitle = 'Setup | Rehive';
         $rootScope.$pageFinishedLoading=true;
 
         $scope.goToNextView=function () {

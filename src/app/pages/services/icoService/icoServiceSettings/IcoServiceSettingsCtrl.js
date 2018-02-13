@@ -10,7 +10,7 @@
         var vm = this;
         vm.token = cookieManagement.getCookie('TOKEN');
         vm.serviceUrl = cookieManagement.getCookie('SERVICEURL');
-        $rootScope.dashboardTitle = 'Rehive | Ico service';
+        $rootScope.dashboardTitle = 'Ico service | Rehive';
         $scope.updatingCompanyInfo = false;
         $scope.icoSettingView = '';
         $scope.company = {

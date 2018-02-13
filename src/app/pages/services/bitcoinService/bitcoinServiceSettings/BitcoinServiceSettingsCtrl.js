@@ -7,7 +7,7 @@
     /** @ngInject */
     function BitcoinServiceSettingsCtrl($rootScope,$scope) {
 
-        $rootScope.dashboardTitle = 'Rehive | Bitcoin service';
+        $rootScope.dashboardTitle = 'Bitcoin service | Rehive';
         $scope.bitcoinSettingView = '';
         $scope.loadingHdkeys =  true;
         $scope.addingHdkey =  false;

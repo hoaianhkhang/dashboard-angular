@@ -10,7 +10,7 @@
 
         var vm = this;
         vm.token = cookieManagement.getCookie('TOKEN');
-        $rootScope.dashboardTitle = 'Rehive | Transactions history';
+        $rootScope.dashboardTitle = 'Transactions history | Rehive';
         vm.currenciesList = JSON.parse($window.sessionStorage.currenciesList || '[]');
         $scope.showingFilters = false;
         $scope.dateFilterOptions = ['Is in the last','In between','Is equal to','Is after','Is before'];

@@ -11,7 +11,7 @@
 
         var vm = this;
         vm.token = cookieManagement.getCookie('TOKEN');
-        $rootScope.dashboardTitle = 'Rehive | Debits';
+        $rootScope.dashboardTitle = 'Debits | Rehive';
 
         $scope.debitData = {
             user: null,

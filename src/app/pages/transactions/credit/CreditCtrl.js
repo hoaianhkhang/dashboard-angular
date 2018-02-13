@@ -10,7 +10,7 @@
 
         var vm = this;
         vm.token = cookieManagement.getCookie('TOKEN');
-        $rootScope.dashboardTitle = 'Rehive | Credits';
+        $rootScope.dashboardTitle = 'Credits | Rehive';
 
         $scope.creditData = {
             user: null,

@@ -10,7 +10,7 @@
 
         var vm = this;
         vm.token = cookieManagement.getCookie('TOKEN');
-        $rootScope.dashboardTitle = 'Rehive | Users';
+        $rootScope.dashboardTitle = 'Users | Rehive';
         vm.currenciesList = JSON.parse($window.sessionStorage.currenciesList || '[]');
         vm.location = $location.path();
         vm.locationArray = vm.location.split('/');

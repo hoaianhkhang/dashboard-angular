@@ -10,7 +10,7 @@
         var vm = this;
         vm.token = cookieManagement.getCookie('TOKEN');
         vm.serviceUrl = cookieManagement.getCookie('SERVICEURL');
-        $rootScope.dashboardTitle = 'Rehive | Stellar service';
+        $rootScope.dashboardTitle = 'Stellar service | Rehive';
         $scope.serviceSetupParams = {};
         $scope.loadingStellarService = true;
 

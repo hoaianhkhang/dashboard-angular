@@ -10,7 +10,7 @@
         var vm = this;
         vm.user = {};
         vm.token = cookieManagement.getCookie('TOKEN');
-        $rootScope.dashboardTitle = 'Rehive | Setup';
+        $rootScope.dashboardTitle = 'Setup | Rehive';
         $scope.verifyingEmail = false;
         $rootScope.$pageFinishedLoading = true;
 

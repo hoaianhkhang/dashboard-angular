@@ -10,7 +10,7 @@
         var vm = this;
         vm.token = cookieManagement.getCookie('TOKEN');
         vm.baseUrl = cookieManagement.getCookie('SERVICEURL');
-        $rootScope.dashboardTitle = 'Rehive | Conversion service';
+        $rootScope.dashboardTitle = 'Conversion service | Rehive';
         $scope.loadingRates =  true;
 
         $scope.pagination = {

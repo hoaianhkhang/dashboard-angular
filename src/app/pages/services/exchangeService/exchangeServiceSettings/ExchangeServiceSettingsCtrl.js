@@ -10,7 +10,7 @@
         var vm = this;
         vm.token = cookieManagement.getCookie('TOKEN');
         vm.baseUrl = cookieManagement.getCookie('SERVICEURL');
-        $rootScope.dashboardTitle = 'Rehive | Exchange service';
+        $rootScope.dashboardTitle = 'Exchange service | Rehive';
         $scope.exchangeSettingView = '';
         $scope.updatingCompanyDetails =  false;
         vm.updatedCompany = {};

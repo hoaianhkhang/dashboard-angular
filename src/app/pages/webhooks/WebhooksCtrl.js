@@ -10,7 +10,7 @@
         var vm = this;
         vm.updatedWebhook = {};
         vm.token = cookieManagement.getCookie('TOKEN');
-        $rootScope.dashboardTitle = 'Rehive | Webhooks';
+        $rootScope.dashboardTitle = 'Webhooks | Rehive';
         $scope.loadingWebhooks = true;
 
         $scope.goToSetting = function(path){

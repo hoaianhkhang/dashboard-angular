@@ -1,14 +1,29 @@
 <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 company-setup-col-8">
     <div class="panel">
         <div class="panel-heading">
-            <span class="user-details-panel-title">Accounts</span>
+            <span class="user-details-panel-title">Account configurations</span>
         </div>
         <div class="panel-body">
             <div class=" row divider-25">
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <p>Accounts can be added to groups and assigned to a set of currencies for that account. Define
-                        primary accounts for a specific user group and setup default accounts for groups and
-                        associated currencies. Default accounts are automatically added to a user group.</p>
+                    <ul class="group-setup-ul">
+                        <li>Set up templates for accounts configurations per group that is applied on registration only.</li>
+                        <li>Each group can have one Primary account only.</li>
+                        <li>If an account is set as the Primary account, all money transferred to users in
+                            the selected group will go to that account.</li>
+                        <ul class="group-setup-ul">
+                            <li>There can only be one primary account per group.</li>
+                            <li>You cannot make transfers to a user without a primary account specified for them.</li>
+                            <li>Primary accounts are also Default accounts.</li>
+                        </ul>
+                        <li>If an account is set as Default, all users in the selected group will automatically have the account
+                            and its configurations created for them upon user registration.</li>
+                        <li>Non-default, non-primary accounts are made available to users in the selected
+                            group and can be added to users as required by either an admin or a user.</li>
+                        <li>Select which currencies are available to the account and can transact in.</li>
+                        <li>Add as many account configurations as you want.</li>
+                        <li>You can add, remove and edit account configurations later.</li>
+                    </ul>
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 custom-form">
                     <div class="form-group">

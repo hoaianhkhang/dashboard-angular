@@ -9,7 +9,7 @@
 
         var vm = this;
         vm.token = cookieManagement.getCookie('TOKEN');
-        $rootScope.dashboardTitle = 'Rehive | Ethereum service';
+        $rootScope.dashboardTitle = 'Ethereum service | Rehive';
         $scope.ethereumSettingView = '';
         $scope.loadingHdkeys =  true;
         $scope.addingHdkey =  false;

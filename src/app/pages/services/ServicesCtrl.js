@@ -9,7 +9,7 @@
 
         var vm = this;
         vm.token = cookieManagement.getCookie('TOKEN');
-        $rootScope.dashboardTitle = 'Rehive | Services';
+        $rootScope.dashboardTitle = 'Services | Rehive';
         $scope.loadingServices = true;
         $scope.showingFilters = false;
 
