@@ -5,8 +5,8 @@
         .controller("SetupUsersGroupsCtrl", SetupUsersGroupsCtrl);
 
     function SetupUsersGroupsCtrl($rootScope,$scope,$http,cookieManagement,
-        environmentConfig,$location,errorHandler,localStorageManagement) {
-        var vm=this;
+                                    environmentConfig,$location,errorHandler,localStorageManagement) {
+        var vm = this;
         vm.token=cookieManagement.getCookie("TOKEN");
         $scope.addedGroups = [];
         $scope.user = {};
@@ -48,6 +48,13 @@
                     errorHandler.evaluateErrors(error.data);
                     errorHandler.handleErrors(error);
                 });
+            } else {
+                $rootScope.gotToken = false;
+                $rootScope.securityConfigured = true;
+                $rootScope.pageTopObj = {};
+                $rootScope.userFullyVerified = false;
+                cookieManagement.deleteCookie('TOKEN');
+                $location.path('/login');
             }
         };
         vm.getGroups();

@@ -9,6 +9,7 @@
 
         var vm = this;
         cookieManagement.deleteCookie('TOKEN');
+        $rootScope.dashboardTitle = 'Rehive';
         $scope.path = $location.path();
         $scope.showLoginPassword = false;
 

@@ -50,6 +50,13 @@
                     errorHandler.evaluateErrors(error.data);
                     errorHandler.handleErrors(error);
                 });
+            } else {
+                $rootScope.gotToken = false;
+                $rootScope.securityConfigured = true;
+                $rootScope.pageTopObj = {};
+                $rootScope.userFullyVerified = false;
+                cookieManagement.deleteCookie('TOKEN');
+                $location.path('/login');
             }
         };
         vm.getSubtypes();
