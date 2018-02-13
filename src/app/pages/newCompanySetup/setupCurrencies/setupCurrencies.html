@@ -27,7 +27,7 @@
                                 <small class="text-muted">(To select multiple currencies, hold CTRL while selecting)</small>
                             </label>
                             <br>
-                            <select class="form-control pointer divider" ng-model="currenciesToAdd" multiple
+                            <select class="form-control pointer divider currencies-setup-dropdown" ng-model="currenciesToAdd" multiple
                                     ng-options="currency.code + ' - ' + currency.description for currency in initialCurrencies | orderBy: 'code'"
                                     required>
                             </select>
