@@ -27,13 +27,13 @@
                     <div class="form-group">
                         <label>Subtype name <span class="required-icon">*</span></label>
                         <input type="text" class="form-control" ng-model="subtype.name"
-                               placeholder="Subtype name eg. purchase, withdraw, deposit"
+                               placeholder="Subtype name e.g. purchase, withdraw, deposit"
                                auto-focus="!havePersonalDetails" required ng-change="subtype.name? subtype.name = subtype.name.toLowerCase():null;">
                     </div>
                     <div class="form-group">
                         <label>Subtype label </label>
                         <input type="text" class="form-control" ng-model="subtype.label"
-                               placeholder="Subtype label">
+                               placeholder="Subtype label e.g. Purchase, Withdraw, Deposit">
                     </div>
                     <div class="form-group">
                         <button ng-click="addSubtype(subtype)"
