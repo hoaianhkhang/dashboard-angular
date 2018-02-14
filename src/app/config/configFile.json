@@ -1,7 +1,7 @@
 {
   "staging": {
     "environmentConfig": {
-      "API": "https://staging.rehive.com/api/3"
+      "API": "https://api.staging.rehive.com/api/3"
     }
   },
   "local": {
