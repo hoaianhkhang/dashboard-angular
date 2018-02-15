@@ -1,16 +1,30 @@
 'use strict';
 
 var gulp = require('gulp');
-var wrench = require('wrench');
+var klawSync = require('klaw-sync');
 
 /**
  *  This will load all js or coffee files in the gulp directory
  *  in order to load all gulp tasks
  */
-wrench.readdirSyncRecursive('./gulp').filter(function(file) {
-  return (/\.(js|coffee)$/i).test(file);
-}).map(function(file) {
-  require('./gulp/' + file);
+var paths = [];
+
+// The directory that you want to explore
+var directoryToExplore = "./gulp";
+
+try {
+    klawSync(directoryToExplore,{filter: function (file) {
+        if((/\.(js|coffee)$/i).test(file.path)){
+            paths.push(file.path);
+        }
+    }});
+} catch (err) {
+    console.error(err);
+}
+
+paths.map(function(path) {
+    var pathArray = path.split('/');
+    require('./gulp/' + pathArray[pathArray.length - 1]);
 });
 
 
