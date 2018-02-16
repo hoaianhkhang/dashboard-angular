@@ -13,9 +13,9 @@ $height: 52px;
   text-align: center;
   opacity: 0.4;
   color: $primary;
-  background-color: rgba(0, 0, 0, 0.75);
+  border: 3px solid $primary;
   border-radius: 50%;
-  line-height: 46px;
+  line-height: 42px;
   &:hover {
     opacity: 0.8;
   }
