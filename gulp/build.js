@@ -6,7 +6,8 @@ var conf = require('./conf');
 var gulpNgConfig = require('gulp-ng-config');
 
 var $ = require('gulp-load-plugins')({
-  pattern: ['gulp-*','gulp-rev','gulp-rev-replace','main-bower-files', 'uglify-save-license', 'del']
+    lazy:true,
+    pattern: ['gulp-*','gulp-rev','gulp-rev-replace','main-bower-files', 'uglify-save-license', 'del']
 });
 
 gulp.task('partials', function () {
@@ -52,7 +53,7 @@ gulp.task('html', ['inject', 'partials'], function () {
     .pipe(cssFilter)
     .pipe($.sourcemaps.init())
     .pipe($.replace('../../bower_components/bootstrap-sass/assets/fonts/bootstrap/', '../fonts/'))
-    .pipe($.minifyCss({ processImport: false }))
+    .pipe($.cleanCss({ compatibility: 'ie8' }))
     .pipe($.sourcemaps.write('maps'))
     .pipe(cssFilter.restore)
     .pipe(assets.restore())
