@@ -4,7 +4,7 @@
     angular.module('BlurAdmin.pages.newCompanySetup.setupUsersGroups')
         .controller("SetupUsersGroupsCtrl", SetupUsersGroupsCtrl);
 
-    function SetupUsersGroupsCtrl($rootScope,$scope,$http,cookieManagement,
+    function SetupUsersGroupsCtrl($rootScope,$scope,$http,cookieManagement,toastr,
                                     environmentConfig,$location,errorHandler,localStorageManagement) {
         var vm = this;
         vm.token=cookieManagement.getCookie("TOKEN");
@@ -54,6 +54,7 @@
                 $rootScope.pageTopObj = {};
                 $rootScope.userFullyVerified = false;
                 cookieManagement.deleteCookie('TOKEN');
+                toastr.error('Your session has expired, please log in again', 'Message');
                 $location.path('/login');
             }
         };

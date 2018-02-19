@@ -21,7 +21,7 @@ angular.module('BlurAdmin', [
     .config(function (ngIntlTelInputProvider) {
     ngIntlTelInputProvider.set({initialCountry: 'us',utilsScript: 'https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/12.0.1/js/utils.js'});
 })
-    .run(function($rootScope,cookieManagement,errorHandler,localStorageManagement,
+    .run(function($rootScope,cookieManagement,errorHandler,localStorageManagement,toastr,
                   userVerification,$http,environmentConfig,$window,$location,_){
 
         $window.onload = function(){
@@ -137,6 +137,7 @@ angular.module('BlurAdmin', [
                     $rootScope.gotToken = true;
                     $rootScope.securityConfigured = true;
                 } else {
+                    toastr.error('Your session has expired, please log in again', 'Message');
                     $rootScope.securityConfigured = true;
                     $rootScope.gotToken = false;
                     $location.path('/login');

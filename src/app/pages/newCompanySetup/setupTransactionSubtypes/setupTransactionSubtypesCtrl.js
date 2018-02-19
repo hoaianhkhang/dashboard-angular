@@ -4,9 +4,9 @@
     angular.module('BlurAdmin.pages.newCompanySetup.setupTransactionSubtypes')
         .controller("SetupTransactionSubtypesCtrl", SetupTransactionSubtypesCtrl);
 
-    function SetupTransactionSubtypesCtrl($rootScope,$scope,$http,cookieManagement,
-        environmentConfig,$location,errorHandler,localStorageManagement) {
-        var vm=this;
+    function SetupTransactionSubtypesCtrl($rootScope,$scope,$http,cookieManagement,toastr,
+                                            environmentConfig,$location,errorHandler,localStorageManagement) {
+        var vm = this;
         vm.token=cookieManagement.getCookie("TOKEN");
         $scope.subtypes = [];
         $scope.subtype={};
@@ -56,6 +56,7 @@
                 $rootScope.pageTopObj = {};
                 $rootScope.userFullyVerified = false;
                 cookieManagement.deleteCookie('TOKEN');
+                toastr.error('Your session has expired, please log in again', 'Message');
                 $location.path('/login');
             }
         };

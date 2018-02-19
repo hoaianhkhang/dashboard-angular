@@ -79,6 +79,7 @@
                 $rootScope.pageTopObj = {};
                 $rootScope.userFullyVerified = false;
                 cookieManagement.deleteCookie('TOKEN');
+                toastr.error('Your session has expired, please log in again', 'Message');
                 $location.path('/login');
             }
         };

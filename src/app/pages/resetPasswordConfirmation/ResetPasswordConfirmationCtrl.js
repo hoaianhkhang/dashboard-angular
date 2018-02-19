@@ -44,7 +44,7 @@
 
         $scope.goToLogin = function(){
             $location.path('/login');
-        }
+        };
 
     }
 })();
