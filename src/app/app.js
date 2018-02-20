@@ -117,8 +117,10 @@ angular.module('BlurAdmin', [
 
             if(newUrlLastElement == 'login'){
                 cookieManagement.deleteCookie('TOKEN');
+                $rootScope.dashboardTitle = 'Rehive';
                 $rootScope.gotToken = false;
                 $rootScope.securityConfigured = true;
+                $rootScope.pageTopObj = {};
                 $rootScope.userFullyVerified = false;
                 $location.path('/login');
             } else{
@@ -138,8 +140,11 @@ angular.module('BlurAdmin', [
                     $rootScope.securityConfigured = true;
                 } else {
                     toastr.error('Your session has expired, please log in again', 'Message');
-                    $rootScope.securityConfigured = true;
+                    $rootScope.dashboardTitle = 'Rehive';
                     $rootScope.gotToken = false;
+                    $rootScope.securityConfigured = true;
+                    $rootScope.pageTopObj = {};
+                    $rootScope.userFullyVerified = false;
                     $location.path('/login');
                 }
 
