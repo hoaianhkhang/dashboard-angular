@@ -105,7 +105,10 @@
                     }
                 }).then(function (res) {
                     if (res.status === 200) {
-                        $scope.groupOptions = res.data.data.results;
+                        if(res.data.data.results.length > 0){
+                            $scope.groupOptions = res.data.data.results;
+                            $scope.applyFiltersObj.groupFilter.selectedGroup = $scope.groupOptions[0];
+                        }
                     }
                 }).catch(function (error) {
                     errorHandler.evaluateErrors(error.data);

@@ -23,6 +23,7 @@
         $scope.dateFilterIntervalOptions = ['days','months'];
         $scope.statusOptions = ['Status','Pending', 'Obsolete', 'Declined', 'Verified', 'Incomplete'];
         $scope.orderByOptions = ['Joined date','Last login date'];
+        $scope.groupFilterOptions = ['Group name','In group'];
         $scope.currencyOptions = [];
         $scope.filtersCount = 0;
 
@@ -66,6 +67,8 @@
                 selectedAccountReference: ''
             },
             groupFilter: {
+                selectedGroupOption: 'Group name',
+                existsInGroup: false,
                 selectedGroup: {}
             },
             currencyFilter: {
@@ -104,7 +107,10 @@
                     }
                 }).then(function (res) {
                     if (res.status === 200) {
-                        $scope.groupOptions = res.data.data.results;
+                        if(res.data.data.results.length > 0){
+                            $scope.groupOptions = res.data.data.results;
+                            $scope.applyFiltersObj.groupFilter.selectedGroup = $scope.groupOptions[0];
+                        }
                     }
                 }).catch(function (error) {
                     errorHandler.evaluateErrors(error.data);
@@ -332,7 +338,8 @@
                 first_name__contains: $scope.filtersObj.firstNameFilter ? ($scope.applyFiltersObj.firstNameFilter.selectedFirstName ?  $scope.applyFiltersObj.firstNameFilter.selectedFirstName : null): null,
                 last_name__contains: $scope.filtersObj.lastNameFilter ? ($scope.applyFiltersObj.lastNameFilter.selectedLastName ?  $scope.applyFiltersObj.lastNameFilter.selectedLastName : null): null,
                 account: $scope.filtersObj.accountReferenceFilter ? ($scope.applyFiltersObj.accountReferenceFilter.selectedAccountReference ?  $scope.applyFiltersObj.accountReferenceFilter.selectedAccountReference : null): null,
-                group: $scope.filtersObj.groupFilter ? ($scope.applyFiltersObj.groupFilter.selectedGroup ?  $scope.applyFiltersObj.groupFilter.selectedGroup.name : null): null,
+                group: $scope.filtersObj.groupFilter ? $scope.applyFiltersObj.groupFilter.selectedGroupOption == 'Group name'? $scope.applyFiltersObj.groupFilter.selectedGroup.name: null : null,
+                group__isnull: $scope.filtersObj.groupFilter ? $scope.applyFiltersObj.groupFilter.selectedGroupOption == 'In group'? (!$scope.applyFiltersObj.groupFilter.existsInGroup).toString(): null : null,
                 date_joined__gt: vm.dateObj.date_joined__gt ? Date.parse(vm.dateObj.date_joined__gt +'T00:00:00') : null,
                 date_joined__lt: vm.dateObj.date_joined__lt ? Date.parse(vm.dateObj.date_joined__lt +'T00:00:00') : null,
                 last_login__gt: vm.lastLogindateObj.last_login__gt ? Date.parse(vm.lastLogindateObj.last_login__gt +'T00:00:00') : null,
