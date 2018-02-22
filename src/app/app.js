@@ -1,14 +1,19 @@
 'use strict';
 
+var jquery = require('jquery');
+var angular = require('angular');
+var angularToastr = require('angular-toastr');
+var ngConfirm = require('angular-confirm1');
+
 angular.module('BlurAdmin', [
     'BlurAdmin.config',
+    'toastr',
     'cp.ngConfirm',
     'ngFileUpload',
     'ngSanitize',
     'ngCookies',
     'ui.bootstrap',
     'ui.router',
-    'toastr',
     'countrySelect',
     'angular-click-outside',
     'ngCsv',
