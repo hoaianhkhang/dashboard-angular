@@ -139,7 +139,6 @@ angular.module('BlurAdmin', [
                     $rootScope.gotToken = true;
                     $rootScope.securityConfigured = true;
                 } else {
-                    toastr.error('Your session has expired, please log in again', 'Message');
                     $rootScope.dashboardTitle = 'Rehive';
                     $rootScope.gotToken = false;
                     $rootScope.securityConfigured = true;
