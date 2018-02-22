@@ -39,6 +39,7 @@
             firstNameFilter: false,
             lastNameFilter: false,
             accountReferenceFilter: false,
+            groupFilter: false,
             currencyFilter: false,
             joinedDateFilter: false,
             lastLoginDateFilter: false,
@@ -63,6 +64,9 @@
             },
             accountReferenceFilter: {
                 selectedAccountReference: ''
+            },
+            groupFilter: {
+                selectedGroup: {}
             },
             currencyFilter: {
                 selectedCurrency: {}
@@ -90,6 +94,25 @@
                 selectedOrderByOption: 'Joined date'
             }
         };
+
+        $scope.getGroups = function () {
+            if(vm.token) {
+                $http.get(environmentConfig.API + '/admin/groups/?page_size=250', {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': vm.token
+                    }
+                }).then(function (res) {
+                    if (res.status === 200) {
+                        $scope.groupOptions = res.data.data.results;
+                    }
+                }).catch(function (error) {
+                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.handleErrors(error);
+                });
+            }
+        };
+        $scope.getGroups();
 
         vm.getCompanyCurrencies = function(){
             //adding currency as default value in both results array and ng-model of currency
@@ -155,6 +178,7 @@
                 firstNameFilter: false,
                 lastNameFilter: false,
                 accountReferenceFilter: false,
+                groupFilter: false,
                 currencyFilter: false,
                 joinedDateFilter: false,
                 lastLoginDateFilter: false,
@@ -308,6 +332,7 @@
                 first_name__contains: $scope.filtersObj.firstNameFilter ? ($scope.applyFiltersObj.firstNameFilter.selectedFirstName ?  $scope.applyFiltersObj.firstNameFilter.selectedFirstName : null): null,
                 last_name__contains: $scope.filtersObj.lastNameFilter ? ($scope.applyFiltersObj.lastNameFilter.selectedLastName ?  $scope.applyFiltersObj.lastNameFilter.selectedLastName : null): null,
                 account: $scope.filtersObj.accountReferenceFilter ? ($scope.applyFiltersObj.accountReferenceFilter.selectedAccountReference ?  $scope.applyFiltersObj.accountReferenceFilter.selectedAccountReference : null): null,
+                group: $scope.filtersObj.groupFilter ? ($scope.applyFiltersObj.groupFilter.selectedGroup ?  $scope.applyFiltersObj.groupFilter.selectedGroup.name : null): null,
                 date_joined__gt: vm.dateObj.date_joined__gt ? Date.parse(vm.dateObj.date_joined__gt +'T00:00:00') : null,
                 date_joined__lt: vm.dateObj.date_joined__lt ? Date.parse(vm.dateObj.date_joined__lt +'T00:00:00') : null,
                 last_login__gt: vm.lastLogindateObj.last_login__gt ? Date.parse(vm.lastLogindateObj.last_login__gt +'T00:00:00') : null,

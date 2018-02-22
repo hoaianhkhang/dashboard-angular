@@ -25,6 +25,7 @@
             transactionIdFilter: false,
             userFilter: false,
             accountFilter: false,
+            groupFilter: false,
             currencyFilter: false,
             pageSizeFilter: false,
             orderByFilter: false
@@ -62,6 +63,9 @@
             accountFilter: {
                 selectedAccount: $state.params.account || null
             },
+            groupFilter: {
+                selectedGroup: {}
+            },
             currencyFilter:{
                 selectedCurrencyOption: {}
             },
@@ -85,11 +89,31 @@
         $scope.statusOptions = ['Pending','Complete','Failed','Deleted'];
         $scope.currencyOptions = [];
         $scope.orderByOptions = ['Latest','Largest','Smallest'];
+        $scope.groupOptions = [];
 
         sharedResources.getSubtypes().then(function (res) {
             $scope.subtypeOptions = _.pluck(res.data.data,'name');
             $scope.subtypeOptions.unshift('');
         });
+
+        $scope.getGroups = function () {
+            if(vm.token) {
+                $http.get(environmentConfig.API + '/admin/groups/?page_size=250', {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': vm.token
+                    }
+                }).then(function (res) {
+                    if (res.status === 200) {
+                        $scope.groupOptions = res.data.data.results;
+                    }
+                }).catch(function (error) {
+                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.handleErrors(error);
+                });
+            }
+        };
+        $scope.getGroups();
 
         //for angular datepicker
         $scope.dateObj = {};
@@ -193,6 +217,7 @@
                 transactionTypeFilter: false,
                 transactionIdFilter: false,
                 userFilter: false,
+                groupFilter: false,
                 currencyFilter: false,
                 pageSizeFilter: false,
                 orderByFilter: false
@@ -335,6 +360,7 @@
                 currency: $scope.filtersObj.currencyFilter || $scope.filtersObj.amountFilter ? $scope.applyFiltersObj.currencyFilter.selectedCurrencyOption.code: null,
                 user: $scope.filtersObj.userFilter ? ($scope.applyFiltersObj.userFilter.selectedUserOption ? encodeURIComponent($scope.applyFiltersObj.userFilter.selectedUserOption) : null): null,
                 account: $scope.filtersObj.accountFilter ? $scope.applyFiltersObj.accountFilter.selectedAccount: null,
+                group: $scope.filtersObj.groupFilter ? $scope.applyFiltersObj.groupFilter.selectedGroup.name: null,
                 orderby: $scope.filtersObj.orderByFilter ? ($scope.applyFiltersObj.orderByFilter.selectedOrderByOption == 'Latest' ? '-created' : $scope.applyFiltersObj.orderByFilter.selectedOrderByOption == 'Largest' ? '-amount' : $scope.applyFiltersObj.orderByFilter.selectedOrderByOption == 'Smallest' ? 'amount' : null): null,
                 id: $scope.filtersObj.transactionIdFilter ? ($scope.applyFiltersObj.transactionIdFilter.selectedTransactionIdOption ? encodeURIComponent($scope.applyFiltersObj.transactionIdFilter.selectedTransactionIdOption) : null): null,
                 tx_type: $scope.filtersObj.transactionTypeFilter ? $scope.applyFiltersObj.transactionTypeFilter.selectedTransactionTypeOption.toLowerCase() : null,
