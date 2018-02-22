@@ -22,7 +22,11 @@
                 }
               } else{
                   if(errors && errors.message){
-                      toastr.error(errors.message, 'Message');
+                      if(errors.message == 'Invalid token.'){
+                          toastr.error('Your session has expired, please log in again', 'Message');
+                      } else {
+                          toastr.error(errors.message, 'Message');
+                      }
                   } else {
                       toastr.error('Something went wrong, please check your internet connection or try again', 'Message');
                   }
