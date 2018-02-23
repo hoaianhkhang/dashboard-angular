@@ -1,37 +1,46 @@
 'use strict';
 
-var jquery = require('jquery');
-var angular = require('angular');
-var angularToastr = require('angular-toastr');
-var ngConfirm = require('angular-confirm1');
-
 angular.module('BlurAdmin', [
-    'BlurAdmin.config',
     'toastr',
     'cp.ngConfirm',
-    'ngFileUpload',
     'ngSanitize',
+    'ngFileUpload',
     'ngCookies',
     'ui.bootstrap',
     'ui.router',
-    'countrySelect',
     'angular-click-outside',
     'ngCsv',
     'iso-3166-country-codes',
+    'countrySelect',
     'ngclipboard',
-    'ngIntlTelInput',
-    'BlurAdmin.theme',
-    'BlurAdmin.pages'
+    'ngIntlTelInput'
 ])
+
+    .constant('environmentConfig',
+        (function() {
+            if (DASHBOARD_ENV == "production") {
+                return PROD_URL;
+            } else if(DASHBOARD_ENV == "staging") {
+                return STAGING_URL;
+            } else {
+                return LOCAL_URL;
+            }
+            //Immediately invoke it
+        })()
+    )
+
+
     .config(function (ngIntlTelInputProvider) {
-    ngIntlTelInputProvider.set({initialCountry: 'us',utilsScript: 'https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/12.0.1/js/utils.js'});
-})
+        ngIntlTelInputProvider.set({initialCountry: 'us',utilsScript: 'https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/12.0.1/js/utils.js'});
+    })
     .run(function($rootScope,cookieManagement,errorHandler,localStorageManagement,toastr,
                   userVerification,$http,environmentConfig,$window,$location,_){
 
         $window.onload = function(){
             $rootScope.$pageFinishedLoading = true;
         };
+
+        console.log('NODE_ENV: ', env.NODE_ENV)
 
         $rootScope.dashboardTitle = 'Rehive';
 
@@ -152,8 +161,9 @@ angular.module('BlurAdmin', [
 
             //checking if changing password or setting up multi factor authentication
             if(newUrlLastElement == 'change' || newUrlLastElement == 'multi-factor'
-            || newUrl.indexOf('/multi-factor/sms') > 0 || newUrl.indexOf('/multi-factor/verify') > 0){
+                || newUrl.indexOf('/multi-factor/sms') > 0 || newUrl.indexOf('/multi-factor/verify') > 0){
                 $rootScope.securityConfigured = false;
             }
-        };
+        }
     });
+
