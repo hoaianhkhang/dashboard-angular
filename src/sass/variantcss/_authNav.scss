@@ -21,30 +21,30 @@
   font-size: 18px;
   line-height: 1.3333333;
   width: 100px;
-  background-color: transparent;
+  background-color: $primary;
   border: 1px solid $primary;
   border-radius: 2px;
-  color:  $primary;
+  color:  $body-bg;
   &:focus{
-    background-color: $primary;
+    background-color: transparent;
     border: 1px solid  $primary;
-    color: $body-bg;
+    color: $primary;
   }
   &:hover{
-    background-color: $primary;
+    background-color: transparent;
     border: 1px solid  $primary;
-    color: $body-bg;
+    color: $primary;
   }
   &:active{
     border: 1px solid  $primary;
-    color: $body-bg;
+    color: $primary;
   }
 }
 
 .auth-nav-table > .auth-nav-cell > a > .active-auth-nav{
-  background-color: $primary;
+  background-color: transparent;
   border: 1px solid $primary;
-  color: $body-bg;
+  color: $primary;
   border-radius: 2px;
 }
 
