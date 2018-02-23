@@ -15,7 +15,7 @@
             first_name: '',
             last_name: '',
             email: '',
-            mobile: '',
+            mobile_number: '',
             id_number: '',
             language: '',
             metadata: '',
@@ -54,7 +54,7 @@
         };
 
         $scope.addNewUser = function (newUserParams) {
-            if(!newUserParams.email && !newUserParams.mobile){
+            if(!newUserParams.email && !newUserParams.mobile_number){
                 toastr.error('Please enter a valid email or mobile number');
                 return;
             }
