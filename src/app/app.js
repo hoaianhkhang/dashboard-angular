@@ -1,5 +1,7 @@
 'use strict';
 
+var themeModule = require('./theme/theme.module');
+
 angular.module('BlurAdmin', [
     'toastr',
     'cp.ngConfirm',
@@ -13,7 +15,8 @@ angular.module('BlurAdmin', [
     'iso-3166-country-codes',
     'countrySelect',
     'ngclipboard',
-    'ngIntlTelInput'
+    'ngIntlTelInput',
+    themeModule
 ])
 
     .constant('environmentConfig',

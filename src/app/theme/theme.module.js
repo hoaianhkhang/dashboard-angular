@@ -4,13 +4,8 @@
  */
 
 
-(function () {
-  'use strict';
-
-  angular.module('BlurAdmin.theme', [
-      'toastr',
-      'BlurAdmin.theme.components',
-      'BlurAdmin.theme.inputs'
-  ]);
-
-})();
+module.exports = angular.module('BlurAdmin.theme', [
+    'toastr',
+    'BlurAdmin.theme.components',
+    'BlurAdmin.theme.inputs'
+]);
