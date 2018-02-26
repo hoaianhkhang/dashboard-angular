@@ -2,8 +2,6 @@
 
 import themeModule from './theme/theme.module';
 
-console.log(themeModule)
-
 angular.module('BlurAdmin', [
     'toastr',
     'cp.ngConfirm',

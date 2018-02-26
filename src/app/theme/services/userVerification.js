@@ -1,11 +1,11 @@
-(function () {
+module.exports = (function () {
     'use strict';
 
     angular.module('BlurAdmin.theme')
         .factory('userVerification', userVerification);
 
     /** @ngInject */
-    function userVerification($http,cookieManagement,environmentConfig,$location,errorHandler) {
+    function userVerification($http,cookieManagement,environmentConfig,errorHandler) {
 
         return {
             verify: function (cb) {
@@ -40,4 +40,4 @@
         }
     }
 
-})();
+});

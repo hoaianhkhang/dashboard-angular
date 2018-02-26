@@ -2,7 +2,10 @@
  * @author v.lugovksy
  * created on 16.12.2015
  */
-(function () {
+
+import pageTopCtrl from './PageTopCtrl';
+
+module.exports = (function () {
   'use strict';
 
   angular.module('BlurAdmin.theme.components')
@@ -17,4 +20,6 @@
     };
   }
 
-})();
+});
+
+pageTopCtrl();

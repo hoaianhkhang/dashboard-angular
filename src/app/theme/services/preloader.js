@@ -1,8 +1,4 @@
-/**
- * @author a.demeshko
- * created on 3/1/16
- */
-(function () {
+module.exports = (function () {
   'use strict';
 
   angular.module('BlurAdmin.theme')
@@ -30,4 +26,4 @@
     }
   }
 
-})();
+});

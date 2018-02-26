@@ -2,7 +2,7 @@
  * @author v.lugovsky
  * created on 03.05.2016
  */
-(function () {
+module.exports = (function () {
   'use strict';
 
   angular.module('BlurAdmin.theme')
@@ -34,4 +34,4 @@
       return (typeof attr !== typeof undefined && attr !== false);
     }
   }
-})();
+});

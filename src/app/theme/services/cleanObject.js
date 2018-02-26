@@ -1,8 +1,8 @@
-(function () {
+module.exports = (function () {
     'use strict';
 
     angular.module('BlurAdmin.theme')
-        .factory('cleanObject', cleanObject);
+        .service('cleanObject', cleanObject);
 
     /** @ngInject */
     function cleanObject() {
@@ -21,4 +21,4 @@
         };
     }
 
-})();
+});

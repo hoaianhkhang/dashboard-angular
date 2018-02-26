@@ -1,8 +1,7 @@
-(function () {
-    'use strict';
+module.exports = (function () {
 
     angular.module('BlurAdmin.theme')
-        .factory('currenciesList', currenciesList);
+        .service('currenciesList', currenciesList);
 
     /** @ngInject */
     function currenciesList() {
@@ -857,4 +856,4 @@
         ];
     }
 
-})();
+});

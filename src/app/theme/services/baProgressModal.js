@@ -2,7 +2,7 @@
  * @author n.poltoratsky
  * created on 27.06.2016
  */
-(function () {
+module.exports = (function () {
     'use strict';
 
     angular.module('BlurAdmin.theme')
@@ -52,4 +52,4 @@
         };
     }
 
-})();
+});

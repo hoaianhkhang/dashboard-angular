@@ -1,14 +1,13 @@
-/**
- * @author v.lugovksy
- * created on 16.12.2015
- */
-/**
- * @author v.lugovsky
- * created on 16.12.2015
- */
-(function () {
-  'use strict';
+import toastrLibConfig from './toastrLibConfig';
+import widgetsDirective from './widgets/widgets.directive';
+import progressBarRoundDirective from './progressBarRound/progressBarRound.directive';
+import pageTopDirective from './pageTop/pageTop.directive';
+import searchBarResultsDirective from './pageTop/searchBarResults/searchBarResults.directive';
 
-  angular.module('BlurAdmin.theme.components', []);
+module.exports = angular.module('BlurAdmin.theme.components', []);
 
-})();
+toastrLibConfig();
+widgetsDirective();
+progressBarRoundDirective();
+pageTopDirective();
+searchBarResultsDirective();

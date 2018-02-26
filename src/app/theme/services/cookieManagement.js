@@ -1,8 +1,8 @@
-(function () {
+module.exports = (function () {
     'use strict';
 
     angular.module('BlurAdmin.theme')
-        .factory('cookieManagement', cookieManagement);
+        .service('cookieManagement', cookieManagement);
 
     /** @ngInject */
     function cookieManagement($cookies) {
@@ -20,4 +20,4 @@
         }
     }
 
-})();
+});

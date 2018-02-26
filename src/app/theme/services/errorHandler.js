@@ -1,8 +1,7 @@
-(function () {
-    'use strict';
+module.exports = (function () {
 
     angular.module('BlurAdmin.theme')
-        .factory('errorHandler', errorHandler);
+        .service('errorHandler', errorHandler);
 
     /** @ngInject */
     function errorHandler(toastr,$location,cookieManagement,$rootScope) {
@@ -43,4 +42,4 @@
         }
     }
 
-})();
+});

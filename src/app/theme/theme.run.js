@@ -2,7 +2,7 @@
  * @author v.lugovksy
  * created on 15.12.2015
  */
-(function () {
+module.exports = (function () {
   'use strict';
 
   angular.module('BlurAdmin.theme')
@@ -37,4 +37,4 @@
     $rootScope.$baSidebarService = baSidebarService;
   }
 
-})();
+});

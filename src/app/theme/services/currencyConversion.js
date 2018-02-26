@@ -1,5 +1,4 @@
-(function () {
-    'use strict';
+module.exports = (function () {
 
     angular.module('BlurAdmin.theme')
         .service('currencyModifiers', currencyModifiers)
@@ -79,4 +78,4 @@
         }
     }
 
-})();
+});

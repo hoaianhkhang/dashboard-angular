@@ -2,7 +2,7 @@
  * Created by n.poltoratsky
  * on 28.06.2016.
  */
-(function () {
+module.exports = (function () {
     'use strict';
 
     angular.module('BlurAdmin.theme.components')
@@ -27,4 +27,4 @@
             }
         }
     }
-})();
+});
