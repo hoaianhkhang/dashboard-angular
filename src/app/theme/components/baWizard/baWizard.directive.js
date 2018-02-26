@@ -1,5 +1,6 @@
-(function() {
-  'use strict';
+import baWizardCtrl from './baWizardCtrl';
+
+module.exports = (function() {
 
   angular.module('BlurAdmin.theme.components')
     .directive('baWizard', baWizard);
@@ -9,9 +10,9 @@
     return {
       restrict: 'E',
       transclude: true,
-      templateUrl: 'app/theme/components/baWizard/baWizard.html',
+      templateUrl: 'src/app/theme/components/baWizard/baWizard.html',
       controllerAs: '$baWizardController',
-      controller: 'baWizardCtrl'
-    }
+      controller: baWizardCtrl
+    };
   }
-})();
+});

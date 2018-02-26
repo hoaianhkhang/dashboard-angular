@@ -3,7 +3,7 @@
  * created on 16.12.2015
  */
 
-import pageTopCtrl from './PageTopCtrl';
+import PageTopCtrl from './PageTopCtrl';
 
 module.exports = (function () {
   'use strict';
@@ -15,11 +15,9 @@ module.exports = (function () {
   function pageTop() {
     return {
       restrict: 'E',
-      templateUrl: 'app/theme/components/pageTop/pageTop.html',
-      controller: 'PageTopCtrl'
+      templateUrl: 'src/app/theme/components/pageTop/pageTop.html',
+      controller: PageTopCtrl
     };
   }
 
 });
-
-pageTopCtrl();

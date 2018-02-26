@@ -13,7 +13,7 @@ module.exports = (function () {
         return {
             restrict: 'E',
             require: '^parent',
-            templateUrl: 'app/theme/components/pageTop/searchBarResults/searchBarResults.html'
+            templateUrl: 'src/app/theme/components/pageTop/searchBarResults/searchBarResults.html'
         };
     }
 
