@@ -1,6 +1,8 @@
 'use strict';
 
-var themeModule = require('./theme/theme.module');
+import themeModule from './theme/theme.module';
+
+console.log(themeModule)
 
 angular.module('BlurAdmin', [
     'toastr',
@@ -16,7 +18,7 @@ angular.module('BlurAdmin', [
     'countrySelect',
     'ngclipboard',
     'ngIntlTelInput',
-    themeModule
+    themeModule.name
 ])
 
     .constant('environmentConfig',
@@ -42,8 +44,6 @@ angular.module('BlurAdmin', [
         $window.onload = function(){
             $rootScope.$pageFinishedLoading = true;
         };
-
-        console.log('NODE_ENV: ', env.NODE_ENV)
 
         $rootScope.dashboardTitle = 'Rehive';
 

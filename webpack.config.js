@@ -7,21 +7,33 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 module.exports = function (env) {
 
     return {
-        context: __dirname + '/src/app/',
+        context: __dirname + '/src/',
         entry: {
             vendor: ['jquery','angular','angular-toastr','angular-confirm1','ng-file-upload',
                      'angular-sanitize','angular-cookies','angular-bootstrap','@uirouter/angularjs',
                      '@iamadamjowett/angular-click-outside','iso-3166-country-codes-angular','ng-csv',
                      'ng-country-select-fixed','ngclipboard','ng-intl-tel-input','underscore'],
-            app: './app.js'
+            app: './app/app.js'
         },
         output: {
             path: path.resolve(__dirname, 'dist'),
             filename: '[chunkhash].js'
         },
+        module: {
+            loaders: [
+                {
+                    test: /\.js$/,
+                    exclude: /(node_modules)/,
+                    loader: 'babel-loader',
+                    query: {
+                        presets: ['env']
+                    }
+                }
+            ]
+        },
         plugins: [
             new HtmlWebpackPlugin({
-                template: '../index.html',
+                template: './index.html',
                 inject: true,
                 hash: true
             }),
