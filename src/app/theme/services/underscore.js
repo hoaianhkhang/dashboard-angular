@@ -2,12 +2,11 @@ module.exports = (function () {
     'use strict';
 
     angular.module('BlurAdmin.theme')
-        .factory('_', _);
+        .service('_', _);
 
     /** @ngInject */
-    function _($window) {
-
-        return $window._;
+    function _() {
+        return require('underscore');
     }
 
 });

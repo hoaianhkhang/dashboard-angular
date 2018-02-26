@@ -20,13 +20,12 @@ import underscoreFactory from './services/underscore';
 import userVerificationFactory from './services/userVerification';
 
 import blurAdminThemeInputModule from './inputs/inputs.module';
-
-console.log(blurAdminThemeInputModule)
+import blurAdminThemeComponentsModule from './components/components.module';
 
 module.exports = angular.module('BlurAdmin.theme', [
     'toastr',
     blurAdminThemeInputModule.name,
-    'BlurAdmin.theme.components'
+    blurAdminThemeComponentsModule.name
 ]);
 
 baProgressModalFactory();

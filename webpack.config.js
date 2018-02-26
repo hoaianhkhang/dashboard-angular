@@ -9,10 +9,10 @@ module.exports = function (env) {
     return {
         context: __dirname + '/src/',
         entry: {
-            vendor: ['jquery','angular','angular-toastr','angular-confirm1','ng-file-upload',
+            vendor: ['jquery','underscore','angular','angular-toastr','angular-confirm1','ng-file-upload',
                      'angular-sanitize','angular-cookies','angular-bootstrap','@uirouter/angularjs',
                      '@iamadamjowett/angular-click-outside','iso-3166-country-codes-angular','ng-csv',
-                     'ng-country-select-fixed','ngclipboard','ng-intl-tel-input','underscore'],
+                     'ng-country-select-fixed','ngclipboard','ng-intl-tel-input'],
             app: './app/app.js'
         },
         output: {
@@ -48,7 +48,8 @@ module.exports = function (env) {
             }),
             new webpack.ProvidePlugin({
                 $: "jquery",
-                jQuery: "jquery"
+                jQuery: "jquery",
+                _: "underscore"
             }),
             new webpack.DefinePlugin({
                 "DASHBOARD_ENV": JSON.stringify(env.NODE_ENV),
