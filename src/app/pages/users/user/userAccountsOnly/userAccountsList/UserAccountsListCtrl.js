@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    angular.module('BlurAdmin.pages.users.user')
+    angular.module('BlurAdmin.pages.users.user.accounts')
         .controller('UserAccountsListCtrl', UserAccountsListCtrl);
 
     /** @ngInject */

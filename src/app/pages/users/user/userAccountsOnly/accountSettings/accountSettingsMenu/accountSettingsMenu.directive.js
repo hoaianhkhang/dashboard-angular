@@ -8,7 +8,7 @@
     function accountSettingsMenu() {
         return {
             restrict: 'E',
-            templateUrl: 'app/pages/users/user/userDetails/userAccounts/accountSettings/accountSettingsMenu/accountSettingsMenu.html'
+            templateUrl: 'app/pages/users/user/userAccountsOnly/accountSettings/accountSettingsMenu/accountSettingsMenu.html'
         };
     }
 })();

@@ -18,7 +18,7 @@
                 <td class="table-row-center transactions-list-element" title="{{accountCurrencyFee.percentage}}" ng-bind="accountCurrencyFee.percentage ? accountCurrencyFee.percentage + '%' : 'None'"></td>
                 <td class="table-row-center transactions-list-element" title="{{accountCurrencyFee.subtype ? accountCurrencyFee.subtype : 'None'}}" ng-bind="accountCurrencyFee.subtype ? accountCurrencyFee.subtype : 'None'| limitTo: '35'"></td>
                 <td class="rehive-table-row-last-child">
-                    <a ng-click="openAccountCurrencyFeesModal('app/pages/users/user/userDetails/userAccounts/accountSettings/accountCurrencyFees/accountCurrencyFeesModal/accountCurrencyFeesModal.html','md',accountCurrencyFee)"
+                    <a ng-click="openAccountCurrencyFeesModal('app/pages/users/user/userAccountsOnly/accountSettings/accountCurrencyFees/accountCurrencyFeesModal/accountCurrencyFeesModal.html','md',accountCurrencyFee)"
                        class="pull-right pointer ">Delete</a>
                     <a ng-click="toggleAccountCurrencyFeeEditView(accountCurrencyFee)"
                        class="pull-right pointer user-address-edit margin-right-30">Edit</a>

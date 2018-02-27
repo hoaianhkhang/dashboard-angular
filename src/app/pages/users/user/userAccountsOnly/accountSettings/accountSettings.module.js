@@ -13,7 +13,7 @@
         $stateProvider
             .state('accountSettings', {
                 url: '/user/:uuid/account/:reference/settings/:currencyCode',
-                templateUrl: 'app/pages/users/user/userDetails/userAccounts/accountSettings/accountSettings.html',
+                templateUrl: 'app/pages/users/user/userAccountsOnly/accountSettings/accountSettings.html',
                 controller: "AccountSettingsCtrl",
                 title: 'Account settings'
             });

@@ -12,7 +12,7 @@
                 title: 'Account currency limits',
                 views:{
                     'accountSettings':{
-                        templateUrl: 'app/pages/users/user/userDetails/userAccounts/accountSettings/accountCurrencyLimits/accountCurrencyLimits.html',
+                        templateUrl: 'app/pages/users/user/userAccountsOnly/accountSettings/accountCurrencyLimits/accountCurrencyLimits.html',
                         controller: "AccountCurrencyLimitsCtrl"
                     }
                 }

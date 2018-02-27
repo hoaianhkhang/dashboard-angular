@@ -19,7 +19,7 @@
         };
 
         $scope.goBackToUser = function () {
-            $location.path('user/' + vm.uuid + '/details');
+            $location.path('user/' + vm.uuid + '/accounts');
         };
 
     }

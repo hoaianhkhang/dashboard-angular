@@ -8,7 +8,7 @@
     function editAccountCurrencyLimit() {
         return {
             restrict: 'E',
-            templateUrl: 'app/pages/users/user/userDetails/userAccounts/accountSettings/accountCurrencyLimits/editAccountCurrencyLimit/editAccountCurrencyLimit.html'
+            templateUrl: 'app/pages/users/user/userAccountsOnly/accountSettings/accountCurrencyLimits/editAccountCurrencyLimit/editAccountCurrencyLimit.html'
         };
     }
 })();

@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    angular.module('BlurAdmin.pages.users.user')
+    angular.module('BlurAdmin.pages.users.user.accounts')
         .directive('userAccountsList', userAccountsList);
 
     /** @ngInject */
@@ -9,7 +9,7 @@
         return {
             restrict: 'E',
             controller: 'UserAccountsListCtrl',
-            templateUrl: 'app/pages/users/user/userDetails/userAccountsList/userAccountsList.html'
+            templateUrl: 'app/pages/users/user/userAccountsOnly/userAccountsList/userAccountsList.html'
         };
     }
 })();

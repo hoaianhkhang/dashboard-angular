@@ -12,7 +12,7 @@
                 title: 'Account currency fees',
                 views:{
                     'accountSettings':{
-                        templateUrl: 'app/pages/users/user/userDetails/userAccounts/accountSettings/accountCurrencyFees/accountCurrencyFees.html',
+                        templateUrl: 'app/pages/users/user/userAccountsOnly/accountSettings/accountCurrencyFees/accountCurrencyFees.html',
                         controller: "AccountCurrencyFeesCtrl"
                     }
                 }

@@ -8,7 +8,7 @@
     function editAccountCurrencyFee() {
         return {
             restrict: 'E',
-            templateUrl: 'app/pages/users/user/userDetails/userAccounts/accountSettings/accountCurrencyFees/editAccountCurrencyFee/editAccountCurrencyFee.html'
+            templateUrl: 'app/pages/users/user/userAccountsOnly/accountSettings/accountCurrencyFees/editAccountCurrencyFee/editAccountCurrencyFee.html'
         };
     }
 })();

@@ -28,8 +28,6 @@
                     if (res.status === 200) {
                         if(res.data.data.results.length > 0 ){
                             $scope.accounts = res.data.data.results;
-                            $scope.account = res.data.data.results[0].user;
-                            $scope.currencies = res.data.data.results[0].currencies;
                         } else {
                             $scope.accounts = [];
                         }

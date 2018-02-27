@@ -12,7 +12,7 @@
                 title: 'Account currency settings',
                 views:{
                     'accountSettings':{
-                        templateUrl: 'app/pages/users/user/userDetails/userAccounts/accountSettings/accountCurrencySettings/accountCurrencySettings.html',
+                        templateUrl: 'app/pages/users/user/userAccountsOnly/accountSettings/accountCurrencySettings/accountCurrencySettings.html',
                         controller: "AccountCurrencySettingsCtrl"
                     }
                 }

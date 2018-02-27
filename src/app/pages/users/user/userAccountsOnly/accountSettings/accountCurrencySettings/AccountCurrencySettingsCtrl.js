@@ -5,8 +5,8 @@
         .controller('AccountCurrencySettingsCtrl', AccountCurrencySettingsCtrl);
 
     /** @ngInject */
-    function AccountCurrencySettingsCtrl($window,$scope,$stateParams,$http,$uibModal,environmentConfig,_,
-                                       sharedResources,cookieManagement,errorHandler,currencyModifiers,toastr) {
+    function AccountCurrencySettingsCtrl($scope,$stateParams,$http,environmentConfig,
+                                       cookieManagement,errorHandler) {
 
         var vm = this;
         vm.token = cookieManagement.getCookie('TOKEN');
