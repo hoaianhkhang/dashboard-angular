@@ -34,7 +34,7 @@
                     $location.path('/welcome_to_rehive');
                 } else {
                     $scope.verifyingEmail = false;
-                    toastr.error('Please verify your account','Message');
+                    toastr.error('Please verify your account');
                 }
             });
         };

@@ -36,7 +36,7 @@
                                     $location.path('company/setup/initial');
                                 } else {
                                     $location.path('/verification');
-                                    toastr.error('Please verify your account','Message');
+                                    toastr.error('Please verify your account');
                                     $rootScope.$pageFinishedLoading = true;
                                 }
                             });
@@ -73,7 +73,7 @@
                             $location.path('company/setup/initial');
                         } else {
                             $location.path('/verification');
-                            toastr.error('Please verify your account','Message');
+                            toastr.error('Please verify your account');
                             $rootScope.$pageFinishedLoading = true;
                         }
                     });
