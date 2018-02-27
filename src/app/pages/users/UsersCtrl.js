@@ -33,6 +33,26 @@
             maxSize: 5
         };
 
+        $scope.showColumns = [
+            {colName: 'Identifier',visible: true},
+            {colName: 'First name',visible: true},
+            {colName: 'Last name',visible: true},
+            {colName: 'Email',visible: true},
+            {colName: 'Mobile number',visible: true},
+            {colName: 'Group name',visible: true},
+            {colName: 'Date joined',visible: true},
+            {colName: 'Status',visible: false},
+            {colName: 'KYC status',visible: false},
+            {colName: 'Active',visible: false},
+            {colName: 'Last login',visible: false},
+            {colName: 'Verified',visible: false},
+            {colName: 'ID Number',visible: false},
+            {colName: 'Nationality',visible: false},
+            {colName: 'Language',visible: false},
+            {colName: 'Timezone',visible: false},
+            {colName: 'Birth date',visible: false},
+            {colName: 'Username',visible: false}
+        ];
         $scope.filtersObj = {
             identifierFilter: false,
             emailFilter: false,

@@ -54,11 +54,6 @@
         };
 
         $scope.addNewUser = function (newUserParams) {
-            if(!newUserParams.email && !newUserParams.mobile_number){
-                toastr.error('Please enter a valid email or mobile number');
-                return;
-            }
-
             if(newUserParams.metadata == ''){
                 newUserParams.metadata = {};
             } else {
