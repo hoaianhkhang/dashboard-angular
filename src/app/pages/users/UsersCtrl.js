@@ -19,6 +19,7 @@
         $scope.users = [];
         $scope.usersData = {};
         $scope.showingFilters = false;
+        $scope.showingColumnFilters = false;
         $scope.dateFilterOptions = ['Is in the last','In between','Is equal to','Is after','Is before'];
         $scope.dateFilterIntervalOptions = ['days','months'];
         $scope.statusOptions = ['Status','Pending', 'Obsolete', 'Declined', 'Verified', 'Incomplete'];
@@ -118,6 +119,34 @@
             }
         };
 
+        $scope.showColumnFilters = function () {
+            $scope.showingFilters = false;
+            $scope.showingColumnFilters = !$scope.showingColumnFilters;
+        };
+
+        $scope.restoreColDefaults = function () {
+            $scope.showColumns = [
+                {colName: 'Identifier',visible: true},
+                {colName: 'First name',visible: true},
+                {colName: 'Last name',visible: true},
+                {colName: 'Email',visible: true},
+                {colName: 'Mobile number',visible: true},
+                {colName: 'Group name',visible: true},
+                {colName: 'Date joined',visible: true},
+                {colName: 'Status',visible: false},
+                {colName: 'KYC status',visible: false},
+                {colName: 'Active',visible: false},
+                {colName: 'Last login',visible: false},
+                {colName: 'Verified',visible: false},
+                {colName: 'ID Number',visible: false},
+                {colName: 'Nationality',visible: false},
+                {colName: 'Language',visible: false},
+                {colName: 'Timezone',visible: false},
+                {colName: 'Birth date',visible: false},
+                {colName: 'Username',visible: false}
+            ];
+        };
+
         $scope.getGroups = function () {
             if(vm.token) {
                 $http.get(environmentConfig.API + '/admin/groups/?page_size=250', {
@@ -194,6 +223,7 @@
 
         $scope.showFilters = function () {
             $scope.showingFilters = !$scope.showingFilters;
+            $scope.showingColumnFilters = false;
         };
 
         $scope.clearFilters = function () {
