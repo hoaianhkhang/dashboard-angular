@@ -44,7 +44,7 @@
     "angular-dragtable": "^1.0.10"
   },
   "resolutions": {
-    "angular": "^1.6.1",
+    "angular": "^1.5.8",
     "jquery": "~3.1.1"
   },
   "overrides": {
