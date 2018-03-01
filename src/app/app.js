@@ -15,7 +15,6 @@ angular.module('BlurAdmin', [
     'iso-3166-country-codes',
     'ngclipboard',
     'ngIntlTelInput',
-    'Dragtable',
     'BlurAdmin.theme',
     'BlurAdmin.pages'
 ])

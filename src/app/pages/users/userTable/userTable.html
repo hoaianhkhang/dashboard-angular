@@ -22,11 +22,11 @@
         <div ng-show="users.length > 0" class="divider">
             <table class="table custom-table">
                 <tr>
-                    <th drag-me drop-me data-handle=".handle">Email <span class="handle glyphicon glyphicon-move move-icon"></span></th>
-                    <th drag-me drop-me data-handle=".handle">Currency <span class="handle glyphicon glyphicon-move move-icon"></span></th>
-                    <th drag-me drop-me data-handle=".handle">Joined <span class="handle glyphicon glyphicon-move move-icon"></span></th>
-                    <th drag-me drop-me data-handle=".handle">Last login <span class="handle glyphicon glyphicon-move move-icon"></span></th>
-                    <th drag-me drop-me data-handle=".handle">KYC status <span class="handle glyphicon glyphicon-move move-icon"></span></th>
+                    <th>Email</th>
+                    <th>Currency</th>
+                    <th>Joined</th>
+                    <th>Last login</th>
+                    <th>KYC status</th>
                 </tr>
                 <tr ng-repeat="user in users | orderBy: orderByFunction" data-toggle="modal"
                     class="editable-row center pointer user-details-table-hover" ng-click="displayUser(user)">
