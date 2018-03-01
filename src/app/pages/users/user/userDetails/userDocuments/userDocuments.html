@@ -16,7 +16,7 @@
                 <td>{{document.document_category}}</td>
                 <td>{{document.document_type}}</td>
                 <td class="pull-right"><span ng-class="{'status-pending': document.status == 'pending','status-verified': document.status == 'verified',
-                    'status-incomplete-declined': document.status == 'incomplete' || document.status == 'declined'}"
+                    'status-incomplete-declined': document.status == 'incomplete' || document.status == 'declined' || document.status == 'obsolete'}"
                                       class="user-address-status">{{document.status | uppercase}}</span></td>
             </tr>
         </table>

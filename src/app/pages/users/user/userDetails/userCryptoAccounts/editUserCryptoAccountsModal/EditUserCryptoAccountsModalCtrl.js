@@ -13,7 +13,7 @@
         $scope.editUserCryptoAccountParams = {};
         vm.updatedUserCryptoAccount = {};
         $scope.loadingUserCryptoAccounts = true;
-        $scope.statusOptions = ['Pending', 'Incomplete', 'Declined', 'Verified'];
+        $scope.cryptoStatusOptions = ['Pending', 'Incomplete', 'Declined', 'Obsolete', 'Verified'];
         vm.token = cookieManagement.getCookie('TOKEN');
 
         vm.getUserCryptoAccount =  function () {

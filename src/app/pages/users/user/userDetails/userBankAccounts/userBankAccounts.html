@@ -21,7 +21,7 @@
                             </ul>
                     </span>
                     <span ng-class="{'status-pending': bank.status == 'pending','status-verified': bank.status == 'verified',
-                    'status-incomplete-declined': bank.status == 'incomplete' || bank.status == 'declined'}"
+                    'status-incomplete-declined': bank.status == 'incomplete' || bank.status == 'declined' || bank.status == 'obsolete'}"
                           class="user-address-status pull-right margin-right-30">{{bank.status | uppercase}}</span>
                 </div>
             </div>

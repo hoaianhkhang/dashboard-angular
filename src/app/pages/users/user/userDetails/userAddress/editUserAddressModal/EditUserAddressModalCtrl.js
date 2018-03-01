@@ -13,7 +13,7 @@
         vm.updatedUserAddress = {};
         $scope.editUserAddress = {};
         $scope.editingUserAddress = true;
-        $scope.statusOptions = ['Pending', 'Incomplete', 'Declined', 'Verified'];
+        $scope.kycStatusOptions = ['Pending', 'Incomplete', 'Declined', 'Obsolete', 'Verified'];
         vm.token = cookieManagement.getCookie('TOKEN');
 
         vm.getAddress = function () {

@@ -10,7 +10,7 @@
 
         $scope.userAddressParams = {country: 'US', status: 'Pending'};
         vm.uuid = $stateParams.uuid;
-        $scope.statusOptions = ['Pending', 'Incomplete', 'Declined', 'Verified'];
+        $scope.kycStatusOptions = ['Pending', 'Incomplete', 'Declined', 'Obsolete', 'Verified'];
         vm.token = cookieManagement.getCookie('TOKEN');
 
         $scope.addUserAddress = function(userAddressParams){

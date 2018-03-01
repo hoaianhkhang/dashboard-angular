@@ -15,7 +15,7 @@
             metadata: '',
             status: 'Pending'
         };
-        $scope.statusOptions = ['Pending', 'Incomplete', 'Declined', 'Verified'];
+        $scope.cryptoStatusOptions = ['Pending', 'Incomplete', 'Declined', 'Obsolete', 'Verified'];
         vm.token = cookieManagement.getCookie('TOKEN');
 
         vm.isJson = function (str) {

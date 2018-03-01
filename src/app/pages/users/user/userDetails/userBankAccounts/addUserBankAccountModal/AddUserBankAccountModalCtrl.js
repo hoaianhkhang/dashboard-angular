@@ -10,7 +10,7 @@
 
         $scope.userBankAccountParams = {status: 'Pending'};
         vm.uuid = $stateParams.uuid;
-        $scope.statusOptions = ['Pending', 'Incomplete', 'Declined', 'Verified'];
+        $scope.bankStatusOptions = ['Pending', 'Incomplete', 'Declined', 'Obsolete', 'Verified'];
         vm.token = cookieManagement.getCookie('TOKEN');
 
         $scope.addUserBankAccount = function(userBankAccountParams){

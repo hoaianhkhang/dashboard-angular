@@ -45,7 +45,7 @@
                         <tr>
                             <th width="50%">Basic info status</th>
                             <td><select class="form-control pointer" ng-model="userInfo.status"
-                                        ng-options="statusOption for statusOption in statusTypeOptions">
+                                        ng-options="statusOption for statusOption in documentStatusOptions">
                             </select></td>
                         </tr>
                     </table>
@@ -80,7 +80,7 @@
                         <tr>
                             <th width="50%">Address status</th>
                             <td><select class="form-control pointer" ng-model="address.status" ng-change="addressStatusTracking(address)"
-                                        ng-options="statusOption for statusOption in statusTypeOptions">
+                                        ng-options="statusOption for statusOption in documentStatusOptions">
                             </select></td>
                         </tr>
                     </table>
@@ -110,7 +110,7 @@
                     <div class="form-group divider-20">
                         <label>Document status <span class="required-icon">*</span></label>
                         <br>
-                        <select class="form-control pointer" ng-change="documentChanged('status')" ng-model="editDocument.status" ng-options="status for status in statusTypeOptions" required>
+                        <select class="form-control pointer" ng-change="documentChanged('status')" ng-model="editDocument.status" ng-options="status for status in documentStatusOptions" required>
                         </select>
                     </div>
                     <div class="form-group">
@@ -137,7 +137,7 @@
                     <div class="form-group divider-20">
                         <label>Status <span class="required-icon">*</span></label>
                         <br>
-                        <select class="form-control pointer" ng-change="documentChanged('status')" ng-model="editDocument.status" ng-options="status for status in statusTypeOptions" required>
+                        <select class="form-control pointer" ng-change="documentChanged('status')" ng-model="editDocument.status" ng-options="status for status in documentStatusOptions" required>
                         </select>
                     </div>
                     <div class="form-group">

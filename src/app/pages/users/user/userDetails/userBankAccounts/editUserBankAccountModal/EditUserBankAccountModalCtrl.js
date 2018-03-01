@@ -13,7 +13,7 @@
         vm.updatedUserBankAccount = {};
         $scope.editUserBankAccount = {};
         $scope.editingUserBankAccount = true;
-        $scope.statusOptions = ['Pending', 'Incomplete', 'Declined', 'Verified'];
+        $scope.bankStatusOptions = ['Pending', 'Incomplete', 'Declined', 'Obsolete', 'Verified'];
         vm.token = cookieManagement.getCookie('TOKEN');
 
         vm.getUserBankAccount = function () {

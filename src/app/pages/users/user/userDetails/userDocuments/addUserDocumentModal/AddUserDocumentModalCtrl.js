@@ -36,7 +36,7 @@
             'ID Confirmation Photo': 'id_confirmation',
             'Other': 'other'
         };
-        $scope.statusTypeOptions = ['Verified','Incomplete','Pending','Declined'];
+        $scope.documentStatusOptions = ['Pending', 'Incomplete', 'Declined', 'Obsolete', 'Verified'];
 
 
         $scope.addDocument = function () {

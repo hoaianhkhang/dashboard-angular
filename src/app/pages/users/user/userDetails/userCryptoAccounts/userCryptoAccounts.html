@@ -19,7 +19,7 @@
                        class="pull-right pointer ">Delete</a>
                     <a ng-click="openEditUserCryptoAccountsModal('app/pages/users/user/userDetails/userCryptoAccounts/editUserCryptoAccountsModal/editUserCryptoAccountsModal.html','md',cryptoAccount)" class="pull-right pointer user-address-edit margin-right-30">Edit</a>
                     <span ng-class="{'status-pending': cryptoAccount.status == 'pending','status-verified': cryptoAccount.status == 'verified',
-                    'status-incomplete-declined': cryptoAccount.status == 'incomplete' || cryptoAccount.status == 'declined'}"
+                    'status-incomplete-declined': cryptoAccount.status == 'incomplete' || cryptoAccount.status == 'declined' || cryptoAccount.status == 'obsolete'}"
                           class="user-address-status margin-right-30">{{cryptoAccount.status | uppercase}}</span>
                 </td>
             </tr>

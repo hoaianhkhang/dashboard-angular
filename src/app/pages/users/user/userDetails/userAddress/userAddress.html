@@ -26,7 +26,7 @@
                     </span>
                     <span ng-class="{'status-pending': address.status == 'pending',
                     'status-verified': address.status == 'verified','status-incomplete-declined': address.status == 'incomplete'
-                     || address.status == 'declined'}" class="user-address-status pull-right margin-right-30">{{address.status | uppercase}}</span>
+                     || address.status == 'declined' || address.status == 'obsolete'}" class="user-address-status pull-right margin-right-30">{{address.status | uppercase}}</span>
                 </div>
             </div>
         </div>
