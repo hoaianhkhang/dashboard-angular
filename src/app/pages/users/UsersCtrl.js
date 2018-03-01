@@ -34,6 +34,10 @@
             maxSize: 5
         };
 
+        $scope.tableColDrag = function (start,target) {
+            console.log(start,target)
+        };
+
         $scope.showColumns = [
             {colName: 'Identifier',visible: true},
             {colName: 'First name',visible: true},
