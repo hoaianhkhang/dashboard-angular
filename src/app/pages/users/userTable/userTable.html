@@ -20,27 +20,16 @@
     </div>
     <div class="panel-body">
         <div ng-show="users.length > 0" class="divider">
-            <table class="table custom-table" draggable on-drag-end="tableColDrag($start, $target)">
+            <table class="table custom-table draggable-table" draggable on-drag-end="tableColDrag($start, $target)">
                 <thead>
                     <tr>
-                        <th class="pointer">Email</th>
-                        <th class="pointer">Currency</th>
-                        <th class="pointer">Joined</th>
-                        <th class="pointer">Last login</th>
-                        <th class="pointer">KYC status</th>
+                        <th ng-repeat="header in headerColumns" class="pointer" ng-bind="header.colName"></th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr ng-repeat="user in users | orderBy: orderByFunction" data-toggle="modal"
                         class="editable-row center pointer user-details-table-hover" ng-click="displayUser(user)">
-                        <td><div title="{{user.email}}" ng-bind="user.email"></div></td>
-                        <td><div title="{{user.currency.code}}" class="transactions-list-element" ng-bind="user.currency.code"></div></td>
-                        <td><div title="{{user.date_joined | date:'mediumDate'}}, {{user.date_joined | date:'shortTime'}}" class="transactions-list-element">
-                            {{user.date_joined | date:'mediumDate'}}, {{user.date_joined | date:'shortTime'}}
-                        </div></td>
-                        <td><div title="{{user.last_login | date:'mediumDate'}}, {{user.last_login | date:'shortTime'}}" class="transactions-list-element">
-                            {{user.last_login | date:'mediumDate'}}, {{user.last_login | date:'shortTime'}}</div></td>
-                        <td><div title="{{user.kyc.status | capitalizeWord}}" class="transactions-list-element" ng-bind="user.kyc.status | capitalizeWord"></div></td>
+                        <td class="transactions-list-element" ng-repeat="header in headerColumns" ng-bind="user[header.fieldName]"></td>
                     </tr>
                 </tbody>
             </table>

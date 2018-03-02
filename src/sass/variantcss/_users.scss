@@ -3,6 +3,12 @@
   cursor: pointer !important;
 }
 
+.draggable-table{
+  white-space: nowrap;
+  display: block;
+  overflow-x: scroll;
+}
+
 .dynamic-columns{
   margin-left: 22px;
 }

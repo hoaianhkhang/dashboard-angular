@@ -8,7 +8,7 @@
     <div class="panel-body">
         <input type="text" class="column-search" placeholder="Search column" ng-model="columnSearch">
         <p ng-click="restoreColDefaults()" class="columns-restore">Restore defaults</p>
-        <div ng-repeat="column in showColumns | filter: columnSearch">
+        <div ng-repeat="column in headerColumns | filter: columnSearch">
             <div>
                 <label class="checkbox-inline custom-checkbox nowrap">
                     <input type="checkbox" ng-model="column.visible">

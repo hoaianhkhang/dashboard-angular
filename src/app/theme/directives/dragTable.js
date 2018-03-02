@@ -6,17 +6,20 @@
     /** @ngInject */
     var project = angular.module("BlurAdmin.theme");
 
-    project.directive('draggable', function($window, $document) {
+    project.directive('draggable', function($window, $document,$timeout) {
         function make_draggable(scope, elem) {
             scope.table = elem[0];
             scope.order = [];
             scope.dragRadius2 = 100;
 
             var headers = scope.table.tHead.rows[0].cells;
-            for (var i = 0; i < headers.length; i++) {
-                scope.order.push(i);
-                headers[i].onmousedown = dragStart;
-            }
+
+            $timeout(function () {
+                for (var i = 0; i < headers.length; i++) {
+                    scope.order.push(i);
+                    headers[i].onmousedown = dragStart;
+                }
+            },0);
 
             function dragStart($event) {
                 // Prevent default dragging of selected content
@@ -112,7 +115,8 @@
                 // Move drag element as cursor has moved.
                 var style = scope.elNode.style;
                 style.left = (scope.elStartLeft + pos.x - scope.cursorStartX) + "px";
-                style.top  = (scope.elStartTop  + pos.y - scope.cursorStartY) + "px";
+                style.top  = (scope.elStartTop  + pos.y - scope.cursorStartY + 100) + "px";
+                style.overflow = 'hidden';
             }
 
             function dragEnd($event) {
