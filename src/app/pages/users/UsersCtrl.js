@@ -133,27 +133,23 @@
             $scope.showingColumnFilters = !$scope.showingColumnFilters;
         };
 
+        $scope.selectAllColumns = function () {
+            $scope.headerColumns.forEach(function (headerObj) {
+                headerObj.visible = true;
+            })
+        };
+
         $scope.restoreColDefaults = function () {
-            $scope.headerColumns = [
-                {colName: 'Identifier',fieldName: 'identifier',visible: true},
-                {colName: 'First name',fieldName: 'first_name',visible: true},
-                {colName: 'Last name',fieldName: 'last_name',visible: true},
-                {colName: 'Email',fieldName: 'email',visible: true},
-                {colName: 'Mobile number',fieldName: 'mobile_number',visible: true},
-                {colName: 'Group name',fieldName: 'groupName',visible: true},
-                {colName: 'Date joined',fieldName: 'date_joined',visible: true},
-                {colName: 'Status',fieldName: 'status',visible: false},
-                {colName: 'KYC status',fieldName: 'kycStatus',visible: false},
-                {colName: 'Active',fieldName: 'active',visible: false},
-                {colName: 'Last login',fieldName: 'last_login',visible: false},
-                {colName: 'Verified',fieldName: 'verified',visible: false},
-                {colName: 'ID Number',fieldName: 'id_number',visible: false},
-                {colName: 'Nationality',fieldName: 'nationality',visible: false},
-                {colName: 'Language',fieldName: 'language',visible: false},
-                {colName: 'Timezone',fieldName: 'timezone',visible: false},
-                {colName: 'Birth date',fieldName: 'birth_date',visible: false},
-                {colName: 'Username',fieldName: 'username',visible: false}
-            ];
+            var defaultVisibleHeader = ['Identifier','First name','Last name','Email',
+                'Mobile number','Group name','Date joined'];
+
+            $scope.headerColumns.forEach(function (headerObj) {
+                if(defaultVisibleHeader.indexOf(headerObj.colName) > -1){
+                    headerObj.visible = true;
+                } else {
+                    headerObj.visible = false;
+                }
+            });
         };
 
         $scope.getGroups = function () {

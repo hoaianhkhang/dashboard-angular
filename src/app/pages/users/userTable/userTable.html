@@ -20,19 +20,22 @@
     </div>
     <div class="panel-body">
         <div ng-show="users.length > 0" class="divider">
-            <table class="table custom-table draggable-table" draggable on-drag-end="tableColDrag($start, $target)">
-                <thead>
-                    <tr>
-                        <th ng-repeat="header in headerColumns" class="pointer" ng-bind="header.colName"></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr ng-repeat="user in users | orderBy: orderByFunction" data-toggle="modal"
-                        class="editable-row center pointer user-details-table-hover" ng-click="displayUser(user)">
-                        <td class="transactions-list-element" ng-repeat="header in headerColumns" ng-bind="user[header.fieldName]"></td>
-                    </tr>
-                </tbody>
-            </table>
+            <div class="draggable-table">
+                <table class="table custom-table" draggable on-drag-end="tableColDrag($start, $target)">
+                    <thead>
+                        <tr>
+                            <th ng-repeat="header in headerColumns" ng-if="header.visible" class="pointer" ng-bind="header.colName"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="user in users | orderBy: orderByFunction" data-toggle="modal"
+                            class="editable-row center pointer user-details-table-hover" ng-click="displayUser(user)">
+                            <td class="transactions-list-element" ng-repeat="header in headerColumns"
+                                ng-if="header.visible" ng-bind="user[header.fieldName]"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
             <div>
                 <p uib-pagination boundary-links="true" items-per-page="usersPagination.itemsPerPage"  total-items="usersData.count" ng-model="usersPagination.pageNo"
                    max-size="usersPagination.maxSize" class="pagination-sm pull-right transaction-history-pagination" force-ellipses="true" ng-change="getAllUsers()"
