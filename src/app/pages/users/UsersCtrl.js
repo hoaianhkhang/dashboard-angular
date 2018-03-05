@@ -136,7 +136,12 @@
         $scope.selectAllColumns = function () {
             $scope.headerColumns.forEach(function (headerObj) {
                 headerObj.visible = true;
-            })
+            });
+            cookieManagement.setCookie(vm.companyIdentifier,JSON.stringify($scope.headerColumns));
+        };
+
+        $scope.toggleColumnVisibility = function () {
+            cookieManagement.setCookie(vm.companyIdentifier,JSON.stringify($scope.headerColumns));
         };
 
         $scope.restoreColDefaults = function () {
@@ -150,6 +155,8 @@
                     headerObj.visible = false;
                 }
             });
+
+            cookieManagement.setCookie(vm.companyIdentifier,JSON.stringify($scope.headerColumns));
         };
 
         $scope.getGroups = function () {

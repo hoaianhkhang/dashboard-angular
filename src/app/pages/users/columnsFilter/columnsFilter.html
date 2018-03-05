@@ -14,7 +14,7 @@
         <div ng-repeat="column in headerColumns | filter: columnSearch">
             <div>
                 <label class="checkbox-inline custom-checkbox nowrap">
-                    <input type="checkbox" ng-model="column.visible">
+                    <input ng-change="toggleColumnVisibility()" type="checkbox" ng-model="column.visible">
                     <span ng-bind="column.colName"></span>
                 </label>
             </div>

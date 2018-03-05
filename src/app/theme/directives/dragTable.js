@@ -15,6 +15,7 @@
             var headers = scope.table.tHead.rows[0].cells;
 
             $timeout(function () {
+                console.log(headers)
                 for (var i = 0; i < headers.length; i++) {
                     scope.order.push(i);
                     headers[i].onmousedown = dragStart;

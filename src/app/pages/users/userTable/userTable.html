@@ -21,10 +21,12 @@
     <div class="panel-body">
         <div ng-show="users.length > 0" class="divider">
             <div class="draggable-table">
-                <table class="table custom-table" draggable on-drag-end="tableColDrag($start, $target)">
+                <!--draggable on-drag-end="tableColDrag($start, $target)"-->
+                <table class="table custom-table" >
                     <thead>
                         <tr>
-                            <th ng-repeat="header in headerColumns" ng-if="header.visible" class="pointer" ng-bind="header.colName"></th>
+                            <!--class="pointer"-->
+                            <th ng-repeat="header in headerColumns" ng-if="header.visible"  ng-bind="header.colName"></th>
                         </tr>
                     </thead>
                     <tbody>
