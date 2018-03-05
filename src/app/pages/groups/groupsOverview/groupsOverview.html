@@ -41,28 +41,28 @@
                         </div>
                         <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
                             <div>
-                                <span><strong>{{currency.symbol}} {{currency.balance_24h | currencyModifiersFilter: currency.divisibility}}</strong></span>
+                                <span><strong>0</strong></span>
                                 <br>
                                 <span class="currencies-details-heading">Activated users</span>
                             </div>
                         </div>
                         <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
                             <div>
-                                <span><strong>{{currency.symbol}} {{currency.sum_debits_pending | currencyModifiersFilter: currency.divisibility}}</strong></span>
+                                <span><strong>0</strong></span>
                                 <br>
                                 <span class="currencies-details-heading">Dectivated users</span>
                             </div>
                         </div>
                         <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
                             <div>
-                                <input ng-change="updateGroup(group,'default')" class="custom-rehive-checkbox" type="checkbox" ng-model="group.default">
+                                <input ng-disabled="group.name == 'admin' || group.name == 'service'" ng-change="updateGroup(group,'default')" class="custom-rehive-checkbox" type="checkbox" ng-model="group.default">
                                 <br>
                                 <span class="currencies-details-heading">Default</span>
                             </div>
                         </div>
                         <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
                             <div>
-                                <input ng-change="updateGroup(group,'public')" class="custom-rehive-checkbox" type="checkbox" ng-model="group.public">
+                                <input ng-disabled="group.name == 'admin' || group.name == 'service'" ng-change="updateGroup(group,'public')" class="custom-rehive-checkbox" type="checkbox" ng-model="group.public">
                                 <br>
                                 <span class="currencies-details-heading">Public</span>
                             </div>

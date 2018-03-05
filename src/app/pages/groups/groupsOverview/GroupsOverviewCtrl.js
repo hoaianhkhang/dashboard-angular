@@ -85,7 +85,9 @@
             var updateObj = {};
 
             if(type == 'default'){
+                group.public = true;
                 updateObj.default = group.default;
+                updateObj.public = true;
             } else {
                 updateObj.public = group.public;
             }
@@ -105,7 +107,7 @@
                         toastr.success('Group successfully updated');
                     }
                 }).catch(function (error) {
-                    group[type] = false;
+                    group[type] = !group[type];
                     $scope.loadingGroups = false;
                     errorHandler.evaluateErrors(error.data);
                     errorHandler.handleErrors(error);
