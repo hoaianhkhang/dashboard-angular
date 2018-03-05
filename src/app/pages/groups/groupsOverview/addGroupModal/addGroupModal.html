@@ -1,0 +1,34 @@
+<div class="modal-content">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="$dismiss()" aria-label="Close">
+            <em class="ion-ios-close-empty sn-link-close"></em>
+        </button>
+        <h4 class="modal-title" id="myModalLabel">Add group</h4>
+    </div>
+    <div class="modal-body">
+       <form name="groupNameForm" class="custom-form">
+           <div class="form-group divider-20">
+               <label>Name <span class="required-icon">*</span></label>
+               <input type="text" ng-model="groupsParams.name" ng-change="groupNameToLowercase()" class="form-control"  placeholder="Name" required>
+           </div>
+           <div class="form-group divider-20">
+               <label>Label</label>
+               <input type="text" ng-model="groupsParams.label" class="form-control"  placeholder="Label">
+           </div>
+           <div class="form-group divider-20">
+               <label>Public</label>
+               <br>
+               <input class="custom-rehive-checkbox" ng-change="groupsParams.public ? null: groupsParams.default=false" ng-model="groupsParams.public" type="checkbox">
+           </div>
+           <div class="form-group">
+               <label>Default</label>
+               <br>
+               <input class="custom-rehive-checkbox" ng-change="groupsParams.default? groupsParams.public=true:null" ng-model="groupsParams.default" type="checkbox">
+           </div>
+       </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default dashboard-btn pull-left" ng-click="$dismiss()">Close</button>
+        <button type="button" class="btn btn-primary dashboard-btn pull-right" ng-disabled="!groupNameForm.$valid" ng-click="addGroup(groupsParams)">Add</button>
+    </div>
+</div>

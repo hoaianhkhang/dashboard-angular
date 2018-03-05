@@ -1,0 +1,93 @@
+<h1 class="currencies-title">Groups</h1>
+<div class="panel">
+    <div class="panel-heading">
+        <div class="table-filter-heading">
+            <!--<div click-outside="hideFilters()">-->
+                <!--<button ng-click="showFilters()" class="currencies-page-button-filter btn btn-default">Filters</button>-->
+                <!--<div ng-show="showingFilters">-->
+                    <!---->
+                <!--</div>-->
+            <!--</div>-->
+            <div>
+                <button class="btn btn-success pull-right panel-header-button currencies-page-buttons-add"
+                        ng-click="openAddGroupModal('app/pages/groups/groupsOverview/addGroupModal/addGroupModal.html','md')">Add group</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div ng-hide="loadingGroups" ng-repeat="group in groups">
+    <div class="panel ">
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+                    <div class="dashboard-currencies-code">&nbsp;
+                    </div>
+                </div>
+                <div class="currencies-page-row">
+                    <div>
+                        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                            <div>
+                                <span><strong>{{group.name}}</strong></span>
+                                <br>
+                                <span class="currencies-details-heading">Group name</span>
+                            </div>
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                            <div>
+                                <span><strong>{{group.totalUsers}}</strong></span>
+                                <br>
+                                <span class="currencies-details-heading">Total users</span>
+                            </div>
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                            <div>
+                                <span><strong>{{currency.symbol}} {{currency.balance_24h | currencyModifiersFilter: currency.divisibility}}</strong></span>
+                                <br>
+                                <span class="currencies-details-heading">Activated users</span>
+                            </div>
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                            <div>
+                                <span><strong>{{currency.symbol}} {{currency.sum_debits_pending | currencyModifiersFilter: currency.divisibility}}</strong></span>
+                                <br>
+                                <span class="currencies-details-heading">Dectivated users</span>
+                            </div>
+                        </div>
+                        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+                            <div>
+                                <input ng-change="updateGroup(group,'default')" class="custom-rehive-checkbox" type="checkbox" ng-model="group.default">
+                                <br>
+                                <span class="currencies-details-heading">Default</span>
+                            </div>
+                        </div>
+                        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+                            <div>
+                                <input ng-change="updateGroup(group,'public')" class="custom-rehive-checkbox" type="checkbox" ng-model="group.public">
+                                <br>
+                                <span class="currencies-details-heading">Public</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1" ng-click="showGroupsOptions(group.name); $event.stopPropagation()" click-outside="closeOptionsBox()">
+                        <div>
+                            <span class="fa fa-ellipsis-h pull-right pointer currencies-options"></span>
+                            <ul ng-show="group.name == optionsName" class="currencies-options-box">
+                                <li ng-click="showCurrenciesOptions(currency.code)"><i class="dropdown-arr"></i></li>
+                                <li ng-click="goToView('/currency/' + currency.code + '/overview')">Details</li>
+                                <li ng-click="goToUsersState(currency.code)">Users</li>
+                                <li ng-click="goToHistoryState(currency.code)">Permissions</li>
+                                <li ng-click="goToView('/transactions/debit')">Tiers</li>
+                                <li ng-click="goToView('/transactions/credit')">Account configurations</li>
+                                <li ng-click="goToView('/currency/' + currency.code + '/settings')">Transaction settings</li>
+                                <li ng-hide="group.name == 'admin' || group.name == 'service'" ng-click="deleteCompanyGroupPrompt(group)">Delete group</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div ba-panel ng-show="loadingGroups">
+    <loading-image></loading-image>
+</div>
