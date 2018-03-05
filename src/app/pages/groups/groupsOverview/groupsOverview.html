@@ -2,12 +2,6 @@
 <div class="panel">
     <div class="panel-heading">
         <div class="table-filter-heading">
-            <!--<div click-outside="hideFilters()">-->
-                <!--<button ng-click="showFilters()" class="currencies-page-button-filter btn btn-default">Filters</button>-->
-                <!--<div ng-show="showingFilters">-->
-                    <!---->
-                <!--</div>-->
-            <!--</div>-->
             <div>
                 <button class="btn btn-success pull-right panel-header-button currencies-page-buttons-add"
                         ng-click="openAddGroupModal('app/pages/groups/groupsOverview/addGroupModal/addGroupModal.html','md')">Add group</button>
@@ -73,7 +67,7 @@
                             <span class="fa fa-ellipsis-h pull-right pointer currencies-options"></span>
                             <ul ng-show="group.name == optionsName" class="currencies-options-box">
                                 <li ng-click="showCurrenciesOptions(currency.code)"><i class="dropdown-arr"></i></li>
-                                <li ng-click="goToView('/currency/' + currency.code + '/overview')">Details</li>
+                                <li ng-click="goToGroupViews('/groups/details')">Details</li>
                                 <li ng-click="goToUsersState(currency.code)">Users</li>
                                 <li ng-click="goToHistoryState(currency.code)">Permissions</li>
                                 <li ng-click="goToView('/transactions/debit')">Tiers</li>

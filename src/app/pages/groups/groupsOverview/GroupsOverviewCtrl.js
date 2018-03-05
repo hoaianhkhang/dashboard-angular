@@ -1,11 +1,12 @@
 (function () {
     'use strict';
 
-    angular.module('BlurAdmin.pages.groups.overview')
+    angular.module('BlurAdmin.pages.groups')
         .controller('GroupsOverviewCtrl', GroupsOverviewCtrl);
 
     /** @ngInject */
-    function GroupsOverviewCtrl($scope,$http,environmentConfig,cookieManagement,$uibModal,errorHandler,$ngConfirm,toastr) {
+    function GroupsOverviewCtrl($scope,$http,environmentConfig,cookieManagement,$uibModal,
+                                errorHandler,$ngConfirm,toastr,$location) {
 
         var vm = this;
         vm.token = cookieManagement.getCookie('TOKEN');
@@ -17,6 +18,10 @@
 
         $scope.showGroupsOptions = function (code) {
             $scope.optionsName = code;
+        };
+
+        $scope.goToGroupViews = function (path) {
+            $location.path(path);
         };
 
         $scope.getGroups = function () {
@@ -35,7 +40,6 @@
                 }).then(function (res) {
                     if (res.status === 200) {
                         $scope.groups = res.data.data.results;
-                        console.log($scope.groups[2])
                         $scope.groups.forEach(function(element,idx,array){
                             if(idx === array.length - 1){
                                 vm.getGroupUsers(element,'last');
