@@ -8,7 +8,7 @@
     function routeConfig($stateProvider,$urlRouterProvider) {
         $stateProvider
             .state('editGroup', {
-                url: '/groups/details',
+                url: '/groups/:groupName/details',
                 controller: 'EditGroupCtrl',
                 templateUrl: 'app/pages/groups/editGroup/editGroup.html',
                 title: "Groups"
