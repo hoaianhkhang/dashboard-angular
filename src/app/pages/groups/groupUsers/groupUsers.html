@@ -18,14 +18,14 @@
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <ul class="user-details-nav-bar">
                 <li><a href="/#/groups/{{editGroupObj.name}}/details" ng-class="{'transaction-location': locationIndicator == 'details'}">Details</a></li>
-                <li><a href="/#/groups/{{editGroupObj.name}}/users" ng-class="{'transaction-location': locationIndicator == 'accounts'}">Users</a></li>
+                <li><a href="/#/groups/{{editGroupObj.name}}/users" ng-class="{'transaction-location': locationIndicator == 'users'}">Users</a></li>
                 <li><a href="/#/user/{{user.identifier}}/transactions" ng-class="{'transaction-location': locationIndicator == 'transactions'}">Transactions</a></li>
             </ul>
         </div>
     </div>
     <div class="row">
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-
+            <group-users-table></group-users-table>
         </div>
     </div>
 </div>

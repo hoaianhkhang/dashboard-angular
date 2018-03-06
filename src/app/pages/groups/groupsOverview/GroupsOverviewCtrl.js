@@ -5,11 +5,12 @@
         .controller('GroupsOverviewCtrl', GroupsOverviewCtrl);
 
     /** @ngInject */
-    function GroupsOverviewCtrl($scope,$http,environmentConfig,cookieManagement,$uibModal,
+    function GroupsOverviewCtrl($rootScope,$scope,$http,environmentConfig,cookieManagement,$uibModal,
                                 errorHandler,$ngConfirm,toastr,$location) {
 
         var vm = this;
         vm.token = cookieManagement.getCookie('TOKEN');
+        $rootScope.dashboardTitle = 'Groups | Rehive';
         $scope.groups = [];
 
         $scope.closeOptionsBox = function () {

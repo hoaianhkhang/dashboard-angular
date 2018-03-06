@@ -68,7 +68,7 @@
                             <ul ng-show="group.name == optionsName" class="currencies-options-box">
                                 <li ng-click="showCurrenciesOptions(currency.code)"><i class="dropdown-arr"></i></li>
                                 <li ng-click="goToGroupViews('/groups/' + group.name + '/details')">Details</li>
-                                <li ng-click="goToUsersState(currency.code)">Users</li>
+                                <li ng-click="goToGroupViews('/groups/' + group.name + '/users')">Users</li>
                                 <li ng-click="goToHistoryState(currency.code)">Permissions</li>
                                 <li ng-click="goToView('/transactions/debit')">Tiers</li>
                                 <li ng-click="goToView('/transactions/credit')">Account configurations</li>
