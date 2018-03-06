@@ -150,7 +150,7 @@
 }
 
 .group-hexagon {
-  @include hexagon(100px,52px,30.15px 0 30.15px 0);
+  @include hexagon(70px,40px,20px 0 20px 0);
 }
 
 .group-hexagon-margin-bottom{
@@ -159,13 +159,13 @@
 
 .group-hexagon:before,
 .group-hexagon:after {
-  @include hexagon-before-after(50px solid transparent,50px solid transparent);
+  @include hexagon-before-after(36px solid transparent,36px solid transparent);
 }
 
 .group-hexagon:before {
-  @include hexagon-before(30px solid #F8CF51);
+  @include hexagon-before(20px solid #F8CF51);
 }
 
 .group-hexagon:after {
-  @include hexagon-after(30px solid #F8CF51);
+  @include hexagon-after(20px solid #F8CF51);
 }
