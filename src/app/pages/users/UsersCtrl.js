@@ -6,10 +6,11 @@
 
     /** @ngInject */
     function UsersCtrl($rootScope,$state,$scope,environmentConfig,$http,typeaheadService,$location,
-                       cookieManagement,errorHandler,$window,toastr,serializeFiltersService) {
+                       cookieManagement,errorHandler,$window,toastr,serializeFiltersService,$filter) {
 
         var vm = this;
         vm.token = cookieManagement.getCookie('TOKEN');
+        vm.companyIdentifier = cookieManagement.getCookie('companyIdentifier');
         $rootScope.dashboardTitle = 'Users | Rehive';
         vm.currenciesList = JSON.parse($window.sessionStorage.currenciesList || '[]');
         vm.location = $location.path();
@@ -29,30 +30,38 @@
         $scope.filtersCount = 0;
 
         $scope.usersPagination = {
-            itemsPerPage: 25,
+            itemsPerPage: 14,
             pageNo: 1,
             maxSize: 5
         };
 
-        $scope.showColumns = [
-            {colName: 'Identifier',visible: true},
-            {colName: 'First name',visible: true},
-            {colName: 'Last name',visible: true},
-            {colName: 'Email',visible: true},
-            {colName: 'Mobile number',visible: true},
-            {colName: 'Group name',visible: true},
-            {colName: 'Date joined',visible: true},
-            {colName: 'Status',visible: false},
-            {colName: 'KYC status',visible: false},
-            {colName: 'Active',visible: false},
-            {colName: 'Last login',visible: false},
-            {colName: 'Verified',visible: false},
-            {colName: 'ID Number',visible: false},
-            {colName: 'Nationality',visible: false},
-            {colName: 'Language',visible: false},
-            {colName: 'Timezone',visible: false},
-            {colName: 'Birth date',visible: false},
-            {colName: 'Username',visible: false}
+        $scope.tableColDrag = function (start,target) {
+            var tempObj = $scope.headerColumns[start];
+            $scope.headerColumns.splice(start, 1);
+            $scope.headerColumns.splice(target, 0,tempObj);
+
+            cookieManagement.setCookie(vm.companyIdentifier,JSON.stringify($scope.headerColumns));
+        };
+
+        $scope.headerColumns = cookieManagement.getCookie(vm.companyIdentifier) ? JSON.parse(cookieManagement.getCookie(vm.companyIdentifier)) : [
+            {colName: 'Identifier',fieldName: 'identifier',visible: true},
+            {colName: 'First name',fieldName: 'first_name',visible: true},
+            {colName: 'Last name',fieldName: 'last_name',visible: true},
+            {colName: 'Email',fieldName: 'email',visible: true},
+            {colName: 'Mobile number',fieldName: 'mobile_number',visible: true},
+            {colName: 'Group name',fieldName: 'groupName',visible: true},
+            {colName: 'Date joined',fieldName: 'date_joined',visible: true},
+            {colName: 'Status',fieldName: 'status',visible: false},
+            {colName: 'KYC status',fieldName: 'kycStatus',visible: false},
+            {colName: 'Active',fieldName: 'active',visible: false},
+            {colName: 'Last login',fieldName: 'last_login',visible: false},
+            {colName: 'Verified',fieldName: 'verified',visible: false},
+            {colName: 'ID Number',fieldName: 'id_number',visible: false},
+            {colName: 'Nationality',fieldName: 'nationality',visible: false},
+            {colName: 'Language',fieldName: 'language',visible: false},
+            {colName: 'Timezone',fieldName: 'timezone',visible: false},
+            {colName: 'Birth date',fieldName: 'birth_date',visible: false},
+            {colName: 'Username',fieldName: 'username',visible: false}
         ];
         $scope.filtersObj = {
             identifierFilter: false,
@@ -124,27 +133,30 @@
             $scope.showingColumnFilters = !$scope.showingColumnFilters;
         };
 
+        $scope.selectAllColumns = function () {
+            $scope.headerColumns.forEach(function (headerObj) {
+                headerObj.visible = true;
+            });
+            cookieManagement.setCookie(vm.companyIdentifier,JSON.stringify($scope.headerColumns));
+        };
+
+        $scope.toggleColumnVisibility = function () {
+            cookieManagement.setCookie(vm.companyIdentifier,JSON.stringify($scope.headerColumns));
+        };
+
         $scope.restoreColDefaults = function () {
-            $scope.showColumns = [
-                {colName: 'Identifier',visible: true},
-                {colName: 'First name',visible: true},
-                {colName: 'Last name',visible: true},
-                {colName: 'Email',visible: true},
-                {colName: 'Mobile number',visible: true},
-                {colName: 'Group name',visible: true},
-                {colName: 'Date joined',visible: true},
-                {colName: 'Status',visible: false},
-                {colName: 'KYC status',visible: false},
-                {colName: 'Active',visible: false},
-                {colName: 'Last login',visible: false},
-                {colName: 'Verified',visible: false},
-                {colName: 'ID Number',visible: false},
-                {colName: 'Nationality',visible: false},
-                {colName: 'Language',visible: false},
-                {colName: 'Timezone',visible: false},
-                {colName: 'Birth date',visible: false},
-                {colName: 'Username',visible: false}
-            ];
+            var defaultVisibleHeader = ['Identifier','First name','Last name','Email',
+                'Mobile number','Group name','Date joined'];
+
+            $scope.headerColumns.forEach(function (headerObj) {
+                if(defaultVisibleHeader.indexOf(headerObj.colName) > -1){
+                    headerObj.visible = true;
+                } else {
+                    headerObj.visible = false;
+                }
+            });
+
+            cookieManagement.setCookie(vm.companyIdentifier,JSON.stringify($scope.headerColumns));
         };
 
         $scope.getGroups = function () {
@@ -381,7 +393,7 @@
 
             var searchObj = {
                 page: $scope.usersPagination.pageNo,
-                page_size: $scope.filtersObj.pageSizeFilter? $scope.usersPagination.itemsPerPage : 25,
+                page_size: $scope.filtersObj.pageSizeFilter? $scope.usersPagination.itemsPerPage : 14,
                 identifier__contains: $scope.filtersObj.identifierFilter ? ($scope.applyFiltersObj.identifierFilter.selectedIdentifier ?  $scope.applyFiltersObj.identifierFilter.selectedIdentifier : null): null,
                 email__contains: $scope.filtersObj.emailFilter ?($scope.applyFiltersObj.emailFilter.selectedEmail ?  encodeURIComponent($scope.applyFiltersObj.emailFilter.selectedEmail) : null): null,
                 mobile_number__contains: $scope.filtersObj.mobileFilter ? ($scope.applyFiltersObj.mobileFilter.selectedMobile ?  encodeURIComponent($scope.applyFiltersObj.mobileFilter.selectedMobile) : null): null,
@@ -422,10 +434,9 @@
                     'Authorization': vm.token
                 }
             }).then(function (res) {
-                $scope.loadingUsers = false;
                 if (res.status === 200) {
                     $scope.usersData = res.data.data;
-                    $scope.users = res.data.data.results;
+                    vm.formatUsersArray(res.data.data.results);
                     if($scope.users.length == 0){
                         $scope.usersStateMessage = 'No users have been found';
                         return;
@@ -440,6 +451,33 @@
             });
         };
         $scope.getAllUsers();
+
+        vm.formatUsersArray = function (usersArray) {
+            usersArray.forEach(function (userObj) {
+                $scope.users.push({
+                    identifier: userObj.identifier,
+                    first_name: userObj.first_name,
+                    last_name: userObj.last_name,
+                    email: userObj.email,
+                    mobile_number: userObj.mobile_number,
+                    groupName: userObj.groups.length > 0 ? userObj.groups[0].name: null,
+                    date_joined: userObj.date_joined ? $filter("date")(userObj.date_joined,'mediumDate') + ' ' + $filter("date")(userObj.date_joined,'shortTime'): null,
+                    status: $filter("capitalizeWord")(userObj.status),
+                    kycStatus: $filter("capitalizeWord")(userObj.kyc.status),
+                    active: userObj.active ? 'Yes' : 'No',
+                    last_login: userObj.last_login ? $filter("date")(userObj.last_login,'mediumDate') + ' ' + $filter("date")(userObj.last_login,'shortTime'): null,
+                    verified: userObj.verified ? 'Yes' : 'No',
+                    id_number: userObj.id_number,
+                    nationality: userObj.nationality ? $filter("isoCountry")(userObj.nationality): null,
+                    language: userObj.language,
+                    timezone: userObj.timezone,
+                    birth_date: userObj.birth_date,
+                    username: userObj.username
+                });
+            });
+
+            $scope.loadingUsers = false;
+        };
 
         $scope.goToAddUser = function () {
             $location.path('/users/add');

@@ -6,6 +6,10 @@
                         class="btn btn-default">Filters
                     <span ng-show="filtersCount > 0">|</span> <span ng-show="filtersCount > 0" class="filter-count">{{filtersCount}}</span>
                 </button>
+                <button ng-click="showColumnFilters()" class="btn dynamic-columns btn-default">Columns</button>
+                <div ng-show="showingColumnFilters">
+                   <columns-filter></columns-filter>
+                </div>
                 <div ng-show="showingFilters">
                     <user-filters></user-filters>
                 </div>
@@ -16,26 +20,24 @@
     </div>
     <div class="panel-body">
         <div ng-show="users.length > 0" class="divider">
-            <table class="table custom-table">
-                <tr>
-                    <th>Email</th>
-                    <th>Currency</th>
-                    <th>Joined</th>
-                    <th>Last login</th>
-                    <th>KYC status</th>
-                </tr>
-                <tr ng-repeat="user in users | orderBy: orderByFunction" data-toggle="modal"
-                    class="editable-row center pointer user-details-table-hover" ng-click="displayUser(user)">
-                    <td><div title="{{user.email}}" ng-bind="user.email"></div></td>
-                    <td><div title="{{user.currency.code}}" class="transactions-list-element" ng-bind="user.currency.code"></div></td>
-                    <td><div title="{{user.date_joined | date:'mediumDate'}}, {{user.date_joined | date:'shortTime'}}" class="transactions-list-element">
-                        {{user.date_joined | date:'mediumDate'}}, {{user.date_joined | date:'shortTime'}}
-                    </div></td>
-                    <td><div title="{{user.last_login | date:'mediumDate'}}, {{user.last_login | date:'shortTime'}}" class="transactions-list-element">
-                        {{user.last_login | date:'mediumDate'}}, {{user.last_login | date:'shortTime'}}</div></td>
-                    <td><div title="{{user.kyc.status | capitalizeWord}}" class="transactions-list-element" ng-bind="user.kyc.status | capitalizeWord"></div></td>
-                </tr>
-            </table>
+            <div class="draggable-table">
+                <!--draggable on-drag-end="tableColDrag($start, $target)"-->
+                <table class="table custom-table table-striped">
+                    <thead>
+                        <tr>
+                            <!--class="pointer"-->
+                            <th ng-repeat="header in headerColumns" ng-if="header.visible"  ng-bind="header.colName"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="user in users | orderBy: orderByFunction" data-toggle="modal"
+                            class="editable-row center pointer user-details-table-hover" ng-click="displayUser(user)">
+                            <td class="transactions-list-element" ng-repeat="header in headerColumns"
+                                ng-if="header.visible" ng-bind="user[header.fieldName]"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
             <div>
                 <p uib-pagination boundary-links="true" items-per-page="usersPagination.itemsPerPage"  total-items="usersData.count" ng-model="usersPagination.pageNo"
                    max-size="usersPagination.maxSize" class="pagination-sm pull-right transaction-history-pagination" force-ellipses="true" ng-change="getAllUsers()"
