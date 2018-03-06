@@ -3,7 +3,7 @@
   & > thead {
     & > tr {
       & > th {
-        padding: 0 6px;
+        padding: 0 6px 8px 6px;
         border-bottom: 1px solid $border-light;
         color: #A8A8A8 !important;
         white-space: nowrap;
@@ -290,7 +290,7 @@ th {
 }
 
 .table > tbody > tr > th {
-  padding: 0 6px;
+  padding: 0 6px 8px 6px;
   border: none;
 }
 
