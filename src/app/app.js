@@ -84,6 +84,7 @@ angular.module('BlurAdmin', [
                         }).then(function (res) {
                             if (res.status === 200) {
                                 $rootScope.pageTopObj.companyObj = res.data.data;
+                                cookieManagement.setCookie('companyIdentifier',$rootScope.pageTopObj.companyObj.identifier);
                             }
                         }).catch(function (error) {
                             errorHandler.evaluateErrors(error.data);
