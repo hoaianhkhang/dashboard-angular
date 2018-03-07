@@ -55,7 +55,6 @@
             } else {
                 vm.addUserToGroup();
             }
-
         };
 
         vm.addUserToGroup = function(){

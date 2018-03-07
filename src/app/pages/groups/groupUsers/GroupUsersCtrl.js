@@ -28,6 +28,7 @@
         $scope.orderByOptions = ['Joined date','Last login date'];
         $scope.currencyOptions = [];
         $scope.filtersCount = 0;
+        $scope.optionsGroupName = '';
 
         $scope.usersPagination = {
             itemsPerPage: 14,
@@ -517,6 +518,14 @@
             $location.path('/user/' + user.identifier + '/details');
         };
 
+        $scope.closeGroupUsersOptionsBox = function () {
+            $scope.optionsGroupUserIdentifier = '';
+        };
+
+        $scope.showGroupUsersOptions = function (user) {
+            $scope.optionsGroupUserIdentifier = user.identifier;
+        };
+
         $scope.openAddUserToGroupModal = function (page, size) {
             vm.theModal = $uibModal.open({
                 animation: true,
@@ -526,6 +535,27 @@
                 resolve: {
                     group: function () {
                         return $scope.editGroupObj;
+                    }
+                }
+            });
+
+            vm.theModal.result.then(function(user){
+                if(user){
+                    $scope.getAllUsers();
+                }
+            }, function(){
+            });
+        };
+
+        $scope.openReassignUserToGroupModal = function (page, size,user) {
+            vm.theModal = $uibModal.open({
+                animation: true,
+                templateUrl: page,
+                size: size,
+                controller: 'ReassignGroupUserModalCtrl',
+                resolve: {
+                    user: function () {
+                        return user;
                     }
                 }
             });

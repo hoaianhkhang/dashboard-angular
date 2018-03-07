@@ -27,6 +27,7 @@
                     <tr>
                         <!--class="pointer"-->
                         <th ng-repeat="header in headerColumns" ng-if="header.visible"  ng-bind="header.colName"></th>
+                        <th></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -34,6 +35,15 @@
                         class="editable-row center pointer user-details-table-hover" ng-click="displayUser(user)">
                         <td class="transactions-list-element" ng-repeat="header in headerColumns"
                             ng-if="header.visible" ng-bind="user[header.fieldName]"></td>
+                        <td ng-click="showGroupUsersOptions(user); $event.stopPropagation()" class="group-user-options pull-right">...
+                            <div ng-show="user.identifier == optionsGroupUserIdentifier" click-outside="closeGroupUsersOptionsBox()">
+                                <ul  class="group-options-box" >
+                                    <li ng-click="showGroupUsersOptions(user)"><i class="fa fa-caret-right group-users-caret"></i></li>
+                                    <li ng-click="openReassignUserToGroupModal('app/pages/groups/groupUsers/reassignGroupUserModal/reassignGroupUserModal.html','md',user)">Reassign</li>
+                                    <li ng-click="goToGroupViews('/groups/' + group.name + '/users')">Remove</li>
+                                </ul>
+                            </div>
+                        </td>
                     </tr>
                     </tbody>
                 </table>

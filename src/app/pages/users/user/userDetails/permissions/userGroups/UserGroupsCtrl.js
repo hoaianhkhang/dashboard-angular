@@ -16,7 +16,7 @@
         $scope.addingUserGroup = false;
         $scope.userGroupParams = {};
         $scope.userGroups = [];
-        $scope.Groups = [];
+        $scope.groups = [];
 
         $scope.toggleAddUserGroupView  = function () {
             $scope.addingUserGroup = !$scope.addingUserGroup;
