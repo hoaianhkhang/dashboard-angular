@@ -19,6 +19,7 @@
       'BlurAdmin.pages.editGroup',
       'BlurAdmin.pages.groupUsers',
       'BlurAdmin.pages.groupTransactionSettings',
+      'BlurAdmin.pages.groupAccountConfigurations',
       'BlurAdmin.pages.currency',
       'BlurAdmin.pages.webhooks',
       'BlurAdmin.pages.users',

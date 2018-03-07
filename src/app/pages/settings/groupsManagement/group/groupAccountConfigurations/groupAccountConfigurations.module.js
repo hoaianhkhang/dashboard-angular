@@ -11,7 +11,7 @@
                 url: '/account-configurations',
                 views: {
                     'groupViewManagement': {
-                        controller: 'GroupAccountConfigurationsCtrl',
+                        controller: 'GroupAccountConfigurationCtrl',
                         templateUrl: 'app/pages/settings/groupsManagement/group/groupAccountConfigurations/groupAccountConfigurations.html'
                     }
                 },

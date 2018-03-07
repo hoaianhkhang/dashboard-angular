@@ -2,10 +2,10 @@
     'use strict';
 
     angular.module('BlurAdmin.pages.group.accountConfigurations')
-        .controller('GroupAccountConfigurationsCtrl', GroupAccountConfigurationsCtrl);
+        .controller('GroupAccountConfigurationCtrl', GroupAccountConfigurationCtrl);
 
     /** @ngInject */
-    function GroupAccountConfigurationsCtrl($scope,environmentConfig,$http,$stateParams,$uibModal,$location,
+    function GroupAccountConfigurationCtrl($scope,environmentConfig,$http,$stateParams,$uibModal,$location,
                                             cookieManagement,errorHandler,toastr,serializeFiltersService) {
 
         var vm = this;
