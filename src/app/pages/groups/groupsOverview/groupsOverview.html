@@ -72,7 +72,7 @@
                                 <li ng-click="goToHistoryState(currency.code)">Permissions</li>
                                 <li ng-click="goToView('/transactions/debit')">Tiers</li>
                                 <li ng-click="goToView('/transactions/credit')">Account configurations</li>
-                                <li ng-click="goToView('/currency/' + currency.code + '/settings')">Transaction settings</li>
+                                <li ng-click="goToGroupViews('/groups/' + group.name + '/transaction-settings')">Transaction settings</li>
                                 <li ng-hide="group.name == 'admin' || group.name == 'service'" ng-click="deleteCompanyGroupPrompt(group)">Delete group</li>
                             </ul>
                         </div>
