@@ -40,7 +40,7 @@
                                 <ul  class="group-options-box" >
                                     <li ng-click="showGroupUsersOptions(user)"><i class="fa fa-caret-right group-users-caret"></i></li>
                                     <li ng-click="openReassignUserToGroupModal('app/pages/groups/groupUsers/reassignGroupUserModal/reassignGroupUserModal.html','md',user)">Reassign</li>
-                                    <li ng-click="goToGroupViews('/groups/' + group.name + '/users')">Remove</li>
+                                    <li ng-click="deleteUserFromGroupConfirm(user)">Remove</li>
                                 </ul>
                             </div>
                         </td>

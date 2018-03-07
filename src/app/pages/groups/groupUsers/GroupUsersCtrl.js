@@ -6,7 +6,7 @@
 
     /** @ngInject */
     function GroupUsersCtrl($rootScope,$state,$scope,environmentConfig,$http,typeaheadService,$location,$stateParams,
-                       cookieManagement,errorHandler,$window,toastr,serializeFiltersService,$filter,$uibModal) {
+                       cookieManagement,errorHandler,$window,toastr,serializeFiltersService,$filter,$uibModal,$ngConfirm) {
 
         var vm = this;
         vm.groupName = $stateParams.groupName;
@@ -565,6 +565,48 @@
                     $scope.getAllUsers();
                 }
             }, function(){
+            });
+        };
+
+        $scope.deleteUserFromGroupConfirm = function (user) {
+            $ngConfirm({
+                title: 'Remove user from group',
+                content: 'Are you sure you want to remove this user?',
+                animationBounce: 1,
+                animationSpeed: 100,
+                scope: $scope,
+                buttons: {
+                    close: {
+                        text: "No",
+                        btnClass: 'btn-default dashboard-btn'
+                    },
+                    ok: {
+                        text: "Yes",
+                        btnClass: 'btn-primary dashboard-btn',
+                        keys: ['enter'], // will trigger when enter is pressed
+                        action: function(scope){
+                            $scope.deleteUserFromGroup(user);
+                        }
+                    }
+                }
+            });
+        };
+
+        $scope.deleteUserFromGroup = function (user) {
+            $scope.loadingGroup = true;
+            $http.delete(environmentConfig.API + '/admin/users/' + user.identifier + '/groups/' + vm.groupName + '/', {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': vm.token
+                }
+            }).then(function (res) {
+                if (res.status === 200) {
+                    $scope.getAllUsers();
+                }
+            }).catch(function (error) {
+                $scope.loadingGroup = false;
+                errorHandler.evaluateErrors(error.data);
+                errorHandler.handleErrors(error);
             });
         };
 
