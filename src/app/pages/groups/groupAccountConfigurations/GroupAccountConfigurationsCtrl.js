@@ -109,7 +109,6 @@
                     if (res.status === 200) {
                         $scope.groupAccountConfigurationsData = res.data.data;
                         $scope.groupAccountConfigurationsList = res.data.data.results;
-                        console.log($scope.groupAccountConfigurationsList[2])
                     }
                 }).catch(function (error) {
                     $scope.loadingGroupAccountConfigurations = false;
