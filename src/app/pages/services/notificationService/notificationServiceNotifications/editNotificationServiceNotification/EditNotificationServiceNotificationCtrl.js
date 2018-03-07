@@ -35,7 +35,7 @@
             TRANSACTION_EXECUTE: 'transaction.execute'
         };
 
-        $scope.eventOptions = ['User Create','User Update','User Password Reset','User Password Set','User Email Verify','User Mobile Verify',
+        $scope.eventOptions = ['','User Create','User Update','User Password Reset','User Password Set','User Email Verify','User Mobile Verify',
             'Address Create','Address Update','Document Create','Document Update',
             'Bank Account Create','Bank Account Update','Crypto Account Create','Crypto Account Update',
             'Transaction Create','Transaction Update','Transaction Delete','Transaction Initiate','Transaction Execute'];
@@ -52,8 +52,10 @@
                     $scope.loadingNotifications =  false;
                     if (res.status === 200) {
                         $scope.editNotification = res.data.data;
-                        $scope.editNotification.event = $filter('capitalizeDottedSentence')(res.data.data.event);
-                        $scope.editNotification.event = $filter('capitalizeUnderscoredSentence')($scope.editNotification.event);
+                        if(res.data.data.event){
+                            $scope.editNotification.event = $filter('capitalizeDottedSentence')(res.data.data.event);
+                            $scope.editNotification.event = $filter('capitalizeUnderscoredSentence')($scope.editNotification.event);
+                        }
                     }
                 }).catch(function (error) {
                     $scope.loadingNotifications =  false;

@@ -30,7 +30,7 @@
         $scope.filtersCount = 0;
 
         $scope.usersPagination = {
-            itemsPerPage: 14,
+            itemsPerPage: 25,
             pageNo: 1,
             maxSize: 5
         };
@@ -393,7 +393,7 @@
 
             var searchObj = {
                 page: $scope.usersPagination.pageNo,
-                page_size: $scope.filtersObj.pageSizeFilter? $scope.usersPagination.itemsPerPage : 14,
+                page_size: $scope.filtersObj.pageSizeFilter? $scope.usersPagination.itemsPerPage : 25,
                 identifier__contains: $scope.filtersObj.identifierFilter ? ($scope.applyFiltersObj.identifierFilter.selectedIdentifier ?  $scope.applyFiltersObj.identifierFilter.selectedIdentifier : null): null,
                 email__contains: $scope.filtersObj.emailFilter ?($scope.applyFiltersObj.emailFilter.selectedEmail ?  encodeURIComponent($scope.applyFiltersObj.emailFilter.selectedEmail) : null): null,
                 mobile_number__contains: $scope.filtersObj.mobileFilter ? ($scope.applyFiltersObj.mobileFilter.selectedMobile ?  encodeURIComponent($scope.applyFiltersObj.mobileFilter.selectedMobile) : null): null,

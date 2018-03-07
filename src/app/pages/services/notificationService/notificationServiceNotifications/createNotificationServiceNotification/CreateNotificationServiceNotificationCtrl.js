@@ -15,7 +15,7 @@
         $scope.notificationParams = {
             enabled: false,
             preference_enabled: false,
-            event: 'User Create'
+            event: ''
         };
 
         vm.eventOptionsObj = {
@@ -40,16 +40,19 @@
             TRANSACTION_EXECUTE: 'transaction.execute'
         };
 
-        $scope.eventOptions = ['User Create','User Update','User Password Reset','User Password Set','User Email Verify','User Mobile Verify',
+        $scope.eventOptions = ['','User Create','User Update','User Password Reset','User Password Set','User Email Verify','User Mobile Verify',
             'Address Create','Address Update','Document Create','Document Update',
             'Bank Account Create','Bank Account Update','Crypto Account Create','Crypto Account Update',
             'Transaction Create','Transaction Update','Transaction Delete','Transaction Initiate','Transaction Execute'];
 
         $scope.addNotification = function (notificationParams) {
-            var event;
-            event = notificationParams.event.toUpperCase();
-            event = event.replace(/ /g, '_');
-            notificationParams.event = vm.eventOptionsObj[event];
+            if(notificationParams.event){
+                var event;
+                event = notificationParams.event.toUpperCase();
+                event = event.replace(/ /g, '_');
+                notificationParams.event = vm.eventOptionsObj[event];
+            }
+
             $scope.loadingNotifications =  true;
             if(vm.token) {
                 $http.post(vm.baseUrl + 'admin/notifications/',notificationParams, {
