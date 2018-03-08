@@ -53,10 +53,16 @@
                             <td class="transactions-list-element">
                                 <input class="custom-rehive-checkbox" ng-change="updateAccountConfig(groupAccountConfiguration,'primary')" ng-model="groupAccountConfiguration.primary" type="checkbox">
                             </td>
-                            <td  width="30%">
-                                <span ng-repeat="currency in groupAccountConfiguration.currencies" class="group-acount-currencies">
-                                    {{$last ? currency.code + ' ': currency.code + ',' }}
-                                </span>
+                            <td class="group-account-currencies-td" width="30%">
+                                <span ng-repeat="currency in groupAccountConfiguration.currencies"
+                                      class="group-acount-currencies">
+                                        {{$index > 5 ? ' ' : $index == 5 ? ' ' + '...' : $last ? ' ' + currency.code : currency.code + ',' }}
+                                    </span>
+                                <div ng-show="groupAccountConfiguration.currencies.length > 0" class="group-tooltip">
+                                    <span ng-repeat="currency in groupAccountConfiguration.currencies">
+                                        {{$last ? ' ' + currency.code : currency.code + ',' }}
+                                    </span>
+                                </div>
                             </td>
                             <td class="rehive-table-row-last-child pull-right">
                                 <a ng-click="openDeleteGroupAccountConfigurationsModal('app/pages/settings/groupsManagement/group/groupAccountConfigurations/groupAccountConfigurationsModal/groupAccountConfigurationsModal.html','md',groupAccountConfiguration)"

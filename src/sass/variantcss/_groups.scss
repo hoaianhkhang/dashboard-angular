@@ -1,3 +1,35 @@
+.group-account-currencies-td {
+  position: relative;
+  & .group-tooltip{
+    display: none;
+  }
+}
+
+.group-account-currencies-td:hover{
+  position: relative;
+  & .group-tooltip{
+    display: inline-block;
+    position: absolute;
+    bottom: 30px;
+    left: 7px;
+    line-height: 20px;
+    padding: 1px 5px;
+    background-color: rgba(0,0,0,0.8);
+    color: white;
+    max-width: 400px;
+  }
+  & .group-tooltip::after {
+    content: " ";
+    position: absolute;
+    top: 100%; /* At the bottom of the tooltip */
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: black transparent transparent transparent;
+  }
+}
+
 .group-acount-currencies{
   overflow: hidden;
 }
