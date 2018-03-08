@@ -6,7 +6,7 @@
 
     /** @ngInject */
     function GroupAccountConfigurationsCtrl($scope,$http,environmentConfig,cookieManagement,serializeFiltersService,
-                                          $stateParams,$location,errorHandler,toastr) {
+                                          $stateParams,$location,errorHandler,toastr,$uibModal,$ngConfirm) {
 
         var vm = this;
         vm.token = cookieManagement.getCookie('TOKEN');
@@ -126,6 +126,10 @@
             } else {
                 $scope.loadingGroupAccountConfigurations = true;
                 updateObj.primary = accountConfig.primary;
+                if(accountConfig.primary){
+                    updateObj.default = accountConfig.primary;
+                }
+
             }
 
             $http.patch(environmentConfig.API + '/admin/groups/' + vm.groupName + '/account-configurations/' + accountConfig.name + '/',updateObj,{
@@ -145,9 +149,66 @@
                 errorHandler.evaluateErrors(error.data);
                 errorHandler.handleErrors(error);
             });
-        }
+        };
 
+        $scope.openAddAccountConfigurationsModal = function (page, size) {
+            vm.theModal = $uibModal.open({
+                animation: true,
+                templateUrl: page,
+                size: size,
+                controller: 'AddGroupAccountConfigModalCtrl'
+            });
 
+            vm.theModal.result.then(function(account){
+                if(account){
+                    $scope.getGroupAccountConfigurations();
+                }
+            }, function(){
+            });
+        };
+
+        $scope.deleteAccountConfigConfirm = function (accountConfiguration) {
+            $ngConfirm({
+                title: 'Delete account configuration',
+                content: 'Are you sure you want to remove this account configuration?',
+                animationBounce: 1,
+                animationSpeed: 100,
+                scope: $scope,
+                buttons: {
+                    close: {
+                        text: "No",
+                        btnClass: 'btn-default dashboard-btn'
+                    },
+                    ok: {
+                        text: "Yes",
+                        btnClass: 'btn-primary dashboard-btn',
+                        keys: ['enter'], // will trigger when enter is pressed
+                        action: function(scope){
+                            $scope.deleteAccountConfig(accountConfiguration);
+                        }
+                    }
+                }
+            });
+        };
+
+        $scope.deleteAccountConfig = function (accountConfiguration) {
+            $scope.loadingGroupAccountConfigurations = true;
+            $http.delete(environmentConfig.API + '/admin/groups/' + vm.groupName + '/account-configurations/' + accountConfiguration.name + '/', {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': vm.token
+                }
+            }).then(function (res) {
+                if (res.status === 200) {
+                    toastr.success('Account configuration successfully deleted');
+                    $scope.getGroupAccountConfigurations();
+                }
+            }).catch(function (error) {
+                $scope.loadingGroupAccountConfigurations = false;
+                errorHandler.evaluateErrors(error.data);
+                errorHandler.handleErrors(error);
+            });
+        };
 
 
 
