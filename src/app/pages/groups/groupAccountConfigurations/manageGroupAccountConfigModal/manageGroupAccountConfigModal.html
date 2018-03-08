@@ -7,10 +7,45 @@
     </div>
     <div class="panel-body">
         <form name="accountConfigurationForm" class="custom-form">
-
             <div class="form-group">
-                <button ng-click="addGroupAccountConfigurations(groupAccountConfigurationParams)" ng-disabled="!accountConfigurationForm.$valid"
-                        class="btn btn-primary user-accounts-btn pull-right">Add</button>
+                <label>Name <span class="required-icon">*</span></label>
+                <br>
+                <input type="text" class="form-control" ng-change="groupEditAccountConfigurationNameToLowercase()"
+                       ng-model="editAccountConfiguration.name" placeholder="Enter name" required/>
+            </div>
+            <div class="form-group">
+                <label>Label</label>
+                <br>
+                <input type="text" class="form-control" ng-model="editAccountConfiguration.label" placeholder="Enter label" />
+            </div>
+            <div class="form-group">
+                <label>Default</label>
+                <br>
+                <input class="custom-rehive-checkbox" ng-model="editAccountConfiguration.default" type="checkbox">
+            </div>
+            <div class="form-group">
+                <label>Primary</span></label>
+                <br>
+                <input class="custom-rehive-checkbox"
+                       ng-change="editAccountConfiguration.primary ? editAccountConfiguration.default = true: ''"
+                       ng-model="editAccountConfiguration.primary" type="checkbox">
+            </div>
+            <div class="form-group">
+                <label>Currency <span class="required-icon">*</span> <small class="text-muted">(Hold CTRL to select multiple currencies)</small></label>
+                <br>
+                <select class="form-control pointer divider" ng-model="editAccountConfiguration.currencies" multiple
+                        ng-options="currency.code for currency in currenciesList track by currency.code">
+                </select>
+                <p>Currencies selected:
+                    <span ng-repeat="currency in editAccountConfiguration.currencies">
+                    {{$last ? ' ' + currency.code : currency.code + ',' }}
+                </span>
+                </p>
+            </div>
+            <!--updateAccountConfiguration(editAccountConfiguration)-->
+            <div class="form-group">
+                <button ng-click="separateCurrencies(editAccountConfiguration.currencies)" ng-disabled="!accountConfigurationForm.$valid"
+                        class="btn btn-primary user-accounts-btn pull-right">Save</button>
                 <button ng-click="$dismiss()" class="btn btn-default pull-left user-accounts-btn">Close</button>
             </div>
         </form>

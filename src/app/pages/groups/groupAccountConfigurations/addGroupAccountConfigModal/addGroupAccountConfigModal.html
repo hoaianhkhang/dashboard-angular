@@ -37,7 +37,7 @@
                 </select>
                 <p>Currencies selected:
                     <span ng-repeat="currency in newAccountConfigurationCurrencies.list">
-                    {{currency.code}},&nbsp;
+                    {{$last ? ' ' + currency.code : currency.code + ',' }}
                 </span>
                 </p>
             </div>

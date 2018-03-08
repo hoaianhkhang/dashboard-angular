@@ -167,6 +167,27 @@
             });
         };
 
+        $scope.openManageAccountConfigurationsModal = function (page, size,groupAccountConfiguration) {
+            vm.theManageModal = $uibModal.open({
+                animation: true,
+                templateUrl: page,
+                size: size,
+                controller: 'ManageGroupAccountConfigModalCtrl',
+                resolve:{
+                    accountConfig: function () {
+                        return groupAccountConfiguration;
+                    }
+                }
+            });
+
+            vm.theManageModal.result.then(function(account){
+                if(account){
+                    $scope.getGroupAccountConfigurations();
+                }
+            }, function(){
+            });
+        };
+
         $scope.deleteAccountConfigConfirm = function (accountConfiguration) {
             $ngConfirm({
                 title: 'Delete account configuration',
