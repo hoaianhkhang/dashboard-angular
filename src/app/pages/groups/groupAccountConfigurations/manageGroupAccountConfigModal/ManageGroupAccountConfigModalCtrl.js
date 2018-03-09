@@ -4,7 +4,7 @@
     angular.module('BlurAdmin.pages.groupAccountConfigurations')
         .controller('ManageGroupAccountConfigModalCtrl', ManageGroupAccountConfigModalCtrl);
 
-    function ManageGroupAccountConfigModalCtrl($scope,$uibModalInstance,toastr,$http,$stateParams,
+    function ManageGroupAccountConfigModalCtrl($scope,$uibModalInstance,toastr,$http,$stateParams,_,$timeout,
                                             environmentConfig,cookieManagement,errorHandler,accountConfig) {
 
         var vm = this;
@@ -14,7 +14,7 @@
         $scope.editAccountConfiguration = accountConfig;
         $scope.editAccountConfiguration.prevName = accountConfig.name;
         $scope.accountConfigurationCurrencies = {
-            list: accountConfig.currencies
+            list: _.pluck(accountConfig.currencies,'code')
         };
         $scope.currenciesList = [];
 
@@ -43,10 +43,6 @@
             }
         };
 
-        $scope.trackCurrencies = function (currency) {
-            console.log(currency)
-        };
-
         $scope.updateAccountConfiguration = function (editAccountConfiguration) {
             $scope.loadingGroupAccountConfigurations = true;
             var updateAccountConfiguration = {
@@ -63,11 +59,7 @@
                 }
             }).then(function (res) {
                 if (res.status === 200) {
-                    $scope.deleteAccountConfigCurrency(editAccountConfiguration);
-
-                    // $scope.editGroupAccountConfigurationObj = {};
-                    // $scope.accountConfigName =  res.data.data.name;
-                    // vm.getAccountConfiguration();
+                    $scope.separateCurrencies(editAccountConfiguration);
                 }
             }).catch(function (error) {
                 $scope.loadingGroupAccountConfigurations = false;
@@ -76,40 +68,95 @@
             });
         };
 
-        $scope.separateCurrencies = function (currencies) {
-            var newCurrencyArray = [];
-            newCurrencyArray = currencies.map(function (currency) {
-                var index;
-                index = $scope.accountConfigurationCurrencies.list.findIndex(function (accountCurrency) {
-                    return accountCurrency.code == currency.code;
-                });
-                if(index > -1){
-                    return currency;
-                }
-            });
+        $scope.separateCurrencies = function (editAccountConfiguration) {
+            var newCurrencyArray = [],deleteCurrencyArray = [],currencies = [];
 
-            console.log(newCurrencyArray)
+            currencies = _.pluck(editAccountConfiguration.currencies,'code');
+            newCurrencyArray = _.difference(currencies,$scope.accountConfigurationCurrencies.list);
+            deleteCurrencyArray = _.difference($scope.accountConfigurationCurrencies.list,currencies);
+
+            if(deleteCurrencyArray.length > 0){
+                deleteCurrencyArray.forEach(function (currencyCode,index,array) {
+                    $scope.deleteAccountConfigCurrency(editAccountConfiguration,currencyCode);
+                    if(index === (array.length -1)){
+                        if(newCurrencyArray.length > 0){
+                            newCurrencyArray.forEach(function (currencyCode,index,array) {
+                                if(index === (array.length -1)){
+                                    $scope.createAccountConfigCurrency(editAccountConfiguration,currencyCode,'last');
+                                } else{
+                                    $scope.createAccountConfigCurrency(editAccountConfiguration,currencyCode);
+                                }
+                            });
+                        } else {
+                            $timeout(function () {
+                                $scope.loadingGroupAccountConfigurations = false;
+                                toastr.success('Account configuration successfully updated');
+                                $uibModalInstance.close(true);
+                            },800);
+                        }
+                    }
+                });
+            } else {
+                if(newCurrencyArray.length > 0){
+                    newCurrencyArray.forEach(function (currencyCode,index,array) {
+                        if(index === (array.length -1)){
+                            $scope.createAccountConfigCurrency(editAccountConfiguration,currencyCode,'last');
+                        } else{
+                            $scope.createAccountConfigCurrency(editAccountConfiguration,currencyCode);
+                        }
+                    });
+                } else {
+                    $timeout(function () {
+                        $scope.loadingGroupAccountConfigurations = false;
+                        toastr.success('Account configuration successfully updated');
+                        $uibModalInstance.close(true);
+                    },800);
+                }
+            }
+
+
         };
 
-        $scope.deleteAccountConfigCurrency = function(editAccountConfiguration){
+        $scope.deleteAccountConfigCurrency = function(editAccountConfiguration,currencyCode){
+            $scope.loadingGroupAccountConfigurations = true;
+            $http.delete(environmentConfig.API + '/admin/groups/' + vm.groupName + '/account-configurations/' + editAccountConfiguration.prevName + '/currencies/' + currencyCode + '/', {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': vm.token
+                }
+            }).then(function (res) {
+                if (res.status === 200) {
 
-            // $scope.loadingGroupAccountConfigurations = true;
-            // $http.delete(environmentConfig.API + '/admin/groups/' + vm.groupName + '/account-configurations/' + editAccountConfiguration.prevName + '/currencies/' + currency.code + '/', {
-            //     headers: {
-            //         'Content-Type': 'application/json',
-            //         'Authorization': vm.token
-            //     }
-            // }).then(function (res) {
-            //     if (res.status === 200) {
-            //         $scope.loadingGroupAccountConfigurations = false;
-            //         toastr.success('Account configuration successfully updated');
-            //         $uibModalInstance.close(res.data);
-            //     }
-            // }).catch(function (error) {
-            //     $scope.loadingGroupAccountConfigurations = false;
-            //     errorHandler.evaluateErrors(error.data);
-            //     errorHandler.handleErrors(error);
-            // });
+                }
+            }).catch(function (error) {
+                $scope.loadingGroupAccountConfigurations = false;
+                errorHandler.evaluateErrors(error.data);
+                errorHandler.handleErrors(error);
+            });
+        };
+
+        $scope.createAccountConfigCurrency = function(editAccountConfiguration,currencyCode,last){
+            $scope.loadingGroupAccountConfigurations = true;
+            $http.post(environmentConfig.API + '/admin/groups/' + vm.groupName + '/account-configurations/' + editAccountConfiguration.prevName + '/currencies/',{currency: currencyCode}, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': vm.token
+                }
+            }).then(function (res) {
+                if (res.status === 201) {
+                    if(last){
+                        $timeout(function () {
+                            $scope.loadingGroupAccountConfigurations = false;
+                            toastr.success('Account configuration successfully updated');
+                            $uibModalInstance.close(res.data);
+                        },800);
+                    }
+                }
+            }).catch(function (error) {
+                $scope.loadingGroupAccountConfigurations = false;
+                errorHandler.evaluateErrors(error.data);
+                errorHandler.handleErrors(error);
+            });
         };
 
 
