@@ -1,0 +1,97 @@
+<div ng-hide="loadingTierFees && (tierLevelsForFees.length > 0)" class="tier-limits">
+    <uib-tabset active="activeTabIndex">
+        <uib-tab ng-repeat="tierLevel in tierLevelsForFees" select="selectTier(tierLevel)" heading="Tier {{tierLevel}}">
+            <div ng-hide="editingTierFees">
+                <div ng-show="tiersFeesList.length > 0" class="panel">
+                    <div class="panel-heading">
+                        <span class="user-details-panel-title">Tier fees</span>
+                    </div>
+                    <div class="panel-body">
+                        <table class="table">
+                            <tr class="user-switches-table-header divider">
+                                <th class="rehive-table-row-first-child">Tx type</th>
+                                <th>Currency</th>
+                                <th>Amount</th>
+                                <th>Percentage</th>
+                                <th>Subtype</th>
+                                <th></th>
+                            </tr>
+                            <tr ng-repeat="tierFee in tiersFeesList">
+                                <td class="transactions-list-element rehive-table-row-first-child"
+                                    title="{{tierFee.tx_type | capitalizeWord}}" ng-bind="tierFee.tx_type | capitalizeWord | limitTo: '35'"></td>
+                                <td title="{{tierFee.currency.code}}"
+                                    ng-bind="tierFee.currency.code"></td>
+                                <td title="{{tierFee.value | currencyModifiersFilter: tierFee.currency.divisibility}}"
+                                    ng-bind="tierFee.value | currencyModifiersFilter: tierFee.currency.divisibility"></td>
+                                <td title="{{tierFee.percentage}}"
+                                    ng-bind="tierFee.percentage ? tierFee.percentage + '%' : 'None'"></td>
+                                <td title="{{tierFee.subtype ? tierFee.subtype : 'None'}}"
+                                    ng-bind="tierFee.subtype ? tierFee.subtype : 'None'| limitTo: '35'"></td>
+                                <td class="rehive-table-row-last-child pull-right">
+                                    <a ng-click="openTierFeesModal('app/pages/settings/groupsManagement/group/groupTiers/tierFees/tierFeesModal/tierFeesModal.html','md',tierFee)"
+                                       class="pull-right pointer ">Delete</a>
+                                    <a ng-click="toggleTierFeeEditView(tierFee)"
+                                       class="pull-right pointer user-address-edit margin-right-30">Edit</a>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div ba-panel ng-show="tiersFeesList.length == 0">
+                    <i>No fees are available for this tier.</i>
+                </div>
+                <div class="panel">
+                    <div class="panel-heading">
+                        <span class="user-details-panel-title">Add tier fee</span>
+                    </div>
+                    <div class="panel-body">
+                        <form name="tierFeeForm" class="custom-form">
+                            <div class="form-group">
+                                <label>Transaction type <span class="required-icon">*</span></label>
+                                <br>
+                                <select class="form-control pointer" ng-change="getSubtypesArray(tierFeesParams)" ng-model="tierFeesParams.tx_type" ng-options="option for option in txTypeOptions" required>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Currency <span class="required-icon">*</span></label>
+                                <select class="form-control pointer" ng-model="tierFeesParams.currency"
+                                        ng-options="currency.code for currency in currenciesList track by currency.code" required>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Amount</label>
+                                <input type="text" class="form-control" ng-model="tierFeesParams.value" placeholder="Enter value" />
+                            </div>
+                            <div class="form-group">
+                                <label>Percentage</span></label>
+                                <br>
+                                <input type="text" class="form-control" ng-model="tierFeesParams.percentage" placeholder="Enter percentage" />
+                            </div>
+                            <div ng-hide="loadingSubtypes" class="form-group">
+                                <label>Subtype</label>
+                                <select class="form-control pointer"
+                                        ng-model="tierFeesParams.subtype" ng-options="subtypeOption for subtypeOption in subtypeOptions">
+                                </select>
+                            </div>
+                            <div ng-show="loadingSubtypes">
+                                <loading-image class="custom-subtype-loading"></loading-image>
+                            </div>
+                            <div class="form-group">
+                                <button ng-click="addTierFee(tierFeesParams)" ng-disabled="!tierFeeForm.$valid" class="btn btn-primary dashboard-btn pull-right">Add</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div ng-show="editingTierFees">
+                <edit-tier-fees></edit-tier-fees>
+            </div>
+        </uib-tab>
+    </uib-tabset>
+</div>
+<div ba-panel ng-show="!loadingTierFees && tierLevelsForFees.length == 0">
+    <i>No tiers are available for this group.</i>
+</div>
+<div ba-panel ng-show="loadingTierFees">
+    <loading-image></loading-image>
+</div>

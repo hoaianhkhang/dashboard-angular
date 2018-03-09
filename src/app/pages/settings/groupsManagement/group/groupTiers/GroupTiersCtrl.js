@@ -2,10 +2,10 @@
     'use strict';
 
     angular.module('BlurAdmin.pages.groupTiers')
-        .controller('GroupTiersCtrl', GroupTiersCtrl);
+        .controller('GroupTierCtrl', GroupTierCtrl);
 
     /** @ngInject */
-    function GroupTiersCtrl($scope,$stateParams,cookieManagement,$location) {
+    function GroupTierCtrl($scope,$stateParams,cookieManagement,$location) {
 
         var vm = this;
         vm.token = cookieManagement.getCookie('TOKEN');

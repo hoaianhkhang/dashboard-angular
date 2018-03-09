@@ -69,8 +69,8 @@
                                 <li ng-click="showCurrenciesOptions(currency.code)"><i class="dropdown-arr"></i></li>
                                 <li ng-click="goToGroupViews('/groups/' + group.name + '/details')">Details</li>
                                 <li ng-click="goToGroupViews('/groups/' + group.name + '/users')">Users</li>
-                                <li ng-click="goToHistoryState(currency.code)">Permissions</li>
-                                <li ng-click="goToView('/transactions/debit')">Tiers</li>
+                                <li ng-click="goToGroupViews('/groups/' + group.name + '/permissions')">Permissions</li>
+                                <li ng-click="goToGroupViews('/groups/' + group.name + '/tiers')">Tiers</li>
                                 <li ng-click="goToGroupViews('/groups/' + group.name + '/account-configurations')">Account configurations</li>
                                 <li ng-click="goToGroupViews('/groups/' + group.name + '/transaction-settings')">Transaction settings</li>
                                 <li ng-hide="group.name == 'admin' || group.name == 'service'" ng-click="deleteCompanyGroupPrompt(group)">Delete group</li>

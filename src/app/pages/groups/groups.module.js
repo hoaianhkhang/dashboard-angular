@@ -6,6 +6,7 @@
         'BlurAdmin.pages.groups.groupUsers',
         'BlurAdmin.pages.groups.editGroup',
         'BlurAdmin.pages.groups.groupAccountConfigurations',
+        'BlurAdmin.pages.groups.groupManagementTiers',
         'BlurAdmin.pages.groups.groupTransactionSettings'
     ])
         .config(routeConfig);

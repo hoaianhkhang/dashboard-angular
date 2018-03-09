@@ -15,7 +15,7 @@
         $stateProvider
             .state('groupTiers', {
                 url: '/settings/groups-management/:groupName/tiers',
-                controller: 'GroupTiersCtrl',
+                controller: 'GroupTierCtrl',
                 templateUrl: 'app/pages/settings/groupsManagement/group/groupTiers/groupTiers.html',
                 title: "Group tiers"
             });
