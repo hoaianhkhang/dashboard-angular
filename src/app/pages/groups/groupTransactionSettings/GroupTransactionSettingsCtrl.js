@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    angular.module('BlurAdmin.pages.groupTransactionSettings')
+    angular.module('BlurAdmin.pages.groups.groupTransactionSettings')
         .controller('GroupTransactionSettingsCtrl', GroupTransactionSettingsCtrl);
 
     /** @ngInject */

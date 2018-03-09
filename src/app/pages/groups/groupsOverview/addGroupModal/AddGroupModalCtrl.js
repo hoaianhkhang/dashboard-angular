@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    angular.module('BlurAdmin.pages.groups')
+    angular.module('BlurAdmin.pages.groups.overview')
         .controller('AddGroupsModalCtrl', AddGroupsModalCtrl);
 
     function AddGroupsModalCtrl($scope,$uibModalInstance,cookieManagement,environmentConfig,toastr,errorHandler,$http) {

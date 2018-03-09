@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    angular.module('BlurAdmin.pages.groupAccountConfigurations')
+    angular.module('BlurAdmin.pages.groups.groupAccountConfigurations')
         .controller('GroupAccountConfigurationsCtrl', GroupAccountConfigurationsCtrl);
 
     /** @ngInject */

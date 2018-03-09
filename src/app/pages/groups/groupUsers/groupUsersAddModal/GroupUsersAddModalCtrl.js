@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    angular.module('BlurAdmin.pages.groupUsers')
+    angular.module('BlurAdmin.pages.groups.groupUsers')
         .controller('GroupUsersAddModalCtrl', GroupUsersAddModalCtrl);
 
     function GroupUsersAddModalCtrl($scope,$uibModalInstance,toastr,group,$http,typeaheadService,

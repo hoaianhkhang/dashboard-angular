@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    angular.module('BlurAdmin.pages.editGroup')
+    angular.module('BlurAdmin.pages.groups.editGroup')
         .controller('EditGroupCtrl', EditGroupCtrl);
 
     /** @ngInject */

@@ -1,21 +1,19 @@
 (function () {
     'use strict';
 
-    angular.module('BlurAdmin.pages.groups', [])
+    angular.module('BlurAdmin.pages.groups.overview', [])
         .config(routeConfig);
 
     /** @ngInject */
     function routeConfig($stateProvider,$urlRouterProvider) {
         $stateProvider
-            .state('groups', {
-                url: '/groups',
+            .state('groups.overview', {
+                url: '/overview',
                 controller: 'GroupsOverviewCtrl',
                 templateUrl: 'app/pages/groups/groupsOverview/groupsOverview.html',
-                title: "Groups",
-                sidebarMeta: {
-                    order: 600
-                }
+                title: "Groups details",
             });
+
     }
 
 })();

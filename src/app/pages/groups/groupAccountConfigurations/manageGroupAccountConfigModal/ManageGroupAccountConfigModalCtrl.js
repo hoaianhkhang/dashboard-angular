@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    angular.module('BlurAdmin.pages.groupAccountConfigurations')
+    angular.module('BlurAdmin.pages.groups.groupAccountConfigurations')
         .controller('ManageGroupAccountConfigModalCtrl', ManageGroupAccountConfigModalCtrl);
 
     function ManageGroupAccountConfigModalCtrl($scope,$uibModalInstance,toastr,$http,$stateParams,_,$timeout,
