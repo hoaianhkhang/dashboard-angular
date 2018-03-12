@@ -1,7 +1,7 @@
 <div ng-hide="loadingTierRequirements && (tierLevelsForRequirements.length > 0)" class="tier-limits">
     <uib-tabset active="activeTabIndex">
         <uib-tab ng-repeat="tierLevel in tierLevelsForRequirements" select="selectTier(tierLevel)" heading="Tier {{tierLevel}}">
-            <tier-requirements-form></tier-requirements-form>
+            <group-tier-requirements-form></group-tier-requirements-form>
         </uib-tab>
     </uib-tabset>
 </div>

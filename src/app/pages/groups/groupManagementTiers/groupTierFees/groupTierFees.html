@@ -1,6 +1,8 @@
 <div ng-hide="loadingTierFees && (tierLevelsForFees.length > 0)" class="tier-limits">
     <uib-tabset active="activeTabIndex">
         <uib-tab ng-repeat="tierLevel in tierLevelsForFees" select="selectTier(tierLevel)" heading="Tier {{tierLevel}}">
+            <a ng-click="openAddGroupTierFeeModal('app/pages/groups/groupManagementTiers/groupTierFees/addGroupTierFeeModal/addGroupTierFeeModal.html','md')"
+               class="tier-add-header-link">Add fee</a>
             <div>
                 <div ng-show="tiersFeesList.length > 0" class="panel">
                     <div class="panel-heading">
@@ -28,9 +30,9 @@
                                 <td title="{{tierFee.subtype ? tierFee.subtype : 'None'}}"
                                     ng-bind="tierFee.subtype ? tierFee.subtype : 'None'| limitTo: '35'"></td>
                                 <td class="rehive-table-row-last-child pull-right">
-                                    <a ng-click="openTierFeesModal('app/pages/settings/groupsManagement/group/groupTiers/tierFees/tierFeesModal/tierFeesModal.html','md',tierFee)"
+                                    <a ng-click="deleteTierFeeConfirm(tierFee)"
                                        class="pull-right pointer ">Delete</a>
-                                    <a ng-click="toggleTierFeeEditView(tierFee)"
+                                    <a ng-click="openEditGroupTierFeeModal('app/pages/groups/groupManagementTiers/groupTierFees/editGroupTierFeeModal/editGroupTierFeeModal.html','md',tierFee)"
                                        class="pull-right pointer user-address-edit margin-right-30">Edit</a>
                                 </td>
                             </tr>

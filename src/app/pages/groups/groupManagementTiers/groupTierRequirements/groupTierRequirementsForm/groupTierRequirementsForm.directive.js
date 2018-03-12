@@ -8,7 +8,7 @@
     function groupTierRequirementsForm() {
         return {
             restrict: 'E',
-            templateUrl: 'app/pages/groups/groupManagementTiers/groupTierRequirementsForm/groupTierRequirementsForm.html'
+            templateUrl: 'app/pages/groups/groupManagementTiers/groupTierRequirements/groupTierRequirementsForm/groupTierRequirementsForm.html'
         };
     }
 })();

@@ -11,6 +11,7 @@
         $scope.editTier = tier;
         vm.token = cookieManagement.getCookie('TOKEN');
         vm.updatedTier = {};
+        $scope.tierLevels = [1,2,3,4,5,6,7];
         $scope.editingTiers = false;
 
         $scope.tierChanged = function(field){

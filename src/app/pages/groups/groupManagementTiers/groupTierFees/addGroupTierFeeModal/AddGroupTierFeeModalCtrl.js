@@ -1,16 +1,41 @@
 (function () {
     'use strict';
 
-    angular.module('BlurAdmin.pages.groupTiers.tierFees')
-        .controller('AddGroupTierFeeModal', AddGroupTierFeeModal);
+    angular.module('BlurAdmin.pages.groups.groupManagementTiers.groupTierFees')
+        .controller('AddGroupTierFeeModalCtrl', AddGroupTierFeeModalCtrl);
 
-    function AddGroupTierFeeModal($scope,$uibModalInstance,tierFee,selectedTier,toastr,$http,environmentConfig,cookieManagement,errorHandler) {
+    function AddGroupTierFeeModalCtrl($scope,$uibModalInstance,currencyModifiers,selectedTier,toastr,$http,_,
+                                      environmentConfig,cookieManagement,errorHandler,$stateParams,sharedResources) {
 
         var vm = this;
-        $scope.tierFee = tierFee;
         $scope.selectedTier = selectedTier;
-        $scope.deletingTierFees = false;
+        $scope.addingTierFees = false;
+        $scope.loadingSubtypes = false;
+        vm.groupName = $stateParams.groupName;
         vm.token = cookieManagement.getCookie('TOKEN');
+        $scope.tierFeesParams = {
+            tx_type: 'Credit',
+            subtype: ''
+        };
+        $scope.txTypeOptions = ['Credit','Debit'];
+
+        $scope.getSubtypesArray = function(params,editing){
+            $scope.loadingSubtypes = true;
+            if(!editing){
+                params.subtype = '';
+            } else if(!params.subtype && editing){
+                params.subtype = '';
+            }
+            sharedResources.getSubtypes().then(function (res) {
+                res.data.data = res.data.data.filter(function (element) {
+                    return element.tx_type == (params.tx_type).toLowerCase();
+                });
+                $scope.subtypeOptions = _.pluck(res.data.data,'name');
+                $scope.subtypeOptions.unshift('');
+                $scope.loadingSubtypes = false;
+            });
+        };
+        $scope.getSubtypesArray($scope.tierFeesParams);
 
         $scope.addTierFee = function(tierFeesParams){
             if(tierFeesParams.value){
@@ -26,7 +51,7 @@
                 tierFeesParams.percentage = 0;
             }
             if(vm.token) {
-                $scope.loadingTierFees = true;
+                $scope.addingTierFees = true;
                 tierFeesParams.tx_type = tierFeesParams.tx_type.toLowerCase();
                 tierFeesParams.currency = tierFeesParams.currency.code;
 
@@ -36,23 +61,17 @@
                         'Authorization': vm.token
                     }
                 }).then(function (res) {
-                    $scope.loadingTierFees = false;
+                    $scope.addingTierFees = false;
                     if (res.status === 201) {
                         toastr.success('Fee added successfully to tier');
-                        $scope.tierFeesParams = {
-                            tx_type: 'Credit',
-                            subtype: ''
-                        };
-                        $scope.getSubtypesArray($scope.tierFeesParams);
-                        $scope.getAllTiers($scope.selectedTier.level);
+                        $uibModalInstance.close($scope.selectedTier.level);
                     }
                 }).catch(function (error) {
                     $scope.tierFeesParams = {
                         tx_type: 'Credit',
                         subtype: ''
                     };
-                    $scope.getSubtypesArray($scope.tierFeesParams);
-                    $scope.loadingTierFees = false;
+                    $scope.addingTierFees = false;
                     errorHandler.evaluateErrors(error.data);
                     errorHandler.handleErrors(error);
                 });

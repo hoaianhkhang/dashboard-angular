@@ -25,13 +25,16 @@
             $location.path(path);
         };
 
-        $scope.getGroups = function () {
+        $scope.getGroups = function (dontShowLoadingImage) {
             if(vm.token) {
-                $scope.loadingGroups = true;
 
-                if ($scope.groups.length > 0) {
-                    $scope.groups.length = 0;
+                if(!dontShowLoadingImage){
+                    $scope.loadingGroups = true;
                 }
+
+                // if ($scope.groups.length > 0) {
+                //     $scope.groups.length = 0;
+                // }
 
                 $http.get(environmentConfig.API + '/admin/groups/?page_size=250', {
                     headers: {
@@ -61,7 +64,6 @@
 
         vm.getGroupUsers = function (group,last) {
             if(vm.token) {
-                $scope.loadingGroups = true;
                 $http.get(environmentConfig.API + '/admin/users/?group=' + group.name, {
                     headers: {
                         'Content-Type': 'application/json',
@@ -107,7 +109,7 @@
                     $scope.loadingGroups = false;
                     if (res.status === 200) {
                         if(type == 'default'){
-                            $scope.getGroups();
+                            $scope.getGroups('dontShowLoadingImage');
                         }
                         toastr.success('Group successfully updated');
                     }
