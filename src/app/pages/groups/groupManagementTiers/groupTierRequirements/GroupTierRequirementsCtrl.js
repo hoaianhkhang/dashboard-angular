@@ -1,11 +1,11 @@
 (function () {
     'use strict';
 
-    angular.module('BlurAdmin.pages.groupTiers.tierRequirements')
-        .controller('TierRequirementsCtrl', TierRequirementsCtrl);
+    angular.module('BlurAdmin.pages.groups.groupManagementTiers.groupTierRequirements')
+        .controller('GroupTierRequirementsCtrl', GroupTierRequirementsCtrl);
 
     /** @ngInject */
-    function TierRequirementsCtrl($scope,$stateParams,cookieManagement,$http,environmentConfig,errorHandler,_,toastr,$window,$timeout) {
+    function GroupTierRequirementsCtrl($scope,$stateParams,cookieManagement,$http,environmentConfig,errorHandler,_,toastr,$timeout) {
 
         var vm = this;
         vm.token = cookieManagement.getCookie('TOKEN');
