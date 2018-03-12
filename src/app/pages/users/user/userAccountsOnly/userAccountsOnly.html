@@ -38,15 +38,6 @@
             </div>
         </div>
     </div>
-    <div ng-show="!loadingUserAccounts && accounts.length == 0" class="panel">
-        <div class="panel-heading">
-            <span class="user-details-panel-title">Accounts list</span>
-            <a ng-click="openAddUserAccountOnlyModal('app/pages/users/user/userAccountsOnly/addUserAccountOnlyModal/addUserAccountOnlyModal.html','md')" class="user-details-panel-link pull-right pointer">Add account</a>
-        </div>
-        <div class="panel-body">
-            <i>No accounts are available</i>
-        </div>
-    </div>
 </div>
 <div ba-panel ng-show="loadingUserAccounts">
     <loading-image></loading-image>

@@ -69,28 +69,6 @@
             $location.path('user/' + vm.uuid + '/account/'+account+'/settings/'+ currencyCode);
         };
 
-        $scope.openAddUserAccountOnlyModal = function (page, size) {
-            vm.theModal = $uibModal.open({
-                animation: true,
-                templateUrl: page,
-                size: size,
-                controller: 'AddUserAccountOnlyModalCtrl',
-                scope: $scope,
-                resolve: {
-                    uuid: function () {
-                        return vm.uuid;
-                    }
-                }
-            });
-
-            vm.theModal.result.then(function(account){
-                if(account){
-                    vm.getUserAccounts();
-                }
-            }, function(){
-            });
-        };
-
         $scope.openAddAccountCurrenciesModal = function (page, size, reference,currencies) {
             vm.theModal = $uibModal.open({
                 animation: true,
