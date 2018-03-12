@@ -1,7 +1,7 @@
 <div ng-hide="loadingTierFees && (tierLevelsForFees.length > 0)" class="tier-limits">
     <uib-tabset active="activeTabIndex">
         <uib-tab ng-repeat="tierLevel in tierLevelsForFees" select="selectTier(tierLevel)" heading="Tier {{tierLevel}}">
-            <div ng-hide="editingTierFees">
+            <div>
                 <div ng-show="tiersFeesList.length > 0" class="panel">
                     <div class="panel-heading">
                         <span class="user-details-panel-title">Tier fees</span>
@@ -40,17 +40,6 @@
                 <div ba-panel ng-show="tiersFeesList.length == 0">
                     <i>No fees are available for this tier.</i>
                 </div>
-                <div class="panel">
-                    <div class="panel-heading">
-                        <span class="user-details-panel-title">Add tier fee</span>
-                    </div>
-                    <div class="panel-body">
-
-                    </div>
-                </div>
-            </div>
-            <div ng-show="editingTierFees">
-                <edit-tier-fees></edit-tier-fees>
             </div>
         </uib-tab>
     </uib-tabset>

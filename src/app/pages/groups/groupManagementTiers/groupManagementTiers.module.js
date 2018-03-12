@@ -5,6 +5,7 @@
         'BlurAdmin.pages.groups.groupManagementTiers.list',
         'BlurAdmin.pages.groups.groupManagementTiers.groupTierRequirements',
         'BlurAdmin.pages.groups.groupManagementTiers.groupTierLimits',
+        'BlurAdmin.pages.groups.groupManagementTiers.groupTierFees',
         'BlurAdmin.pages.groups.groupManagementTiers.groupTierSettings'
     ])
         .config(routeConfig);

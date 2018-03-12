@@ -6,7 +6,7 @@
                class="user-details-panel-link pull-right pointer">Add tier</a>
         </div>
         <div class="panel-body">
-            <table class="table">
+            <table ng-show="tiersList.length > 0" class="table">
                 <tr class="user-switches-table-header divider">
                     <th class="rehive-table-row-first-child">Level</th>
                     <th>Name</th>
@@ -25,6 +25,9 @@
                     </td>
                 </tr>
             </table>
+            <div ng-hide="tiersList.length > 0">
+                <i>No tiers are available for this group.</i>
+            </div>
         </div>
     </div>
 </div>

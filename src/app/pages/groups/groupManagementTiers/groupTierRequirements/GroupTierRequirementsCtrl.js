@@ -121,7 +121,6 @@
                 }
             }
             $scope.loadingTierRequirements = false;
-            vm.updatedTierRequirements = {};
         };
 
         $scope.saveTierRequirements = function(fieldName,last){
@@ -134,6 +133,7 @@
                 }).then(function (res) {
                     if (res.status === 201) {
                         if(last){
+                            vm.updatedTierRequirements = {};
                             $scope.getAllTiers($scope.selectedTier.level);
                             toastr.success('Tier requirements updated successfully')
                         }
@@ -168,8 +168,9 @@
                 }).then(function (res) {
                     if (res.status === 200) {
                         if(last){
+                            vm.updatedTierRequirements = {};
                             $scope.getAllTiers($scope.selectedTier.level);
-                            toastr.success('Tier requirements updated successfully')
+                            toastr.success('Tier requirements updated successfully');
                         }
                     }
                 }).catch(function (error) {

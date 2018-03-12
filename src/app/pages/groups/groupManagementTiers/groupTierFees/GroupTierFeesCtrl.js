@@ -1,11 +1,11 @@
 (function () {
     'use strict';
 
-    angular.module('BlurAdmin.pages.groupTiers.tierFees')
-        .controller('TierFeesCtrl', TierFeesCtrl);
+    angular.module('BlurAdmin.pages.groups.groupManagementTiers.groupTierFees')
+        .controller('GroupTierFeesCtrl', GroupTierFeesCtrl);
 
     /** @ngInject */
-    function TierFeesCtrl($scope,$stateParams,cookieManagement,$http,environmentConfig,_,$window,
+    function GroupTierFeesCtrl($scope,$stateParams,cookieManagement,$http,environmentConfig,_,$window,
                           sharedResources,$timeout,errorHandler,toastr,$uibModal,currencyModifiers) {
 
         var vm = this;
@@ -15,7 +15,6 @@
         $scope.activeTabIndex = 0;
         $scope.loadingTierFees = true;
         $scope.loadingSubtypes = false;
-        $scope.editingTierFees = false;
         vm.updatedTierFee = {};
         $scope.tierFeesParams = {
             tx_type: 'Credit',
@@ -46,16 +45,6 @@
             });
         };
         $scope.getSubtypesArray($scope.tierFeesParams);
-
-        $scope.toggleTierFeeEditView = function(tierFee){
-            if(tierFee) {
-                vm.getTierFee(tierFee);
-            } else {
-                $scope.editTierFee = {};
-                $scope.getAllTiers($scope.selectedTier.level);
-            }
-            $scope.editingTierFees = !$scope.editingTierFees;
-        };
 
         vm.getTierFee = function (tierFee) {
             $scope.loadingTierFees = true;
@@ -122,7 +111,6 @@
         };
 
         $scope.selectTier = function(tierLevel){
-            $scope.editingTierFees = false;
             var index = $scope.allTiers.findIndex(vm.findIndexOfTier,tierLevel);
             $scope.selectedTier = $scope.allTiers[index];
             if($scope.selectedTier){
@@ -186,7 +174,6 @@
 
             if(vm.token) {
                 $scope.loadingTierFees = true;
-                $scope.editingTierFees = !$scope.editingTierFees;
                 vm.updatedTierFee.tx_type ? vm.updatedTierFee.tx_type = vm.updatedTierFee.tx_type.toLowerCase() : '';
 
                 $http.patch(environmentConfig.API + '/admin/groups/' + vm.groupName + '/tiers/' + $scope.selectedTier.id + '/fees/' + $scope.editTierFee.id + '/',vm.updatedTierFee,{
