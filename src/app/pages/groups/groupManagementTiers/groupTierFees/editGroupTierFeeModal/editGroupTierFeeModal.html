@@ -1,8 +1,11 @@
-<div ng-hide="loadingTierFees" class="panel">
-    <div class="panel-heading">
-        <span class="user-details-panel-title">Edit tier fee</span>
+<div class="modal-content">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="$dismiss()" aria-label="Close">
+            <em class="ion-ios-close-empty sn-link-close"></em>
+        </button>
+        <h4 class="modal-title" id="myModalLabel">Edit tier fee</h4>
     </div>
-    <div class="panel-body">
+    <div class="modal-body">
         <form name="editTierFeeForm" class="custom-form" novalidate>
             <div class="form-group">
                 <label>Transaction type <span class="required-icon">*</span></label>
@@ -39,4 +42,9 @@
             </div>
         </form>
     </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default dashboard-btn pull-left" ng-click="$dismiss()">Close</button>
+        <button ng-click="addTierFee(tierFeesParams)" ng-disabled="!tierFeeForm.$valid" class="btn btn-primary dashboard-btn pull-right">Add</button>
+    </div>
 </div>
+
