@@ -5,6 +5,7 @@
         'BlurAdmin.pages.groups.overview',
         'BlurAdmin.pages.groups.groupUsers',
         'BlurAdmin.pages.groups.editGroup',
+        'BlurAdmin.pages.groups.groupPermissions',
         'BlurAdmin.pages.groups.groupAccountConfigurations',
         'BlurAdmin.pages.groups.groupManagementTiers',
         'BlurAdmin.pages.groups.groupTransactionSettings'
