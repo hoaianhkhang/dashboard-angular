@@ -52,7 +52,7 @@
 
         $scope.resendMobileVerification = function () {
             $scope.verifyingMobile = true;
-            $http.post(environmentConfig.API + '/auth/mobile/verify/resend/', {mobile: mobile.number,company: vm.company.identifier}, {
+            $http.post(environmentConfig.API + '/auth/mobile/verify/resend/', {mobile: $scope.mobile.number,company: vm.company.identifier}, {
                 headers: {
                     'Content-Type': 'application/json'
                 }
