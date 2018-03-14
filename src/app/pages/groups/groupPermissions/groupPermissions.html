@@ -50,7 +50,7 @@
                                 <td></td>
                                 <td ng-repeat="level in permission.levels">
                                     <label  class="checkbox-inline custom-checkbox nowrap">
-                                        <input type="checkbox" ng-change="trackPermissions(permission,level)" ng-model="level.enabled"
+                                        <input type="checkbox" ng-change="trackPermissions(permission,level,key)" ng-model="level.enabled"
                                             ng-checked="level.enabled">
                                             <span class="account-settings-span"></span>
                                     </label>
