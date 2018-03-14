@@ -11,6 +11,7 @@
         var vm = this;
         vm.token = cookieManagement.getCookie('TOKEN');
         vm.companyIdentifier = cookieManagement.getCookie('companyIdentifier');
+        vm.savedUserTableColumns = vm.companyIdentifier + 'usersTable';
         $rootScope.dashboardTitle = 'Users | Rehive';
         vm.currenciesList = JSON.parse($window.sessionStorage.currenciesList || '[]');
         vm.location = $location.path();
@@ -35,15 +36,15 @@
             maxSize: 5
         };
 
-        $scope.tableColDrag = function (start,target) {
-            var tempObj = $scope.headerColumns[start];
-            $scope.headerColumns.splice(start, 1);
-            $scope.headerColumns.splice(target, 0,tempObj);
+        // $scope.tableColDrag = function (start,target) {
+        //     var tempObj = $scope.headerColumns[start];
+        //     $scope.headerColumns.splice(start, 1);
+        //     $scope.headerColumns.splice(target, 0,tempObj);
+        //
+        //     cookieManagement.setCookie(vm.savedUserTableColumns,JSON.stringify($scope.headerColumns));
+        // };
 
-            cookieManagement.setCookie(vm.companyIdentifier,JSON.stringify($scope.headerColumns));
-        };
-
-        $scope.headerColumns = cookieManagement.getCookie(vm.companyIdentifier) ? JSON.parse(cookieManagement.getCookie(vm.companyIdentifier)) : [
+        $scope.headerColumns = cookieManagement.getCookie(vm.savedUserTableColumns) ? JSON.parse(cookieManagement.getCookie(vm.savedUserTableColumns)) : [
             {colName: 'Identifier',fieldName: 'identifier',visible: true},
             {colName: 'First name',fieldName: 'first_name',visible: true},
             {colName: 'Last name',fieldName: 'last_name',visible: true},
@@ -137,11 +138,11 @@
             $scope.headerColumns.forEach(function (headerObj) {
                 headerObj.visible = true;
             });
-            cookieManagement.setCookie(vm.companyIdentifier,JSON.stringify($scope.headerColumns));
+            cookieManagement.setCookie(vm.savedUserTableColumns,JSON.stringify($scope.headerColumns));
         };
 
         $scope.toggleColumnVisibility = function () {
-            cookieManagement.setCookie(vm.companyIdentifier,JSON.stringify($scope.headerColumns));
+            cookieManagement.setCookie(vm.savedUserTableColumns,JSON.stringify($scope.headerColumns));
         };
 
         $scope.restoreColDefaults = function () {
@@ -156,7 +157,7 @@
                 }
             });
 
-            cookieManagement.setCookie(vm.companyIdentifier,JSON.stringify($scope.headerColumns));
+            cookieManagement.setCookie(vm.savedUserTableColumns,JSON.stringify($scope.headerColumns));
         };
 
         $scope.getGroups = function () {

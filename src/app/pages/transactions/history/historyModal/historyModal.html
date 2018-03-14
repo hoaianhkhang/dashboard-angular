@@ -1,4 +1,4 @@
-<div class="modal-content">
+<div ng-hide="updatingTransaction" class="modal-content">
     <div class="modal-header">
         <button type="button" class="close" ng-click="$dismiss()" aria-label="Close">
             <em class="ion-ios-close-empty sn-link-close"></em>
@@ -63,6 +63,14 @@
             </div>
             <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 no-right-padding">
                 <p ng-bind="transaction.fee | currencyModifiersFilter: transaction.currency.divisibility"></p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-left-padding divider">
+                <p class="text-subtle">Total amount: </p>
+            </div>
+            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 no-right-padding">
+                <p ng-bind="transaction.total_amount  | currencyModifiersFilter: transaction.currency.divisibility"></p>
             </div>
         </div>
         <div class="row">
@@ -133,4 +141,7 @@
             <button type="button" ng-show="transaction.status == 'Pending' || transaction.status == 'Initiating'" ng-disabled="updatingTransaction" class="transaction-details-button btn btn-primary pull-right" ng-click="updateTransactionConfirm('Complete')">Complete Transaction</button>
         </div>
     </div>
+</div>
+<div ba-panel ng-show="updatingTransaction">
+    <loading-image></loading-image>
 </div>

@@ -7,15 +7,37 @@
     function historyModalCtrl($uibModalInstance,$http,$scope,errorHandler,toastr,$timeout,
                               transaction,metadataTextService,$location,environmentConfig,cookieManagement,$ngConfirm) {
 
-        $scope.transaction = transaction;
+        var vm = this;
+        vm.token = cookieManagement.getCookie('TOKEN');
         $scope.updateTransactionObj = {};
         $scope.formatted = {};
-        $scope.formatted.metadata = metadataTextService.convertToText($scope.transaction.metadata);
+        $scope.formatted.metadata = {};
         $scope.editingTransaction = false;
         $scope.updatingTransaction = false;
 
-        var vm = this;
-        vm.token = cookieManagement.getCookie('TOKEN');
+        $scope.getTransaction = function(){
+            if(vm.token) {
+                $scope.updatingTransaction = true;
+                $http.get(environmentConfig.API + '/admin/transactions/' + transaction.id + '/', {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': vm.token
+                        }
+                    }).then(function (res) {
+                    if (res.status === 200) {
+                        $scope.transaction = res.data.data;
+                        $scope.formatted.metadata = metadataTextService.convertToText($scope.transaction.metadata);
+                        $scope.updatingTransaction = false;
+
+                    }
+                }).catch(function (error) {
+                    $scope.updatingTransaction = false;
+                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.handleErrors(error);
+                });
+            }
+        };
+        $scope.getTransaction();
 
         $scope.editTransaction = function(){
             var metaData;
