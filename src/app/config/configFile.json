@@ -1,12 +1,12 @@
 {
   "staging": {
     "environmentConfig": {
-      "API": "https://api.staging.rehive.com/api/3"
+      "API": "https://api.staging.rehive.com/3"
     }
   },
   "local": {
     "environmentConfig": {
-      "API": "http://localhost:8000/api/3"
+      "API": "https://api.rehive.com/3"
     }
   },
   "production": {
