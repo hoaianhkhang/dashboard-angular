@@ -488,5 +488,9 @@
             $location.path('/user/' + user.identifier + '/details');
         };
 
+        $scope.closeColumnFiltersBox = function () {
+            $scope.showingColumnFilters = false;
+        };
+
     }
 })();

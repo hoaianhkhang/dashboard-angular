@@ -539,6 +539,10 @@
             });
         };
 
+        $scope.closeColumnFiltersBox = function () {
+            $scope.showingColumnFilters = false;
+        };
+
 
     }
 })();

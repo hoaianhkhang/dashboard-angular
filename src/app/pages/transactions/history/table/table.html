@@ -6,10 +6,12 @@
                         class="btn btn-default">Filters
                     <span ng-show="filtersCount > 0">|</span> <span ng-show="filtersCount > 0" class="filter-count">{{filtersCount}}</span>
                 </button>
-                <button ng-click="showColumnFilters()" class="btn dynamic-columns btn-default">Columns</button>
-                <div ng-show="showingColumnFilters">
-                    <history-columns-filter></history-columns-filter>
-                </div>
+                <span  click-outside="closeColumnFiltersBox()">
+                    <button ng-click="showColumnFilters()" class="btn dynamic-columns btn-default">Columns</button>
+                    <div ng-show="showingColumnFilters">
+                        <history-columns-filter></history-columns-filter>
+                    </div>
+                </span>
                 <div ng-show="showingFilters">
                     <history-filters></history-filters>
                 </div>
