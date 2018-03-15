@@ -41,8 +41,6 @@ angular.module('BlurAdmin', [
 
         var locationChangeStart = $rootScope.$on('$locationChangeStart', function (event,newUrl) {
 
-            console.log(newUrl)
-
             var newUrlArray = newUrl.split('/'),
                 newUrlLastElement = _.last(newUrlArray);
 
@@ -148,6 +146,7 @@ angular.module('BlurAdmin', [
                     $rootScope.pageTopObj = {};
                     $rootScope.userFullyVerified = false;
                     $location.path('/login');
+                    $location.replace();
                 }
 
             }
