@@ -118,13 +118,13 @@
                     </div>
                     <div ng-hide="applyFiltersObj.amountFilter.selectedAmountOption == 'Is between'">
                         <select class="form-control pointer margin-left-12" ng-model="applyFiltersObj.currencyFilter.selectedCurrencyOption"
-                                ng-options="currency.code for currency in currencyOptions track by currency.code">
+                                ng-options="currency.code for currency in currencyOptions | orderBy: 'code' track by currency.code">
                         </select>
                     </div>
                 </div>
                 <div ng-show="applyFiltersObj.amountFilter.selectedAmountOption == 'Is between'" class="col-lg-12 col-md-12 col-sm-12 col-xs-12 divider-top-6">
                     <select class="form-control pointer" ng-model="applyFiltersObj.currencyFilter.selectedCurrencyOption"
-                            ng-options="currency.code for currency in currencyOptions track by currency.code">
+                            ng-options="currency.code for currency in currencyOptions | orderBy: 'code' track by currency.code">
                     </select>
                 </div>
             </div>
@@ -202,7 +202,7 @@
             <div ng-if="filtersObj.currencyFilter" class="row divider-top-6">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 date-filter-view">
                     <select class="form-control pointer" ng-model="applyFiltersObj.currencyFilter.selectedCurrencyOption"
-                            ng-options="currency.code for currency in currencyOptions track by currency.code">
+                            ng-options="currency.code for currency in currencyOptions | orderBy: 'code' track by currency.code">
                     </select>
                 </div>
             </div>

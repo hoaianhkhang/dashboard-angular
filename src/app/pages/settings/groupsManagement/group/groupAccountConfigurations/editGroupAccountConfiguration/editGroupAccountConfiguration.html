@@ -84,11 +84,11 @@
                 <label>Currency <span class="required-icon">*</span> <small class="text-muted">(Hold CTRL to select multiple currencies)</small></label>
                 <br>
                 <select class="form-control pointer divider" ng-model="newAccountConfigurationCurrencies.list" multiple
-                        ng-options="currency.code for currency in currenciesList track by currency.code" required>
+                        ng-options="currency.code for currency in currenciesList | orderBy: 'code' track by currency.code" required>
                 </select>
                 <p>Currencies selected:
-                    <span ng-repeat="currency in newAccountConfigurationCurrencies.list">
-                    {{currency.code}},&nbsp;
+                    <span ng-repeat="currency in newAccountConfigurationCurrencies.list | orderBy: 'code'">
+                    {{$last ? ' ' + currency.code : currency.code + ',' }}
                 </span>
                 </p>
             </div>

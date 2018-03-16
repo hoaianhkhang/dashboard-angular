@@ -11,16 +11,16 @@
                 <label>Currency <span class="required-icon">*</span> <small class="text-muted">(Hold CTRL to select multiple currencies)</small></label>
                 <br>
                 <select class="form-control pointer divider" ng-model="newAccountCurrencies.list" multiple
-                        ng-options="currency.code for currency in currencyOptions track by currency.code" required>
+                        ng-options="currency.code for currency in currencyOptions | orderBy: 'code' track by currency.code" required>
                 </select>
                 <p>Currencies selected:
-                    <span ng-repeat="currency in newAccountCurrencies.list">
-                    {{currency.code}},&nbsp;
+                    <span ng-repeat="currency in newAccountCurrencies.list | orderBy: 'code'">
+                    {{$last ? ' ' + currency.code : currency.code + ',' }}
                 </span>
                 </p>
                 <p>Currencies already selected:
-                    <span ng-repeat="currencyObj in currenciesList">
-                    {{currencyObj.currency.code}},&nbsp;
+                    <span ng-repeat="currencyObj in currenciesList | orderBy: 'currency.code'">
+                    {{$last ? ' ' + currencyObj.currency.code : currencyObj.currency.code + ','}}
                 </span>
                 </p>
             </div>

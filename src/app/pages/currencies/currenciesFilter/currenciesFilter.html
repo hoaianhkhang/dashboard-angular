@@ -17,7 +17,7 @@
             <div ng-if="filtersObj.currencyFilter" class="row divider-top-6">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 date-filter-view">
                     <select class="form-control pointer" ng-model="applyFiltersObj.currencyFilter.selectedCurrencyOption"
-                            ng-options="currency.code for currency in currencyOptions track by currency.code">
+                            ng-options="currency.code for currency in currencyOptions | orderBy: 'code' track by currency.code">
                     </select>
                 </div>
             </div>

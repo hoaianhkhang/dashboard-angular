@@ -61,13 +61,13 @@
                                 ng-options="currency.code for currency in currencies | orderBy: 'code'">
                         </select>
                         <p>Currencies selected:
-                            <span ng-repeat="currency in account.currencies">
-                                {{currency.code}},&nbsp;
+                            <span ng-repeat="currency in account.currencies | orderBy: 'code'">
+                                {{$last ? ' ' + currency.code : currency.code + ',' }}
                             </span>
                         </p>
                         <p ng-show="alreadySelectedCurrencies.length > 0">Currencies already selected:
-                            <span ng-repeat="currency in alreadySelectedCurrencies">
-                                {{currency.code}},&nbsp;
+                            <span ng-repeat="currency in alreadySelectedCurrencies | orderBy: 'code'">
+                                {{$last ? ' ' + currency.code : currency.code + ',' }}
                             </span>
                         </p>
                     </div>
