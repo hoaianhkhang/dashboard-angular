@@ -34,6 +34,8 @@
             $http.post(environmentConfig.API + '/auth/company/register/', $scope.registerData)
                 .then(function (res) {
                     if (res.status === 201) {
+                        $rootScope.pageTopObj.userInfoObj = {};
+                        $rootScope.pageTopObj.userInfoObj = res.data.data.user;
                         cookieManagement.setCookie('TOKEN','Token ' + res.data.data.token);
                         $location.path('/verification');
                         $rootScope.$pageFinishedLoading = true;

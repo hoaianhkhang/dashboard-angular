@@ -40,6 +40,7 @@
                         }
                     }).then(function (res) {
                         if (res.status === 200) {
+                            $rootScope.pageTopObj.companyObj = {};
                             $rootScope.pageTopObj.companyObj = res.data.data;
                         }
                     }).catch(function (error) {
@@ -59,6 +60,7 @@
                         }
                     }).then(function (res) {
                         if (res.status === 200) {
+                            $rootScope.pageTopObj.userInfoObj = {};
                             $rootScope.pageTopObj.userInfoObj = res.data.data;
                         }
                     }).catch(function (error) {

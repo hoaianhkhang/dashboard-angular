@@ -92,6 +92,7 @@
                 if (res.status === 200) {
                     vm.updatedCompanyInfo = {};
                     $scope.company.details = {};
+                    $rootScope.pageTopObj.companyObj = {};
                     $rootScope.pageTopObj.companyObj = res.data.data;
                     $scope.updateCompanySettings();
                 }

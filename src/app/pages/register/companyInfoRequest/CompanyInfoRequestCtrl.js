@@ -29,6 +29,7 @@
                 }).then(function (res) {
                     if (res.status === 200) {
                         if(res.data.data && res.data.data.name){
+                            $rootScope.pageTopObj.companyObj = {};
                             $rootScope.pageTopObj.companyObj = res.data.data;
                             userVerification.verify(function(err,verified){
                                 if(verified){
@@ -65,6 +66,7 @@
                 }
             }).then(function (res) {
                 if (res.status === 200) {
+                    $rootScope.pageTopObj.companyObj = {};
                     $rootScope.pageTopObj.companyObj = res.data.data;
                     userVerification.verify(function(err,verified){
                         if(verified){

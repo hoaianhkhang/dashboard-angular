@@ -83,6 +83,7 @@ angular.module('BlurAdmin', [
                             }
                         }).then(function (res) {
                             if (res.status === 200) {
+                                $rootScope.pageTopObj.companyObj = {};
                                 $rootScope.pageTopObj.companyObj = res.data.data;
                                 cookieManagement.setCookie('companyIdentifier',$rootScope.pageTopObj.companyObj.identifier);
                             }
@@ -105,6 +106,7 @@ angular.module('BlurAdmin', [
                             }
                         }).then(function (res) {
                             if (res.status === 200) {
+                                $rootScope.pageTopObj.userInfoObj = {};
                                 $rootScope.pageTopObj.userInfoObj = res.data.data;
                             }
                         }).catch(function (error) {
