@@ -8,12 +8,18 @@
             <table class="table setting-bank-accounts-table">
                 <tr>
                     <th class="rehive-table-row-first-child">Bank name</th>
+                    <th>Account name/holder</th>
                     <th>Account number</th>
+                    <th>Currencies</th>
                     <td></td>
                 </tr>
                 <tr ng-repeat="bankAccount in bankAccounts">
                     <td class="table-row-center transactions-list-element rehive-table-row-first-child">{{bankAccount.bank_name}}</td>
+                    <td class="table-row-center transactions-list-element">{{bankAccount.name}}</td>
                     <td class="table-row-center transactions-list-element">{{bankAccount.number}}</td>
+                    <td class="table-row-center transactions-list-element">
+
+                    </td>
                     <th class="rehive-table-row-last-child">
                         <a ng-click="openBankAccountModal('app/pages/settings/bankAccounts/bankAccountModal/bankAccountModal.html','md',bankAccount)"
                            class="pull-right pointer ">Delete</a>

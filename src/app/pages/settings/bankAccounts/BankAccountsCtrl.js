@@ -6,7 +6,7 @@
 
     /** @ngInject */
     function BankAccountsCtrl($scope,environmentConfig,$uibModal,toastr,$http,cookieManagement,
-                              errorHandler,serializeFiltersService) {
+                              errorHandler,serializeFiltersService,_) {
 
         var vm = this;
         vm.token = cookieManagement.getCookie('TOKEN');
@@ -49,10 +49,10 @@
                         'Authorization': vm.token
                     }
                 }).then(function (res) {
-                    $scope.loadingBankAccounts = false;
                     if (res.status === 200) {
                         $scope.bankAccountsData = res.data.data;
                         $scope.bankAccounts = res.data.data.results;
+                        vm.getBankAccountCurrencies($scope.bankAccounts);
                     }
                 }).catch(function (error) {
                     $scope.loadingBankAccounts = false;
@@ -62,6 +62,31 @@
             }
         };
         $scope.getBankAccounts();
+
+        vm.getBankAccountCurrencies = function (bankAccounts) {
+            $scope.loadingBankAccounts = true;
+
+            bankAccounts.forEach(function (bank,index,array) {
+                $http.get(environmentConfig.API + '/admin/bank-accounts/' + bank.id + '/currencies/', {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': vm.token
+                    }
+                }).then(function (res) {
+                    if (res.status === 200) {
+                        bank.currencies = _.pluck(res.data.data.results,'code');
+                        if(index == (array.length -1)){
+                            $scope.loadingBankAccounts = false;
+                            console.log($scope.bankAccounts);
+                        }
+                    }
+                }).catch(function (error) {
+                    $scope.loadingBankAccounts = false;
+                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.handleErrors(error);
+                });
+            });
+        };
 
         $scope.openAddBankAccountModal = function (page, size) {
             vm.theAddModal = $uibModal.open({
