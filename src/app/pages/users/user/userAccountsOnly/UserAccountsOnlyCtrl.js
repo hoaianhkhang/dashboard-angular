@@ -62,7 +62,12 @@
         vm.getCompanyCurrencies();
 
         $scope.goToView = function(state,currency,email,account){
-            $state.go(state,{"email": email, "account": account});
+            if(email){
+                $state.go(state,{"email": email, "account": account});
+            } else {
+                $state.go(state,{"email": vm.uuid, "account": account});
+            }
+
         };
 
         $scope.goToSettings = function(currencyCode, account){
