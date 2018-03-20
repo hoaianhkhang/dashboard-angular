@@ -18,7 +18,7 @@
                 <label>Currency <span class="required-icon">*</span></label>
                 <br>
                 <select class="form-control pointer" ng-model="debitData.currency"
-                        ng-options="currency.code for currency in currencyOptions track by currency.code" required>
+                        ng-options="currency.code for currency in currencyOptions | orderBy: 'code' track by currency.code" required>
                 </select>
             </div>
             <div class="form-group">

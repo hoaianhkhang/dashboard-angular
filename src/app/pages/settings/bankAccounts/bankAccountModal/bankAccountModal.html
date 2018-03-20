@@ -6,7 +6,8 @@
         <h4 class="modal-title" id="myModalLabel">Delete bank account</h4>
     </div>
     <div class="modal-body">
-        <p>{{bankAccount.name}}, {{bankAccount.number}}</p>
+        <p class="divider"><span class="text-subtle">Bank name:</span> {{bankAccount.bank_name}}</p>
+        <p class="divider"><span class="text-subtle">Bank number:</span> {{bankAccount.number}}</p>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-default dashboard-btn pull-left" ng-click="$dismiss()">Close</button>

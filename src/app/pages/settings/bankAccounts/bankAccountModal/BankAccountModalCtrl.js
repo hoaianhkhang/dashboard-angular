@@ -6,7 +6,7 @@
 
     function BankAccountModalCtrl($scope,$uibModalInstance,bankAccount,toastr,$http,environmentConfig,cookieManagement,errorHandler) {
 
-        var vm= this;
+        var vm = this;
 
         $scope.bankAccount = bankAccount;
         vm.token = cookieManagement.getCookie('TOKEN');

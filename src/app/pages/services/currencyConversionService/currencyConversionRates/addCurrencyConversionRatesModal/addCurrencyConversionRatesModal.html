@@ -10,13 +10,13 @@
             <div class="form-group divider-20">
                 <label>From currency <span class="required-icon">*</span></label>
                 <select class="form-control pointer" ng-model="rateParams.fromCurrency"
-                        ng-options="currency.code for currency in currenciesList track by currency.code">
+                        ng-options="currency.code for currency in currenciesList | orderBy: 'code' track by currency.code">
                 </select>
             </div>
             <div class="form-group divider-20">
                 <label>To currency <span class="required-icon">*</span></label>
                 <select class="form-control pointer" ng-model="rateParams.toCurrency"
-                        ng-options="currency.code for currency in currenciesList track by currency.code">
+                        ng-options="currency.code for currency in currenciesList | orderBy: 'code' track by currency.code">
                 </select>
             </div>
             <div class="form-group divider-20">

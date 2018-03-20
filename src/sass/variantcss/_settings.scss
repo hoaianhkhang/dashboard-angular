@@ -14,3 +14,39 @@ textarea {
 .permissions-table .table{
   margin-bottom: 0;
 }
+
+.bank-account-currencies-td {
+  position: relative;
+  & .bank-tooltip{
+    display: none;
+  }
+}
+
+.bank-account-currencies-td:hover{
+  position: relative;
+  & .bank-tooltip{
+    display: inline-block;
+    position: absolute;
+    bottom: 30px;
+    left: 7px;
+    line-height: 20px;
+    padding: 1px 5px;
+    background-color: rgba(0,0,0,0.8);
+    color: white;
+    max-width: 400px;
+  }
+  & .bank-tooltip::after {
+    content: " ";
+    position: absolute;
+    top: 100%; /* At the bottom of the tooltip */
+    left: 20%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: black transparent transparent transparent;
+  }
+}
+
+.bank-acount-currencies{
+  overflow: hidden;
+}

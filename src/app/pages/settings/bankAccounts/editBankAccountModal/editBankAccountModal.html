@@ -1,34 +1,37 @@
-<div ng-hide="loadingBankAccounts" class="panel">
-    <div class="panel-heading">
-        <span class="user-details-panel-title">Edit bank account</span>
+<div ng-hide="updatingBankAccount" class="modal-content">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="$dismiss()" aria-label="Close">
+            <em class="ion-ios-close-empty sn-link-close"></em>
+        </button>
+        <h4 class="modal-title" id="myModalLabel">Edit bank account</h4>
     </div>
-    <div class="panel-body">
+    <div class="modal-body">
         <form class="custom-form">
-            <div class="form-group">
+            <div class="form-group divider-20">
                 <label>Account name/holder</label>
                 <input type="text" ng-change="bankAccountChanged('name')" ng-model="editBankData.name" class="form-control"  placeholder="e.g. Currency Corp">
             </div>
-            <div class="form-group">
+            <div class="form-group divider-20">
                 <label>Account number</label>
                 <input type="text" ng-change="bankAccountChanged('number')" ng-model="editBankData.number" class="form-control"  placeholder="e.g. 5246357653">
             </div>
-            <div class="form-group">
+            <div class="form-group divider-20">
                 <label>Account type</label>
                 <input type="text" ng-change="bankAccountChanged('type')" ng-model="editBankData.type" class="form-control"  placeholder="e.g. Cheque/Current/Savings">
             </div>
-            <div class="form-group">
+            <div class="form-group divider-20">
                 <label>Bank name</label>
                 <input type="text"  ng-change="bankAccountChanged('bank_name')" ng-model="editBankData.bank_name" class="form-control"  placeholder="e.g. Saharah Bank Ltd">
             </div>
-            <div class="form-group">
+            <div class="form-group divider-20">
                 <label>Bank code</label>
                 <input type="text" ng-change="bankAccountChanged('bank_code')" ng-model="editBankData.bank_code" class="form-control"  placeholder="e.g. 342543">
             </div>
-            <div class="form-group">
+            <div class="form-group divider-20">
                 <label>Branch code</label>
                 <input type="text" ng-change="bankAccountChanged('branch_code')" ng-model="editBankData.branch_code" class="form-control"  placeholder="e.g. 456798">
             </div>
-            <!--<div class="form-group">-->
+            <!--<div class="form-group divider-20">-->
             <!--<label>Bank/Branch Address</label>-->
             <!--<input type="text" ng-model="es" class="form-control divider"  placeholder="Address line 1">-->
             <!--<input type="text" ng-model="er" class="form-control divider"  placeholder="Address line 2">-->
@@ -36,22 +39,37 @@
             <!--<country-select class="form-control pointer divider" data-ng-model="eq"></country-select>-->
             <!--<input type="text" ng-model="ew" class="form-control divider"  placeholder="Code/Zipcode">-->
             <!--</div>-->
-            <div class="form-group">
+            <div class="form-group divider-20">
                 <label>Swift</label>
                 <input type="text" ng-change="bankAccountChanged('swift')" ng-model="editBankData.swift" class="form-control"  placeholder="e.g. FDDODUMM">
             </div>
-            <div class="form-group">
+            <div class="form-group divider-20">
                 <label>Iban</label>
                 <input type="text" ng-change="bankAccountChanged('iban')" ng-model="editBankData.iban" class="form-control"  placeholder="e.g. DE41700333001189190812">
             </div>
-            <div class="form-group">
+            <div class="form-group divider-20">
                 <label>Bic</label>
                 <input type="text" ng-change="bankAccountChanged('bic')" ng-model="editBankData.bic" class="form-control"  placeholder="e.g. FDDODUMMXXX">
             </div>
             <div class="form-group">
-                <button ng-click="updateBankAccount()" class="btn btn-primary dashboard-btn pull-right">Save</button>
-                <button ng-click="toggleEditBankAccountsView()" class="btn btn-default dashboard-btn pull-right margin-right-10">Back</button>
+                <label>Currencies <small class="text-muted">(Hold CTRL to select multiple currencies)</small></label>
+                <br>
+                <select class="form-control pointer divider" ng-model="editBankAccountCurrencies.list" multiple
+                        ng-options="currency.code for currency in currenciesList | orderBy: 'code' track by currency.code" required>
+                </select>
+                <p>Currencies selected:
+                    <span ng-repeat="currency in editBankAccountCurrencies.list | orderBy: 'code'">
+                    {{$last ? ' ' + currency.code : currency.code + ',' }}
+                </span>
+                </p>
             </div>
         </form>
     </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default dashboard-btn pull-left" ng-click="$dismiss()">Close</button>
+        <button ng-click="updateBankAccount()" ng-disabled="deletingBankAccount" type="button" class="btn btn-primary dashboard-btn pull-right">Save</button>
+    </div>
+</div>
+<div ba-panel ng-show="updatingBankAccount">
+    <loading-image></loading-image>
 </div>

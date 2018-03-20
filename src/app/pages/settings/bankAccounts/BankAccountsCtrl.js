@@ -5,58 +5,54 @@
         .controller('BankAccountsCtrl', BankAccountsCtrl);
 
     /** @ngInject */
-    function BankAccountsCtrl($scope,environmentConfig,$uibModal,toastr,$http,cookieManagement,errorHandler,$window) {
+    function BankAccountsCtrl($scope,environmentConfig,$uibModal,toastr,$http,cookieManagement,
+                              errorHandler,serializeFiltersService,_) {
 
         var vm = this;
         vm.token = cookieManagement.getCookie('TOKEN');
-        $scope.editingBankAccounts = false;
         $scope.loadingBankAccounts = true;
-        $scope.newBankData = {};
-        vm.updatedBankAccount = {};
+        $scope.bankAccounts = [];
 
-
-        $scope.toggleEditBankAccountsView = function(bankAccount){
-            if(bankAccount){
-                vm.getBankAccount(bankAccount);
-            } else {
-                $scope.editBankData = {};
-                vm.getBankAccounts();
-            }
-
-            $scope.editingBankAccounts = !$scope.editingBankAccounts;
+        $scope.pagination = {
+            itemsPerPage: 15,
+            pageNo: 1,
+            maxSize: 5
         };
 
-        vm.getBankAccount = function (bankAccount) {
-            $scope.loadingBankAccounts = true;
-            $http.get(environmentConfig.API + '/admin/bank-accounts/' + bankAccount.id + '/', {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': vm.token
-                }
-            }).then(function (res) {
-                $scope.loadingBankAccounts = false;
-                if (res.status === 200) {
-                    $scope.editBankData = res.data.data;
-                }
-            }).catch(function (error) {
-                $scope.loadingBankAccounts = false;
-                errorHandler.evaluateErrors(error.data);
-                errorHandler.handleErrors(error);
-            });
+        vm.getBankAccountsUrl = function(){
+
+            var searchObj = {
+                page: $scope.pagination.pageNo,
+                page_size: $scope.pagination.itemsPerPage
+            };
+
+            return environmentConfig.API + '/admin/bank-accounts/?' + serializeFiltersService.serializeFilters(searchObj);
         };
 
-        vm.getBankAccounts = function () {
+        $scope.getBankAccounts = function (fromModalDelete) {
             if(vm.token) {
                 $scope.loadingBankAccounts = true;
-                $http.get(environmentConfig.API + '/admin/bank-accounts/', {
+
+                if ($scope.bankAccounts.length > 0) {
+                    $scope.bankAccounts.length = 0;
+                }
+
+                if(fromModalDelete){
+                    $scope.pagination.pageNo = 1;
+                }
+
+                var bankAccountsUrl = vm.getBankAccountsUrl();
+
+                $http.get(bankAccountsUrl, {
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': vm.token
                     }
                 }).then(function (res) {
-                    $scope.loadingBankAccounts = false;
                     if (res.status === 200) {
-                        $scope.bankAccounts = res.data.data;
+                        $scope.bankAccountsData = res.data.data;
+                        $scope.bankAccounts = res.data.data.results;
+                        vm.getBankAccountCurrencies($scope.bankAccounts);
                     }
                 }).catch(function (error) {
                     $scope.loadingBankAccounts = false;
@@ -65,59 +61,69 @@
                 });
             }
         };
-        vm.getBankAccounts();
+        $scope.getBankAccounts();
 
-        $scope.addBankAccount = function (newBankAccount) {
-            $http.post(environmentConfig.API + '/admin/bank-accounts/', newBankAccount, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': vm.token
-                }
-            }).then(function (res) {
-                $scope.loadingBankAccounts = false;
-                if (res.status === 201) {
-                    vm.getBankAccounts();
-                    toastr.success('You have successfully added the bank account');
-                    $scope.newBankData = {};
-                    $window.scrollTo(0, 0);
-                }
-            }).catch(function (error) {
-                $scope.loadingBankAccounts = false;
-                errorHandler.evaluateErrors(error.data);
-                errorHandler.handleErrors(error);
-            });
-        };
-
-        $scope.bankAccountChanged = function(field){
-            vm.updatedBankAccount[field] = $scope.editBankData[field];
-        };
-
-        $scope.updateBankAccount = function () {
-            $window.scrollTo(0, 0);
-            $scope.editingBankAccounts = !$scope.editingBankAccounts;
+        vm.getBankAccountCurrencies = function (bankAccounts) {
             $scope.loadingBankAccounts = true;
-            $http.patch(environmentConfig.API + '/admin/bank-accounts/'+ $scope.editBankData.id + '/', vm.updatedBankAccount, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': vm.token
-                }
-            }).then(function (res) {
-                $scope.loadingBankAccounts = false;
-                if (res.status === 200) {
-                    vm.updatedBankAccount = {};
-                    vm.getBankAccounts();
-                    toastr.success('You have successfully updated the bank account');
-                }
-            }).catch(function (error) {
-                $scope.loadingBankAccounts = false;
-                vm.updatedBankAccount = {};
-                errorHandler.evaluateErrors(error.data);
-                errorHandler.handleErrors(error);
+
+            bankAccounts.forEach(function (bank,index,array) {
+                $http.get(environmentConfig.API + '/admin/bank-accounts/' + bank.id + '/currencies/', {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': vm.token
+                    }
+                }).then(function (res) {
+                    if (res.status === 200) {
+                        bank.currencies = res.data.data.results;
+                        if(index == (array.length -1)){
+                            $scope.loadingBankAccounts = false;
+                        }
+                    }
+                }).catch(function (error) {
+                    $scope.loadingBankAccounts = false;
+                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.handleErrors(error);
+                });
             });
         };
 
-        vm.findIndexOfBankAccount = function(element){
-            return this.id == element.id;
+        $scope.openAddBankAccountModal = function (page, size) {
+            vm.theAddModal = $uibModal.open({
+                animation: true,
+                templateUrl: page,
+                size: size,
+                controller: 'AddBankAccountModalCtrl',
+                scope: $scope
+            });
+
+            vm.theAddModal.result.then(function(bankAccount){
+                if(bankAccount){
+                    $scope.getBankAccounts();
+                }
+            }, function(){
+            });
+        };
+
+        $scope.openEditBankAccountModal = function (page, size,bankAccount) {
+            vm.theEditModal = $uibModal.open({
+                animation: true,
+                templateUrl: page,
+                size: size,
+                controller: 'EditBankAccountModalCtrl',
+                scope: $scope,
+                resolve: {
+                    bankAccount: function () {
+                        return bankAccount;
+                    }
+                }
+            });
+
+            vm.theEditModal.result.then(function(bankAccount){
+                if(bankAccount){
+                    $scope.getBankAccounts();
+                }
+            }, function(){
+            });
         };
 
         $scope.openBankAccountModal = function (page, size,bankAccount) {
@@ -135,8 +141,9 @@
             });
 
             vm.theModal.result.then(function(bankAccount){
-                var index = $scope.bankAccounts.findIndex(vm.findIndexOfBankAccount,bankAccount);
-                $scope.bankAccounts.splice(index, 1);
+               if(bankAccount){
+                   $scope.getBankAccounts('fromModalDelete');
+               }
             }, function(){
             });
         };

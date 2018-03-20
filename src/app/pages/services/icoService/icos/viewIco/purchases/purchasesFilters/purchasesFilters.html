@@ -12,7 +12,7 @@
             <label><strong>Quote deposit currency</strong></label>
             <br>
             <select class="form-control pointer" ng-model="searchPurchasesParams.searchCurrency"
-                    ng-options="currency.code for currency in currencyOptions track by currency.code">
+                    ng-options="currency.code for currency in currencyOptions | orderBy: 'code' track by currency.code">
             </select>
         </div>
         <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
