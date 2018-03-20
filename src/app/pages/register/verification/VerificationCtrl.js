@@ -72,6 +72,16 @@
             });
         };
 
+        $scope.logout = function () {
+            $rootScope.dashboardTitle = 'Rehive';
+            $rootScope.gotToken = false;
+            $rootScope.securityConfigured = true;
+            $rootScope.pageTopObj = {};
+            $rootScope.userFullyVerified = false;
+            cookieManagement.deleteCookie('TOKEN');
+            $location.path('/login');
+        };
+
 
     }
 })();
