@@ -17,8 +17,16 @@
                     <td class="table-row-center transactions-list-element rehive-table-row-first-child">{{bankAccount.bank_name}}</td>
                     <td class="table-row-center transactions-list-element">{{bankAccount.name}}</td>
                     <td class="table-row-center transactions-list-element">{{bankAccount.number}}</td>
-                    <td class="table-row-center transactions-list-element">
-
+                    <td class="bank-account-currencies-td" width="30%">
+                        <span ng-repeat="currency in bankAccount.currencies | orderBy: 'code'"
+                              class="bank-acount-currencies">
+                                {{$index > 5 ? ' ' : $index == 5 ? ' ' + '...' : $last ? ' ' + currency.code : currency.code + ',' }}
+                        </span>
+                        <div ng-show="bankAccount.currencies.length > 0" class="bank-tooltip">
+                            <span ng-repeat="currency in bankAccount.currencies | orderBy: 'code'">
+                                {{$last ? ' ' + currency.code : currency.code + ',' }}
+                            </span>
+                        </div>
                     </td>
                     <th class="rehive-table-row-last-child">
                         <a ng-click="openBankAccountModal('app/pages/settings/bankAccounts/bankAccountModal/bankAccountModal.html','md',bankAccount)"

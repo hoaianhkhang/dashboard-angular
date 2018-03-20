@@ -74,10 +74,9 @@
                     }
                 }).then(function (res) {
                     if (res.status === 200) {
-                        bank.currencies = _.pluck(res.data.data.results,'code');
+                        bank.currencies = res.data.data.results;
                         if(index == (array.length -1)){
                             $scope.loadingBankAccounts = false;
-                            console.log($scope.bankAccounts);
                         }
                     }
                 }).catch(function (error) {
