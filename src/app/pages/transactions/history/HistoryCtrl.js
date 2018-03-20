@@ -6,18 +6,45 @@
 
     /** @ngInject */
     function HistoryCtrl($rootScope,$scope,environmentConfig,$http,cookieManagement,$uibModal,sharedResources,toastr,currencyModifiers,
-                         errorHandler,$state,$window,typeaheadService,$filter,serializeFiltersService,$location) {
+                         errorHandler,$state,$window,typeaheadService,$filter,serializeFiltersService,$location,_) {
 
         var vm = this;
         vm.token = cookieManagement.getCookie('TOKEN');
+        vm.companyIdentifier = cookieManagement.getCookie('companyIdentifier');
+        vm.savedTransactionTableColumns = vm.companyIdentifier + 'transactionsTable';
         $rootScope.dashboardTitle = 'Transactions history | Rehive';
         vm.currenciesList = JSON.parse($window.sessionStorage.currenciesList || '[]');
         $scope.showingFilters = false;
+        $scope.showingColumnFilters = false;
         $scope.dateFilterOptions = ['Is in the last','In between','Is equal to','Is after','Is before'];
         $scope.amountFilterOptions = ['Is equal to','Is between','Is greater than','Is less than'];
         $scope.dateFilterIntervalOptions = ['days','months'];
         $scope.groupFilterOptions = ['Group name','In a group'];
         $scope.filtersCount = 0;
+
+        $scope.headerColumns = cookieManagement.getCookie(vm.savedTransactionTableColumns) ? JSON.parse(cookieManagement.getCookie(vm.savedTransactionTableColumns)) : [
+            {colName: 'User',fieldName: 'user',visible: true},
+            {colName: 'Type',fieldName: 'tx_type',visible: true},
+            {colName: 'Subtype',fieldName: 'subtype',visible: true},
+            {colName: 'Currency',fieldName: 'currencyCode',visible: true},
+            {colName: 'Amount',fieldName: 'amount',visible: true},
+            {colName: 'Fee',fieldName: 'fee',visible: true},
+            {colName: 'Status',fieldName: 'status',visible: true},
+            {colName: 'Id',fieldName: 'id',visible: true},
+            {colName: 'Date',fieldName: 'createdDate',visible: true},
+            {colName: 'Total amount',fieldName: 'totalAmount',visible: false},
+            {colName: 'Balance',fieldName: 'balance',visible: false},
+            {colName: 'Account',fieldName: 'account',visible: false},
+            {colName: 'Username',fieldName: 'username',visible: false},
+            {colName: 'Identifier',fieldName: 'identifier',visible: false},
+            {colName: 'Updated',fieldName: 'updatedDate',visible: false},
+            {colName: 'Mobile',fieldName: 'mobile_number',visible: false},
+            {colName: 'Destination tx id',fieldName: 'destination_tx_id',visible: false},
+            {colName: 'Source tx id',fieldName: 'source_tx_id',visible: false},
+            {colName: 'Label',fieldName: 'label',visible: false},
+            {colName: 'Reference',fieldName: 'reference',visible: false},
+            {colName: 'Note',fieldName: 'note',visible: false}
+        ];
         $scope.filtersObj = {
             dateFilter: false,
             amountFilter: false,
@@ -94,6 +121,37 @@
         $scope.orderByOptions = ['Latest','Largest','Smallest'];
         $scope.groupOptions = [];
 
+        $scope.showColumnFilters = function () {
+            $scope.showingFilters = false;
+            $scope.showingColumnFilters = !$scope.showingColumnFilters;
+        };
+
+        $scope.selectAllColumns = function () {
+            $scope.headerColumns.forEach(function (headerObj) {
+                headerObj.visible = true;
+            });
+            cookieManagement.setCookie(vm.savedTransactionTableColumns,JSON.stringify($scope.headerColumns));
+        };
+
+        $scope.toggleColumnVisibility = function () {
+            cookieManagement.setCookie(vm.savedTransactionTableColumns,JSON.stringify($scope.headerColumns));
+        };
+
+        $scope.restoreColDefaults = function () {
+            var defaultVisibleHeader = ['User','Type','Subtype','Currency',
+                'Amount','Fee','Status','Date','Id'];
+
+            $scope.headerColumns.forEach(function (headerObj) {
+                if(defaultVisibleHeader.indexOf(headerObj.colName) > -1){
+                    headerObj.visible = true;
+                } else {
+                    headerObj.visible = false;
+                }
+            });
+
+            cookieManagement.setCookie(vm.savedTransactionTableColumns,JSON.stringify($scope.headerColumns));
+        };
+
         sharedResources.getSubtypes().then(function (res) {
             $scope.subtypeOptions = _.pluck(res.data.data,'name');
             $scope.subtypeOptions.unshift('');
@@ -139,7 +197,9 @@
         $scope.getFileName = $filter('date')(Date.now(),'mediumDate') + ' ' + $filter('date')(Date.now(),'shortTime') + '-transactionsHistory.csv';
 
         $scope.getHeader = function () {return ["Id", "User","Balance","Type","Currency", "Amount",
-            "Fee","Subtype","Account","Status","Date","Reference","Note","Metadata"]};
+            "Fee","Subtype","Account","Status","Date","Reference","Note","Metadata"];};
+
+        //To do: fix header names
 
         $scope.getCSVArray = function () {
             var array = [];
@@ -154,16 +214,16 @@
                 }
                 array.push({
                     Id: element.id,
-                    user: element.user.email,
-                    balance: $filter('currencyModifiersFilter')(element.balance,element.currency.divisibility).toString(),
-                    type: $filter('capitalizeWord')(element.tx_type),
-                    currency: element.currency.code,
-                    amount: $filter('currencyModifiersFilter')(element.amount,element.currency.divisibility).toString(),
-                    fee: $filter('currencyModifiersFilter')(element.fee,element.currency.divisibility).toString(),
+                    user: element.user,
+                    balance: element.balance.toString(),
+                    type: element.tx_type,
+                    currency: element.currencyCode,
+                    amount: element.amount,
+                    fee: element.fee.toString(),
                     subtype: element.subtype,
                     account: element.account,
                     status: element.status,
-                    date: $filter('date')(element.created,'mediumDate') + ' ' +$filter('date')(element.created,'shortTime'),
+                    date: element.createdDate,
                     reference: element.reference,
                     note: element.note,
                     metadata: metadata
@@ -213,6 +273,7 @@
 
         $scope.showFilters = function () {
             $scope.showingFilters = !$scope.showingFilters;
+            $scope.showingColumnFilters = false;
         };
 
         $scope.clearFilters = function () {
@@ -403,10 +464,9 @@
                         'Authorization': vm.token
                     }
                 }).then(function (res) {
-                    $scope.loadingTransactions = false;
                     if (res.status === 200) {
                         $scope.transactionsData = res.data.data;
-                        $scope.transactions = $scope.transactionsData.results;
+                        vm.formatTransactionsArray($scope.transactionsData.results);
                         if ($scope.transactions.length == 0) {
                             $scope.transactionsStateMessage = 'No transactions have been found';
                             return;
@@ -423,6 +483,37 @@
             }
         };
         $scope.getLatestTransactions();
+
+        vm.formatTransactionsArray = function (transactionsArray) {
+            transactionsArray.forEach(function (transactionObj) {
+                $scope.transactions.push({
+                    user: transactionObj.user.email || transactionObj.user.mobile_number,
+                    tx_type: $filter("capitalizeWord")(transactionObj.tx_type),
+                    subtype: transactionObj.subtype,
+                    currencyCode: transactionObj.currency.code,
+                    amount: $filter("currencyModifiersFilter")(transactionObj.amount,transactionObj.currency.divisibility),
+                    fee: $filter("currencyModifiersFilter")(transactionObj.fee,transactionObj.currency.divisibility),
+                    status: transactionObj.status,
+                    id: transactionObj.id,
+                    createdDate: $filter("date")(transactionObj.created,'mediumDate') + ' ' + $filter("date")(transactionObj.created,'shortTime'),
+                    totalAmount: $filter("currencyModifiersFilter")(transactionObj.total_amount,transactionObj.currency.divisibility),
+                    balance: $filter("currencyModifiersFilter")(transactionObj.balance,transactionObj.currency.divisibility),
+                    account: transactionObj.account,
+                    username: transactionObj.user.username,
+                    identifier: transactionObj.user.identifier,
+                    updatedDate: transactionObj.updated ? $filter("date")(transactionObj.updated,'mediumDate') + ' ' + $filter("date")(transactionObj.updated,'shortTime'): null,
+                    mobile_number: transactionObj.user.mobile_number,
+                    destination_tx_id: transactionObj.destination_transaction ? transactionObj.destination_transaction.id : "",
+                    source_tx_id: transactionObj.source_transaction ? transactionObj.source_transaction.id : "",
+                    label: transactionObj.label,
+                    reference: transactionObj.reference,
+                    note: transactionObj.note,
+                    metadata: transactionObj.metadata
+                });
+            });
+
+            $scope.loadingTransactions = false;
+        };
 
         $scope.getUsersEmailTypeahead = typeaheadService.getUsersEmailTypeahead();
 
@@ -441,11 +532,15 @@
 
             vm.theModal.result.then(function(transaction){
                 if(transaction){
-                    $scope.clearFilters()
+                    $scope.clearFilters();
                     $scope.getLatestTransactions();
                 }
             }, function(){
             });
+        };
+
+        $scope.closeColumnFiltersBox = function () {
+            $scope.showingColumnFilters = false;
         };
 
 
