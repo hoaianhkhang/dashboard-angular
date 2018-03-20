@@ -8,32 +8,34 @@
             <table class="table setting-bank-accounts-table">
                 <tr>
                     <th class="rehive-table-row-first-child">Bank name</th>
-                    <th>Account name/holder</th>
+                    <th>Account name</th>
                     <th>Account number</th>
                     <th>Currencies</th>
-                    <td></td>
+                    <th></th>
                 </tr>
                 <tr ng-repeat="bankAccount in bankAccounts">
-                    <td class="table-row-center transactions-list-element rehive-table-row-first-child">{{bankAccount.bank_name}}</td>
-                    <td class="table-row-center transactions-list-element">{{bankAccount.name}}</td>
-                    <td class="table-row-center transactions-list-element">{{bankAccount.number}}</td>
-                    <td class="bank-account-currencies-td" width="30%">
-                        <span ng-repeat="currency in bankAccount.currencies | orderBy: 'code'"
-                              class="bank-acount-currencies">
-                                {{$index > 5 ? ' ' : $index == 5 ? ' ' + '...' : $last ? ' ' + currency.code : currency.code + ',' }}
+                    <td width="20%" class="table-row-center transactions-list-element rehive-table-row-first-child">{{bankAccount.bank_name}}</td>
+                    <td width="20%" class="table-row-center transactions-list-element">{{bankAccount.name}}</td>
+                    <td width="20%" class="table-row-center transactions-list-element">{{bankAccount.number}}</td>
+                    <td width="20%" class="bank-account-currencies-td">
+                        <div class="transactions-list-element ">
+                            <span ng-repeat="currency in bankAccount.currencies | orderBy: 'code'"
+                                  class="bank-acount-currencies">
+                                {{$index > 4 ? ' ' : $index == 4 ? ' ' + '...' : $last ? ' ' + currency.code : currency.code + ',' }}
                         </span>
-                        <div ng-show="bankAccount.currencies.length > 0" class="bank-tooltip">
+                            <div ng-show="bankAccount.currencies.length > 0" class="bank-tooltip">
                             <span ng-repeat="currency in bankAccount.currencies | orderBy: 'code'">
                                 {{$last ? ' ' + currency.code : currency.code + ',' }}
                             </span>
+                            </div>
                         </div>
                     </td>
-                    <th class="rehive-table-row-last-child">
+                    <td width="20%" class="rehive-table-row-last-child">
                         <a ng-click="openBankAccountModal('app/pages/settings/bankAccounts/bankAccountModal/bankAccountModal.html','md',bankAccount)"
                            class="pull-right pointer ">Delete</a>
                         <a ng-click="openEditBankAccountModal('app/pages/settings/bankAccounts/editBankAccountModal/editBankAccountModal.html','md',bankAccount)"
                            class="pull-right pointer user-address-edit margin-right-30">Edit</a>
-                    </th>
+                    </td>
                 </tr>
             </table>
             <div ng-show="bankAccounts.length > 0">
