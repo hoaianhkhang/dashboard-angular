@@ -50,9 +50,13 @@
                     }
                 }).then(function (res) {
                     if (res.status === 200) {
-                        $scope.bankAccountsData = res.data.data;
-                        $scope.bankAccounts = res.data.data.results;
-                        vm.getBankAccountCurrencies($scope.bankAccounts);
+                        if(res.data.data.results.length > 0 ){
+                            $scope.bankAccountsData = res.data.data;
+                            $scope.bankAccounts = res.data.data.results;
+                            vm.getBankAccountCurrencies($scope.bankAccounts);
+                        } else {
+                            $scope.loadingBankAccounts = false;
+                        }
                     }
                 }).catch(function (error) {
                     $scope.loadingBankAccounts = false;
