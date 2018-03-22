@@ -2,8 +2,7 @@
     'use strict';
 
     angular.module('BlurAdmin.pages.currency', [
-            'BlurAdmin.pages.currency.overview',
-            'BlurAdmin.pages.currency.settings'
+            'BlurAdmin.pages.currency.overview'
         ])
         .config(routeConfig);
 
