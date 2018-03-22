@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    angular.module('BlurAdmin.pages.accountSettings.accountCurrencyLimits')
+    angular.module('BlurAdmin.pages.users.user.accountSettings.accountCurrencyLimits')
         .directive('editAccountCurrencyLimit', editAccountCurrencyLimit);
 
     /** @ngInject */

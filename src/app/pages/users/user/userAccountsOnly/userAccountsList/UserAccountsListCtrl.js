@@ -5,11 +5,12 @@
         .controller('UserAccountsListCtrl', UserAccountsListCtrl);
 
     /** @ngInject */
-    function UserAccountsListCtrl($scope,environmentConfig,$stateParams,toastr,
+    function UserAccountsListCtrl($scope,environmentConfig,$stateParams,$rootScope,
                               $http,cookieManagement,errorHandler,$uibModal) {
 
         var vm = this;
         vm.token = cookieManagement.getCookie('TOKEN');
+        $rootScope.shouldBeBlue = 'Users';
         vm.uuid = $stateParams.uuid;
         $scope.loadingUserAccountsList = true;
 

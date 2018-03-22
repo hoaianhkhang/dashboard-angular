@@ -5,15 +5,25 @@
         .controller('UserAccountsOnlyCtrl', UserAccountsOnlyCtrl);
 
     /** @ngInject */
-    function UserAccountsOnlyCtrl($scope,environmentConfig,$stateParams,toastr,$uibModal,
+    function UserAccountsOnlyCtrl($scope,environmentConfig,$stateParams,$rootScope,$uibModal,
                               $http,cookieManagement,errorHandler,$location,$state) {
 
         var vm = this;
         vm.token = cookieManagement.getCookie('TOKEN');
+        $rootScope.shouldBeBlue = 'Users';
         vm.uuid = $stateParams.uuid;
         vm.reference = '';
         $scope.newAccountCurrencies = {list: []};
         $scope.loadingUserAccounts = true;
+        $scope.optionsCode = '';
+
+        $scope.closeOptionsBox = function () {
+            $scope.optionsCode = '';
+        };
+
+        $scope.showCurrenciesOptions = function (code) {
+            $scope.optionsCode = code;
+        };
 
         vm.getUserAccounts = function(){
             if(vm.token) {
@@ -28,6 +38,7 @@
                     if (res.status === 200) {
                         if(res.data.data.results.length > 0 ){
                             $scope.accounts = res.data.data.results;
+                            console.log($scope.accounts)
                         } else {
                             $scope.accounts = [];
                         }

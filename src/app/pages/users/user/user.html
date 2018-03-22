@@ -9,14 +9,31 @@
         </div>
     </div>
     <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <span class="user-details-name">{{user.first_name}} {{user.last_name}}</span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <span class="user-details-breadcrumb"><span ng-click="goToBreadCrumbsView('/users')" class="pointer">Users</span> /
+                <span ng-click="goToBreadCrumbsView('/user/' + user.identifier + '/details')" ng-class="{'text-bold': trackedLocation == 'details'}" class="pointer">Current user</span>
+                <span ng-show="(trackedLocation == 'accounts' || trackedLocation == 'account')" ng-class="{'text-bold': trackedLocation == 'accounts','pointer': trackedLocation == 'account'}"
+                      ng-click="goToBreadCrumbsView('/user/' + user.identifier + '/accounts')">/ Accounts</span>
+                <span ng-show="trackedLocation == 'transactions'" ng-class="{'text-bold': trackedLocation == 'transactions'}">/ Transactions</span>
+                <span ng-show="secondaryTrackedLocation == 'limits'" ng-class="{'text-bold': secondaryTrackedLocation == 'limits'}">/ Account currency limits</span>
+                <span ng-show="secondaryTrackedLocation == 'fees'" ng-class="{'text-bold': secondaryTrackedLocation == 'fees'}">/ Account currency fees</span>
+                <span ng-show="secondaryTrackedLocation == 'settings'" ng-class="{'text-bold': secondaryTrackedLocation == 'settings'}">/ Account currency settings</span>
+            </span>
+        </div>
+    </div>
+    <div class="row">
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 user-details-first-row">
             <div ng-hide="user.profile">
                 <div class="alternatePhoto pointer" ng-click="openUserProfilePictureModal('app/pages/users/user/userProfilePictureModal/userProfilePictureModal.html','md',user)">{{user.first_name | limitTo: 1 | uppercase}}{{user.last_name | uppercase | limitTo: 1}}</div>
             </div>
             <img ng-show="user.profile" class="pointer user-profile-picture" ng-click="openUserProfilePictureModal('app/pages/users/user/userProfilePictureModal/userProfilePictureModal.html','md',user)"
-                 ng-src="{{user.profile}}"  width="130" height="130" alt="token Image">
+                 ng-src="{{user.profile}}"  width="90" height="90" alt="token Image">
             <div>
-                <span class="user-details-name">{{user.first_name}} {{user.last_name}}</span>
                 <p ngclipboard ngclipboard-success="copiedSuccessfully()" data-clipboard-text="{{user.identifier}}"
                    class="user-details-info pointer">identifier: {{user.identifier}}</p>
                 <p class="user-details-info">user for {{beenAUser}}</p>

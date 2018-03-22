@@ -24,7 +24,6 @@
       'BlurAdmin.pages.resetPassword',
       'BlurAdmin.pages.resetPasswordConfirmation',
       'BlurAdmin.pages.verifyAdminEmail',
-      'BlurAdmin.pages.accountSettings',
       'BlurAdmin.pages.group',
       'BlurAdmin.pages.groupTiers',
       'BlurAdmin.pages.permissions',

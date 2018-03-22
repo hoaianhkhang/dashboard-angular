@@ -11,6 +11,7 @@
         var vm = this;
         vm.token = cookieManagement.getCookie('TOKEN');
         $rootScope.dashboardTitle = 'User | Rehive';
+        $rootScope.shouldBeBlue = 'Users';
         vm.uuid = $stateParams.uuid;
         $scope.user = {};
         $scope.loadingUser = true;
@@ -22,11 +23,41 @@
         vm.locationArray = vm.location.split('/');
         $scope.locationIndicator = vm.locationArray[vm.locationArray.length - 1];
 
-        $rootScope.$on('$locationChangeStart', function (event,newUrl) {
+        $scope.$on('$locationChangeStart', function (event,newUrl) {
             vm.location = $location.path();
             vm.locationArray = vm.location.split('/');
             $scope.locationIndicator = vm.locationArray[vm.locationArray.length - 1];
+            vm.locationTracker(vm.location);
         });
+
+        vm.locationTracker = function (location) {
+            var baseLocation = '/user/' + vm.uuid;
+            var remainingLocation = location.split(baseLocation).pop();
+            var remainingLocationArray = remainingLocation.split('/');
+
+            if(remainingLocationArray[1] == 'details'){
+                $scope.trackedLocation = 'details';
+                $scope.secondaryTrackedLocation = '';
+            } else if (remainingLocationArray[1] == 'accounts'){
+                $scope.trackedLocation = 'accounts';
+                $scope.secondaryTrackedLocation = '';
+            } else if (remainingLocationArray[1] == 'transactions'){
+                $scope.trackedLocation = 'transactions';
+                $scope.secondaryTrackedLocation = '';
+            } else if(remainingLocationArray[1] == 'account'){
+                $scope.locationIndicator = 'accounts';
+                $scope.trackedLocation = 'account';
+                $scope.secondaryTrackedLocation = '';
+                if(remainingLocationArray[(remainingLocationArray.length - 1)] == 'limits'){
+                    $scope.secondaryTrackedLocation = 'limits';
+                } else if(remainingLocationArray[(remainingLocationArray.length - 1)] == 'fees'){
+                    $scope.secondaryTrackedLocation = 'fees';
+                }else if(remainingLocationArray[(remainingLocationArray.length - 1)] == 'settings'){
+                    $scope.secondaryTrackedLocation = 'settings';
+                }
+            }
+        };
+        vm.locationTracker(vm.location);
 
         vm.getUser = function(){
             if(vm.token) {
@@ -208,6 +239,10 @@
                 }
             }, function(){
             });
+        };
+
+        $scope.goToBreadCrumbsView = function (path) {
+            $location.path(path);
         };
 
 

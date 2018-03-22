@@ -1,10 +1,14 @@
-<user-accounts-list></user-accounts-list>
 <div class="row">
     <div ng-hide="loadingUserAccounts || accounts.length < 0" class="col-lg-12 col-md-12 col-sm-12 col-xs-12" ng-repeat="account in accounts | orderBy: '-primary'">
         <div ng-hide="loadingUserAccounts" class="panel">
             <div class="panel-heading">
-        <span class="user-details-panel-title">{{account.name}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <span ng-show="account.primary" class="user-primary-account user-address-status">PRIMARY</span></span>
+            <span class="user-details-panel-title">
+                {{account.name}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <span class="account-reference">
+                    <span class="account-reference-title">Reference</span>&nbsp;&nbsp;
+                    <span class="account-reference-value">{{account.reference}}</span></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <span ng-show="account.primary" class="user-primary-account user-address-status">PRIMARY</span>
+            </span>
                 <a ng-click="openAddAccountCurrenciesModal('app/pages/users/user/userAccountsOnly/addUserAccountOnlyCurrenciesModal/addUserAccountOnlyCurrenciesModal.html','md',account.reference,account.currencies)" class="user-details-panel-link pull-right pointer">Add currency</a>
             </div>
             <div class="panel-body">
@@ -23,12 +27,16 @@
                         <td width="30%" title="{{acc.balance  | currencyModifiersFilter: acc.currency.divisibility}}">
                             {{acc.currency.symbol}} {{acc.balance  | currencyModifiersFilter: acc.currency.divisibility}}
                         </td>
-                        <td class="rehive-table-row-last-child" width="55%">
-                            <a ng-click="goToSettings(acc.currency.code,account.reference)" class="pull-right pointer user-bank-edit">Settings</a>
-                            <a ng-click="goToView('transactions.credit',acc.currency,account.user.email,account.reference)"
-                               class="pull-right pointer user-bank-edit margin-right-30">Credit</a>
-                            <a ng-click="goToView('transactions.debit',acc.currency,account.user.email,account.reference)"
-                               class="pull-right pointer user-bank-edit margin-right-30">Debit</a>
+                        <td class="rehive-table-row-last-child account-options-row" width="55%">
+                            <div class="pull-right" ng-click="showCurrenciesOptions(acc.currency.code); $event.stopPropagation()" click-outside="closeOptionsBox()">
+                                <span class="fa fa-ellipsis-h pull-right pointer account-options"></span>
+                                <ul ng-show="acc.currency.code == optionsCode" class="account-options-box">
+                                    <li ng-click="showCurrenciesOptions(acc.currency.code)"><i class="dropdown-arr"></i></li>
+                                    <li ng-click="goToSettings(acc.currency.code,account.reference)">Settings</li>
+                                    <li ng-click="goToView('transactions.credit',acc.currency,account.user.email,account.reference)">Credit</li>
+                                    <li ng-click="goToView('transactions.debit',acc.currency,account.user.email,account.reference)">Debit</li>
+                                </ul>
+                            </div>
                         </td>
                     </tr>
                 </table>

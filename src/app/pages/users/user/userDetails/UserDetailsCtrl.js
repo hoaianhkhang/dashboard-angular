@@ -5,10 +5,11 @@
         .controller('UserDetailsCtrl', UserDetailsCtrl);
 
     /** @ngInject */
-    function UserDetailsCtrl($scope,cookieManagement,$stateParams,$location) {
+    function UserDetailsCtrl($scope,$rootScope,cookieManagement,$stateParams,$location) {
 
         var vm = this;
         vm.token = cookieManagement.getCookie('TOKEN');
+        $rootScope.shouldBeBlue = 'Users';
         vm.uuid = $stateParams.uuid;
 
         $scope.goToPermissionSettings = function () {

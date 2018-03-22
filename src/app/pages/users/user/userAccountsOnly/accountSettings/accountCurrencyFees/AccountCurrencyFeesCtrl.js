@@ -1,15 +1,16 @@
 (function () {
     'use strict';
 
-    angular.module('BlurAdmin.pages.accountSettings.accountCurrencyFees')
+    angular.module('BlurAdmin.pages.users.user.accountSettings.accountCurrencyFees')
         .controller('AccountCurrencyFeesCtrl', AccountCurrencyFeesCtrl);
 
     /** @ngInject */
-    function AccountCurrencyFeesCtrl($scope,$window,$stateParams,$http,$uibModal,environmentConfig,_,
+    function AccountCurrencyFeesCtrl($scope,$window,$stateParams,$http,$uibModal,environmentConfig,_,$rootScope,
                                      sharedResources,cookieManagement,errorHandler,currencyModifiers,toastr) {
 
         var vm = this;
         vm.token = cookieManagement.getCookie('TOKEN');
+        $rootScope.shouldBeBlue = 'Users';
         vm.currencyCode = $stateParams.currencyCode;
         vm.currenciesList = JSON.parse($window.sessionStorage.currenciesList);
         vm.reference = $stateParams.reference;

@@ -6,7 +6,10 @@
         ba-sidebar-toggling-item="item">
       <hr class="sidebar-custom-hr" ng-show="item.title=='Build a fintech app'">
       <a ng-mouseenter="hoverItem($event, item)" ui-state="item.stateRef || ''" ng-href="{{::(item.fixedHref ? item.fixedHref: '')}}" ng-if="::!item.subMenu" class="al-sidebar-list-link">
-        <i class="{{ ::item.icon }}"></i><span ng-class="{'sidebar-custom-menu-title': item.title =='Build a fintech app'}">{{ ::item.title }}</span>
+        <i class="{{ ::item.icon }}"></i>
+        <span ng-class="{'sidebar-custom-menu-title': item.title =='Build a fintech app','should-be-blue': shouldBeBlue == item.title}">
+          {{ ::item.title }}
+        </span>
       </a>
       <a ng-mouseenter="hoverItem($event, item)" ng-if="::item.subMenu"
          class="al-sidebar-list-link" ba-ui-sref-toggler>
