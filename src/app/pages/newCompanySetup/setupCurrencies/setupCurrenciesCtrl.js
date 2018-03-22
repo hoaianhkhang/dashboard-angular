@@ -4,7 +4,7 @@
     angular.module('BlurAdmin.pages.newCompanySetup.setupCurrencies')
         .controller("SetupCurrenciesCtrl", SetupCurrenciesCtrl);
 
-    function SetupCurrenciesCtrl($rootScope,$scope,$http,toastr,cookieManagement,currenciesList,
+    function SetupCurrenciesCtrl($rootScope,$scope,$http,toastr,cookieManagement,currenciesList,$ngConfirm,
         environmentConfig,$location,errorHandler,$uibModal,localStorageManagement,$window) {
 
         var vm = this;
@@ -112,6 +112,30 @@
             } else {
                 toastr.info('Please select atleast one currency');
             }
+        };
+
+        $scope.deleteCurrencyConfirm = function (code) {
+            $ngConfirm({
+                title: 'Delete currency',
+                content: 'Are you sure you want to delete this currency?',
+                animationBounce: 1,
+                animationSpeed: 100,
+                scope: $scope,
+                buttons: {
+                    close: {
+                        text: "No",
+                        btnClass: 'btn-default pull-left dashboard-btn'
+                    },
+                    ok: {
+                        text: "Yes",
+                        btnClass: 'btn-primary dashboard-btn',
+                        keys: ['enter'], // will trigger when enter is pressed
+                        action: function(scope){
+                            $scope.deleteCurrency(code);
+                        }
+                    }
+                }
+            });
         };
 
         $scope.deleteCurrency = function(code){

@@ -4,7 +4,7 @@
     angular.module('BlurAdmin.pages.newCompanySetup.setupUsersGroups')
         .controller("SetupUsersGroupsCtrl", SetupUsersGroupsCtrl);
 
-    function SetupUsersGroupsCtrl($rootScope,$scope,$http,cookieManagement,toastr,
+    function SetupUsersGroupsCtrl($rootScope,$scope,$http,cookieManagement,toastr,$ngConfirm,
                                     environmentConfig,$location,errorHandler,localStorageManagement) {
         var vm = this;
         vm.token=cookieManagement.getCookie("TOKEN");
@@ -105,7 +105,30 @@
             $scope.user = group;
             $scope.user.prevName = group.name;
             $scope.editingUser = true;
+        };
 
+        $scope.deleteGroupConfirm = function (name) {
+            $ngConfirm({
+                title: 'Delete group',
+                content: 'Are you sure you want to delete this group?',
+                animationBounce: 1,
+                animationSpeed: 100,
+                scope: $scope,
+                buttons: {
+                    close: {
+                        text: "No",
+                        btnClass: 'btn-default pull-left dashboard-btn'
+                    },
+                    ok: {
+                        text: "Yes",
+                        btnClass: 'btn-primary dashboard-btn',
+                        keys: ['enter'], // will trigger when enter is pressed
+                        action: function(scope){
+                            $scope.deleteGroup(name);
+                        }
+                    }
+                }
+            });
         };
 
         $scope.deleteGroup = function (name) {

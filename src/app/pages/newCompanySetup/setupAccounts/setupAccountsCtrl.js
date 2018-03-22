@@ -4,9 +4,10 @@
     angular.module('BlurAdmin.pages.newCompanySetup.setupAccounts')
         .controller("SetupAccountsCtrl", SetupAccountsCtrl);
 
-    function SetupAccountsCtrl($rootScope,$scope,$http,toastr,cookieManagement,currenciesList,
+    function SetupAccountsCtrl($rootScope,$scope,$http,toastr,cookieManagement,currenciesList,$ngConfirm,
         environmentConfig,$location,errorHandler,localStorageManagement) {
-        var vm=this;
+
+        var vm = this;
         vm.token=cookieManagement.getCookie("TOKEN");
         $scope.groups = [];
         $scope.currencies = [];        
@@ -247,6 +248,30 @@
                 account.currencies = $scope.alreadySelectedCurrencies;
                 $scope.alreadySelectedCurrencies = [];
             }
+        };
+
+        $scope.deleteAccountConfirm = function (account) {
+            $ngConfirm({
+                title: 'Delete account configuration',
+                content: 'Are you sure you want to delete this account configuration?',
+                animationBounce: 1,
+                animationSpeed: 100,
+                scope: $scope,
+                buttons: {
+                    close: {
+                        text: "No",
+                        btnClass: 'btn-default pull-left dashboard-btn'
+                    },
+                    ok: {
+                        text: "Yes",
+                        btnClass: 'btn-primary dashboard-btn',
+                        keys: ['enter'], // will trigger when enter is pressed
+                        action: function(scope){
+                            $scope.deleteAccount(account);
+                        }
+                    }
+                }
+            });
         };
 
         $scope.deleteAccount = function (account) {

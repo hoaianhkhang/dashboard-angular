@@ -4,8 +4,9 @@
     angular.module('BlurAdmin.pages.newCompanySetup.setupTransactionSubtypes')
         .controller("SetupTransactionSubtypesCtrl", SetupTransactionSubtypesCtrl);
 
-    function SetupTransactionSubtypesCtrl($rootScope,$scope,$http,cookieManagement,toastr,
+    function SetupTransactionSubtypesCtrl($rootScope,$scope,$http,cookieManagement,toastr,$ngConfirm,
                                             environmentConfig,$location,errorHandler,localStorageManagement) {
+
         var vm = this;
         vm.token=cookieManagement.getCookie("TOKEN");
         $scope.subtypes = [];
@@ -110,7 +111,31 @@
             });
         };
 
-        $scope.deleteSelectedItem=function (id) {
+        $scope.deleteSubtypeConfirm = function (id) {
+            $ngConfirm({
+                title: 'Delete subtype',
+                content: 'Are you sure you want to delete this subtype?',
+                animationBounce: 1,
+                animationSpeed: 100,
+                scope: $scope,
+                buttons: {
+                    close: {
+                        text: "No",
+                        btnClass: 'btn-default pull-left dashboard-btn'
+                    },
+                    ok: {
+                        text: "Yes",
+                        btnClass: 'btn-primary dashboard-btn',
+                        keys: ['enter'], // will trigger when enter is pressed
+                        action: function(scope){
+                            $scope.deleteSelectedItem(id);
+                        }
+                    }
+                }
+            });
+        };
+
+        $scope.deleteSelectedItem = function (id) {
             $scope.loadingSetupSubtypes= true;
             $http.delete(environmentConfig.API + '/admin/subtypes/' + id + '/', {
                 headers: {
