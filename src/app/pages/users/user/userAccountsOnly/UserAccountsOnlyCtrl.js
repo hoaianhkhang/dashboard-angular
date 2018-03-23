@@ -16,13 +16,16 @@
         $scope.newAccountCurrencies = {list: []};
         $scope.loadingUserAccounts = true;
         $scope.optionsCode = '';
+        $scope.optionsReference = '';
 
         $scope.closeOptionsBox = function () {
             $scope.optionsCode = '';
+            $scope.optionsReference = '';
         };
 
-        $scope.showCurrenciesOptions = function (code) {
+        $scope.showCurrenciesOptions = function (code,reference) {
             $scope.optionsCode = code;
+            $scope.optionsReference = reference;
         };
 
         vm.getUserAccounts = function(){
@@ -38,7 +41,6 @@
                     if (res.status === 200) {
                         if(res.data.data.results.length > 0 ){
                             $scope.accounts = res.data.data.results;
-                            console.log($scope.accounts)
                         } else {
                             $scope.accounts = [];
                         }
@@ -83,6 +85,50 @@
 
         $scope.goToSettings = function(currencyCode, account){
             $location.path('user/' + vm.uuid + '/account/'+account+'/settings/'+ currencyCode);
+        };
+
+        $scope.openAddAccountModal = function (page, size) {
+            vm.theAccountModal = $uibModal.open({
+                animation: true,
+                templateUrl: page,
+                size: size,
+                controller: 'AddAccountModalCtrl',
+                scope: $scope,
+                resolve: {
+                    currenciesList: function () {
+                        return $scope.currencyOptions;
+                    }
+                }
+            });
+
+            vm.theAccountModal.result.then(function(account){
+                if(account){
+                    vm.getUserAccounts();
+                }
+            }, function(){
+            });
+        };
+
+        $scope.openEditAccountModal = function (page, size,account) {
+            vm.theEditAccountModal = $uibModal.open({
+                animation: true,
+                templateUrl: page,
+                size: size,
+                controller: 'EditAccountModalCtrl',
+                scope: $scope,
+                resolve: {
+                    account: function () {
+                        return account;
+                    }
+                }
+            });
+
+            vm.theEditAccountModal.result.then(function(account){
+                if(account){
+                    vm.getUserAccounts();
+                }
+            }, function(){
+            });
         };
 
         $scope.openAddAccountCurrenciesModal = function (page, size, reference,currencies) {

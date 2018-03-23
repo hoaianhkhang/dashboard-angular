@@ -238,6 +238,13 @@ input.custom-rehive-checkbox:disabled{
   font-weight: 400;
 }
 
+.account-edit-link{
+  position: absolute;
+  top: 25px;
+  right: 119px;
+  font-size: 14px;
+}
+
 .account-reference{
   & > .account-reference-title{
     font-weight: normal;
@@ -304,6 +311,10 @@ input.custom-rehive-checkbox:disabled{
       border-bottom-color: $default;
     }
   }
+}
+
+.account-menu-selection{
+  background-color: #f5f5f5;
 }
 
 .status-pending{

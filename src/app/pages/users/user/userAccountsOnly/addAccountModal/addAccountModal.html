@@ -26,7 +26,7 @@
                 <label>Currency <small class="text-muted">(Hold CTRL to select multiple currencies)</small></label>
                 <br>
                 <select class="form-control pointer divider" ng-model="currenciesForNewAccount.list" multiple
-                        ng-options="currency.code for currency in currencyOptions | orderBy: 'code' track by currency.code">
+                        ng-options="currency.code for currency in currenciesList | orderBy: 'code' track by currency.code">
                 </select>
                 <p>Currencies selected:
                     <span ng-repeat="currency in currenciesForNewAccount.list | orderBy: 'code'">

@@ -2,15 +2,17 @@
     'use strict';
 
     angular.module('BlurAdmin.pages.users.user.accounts')
-        .controller('AddUserAccountsListModalCtrl', AddUserAccountsListModalCtrl);
+        .controller('AddAccountModalCtrl', AddAccountModalCtrl);
 
-    function AddUserAccountsListModalCtrl($scope,$uibModalInstance,toastr,$stateParams,$http,environmentConfig,cookieManagement,errorHandler) {
+    function AddAccountModalCtrl($scope,$uibModalInstance,toastr,currenciesList,
+                                 $stateParams,$http,environmentConfig,cookieManagement,errorHandler) {
 
         var vm = this;
 
         $scope.newUserAccountParams = {};
         vm.uuid = $stateParams.uuid;
         vm.token = cookieManagement.getCookie('TOKEN');
+        $scope.currenciesList = currenciesList;
         $scope.currenciesForNewAccount = {
             list: []
         };
@@ -64,7 +66,7 @@
                         }
                     }).catch(function (error) {
                         $scope.currenciesForNewAccount = {list: []};
-                        $$scope.addingUserAccount = false;
+                        $scope.addingUserAccount = false;
                         errorHandler.evaluateErrors(error.data);
                         errorHandler.handleErrors(error);
                     });

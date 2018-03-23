@@ -2,9 +2,9 @@
     'use strict';
 
     angular.module('BlurAdmin.pages.users.user.accounts')
-        .controller('EditUserAccountModalCtrl', EditUserAccountModalCtrl);
+        .controller('EditAccountModalCtrl', EditAccountModalCtrl);
 
-    function EditUserAccountModalCtrl($scope,$uibModalInstance,account,toastr,$stateParams,$filter,
+    function EditAccountModalCtrl($scope,$uibModalInstance,account,toastr,$stateParams,
                                       $http,environmentConfig,cookieManagement,errorHandler) {
 
         var vm = this;
