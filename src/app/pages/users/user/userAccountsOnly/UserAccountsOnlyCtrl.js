@@ -6,7 +6,7 @@
 
     /** @ngInject */
     function UserAccountsOnlyCtrl($scope,environmentConfig,$stateParams,$rootScope,$uibModal,
-                              $http,cookieManagement,errorHandler,$location,$state) {
+                              $http,cookieManagement,errorHandler,$location,$state,serializeFiltersService) {
 
         var vm = this;
         vm.token = cookieManagement.getCookie('TOKEN');
@@ -17,6 +17,25 @@
         $scope.loadingUserAccounts = true;
         $scope.optionsCode = '';
         $scope.optionsReference = '';
+        $scope.accountsFiltersCount = 0;
+        $scope.showingAccountsFilters = false;
+        $scope.accounts = [];
+        $scope.filtersObj = {
+            accountNameFilter: false,
+            accountReferenceFilter: false
+        };
+        $scope.applyFiltersObj = {
+            accountNameFilter: {
+                selectedAccountName: ''
+            },
+            accountReferenceFilter: {
+                selectedAccountReference: ''
+            }
+        };
+
+        $scope.showAccountsFilters = function () {
+            $scope.showingAccountsFilters = !$scope.showingAccountsFilters;
+        };
 
         $scope.closeOptionsBox = function () {
             $scope.optionsCode = '';
@@ -28,10 +47,39 @@
             $scope.optionsReference = reference;
         };
 
-        vm.getUserAccounts = function(){
+        vm.getUsersAccountsUrl = function(){
+            $scope.accountsFiltersCount = 0;
+
+            for(var x in $scope.filtersObj){
+                if($scope.filtersObj.hasOwnProperty(x)){
+                    if($scope.filtersObj[x]){
+                        $scope.accountsFiltersCount = $scope.accountsFiltersCount + 1;
+                    }
+                }
+            }
+
+            var searchObj = {
+                page_size: 250,
+                user: vm.uuid,
+                reference: $scope.filtersObj.accountReferenceFilter ? ($scope.applyFiltersObj.accountReferenceFilter.selectedAccountReference ?  $scope.applyFiltersObj.accountReferenceFilter.selectedAccountReference : null): null,
+                name: $scope.filtersObj.accountNameFilter ?($scope.applyFiltersObj.accountNameFilter.selectedAccountName ?  $scope.applyFiltersObj.accountNameFilter.selectedAccountName : null): null
+            };
+
+            return environmentConfig.API + '/admin/accounts/?' + serializeFiltersService.serializeFilters(searchObj);
+        };
+
+        $scope.getUserAccounts = function(){
             if(vm.token) {
                 $scope.loadingUserAccounts = true;
-                $http.get(environmentConfig.API + '/admin/accounts/?user=' + vm.uuid, {
+                $scope.showingAccountsFilters = false;
+
+                if($scope.accounts.length > 0 ){
+                    $scope.accounts.length = 0;
+                }
+
+                var usersAccountsUrl = vm.getUsersAccountsUrl();
+
+                $http.get(usersAccountsUrl, {
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': vm.token
@@ -53,7 +101,7 @@
                 });
             }
         };
-        vm.getUserAccounts();
+        $scope.getUserAccounts();
 
         vm.getCompanyCurrencies = function(){
             if(vm.token){
@@ -87,6 +135,13 @@
             $location.path('user/' + vm.uuid + '/account/'+account+'/settings/'+ currencyCode);
         };
 
+        $scope.clearAccountsFilters = function () {
+            $scope.filtersObj = {
+                accountNameFilter: false,
+                accountReferenceFilter: false
+            };
+        };
+
         $scope.openAddAccountModal = function (page, size) {
             vm.theAccountModal = $uibModal.open({
                 animation: true,
@@ -103,13 +158,13 @@
 
             vm.theAccountModal.result.then(function(account){
                 if(account){
-                    vm.getUserAccounts();
+                    $scope.getUserAccounts();
                 }
             }, function(){
             });
         };
 
-        $scope.openEditAccountModal = function (page, size,account) {
+        $scope.openEditAccountModal = function (page, size,account,currencies) {
             vm.theEditAccountModal = $uibModal.open({
                 animation: true,
                 templateUrl: page,
@@ -119,28 +174,6 @@
                 resolve: {
                     account: function () {
                         return account;
-                    }
-                }
-            });
-
-            vm.theEditAccountModal.result.then(function(account){
-                if(account){
-                    vm.getUserAccounts();
-                }
-            }, function(){
-            });
-        };
-
-        $scope.openAddAccountCurrenciesModal = function (page, size, reference,currencies) {
-            vm.theModal = $uibModal.open({
-                animation: true,
-                templateUrl: page,
-                size: size,
-                controller: 'AddUserAccountOnlyCurrenciesModalCtrl',
-                scope: $scope,
-                resolve: {
-                    reference: function () {
-                        return reference;
                     },
                     currenciesList: function () {
                         return currencies;
@@ -148,9 +181,9 @@
                 }
             });
 
-            vm.theModal.result.then(function(account){
+            vm.theEditAccountModal.result.then(function(account){
                 if(account){
-                    vm.getUserAccounts();
+                    $scope.getUserAccounts();
                 }
             }, function(){
             });

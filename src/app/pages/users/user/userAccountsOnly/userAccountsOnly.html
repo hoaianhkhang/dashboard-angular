@@ -1,6 +1,13 @@
 <div class="panel" >
     <div class="panel-heading">
         <div class="table-filter-heading">
+            <button ng-click="showAccountsFilters()" ng-class="{'transactions-filter-btn': (accountsFiltersCount > 0), 'transactions-btn': (accountsFiltersCount == 0)}"
+                    class="btn btn-default">Filters
+                <span ng-show="accountsFiltersCount > 0">|</span> <span ng-show="accountsFiltersCount > 0" class="filter-count">{{accountsFiltersCount}}</span>
+            </button>
+            <div ng-show="showingAccountsFilters">
+                <user-accounts-filter></user-accounts-filter>
+            </div>
             <div>
                 <button class="btn btn-success pull-right panel-header-button currencies-page-buttons-add"
                         ng-click="openAddAccountModal('app/pages/users/user/userAccountsOnly/addAccountModal/addAccountModal.html','md')">Add account</button>
@@ -19,8 +26,7 @@
                         <span class="account-reference-value">{{account.reference}}</span></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <span ng-show="account.primary" class="user-primary-account user-address-status">PRIMARY</span>
                 </span>
-                <a ng-click="openAddAccountCurrenciesModal('app/pages/users/user/userAccountsOnly/addUserAccountOnlyCurrenciesModal/addUserAccountOnlyCurrenciesModal.html','md',account.reference,account.currencies)" class="user-details-panel-link pull-right pointer">Add currency</a>
-                <a ng-click="openEditAccountModal('app/pages/users/user/userAccountsOnly/editAccountModal/editAccountModal.html','md',account)" class="account-edit-link pull-right pointer">Edit</a>
+                <a ng-click="openEditAccountModal('app/pages/users/user/userAccountsOnly/editAccountModal/editAccountModal.html','md',account,account.currencies)" class="user-details-panel-link pull-right pointer">Edit</a>
             </div>
             <div class="panel-body">
                 <table ng-show="account.currencies.length > 0" class="table">

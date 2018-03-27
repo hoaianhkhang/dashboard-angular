@@ -24,5 +24,9 @@
             $location.path('user/' + vm.uuid + '/account/'+ $scope.reference +'/settings/' + $scope.currencyCode + '/' + path);
         };
 
+        if($scope.subMenuLocation != 'limits' && $scope.subMenuLocation != 'fees'  && $scope.subMenuLocation != 'settings' ){
+            $scope.goToSetting('limits');
+        }
+
     }
 })();

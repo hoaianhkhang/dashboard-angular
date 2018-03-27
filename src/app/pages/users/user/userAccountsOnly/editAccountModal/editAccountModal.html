@@ -19,6 +19,23 @@
                 <input class="custom-rehive-checkbox" ng-model="editUserAccountParams.primary" type="checkbox">
             </div>
             <div class="form-group">
+                <label>Currency <span class="required-icon">*</span> <small class="text-muted">(Hold CTRL to select multiple currencies)</small></label>
+                <br>
+                <select class="form-control pointer divider" ng-model="newAccountCurrencies.list" multiple
+                        ng-options="currency.code for currency in currencyOptions | orderBy: 'code' track by currency.code">
+                </select>
+                <p>Currencies selected:
+                    <span ng-repeat="currency in newAccountCurrencies.list | orderBy: 'code'">
+                    {{$last ? ' ' + currency.code : currency.code + ',' }}
+                </span>
+                </p>
+                <p>Currencies already selected:
+                    <span ng-repeat="currencyObj in currenciesList | orderBy: 'currency.code'">
+                    {{$last ? ' ' + currencyObj.currency.code : currencyObj.currency.code + ','}}
+                </span>
+                </p>
+            </div>
+            <div class="form-group">
                 <button ng-click="editUserAccountFunction(editUserAccountParams)" ng-disabled="!userAccountForm.$valid" class="btn btn-primary user-accounts-btn pull-right">Save</button>
                 <button ng-click="$dismiss()" class="btn btn-default pull-left user-accounts-btn">Close</button>
             </div>

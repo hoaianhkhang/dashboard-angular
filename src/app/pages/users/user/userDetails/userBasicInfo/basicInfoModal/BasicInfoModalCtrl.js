@@ -4,7 +4,8 @@
     angular.module('BlurAdmin.pages.users.user')
         .controller('BasicInfoModalCtrl', BasicInfoModalCtrl);
 
-    function BasicInfoModalCtrl($scope,$uibModalInstance,user,toastr,$filter,$http,environmentConfig,cookieManagement,errorHandler) {
+    function BasicInfoModalCtrl($scope,$uibModalInstance,user,toastr,$filter,$http,environmentConfig,
+                                $window,cookieManagement,errorHandler) {
 
         var vm = this;
 
@@ -68,7 +69,11 @@
                     if (res.status === 200) {
                         toastr.success('Successfully updated the user info');
                         $scope.editUserBasicInfo = {};
-                        $uibModalInstance.close($scope.user);
+                        if(vm.updatedUserBasicInfo.hasOwnProperty('first_name') || vm.updatedUserBasicInfo.hasOwnProperty('last_name')){
+                            $window.location.reload();
+                        } else {
+                            $uibModalInstance.close($scope.user);
+                        }
                     }
                 }).catch(function (error) {
                     $scope.loadingUserBasicInfo = false;
