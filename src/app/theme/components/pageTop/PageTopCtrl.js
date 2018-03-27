@@ -42,6 +42,7 @@
                         if (res.status === 200) {
                             $rootScope.pageTopObj.companyObj = {};
                             $rootScope.pageTopObj.companyObj = res.data.data;
+                            cookieManagement.setCookie('companyIdentifier',$rootScope.pageTopObj.companyObj.identifier);
                         }
                     }).catch(function (error) {
                     });
