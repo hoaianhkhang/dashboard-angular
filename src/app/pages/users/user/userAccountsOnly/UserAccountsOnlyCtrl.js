@@ -103,25 +103,6 @@
         };
         $scope.getUserAccounts();
 
-        vm.getCompanyCurrencies = function(){
-            if(vm.token){
-                $http.get(environmentConfig.API + '/admin/currencies/?enabled=true', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
-                    if (res.status === 200) {
-                        $scope.currencyOptions = res.data.data.results;
-                    }
-                }).catch(function (error) {
-                    errorHandler.evaluateErrors(error.data);
-                    errorHandler.handleErrors(error);
-                });
-            }
-        };
-        vm.getCompanyCurrencies();
-
         $scope.goToView = function(state,currency,email,account){
             if(email){
                 $state.go(state,{"email": email, "account": account});
@@ -148,12 +129,7 @@
                 templateUrl: page,
                 size: size,
                 controller: 'AddAccountModalCtrl',
-                scope: $scope,
-                resolve: {
-                    currenciesList: function () {
-                        return $scope.currencyOptions;
-                    }
-                }
+                scope: $scope
             });
 
             vm.theAccountModal.result.then(function(account){

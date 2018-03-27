@@ -28,7 +28,9 @@
                 <select class="form-control pointer divider" ng-model="currenciesForNewAccount.list" multiple
                         ng-options="currency.code for currency in currenciesList | orderBy: 'code' track by currency.code">
                 </select>
-                <p>Currencies selected:
+                <p ng-hide="currenciesList.length > 0 || addingUserAccount">Looks like you haven't added any currencies to your company yet.
+                    Add one by going to the <a href="/#/currencies" target="_blank">currencies page</a>.</p>
+                <p ng-show="currenciesList.length > 0 || addingUserAccount">Currencies selected:
                     <span ng-repeat="currency in currenciesForNewAccount.list | orderBy: 'code'">
                     {{$last ? ' ' + currency.code : currency.code + ',' }}
                 </span>

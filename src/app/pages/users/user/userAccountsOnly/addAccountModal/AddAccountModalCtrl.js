@@ -12,10 +12,32 @@
         $scope.newUserAccountParams = {};
         vm.uuid = $stateParams.uuid;
         vm.token = cookieManagement.getCookie('TOKEN');
-        $scope.currenciesList = currenciesList;
+        $scope.addingUserAccount = true;
         $scope.currenciesForNewAccount = {
             list: []
         };
+
+        vm.getCompanyCurrencies = function(){
+            $scope.addingUserAccount = true;
+            if(vm.token){
+                $http.get(environmentConfig.API + '/admin/currencies/?enabled=true', {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': vm.token
+                    }
+                }).then(function (res) {
+                    if (res.status === 200) {
+                        $scope.addingUserAccount = false;
+                        $scope.currenciesList = res.data.data.results;
+                    }
+                }).catch(function (error) {
+                    $scope.addingUserAccount = false;
+                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.handleErrors(error);
+                });
+            }
+        };
+        vm.getCompanyCurrencies();
 
         $scope.addNewUserAccount = function(newUserAccountParams){
             if(vm.token) {
