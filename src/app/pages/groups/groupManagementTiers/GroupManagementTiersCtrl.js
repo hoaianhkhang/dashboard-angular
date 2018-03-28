@@ -17,6 +17,7 @@
         vm.locationArray = vm.location.split('/');
         $scope.locationIndicator = vm.locationArray[vm.locationArray.length - 1];
         $scope.subMenuLocation = $scope.locationIndicator;
+        $scope.locationIndicator = 'tiers';
 
         $scope.goToGroupView = function (path) {
             $location.path(path);
@@ -26,6 +27,11 @@
             $scope.subMenuLocation = path;
             $location.path('/groups/' + vm.groupName + '/tiers/' + path);
         };
+
+        if($scope.subMenuLocation != 'limits' && $scope.subMenuLocation != 'fees' && $scope.subMenuLocation != 'settings'
+            && $scope.subMenuLocation != 'requirements' && $scope.subMenuLocation != 'list'){
+            $scope.goToGroupManagementTiersSettings('list');
+        }
 
         $scope.getGroup = function () {
             if(vm.token) {

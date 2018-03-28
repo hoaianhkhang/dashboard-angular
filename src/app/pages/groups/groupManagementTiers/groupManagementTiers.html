@@ -1,7 +1,12 @@
 <div class="row">
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 groups-breadcrumb">
         <span ng-click="goToGroupView('groups/overview')" class="pointer">Groups</span>
-        <span><strong>&nbsp;/&nbsp; Group tiers</strong></span>
+        <span>&nbsp;/&nbsp; Group tiers</span>
+        <span ng-show="subMenuLocation == 'list'"><strong>&nbsp;/&nbsp; list</strong></span>
+        <span ng-show="subMenuLocation == 'requirements'"><strong>&nbsp;/&nbsp; Tier requirements</strong></span>
+        <span ng-show="subMenuLocation == 'limits'"><strong>&nbsp;/&nbsp; Tier limits</strong></span>
+        <span ng-show="subMenuLocation == 'fees'"><strong>&nbsp;/&nbsp; Tier fees</strong></span>
+        <span ng-show="subMenuLocation == 'settings'"><strong>&nbsp;/&nbsp; Tier settings</strong></span>
     </div>
 </div>
 <h1 class="group-details-page-title">Group tiers</h1>
@@ -23,7 +28,7 @@
                 <li><a href="/#/groups/{{editGroupObj.name}}/details" ng-class="{'transaction-location': locationIndicator == 'details'}">Details</a></li>
                 <li><a href="/#/groups/{{editGroupObj.name}}/users" ng-class="{'transaction-location': locationIndicator == 'users'}">Users</a></li>
                 <li><a href="/#/groups/{{editGroupObj.name}}/permissions" ng-class="{'transaction-location': locationIndicator == 'permissions'}">Permissions</a></li>
-                <li><a href="/#/groups/{{editGroupObj.name}}/tiers" ng-class="{'transaction-location': locationIndicator == 'tiers'}">Tiers</a></li>
+                <li><a ng-click="goToGroupManagementTiersSettings('list')" ng-class="{'transaction-location': locationIndicator == 'tiers'}">Tiers</a></li>
                 <li><a href="/#/groups/{{editGroupObj.name}}/account-configurations" ng-class="{'transaction-location': locationIndicator == 'account-configurations'}">Account configurations</a></li>
                 <li><a href="/#/groups/{{editGroupObj.name}}/transaction-settings" ng-class="{'transaction-location': locationIndicator == 'transaction-settings'}">Transaction settings</a></li>
             </ul>
