@@ -21,6 +21,39 @@
   }
 }
 
+.group-overview-td{
+  position: relative;
+  & .group-overview-tooltip{
+    display: none;
+  }
+  &:hover {
+    position: relative;
+    & .group-overview-tooltip {
+      display: inline-block;
+      position: absolute;
+      top: 108%;
+      left: -25%;
+      z-index: 1000;
+      line-height: 20px;
+      padding: 1px 5px;
+      background-color: rgba(0, 0, 0, 0.8);
+      color: white;
+      max-width: 150px;
+    }
+    & .group-overview-tooltip::after {
+      content: " ";
+      position: absolute;
+      bottom: 100%;
+      z-index: 1000;
+      left: 40%;
+      margin-left: -5px;
+      border-width: 5px;
+      border-style: solid;
+      border-color: transparent transparent black transparent;
+    }
+  }
+}
+
 .group-account-currencies-td:hover{
   position: relative;
   & .group-tooltip{
