@@ -18,73 +18,32 @@
             ACCOUNT_CURRENCY : 'accountcurrency',
             ACCOUNT_CURRENCY_FEE : 'accountcurrencyfee',
             ACCOUNT_CURRENCY_LIMIT : 'accountcurrencylimit',
-            ACCOUNT_CURRENCY_TRANSACTION_FEE : 'accountcurrencytransactionfee',
-            ACCOUNT_CURRENCY_TRANSACTION_SWITCH : 'accountcurrencytransactionswitch',
-            ACCOUNT_CONFIGURATION : 'accountconfiguration',
-            ACCOUNT_TOKEN : 'accounttoken',
-            ACCOUNT_TOKEN_LIMIT : 'accounttokenlimit',
-            ACCOUNT_TOKEN_TRANSACTION_FEE : 'accounttokentransactionfee',
-            ACCOUNT_TOKEN_TRANSACTION_SWITCH : 'accounttokentransactionswitch',
             CURRENCY : 'currency',
-            CURRENCY_COMPANY_BANK_ACCOUNT : 'currencycompanybankaccount',
-            CURRENCY_TIER : 'currencytier',
-            CURRENCY_TIER_LIMIT : 'currencytierlimit',
-            CURRENCY_TIER_REQUIREMENT : 'currencytierrequirement',
-            CURRENCY_TIER_TRANSACTION_FEE : 'currencytiertransactionfee',
-            CURRENCY_TIER_TRANSACTION_SWITCH : 'currencytiertransactionswitch',
             BANK_BRANCH_ADDRESS : 'bankbranchaddress',
             COMPANY : 'company',
             COMPANY_ADDRESS : 'companyaddress',
             COMPANY_BANK_ACCOUNT : 'companybankaccount',
             COMPANY_NOTIFICATION : 'companynotification',
-            COMPANY_PERMISSION_GROUP : 'companypermissiongroup',
             COMPANY_SERVICE : 'companyservice',
-            COMPANY_TRANSACTION_SWITCH : 'companytransactionswitch',
             CRYPTO_ACCOUNT : 'cryptoaccount',
             DOCUMENT : 'document',
-            GENERAL_WEBHOOK : 'generalwebhook',
-            GENERAL_WEBHOOK_TASK : 'generalwebhooktask',
-            GLOBAL_SWITCH : 'globalswitch',
+            USER : 'user',
+            USER_ADDRESS : 'useraddress',
+            USER_BANK_ACCOUNT : 'userbankaccount',
+            MOBILE : 'mobile',
             GROUP: 'group',
             GROUP_TIER: 'grouptier',
             GROUP_TIER_FEE: 'grouptierfee',
             GROUP_TIER_LIMIT: 'grouptierlimit',
             GROUP_TIER_REQUIREMENT: 'grouptierrequirement',
-            GROUP_TIER_TRANSACTION_FEE: 'grouptiertransactionfee',
-            IDEMPOTENT_REQUEST : 'idempotentrequest',
-            INFO : 'info',
-            INVITED_MANAGER : 'invitedmanager',
-            MFA_TOKEN_VERIFICATION : 'mfatokenverification',
-            MFA_USER_VERIFICATION : 'mfauserverification',
-            MOBILE : 'mobile',
-            MOBILE_CONFIRMATION : 'mobileconfirmation',
-            NOTIFICATION : 'notification',
-            PROXY_GROUP : 'proxygroup',
+            ACCOUNT_CONFIGURATION: 'accountconfiguration',
             REQUEST : 'request',
             SERVICE : 'service',
-            SERVICE_PERMISSION : 'servicepermission',
-            TOKEN : 'token',
-            TOKEN_COMPANY_BANK_ACCOUNT : 'tokencompanybankaccount',
-            TOKEN_TIER : 'tokentier',
-            TOKEN_TIER_LIMIT : 'tokentierlimit',
-            TOKEN_TIER_REQUIREMENT : 'tokentierrequirement',
-            TOKEN_TIER_TRANSACTION_FEE : 'tokentiertransactionfee',
-            TOKEN_TIER_TRANSACTION_SWITCH : 'tokentiertransactionswitch',
-            TOTP_DEVICE : 'totpdevice',
             TRANSACTION : 'transaction',
             TRANSACTION_FEE : 'transactionfee',
             TRANSACTION_MESSAGE : 'transactionmessage',
             TRANSACTION_SUBTYPE : 'transactionsubtype',
-            TRANSACTION_TRANSITION : 'transactiontransition',
-            TRANSACTION_TRANSITION_GROUP : 'transactiontransitiongroup',
-            TRANSACTION_WEBHOOK : 'transactionwebhook',
-            TRANSACTION_WEBHOOK_TASK : 'transactionwebhooktask',
             TRANSFER : 'transfer',
-            TRANSFER_TRANSITION : 'transfertransition',
-            USER : 'user',
-            USER_ADDRESS : 'useraddress',
-            USER_BANK_ACCOUNT : 'userbankaccount',
-            USER_TRANSACTION_SWITCH : 'usertransactionswitch',
             WEBHOOK : 'webhook',
             WEBHOOK_REQUEST : 'webhookrequest',
             WEBHOOK_TASK : 'webhooktask'
@@ -148,8 +107,7 @@
                     {type:'Account',levelCounter: 0,levels: [{name: 'view',enabled: false},{name: 'add',enabled: false},{name: 'change',enabled: false},{name: 'delete',enabled: false},{name: 'all',enabled: false}]},
                     {type:'Account currency',levelCounter: 0,levels: [{name: 'view',enabled: false},{name: 'add',enabled: false},{name: 'change',enabled: false},{name: 'delete',enabled: false},{name: 'all',enabled: false}]},
                     {type:'Account currency limit',levelCounter: 0,levels: [{name: 'view',enabled: false},{name: 'add',enabled: false},{name: 'change',enabled: false},{name: 'delete',enabled: false},{name: 'all',enabled: false}]},
-                    {type:'Account currency transaction fee',levelCounter: 0,levels: [{name: 'view',enabled: false},{name: 'add',enabled: false},{name: 'change',enabled: false},{name: 'delete',enabled: false},{name: 'all',enabled: false}]},
-                    {type:'Account currency transaction switch',levelCounter: 0,levels: [{name: 'view',enabled: false},{name: 'add',enabled: false},{name: 'change',enabled: false},{name: 'delete',enabled: false},{name: 'all',enabled: false}]}
+                    {type:'Account currency fee',levelCounter: 0,levels: [{name: 'view',enabled: false},{name: 'add',enabled: false},{name: 'change',enabled: false},{name: 'delete',enabled: false},{name: 'all',enabled: false}]}
                 ]};
 
             $scope.totalPermissionsObj.currencyPermissionsOptions = {
@@ -157,12 +115,7 @@
                 enableAll: false,
                 permissionCounter: 0,
                 permissions: [
-                    {type:'Currency',levelCounter: 0,levels: [{name: 'view',enabled: false},{name: 'add',enabled: false},{name: 'change',enabled: false},{name: 'delete',enabled: false},{name: 'all',enabled: false}]},
-                    {type:'Currency tier',levelCounter: 0,levels: [{name: 'view',enabled: false},{name: 'add',enabled: false},{name: 'change',enabled: false},{name: 'delete',enabled: false},{name: 'all',enabled: false}]},
-                    {type:'Currency tier limit',levelCounter: 0,levels: [{name: 'view',enabled: false},{name: 'add',enabled: false},{name: 'change',enabled: false},{name: 'delete',enabled: false},{name: 'all',enabled: false}]},
-                    {type:'Currency tier requirement',levelCounter: 0,levels: [{name: 'view',enabled: false},{name: 'add',enabled: false},{name: 'change',enabled: false},{name: 'delete',enabled: false},{name: 'all',enabled: false}]},
-                    {type:'Currency tier transaction fee',levelCounter: 0,levels: [{name: 'view',enabled: false},{name: 'add',enabled: false},{name: 'change',enabled: false},{name: 'delete',enabled: false},{name: 'all',enabled: false}]},
-                    {type:'Currency tier transaction switch',levelCounter: 0,levels: [{name: 'view',enabled: false},{name: 'add',enabled: false},{name: 'change',enabled: false},{name: 'delete',enabled: false},{name: 'all',enabled: false}]}
+                    {type:'Currency',levelCounter: 0,levels: [{name: 'view',enabled: false},{name: 'add',enabled: false},{name: 'change',enabled: false},{name: 'delete',enabled: false},{name: 'all',enabled: false}]}
                 ]};
 
             $scope.totalPermissionsObj.companyPermissionsOptions = {
@@ -170,10 +123,47 @@
                 enableAll: false,
                 permissionCounter: 0,
                 permissions: [
+                    {type:'Bank branch address',levelCounter: 0,levels: [{name: 'view',enabled: false},{name: 'add',enabled: false},{name: 'change',enabled: false},{name: 'delete',enabled: false},{name: 'all',enabled: false}]},
                     {type:'Company',levelCounter: 0,levels: [{name: 'view',enabled: false},{name: 'add',enabled: false},{name: 'change',enabled: false},{name: 'delete',enabled: false},{name: 'all',enabled: false}]},
                     {type:'Company address',levelCounter: 0,levels: [{name: 'view',enabled: false},{name: 'add',enabled: false},{name: 'change',enabled: false},{name: 'delete',enabled: false},{name: 'all',enabled: false}]},
                     {type:'Company bank account',levelCounter: 0,levels: [{name: 'view',enabled: false},{name: 'add',enabled: false},{name: 'change',enabled: false},{name: 'delete',enabled: false},{name: 'all',enabled: false}]},
-                    {type:'Company transaction switch',levelCounter: 0,levels: [{name: 'view',enabled: false},{name: 'add',enabled: false},{name: 'change',enabled: false},{name: 'delete',enabled: false},{name: 'all',enabled: false}]}
+                    {type:'Company notification',levelCounter: 0,levels: [{name: 'view',enabled: false},{name: 'add',enabled: false},{name: 'change',enabled: false},{name: 'delete',enabled: false},{name: 'all',enabled: false}]},
+                    {type:'Company service',levelCounter: 0,levels: [{name: 'view',enabled: false},{name: 'add',enabled: false},{name: 'change',enabled: false},{name: 'delete',enabled: false},{name: 'all',enabled: false}]}
+                ]};
+
+            $scope.totalPermissionsObj.userPermissionsOptions = {
+                permissionsName: 'User permissions',
+                enableAll: false,
+                permissionCounter: 0,
+                permissions: [
+                    {type:'Crypto account',levelCounter: 0,levels: [{name: 'view',enabled: false},{name: 'add',enabled: false},{name: 'change',enabled: false},{name: 'delete',enabled: false},{name: 'all',enabled: false}]},
+                    {type:'Document',levelCounter: 0,levels: [{name: 'view',enabled: false},{name: 'add',enabled: false},{name: 'change',enabled: false},{name: 'delete',enabled: false},{name: 'all',enabled: false}]},
+                    {type:'User',levelCounter: 0,levels: [{name: 'view',enabled: false},{name: 'add',enabled: false},{name: 'change',enabled: false},{name: 'delete',enabled: false},{name: 'all',enabled: false}]},
+                    {type:'User address',levelCounter: 0,levels: [{name: 'view',enabled: false},{name: 'add',enabled: false},{name: 'change',enabled: false},{name: 'delete',enabled: false},{name: 'all',enabled: false}]},
+                    {type:'User bank account',levelCounter: 0,levels: [{name: 'view',enabled: false},{name: 'add',enabled: false},{name: 'change',enabled: false},{name: 'delete',enabled: false},{name: 'all',enabled: false}]},
+                    {type:'Mobile',levelCounter: 0,levels: [{name: 'view',enabled: false},{name: 'add',enabled: false},{name: 'change',enabled: false},{name: 'delete',enabled: false},{name: 'all',enabled: false}]}
+                ]};
+
+            $scope.totalPermissionsObj.groupPermissionsOptions = {
+                permissionsName: 'Group permissions',
+                enableAll: false,
+                permissionCounter: 0,
+                permissions: [
+                    {type:'Group',levelCounter: 0,levels: [{name: 'view',enabled: false},{name: 'add',enabled: false},{name: 'change',enabled: false},{name: 'delete',enabled: false},{name: 'all',enabled: false}]},
+                    {type:'Group tier',levelCounter: 0,levels: [{name: 'view',enabled: false},{name: 'add',enabled: false},{name: 'change',enabled: false},{name: 'delete',enabled: false},{name: 'all',enabled: false}]},
+                    {type:'Group tier fee',levelCounter: 0,levels: [{name: 'view',enabled: false},{name: 'add',enabled: false},{name: 'change',enabled: false},{name: 'delete',enabled: false},{name: 'all',enabled: false}]},
+                    {type:'Group tier limit',levelCounter: 0,levels: [{name: 'view',enabled: false},{name: 'add',enabled: false},{name: 'change',enabled: false},{name: 'delete',enabled: false},{name: 'all',enabled: false}]},
+                    {type:'Group tier requirement',levelCounter: 0,levels: [{name: 'view',enabled: false},{name: 'add',enabled: false},{name: 'change',enabled: false},{name: 'delete',enabled: false},{name: 'all',enabled: false}]},
+                    {type:'Account configuration',levelCounter: 0,levels: [{name: 'view',enabled: false},{name: 'add',enabled: false},{name: 'change',enabled: false},{name: 'delete',enabled: false},{name: 'all',enabled: false}]}
+                ]};
+
+            $scope.totalPermissionsObj.miscPermissionsOptions = {
+                permissionsName: 'Misc permissions',
+                enableAll: false,
+                permissionCounter: 0,
+                permissions: [
+                    {type:'Request',levelCounter: 0,levels: [{name: 'view',enabled: false},{name: 'add',enabled: false},{name: 'change',enabled: false},{name: 'delete',enabled: false},{name: 'all',enabled: false}]},
+                    {type:'Service',levelCounter: 0,levels: [{name: 'view',enabled: false},{name: 'add',enabled: false},{name: 'change',enabled: false},{name: 'delete',enabled: false},{name: 'all',enabled: false}]}
                 ]};
 
             $scope.totalPermissionsObj.transactionPermissionsOptions = {
@@ -182,37 +172,23 @@
                 permissionCounter: 0,
                 permissions: [
                     {type:'Transaction',levelCounter: 0,levels: [{name: 'view',enabled: false},{name: 'add',enabled: false},{name: 'change',enabled: false},{name: 'delete',enabled: false},{name: 'all',enabled: false}]},
+                    {type:'Transaction fee',levelCounter: 0,levels: [{name: 'view',enabled: false},{name: 'add',enabled: false},{name: 'change',enabled: false},{name: 'delete',enabled: false},{name: 'all',enabled: false}]},
+                    {type:'Transaction message',levelCounter: 0,levels: [{name: 'view',enabled: false},{name: 'add',enabled: false},{name: 'change',enabled: false},{name: 'delete',enabled: false},{name: 'all',enabled: false}]},
                     {type:'Transaction subtype',levelCounter: 0,levels: [{name: 'view',enabled: false},{name: 'add',enabled: false},{name: 'change',enabled: false},{name: 'delete',enabled: false},{name: 'all',enabled: false}]},
-                    {type:'Transaction webhook',levelCounter: 0,levels: [{name: 'view',enabled: false},{name: 'add',enabled: false},{name: 'change',enabled: false},{name: 'delete',enabled: false},{name: 'all',enabled: false}]}
+                    {type:'Transfer',levelCounter: 0,levels: [{name: 'view',enabled: false},{name: 'add',enabled: false},{name: 'change',enabled: false},{name: 'delete',enabled: false},{name: 'all',enabled: false}]}
                 ]};
 
-            $scope.totalPermissionsObj.miscPermissionsOptions = {
-                permissionsName: 'Misc permissions',
+            $scope.totalPermissionsObj.webhookPermissionsOptions = {
+                permissionsName: 'Webhook permissions',
                 enableAll: false,
                 permissionCounter: 0,
                 permissions: [
-                    {type:'Global switch',levelCounter: 0,levels: [{name: 'view',enabled: false},{name: 'add',enabled: false},{name: 'change',enabled: false},{name: 'delete',enabled: false},{name: 'all',enabled: false}]},
-                    {type:'General webhook',levelCounter: 0,levels: [{name: 'view',enabled: false},{name: 'add',enabled: false},{name: 'change',enabled: false},{name: 'delete',enabled: false},{name: 'all',enabled: false}]},
-                    {type:'Notification',levelCounter: 0,levels: [{name: 'view',enabled: false},{name: 'add',enabled: false},{name: 'change',enabled: false},{name: 'delete',enabled: false},{name: 'all',enabled: false}]},
-                    {type:'Permission',levelCounter: 0,levels: [{name: 'view',enabled: false},{name: 'add',enabled: false},{name: 'change',enabled: false},{name: 'delete',enabled: false},{name: 'all',enabled: false}]},
-                    {type:'Company permission group',levelCounter: 0,levels: [{name: 'view',enabled: false},{name: 'add',enabled: false},{name: 'change',enabled: false},{name: 'delete',enabled: false},{name: 'all',enabled: false}]}
+                    {type:'Webhook',levelCounter: 0,levels: [{name: 'view',enabled: false},{name: 'add',enabled: false},{name: 'change',enabled: false},{name: 'delete',enabled: false},{name: 'all',enabled: false}]},
+                    {type:'Webhook request',levelCounter: 0,levels: [{name: 'view',enabled: false},{name: 'add',enabled: false},{name: 'change',enabled: false},{name: 'delete',enabled: false},{name: 'all',enabled: false}]},
+                    {type:'Webhook task',levelCounter: 0,levels: [{name: 'view',enabled: false},{name: 'add',enabled: false},{name: 'change',enabled: false},{name: 'delete',enabled: false},{name: 'all',enabled: false}]}
                 ]};
 
-            $scope.totalPermissionsObj.userPermissionsOptions = {
-                permissionsName: 'User permissions',
-                enableAll: false,
-                permissionCounter: 0,
-                permissions: [
-                    {type:'User',levelCounter: 0,levels: [{name: 'view',enabled: false},{name: 'add',enabled: false},{name: 'change',enabled: false},{name: 'delete',enabled: false},{name: 'all',enabled: false}]},
-                    {type:'User address',levelCounter: 0,levels: [{name: 'view',enabled: false},{name: 'add',enabled: false},{name: 'change',enabled: false},{name: 'delete',enabled: false},{name: 'all',enabled: false}]},
-                    {type:'User bank account',levelCounter: 0,levels: [{name: 'view',enabled: false},{name: 'add',enabled: false},{name: 'change',enabled: false},{name: 'delete',enabled: false},{name: 'all',enabled: false}]},
-                    {type:'User transaction switch',levelCounter: 0,levels: [{name: 'view',enabled: false},{name: 'add',enabled: false},{name: 'change',enabled: false},{name: 'delete',enabled: false},{name: 'all',enabled: false}]},
-                    {type:'Crypto account',levelCounter: 0,levels: [{name: 'view',enabled: false},{name: 'add',enabled: false},{name: 'change',enabled: false},{name: 'delete',enabled: false},{name: 'all',enabled: false}]},
-                    {type:'Document',levelCounter: 0,levels: [{name: 'view',enabled: false},{name: 'add',enabled: false},{name: 'change',enabled: false},{name: 'delete',enabled: false},{name: 'all',enabled: false}]},
-                    {type:'Email address',levelCounter: 0,levels: [{name: 'view',enabled: false},{name: 'add',enabled: false},{name: 'change',enabled: false},{name: 'delete',enabled: false},{name: 'all',enabled: false}]},
-                    {type:'Mobile',levelCounter: 0,levels: [{name: 'view',enabled: false},{name: 'add',enabled: false},{name: 'change',enabled: false},{name: 'delete',enabled: false},{name: 'all',enabled: false}]},
-                    {type:'Auth token',levelCounter: 0,levels: [{name: 'view',enabled: false},{name: 'add',enabled: false},{name: 'change',enabled: false},{name: 'delete',enabled: false},{name: 'all',enabled: false}]}
-                ]};
+
         };
         vm.initializePermissions();
 
@@ -525,7 +501,7 @@
                 vm.checkedLevels = [];
                 toastr.success('Permissions successfully saved');
                 vm.getPermissions();
-            },400);
+            },2000);
         };
 
 
