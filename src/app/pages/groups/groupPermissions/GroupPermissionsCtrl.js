@@ -501,7 +501,7 @@
                 vm.checkedLevels = [];
                 toastr.success('Permissions successfully saved');
                 vm.getPermissions();
-            },2000);
+            },2500);
         };
 
 
