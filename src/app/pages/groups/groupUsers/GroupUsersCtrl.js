@@ -123,6 +123,10 @@
             }
         };
 
+        $scope.goToGroupView = function (path) {
+            $location.path(path);
+        };
+
         $scope.showColumnFilters = function () {
             $scope.showingFilters = false;
             $scope.showingColumnFilters = !$scope.showingColumnFilters;

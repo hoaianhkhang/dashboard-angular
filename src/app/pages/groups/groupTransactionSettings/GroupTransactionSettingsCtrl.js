@@ -17,6 +17,10 @@
         vm.locationArray = vm.location.split('/');
         $scope.locationIndicator = vm.locationArray[vm.locationArray.length - 1];
 
+        $scope.goToGroupView = function (path) {
+            $location.path(path);
+        };
+
         $scope.getGroup = function () {
             if(vm.token) {
                 $scope.loadingGroup = true;

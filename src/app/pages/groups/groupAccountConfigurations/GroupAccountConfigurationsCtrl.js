@@ -18,6 +18,10 @@
         $scope.locationIndicator = vm.locationArray[vm.locationArray.length - 1];
         $scope.groupAccountConfigurationsList = [];
 
+        $scope.goToGroupView = function (path) {
+            $location.path(path);
+        };
+
         $scope.getGroup = function () {
             if(vm.token) {
                 $scope.loadingGroup = true;

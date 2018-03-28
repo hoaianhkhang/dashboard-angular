@@ -5,7 +5,7 @@
         .controller('EditGroupCtrl', EditGroupCtrl);
 
     /** @ngInject */
-    function EditGroupCtrl($scope,$http,environmentConfig,cookieManagement,$stateParams,$location,$uibModal,errorHandler,toastr) {
+    function EditGroupCtrl($scope,$http,environmentConfig,cookieManagement,$stateParams,$location,errorHandler,toastr) {
 
         var vm = this;
         vm.token = cookieManagement.getCookie('TOKEN');
@@ -15,6 +15,10 @@
         vm.location = $location.path();
         vm.locationArray = vm.location.split('/');
         $scope.locationIndicator = vm.locationArray[vm.locationArray.length - 1];
+
+        $scope.goToGroupView = function (path) {
+            $location.path(path);
+        };
 
         $scope.getGroup = function () {
             if(vm.token) {

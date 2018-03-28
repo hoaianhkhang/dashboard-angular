@@ -6,7 +6,7 @@
 
     /** @ngInject */
     function GroupManagementTiersCtrl($scope,$http,environmentConfig,cookieManagement,
-                                          $stateParams,$location,errorHandler,_) {
+                                          $stateParams,$location,errorHandler) {
 
         var vm = this;
         vm.token = cookieManagement.getCookie('TOKEN');
@@ -17,6 +17,10 @@
         vm.locationArray = vm.location.split('/');
         $scope.locationIndicator = vm.locationArray[vm.locationArray.length - 1];
         $scope.subMenuLocation = $scope.locationIndicator;
+
+        $scope.goToGroupView = function (path) {
+            $location.path(path);
+        };
 
         $scope.goToGroupManagementTiersSettings = function (path) {
             $scope.subMenuLocation = path;
