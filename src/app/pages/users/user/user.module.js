@@ -4,7 +4,8 @@
     angular.module('BlurAdmin.pages.users.user', [
         'BlurAdmin.pages.users.user.details',
         'BlurAdmin.pages.users.user.transactions',
-        'BlurAdmin.pages.users.user.accounts'
+        'BlurAdmin.pages.users.user.accounts',
+        'BlurAdmin.pages.users.user.accountSettings'
     ])
         .config(routeConfig);
 

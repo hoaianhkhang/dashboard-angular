@@ -1,6 +1,7 @@
-<div ng-hide="loadingAccountCurrencyLimits || editingAccountCurrencyLimits" class="setting-bank-accounts panel">
+<div ng-hide="loadingAccountCurrencyLimits" class="setting-bank-accounts panel">
     <div class="panel-heading">
-        <span class="user-details-panel-title">Account currency limits for {{userData.email}}</span>
+        <span class="user-details-panel-title">Account currency limits</span>
+        <a ng-click="openAddAccountCurrencyLimitModal('app/pages/users/user/userAccountsOnly/accountSettings/accountCurrencyLimits/addAccountCurrencyLimit/addAccountCurrencyLimit.html','md')" class="user-details-panel-link pull-right pointer">Add limit</a>
     </div>
     <div class="panel-body">
         <table ng-show="accountCurrencyLimitsList.length > 0" class="table fees-table setting-bank-accounts-table">
@@ -20,7 +21,7 @@
                 <td class="rehive-table-row-last-child">
                     <a ng-click="openAccountCurrencyLimitsModal('app/pages/users/user/userAccountsOnly/accountSettings/accountCurrencyLimits/accountCurrencyLimitsModal/accountCurrencyLimitsModal.html','md',accountCurrencyLimit)"
                        class="pull-right pointer ">Delete</a>
-                    <a ng-click="toggleAccountCurrencyLimitEditView(accountCurrencyLimit)"
+                    <a ng-click="openEditAccountCurrencyLimitModal('app/pages/users/user/userAccountsOnly/accountSettings/accountCurrencyLimits/editAccountCurrencyLimit/editAccountCurrencyLimit.html','md',accountCurrencyLimit)"
                        class="pull-right pointer user-address-edit margin-right-30">Edit</a>
                 </td>
             </tr>
@@ -29,46 +30,6 @@
             <i>No limits are available.</i>
         </div>
     </div>
-</div>
-<div ng-hide="loadingAccountCurrencyLimits || editingAccountCurrencyLimits" class="panel">
-    <div class="panel-heading">
-        <span class="user-details-panel-title">Add account currency limit</span>
-    </div>
-    <div class="panel-body">
-        <form name="accountCurrencyLimitForm" class="custom-form">
-            <div class="form-group">
-                <label>Transaction type <span class="required-icon">*</span></label>
-                <br>
-                <select class="form-control pointer" ng-change="getSubtypesArray(accountCurrencyLimitsParams)" ng-model="accountCurrencyLimitsParams.tx_type" ng-options="option for option in txTypeOptions" required>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>Amount</label>
-                <input type="text" class="form-control" ng-model="accountCurrencyLimitsParams.value" placeholder="Enter value"/>
-            </div>
-            <div class="form-group">
-                <label>Type <span class="required-icon">*</span></label>
-                <br>
-                <select class="form-control pointer" ng-model="accountCurrencyLimitsParams.type" ng-options="typeOption for typeOption in typeOptions" required>
-                </select>
-            </div>
-            <div ng-hide="loadingSubtypes" class="form-group">
-                <label>Subtype</label>
-                <select class="form-control pointer" ng-model="accountCurrencyLimitsParams.subtype"
-                        ng-options="subtypeOption for subtypeOption in subtypeOptions">
-                </select>
-            </div>
-            <div ng-show="loadingSubtypes">
-                <loading-image class="custom-subtype-loading"></loading-image>
-            </div>
-            <div class="form-group">
-                <button ng-click="addAccountCurrencyLimit(accountCurrencyLimitsParams)" ng-disabled="!accountCurrencyLimitForm.$valid" class="btn btn-primary dashboard-btn pull-right">Add</button>
-            </div>
-        </form>
-    </div>
-</div>
-<div ng-show="editingAccountCurrencyLimits">
-    <edit-account-currency-limit></edit-account-currency-limit>
 </div>
 <div ba-panel ng-show="loadingAccountCurrencyLimits">
     <loading-image></loading-image>

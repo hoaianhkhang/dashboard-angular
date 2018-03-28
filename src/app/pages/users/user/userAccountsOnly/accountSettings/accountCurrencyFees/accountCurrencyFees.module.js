@@ -1,13 +1,13 @@
 (function () {
     'use strict';
 
-    angular.module('BlurAdmin.pages.accountSettings.accountCurrencyFees', [])
+    angular.module('BlurAdmin.pages.users.user.accountSettings.accountCurrencyFees', [])
         .config(routeConfig);
 
     /** @ngInject */
     function routeConfig($stateProvider) {
         $stateProvider
-            .state('accountSettings.accountCurrencyFees', {
+            .state('user.accountSettings.accountCurrencyFees', {
                 url: '/fees',
                 title: 'Account currency fees',
                 views:{

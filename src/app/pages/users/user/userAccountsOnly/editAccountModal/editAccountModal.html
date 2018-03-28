@@ -1,17 +1,28 @@
-<div ng-hide="loadingUserAccounts" class="panel">
+<div ng-hide="loadingUserAccountsList" class="panel">
     <div class="panel-heading">
-        <span class="user-details-panel-title">Add account currency</span>
+        <span class="user-details-panel-title">Edit account</span>
         <a ng-click="$dismiss()" class="panel-modal-close-icon pull-right pointer">
             <em class="ion-ios-close-empty sn-link-close"></em>
         </a>
     </div>
     <div class="panel-body">
-        <form name="userAccountCurrency" class="custom-form" novalidate>
+        <form name="userAccountForm" class="custom-form" novalidate>
+            <div class="form-group">
+                <label>Name  <span class="required-icon">*</span></label>
+                <input type="text" class="form-control"
+                       ng-change="editUserAccountParams.name = editUserAccountParams.name.toLowerCase()"
+                       ng-model="editUserAccountParams.name" placeholder="Enter account name" required/>
+            </div>
+            <div class="form-group">
+                <label>Primary</label>
+                <br>
+                <input class="custom-rehive-checkbox" ng-model="editUserAccountParams.primary" type="checkbox">
+            </div>
             <div class="form-group">
                 <label>Currency <span class="required-icon">*</span> <small class="text-muted">(Hold CTRL to select multiple currencies)</small></label>
                 <br>
                 <select class="form-control pointer divider" ng-model="newAccountCurrencies.list" multiple
-                        ng-options="currency.code for currency in currencyOptions | orderBy: 'code' track by currency.code" required>
+                        ng-options="currency.code for currency in currencyOptions | orderBy: 'code' track by currency.code">
                 </select>
                 <p>Currencies selected:
                     <span ng-repeat="currency in newAccountCurrencies.list | orderBy: 'code'">
@@ -25,12 +36,12 @@
                 </p>
             </div>
             <div class="form-group">
-                <button ng-click="addAccountCurrency(newAccountCurrencies.list)" ng-disabled="!userAccountCurrency.$valid" class="btn btn-primary user-accounts-btn pull-right">Add</button>
+                <button ng-click="editUserAccountFunction(editUserAccountParams)" ng-disabled="!userAccountForm.$valid" class="btn btn-primary user-accounts-btn pull-right">Save</button>
                 <button ng-click="$dismiss()" class="btn btn-default pull-left user-accounts-btn">Close</button>
             </div>
         </form>
     </div>
 </div>
-<div ba-panel ng-show="loadingUserAccounts">
+<div ba-panel ng-show="loadingUserAccountsList">
     <loading-image></loading-image>
 </div>

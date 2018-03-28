@@ -6,10 +6,11 @@
 
     /** @ngInject */
     function UserTransactionsCtrl($scope,environmentConfig,$http,cookieManagement,$uibModal,sharedResources,toastr,currencyModifiers,
-                         errorHandler,$state,$window,typeaheadService,$filter,serializeFiltersService,$location,$stateParams) {
+                         errorHandler,$state,$window,typeaheadService,$filter,serializeFiltersService,$rootScope,$stateParams) {
 
         var vm = this;
         vm.token = cookieManagement.getCookie('TOKEN');
+        $rootScope.shouldBeBlue = 'Users';
         vm.currenciesList = JSON.parse($window.sessionStorage.currenciesList || '[]');
         vm.uuid = $stateParams.uuid;
         $scope.showingFilters = false;

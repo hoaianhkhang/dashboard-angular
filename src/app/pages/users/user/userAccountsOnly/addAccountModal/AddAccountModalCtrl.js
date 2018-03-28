@@ -2,18 +2,42 @@
     'use strict';
 
     angular.module('BlurAdmin.pages.users.user.accounts')
-        .controller('AddUserAccountsListModalCtrl', AddUserAccountsListModalCtrl);
+        .controller('AddAccountModalCtrl', AddAccountModalCtrl);
 
-    function AddUserAccountsListModalCtrl($scope,$uibModalInstance,toastr,$stateParams,$http,environmentConfig,cookieManagement,errorHandler) {
+    function AddAccountModalCtrl($scope,$uibModalInstance,toastr,currenciesList,
+                                 $stateParams,$http,environmentConfig,cookieManagement,errorHandler) {
 
         var vm = this;
 
         $scope.newUserAccountParams = {};
         vm.uuid = $stateParams.uuid;
         vm.token = cookieManagement.getCookie('TOKEN');
+        $scope.addingUserAccount = true;
         $scope.currenciesForNewAccount = {
             list: []
         };
+
+        vm.getCompanyCurrencies = function(){
+            $scope.addingUserAccount = true;
+            if(vm.token){
+                $http.get(environmentConfig.API + '/admin/currencies/?enabled=true', {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': vm.token
+                    }
+                }).then(function (res) {
+                    if (res.status === 200) {
+                        $scope.addingUserAccount = false;
+                        $scope.currenciesList = res.data.data.results;
+                    }
+                }).catch(function (error) {
+                    $scope.addingUserAccount = false;
+                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.handleErrors(error);
+                });
+            }
+        };
+        vm.getCompanyCurrencies();
 
         $scope.addNewUserAccount = function(newUserAccountParams){
             if(vm.token) {
@@ -64,7 +88,7 @@
                         }
                     }).catch(function (error) {
                         $scope.currenciesForNewAccount = {list: []};
-                        $$scope.addingUserAccount = false;
+                        $scope.addingUserAccount = false;
                         errorHandler.evaluateErrors(error.data);
                         errorHandler.handleErrors(error);
                     });

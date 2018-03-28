@@ -1,15 +1,16 @@
 (function () {
     'use strict';
 
-    angular.module('BlurAdmin.pages.accountSettings.accountCurrencySettings')
+    angular.module('BlurAdmin.pages.users.user.accountSettings.accountCurrencySettings')
         .controller('AccountCurrencySettingsCtrl', AccountCurrencySettingsCtrl);
 
     /** @ngInject */
     function AccountCurrencySettingsCtrl($scope,$stateParams,$http,environmentConfig,
-                                       cookieManagement,errorHandler) {
+                                       cookieManagement,errorHandler,$rootScope) {
 
         var vm = this;
         vm.token = cookieManagement.getCookie('TOKEN');
+        $rootScope.shouldBeBlue = 'Users';
         vm.currencyCode = $stateParams.currencyCode;
         vm.reference = $stateParams.reference;
 

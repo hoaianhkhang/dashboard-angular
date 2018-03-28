@@ -1,13 +1,13 @@
 (function () {
     'use strict';
 
-    angular.module('BlurAdmin.pages.accountSettings.accountCurrencyLimits', [])
+    angular.module('BlurAdmin.pages.users.user.accountSettings.accountCurrencyLimits', [])
         .config(routeConfig);
 
     /** @ngInject */
     function routeConfig($stateProvider) {
         $stateProvider
-            .state('accountSettings.accountCurrencyLimits', {
+            .state('user.accountSettings.accountCurrencyLimits', {
                 url: '/limits',
                 title: 'Account currency limits',
                 views:{

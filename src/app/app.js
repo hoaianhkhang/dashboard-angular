@@ -41,6 +41,8 @@ angular.module('BlurAdmin', [
 
         var locationChangeStart = $rootScope.$on('$locationChangeStart', function (event,newUrl) {
 
+            $rootScope.shouldBeBlue = '';
+
             var newUrlArray = newUrl.split('/'),
                 newUrlLastElement = _.last(newUrlArray);
 
