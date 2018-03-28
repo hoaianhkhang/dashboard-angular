@@ -4,8 +4,8 @@
             <span class="user-details-panel-title">Bank accounts</span>
             <a ng-click="openAddBankAccountModal('app/pages/settings/bankAccounts/addBankAccountModal/addBankAccountModal.html','md')" class="user-details-panel-link pull-right pointer">Add bank account</a>
         </div>
-        <div class="panel-body">
-            <table ng-show="bankAccounts.length > 0" class="table setting-bank-accounts-table">
+        <div ng-show="bankAccounts.length > 0" class="panel-body">
+            <table class="table setting-bank-accounts-table">
                 <tr>
                     <th class="rehive-table-row-first-child">Bank name</th>
                     <th>Account name</th>
