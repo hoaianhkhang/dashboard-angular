@@ -32,26 +32,25 @@
     <div class="row">
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <div class="panel" ng-repeat="(key,value) in totalPermissionsObj">
-                <div class="panel-body">
-                    <div class="permissions-table divider-20">
+                <div>
+                    <div class="group-permissions-table">
                         <table class="table">
                             <tr>
-                                <th width="30%" ng-bind="totalPermissionsObj[key].permissionsName"></th>
-                                <th>
+                                <th width="50%">
+                                    {{totalPermissionsObj[key].permissionsName}}
                                     <input type="checkbox" class="custom-rehive-checkbox" ng-model="totalPermissionsObj[key].enableAll" ng-click="toggleAllPermissions(key,totalPermissionsObj[key].enableAll)">
                                 </th>
-                                <th>View</th>
-                                <th>Add</th>
-                                <th>Change</th>
-                                <th>Delete</th>
-                                <th>All</th>
+                                <th width="10%" class="text-center">View</th>
+                                <th width="10%" class="text-center">Add</th>
+                                <th width="10%" class="text-center">Change</th>
+                                <th width="10%" class="text-center">Delete</th>
+                                <th width="10%" class="text-center">All</th>
                             </tr>
                             <tr ng-repeat="permission in totalPermissionsObj[key].permissions">
                                 <td>
-                                    <p ng-bind="permission.type"></p>
+                                    <p class="no-margin" ng-bind="permission.type"></p>
                                 </td>
-                                <td></td>
-                                <td ng-repeat="level in permission.levels">
+                                <td class="text-center" ng-repeat="level in permission.levels">
                                     <label  class="checkbox-inline custom-checkbox nowrap">
                                         <input type="checkbox" ng-change="trackPermissions(permission,level,key)" ng-model="level.enabled"
                                             ng-checked="level.enabled">

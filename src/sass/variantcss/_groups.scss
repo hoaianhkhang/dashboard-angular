@@ -1,3 +1,24 @@
+.group-permissions-table .table{
+  margin-bottom: 0;
+  & > tbody > tr:first-child{
+    background-color: $primary;
+  }
+  & > tbody > tr > th{
+    color: white!important;
+    line-height: 28px;
+    padding: 6px 20px;
+    & .custom-rehive-checkbox{
+      vertical-align: middle;
+      margin: 0 0 0 80px;
+    }
+  }
+  & > tbody > tr > td{
+    padding: 6px 20px;
+    border: 1px solid rgba(235, 235, 235, 0.44);
+  }
+}
+
+
 .tier-add-header-link{
   color: white;
   z-index: 100;
