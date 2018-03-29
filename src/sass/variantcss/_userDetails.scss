@@ -279,6 +279,9 @@ input.custom-rehive-checkbox:disabled{
   font-size: 14px;
   line-height: 19px;
   margin-bottom: 0;
+  & strong{
+    color: #022b36;
+  }
 }
 
 .user-details-nav-bar {

@@ -1,4 +1,4 @@
-<div class="modal-content" ng-keydown="($event.keyCode === 13)  && addGroup(groupsParams)">
+<div ng-hide="addingGroups" class="modal-content" ng-keydown="($event.keyCode === 13)  && addGroup(groupsParams)">
     <div class="modal-header">
         <button type="button" class="close" ng-click="$dismiss()" aria-label="Close">
             <em class="ion-ios-close-empty sn-link-close"></em>
@@ -32,4 +32,7 @@
         <button type="button" class="btn btn-default dashboard-btn pull-left" ng-click="$dismiss()">Close</button>
         <button type="button" class="btn btn-primary dashboard-btn pull-right" ng-disabled="!groupNameForm.$valid" ng-click="addGroup(groupsParams)">Add</button>
     </div>
+</div>
+<div ba-panel ng-show="addingGroups">
+    <loading-image></loading-image>
 </div>

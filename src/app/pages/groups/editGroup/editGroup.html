@@ -20,12 +20,12 @@
     <div class="row">
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <ul class="user-details-nav-bar">
-                <li><a href="/#/groups/{{editGroupObj.name}}/details" ng-class="{'transaction-location': locationIndicator == 'details'}">Details</a></li>
-                <li><a href="/#/groups/{{editGroupObj.name}}/users" ng-class="{'transaction-location': locationIndicator == 'users'}">Users</a></li>
-                <li><a href="/#/groups/{{editGroupObj.name}}/permissions" ng-class="{'transaction-location': locationIndicator == 'permissions'}">Permissions</a></li>
-                <li><a href="/#/groups/{{editGroupObj.name}}/tiers" ng-class="{'transaction-location': locationIndicator == 'tiers'}">Tiers</a></li>
-                <li><a href="/#/groups/{{editGroupObj.name}}/account-configurations" ng-class="{'transaction-location': locationIndicator == 'account-configurations'}">Account configurations</a></li>
-                <li><a href="/#/groups/{{editGroupObj.name}}/transaction-settings" ng-class="{'transaction-location': locationIndicator == 'transaction-settings'}">Transaction settings</a></li>
+                <li><a href="/#/groups/{{groupName}}/details" ng-class="{'transaction-location': locationIndicator == 'details'}">Details</a></li>
+                <li><a href="/#/groups/{{groupName}}/users" ng-class="{'transaction-location': locationIndicator == 'users'}">Users</a></li>
+                <li><a href="/#/groups/{{groupName}}/permissions" ng-class="{'transaction-location': locationIndicator == 'permissions'}">Permissions</a></li>
+                <li><a href="/#/groups/{{groupName}}/tiers" ng-class="{'transaction-location': locationIndicator == 'tiers'}">Tiers</a></li>
+                <li><a href="/#/groups/{{groupName}}/account-configurations" ng-class="{'transaction-location': locationIndicator == 'account-configurations'}">Account configurations</a></li>
+                <li><a href="/#/groups/{{groupName}}/transaction-settings" ng-class="{'transaction-location': locationIndicator == 'transaction-settings'}">Transaction settings</a></li>
             </ul>
         </div>
     </div>
@@ -49,15 +49,17 @@
                             <label>Description</label>
                             <input type="text" ng-model="editGroupObj.description" ng-change="groupChanged('description')" class="form-control" placeholder="Description">
                         </div>
-                        <div class="form-group">
-                            <label>Default</label>
-                            <br>
-                            <input class="custom-rehive-checkbox" ng-model="editGroupObj.default" ng-change="groupChanged('default')" type="checkbox">
-                        </div>
-                        <div class="form-group">
-                            <label>Public</label>
-                            <br>
-                            <input class="custom-rehive-checkbox" ng-model="editGroupObj.public" ng-change="groupChanged('public')" type="checkbox">
+                        <div class="row form-group">
+                            <div class="col-lg-2 col-md-2 col-sm-4 col-xs-4">
+                                <label>Default</label>
+                                <br>
+                                <input class="custom-rehive-checkbox" ng-model="editGroupObj.default" ng-change="groupChanged('default')" type="checkbox">
+                            </div>
+                            <div class="col-lg-2 col-md-2 col-sm-4 col-xs-4">
+                                <label>Public</label>
+                                <br>
+                                <input class="custom-rehive-checkbox" ng-model="editGroupObj.public" ng-change="groupChanged('public')" type="checkbox">
+                            </div>
                         </div>
                         <div class="form-group">
                             <button ng-click="updateGroupObj(editGroupObj)"

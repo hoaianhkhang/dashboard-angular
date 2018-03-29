@@ -9,7 +9,7 @@
 
         var vm = this;
         vm.token = cookieManagement.getCookie('TOKEN');
-        vm.groupName = $stateParams.groupName;
+        $scope.groupName = $stateParams.groupName;
         vm.updatedGroup = {};
         $scope.loadingGroup = true;
         vm.location = $location.path();
@@ -24,7 +24,7 @@
             if(vm.token) {
                 $scope.loadingGroup = true;
 
-                $http.get(environmentConfig.API + '/admin/groups/' + vm.groupName + '/', {
+                $http.get(environmentConfig.API + '/admin/groups/' + $scope.groupName + '/', {
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': vm.token
@@ -66,7 +66,7 @@
         };
 
         $scope.groupChanged = function(field){
-            if(field == 'name'){
+            if(field == 'name' && $scope.editGroupObj.name){
                 $scope.editGroupObj.name = $scope.editGroupObj.name.toLowerCase();
             }
 
