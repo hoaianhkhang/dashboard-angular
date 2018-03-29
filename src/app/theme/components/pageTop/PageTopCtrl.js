@@ -159,7 +159,7 @@
                         if(res.data.data.count == 1){
                             vm.findTransactions(res.data.data.results[0].email,'user');
                         } else {
-                            vm.findTransactions(searchString,'id')
+                            vm.findTransactions(searchString,'id');
                         }
                     }
                 }).catch(function (error) {
