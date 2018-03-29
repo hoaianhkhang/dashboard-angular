@@ -522,14 +522,6 @@
             $location.path('/user/' + user.identifier + '/details');
         };
 
-        $scope.closeGroupUsersOptionsBox = function () {
-            $scope.optionsGroupUserIdentifier = '';
-        };
-
-        $scope.showGroupUsersOptions = function (user) {
-            $scope.optionsGroupUserIdentifier = user.identifier;
-        };
-
         $scope.openAddUserToGroupModal = function (page, size) {
             vm.theModal = $uibModal.open({
                 animation: true,

@@ -18,7 +18,15 @@
             .state('groups', {
                 url: '/groups',
                 template: "<ui-view autoscroll='true' autoscroll-body-top></ui-view>",
-                controller: function ($scope,_,$state) {
+                controller: function ($scope,_,$state,$location) {
+
+                    var vm = this;
+                    vm.location = $location.path();
+                    vm.locationArray = vm.location.split('/');
+                    $scope.locationIndicator = vm.locationArray[vm.locationArray.length - 1];
+                    if($scope.locationIndicator == 'groups'){
+                        $state.go('groups.overview');
+                    }
                     $scope.$on('$locationChangeStart', function (event,newUrl) {
                          var newUrlArray = newUrl.split('/'),
                              newUrlLastElement = _.last(newUrlArray);
@@ -32,6 +40,7 @@
                     order: 600
                 }
             });
+        $urlRouterProvider.when("/groups","/groups/overview");
     }
 
 })();

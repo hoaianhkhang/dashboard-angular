@@ -10,22 +10,43 @@
         var vm = this;
         vm.group = group;
         vm.token = cookieManagement.getCookie('TOKEN');
-        $scope.getUsersEmailTypeahead = typeaheadService.getUsersEmailTypeahead();
-        $scope.userGroupParams = {};
+        $scope.userGroupParams = {
+            inputType: 'Email'
+        };
         $scope.loadingGroup = false;
+        $scope.userOptions = ['Email','Mobile','Identifier'];
 
         $scope.getUser = function(userGroupParams){
             if(vm.token) {
                 $scope.loadingGroup = true;
-                $http.get(environmentConfig.API + '/admin/users/?email__contains=' + encodeURIComponent(userGroupParams.email), {
+                vm.filter = '';
+                vm.filterString = '';
+
+                if(userGroupParams.inputType == 'Email'){
+                    vm.filter = 'email__contains=';
+                    vm.filterString = encodeURIComponent(userGroupParams.user);
+                } else if(userGroupParams.inputType == 'Mobile'){
+                    vm.filter = 'mobile_number__contains=';
+                    vm.filterString = encodeURIComponent(userGroupParams.user);
+                } else {
+                    vm.filter = 'identifier__contains=';
+                    vm.filterString = userGroupParams.user;
+                }
+
+                $http.get(environmentConfig.API + '/admin/users/?' + vm.filter + vm.filterString, {
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': vm.token
                     }
                 }).then(function (res) {
                     if (res.status === 200) {
-                        $scope.user = res.data.data.results[0];
-                        $scope.deleteUserGroup();
+                        if(res.data.data.results.length == 0){
+                            toastr.error('No user found');
+                            $scope.loadingGroup = false;
+                        } else {
+                            $scope.user = res.data.data.results[0];
+                            $scope.deleteUserGroup();
+                        }
                     }
                 }).catch(function (error) {
                     $scope.loadingGroup = false;
