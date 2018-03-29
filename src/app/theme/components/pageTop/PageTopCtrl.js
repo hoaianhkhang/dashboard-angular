@@ -227,6 +227,7 @@
             $rootScope.dashboardTitle = 'Rehive';
             $rootScope.gotToken = false;
             $rootScope.securityConfigured = true;
+            $window.sessionStorage.currenciesList = '';
             $rootScope.pageTopObj = {};
             $rootScope.userFullyVerified = false;
             cookieManagement.deleteCookie('TOKEN');

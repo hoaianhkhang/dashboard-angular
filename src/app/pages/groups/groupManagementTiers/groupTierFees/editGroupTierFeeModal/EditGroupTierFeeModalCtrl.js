@@ -18,6 +18,27 @@
         $scope.txTypeOptions = ['Credit','Debit'];
         vm.updatedTierFee = {};
 
+        vm.getCompanyCurrencies = function(){
+            if(vm.token){
+                $scope.editingTierFees = true;
+                $http.get(environmentConfig.API + '/admin/currencies/?enabled=true', {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': vm.token
+                    }
+                }).then(function (res) {
+                    if (res.status === 200) {
+                        $scope.currenciesOptions = res.data.data.results;
+                        vm.getTierFee();
+                    }
+                }).catch(function (error) {
+                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.handleErrors(error);
+                });
+            }
+        };
+        vm.getCompanyCurrencies();
+
         vm.returnCurrencyObj = function (currencyCode) {
             return $scope.currenciesList.find(function (element) {
                 return (element.code == currencyCode);
@@ -64,7 +85,6 @@
                 errorHandler.handleErrors(error);
             });
         };
-        vm.getTierFee();
 
         $scope.tierFeeChanged = function(field){
             vm.updatedTierFee[field] = $scope.editTierFee[field];

@@ -223,10 +223,10 @@
                         return accountCurrencyFee;
                     },
                     currencyCode: function () {
-                        return vm.currencyCode
+                        return vm.currencyCode;
                     },
                     reference: function () {
-                        return vm.reference
+                        return vm.reference;
                     }
                 }
             });

@@ -6,7 +6,7 @@
 
     /** @ngInject */
     function GroupTierLimitsCtrl($scope,$stateParams,cookieManagement,$http,environmentConfig,_,$window,
-                            sharedResources,$timeout,errorHandler,toastr,$uibModal,$ngConfirm) {
+                            $timeout,errorHandler,toastr,$uibModal,$ngConfirm) {
 
         var vm = this;
         vm.token = cookieManagement.getCookie('TOKEN');

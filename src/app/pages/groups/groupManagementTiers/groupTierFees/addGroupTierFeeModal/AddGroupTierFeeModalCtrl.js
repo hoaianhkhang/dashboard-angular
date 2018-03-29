@@ -19,6 +19,25 @@
         };
         $scope.txTypeOptions = ['Credit','Debit'];
 
+        vm.getCompanyCurrencies = function(){
+            if(vm.token){
+                $http.get(environmentConfig.API + '/admin/currencies/?enabled=true', {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': vm.token
+                    }
+                }).then(function (res) {
+                    if (res.status === 200) {
+                        $scope.currenciesOptions = res.data.data.results;
+                    }
+                }).catch(function (error) {
+                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.handleErrors(error);
+                });
+            }
+        };
+        vm.getCompanyCurrencies();
+
         $scope.getSubtypesArray = function(params,editing){
             $scope.loadingSubtypes = true;
             if(!editing){

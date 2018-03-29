@@ -19,8 +19,29 @@
         $scope.loadingSubtypes = false;
         vm.updatedTierLimit = {};
 
+        vm.getCompanyCurrencies = function(){
+            if(vm.token){
+                $scope.editingTierLimits = true;
+                $http.get(environmentConfig.API + '/admin/currencies/?enabled=true', {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': vm.token
+                    }
+                }).then(function (res) {
+                    if (res.status === 200) {
+                        $scope.currenciesOptions = res.data.data.results;
+                        vm.getTierLimit();
+                    }
+                }).catch(function (error) {
+                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.handleErrors(error);
+                });
+            }
+        };
+        vm.getCompanyCurrencies();
+
         vm.returnCurrencyObj = function (currencyCode) {
-            return $scope.currenciesList.find(function (element) {
+            return $scope.currenciesOptions.find(function (element) {
                 return (element.code == currencyCode);
             });
         };
@@ -65,7 +86,6 @@
                 errorHandler.handleErrors(error);
             });
         };
-        vm.getTierLimit();
 
 
         $scope.tierLimitChanged = function(field){

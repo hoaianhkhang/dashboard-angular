@@ -1,4 +1,4 @@
-<div class="modal-content">
+<div ng-hide="addingTiers" class="modal-content" ng-keydown="($event.keyCode === 13)  && addGroupTier()">
     <div class="modal-header">
         <button type="button" class="close" ng-click="$dismiss()" aria-label="Close">
             <em class="ion-ios-close-empty sn-link-close"></em>
@@ -27,4 +27,7 @@
         <button type="button" class="btn btn-default dashboard-btn pull-left" ng-click="$dismiss()">Close</button>
         <button ng-disabled="!tierForm.$valid" ng-click="addGroupTier()" type="button" class="btn btn-primary dashboard-btn pull-right">Add</button>
     </div>
+</div>
+<div ba-panel ng-show="addingTiers">
+    <loading-image></loading-image>
 </div>
