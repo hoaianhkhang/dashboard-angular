@@ -64,11 +64,14 @@
                     toastr.error('Please input amount to ' + tierFeesParams.currency.divisibility + ' decimal places');
                     return;
                 }
+            } else {
+                tierFeesParams.value = 0;
             }
 
             if(!tierFeesParams.percentage){
                 tierFeesParams.percentage = 0;
             }
+
             if(vm.token) {
                 $scope.addingTierFees = true;
                 tierFeesParams.tx_type = tierFeesParams.tx_type.toLowerCase();
