@@ -168,20 +168,20 @@
         };
 
         $scope.deleteTierFee = function (tierFee) {
-            $scope.deletingTierFees = true;
+            $scope.loadingTierFees = true;
             $http.delete(environmentConfig.API + '/admin/groups/' + vm.groupName + '/tiers/' + $scope.selectedTier.id + '/fees/' + tierFee.id + '/', {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': vm.token
                 }
             }).then(function (res) {
-                $scope.deletingTierFees = false;
+                $scope.loadingTierFees = false;
                 if (res.status === 200) {
                     toastr.success('Tier fee successfully deleted');
                     $scope.getAllTiers($scope.selectedTier.level);
                 }
             }).catch(function (error) {
-                $scope.deletingTierFees = false;
+                $scope.loadingTierFees = false;
                 errorHandler.evaluateErrors(error.data);
                 errorHandler.handleErrors(error);
             });
