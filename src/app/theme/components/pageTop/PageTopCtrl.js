@@ -162,7 +162,7 @@
                         if(res.data.data.count == 1){
                             vm.findTransactions(res.data.data.results[0].email,'user');
                         } else {
-                            vm.findTransactions(searchString,'id')
+                            vm.findTransactions(searchString,'id');
                         }
                     }
                 }).catch(function (error) {
@@ -230,6 +230,7 @@
             $rootScope.dashboardTitle = 'Rehive';
             $rootScope.gotToken = false;
             $rootScope.securityConfigured = true;
+            $window.sessionStorage.currenciesList = '';
             $rootScope.pageTopObj = {};
             $rootScope.userFullyVerified = false;
             cookieManagement.deleteCookie('TOKEN');

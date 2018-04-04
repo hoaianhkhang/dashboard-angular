@@ -1,0 +1,76 @@
+<div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 groups-breadcrumb">
+        <span ng-click="goToGroupView('groups/overview')" class="pointer">Groups</span>
+        <span><strong>&nbsp;/&nbsp; Group details</strong></span>
+    </div>
+</div>
+<h1 class="group-details-page-title">Group details</h1>
+<div class="user-details-view" ng-hide="loadingGroup">
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 user-details-first-row divider-30">
+            <div class="group-hexagon"></div>
+            <div class="group-overview-details">
+                <span class="group-details-name">{{editGroupObj.name}}</span>
+                <p class="user-details-info"><strong>{{totalUsersCount}}</strong> Total users</p>
+                <p class="user-details-info"><strong>0</strong> Activated users</p>
+                <p class="user-details-info"><strong>0</strong> Deactivated users</p>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <ul class="user-details-nav-bar">
+                <li><a href="/#/groups/{{groupName}}/details" ng-class="{'transaction-location': locationIndicator == 'details'}">Details</a></li>
+                <li><a href="/#/groups/{{groupName}}/users" ng-class="{'transaction-location': locationIndicator == 'users'}">Users</a></li>
+                <li><a href="/#/groups/{{groupName}}/permissions" ng-class="{'transaction-location': locationIndicator == 'permissions'}">Permissions</a></li>
+                <li><a href="/#/groups/{{groupName}}/tiers" ng-class="{'transaction-location': locationIndicator == 'tiers'}">Tiers</a></li>
+                <li><a href="/#/groups/{{groupName}}/account-configurations" ng-class="{'transaction-location': locationIndicator == 'account-configurations'}">Account configurations</a></li>
+                <li><a href="/#/groups/{{groupName}}/transaction-settings" ng-class="{'transaction-location': locationIndicator == 'transaction-settings'}">Transaction settings</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+            <div class="panel">
+                <div class="panel-heading">
+                    <span class="user-details-panel-title">Edit group</span>
+                </div>
+                <div class="panel-body">
+                    <form name="editGroupForm" class="custom-form">
+                        <div class="form-group">
+                            <label>Name <span class="required-icon">*</span></label>
+                            <input type="text" ng-model="editGroupObj.name" ng-change="groupChanged('name')" class="form-control" placeholder="Name" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Label</label>
+                            <input type="text" ng-model="editGroupObj.label" ng-change="groupChanged('label')" class="form-control" placeholder="Label">
+                        </div>
+                        <div class="form-group">
+                            <label>Description</label>
+                            <input type="text" ng-model="editGroupObj.description" ng-change="groupChanged('description')" class="form-control" placeholder="Description">
+                        </div>
+                        <div class="row form-group">
+                            <div class="col-lg-2 col-md-2 col-sm-4 col-xs-4">
+                                <label>Default</label>
+                                <br>
+                                <input class="custom-rehive-checkbox" ng-model="editGroupObj.default" ng-change="groupChanged('default')" type="checkbox">
+                            </div>
+                            <div class="col-lg-2 col-md-2 col-sm-4 col-xs-4">
+                                <label>Public</label>
+                                <br>
+                                <input class="custom-rehive-checkbox" ng-model="editGroupObj.public" ng-change="groupChanged('public')" type="checkbox">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <button ng-click="updateGroupObj(editGroupObj)"
+                                    ng-disabled="!editGroupForm.$valid" class="btn btn-primary dashboard-btn pull-right">Save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div ba-panel ng-show="loadingGroup">
+    <loading-image></loading-image>
+</div>

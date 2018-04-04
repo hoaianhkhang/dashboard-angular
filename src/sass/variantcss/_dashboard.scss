@@ -23,9 +23,9 @@ span.should-be-blue{
 }
 
 .currencies-title{
-  color: $primary;
+  color: #022b36;
   font-size: 16px;
-  font-weight: 400;
+  font-weight: bold;
   margin: 0 0 19px 0;
   position: relative;
   top: -7px;
@@ -52,6 +52,10 @@ span.should-be-blue{
 
 .divider{
   margin-bottom: 10px !important;
+}
+
+.divider-15{
+  margin-bottom: 15px !important;
 }
 
 .divider-20{

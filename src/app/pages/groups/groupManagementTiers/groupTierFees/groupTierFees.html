@@ -1,0 +1,54 @@
+<div ng-hide="loadingTierFees && (tierLevelsForFees.length > 0)" class="tier-limits">
+    <uib-tabset active="activeTabIndex">
+        <uib-tab ng-repeat="tierLevel in tierLevelsForFees" select="selectTier(tierLevel)" heading="Tier {{tierLevel}}">
+            <a ng-click="openAddGroupTierFeeModal('app/pages/groups/groupManagementTiers/groupTierFees/addGroupTierFeeModal/addGroupTierFeeModal.html','md')"
+               class="tier-add-header-link">Add fee</a>
+            <div>
+                <div ng-show="tiersFeesList.length > 0" class="panel">
+                    <div class="panel-heading">
+                        <span class="user-details-panel-title">Tier fees</span>
+                    </div>
+                    <div class="panel-body">
+                        <table class="table">
+                            <tr class="user-switches-table-header divider">
+                                <th class="rehive-table-row-first-child">Tx type</th>
+                                <th>Currency</th>
+                                <th>Amount</th>
+                                <th>Percentage</th>
+                                <th>Subtype</th>
+                                <th></th>
+                            </tr>
+                            <tr ng-repeat="tierFee in tiersFeesList">
+                                <td class="transactions-list-element rehive-table-row-first-child"
+                                    title="{{tierFee.tx_type | capitalizeWord}}" ng-bind="tierFee.tx_type | capitalizeWord | limitTo: '35'"></td>
+                                <td title="{{tierFee.currency.code}}"
+                                    ng-bind="tierFee.currency.code"></td>
+                                <td title="{{tierFee.value | currencyModifiersFilter: tierFee.currency.divisibility}}"
+                                    ng-bind="tierFee.value | currencyModifiersFilter: tierFee.currency.divisibility"></td>
+                                <td title="{{tierFee.percentage}}"
+                                    ng-bind="tierFee.percentage ? tierFee.percentage + '%' : 'None'"></td>
+                                <td title="{{tierFee.subtype ? tierFee.subtype : 'None'}}"
+                                    ng-bind="tierFee.subtype ? tierFee.subtype : 'None'| limitTo: '35'"></td>
+                                <td class="rehive-table-row-last-child pull-right">
+                                    <a ng-click="deleteTierFeeConfirm(tierFee)"
+                                       class="pull-right pointer ">Delete</a>
+                                    <a ng-click="openEditGroupTierFeeModal('app/pages/groups/groupManagementTiers/groupTierFees/editGroupTierFeeModal/editGroupTierFeeModal.html','md',tierFee)"
+                                       class="pull-right pointer user-address-edit margin-right-30">Edit</a>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div ba-panel ng-show="tiersFeesList.length == 0">
+                    <i>No fees are available for this tier.</i>
+                </div>
+            </div>
+        </uib-tab>
+    </uib-tabset>
+</div>
+<div ba-panel ng-show="!loadingTierFees && tierLevelsForFees.length == 0">
+    <i>No tiers are available for this group.</i>
+</div>
+<div ba-panel ng-show="loadingTierFees">
+    <loading-image></loading-image>
+</div>

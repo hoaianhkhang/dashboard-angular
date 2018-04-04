@@ -1,0 +1,96 @@
+<div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 groups-breadcrumb">
+        <span ng-click="goToGroupView('groups/overview')" class="pointer">Groups</span>
+        <span><strong>&nbsp;/&nbsp; Group account configurations</strong></span>
+    </div>
+</div>
+<h1 class="group-details-page-title">Group account configurations</h1>
+<div class="user-details-view" ng-hide="loadingGroupAccountConfigurations">
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 user-details-first-row divider-30">
+            <div class="group-hexagon"></div>
+            <div class="group-overview-details">
+                <span class="group-details-name">{{editGroupObj.name}}</span>
+                <p class="user-details-info"><strong>{{totalUsersCount}}</strong> Total users</p>
+                <p class="user-details-info"><strong>0</strong> Activated users</p>
+                <p class="user-details-info"><strong>0</strong> Deactivated users</p>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <ul class="user-details-nav-bar">
+                <li><a href="/#/groups/{{editGroupObj.name}}/details" ng-class="{'transaction-location': locationIndicator == 'details'}">Details</a></li>
+                <li><a href="/#/groups/{{editGroupObj.name}}/users" ng-class="{'transaction-location': locationIndicator == 'users'}">Users</a></li>
+                <li><a href="/#/groups/{{editGroupObj.name}}/permissions" ng-class="{'transaction-location': locationIndicator == 'permissions'}">Permissions</a></li>
+                <li><a href="/#/groups/{{editGroupObj.name}}/tiers" ng-class="{'transaction-location': locationIndicator == 'tiers'}">Tiers</a></li>
+                <li><a href="/#/groups/{{editGroupObj.name}}/account-configurations" ng-class="{'transaction-location': locationIndicator == 'account-configurations'}">Account configurations</a></li>
+                <li><a href="/#/groups/{{editGroupObj.name}}/transaction-settings" ng-class="{'transaction-location': locationIndicator == 'transaction-settings'}">Transaction settings</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
+            <div class="panel">
+                <div class="panel-heading">
+                    <span class="user-details-panel-title">Account configurations</span>
+                    <a ng-click="openAddAccountConfigurationsModal('app/pages/groups/groupAccountConfigurations/addGroupAccountConfigModal/addGroupAccountConfigModal.html','md')" class="user-details-panel-link pull-right pointer">
+                        Add account configuration
+                    </a>
+                </div>
+                <div class="panel-body">
+                    <table ng-show="groupAccountConfigurationsList.length > 0" class="table">
+                        <tr class="user-switches-table-header divider">
+                            <th class="rehive-table-row-first-child">Name</th>
+                            <th>Label</th>
+                            <th>Default</th>
+                            <th>Primary</th>
+                            <th>Currencies</th>
+                            <th></th>
+                        </tr>
+                        <tr ng-repeat="groupAccountConfiguration in groupAccountConfigurationsList">
+                            <td class="transactions-list-element rehive-table-row-first-child"
+                                title="{{groupAccountConfiguration.name | capitalizeWord}}" ng-bind="groupAccountConfiguration.name"></td>
+                            <td title="{{groupAccountConfiguration.label || 'None'}}"
+                                ng-bind="groupAccountConfiguration.label || 'None'"></td>
+                            <td class="transactions-list-element">
+                                <input class="custom-rehive-checkbox" ng-change="updateAccountConfig(groupAccountConfiguration,'default')" ng-model="groupAccountConfiguration.default" type="checkbox">
+                            </td>
+                            <td class="transactions-list-element">
+                                <input class="custom-rehive-checkbox" ng-change="updateAccountConfig(groupAccountConfiguration,'primary')" ng-model="groupAccountConfiguration.primary" type="checkbox">
+                            </td>
+                            <td class="group-account-currencies-td" width="30%">
+                                <span ng-repeat="currency in groupAccountConfiguration.currencies"
+                                      class="group-acount-currencies">
+                                        {{$index > 5 ? ' ' : $index == 5 ? ' ' + '...' : $last ? ' ' + currency.code : currency.code + ',' }}
+                                    </span>
+                                <div ng-show="groupAccountConfiguration.currencies.length > 0" class="group-tooltip">
+                                    <span ng-repeat="currency in groupAccountConfiguration.currencies">
+                                        {{$last ? ' ' + currency.code : currency.code + ',' }}
+                                    </span>
+                                </div>
+                            </td>
+                            <td class="rehive-table-row-last-child pull-right">
+                                <a ng-click="deleteAccountConfigConfirm(groupAccountConfiguration)"
+                                   class="pull-right pointer ">Delete</a>
+                                <a ng-click="openManageAccountConfigurationsModal('app/pages/groups/groupAccountConfigurations/manageGroupAccountConfigModal/manageGroupAccountConfigModal.html','md',groupAccountConfiguration)"
+                                   class="pull-right pointer user-address-edit margin-right-30">Manage</a>
+                            </td>
+                        </tr>
+                    </table>
+                    <div ng-show="groupAccountConfigurationsList.length > 0">
+                        <p uib-pagination boundary-links="true" items-per-page="pagination.itemsPerPage"  total-items="groupAccountConfigurationsData.count" ng-model="pagination.pageNo"
+                           max-size="pagination.maxSize" class="pagination-sm pull-right transaction-history-pagination" force-ellipses="true" ng-change="getGroupAccountConfigurations()"
+                           previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></p>
+                    </div>
+                    <div ng-show="!loadingGroupAccountConfigurations && groupAccountConfigurationsList.length == 0">
+                        <i>No account configurations are available for this group.</i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div ba-panel ng-show="loadingGroupAccountConfigurations">
+    <loading-image></loading-image>
+</div>

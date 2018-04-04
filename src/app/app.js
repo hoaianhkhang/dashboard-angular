@@ -127,6 +127,7 @@ angular.module('BlurAdmin', [
                 $rootScope.securityConfigured = true;
                 $rootScope.pageTopObj = {};
                 $rootScope.userFullyVerified = false;
+                $window.sessionStorage.currenciesList = '';
                 $location.path('/login');
             } else{
                 if(newUrl.indexOf('password/reset/confirm') > 0 || newUrl.indexOf('email/verify') > 0) {

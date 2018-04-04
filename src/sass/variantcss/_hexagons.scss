@@ -148,3 +148,24 @@
   width: 60px;
   margin: 10px 0 12px 0;
 }
+
+.group-hexagon {
+  @include hexagon(70px,40px,20px 0 20px 0);
+}
+
+.group-hexagon-margin-bottom{
+  margin-bottom: 13px;
+}
+
+.group-hexagon:before,
+.group-hexagon:after {
+  @include hexagon-before-after(36px solid transparent,36px solid transparent);
+}
+
+.group-hexagon:before {
+  @include hexagon-before(20px solid #F8CF51);
+}
+
+.group-hexagon:after {
+  @include hexagon-after(20px solid #F8CF51);
+}
