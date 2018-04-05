@@ -37,7 +37,7 @@
                 },
                 title: "Groups",
                 sidebarMeta: {
-                    order: 600
+                    order: 400
                 }
             });
         $urlRouterProvider.when("/groups","/groups/overview");
