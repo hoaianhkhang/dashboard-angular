@@ -69,25 +69,6 @@
 
         $scope.updateTransactionStatus = function(){
             $scope.updatingTransaction = true;
-            $http.patch(environmentConfig.API + '/admin/transactions/' + $scope.transaction.id + '/', { status: $scope.updateTransactionObj.status },
-                {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
-                if (res.status === 200) {
-                    $scope.editTransaction();
-                }
-            }).catch(function (error) {
-                $scope.updatingTransaction = false;
-                errorHandler.evaluateErrors(error.data);
-                errorHandler.handleErrors(error);
-            });
-        };
-
-        $scope.editTransaction = function(){
-            $scope.updatingTransaction = true;
             var metaData;
             if($scope.updateTransactionObj.metadata){
                 if(vm.isJson($scope.updateTransactionObj.metadata)){
@@ -100,37 +81,37 @@
                 metaData = {};
             }
 
-            if(vm.token) {
-                $http.patch(environmentConfig.API + '/admin/transactions/' + $scope.transaction.id + '/',
-                    {
-                        metadata: metaData
-                    }, {
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': vm.token
-                        }
-                    }).then(function (res) {
-                    if (res.status === 200) {
-                        if(metaData == {}){
-                            delete $scope.formatted.metadata;
-                            delete $scope.transaction.metadata;
-                        } else {
-                            $scope.transaction.metadata = metaData;
-                            $scope.formatted.metadata = metadataTextService.convertToText(metaData);
-                        }
-
-                        $timeout(function () {
-                            $scope.updatingTransaction = false;
-                            toastr.success('Transaction successfully updated');
-                            $uibModalInstance.close($scope.transaction);
-                        },800);
+            $http.patch(environmentConfig.API + '/admin/transactions/' + $scope.transaction.id + '/',
+                {
+                    status: $scope.updateTransactionObj.status,
+                    metadata: metaData
+                },
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': vm.token
                     }
-                }).catch(function (error) {
-                    $scope.updatingTransaction = false;
-                    errorHandler.evaluateErrors(error.data);
-                    errorHandler.handleErrors(error);
-                });
-            }
+                }).then(function (res) {
+                if (res.status === 200) {
+                    if(metaData == {}){
+                        delete $scope.formatted.metadata;
+                        delete $scope.transaction.metadata;
+                    } else {
+                        $scope.transaction.metadata = metaData;
+                        $scope.formatted.metadata = metadataTextService.convertToText(metaData);
+                    }
+
+                    $timeout(function () {
+                        $scope.updatingTransaction = false;
+                        toastr.success('Transaction successfully updated');
+                        $uibModalInstance.close($scope.transaction);
+                    },800);
+                }
+            }).catch(function (error) {
+                $scope.updatingTransaction = false;
+                errorHandler.evaluateErrors(error.data);
+                errorHandler.handleErrors(error);
+            });
         };
 
         vm.isJson = function (str) {
