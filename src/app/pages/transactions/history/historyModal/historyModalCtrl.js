@@ -4,8 +4,8 @@
     angular.module('BlurAdmin.pages.transactions.history')
         .controller('historyModalCtrl', historyModalCtrl);
 
-    function historyModalCtrl($uibModalInstance,$http,$scope,errorHandler,toastr,$timeout,
-                              transaction,metadataTextService,$location,environmentConfig,cookieManagement,$ngConfirm) {
+    function historyModalCtrl($uibModalInstance,$http,$scope,errorHandler,toastr,$timeout,$anchorScroll,
+                              transaction,metadataTextService,$location,environmentConfig,cookieManagement) {
 
         var vm = this;
         vm.token = cookieManagement.getCookie('TOKEN');
@@ -59,6 +59,14 @@
                 }
 
                 $scope.updateTransactionObj.status = $scope.transaction.status;
+                //scrolling to the bottom
+                var old = $location.hash();
+                $location.hash('transaction-modal-save-button');
+                $anchorScroll();
+                $timeout(function () {
+                    $location.hash(old);
+                },200);
+
             } else {
                 delete $scope.updateTransactionObj.metadata;
             }
@@ -127,6 +135,7 @@
             $uibModalInstance.close();
             $location.path('/user/' + $scope.transaction.user.identifier + '/details');
         };
-    }
 
+
+    }
 })();

@@ -392,7 +392,7 @@
                 animation: true,
                 templateUrl: page,
                 size: size,
-                controller: 'historyModalCtrl',
+                controller: 'UserTransactionsModalCtrl',
                 resolve: {
                     transaction: function () {
                         return transaction;
@@ -402,7 +402,7 @@
 
             vm.theModal.result.then(function(transaction){
                 if(transaction){
-                    $scope.clearFilters()
+                    $scope.clearFilters();
                     $scope.getLatestTransactions();
                 }
             }, function(){

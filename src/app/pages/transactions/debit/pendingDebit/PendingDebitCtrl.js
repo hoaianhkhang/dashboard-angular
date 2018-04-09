@@ -85,10 +85,6 @@
             });
         };
 
-        vm.findIndexOfTransaction = function(element){
-            return this.id == element.id;
-        };
-
         $scope.openModal = function (page, size,transaction) {
             vm.theModal = $uibModal.open({
                 animation: true,
@@ -103,11 +99,8 @@
             });
 
             vm.theModal.result.then(function(transaction){
-                var index = $scope.transactions.list.findIndex(vm.findIndexOfTransaction,transaction);
-                $scope.transactions.list.splice(index, 1);
-                if($scope.transactions.list.length == 0){
-                    $scope.transactionsStateMessage = 'No pending transactions';
-                    return;
+                if(transaction){
+                    $scope.getPendingTransactions();
                 }
             }, function(){
             });
