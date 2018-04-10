@@ -6,7 +6,7 @@
 
     /** @ngInject */
     function UsersCtrl($rootScope,$state,$scope,environmentConfig,$http,typeaheadService,$location,
-                       cookieManagement,errorHandler,$window,toastr,serializeFiltersService,$filter) {
+                       cookieManagement,errorHandler,$window,toastr,serializeFiltersService,$filter,localStorageManagement) {
 
         var vm = this;
         vm.token = cookieManagement.getCookie('TOKEN');
@@ -36,15 +36,7 @@
             maxSize: 5
         };
 
-        // $scope.tableColDrag = function (start,target) {
-        //     var tempObj = $scope.headerColumns[start];
-        //     $scope.headerColumns.splice(start, 1);
-        //     $scope.headerColumns.splice(target, 0,tempObj);
-        //
-        //     cookieManagement.setCookie(vm.savedUserTableColumns,JSON.stringify($scope.headerColumns));
-        // };
-
-        $scope.headerColumns = cookieManagement.getCookie(vm.savedUserTableColumns) ? JSON.parse(cookieManagement.getCookie(vm.savedUserTableColumns)) : [
+        $scope.headerColumns = localStorageManagement.getValue(vm.savedUserTableColumns) ? JSON.parse(localStorageManagement.getValue(vm.savedUserTableColumns)) : [
             {colName: 'Identifier',fieldName: 'identifier',visible: true},
             {colName: 'First name',fieldName: 'first_name',visible: true},
             {colName: 'Last name',fieldName: 'last_name',visible: true},
@@ -138,11 +130,11 @@
             $scope.headerColumns.forEach(function (headerObj) {
                 headerObj.visible = true;
             });
-            cookieManagement.setCookie(vm.savedUserTableColumns,JSON.stringify($scope.headerColumns));
+            localStorageManagement.setValue(vm.savedUserTableColumns,JSON.stringify($scope.headerColumns));
         };
 
         $scope.toggleColumnVisibility = function () {
-            cookieManagement.setCookie(vm.savedUserTableColumns,JSON.stringify($scope.headerColumns));
+            localStorageManagement.setValue(vm.savedUserTableColumns,JSON.stringify($scope.headerColumns));
         };
 
         $scope.restoreColDefaults = function () {
@@ -157,7 +149,7 @@
                 }
             });
 
-            cookieManagement.setCookie(vm.savedUserTableColumns,JSON.stringify($scope.headerColumns));
+            localStorageManagement.setValue(vm.savedUserTableColumns,JSON.stringify($scope.headerColumns));
         };
 
         $scope.getGroups = function () {
