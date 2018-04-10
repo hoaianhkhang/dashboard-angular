@@ -62,11 +62,16 @@
                 $scope.updateTransactionObj.status = $scope.transaction.status;
                 //scrolling to the bottom
                 var old = $location.hash();
-                $location.hash('transaction-modal-save-button');
+                $location.hash('transaction-modal-mid');
                 $anchorScroll();
+                $location.hash(old);
+                $timeout(function () {
+                    $location.hash('transaction-modal-save-button');
+                    $anchorScroll();
+                },30);
                 $timeout(function () {
                     $location.hash(old);
-                },200);
+                },50);
 
             } else {
                 delete $scope.updateTransactionObj.metadata;
