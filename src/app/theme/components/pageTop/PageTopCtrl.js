@@ -43,6 +43,10 @@
                             $rootScope.pageTopObj.companyObj = {};
                             $rootScope.pageTopObj.companyObj = res.data.data;
                             cookieManagement.setCookie('companyIdentifier',$rootScope.pageTopObj.companyObj.identifier);
+
+                            // delete following two lines after a few days of deployment
+                            cookieManagement.deleteCookie($rootScope.pageTopObj.companyObj.identifier + 'transactionsTable');
+                            cookieManagement.deleteCookie($rootScope.pageTopObj.companyObj.identifier + 'usersTable');
                         }
                     }).catch(function (error) {
                     });

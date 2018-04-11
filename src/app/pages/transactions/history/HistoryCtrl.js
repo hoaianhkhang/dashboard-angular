@@ -6,7 +6,7 @@
 
     /** @ngInject */
     function HistoryCtrl($rootScope,$scope,environmentConfig,$http,cookieManagement,$uibModal,sharedResources,toastr,currencyModifiers,
-                         errorHandler,$state,$window,typeaheadService,$filter,serializeFiltersService,$location,_) {
+                         errorHandler,$state,$window,typeaheadService,$filter,serializeFiltersService,$location,_,localStorageManagement) {
 
         var vm = this;
         vm.token = cookieManagement.getCookie('TOKEN');
@@ -22,7 +22,7 @@
         $scope.groupFilterOptions = ['Group name','In a group'];
         $scope.filtersCount = 0;
 
-        $scope.headerColumns = cookieManagement.getCookie(vm.savedTransactionTableColumns) ? JSON.parse(cookieManagement.getCookie(vm.savedTransactionTableColumns)) : [
+        $scope.headerColumns = localStorageManagement.getValue(vm.savedTransactionTableColumns) ? JSON.parse(localStorageManagement.getValue(vm.savedTransactionTableColumns)) : [
             {colName: 'User',fieldName: 'user',visible: true},
             {colName: 'Type',fieldName: 'tx_type',visible: true},
             {colName: 'Subtype',fieldName: 'subtype',visible: true},
@@ -130,11 +130,11 @@
             $scope.headerColumns.forEach(function (headerObj) {
                 headerObj.visible = true;
             });
-            cookieManagement.setCookie(vm.savedTransactionTableColumns,JSON.stringify($scope.headerColumns));
+            localStorageManagement.setValue(vm.savedTransactionTableColumns,JSON.stringify($scope.headerColumns));
         };
 
         $scope.toggleColumnVisibility = function () {
-            cookieManagement.setCookie(vm.savedTransactionTableColumns,JSON.stringify($scope.headerColumns));
+            localStorageManagement.setValue(vm.savedTransactionTableColumns,JSON.stringify($scope.headerColumns));
         };
 
         $scope.restoreColDefaults = function () {
@@ -149,7 +149,7 @@
                 }
             });
 
-            cookieManagement.setCookie(vm.savedTransactionTableColumns,JSON.stringify($scope.headerColumns));
+            localStorageManagement.setValue(vm.savedTransactionTableColumns,JSON.stringify($scope.headerColumns));
         };
 
         sharedResources.getSubtypes().then(function (res) {
