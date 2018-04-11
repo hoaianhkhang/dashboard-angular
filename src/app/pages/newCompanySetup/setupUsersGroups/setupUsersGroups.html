@@ -81,7 +81,7 @@
         </div>
         <div class="panel-body">
             <div class="divider-20" ng-repeat="group in addedGroups" ng-class="{'no-margin-bottom': $last}">
-                <div class="divider">
+                <div ng-class="{'divider': group.public && group.default}">
                     <span ng-class="{'pointer': group.name!='admin' && group.name!='service'}" ng-click="group.name!='admin' && group.name!='service' ? editUser(group):null">{{group.label}}</span>
                     &nbsp;&nbsp;&nbsp;&nbsp;
                     <span ng-class="{'pointer': group.name!='admin' && group.name!='service'}" ng-click="group.name!='admin' && group.name!='service' ? editUser(group):null">({{group.name}})</span>
@@ -89,7 +89,7 @@
                           ng-hide="group.name=='admin' || group.name=='service'"
                           ng-click="deleteGroupConfirm(group.name)">x</span>
                 </div>
-                <div ng-show="group.public || group.name">
+                <div ng-class="{'invisible-with-no-space': !group.public && !group.default}">
                     <span ng-show="group.public">Public</span>
                     &nbsp;&nbsp;&nbsp;&nbsp;
                     <span ng-show="group.default">Default</span>
