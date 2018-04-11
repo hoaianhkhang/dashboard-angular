@@ -11,7 +11,7 @@
                         <li>You can configure tiers, tier limits, tier requirements, fees, and admin permissions per group.</li>
                         <li>By default only admins can assign users to a group - make a group <i><b>Public</b></i> if you would
                             like the group to be available as a choice in the registration API endpoint.</li>
-                        <li>Make a group <i><b>Default</b></i> if you want new users to be automatically added upon user creation.</li>
+                        <li>Make a group <i><b>Default</b></i> if you want new users to be automatically added upon user creation. Only one group can be set as the <i><b>Default</b></i>.</li>
                         <li><i><b>admin</b></i> group is automatically added. The company owner is placed in this group.</li>
                         <li><i><b>service</b></i> group is automatically added - it is required to run 3rd party services on Rehive.</li>
                     </ul>
@@ -21,7 +21,7 @@
                         <label>Group name <span class="required-icon">*</span></label>
                         <input type="text" class="form-control" ng-model="user.name"
                                placeholder="Group name e.g. merchant" required
-                               ng-change="user.name? user.name = user.name.toLowerCase():null;">
+                               ng-change="groupNameChanged(user)">
                     </div>
                     <div class="form-group">
                         <label>Group label <span class="required-icon"></span></label>
@@ -81,18 +81,18 @@
         </div>
         <div class="panel-body">
             <div class="divider-20" ng-repeat="group in addedGroups" ng-class="{'no-margin-bottom': $last}">
-                <div ng-class="{'divider': group.public && group.default}">
+                <div ng-class="{'divider': group.public || group.default}">
                     <span ng-class="{'pointer': group.name!='admin' && group.name!='service'}" ng-click="group.name!='admin' && group.name!='service' ? editUser(group):null">{{group.label}}</span>
-                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <span ng-class="{'invisible-with-no-space': !group.label}">&nbsp;&nbsp;&nbsp;&nbsp;</span>
                     <span ng-class="{'pointer': group.name!='admin' && group.name!='service'}" ng-click="group.name!='admin' && group.name!='service' ? editUser(group):null">({{group.name}})</span>
                     <span class="pull-right pointer" style="font-size: 16px;line-height: 16px;font-weight: 500;"
                           ng-hide="group.name=='admin' || group.name=='service'"
                           ng-click="deleteGroupConfirm(group.name)">x</span>
                 </div>
                 <div ng-class="{'invisible-with-no-space': !group.public && !group.default}">
-                    <span ng-show="group.public">Public</span>
+                    <span class="group-properties" ng-show="group.public"><i class="fa fa-check"></i>&nbsp;&nbsp; Public</span>
                     &nbsp;&nbsp;&nbsp;&nbsp;
-                    <span ng-show="group.default">Default</span>
+                    <span class="group-properties" ng-show="group.default"><i class="fa fa-check"></i>&nbsp;&nbsp; Default</span>
                 </div>
             </div>
         </div>

@@ -4,7 +4,7 @@
     angular.module('BlurAdmin.pages.newCompanySetup.setupUsersGroups')
         .controller("SetupUsersGroupsCtrl", SetupUsersGroupsCtrl);
 
-    function SetupUsersGroupsCtrl($rootScope,$scope,$http,cookieManagement,toastr,$ngConfirm,
+    function SetupUsersGroupsCtrl($rootScope,$scope,$http,cookieManagement,toastr,$ngConfirm,$filter,
                                     environmentConfig,$location,errorHandler,localStorageManagement) {
         var vm = this;
         vm.token=cookieManagement.getCookie("TOKEN");
@@ -21,6 +21,14 @@
             $location.path('company/setup/currency-setup');
         };
 
+        $scope.groupNameChanged = function (user) {
+            if(user.name){
+                user.name = user.name.toLowerCase();
+                user.label = $filter('capitalizeWord')(user.name);
+            } else {
+                user.label = '';
+            }
+        };
 
         vm.getGroups = function(){
             if(vm.token){
@@ -33,7 +41,6 @@
                 }).then(function (res) {
                     if (res.status === 200) {
                         $scope.addedGroups = res.data.data.results;
-                        console.log($scope.addedGroups)
                         if($scope.addedGroups.length == 2){
                             $rootScope.setupUsers = 0;
                             localStorageManagement.setValue('setupUsers',0);

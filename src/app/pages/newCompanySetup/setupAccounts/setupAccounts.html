@@ -34,7 +34,7 @@
                         <label>2 - Configure <span class="required-icon">*</span></label>
                         <input type="text" class="form-control" ng-model="account.name"
                                placeholder="Account name, e.g. default, saving, loan, etc."
-                               ng-change="account.name? account.name = account.name.toLowerCase():null;">
+                               ng-change="accountConfigNameChanged(account)">
                         <div class="checkbox divider-20">
                             <input type="text" class="form-control" ng-model="account.label"
                                    placeholder="Account label, e.g. Default, Saving, Loan, etc.">

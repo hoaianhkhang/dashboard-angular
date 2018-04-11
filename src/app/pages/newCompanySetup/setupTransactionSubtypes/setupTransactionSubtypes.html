@@ -9,7 +9,8 @@
                     <ul class="group-setup-ul">
                         <li>Subtypes are a way to mark specific transactions in order to categorize and sort them.</li>
                         <li>Select whether the subtype should be applied to a credit or debit transaction type.</li>
-                        <li>Subtypes can be used to define business logic surrounding marked transactions in the dashboard.</li>
+                        <li>Subtypes can be used to define business logic for marked transactions in the dashboard.
+                            E.g. A debit subtype named <i><b>withdrawal</b></i> can apply fees to only debit transactions marked with subtype withdrawal.</li>
                     </ul>
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 custom-form">
@@ -26,7 +27,8 @@
                         <label>Subtype name <span class="required-icon">*</span></label>
                         <input type="text" class="form-control" ng-model="subtype.name"
                                placeholder="Subtype name e.g. purchase, withdraw, deposit"
-                               auto-focus="!havePersonalDetails" required ng-change="subtype.name? subtype.name = subtype.name.toLowerCase():null;">
+                               auto-focus="!havePersonalDetails" required
+                               ng-change="setupSubtypesNameChanged(subtype)">
                     </div>
                     <div class="form-group">
                         <label>Subtype label </label>
