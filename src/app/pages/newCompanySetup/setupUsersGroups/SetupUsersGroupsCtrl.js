@@ -33,6 +33,7 @@
                 }).then(function (res) {
                     if (res.status === 200) {
                         $scope.addedGroups = res.data.data.results;
+                        console.log($scope.addedGroups)
                         if($scope.addedGroups.length == 2){
                             $rootScope.setupUsers = 0;
                             localStorageManagement.setValue('setupUsers',0);

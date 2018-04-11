@@ -68,7 +68,7 @@
                         class="btn btn-primary setup-skip-btn pull-left dashboard-btn margin-left-10">Skip all
                 </button>
                 <button ng-click="goToNextView()" ng-disabled="setupUsers==0"
-                        class="btn btn-primary setup-next-btn pull-right dashboard-btn">Next
+                        class="btn btn-primary pull-right dashboard-btn">Next
                 </button>
             </div>
         </div>
@@ -81,10 +81,19 @@
         </div>
         <div class="panel-body">
             <div class="divider-20" ng-repeat="group in addedGroups" ng-class="{'no-margin-bottom': $last}">
-                <span ng-class="{'pointer': group.name!='admin' && group.name!='service'}" ng-click="group.name!='admin' && group.name!='service' ? editUser(group):null">{{group.name}}</span>
-                <span class="pull-right pointer" style="font-size: 16px;line-height: 16px;font-weight: 500;"
-                      ng-hide="group.name=='admin' || group.name=='service'"
-                      ng-click="deleteGroupConfirm(group.name)">x</span>
+                <div class="divider">
+                    <span ng-class="{'pointer': group.name!='admin' && group.name!='service'}" ng-click="group.name!='admin' && group.name!='service' ? editUser(group):null">{{group.label}}</span>
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <span ng-class="{'pointer': group.name!='admin' && group.name!='service'}" ng-click="group.name!='admin' && group.name!='service' ? editUser(group):null">({{group.name}})</span>
+                    <span class="pull-right pointer" style="font-size: 16px;line-height: 16px;font-weight: 500;"
+                          ng-hide="group.name=='admin' || group.name=='service'"
+                          ng-click="deleteGroupConfirm(group.name)">x</span>
+                </div>
+                <div ng-show="group.public || group.name">
+                    <span ng-show="group.public">Public</span>
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <span ng-show="group.default">Default</span>
+                </div>
             </div>
         </div>
     </div>
