@@ -150,6 +150,9 @@
             <button type="button" ng-show="editingTransaction" ng-disabled="!untouchedTransaction" id="transaction-modal-save-button"
                     ng-click="updateTransactionStatus()" ng-class="{'setup-next-btn': !untouchedTransaction,'btn-primary': untouchedTransaction}"
                     class="dashboard-btn btn pull-right">Save</button>
+            <button type="button" ng-show="editingTransaction"
+                    ng-click="toggleEditingTransaction()"
+                    class="dashboard-btn btn-default btn pull-left">Cancel</button>
         </div>
     </div>
 </div>
