@@ -71,6 +71,7 @@
 
 
             var searchObj = {
+                page_size: 250,
                 enabled: true,
                 code: $scope.filtersObj.currencyFilter ? $scope.applyFiltersObj.currencyFilter.selectedCurrencyOption.code: null,
                 unit: $scope.filtersObj.unitFilter ? $scope.applyFiltersObj.unitFilter.selectedCurrencyOption.unit: null

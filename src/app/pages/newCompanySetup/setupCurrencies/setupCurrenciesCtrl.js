@@ -26,7 +26,7 @@
         vm.getCurrencies = function(){
             $scope.loadingCurrencies = true;
             if(vm.token){
-                $http.get(environmentConfig.API + '/admin/currencies/?enabled=true', {
+                $http.get(environmentConfig.API + '/admin/currencies/?enabled=true&page_size=250', {
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': vm.token
@@ -64,7 +64,7 @@
 
         vm.getCompanyCurrencies = function(){
             if(vm.token){
-                $http.get(environmentConfig.API + '/admin/currencies/?enabled=true', {
+                $http.get(environmentConfig.API + '/admin/currencies/?enabled=true&page_size=250', {
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': vm.token

@@ -102,7 +102,7 @@
 
         vm.getCompanyCurrencies = function(){
             if($rootScope.userFullyVerified && vm.token){
-                $http.get(environmentConfig.API + '/admin/currencies/?enabled=true', {
+                $http.get(environmentConfig.API + '/admin/currencies/?enabled=true&page_size=250', {
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': vm.token
