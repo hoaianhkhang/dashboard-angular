@@ -120,14 +120,19 @@
                          ng-hide="accounts.length==0"
                          ng-class="{'no-margin-bottom': $last}">
                         <div ng-show="group.name ==  account.group.name" class="account-config-company-setup">
-                            <div ng-click="editingAccountCompanySetup(account)" class="pointer pull-left">
+                            <div class="pull-left">
                                 <span ng-class="{'long-text': (account.label.length > 16), 'very-long-text': (account.label.length > 25)}" ng-show="account.label">{{account.label}}</span>
                                 <span ng-hide="account.label" class="font-italic">No label provided</span>
                                 <p>{{account.name}}</p>
                             </div>
-                            <div ng-show="group.name ==  account.group.name" class="pull-right pointer add-new">
+                            <div ng-show="group.name ==  account.group.name" class="pull-right pointer">
                                 <span ng-click="deleteAccountConfirm(account)">x</span>
                             </div>
+                            <span style="font-size: 10px;line-height: 20px;font-weight: 500; padding: 0 5px 5px 5px;"
+                                  ng-click="editingAccountCompanySetup(account)"
+                                  class="pull-right margin-right-10 pointer">
+                                    <i class="fa fa-pencil"></i>
+                            </span>
                         </div>
                     </div>
                 </div>

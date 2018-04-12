@@ -73,10 +73,15 @@
             <span class="user-details-panel-title">Added transaction subtypes</span>
         </div>
         <div class="panel-body">
-            <div class="divider-20" ng-repeat="subtype in subtypes" ng-hide="subtypes.length==0"
+            <div class="divider-20" ng-repeat="subtype in subtypes" ng-hide="subtypes.length == 0"
                  ng-class="{'no-margin-bottom': $last}">
-                <span ng-click="editSubtype(subtype)" class="pointer">{{subtype.name}}</span>
+                <span>{{subtype.name}}</span>
                 <span class="pull-right pointer" ng-click="deleteSubtypeConfirm(subtype.id)">x</span>
+                <span style="font-size: 10px;line-height: 20px;font-weight: 500; padding: 0 5px 5px 5px;"
+                      ng-click="editSubtypeObj(subtype)"
+                      class="pull-right margin-right-10 pointer">
+                    <i class="fa fa-pencil"></i>
+                </span>
             </div>
             <span ng-show="subtypes.length==0">No subtypes added yet.</span>
         </div>

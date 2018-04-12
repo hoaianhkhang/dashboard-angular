@@ -161,7 +161,7 @@
             });
         };
 
-        $scope.editSubtype = function(subtype) {
+        $scope.editSubtypeObj = function(subtype) {
             $scope.subtype = subtype;
             $scope.editingSubtypes = true;
             $scope.subtype.prevName = subtype.name;
