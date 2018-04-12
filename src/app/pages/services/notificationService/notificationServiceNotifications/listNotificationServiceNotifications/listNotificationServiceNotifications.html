@@ -18,7 +18,8 @@
                     <td class="transactions-list-element rehive-table-row-first-child" title="{{notification.name}}" ng-bind="notification.name"></td>
                     <td class="transactions-list-element" title="{{notification.subject || 'None'}}" ng-bind="notification.subject || 'None'"></td>
                     <td class="transactions-list-element">
-                        <input class="custom-rehive-checkbox" ng-model="notification.enabled" type="checkbox">
+                        <input class="custom-rehive-checkbox" ng-click="toggleNotificationStatus(notification)"
+                               ng-model="notification.enabled" type="checkbox">
                     </td>
                     <td class="transactions-list-element" title="{{notification.event | capitalizeDottedSentence | capitalizeUnderscoredSentence}}"
                         ng-bind="notification.event | capitalizeDottedSentence | capitalizeUnderscoredSentence"></td>

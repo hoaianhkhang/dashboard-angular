@@ -52,6 +52,24 @@
         };
         $scope.getNotificationsList();
 
+        $scope.toggleNotificationStatus = function (notification) {
+            if(vm.token) {
+                $http.patch(vm.baseUrl + 'admin/notifications/' + notification.id + '/',{enabled: notification.enabled}, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': vm.token
+                    }
+                }).then(function (res) {
+                    if (res.status === 200) {
+                        toastr.success('Notification updated successfully');
+                    }
+                }).catch(function (error) {
+                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.handleErrors(error);
+                });
+            }
+        };
+
         $scope.goToAddNotificationView = function () {
             $location.path('/services/notifications/create');
         };
