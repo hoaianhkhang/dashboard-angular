@@ -64,7 +64,7 @@
 
         vm.getGroupUsers = function (group,last) {
             if(vm.token) {
-                $http.get(environmentConfig.API + '/admin/users/?group=' + group.name, {
+                $http.get(environmentConfig.API + '/admin/users/overview?group=' + group.name, {
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': vm.token
@@ -73,7 +73,8 @@
                     if (res.status === 200) {
                         $scope.groups.forEach(function (element,index) {
                             if(element.name == group.name){
-                                element.totalUsers = res.data.data.count;
+                                element.totalUsers = res.data.data.total;
+                                element.activeUsers = res.data.data.active;
                             }
                         });
                         if(last){
