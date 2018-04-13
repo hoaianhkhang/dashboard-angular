@@ -530,14 +530,14 @@
                 }
             });
 
-            vm.theModal.result.then(function(transaction){
-                if(transaction){
-                    $scope.clearFilters();
-                    $scope.getLatestTransactions();
-                }
-            }, function(){
-            });
         };
+
+        $scope.$on("modalClosing",function(event,transactionHasBeenUpdated){
+           if(transactionHasBeenUpdated){
+               $scope.clearFilters();
+               $scope.getLatestTransactions();
+           }
+        });
 
         $scope.closeColumnFiltersBox = function () {
             $scope.showingColumnFilters = false;

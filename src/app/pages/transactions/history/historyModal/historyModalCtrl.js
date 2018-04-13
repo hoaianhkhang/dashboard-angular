@@ -4,7 +4,7 @@
     angular.module('BlurAdmin.pages.transactions.history')
         .controller('historyModalCtrl', historyModalCtrl);
 
-    function historyModalCtrl($uibModalInstance,$http,$scope,errorHandler,toastr,$timeout,$anchorScroll,
+    function historyModalCtrl($rootScope,$uibModalInstance,$http,$scope,errorHandler,toastr,$timeout,$anchorScroll,
                               transaction,metadataTextService,$location,environmentConfig,cookieManagement) {
 
         var vm = this;
@@ -15,7 +15,12 @@
         $scope.editingTransaction = false;
         $scope.updatingTransaction = false;
         $scope.untouchedTransaction = false;
+        $scope.transactionHasBeenUpdated = false;
         $scope.editTransactionStatusOptions = ['Pending','Complete','Failed'];
+
+        $scope.$on("modal.closing",function(){
+            $rootScope.$broadcast("modalClosing",$scope.transactionHasBeenUpdated);
+        });
 
         $scope.copiedMetadataSuccessfully= function () {
             toastr.success('Metadata copied to clipboard');
@@ -115,9 +120,10 @@
                     }
 
                     $timeout(function () {
+                        $scope.transactionHasBeenUpdated = true;
+                        $scope.toggleEditingTransaction();
                         $scope.updatingTransaction = false;
                         toastr.success('Transaction successfully updated');
-                        $uibModalInstance.close($scope.transaction);
                     },800);
                 }
             }).catch(function (error) {

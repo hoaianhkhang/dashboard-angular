@@ -5,7 +5,7 @@
         .controller('PendingCreditModalCtrl', PendingCreditModalCtrl);
 
     /** @ngInject */
-    function PendingCreditModalCtrl($uibModalInstance,$scope,$http,environmentConfig,cookieManagement,$anchorScroll,
+    function PendingCreditModalCtrl($rootScope,$uibModalInstance,$scope,$http,environmentConfig,cookieManagement,$anchorScroll,
                                     $timeout,toastr,transaction,errorHandler,metadataTextService,$location) {
 
         var vm = this;
@@ -16,7 +16,12 @@
         $scope.editingTransaction = false;
         $scope.updatingTransaction = false;
         $scope.untouchedTransaction = false;
+        $scope.transactionHasBeenUpdated = false;
         $scope.editTransactionStatusOptions = ['Pending','Complete','Failed'];
+
+        $scope.$on("modal.closing",function(){
+            $rootScope.$broadcast("modalClosing",$scope.transactionHasBeenUpdated);
+        });
 
         $scope.copiedMetadataSuccessfully= function () {
             toastr.success('Metadata copied to clipboard');
@@ -116,9 +121,10 @@
                     }
 
                     $timeout(function () {
+                        $scope.transactionHasBeenUpdated = true;
+                        $scope.toggleEditingTransaction();
                         $scope.updatingTransaction = false;
                         toastr.success('Transaction successfully updated');
-                        $uibModalInstance.close($scope.transaction);
                     },800);
                 }
             }).catch(function (error) {

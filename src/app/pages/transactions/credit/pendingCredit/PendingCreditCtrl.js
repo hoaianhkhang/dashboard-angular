@@ -101,14 +101,13 @@
                 }
             });
 
-            vm.theModal.result.then(function(transaction){
-                if(transaction){
-                    $scope.getPendingTransactions();
-                }
-            }, function(){
-            });
-
         };
+
+        $scope.$on("modalClosing",function(event,transactionHasBeenUpdated){
+            if(transactionHasBeenUpdated){
+                $scope.getPendingTransactions();
+            }
+        });
 
     }
 })();
