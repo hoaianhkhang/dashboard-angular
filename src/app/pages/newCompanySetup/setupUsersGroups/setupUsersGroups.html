@@ -8,12 +8,7 @@
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                     <ul class="group-setup-ul">
                         <li>Create groups to categorize and configure business rules for your users.</li>
-                        <li>You can configure tiers, tier limits, tier requirements, fees, and admin permissions per group.</li>
-                        <li>By default only admins can assign users to a group - make a group <i><b>Public</b></i> if you would
-                            like the group to be available as a choice in the registration API endpoint.</li>
-                        <li>Make a group <i><b>Default</b></i> if you want new users to be automatically added upon user creation. Only one group can be set as the <i><b>Default</b></i>.</li>
-                        <li><i><b>admin</b></i> group is automatically added. The company owner is placed in this group.</li>
-                        <li><i><b>service</b></i> group is automatically added - it is required to run 3rd party services on Rehive.</li>
+                        <li>You can configure tiers, tier limits, tier requirements, fees, and admin permissions per group later on.</li>
                     </ul>
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 custom-form">
@@ -28,8 +23,10 @@
                         <input type="text" class="form-control" ng-model="user.label"
                                placeholder="Group label e.g. Merchant">
                     </div>
-                    <div class="form-group">
-                        <label>Public</label>
+                    <div class="form-group setup-groups-tooltip-div">
+                        <label>Public &nbsp;<i uib-tooltip-html="'Make a group <strong><i>Public</i></strong>
+                        if you would like the group to be available as a choice in the registration API endpoint.'"
+                                         class="ion-information-circled setup-groups-tooltip"></i></label>
                         <br>
                         <span data-tip="Allows users to allocate themselves to the group">
                             <input class="custom-rehive-checkbox"
@@ -38,8 +35,10 @@
                         </span>
 
                     </div>
-                    <div class="form-group">
-                        <label>Default</label>
+                    <div class="form-group setup-groups-tooltip-div">
+                        <label>Default &nbsp;<i uib-tooltip-html="'Make a group <strong><i>Default</i></strong> if you want
+                        new users to be automatically added to it when they register. Only one group can be set as the
+                        <strong><i>Default</i></strong>.'" class="ion-information-circled setup-groups-tooltip"></i></label>
                         <br>
                         <span data-tip="Users will be allocated to the  default group automatically on registration">
                             <input class="custom-rehive-checkbox" ng-change="user.default? user.public=true:null"
@@ -80,16 +79,16 @@
             <span class="user-details-panel-title">Added groups</span>
         </div>
         <div class="panel-body">
-            <div class="divider-20" ng-repeat="group in addedGroups" ng-class="{'no-margin-bottom': $last}">
+            <div class="divider-20" ng-repeat="group in addedGroups | orderBy: 'name'" ng-class="{'no-margin-bottom': $last}">
                 <div ng-class="{'divider': group.public || group.default}">
                     <span>{{group.name}}</span>
-                    <span class="pull-right pointer" style="font-size: 16px;line-height: 16px;font-weight: 500;"
+                    <span class="pull-right groups-delete-x-icon pointer"
                           ng-hide="group.name=='admin' || group.name=='service'"
                           ng-click="deleteGroupConfirm(group.name)">x</span>
                     <span style="font-size: 10px;line-height: 20px;font-weight: 500; padding: 0 5px 5px 5px;"
                           ng-class="{'pointer': group.name!='admin' && group.name!='service'}"
                           ng-click="group.name!='admin' && group.name!='service' ? editUser(group):null"
-                          class="pull-right margin-right-10" ng-click="deleteCurrencyConfirm(currency.code)"
+                          class="pull-right margin-right-25" ng-click="deleteCurrencyConfirm(currency.code)"
                           ng-hide="group.name=='admin' || group.name=='service'">
                         <i class="fa fa-pencil"></i>
                     </span>
@@ -104,5 +103,25 @@
     </div>
     <div ba-panel ng-show="loadingUsersGroups">
         <loading-image></loading-image>
+    </div>
+    <div class="panel">
+        <div class="panel-heading">
+            <span class="user-details-panel-title">Rehive system groups &nbsp;
+                <span class="system-groups-tooltip-span">
+                    <i class="ion-information-circled setup-groups-tooltip">
+                    <span class="system-groups-tooltip">
+                        <strong><i>admin</i></strong> group is automatically added and the company owner placed inside. <strong><i>service</i></strong> group is required to add utility services on Rehive.
+                    </span>
+                </i>
+                </span>
+            </span>
+        </div>
+        <div class="panel-body">
+            <div class="divider-20" ng-repeat="group in rehiveSystemGroups | orderBy: 'name'" ng-class="{'no-margin-bottom': $last}">
+                <div>
+                    <span>{{group.name}}</span>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

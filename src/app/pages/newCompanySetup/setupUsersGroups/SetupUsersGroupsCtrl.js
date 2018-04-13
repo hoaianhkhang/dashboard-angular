@@ -15,6 +15,7 @@
         localStorageManagement.setValue('activeSetupRoute',0);
         $scope.editingUser = false;
         $scope.loadingUsersGroups = true;
+        $scope.rehiveSystemGroups = [{name: 'admin'},{name: 'service'}];
 
         $scope.goToNextView = function () {
             $rootScope.userFullyVerified = true;
@@ -33,6 +34,7 @@
         vm.getGroups = function(){
             if(vm.token){
                 $scope.loadingUsersGroups = true;
+                $scope.addedGroups = [];
                 $http.get(environmentConfig.API + '/admin/groups/', {
                     headers: {
                         'Content-Type': 'application/json',
@@ -40,7 +42,12 @@
                     }
                 }).then(function (res) {
                     if (res.status === 200) {
-                        $scope.addedGroups = res.data.data.results;
+                        res.data.data.results.forEach(function (group) {
+                            if(group.name != 'admin' && group.name != 'service'){
+                                $scope.addedGroups.push(group);
+                            }
+                        });
+
                         if($scope.addedGroups.length == 2){
                             $rootScope.setupUsers = 0;
                             localStorageManagement.setValue('setupUsers',0);
