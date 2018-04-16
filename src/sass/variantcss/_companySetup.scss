@@ -145,7 +145,10 @@
 }
 
 .account-config-company-setup{
-  margin: 10px 0;
+  margin: 10px 0 5px 5px;
+  & .account-name{
+    overflow-wrap: break-word;
+  }
 }
 
 .font-italic {
