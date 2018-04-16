@@ -5,7 +5,8 @@
         .controller('CurrenciesCtrl', CurrenciesCtrl);
 
     /** @ngInject */
-    function CurrenciesCtrl($rootScope,$scope,$location,cookieManagement,environmentConfig,$http,errorHandler,$state,_,serializeFiltersService) {
+    function CurrenciesCtrl($rootScope,$scope,$location,cookieManagement,environmentConfig,$http,
+                            errorHandler,$state,_,serializeFiltersService,$uibModal) {
 
         var vm = this;
         vm.token = cookieManagement.getCookie('TOKEN');
@@ -31,7 +32,7 @@
 
         $scope.findIndexOfCode = function (currency) {
             return $scope.codeArray.findIndex(function (element) {
-                return element == currency.code
+                return element == currency.code;
             });
         };
 
@@ -157,10 +158,6 @@
             $location.path(path);
         };
 
-        $scope.goToAddCurrency = function(){
-            $location.path('/currency/add');
-        };
-
         $scope.goToHistoryState = function (code) {
             $state.go('transactions.history',{"currencyCode": code});
         };
@@ -171,6 +168,23 @@
 
         $scope.goToPendingTransactions = function (currency,state) {
             $state.go(state);
+        };
+
+        $scope.openAddCurrenciesModal = function (page, size) {
+            vm.theModal = $uibModal.open({
+                animation: true,
+                templateUrl: page,
+                size: size,
+                controller: 'AddCurrencyModalCtrl',
+                scope: $scope
+            });
+
+            vm.theModal.result.then(function(currency){
+                if(currency){
+                    $scope.getCompanyCurrencies();
+                }
+            }, function(){
+            });
         };
 
     }

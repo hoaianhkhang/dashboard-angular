@@ -12,7 +12,6 @@
       'BlurAdmin.pages.smsAuth',
       'BlurAdmin.pages.multiFactorAuthVerify',
       'BlurAdmin.pages.settings',
-      'BlurAdmin.pages.addCurrency',
       'BlurAdmin.pages.currencies',
       'BlurAdmin.pages.transactions',
       'BlurAdmin.pages.groups',

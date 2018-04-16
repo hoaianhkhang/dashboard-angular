@@ -9,7 +9,8 @@
                 </div>
             </div>
             <div>
-                <button class="btn btn-success pull-right panel-header-button currencies-page-buttons-add" ng-click="goToAddCurrency()">Add currency</button>
+                <button class="btn btn-success pull-right panel-header-button currencies-page-buttons-add"
+                        ng-click="openAddCurrenciesModal('app/pages/currencies/addCurrencyModal/addCurrencyModal.html','md')">Add currency</button>
             </div>
         </div>
     </div>
@@ -175,7 +176,8 @@
 <div ng-hide="loadingCurrencies || (currencies.length > 0)">
     <div class="panel">
         <div class="panel-body">
-            <i><a href="/#/currency/add">Add currencies</a> in order to do transactions</i>
+            <i><a class="pointer" ng-click="openAddCurrenciesModal('app/pages/currencies/addCurrencyModal/addCurrencyModal.html','md')">
+                Add currencies</a> in order to do transactions</i>
         </div>
     </div>
 </div>
