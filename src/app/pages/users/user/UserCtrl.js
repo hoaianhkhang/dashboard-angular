@@ -71,7 +71,7 @@
                     $scope.loadingUser = false;
                     if (res.status === 200) {
                         $scope.user = res.data.data;
-                        vm.calculateHowLongUserHasBeenWithCompany($scope.user.date_joined);
+                        vm.calculateHowLongUserHasBeenWithCompany($scope.user.created);
                         $window.sessionStorage.userData = JSON.stringify(res.data.data);
                     }
                 }).catch(function (error) {
@@ -152,11 +152,11 @@
 
             userData.age = ($filter('ageCalculator')(userData.birth_date)).toString();
             userData.nationality = $filter('isoCountry')(userData.nationality);
-            userData.date_joined = $filter('date')(userData.date_joined,'MMM d y') + ' ' +$filter('date')(userData.date_joined,'shortTime');
+            userData.created = $filter('date')(userData.created,'MMM d y') + ' ' +$filter('date')(userData.created,'shortTime');
             userData.last_login = $filter('date')(userData.last_login,'MMM d y') + ' ' +$filter('date')(userData.last_login,'shortTime');
 
             var filteredUserData = _.pick(userData,'identifier','first_name','last_name','username','birth_date','age',
-                'nationality','language','company', 'timezone','verified','date_joined','last_login');
+                'nationality','language','company', 'timezone','verified','created','last_login');
 
             var filteredUserEmails = _.pluck(userEmails,'email');
             var filteredUserMobiles = _.pluck(userMobiles,'number');
