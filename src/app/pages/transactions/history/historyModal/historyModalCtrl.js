@@ -93,6 +93,7 @@
                     metaData =  JSON.parse($scope.updateTransactionObj.metadata);
                 } else {
                     toastr.error('Incorrect metadata format');
+                    $scope.updatingTransaction = false;
                     return false;
                 }
             } else {
