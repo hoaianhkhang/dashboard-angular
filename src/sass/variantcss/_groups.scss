@@ -5,6 +5,7 @@
     border-radius: 0;
     & ul{
       padding-left: 20px!important;
+      text-align: left;
     }
   }
 }
@@ -12,6 +13,7 @@
 .setup-groups-tooltip{
   color: $primary;
   background-color: white;
+  text-align: left;
 }
 
 .setup-groups-tooltip-div{
@@ -19,6 +21,8 @@
     background-color: #4d4d4d!important;
     padding: 4px 6px;
     border-radius: 0;
+    text-align: left;
+    max-width: 210px;
   }
 }
 

@@ -114,7 +114,7 @@
                     <span ng-show="showAccountConfigsOfGroup == $index" class="company-setup-minus-icon pull-right">-</span>
                 </div>
                 <div ng-show="showAccountConfigsOfGroup == $index">
-                    <div class="added-options-overview user-company-overview row" ng-repeat="account in accounts | orderBy: '-account.group.name'"
+                    <div class="added-options-overview row" ng-repeat="account in accounts | orderBy: '-account.group.name'"
                          ng-hide="accounts.length==0"
                          ng-class="{'no-margin-bottom': $last}">
                         <div ng-show="group.name ==  account.group.name" class="account-config-company-setup">
