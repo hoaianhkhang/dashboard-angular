@@ -12,7 +12,9 @@
         $scope.currenciesToAdd = [];
         $rootScope.activeSetupRoute = 1;
         localStorageManagement.setValue('activeSetupRoute',1);
-        $scope.initialCurrencies = currenciesList;
+        $scope.initialCurrencies = currenciesList.slice();
+
+        console.log(currenciesList)
         $scope.loadingCurrencies = true;
 
         $scope.goToNextView=function () {
@@ -34,6 +36,7 @@
                 }).then(function (res) {
                     if (res.status === 200) {
                         $scope.currencies = res.data.data.results;
+                        console.log($scope.currencies)
                         if($scope.currencies.length==0){
                             $rootScope.setupCurrencies = 0;
                             localStorageManagement.setValue('setupCurrencies',0);
