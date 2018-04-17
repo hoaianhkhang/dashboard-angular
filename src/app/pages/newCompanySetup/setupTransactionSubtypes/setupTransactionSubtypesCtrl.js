@@ -27,7 +27,7 @@
         $scope.setupSubtypesNameChanged = function (subtype) {
             if(subtype.name){
                 subtype.name = subtype.name.toLowerCase();
-                subtype.label = $filter('capitalizeWord')(subtype.name);
+                subtype.label = $filter('capitalizeWord')(subtype.name).replace(/_/g, " ").replace(/-/g, " ");
             } else {
                 subtype.label = '';
             }

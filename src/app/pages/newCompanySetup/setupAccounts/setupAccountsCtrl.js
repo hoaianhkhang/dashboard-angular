@@ -23,7 +23,7 @@
         $scope.accountConfigNameChanged = function (account) {
             if(account.name){
                 account.name = account.name.toLowerCase();
-                account.label = $filter('capitalizeWord')(account.name);
+                account.label = $filter('capitalizeWord')(account.name).replace(/_/g, " ").replace(/-/g, " ");
             } else {
                 account.label = '';
             }

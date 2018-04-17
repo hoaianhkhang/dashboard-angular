@@ -25,7 +25,7 @@
         $scope.groupNameChanged = function (user) {
             if(user.name){
                 user.name = user.name.toLowerCase();
-                user.label = $filter('capitalizeWord')(user.name);
+                user.label = $filter('capitalizeWord')(user.name).replace(/_/g, " ").replace(/-/g, " ");
             } else {
                 user.label = '';
             }
