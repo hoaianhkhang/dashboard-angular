@@ -48,14 +48,15 @@
                     },
                     Add: {
                         text: "Add",
-                        btnClass: 'btn-primary dashboard-btn',
                         keys: ['enter'], // will trigger when enter is pressed
-                        action: function(scope,button){
+                        btnClass: 'btn-primary dashboard-btn',
+                        action: function(scope){
+                            console.log('sasd')
                             if(!scope.password){
                                 toastr.error('Please enter your password');
                                 return;
                             }
-                            scope.addServices(selectedService.selected,scope.password)
+                            scope.addServices(selectedService.selected,scope.password);
                         }
                     }
                 }
