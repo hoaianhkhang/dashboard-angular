@@ -176,6 +176,36 @@
                 </div>
             </div>
         </div>
+        <div id="filterDestinationID">
+            <div>
+                <label class="checkbox-inline custom-checkbox nowrap">
+                    <input type="checkbox" ng-model="filtersObj.destinationIdFilter">
+                    <span>Has destination txn id</span>
+                </label>
+            </div>
+            <div ng-if="filtersObj.destinationIdFilter" class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 date-filter-view">
+                    <div class="date-filter-view">
+                        <input class="custom-rehive-checkbox" ng-model="applyFiltersObj.destinationIdFilter.destinationIdExists" type="checkbox">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="filterSourceID">
+            <div>
+                <label class="checkbox-inline custom-checkbox nowrap">
+                    <input type="checkbox" ng-model="filtersObj.sourceIdFilter">
+                    <span>Has source txn id</span>
+                </label>
+            </div>
+            <div ng-if="filtersObj.sourceIdFilter" class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 date-filter-view">
+                    <div class="date-filter-view">
+                        <input class="custom-rehive-checkbox" ng-model="applyFiltersObj.sourceIdFilter.sourceIdExists" type="checkbox">
+                    </div>
+                </div>
+            </div>
+        </div>
         <div id="filterUser">
             <div>
                 <label class="checkbox-inline custom-checkbox nowrap">
