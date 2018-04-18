@@ -51,7 +51,6 @@
                         keys: ['enter'], // will trigger when enter is pressed
                         btnClass: 'btn-primary dashboard-btn',
                         action: function(scope){
-                            console.log('sasd')
                             if(!scope.password){
                                 toastr.error('Please enter your password');
                                 return;
