@@ -172,9 +172,9 @@
         </div>
     </div>
 </div>
-<div ng-hide="loadingCurrencies || (currencies.length == 0)">
+<div ng-hide="loadingCurrencies || (currencies.length == 0)" class="currencies-pagination">
     <p uib-pagination boundary-links="true" items-per-page="pagination.itemsPerPage"  total-items="currenciesData.count" ng-model="pagination.pageNo"
-       max-size="pagination.maxSize" class="pagination-sm pull-right no-margin transaction-history-pagination" force-ellipses="true" ng-change="getCompanyCurrencies()"
+       max-size="pagination.maxSize" class="pagination-sm pull-right no-margin" force-ellipses="true" ng-change="getCompanyCurrencies()"
        previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></p>
 </div>
 <div ng-hide="loadingCurrencies || (currencies.length > 0)">
