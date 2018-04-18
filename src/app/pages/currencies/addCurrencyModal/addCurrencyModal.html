@@ -68,13 +68,13 @@
 
         <div id="addedCurrencyPanel" ng-show="showCurrencyAddedPanel">
             <p class="divider-20" ng-show="currenciesThatHaveBeenAdded.length == 1">
-                You have successfully added currency <strong>{{currenciesThatHaveBeenAdded[0].code}}</strong> to your dashboard.
+                You are adding currency <strong>{{currenciesThatHaveBeenAdded[0].code}}</strong> to your company.
             </p>
             <p class="divider-20" ng-show="currenciesThatHaveBeenAdded.length > 1">
-                You have successfully added currencies
+                You are adding currencies
                 <span ng-repeat="currency in currenciesThatHaveBeenAdded | orderBy: 'code'">
                     <strong>{{$last ? ' and ' + currency.code :(currenciesThatHaveBeenAdded.length - 2 == $index) ? currency.code : currency.code + ',' }}</strong>
-                </span> to your dashboard.
+                </span> to your company.
             </p>
 
             <div ng-show="currenciesThatHaveBeenAdded.length == 1">
