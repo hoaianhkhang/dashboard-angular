@@ -26,7 +26,7 @@
             </div>
             <p>Currencies selected:
                 <span ng-repeat="currency in currenciesToAdd | orderBy: 'code'">
-                    {{$last ? ' ' + currency.code : currency.code + ',' }}
+                    <strong>{{$last ? ' ' + currency.code : currency.code + ',' }}</strong>
                 </span>
             </p>
         </div>
@@ -79,7 +79,7 @@
 
             <div ng-show="currenciesThatHaveBeenAdded.length == 1">
                 <div class="row">
-                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 divider-20 no-padding">
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 divider no-padding">
                         <p class="text-subtle">Code: </p>
                     </div>
                     <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
@@ -87,7 +87,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 divider-20 no-padding">
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 divider no-padding">
                         <p class="text-subtle">Description: </p>
                     </div>
                     <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
@@ -95,7 +95,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 divider-20 no-padding">
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 divider no-padding">
                         <p class="text-subtle">Symbol: </p>
                     </div>
                     <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
@@ -103,7 +103,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 divider-20 no-padding">
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 divider no-padding">
                         <p class="text-subtle">Unit: </p>
                     </div>
                     <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
@@ -121,44 +121,46 @@
             </div>
 
             <div ng-show="currenciesThatHaveBeenAdded.length > 1" ng-repeat="currency in currenciesThatHaveBeenAdded | orderBy: 'code'">
-                <div class="row">
-                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 divider-20 no-padding">
-                        <p class="text-subtle">Code: </p>
+                <div class="multiple-currencies-added">
+                    <div class="row">
+                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 divider no-padding">
+                            <p class="text-subtle">Code: </p>
+                        </div>
+                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                            <p ng-bind="currency.code"></p>
+                        </div>
                     </div>
-                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-                        <p ng-bind="currency.code"></p>
+                    <div class="row">
+                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 divider no-padding">
+                            <p class="text-subtle">Description: </p>
+                        </div>
+                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                            <p ng-bind="currency.description"></p>
+                        </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 divider-20 no-padding">
-                        <p class="text-subtle">Description: </p>
+                    <div class="row">
+                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 divider no-padding">
+                            <p class="text-subtle">Symbol: </p>
+                        </div>
+                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                            <p ng-bind="currency.symbol"></p>
+                        </div>
                     </div>
-                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-                        <p ng-bind="currency.description"></p>
+                    <div class="row">
+                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 divider no-padding">
+                            <p class="text-subtle">Unit: </p>
+                        </div>
+                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                            <p ng-bind="currency.unit"></p>
+                        </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 divider-20 no-padding">
-                        <p class="text-subtle">Symbol: </p>
-                    </div>
-                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-                        <p ng-bind="currency.symbol"></p>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 divider-20 no-padding">
-                        <p class="text-subtle">Unit: </p>
-                    </div>
-                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-                        <p ng-bind="currency.unit"></p>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-padding" ng-class="{'divider-20': !$last}">
-                        <p class="text-subtle">Divisibility: </p>
-                    </div>
-                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-                        <p ng-bind="currency.divisibility"></p>
+                    <div class="row">
+                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-padding">
+                            <p class="text-subtle">Divisibility: </p>
+                        </div>
+                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                            <p ng-bind="currency.divisibility"></p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -176,7 +178,7 @@
                 ng-click="toggleCustomCurrencyView()">Back
         </button>
         <button ng-show="showCurrencyAddedPanel" ng-click="closeModal()"
-                class="btn btn-primary pull-right dashboard-btn">Got it!
+                class="btn btn-primary pull-right dashboard-btn">Confirm
         </button>
     </div>
 </div>
