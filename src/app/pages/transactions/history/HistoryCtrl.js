@@ -88,10 +88,10 @@
                 selectedTransactionIdOption: $state.params.transactionId || null
             },
             destinationIdFilter: {
-                destinationIdExists: false
+                destinationIdExists: true
             },
             sourceIdFilter: {
-                sourceIdExists: false
+                sourceIdExists: true
             },
             userFilter: {
                 selectedUserOption: $state.params.identifier || null
