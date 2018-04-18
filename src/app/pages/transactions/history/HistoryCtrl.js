@@ -87,12 +87,6 @@
             transactionIdFilter: {
                 selectedTransactionIdOption: $state.params.transactionId || null
             },
-            destinationIdFilter: {
-                destinationIdExists: true
-            },
-            sourceIdFilter: {
-                sourceIdExists: true
-            },
             userFilter: {
                 selectedUserOption: $state.params.identifier || null
             },
@@ -441,8 +435,8 @@
                 group__isnull: $scope.filtersObj.groupFilter ? $scope.applyFiltersObj.groupFilter.selectedGroupOption == 'In a group'? (!$scope.applyFiltersObj.groupFilter.existsInGroup).toString(): null : null,
                 orderby: $scope.filtersObj.orderByFilter ? ($scope.applyFiltersObj.orderByFilter.selectedOrderByOption == 'Latest' ? '-created' : $scope.applyFiltersObj.orderByFilter.selectedOrderByOption == 'Largest' ? '-amount' : $scope.applyFiltersObj.orderByFilter.selectedOrderByOption == 'Smallest' ? 'amount' : null): null,
                 id: $scope.filtersObj.transactionIdFilter ? ($scope.applyFiltersObj.transactionIdFilter.selectedTransactionIdOption ? encodeURIComponent($scope.applyFiltersObj.transactionIdFilter.selectedTransactionIdOption) : null): null,
-                destination_transaction : $scope.filtersObj.destinationIdFilter ? $scope.applyFiltersObj.destinationIdFilter.destinationIdExists ? 'true': 'false' : null,
-                source_transaction : $scope.filtersObj.sourceIdFilter ? $scope.applyFiltersObj.sourceIdFilter.sourceIdExists ? 'true': 'false' : null,
+                destination_transaction : $scope.filtersObj.destinationIdFilter ? 'true' : null,
+                source_transaction : $scope.filtersObj.sourceIdFilter ? 'true' : null,
                 tx_type: $scope.filtersObj.transactionTypeFilter ? $scope.applyFiltersObj.transactionTypeFilter.selectedTransactionTypeOption.toLowerCase() : null,
                 status: $scope.filtersObj.statusFilter ? $scope.applyFiltersObj.statusFilter.selectedStatusOption: null,
                 subtype: $scope.filtersObj.transactionTypeFilter ? ($scope.applyFiltersObj.transactionSubtypeFilter.selectedTransactionSubtypeOption ? $scope.applyFiltersObj.transactionSubtypeFilter.selectedTransactionSubtypeOption: null): null
