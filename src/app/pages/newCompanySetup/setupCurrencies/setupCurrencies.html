@@ -7,9 +7,7 @@
                 <div class=" row divider-25">
                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                         <ul class="group-setup-ul">
-                            <li>Choose currencies from a predefined list which includes currency codes,
-                                symbols, names, and divisibility.
-                                Divisibility refers to the decimal places for a currency.</li>
+                            <li>Add which currencies your business can transact in.</li>
                             <li>You can add custom currencies for loyalty and reward programs or
                                 to represent a cryptocurrency or asset,
                                 where you can set currency code, symbol, name, and divisibility for custom currencies.</li>
@@ -32,14 +30,17 @@
                                     required>
                             </select>
                         </div>
-                        <p>Currencies selected:
+                        <p ng-show="currenciesToAdd.length > 0">Currencies selected:
                             <span ng-repeat="currency in currenciesToAdd | orderBy: 'code'">
                                 {{$last ? ' ' + currency.code : currency.code + ',' }}
                             </span>
                         </p>
-                        <button ng-click="addCurrencies(currenciesToAdd)" ng-disabled="currenciesToAdd.length == 0"
+                        <button ng-show="currenciesToAdd.length > 0" ng-click="addCurrencies(currenciesToAdd)" ng-disabled="currenciesToAdd.length == 0"
                                 class="btn btn-primary add-new pull-right dashboard-btn">Add
                         </button>
+                        <p ng-hide="currenciesToAdd.length > 0">
+                            No currencies selected yet.
+                        </p>
                     </div>
                 </div>
                 <hr class="no-margin-horizontal divider-25">
@@ -51,7 +52,7 @@
                             class="btn btn-primary setup-skip-btn pull-left dashboard-btn margin-left-10">Skip all
                     </button>
                     <button ng-click="goToNextView()" ng-disabled="setupCurrencies==0"
-                            class="btn btn-primary setup-next-btn pull-right dashboard-btn">Next
+                            class="btn btn-primary pull-right dashboard-btn">Next
                     </button>
                     <button ng-click="goToPrevView()"
                             class="btn btn-default pull-right dashboard-btn margin-right-10">Back
@@ -69,7 +70,7 @@
                 <div class="divider-20" ng-repeat="currency in currencies | orderBy: 'code'" ng-hide="currencies.length==0" ng-class="{'no-margin-bottom': $last}">
                     <span>{{currency.code}}</span>
                     <span style="font-size: 16px;line-height: 16px;font-weight: 500;"
-                          class="pull-right pointer" ng-click="deleteCurrencyConfirm(currency.code)">x</span>
+                          class="pull-right groups-delete-x-icon pointer" ng-click="deleteCurrencyConfirm(currency)">x</span>
                 </div>
                 <span ng-show="currencies.length==0">No currencies added yet.</span>
             </div>

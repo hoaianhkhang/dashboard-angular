@@ -5,14 +5,16 @@
         .controller("SetupCurrenciesCtrl", SetupCurrenciesCtrl);
 
     function SetupCurrenciesCtrl($rootScope,$scope,$http,toastr,cookieManagement,currenciesList,$ngConfirm,
-        environmentConfig,$location,errorHandler,$uibModal,localStorageManagement,$window) {
+        environmentConfig,$location,errorHandler,$uibModal,localStorageManagement,$window,$timeout) {
 
         var vm = this;
         vm.token=cookieManagement.getCookie("TOKEN");
         $scope.currenciesToAdd = [];
         $rootScope.activeSetupRoute = 1;
         localStorageManagement.setValue('activeSetupRoute',1);
-        $scope.initialCurrencies = currenciesList;
+        $scope.initialCurrencies = currenciesList.slice();
+
+        console.log(currenciesList)
         $scope.loadingCurrencies = true;
 
         $scope.goToNextView=function () {
@@ -34,11 +36,21 @@
                 }).then(function (res) {
                     if (res.status === 200) {
                         $scope.currencies = res.data.data.results;
+                        console.log($scope.currencies)
                         if($scope.currencies.length==0){
                             $rootScope.setupCurrencies = 0;
                             localStorageManagement.setValue('setupCurrencies',0);
                         }
                         else {
+                            $scope.currencies.forEach(function (currency) {
+                                var index = $scope.initialCurrencies.findIndex(function (element) {
+                                    return element.code == currency.code;
+                                });
+                                if(index >=0){
+                                    $scope.initialCurrencies.splice(index,1);
+                                }
+                            });
+
                             $window.sessionStorage.currenciesList = JSON.stringify(res.data.data.results);
                             $rootScope.setupCurrencies = 1;
                             localStorageManagement.setValue('setupCurrencies',1);
@@ -95,9 +107,8 @@
                             vm.getCompanyCurrencies();
                             $rootScope.setupCurrencies = 1;
                             localStorageManagement.setValue('setupCurrencies',1);
-                            $scope.currencies.push(currency);
                             if(index == (array.length - 1)){
-                                $scope.loadingCurrencies = false;
+                                vm.getCurrencies();
                             }
                         }
                     }).catch(function (error) {
@@ -114,7 +125,7 @@
             }
         };
 
-        $scope.deleteCurrencyConfirm = function (code) {
+        $scope.deleteCurrencyConfirm = function (currency) {
             $ngConfirm({
                 title: 'Delete currency',
                 content: 'Are you sure you want to delete this currency?',
@@ -131,24 +142,27 @@
                         btnClass: 'btn-primary dashboard-btn',
                         keys: ['enter'], // will trigger when enter is pressed
                         action: function(scope){
-                            $scope.deleteCurrency(code);
+                            $scope.deleteCurrency(currency);
                         }
                     }
                 }
             });
         };
 
-        $scope.deleteCurrency = function(code){
+        $scope.deleteCurrency = function(currency){
             if(vm.token){
                 $scope.loadingCurrencies = true;
-                $http.delete(environmentConfig.API + '/admin/currencies/'+code+'/', {
+                $http.delete(environmentConfig.API + '/admin/currencies/'+ currency.code + '/', {
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': vm.token
                     }
                 }).then(function (res) {
                     if (res.status === 200) {
-                        vm.getCurrencies();
+                        $scope.initialCurrencies.push(currency);
+                        $timeout(function () {
+                            vm.getCurrencies();
+                        },1000);
                     }
                 }).catch(function (error) {
                     $scope.loadingCurrencies = false;

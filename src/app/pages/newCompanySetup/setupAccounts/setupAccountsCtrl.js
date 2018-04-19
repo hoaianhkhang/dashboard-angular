@@ -4,8 +4,8 @@
     angular.module('BlurAdmin.pages.newCompanySetup.setupAccounts')
         .controller("SetupAccountsCtrl", SetupAccountsCtrl);
 
-    function SetupAccountsCtrl($rootScope,$scope,$http,toastr,cookieManagement,currenciesList,$ngConfirm,
-        environmentConfig,$location,errorHandler,localStorageManagement) {
+    function SetupAccountsCtrl($rootScope,$scope,$http,toastr,cookieManagement,$ngConfirm,
+        environmentConfig,$location,errorHandler,localStorageManagement,$filter) {
 
         var vm = this;
         vm.token=cookieManagement.getCookie("TOKEN");
@@ -19,6 +19,15 @@
         $rootScope.activeSetupRoute = 2;
         localStorageManagement.setValue('activeSetupRoute',2);
         $scope.loadingCompanySetupAccounts = true;
+
+        $scope.accountConfigNameChanged = function (account) {
+            if(account.name){
+                account.name = account.name.toLowerCase();
+                account.label = $filter('capitalizeWord')(account.name).replace(/_/g, " ").replace(/-/g, " ");
+            } else {
+                account.label = '';
+            }
+        };
 
         $scope.showAccountConfigs = function (index) {
             if($scope.showAccountConfigsOfGroup == index){

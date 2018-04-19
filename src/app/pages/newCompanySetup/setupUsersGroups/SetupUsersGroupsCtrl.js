@@ -4,7 +4,7 @@
     angular.module('BlurAdmin.pages.newCompanySetup.setupUsersGroups')
         .controller("SetupUsersGroupsCtrl", SetupUsersGroupsCtrl);
 
-    function SetupUsersGroupsCtrl($rootScope,$scope,$http,cookieManagement,toastr,$ngConfirm,
+    function SetupUsersGroupsCtrl($rootScope,$scope,$http,cookieManagement,toastr,$ngConfirm,$filter,
                                     environmentConfig,$location,errorHandler,localStorageManagement) {
         var vm = this;
         vm.token=cookieManagement.getCookie("TOKEN");
@@ -15,16 +15,26 @@
         localStorageManagement.setValue('activeSetupRoute',0);
         $scope.editingUser = false;
         $scope.loadingUsersGroups = true;
+        $scope.rehiveSystemGroups = [{name: 'admin'},{name: 'service'}];
 
         $scope.goToNextView = function () {
             $rootScope.userFullyVerified = true;
             $location.path('company/setup/currency-setup');
         };
 
+        $scope.groupNameChanged = function (user) {
+            if(user.name){
+                user.name = user.name.toLowerCase();
+                user.label = $filter('capitalizeWord')(user.name).replace(/_/g, " ").replace(/-/g, " ");
+            } else {
+                user.label = '';
+            }
+        };
 
         vm.getGroups = function(){
             if(vm.token){
                 $scope.loadingUsersGroups = true;
+                $scope.addedGroups = [];
                 $http.get(environmentConfig.API + '/admin/groups/', {
                     headers: {
                         'Content-Type': 'application/json',
@@ -32,7 +42,12 @@
                     }
                 }).then(function (res) {
                     if (res.status === 200) {
-                        $scope.addedGroups = res.data.data.results;
+                        res.data.data.results.forEach(function (group) {
+                            if(group.name != 'admin' && group.name != 'service'){
+                                $scope.addedGroups.push(group);
+                            }
+                        });
+
                         if($scope.addedGroups.length == 2){
                             $rootScope.setupUsers = 0;
                             localStorageManagement.setValue('setupUsers',0);

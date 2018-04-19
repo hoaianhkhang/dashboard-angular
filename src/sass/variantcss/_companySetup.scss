@@ -1,3 +1,15 @@
+.group-properties{
+  font-size: 12px!important;
+  color: #A8A8A8;
+  & i{
+    font-size: 8px;
+  }
+}
+
+.invisible-with-no-space{
+  display: none;
+}
+
 .currencies-setup-dropdown{
   height: 200px !important;
 }
@@ -6,6 +18,7 @@
   padding-left: 17px;
   & > li {
     margin-bottom: 10px;
+    line-height: 20px;
   }
 }
 
@@ -132,7 +145,10 @@
 }
 
 .account-config-company-setup{
-  margin: 10px 0;
+  margin: 10px 0 5px 5px;
+  & .account-name{
+    overflow-wrap: break-word;
+  }
 }
 
 .font-italic {

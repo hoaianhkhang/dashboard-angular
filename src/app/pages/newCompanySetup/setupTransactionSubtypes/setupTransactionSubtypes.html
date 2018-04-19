@@ -9,7 +9,8 @@
                     <ul class="group-setup-ul">
                         <li>Subtypes are a way to mark specific transactions in order to categorize and sort them.</li>
                         <li>Select whether the subtype should be applied to a credit or debit transaction type.</li>
-                        <li>Subtypes can be used to define business logic surrounding marked transactions in the dashboard.</li>
+                        <li>Subtypes can be used to define business logic for marked transactions in the dashboard.
+                            E.g. A debit subtype named <i><b>withdrawal</b></i> can apply fees to only debit transactions marked with subtype withdrawal.</li>
                     </ul>
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 custom-form">
@@ -26,7 +27,8 @@
                         <label>Subtype name <span class="required-icon">*</span></label>
                         <input type="text" class="form-control" ng-model="subtype.name"
                                placeholder="Subtype name e.g. purchase, withdraw, deposit"
-                               auto-focus="!havePersonalDetails" required ng-change="subtype.name? subtype.name = subtype.name.toLowerCase():null;">
+                               auto-focus="!havePersonalDetails" required
+                               ng-change="setupSubtypesNameChanged(subtype)">
                     </div>
                     <div class="form-group">
                         <label>Subtype label </label>
@@ -56,7 +58,7 @@
                         class="btn btn-primary setup-skip-btn pull-left dashboard-btn margin-left-10">Skip all
                 </button>
                 <button ng-click="goToNextView()" ng-disabled="setupSubtypes==0"
-                        class="btn btn-primary setup-next-btn pull-right dashboard-btn">Next
+                        class="btn btn-primary pull-right dashboard-btn">Next
                 </button>
                 <button ng-click="goToPrevView()"
                         class="btn btn-default pull-right dashboard-btn margin-right-10">Back
@@ -71,10 +73,15 @@
             <span class="user-details-panel-title">Added transaction subtypes</span>
         </div>
         <div class="panel-body">
-            <div class="divider-20" ng-repeat="subtype in subtypes" ng-hide="subtypes.length==0"
+            <div class="divider-20" ng-repeat="subtype in subtypes" ng-hide="subtypes.length == 0"
                  ng-class="{'no-margin-bottom': $last}">
-                <span ng-click="editSubtype(subtype)" class="pointer">{{subtype.name}}</span>
-                <span class="pull-right pointer" ng-click="deleteSubtypeConfirm(subtype.id)">x</span>
+                <span>{{subtype.name}}</span>
+                <span class="pull-right  groups-delete-x-icon pointer" ng-click="deleteSubtypeConfirm(subtype.id)">x</span>
+                <span style="font-size: 10px;line-height: 20px;font-weight: 500; padding: 0 5px 5px 5px;"
+                      ng-click="editSubtypeObj(subtype)"
+                      class="pull-right margin-right-25 pointer">
+                    <i class="fa fa-pencil"></i>
+                </span>
             </div>
             <span ng-show="subtypes.length==0">No subtypes added yet.</span>
         </div>

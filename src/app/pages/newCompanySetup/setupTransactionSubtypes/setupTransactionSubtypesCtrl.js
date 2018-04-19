@@ -4,7 +4,7 @@
     angular.module('BlurAdmin.pages.newCompanySetup.setupTransactionSubtypes')
         .controller("SetupTransactionSubtypesCtrl", SetupTransactionSubtypesCtrl);
 
-    function SetupTransactionSubtypesCtrl($rootScope,$scope,$http,cookieManagement,toastr,$ngConfirm,
+    function SetupTransactionSubtypesCtrl($rootScope,$scope,$http,cookieManagement,toastr,$ngConfirm,$filter,
                                             environmentConfig,$location,errorHandler,localStorageManagement) {
 
         var vm = this;
@@ -24,6 +24,14 @@
             $location.path('company/setup/accounts');
         };
 
+        $scope.setupSubtypesNameChanged = function (subtype) {
+            if(subtype.name){
+                subtype.name = subtype.name.toLowerCase();
+                subtype.label = $filter('capitalizeWord')(subtype.name).replace(/_/g, " ").replace(/-/g, " ");
+            } else {
+                subtype.label = '';
+            }
+        };
 
         vm.getSubtypes = function(){
             if(vm.token){
@@ -153,7 +161,7 @@
             });
         };
 
-        $scope.editSubtype = function(subtype) {
+        $scope.editSubtypeObj = function(subtype) {
             $scope.subtype = subtype;
             $scope.editingSubtypes = true;
             $scope.subtype.prevName = subtype.name;

@@ -8,19 +8,9 @@
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                     <ul class="group-setup-ul">
                         <li>Set up templates for account configurations per user group.
-                            These are applied to users in that group when they register.</li>
-                        <li>If an account is set as the <i><b>Primary</b></i> account, all money transferred to users in
-                            the selected group will go to that account.</li>
-                        <ul class="group-setup-ul">
-                            <li>There can only be one <i><b>Primary</b></i> account per group.</li>
-                            <li>You cannot make transfers to a user without a <i><b>Primary</b></i> account specified for them.</li>
-                            <li><i><b>Primary</b></i> accounts are also <i><b>Default</b></i> accounts.</li>
-                        </ul>
-                        <li>If an account is set as <i><b>Default</b></i>, all users in the selected group will automatically have the account
-                            and its configurations created for them upon user registration.</li>
-                        <li>Non-default, non-primary accounts are made available to users in the selected
-                            group and can be added to users as required by either an admin or a user.</li>
-                        <li>Select which currencies are available for the account to transact in.</li>
+                            These are applied to users in that group when they resister.</li>
+                        <li>You can add users to groups you create at any time.</li>
+                        <li>Select which currencies the account can transact in.</li>
                     </ul>
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 custom-form">
@@ -34,21 +24,29 @@
                         <label>2 - Configure <span class="required-icon">*</span></label>
                         <input type="text" class="form-control" ng-model="account.name"
                                placeholder="Account name, e.g. default, saving, loan, etc."
-                               ng-change="account.name? account.name = account.name.toLowerCase():null;">
+                               ng-change="accountConfigNameChanged(account)">
                         <div class="checkbox divider-20">
                             <input type="text" class="form-control" ng-model="account.label"
                                    placeholder="Account label, e.g. Default, Saving, Loan, etc.">
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label>Primary</label>
+                    <div class="form-group setup-accounts-tooltip-div">
+                        <label>Primary &nbsp;
+                            <i uib-tooltip-html="'
+                            <ul>
+                                <li>All money transferred to users will go to their <strong><i>Primary</i></strong> account.</li>
+                                <li>There can only be one <strong><i>Primary</i></strong> account per group.</li>
+                                <li>You can\'t make transfers to a user if they don\'t have a <strong><i>Primary</i></strong> account.</li>
+                            </ul>'" class="ion-information-circled setup-groups-tooltip"></i></label>
                         <br>
                         <span data-tip="Set as the main account, only one account can be the primary account per group">
                             <input class="custom-rehive-checkbox" ng-model="account.primary" type="checkbox">
                         </span>
                     </div>
-                    <div class="form-group">
-                        <label>Default</label>
+                    <div class="form-group setup-groups-tooltip-div">
+                        <label>Default &nbsp;<i uib-tooltip-html="'Making an account <strong><i>Default</i></strong> means
+                        all users in a selected group will automatically have this account and its configurations when they register.'"
+                                                class="ion-information-circled setup-groups-tooltip"></i></label>
                         <br>
                         <span data-tip="A default account will be created automatically upon registration">
                             <input class="custom-rehive-checkbox" ng-model="account.default" type="checkbox">
@@ -93,7 +91,7 @@
                         class="btn btn-primary setup-skip-btn pull-left dashboard-btn margin-left-10">Skip all
                 </button>
                 <button ng-click="goToNextView()" ng-disabled="setupAccounts==0"
-                        class="btn btn-primary setup-next-btn pull-right dashboard-btn">Next
+                        class="btn btn-primary pull-right dashboard-btn">Next
                 </button>
                 <button ng-click="goToPrevView()"
                         class="btn btn-default pull-right dashboard-btn margin-right-10">Back
@@ -116,19 +114,37 @@
                     <span ng-show="showAccountConfigsOfGroup == $index" class="company-setup-minus-icon pull-right">-</span>
                 </div>
                 <div ng-show="showAccountConfigsOfGroup == $index">
-                    <div class="added-options-overview user-company-overview row" ng-repeat="account in accounts | orderBy: '-account.group.name'"
+                    <div class="added-options-overview row" ng-repeat="account in accounts | orderBy: '-account.group.name'"
                          ng-hide="accounts.length==0"
                          ng-class="{'no-margin-bottom': $last}">
                         <div ng-show="group.name ==  account.group.name" class="account-config-company-setup">
-                            <div ng-click="editingAccountCompanySetup(account)" class="pointer pull-left">
-                                <span ng-class="{'long-text': (account.label.length > 16), 'very-long-text': (account.label.length > 25)}" ng-show="account.label">{{account.label}}</span>
-                                <span ng-hide="account.label" class="font-italic">No label provided</span>
-                                <p>{{account.name}}</p>
+                            <div>
+                                <div class="row no-padding">
+                                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 account-name no-right-padding">
+                                     <span ng-class="{'long-text': (account.label.length > 16),
+                                      'very-long-text': (account.label.length > 25)}" ng-show="account.name">{{account.name}}</span>
+                                    </div>
+                                    <div  class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-left-padding">
+                                        <span class="pull-right groups-delete-x-icon pointer" ng-click="deleteAccountConfirm(account)">x</span>
+                                        <span style="font-size: 10px;line-height: 20px;font-weight: 500; padding: 0 5px 5px 5px;"
+                                              ng-click="editingAccountCompanySetup(account)"
+                                              class="pull-right margin-right-10 pointer">
+                                    <i class="fa fa-pencil"></i>
+                                    </span>
+                                    </div>
+                                </div>
                             </div>
-                            <div ng-show="group.name ==  account.group.name" class="pull-right pointer add-new">
-                                <span ng-click="deleteAccountConfirm(account)">x</span>
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-right-padding">
+                                    <div ng-class="{'invisible-with-no-space': !account.primary && !account.default}">
+                                        <span class="group-properties" ng-show="account.primary"><i class="fa fa-check"></i>&nbsp;&nbsp; Primary</span>
+                                        <span ng-show="account.primary">&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                        <span class="group-properties" ng-show="account.default"><i class="fa fa-check"></i>&nbsp;&nbsp; Default</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+
                     </div>
                 </div>
             </div>
