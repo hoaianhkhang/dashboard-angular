@@ -25,7 +25,7 @@
         $scope.dateFilterOptions = ['Is in the last','In between','Is equal to','Is after','Is before'];
         $scope.dateFilterIntervalOptions = ['days','months'];
         $scope.statusOptions = ['Status','Pending', 'Obsolete', 'Declined', 'Verified', 'Incomplete'];
-        $scope.orderByOptions = ['Joined date','Last login date'];
+        $scope.orderByOptions = ['Created','Last login date'];
         $scope.groupFilterOptions = ['Group name','In a group'];
         $scope.currencyOptions = [];
         $scope.filtersCount = 0;
@@ -43,7 +43,7 @@
             {colName: 'Email',fieldName: 'email',visible: true},
             {colName: 'Mobile number',fieldName: 'mobile_number',visible: true},
             {colName: 'Group name',fieldName: 'groupName',visible: true},
-            {colName: 'Date joined',fieldName: 'date_joined',visible: true},
+            {colName: 'Created',fieldName: 'created',visible: true},
             {colName: 'Status',fieldName: 'status',visible: false},
             {colName: 'KYC status',fieldName: 'kycStatus',visible: false},
             {colName: 'Active',fieldName: 'active',visible: false},
@@ -117,7 +117,7 @@
                 selectedKycFilter: 'Status'
             },
             orderByFilter: {
-                selectedOrderByOption: 'Joined date'
+                selectedOrderByOption: 'Created'
             }
         };
 
@@ -139,7 +139,7 @@
 
         $scope.restoreColDefaults = function () {
             var defaultVisibleHeader = ['Identifier','First name','Last name','Email',
-                'Mobile number','Group name','Date joined'];
+                'Mobile number','Group name','Created'];
 
             $scope.headerColumns.forEach(function (headerObj) {
                 if(defaultVisibleHeader.indexOf(headerObj.colName) > -1){
@@ -267,43 +267,43 @@
         };
 
         $scope.orderByFunction = function () {
-            return ($scope.applyFiltersObj.orderByFilter.selectedOrderByOption == 'Joined date' ? '-date_joined' : '-last_login');
+            return ($scope.applyFiltersObj.orderByFilter.selectedOrderByOption == 'Created' ? '-created' : '-last_login');
         };
 
         vm.getJoinedDateFilters = function () {
             var dateObj = {
-                date_joined__lt: null,
-                date_joined__gt: null
+                created__lt: null,
+                created__gt: null
             };
 
             switch($scope.applyFiltersObj.joinedDateFilter.selectedDateOption) {
                 case 'Is in the last':
                     if($scope.applyFiltersObj.joinedDateFilter.selectedDayIntervalOption == 'days'){
-                        dateObj.date_joined__lt = moment().add(1,'days').format('YYYY-MM-DD');
-                        dateObj.date_joined__gt = moment().subtract($scope.applyFiltersObj.joinedDateFilter.dayInterval,'days').format('YYYY-MM-DD');
+                        dateObj.created__lt = moment().add(1,'days').format('YYYY-MM-DD');
+                        dateObj.created__gt = moment().subtract($scope.applyFiltersObj.joinedDateFilter.dayInterval,'days').format('YYYY-MM-DD');
                     } else {
-                        dateObj.date_joined__lt = moment().add(1,'days').format('YYYY-MM-DD');
-                        dateObj.date_joined__gt = moment().subtract($scope.applyFiltersObj.joinedDateFilter.dayInterval,'months').format('YYYY-MM-DD');
+                        dateObj.created__lt = moment().add(1,'days').format('YYYY-MM-DD');
+                        dateObj.created__gt = moment().subtract($scope.applyFiltersObj.joinedDateFilter.dayInterval,'months').format('YYYY-MM-DD');
                     }
 
                     break;
                 case 'In between':
-                    dateObj.date_joined__lt = moment(new Date($scope.applyFiltersObj.joinedDateFilter.dateTo)).add(1,'days').format('YYYY-MM-DD');
-                    dateObj.date_joined__gt = moment(new Date($scope.applyFiltersObj.joinedDateFilter.dateFrom)).format('YYYY-MM-DD');
+                    dateObj.created__lt = moment(new Date($scope.applyFiltersObj.joinedDateFilter.dateTo)).add(1,'days').format('YYYY-MM-DD');
+                    dateObj.created__gt = moment(new Date($scope.applyFiltersObj.joinedDateFilter.dateFrom)).format('YYYY-MM-DD');
 
                     break;
                 case 'Is equal to':
-                    dateObj.date_joined__lt = moment(new Date($scope.applyFiltersObj.joinedDateFilter.dateEqualTo)).add(1,'days').format('YYYY-MM-DD');
-                    dateObj.date_joined__gt = moment(new Date($scope.applyFiltersObj.joinedDateFilter.dateEqualTo)).format('YYYY-MM-DD');
+                    dateObj.created__lt = moment(new Date($scope.applyFiltersObj.joinedDateFilter.dateEqualTo)).add(1,'days').format('YYYY-MM-DD');
+                    dateObj.created__gt = moment(new Date($scope.applyFiltersObj.joinedDateFilter.dateEqualTo)).format('YYYY-MM-DD');
 
                     break;
                 case 'Is after':
-                    dateObj.date_joined__lt = null;
-                    dateObj.date_joined__gt = moment(new Date($scope.applyFiltersObj.joinedDateFilter.dateFrom)).add(1,'days').format('YYYY-MM-DD');
+                    dateObj.created__lt = null;
+                    dateObj.created__gt = moment(new Date($scope.applyFiltersObj.joinedDateFilter.dateFrom)).add(1,'days').format('YYYY-MM-DD');
                     break;
                 case 'Is before':
-                    dateObj.date_joined__lt = moment(new Date($scope.applyFiltersObj.joinedDateFilter.dateTo)).format('YYYY-MM-DD');
-                    dateObj.date_joined__gt = null;
+                    dateObj.created__lt = moment(new Date($scope.applyFiltersObj.joinedDateFilter.dateTo)).format('YYYY-MM-DD');
+                    dateObj.created__gt = null;
                     break;
                 default:
                     break;
@@ -369,8 +369,8 @@
                 vm.dateObj = vm.getJoinedDateFilters();
             } else{
                 vm.dateObj = {
-                    date_joined__gt: null,
-                    date_joined__lt: null
+                    created__gt: null,
+                    created__lt: null
                 };
             }
 
@@ -395,8 +395,8 @@
                 account: $scope.filtersObj.accountReferenceFilter ? ($scope.applyFiltersObj.accountReferenceFilter.selectedAccountReference ?  $scope.applyFiltersObj.accountReferenceFilter.selectedAccountReference : null): null,
                 group: $scope.filtersObj.groupFilter ? $scope.applyFiltersObj.groupFilter.selectedGroupOption == 'Group name'? $scope.applyFiltersObj.groupFilter.selectedGroup.name: null : null,
                 group__isnull: $scope.filtersObj.groupFilter ? $scope.applyFiltersObj.groupFilter.selectedGroupOption == 'In a group'? (!$scope.applyFiltersObj.groupFilter.existsInGroup).toString(): null : null,
-                date_joined__gt: vm.dateObj.date_joined__gt ? Date.parse(vm.dateObj.date_joined__gt +'T00:00:00') : null,
-                date_joined__lt: vm.dateObj.date_joined__lt ? Date.parse(vm.dateObj.date_joined__lt +'T00:00:00') : null,
+                created__gt: vm.dateObj.created__gt ? Date.parse(vm.dateObj.created__gt +'T00:00:00') : null,
+                created__lt: vm.dateObj.created__lt ? Date.parse(vm.dateObj.created__lt +'T00:00:00') : null,
                 last_login__gt: vm.lastLogindateObj.last_login__gt ? Date.parse(vm.lastLogindateObj.last_login__gt +'T00:00:00') : null,
                 last_login__lt: vm.lastLogindateObj.last_login__lt ? Date.parse(vm.lastLogindateObj.last_login__lt +'T00:00:00') : null,
                 kyc__status: $scope.filtersObj.kycFilter ? ($scope.applyFiltersObj.kycFilter.selectedKycFilter == 'Status' ? null : $scope.applyFiltersObj.kycFilter.selectedKycFilter.toLowerCase()): null,
@@ -454,7 +454,7 @@
                     email: userObj.email,
                     mobile_number: userObj.mobile_number,
                     groupName: userObj.groups.length > 0 ? userObj.groups[0].name: null,
-                    date_joined: userObj.date_joined ? $filter("date")(userObj.date_joined,'mediumDate') + ' ' + $filter("date")(userObj.date_joined,'shortTime'): null,
+                    created: userObj.created ? $filter("date")(userObj.created,'mediumDate') + ' ' + $filter("date")(userObj.created,'shortTime'): null,
                     status: $filter("capitalizeWord")(userObj.status),
                     kycStatus: $filter("capitalizeWord")(userObj.kyc.status),
                     active: userObj.active ? 'Yes' : 'No',
