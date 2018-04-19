@@ -29,6 +29,11 @@
                 selectedCurrencyOption: {}
             }
         };
+        $scope.pagination = {
+            itemsPerPage: 15,
+            pageNo: 1,
+            maxSize: 5
+        };
 
         $scope.findIndexOfCode = function (currency) {
             return $scope.codeArray.findIndex(function (element) {
@@ -72,7 +77,8 @@
 
 
             var searchObj = {
-                page_size: 250,
+                page: $scope.pagination.pageNo,
+                page_size: $scope.pagination.itemsPerPage,
                 enabled: true,
                 code: $scope.filtersObj.currencyFilter ? $scope.applyFiltersObj.currencyFilter.selectedCurrencyOption.code: null,
                 unit: $scope.filtersObj.unitFilter ? $scope.applyFiltersObj.unitFilter.selectedCurrencyOption.unit: null
@@ -98,9 +104,10 @@
                 }).then(function (res) {
                     if (res.status === 200) {
                         if(res.data.data.results.length > 0){
+                            $scope.currenciesData = res.data.data;
                             $scope.currencies = res.data.data.results;
                             if($scope.currencyOptions.length == 0){
-                                $scope.currencyOptions = res.data.data.results.slice(0);
+                                $scope.currencyOptions = res.data.data.results.slice();
                             }
 
                             $scope.applyFiltersObj.currencyFilter.selectedCurrencyOption = $scope.currencies[0];
