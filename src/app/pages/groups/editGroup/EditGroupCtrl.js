@@ -47,14 +47,15 @@
         vm.getGroupUsers = function (group) {
             if(vm.token) {
                 $scope.loadingGroup = true;
-                $http.get(environmentConfig.API + '/admin/users/?group=' + group.name, {
+                $http.get(environmentConfig.API + '/admin/users/overview?group=' + group.name, {
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': vm.token
                     }
                 }).then(function (res) {
                     if (res.status === 200) {
-                        $scope.totalUsersCount = res.data.data.count;
+                        $scope.totalUsersCount = res.data.data.total;
+                        $scope.activeUsersCount = res.data.data.active;
                         $scope.loadingGroup = false;
                     }
                 }).catch(function (error) {

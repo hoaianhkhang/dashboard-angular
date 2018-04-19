@@ -17,8 +17,8 @@
             <div class="group-overview-details">
                 <span class="group-details-name">{{editGroupObj.name}}</span>
                 <p class="user-details-info"><strong>{{totalUsersCount}}</strong> Total users</p>
-                <p class="user-details-info"><strong>0</strong> Activated users</p>
-                <p class="user-details-info"><strong>0</strong> Deactivated users</p>
+                <p class="user-details-info"><strong>{{activeUsersCount}}</strong> Active users</p>
+                <p class="user-details-info"><strong>{{totalUsersCount - activeUsersCount}}</strong> Deactivated users</p>
             </div>
         </div>
     </div>
