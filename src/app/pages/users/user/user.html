@@ -37,6 +37,7 @@
                 <p ngclipboard ngclipboard-success="copiedSuccessfully()" data-clipboard-text="{{user.identifier}}"
                    class="user-details-info pointer">identifier: {{user.identifier}}</p>
                 <p class="user-details-info">user for {{beenAUser}}</p>
+                <p class="user-details-info">user group: {{user.groups[0].name || 'None'}}</p>
                 <p class="user-details-info">kyc status: {{user.kyc.status}}</p>
                 <p ng-show="user.active" ng-click="toggleActivateUser(false)"  class="user-details-info"><a class="pointer">Deactivate</a></p>
                 <p ng-hide="user.active" ng-click="toggleActivateUser(true)" class="user-details-info"><a class="pointer">Activate</a></p>
