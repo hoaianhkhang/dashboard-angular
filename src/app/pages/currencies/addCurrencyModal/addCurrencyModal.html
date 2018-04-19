@@ -3,7 +3,7 @@
         <button type="button" class="close" ng-click="$dismiss()" aria-label="Close">
             <em class="ion-ios-close-empty sn-link-close"></em>
         </button>
-        <h4 class="modal-title" id="myModalLabel">Add currency</h4>
+        <h4 class="modal-title" id="myModalLabel">{{showCustomCurrency ? 'Add custom currency': 'Add currency'}}</h4>
     </div>
     <div class="modal-body">
 
@@ -36,7 +36,9 @@
                 <div class="row form-group divider-20">
                     <div class="col-sm-12 no-padding">
                         <label>Code <span class="required-icon">*</span></label>
-                        <input type="text" ng-model="newCurrencyParams.code" class="form-control" placeholder="e.g. USD" auto-focus="!newCurrencyParams.code" required>
+                        <input type="text" ng-model="newCurrencyParams.code" class="form-control"
+                               ng-change="newCurrencyParams.code? newCurrencyParams.code = newCurrencyParams.code.toUpperCase():null;"
+                               placeholder="e.g. USD" auto-focus="!newCurrencyParams.code" required>
                     </div>
                 </div>
                 <div class="row form-group divider-20">
