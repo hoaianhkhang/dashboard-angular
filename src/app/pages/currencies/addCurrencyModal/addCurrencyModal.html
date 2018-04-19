@@ -7,7 +7,7 @@
     </div>
     <div class="modal-body">
 
-        <div id="addNormalCurrency" ng-hide="showCustomCurrency || showCurrencyAddedPanel">
+        <div id="addNormalCurrency" ng-hide="showCustomCurrency || showCurrencyConfirmPanel">
             <div class="divider">
                 <p>&nbsp;
                     <a ng-click="toggleCustomCurrencyView()" class="pointer pull-right">Add custom currency</a>
@@ -31,7 +31,7 @@
             </p>
         </div>
 
-        <div id="addCustomCurrency" ng-show="showCustomCurrency && !showCurrencyAddedPanel">
+        <div id="addCustomCurrency" ng-show="showCustomCurrency && !showCurrencyConfirmPanel">
             <form name="customCurrencyForm" class="custom-form" novalidate>
                 <div class="row form-group divider-20">
                     <div class="col-sm-12 no-padding">
@@ -66,24 +66,24 @@
             </form>
         </div>
 
-        <div id="addedCurrencyPanel" ng-show="showCurrencyAddedPanel">
-            <p class="divider-20" ng-show="currenciesThatHaveBeenAdded.length == 1">
-                You are adding currency <strong>{{currenciesThatHaveBeenAdded[0].code}}</strong> to your company.
+        <div id="addedCurrencyPanel" ng-show="showCurrencyConfirmPanel">
+            <p class="divider-20" ng-show="currenciesThatWillBeAdded.length == 1">
+                You are adding currency <strong>{{currenciesThatWillBeAdded[0].code}}</strong> to your company.
             </p>
-            <p class="divider-20" ng-show="currenciesThatHaveBeenAdded.length > 1">
+            <p class="divider-20" ng-show="currenciesThatWillBeAdded.length > 1">
                 You are adding currencies
-                <span ng-repeat="currency in currenciesThatHaveBeenAdded | orderBy: 'code'">
-                    <strong>{{$last ? ' and ' + currency.code :(currenciesThatHaveBeenAdded.length - 2 == $index) ? currency.code : currency.code + ',' }}</strong>
+                <span ng-repeat="currency in currenciesThatWillBeAdded | orderBy: 'code'">
+                    <strong>{{$last ? ' and ' + currency.code :(currenciesThatWillBeAdded.length - 2 == $index) ? currency.code : currency.code + ',' }}</strong>
                 </span> to your company.
             </p>
 
-            <div ng-show="currenciesThatHaveBeenAdded.length == 1">
+            <div ng-show="currenciesThatWillBeAdded.length == 1 && currenciesThatWillBeAddedType == 'custom'">
                 <div class="row">
                     <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 divider no-padding">
                         <p class="text-subtle">Code: </p>
                     </div>
                     <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-                        <p ng-bind="currenciesThatHaveBeenAdded[0].code"></p>
+                        <p ng-bind="currenciesThatWillBeAdded[0].code"></p>
                     </div>
                 </div>
                 <div class="row">
@@ -91,7 +91,7 @@
                         <p class="text-subtle">Description: </p>
                     </div>
                     <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-                        <p ng-bind="currenciesThatHaveBeenAdded[0].description"></p>
+                        <p ng-bind="currenciesThatWillBeAdded[0].description"></p>
                     </div>
                 </div>
                 <div class="row">
@@ -99,7 +99,7 @@
                         <p class="text-subtle">Symbol: </p>
                     </div>
                     <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-                        <p ng-bind="currenciesThatHaveBeenAdded[0].symbol"></p>
+                        <p ng-bind="currenciesThatWillBeAdded[0].symbol"></p>
                     </div>
                 </div>
                 <div class="row">
@@ -107,7 +107,7 @@
                         <p class="text-subtle">Unit: </p>
                     </div>
                     <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-                        <p ng-bind="currenciesThatHaveBeenAdded[0].unit"></p>
+                        <p ng-bind="currenciesThatWillBeAdded[0].unit"></p>
                     </div>
                 </div>
                 <div class="row">
@@ -115,52 +115,7 @@
                         <p class="text-subtle">Divisibility: </p>
                     </div>
                     <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-                        <p ng-bind="currenciesThatHaveBeenAdded[0].divisibility"></p>
-                    </div>
-                </div>
-            </div>
-
-            <div ng-show="currenciesThatHaveBeenAdded.length > 1" ng-repeat="currency in currenciesThatHaveBeenAdded | orderBy: 'code'">
-                <div class="multiple-currencies-added">
-                    <div class="row">
-                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 divider no-padding">
-                            <p class="text-subtle">Code: </p>
-                        </div>
-                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-                            <p ng-bind="currency.code"></p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 divider no-padding">
-                            <p class="text-subtle">Description: </p>
-                        </div>
-                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-                            <p ng-bind="currency.description"></p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 divider no-padding">
-                            <p class="text-subtle">Symbol: </p>
-                        </div>
-                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-                            <p ng-bind="currency.symbol"></p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 divider no-padding">
-                            <p class="text-subtle">Unit: </p>
-                        </div>
-                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-                            <p ng-bind="currency.unit"></p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-padding">
-                            <p class="text-subtle">Divisibility: </p>
-                        </div>
-                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-                            <p ng-bind="currency.divisibility"></p>
-                        </div>
+                        <p ng-bind="currenciesThatWillBeAdded[0].divisibility"></p>
                     </div>
                 </div>
             </div>
@@ -168,17 +123,20 @@
         </div>
     </div>
     <div class="modal-footer">
-        <button ng-hide="showCustomCurrency || showCurrencyAddedPanel" ng-click="addCompanyCurrency(currenciesToAdd)" ng-disabled="currenciesToAdd.length == 0"
+        <button ng-hide="showCustomCurrency || showCurrencyConfirmPanel" ng-click="goToconfirmSelection('normal',currenciesToAdd)" ng-disabled="currenciesToAdd.length == 0"
                 class="btn btn-primary pull-right dashboard-btn">Add
         </button>
-        <button ng-show="showCustomCurrency && !showCurrencyAddedPanel" ng-disabled="!customCurrencyForm.$valid" ng-click="addCustomCompanyCurrency(newCurrencyParams)"
+        <button ng-show="showCustomCurrency && !showCurrencyConfirmPanel" ng-disabled="!customCurrencyForm.$valid" ng-click="goToconfirmSelection('custom',newCurrencyParams)"
                 class="btn btn-primary pull-right dashboard-btn">Add
         </button>
-        <button ng-show="showCustomCurrency && !showCurrencyAddedPanel" class="btn btn-primary pull-right dashboard-btn margin-right-10"
+        <button ng-show="showCustomCurrency && !showCurrencyConfirmPanel" class="btn btn-default pull-right dashboard-btn margin-right-10"
                 ng-click="toggleCustomCurrencyView()">Back
         </button>
-        <button ng-show="showCurrencyAddedPanel" ng-click="closeModal()"
+        <button ng-show="showCurrencyConfirmPanel" ng-click="addCurrencyDependingOnType()"
                 class="btn btn-primary pull-right dashboard-btn">Confirm
+        </button>
+        <button ng-show="showCurrencyConfirmPanel" class="btn btn-default pull-right dashboard-btn margin-right-10"
+                ng-click="goBackToCurrencySelectionView()">Back
         </button>
     </div>
 </div>

@@ -12,15 +12,29 @@
         vm.token = cookieManagement.getCookie('TOKEN');
 
         $scope.currenciesToAdd = [];
-        $scope.currenciesThatHaveBeenAdded = [];
+        $scope.currenciesThatWillBeAdded = [];
+        $scope.currenciesThatWillBeAddedType = '';
         $scope.initialCurrencies = currenciesList.slice();
         $scope.newCurrencyParams = {};
         $scope.showCustomCurrency = false;
-        $scope.showCurrencyAddedPanel = false;
+        $scope.showCurrencyConfirmPanel = false;
         $scope.loadingCurrencies = false;
 
-        $scope.closeModal = function () {
-            $uibModalInstance.close(true);
+        $scope.goBackToCurrencySelectionView = function () {
+            $scope.showCurrencyConfirmPanel = false;
+        };
+
+        $scope.goToconfirmSelection = function (type,currencies) {
+            $scope.currenciesThatWillBeAdded = [];
+            if(Array.isArray(currencies)){
+                $scope.currenciesThatWillBeAddedType = 'normal';
+                $scope.currenciesThatWillBeAdded = currencies.slice();
+            } else {
+                $scope.currenciesThatWillBeAddedType = 'custom';
+                $scope.currenciesThatWillBeAdded.push(currencies);
+            }
+
+            $scope.showCurrencyConfirmPanel = true;
         };
 
         vm.getCurrencies = function(){
@@ -52,6 +66,14 @@
         };
         vm.getCurrencies();
 
+        $scope.addCurrencyDependingOnType = function () {
+            if($scope.currenciesThatWillBeAddedType == 'normal'){
+                $scope.addCompanyCurrency($scope.currenciesThatWillBeAdded);
+            } else{
+                $scope.addCustomCompanyCurrency($scope.currenciesThatWillBeAdded[0]);
+            }
+        };
+
         $scope.addCompanyCurrency = function (currencies) {
             if(currencies && currencies.length > 0){
                 $scope.loadingCurrencies = true;
@@ -65,10 +87,10 @@
                     }).then(function (res) {
                         if (res.status === 201) {
                             if(index == (array.length - 1)){
-                                $scope.currenciesThatHaveBeenAdded = currencies.slice();
                                 vm.getCompanyCurrencies();
                                 $scope.loadingCurrencies = false;
-                                $scope.showCurrencyAddedPanel = true;
+                                toastr.success('Currencies have been added successfully');
+                                $uibModalInstance.close(true);
                             }
                         }
                     }).catch(function (error) {
@@ -96,11 +118,11 @@
                 }
             }).then(function (res) {
                 $scope.loadingCurrencies = false;
-                $scope.currenciesThatHaveBeenAdded.push(newCurrencyParams);
                 if (res.status === 201) {
                     vm.getCompanyCurrencies();
                     $scope.loadingCurrencies = false;
-                    $scope.showCurrencyAddedPanel = true;
+                    toastr.success('Custom currency have been added successfully');
+                    $uibModalInstance.close(true);
                 }
             }).catch(function (error) {
                 $scope.loadingCurrencies = false;
