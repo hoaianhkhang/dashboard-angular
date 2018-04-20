@@ -19,14 +19,25 @@
     <div ng-hide="loadingUserAccounts || accounts.length < 0" class="col-lg-12 col-md-12 col-sm-12 col-xs-12" ng-repeat="account in accounts | orderBy: '-primary'">
         <div ng-hide="loadingUserAccounts" class="panel">
             <div class="panel-heading">
-                <span class="user-details-panel-title">
-                    {{account.name}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <span class="account-reference">
-                        <span class="account-reference-title">Reference</span>&nbsp;&nbsp;
-                        <span class="account-reference-value">{{account.reference}}</span></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <span ng-show="account.primary" class="user-primary-account user-address-status">PRIMARY</span>
-                </span>
-                <a ng-click="openEditAccountModal('app/pages/users/user/userAccountsOnly/editAccountModal/editAccountModal.html','md',account,account.currencies)" class="user-details-panel-link pull-right pointer">Edit</a>
+                <div class="user-account-panel-heading">
+                    <div class="user-account-panel-title">
+                        <span class="currencies-details-heading">Name</span>
+                        <br>
+                        <span class="currencies-details-value">{{account.name}}</span>
+                    </div>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <div class="user-account-panel-title">
+                        <span class="currencies-details-heading">Reference</span>
+                        <br>
+                        <span class="currencies-details-value">{{account.reference}}</span>
+                    </div>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <div class="user-account-panel-title">
+                        <span ng-show="account.primary" class="user-primary-account user-account-status">PRIMARY</span>
+                    </div>
+                    <a ng-click="openEditAccountModal('app/pages/users/user/userAccountsOnly/editAccountModal/editAccountModal.html','md',account,account.currencies)"
+                       class="user-account-edit-link pull-right pointer">Edit</a>
+                </div>
             </div>
             <div class="panel-body">
                 <table ng-show="account.currencies.length > 0" class="table">
