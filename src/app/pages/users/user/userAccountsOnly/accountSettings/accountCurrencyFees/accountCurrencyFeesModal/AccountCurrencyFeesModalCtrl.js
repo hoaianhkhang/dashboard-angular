@@ -4,14 +4,15 @@
     angular.module('BlurAdmin.pages.users.user.accountSettings.accountCurrencyFees')
         .controller('AccountCurrencyFeesModalCtrl', AccountCurrencyFeesModalCtrl);
 
-    function AccountCurrencyFeesModalCtrl($scope,$uibModalInstance,accountCurrencyFee,currencyCode,reference,toastr,$http,environmentConfig,cookieManagement,errorHandler) {
+    function AccountCurrencyFeesModalCtrl($scope,$uibModalInstance,accountCurrencyFee,currencyCode,reference,
+                                          toastr,$http,environmentConfig,localStorageManagement,errorHandler) {
 
         var vm = this;
         vm.currencyCode = currencyCode;
         vm.reference = reference;
         $scope.accountCurrencyFee = accountCurrencyFee;
         $scope.deletingAccountCurrencyFees = false;
-        vm.token = cookieManagement.getCookie('TOKEN');
+        vm.token = localStorageManagement.getValue('TOKEN');
 
         $scope.deleteAccountCurrencyFee = function () {
             $scope.deletingAccountCurrencyFees = true;

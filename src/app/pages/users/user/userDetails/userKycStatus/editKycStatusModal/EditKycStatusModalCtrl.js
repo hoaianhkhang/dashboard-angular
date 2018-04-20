@@ -4,7 +4,7 @@
     angular.module('BlurAdmin.pages.users.user')
         .controller('EditKycStatusModalCtrl', EditKycStatusModalCtrl);
 
-    function EditKycStatusModalCtrl($scope,$uibModalInstance,userStatus,toastr,uuid,$http,environmentConfig,cookieManagement,errorHandler) {
+    function EditKycStatusModalCtrl($scope,$uibModalInstance,userStatus,toastr,uuid,$http,environmentConfig,localStorageManagement,errorHandler) {
 
         var vm = this;
 
@@ -15,7 +15,7 @@
             status: userStatus
         };
         $scope.kycStatusOptions = ['Pending', 'Incomplete', 'Declined', 'Obsolete', 'Verified'];
-        vm.token = cookieManagement.getCookie('TOKEN');
+        vm.token = localStorageManagement.getValue('TOKEN');
 
         $scope.updateUserKycStatus = function(){
             if(vm.token) {

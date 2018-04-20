@@ -5,7 +5,7 @@
         .controller('EditUserCryptoAccountsModalCtrl', EditUserCryptoAccountsModalCtrl);
 
     function EditUserCryptoAccountsModalCtrl($scope,$uibModalInstance,userCryptoAccount,toastr,$stateParams,$filter,
-                                      $http,environmentConfig,cookieManagement,errorHandler) {
+                                      $http,environmentConfig,localStorageManagement,errorHandler) {
 
         var vm = this;
         vm.uuid = $stateParams.uuid;
@@ -14,7 +14,7 @@
         vm.updatedUserCryptoAccount = {};
         $scope.loadingUserCryptoAccounts = true;
         $scope.cryptoStatusOptions = ['Pending', 'Incomplete', 'Declined', 'Obsolete', 'Verified'];
-        vm.token = cookieManagement.getCookie('TOKEN');
+        vm.token = localStorageManagement.getValue('TOKEN');
 
         vm.getUserCryptoAccount =  function () {
             if(vm.token) {

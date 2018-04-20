@@ -5,10 +5,10 @@
         .controller('UserKycStatusCtrl', UserKycStatusCtrl);
 
     /** @ngInject */
-    function UserKycStatusCtrl($scope,environmentConfig,$stateParams,$http,cookieManagement,$uibModal,errorHandler,toastr,$filter) {
+    function UserKycStatusCtrl($scope,environmentConfig,$stateParams,$http,localStorageManagement,$uibModal,errorHandler,$filter) {
 
         var vm = this;
-        vm.token = cookieManagement.getCookie('TOKEN');
+        vm.token = localStorageManagement.getValue('TOKEN');
         vm.uuid = $stateParams.uuid;
         $scope.loadingUserKycStatus = true;
 

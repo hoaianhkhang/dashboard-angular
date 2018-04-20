@@ -5,11 +5,11 @@
         .controller('PendingDebitModalCtrl', PendingDebitModalCtrl);
 
     /** @ngInject */
-    function PendingDebitModalCtrl($rootScope,$uibModalInstance,$scope,$http,environmentConfig,cookieManagement,toastr,$anchorScroll,
+    function PendingDebitModalCtrl($rootScope,$uibModalInstance,$scope,$http,environmentConfig,localStorageManagement,toastr,$anchorScroll,
                                    $timeout,transaction,errorHandler,metadataTextService,$location) {
 
         var vm = this;
-        vm.token = cookieManagement.getCookie('TOKEN');
+        vm.token = localStorageManagement.getValue('TOKEN');
         $scope.updateTransactionObj = {};
         $scope.formatted = {};
         $scope.formatted.metadata = {};

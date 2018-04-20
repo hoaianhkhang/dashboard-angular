@@ -4,11 +4,11 @@
     angular.module('BlurAdmin.pages.newCompanySetup.setupAccounts')
         .controller("SetupAccountsCtrl", SetupAccountsCtrl);
 
-    function SetupAccountsCtrl($rootScope,$scope,$http,toastr,cookieManagement,$ngConfirm,
-        environmentConfig,$location,errorHandler,localStorageManagement,$filter) {
+    function SetupAccountsCtrl($rootScope,$scope,$http,toastr,localStorageManagement,$ngConfirm,
+        environmentConfig,$location,errorHandler,$filter) {
 
         var vm = this;
-        vm.token=cookieManagement.getCookie("TOKEN");
+        vm.token = localStorageManagement.getValue("TOKEN");
         $scope.groups = [];
         $scope.currencies = [];        
         $rootScope.$pageFinishedLoading=true;
@@ -88,7 +88,7 @@
                 $rootScope.securityConfigured = true;
                 $rootScope.pageTopObj = {};
                 $rootScope.userFullyVerified = false;
-                cookieManagement.deleteCookie('TOKEN');
+                localStorageManagement.deleteValue('TOKEN');
                 toastr.error('Your session has expired, please log in again');
                 $location.path('/login');
             }

@@ -6,11 +6,11 @@
 
     /** @ngInject */
     function DebitCtrl($scope, $http, environmentConfig,_,$rootScope,
-                       cookieManagement, toastr, errorHandler,
+                       localStorageManagement, toastr, errorHandler,
                        $location, $state,sharedResources,currencyModifiers,typeaheadService) {
 
         var vm = this;
-        vm.token = cookieManagement.getCookie('TOKEN');
+        vm.token = localStorageManagement.getValue('TOKEN');
         $rootScope.dashboardTitle = 'Debits | Rehive';
 
         $scope.debitData = {

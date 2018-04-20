@@ -5,10 +5,10 @@
         .controller('GroupTierRequirementsCtrl', GroupTierRequirementsCtrl);
 
     /** @ngInject */
-    function GroupTierRequirementsCtrl($scope,$stateParams,cookieManagement,$http,environmentConfig,errorHandler,_,toastr,$timeout) {
+    function GroupTierRequirementsCtrl($scope,$stateParams,localStorageManagement,$http,environmentConfig,errorHandler,_,toastr,$timeout) {
 
         var vm = this;
-        vm.token = cookieManagement.getCookie('TOKEN');
+        vm.token = localStorageManagement.getValue('TOKEN');
         vm.groupName = $stateParams.groupName;
         $scope.activeTabIndex = 0;
         $scope.loadingTierRequirements = true;

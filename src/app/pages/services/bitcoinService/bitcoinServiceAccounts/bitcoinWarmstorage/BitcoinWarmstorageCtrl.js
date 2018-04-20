@@ -5,12 +5,12 @@
         .controller('BitcoinWarmstorageCtrl', BitcoinWarmstorageCtrl);
 
     /** @ngInject */
-    function BitcoinWarmstorageCtrl($scope,cookieManagement,errorHandler,currenciesList,$http,$uibModal,$state,
+    function BitcoinWarmstorageCtrl($scope,localStorageManagement,errorHandler,currenciesList,$http,$uibModal,$state,
                                     sharedResources,_,environmentConfig,currencyModifiers,toastr,serializeFiltersService) {
 
         var vm = this;
-        vm.serviceUrl = cookieManagement.getCookie('SERVICEURL');
-        vm.token = cookieManagement.getCookie('TOKEN');
+        vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
+        vm.token = localStorageManagement.getValue('TOKEN');
         $scope.bitcoinCurrency = currenciesList.find(function (element) {
             return element.code == 'XBT';
         });

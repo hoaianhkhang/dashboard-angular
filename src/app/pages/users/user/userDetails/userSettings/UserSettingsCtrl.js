@@ -5,10 +5,10 @@
         .controller('UserSettingsCtrl', UserSettingsCtrl);
 
     /** @ngInject */
-    function UserSettingsCtrl($scope,environmentConfig,$stateParams,$http,cookieManagement,$uibModal,errorHandler,toastr,$filter) {
+    function UserSettingsCtrl($scope,environmentConfig,$stateParams,$http,localStorageManagement,errorHandler) {
 
         var vm = this;
-        vm.token = cookieManagement.getCookie('TOKEN');
+        vm.token = localStorageManagement.getValue('TOKEN');
         vm.uuid = $stateParams.uuid;
         $scope.userSettingsObj = {};
         $scope.loadingUserSettings = true;

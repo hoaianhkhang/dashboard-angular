@@ -4,13 +4,13 @@
     angular.module('BlurAdmin.pages.users.user')
         .controller('AddUserNumberModalCtrl', AddUserNumberModalCtrl);
 
-    function AddUserNumberModalCtrl($scope,$stateParams,$uibModalInstance,user,toastr,$http,environmentConfig,cookieManagement,errorHandler) {
+    function AddUserNumberModalCtrl($scope,$stateParams,$uibModalInstance,user,toastr,$http,environmentConfig,localStorageManagement,errorHandler) {
 
         var vm = this;
         $scope.user = user;
         vm.uuid = $stateParams.uuid;
         $scope.newUserNumber = {primary: false, verified: false};
-        vm.token = cookieManagement.getCookie('TOKEN');
+        vm.token = localStorageManagement.getValue('TOKEN');
         $scope.loadingUserNumbers = false;
 
 

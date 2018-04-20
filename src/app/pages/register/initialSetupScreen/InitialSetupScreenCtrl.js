@@ -4,9 +4,9 @@
     angular.module('BlurAdmin.pages.initialSetupScreen')
         .controller("InitialSetupScreenCtrl", InitialSetupScreenCtrl);
 
-    function InitialSetupScreenCtrl($rootScope, $scope, $location,cookieManagement) {
-        var vm=this;
-        vm.token=cookieManagement.getCookie("TOKEN");
+    function InitialSetupScreenCtrl($rootScope, $scope, $location) {
+
+        var vm = this;
         $rootScope.dashboardTitle = 'Setup | Rehive';
         $rootScope.$pageFinishedLoading=true;
 

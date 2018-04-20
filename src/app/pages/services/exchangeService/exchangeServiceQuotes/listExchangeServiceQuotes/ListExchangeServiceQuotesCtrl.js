@@ -5,12 +5,12 @@
         .controller('ListExchangeServiceQuotesCtrl', ListExchangeServiceQuotesCtrl);
 
     /** @ngInject */
-    function ListExchangeServiceQuotesCtrl($scope,$http,cookieManagement,$uibModal,errorHandler,serializeFiltersService,
-                                           typeaheadService,toastr) {
+    function ListExchangeServiceQuotesCtrl($scope,$http,localStorageManagement,$uibModal,errorHandler,serializeFiltersService,
+                                           typeaheadService) {
 
         var vm = this;
-        vm.token = cookieManagement.getCookie('TOKEN');
-        vm.baseUrl = cookieManagement.getCookie('SERVICEURL');
+        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.baseUrl = localStorageManagement.getValue('SERVICEURL');
         $scope.showingFilters = false;
         $scope.loadingQuotes =  false;
         $scope.filtersCount = 0;

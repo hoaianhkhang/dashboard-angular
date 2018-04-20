@@ -5,10 +5,10 @@
         .controller('SecurityCtrl', SecurityCtrl);
 
     /** @ngInject */
-    function SecurityCtrl($scope,$uibModal,$location,environmentConfig,$http,cookieManagement,errorHandler) {
+    function SecurityCtrl($scope,$uibModal,$location,environmentConfig,$http,localStorageManagement,errorHandler) {
 
         var vm = this;
-        vm.token = cookieManagement.getCookie('TOKEN');
+        vm.token = localStorageManagement.getValue('TOKEN');
         $scope.loadingAPITokens = true;
         $scope.addingToken = false;
         $scope.createTokenData = {};

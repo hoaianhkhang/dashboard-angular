@@ -5,11 +5,11 @@
         .controller('WarmstorageTransactionModalCtrl', WarmstorageTransactionModalCtrl);
 
     function WarmstorageTransactionModalCtrl($uibModalInstance,$scope,uuid,$state,
-                              transaction,metadataTextService,$location,cookieManagement) {
+                              transaction,metadataTextService,$location,localStorageManagement) {
 
 
         var vm = this;
-        vm.token = cookieManagement.getCookie('TOKEN');
+        vm.token = localStorageManagement.getValue('TOKEN');
         $scope.transaction = transaction;
         vm.uuid = uuid;
         $scope.updateTransactionObj = {};

@@ -4,12 +4,12 @@
     angular.module('BlurAdmin.pages.users.user')
         .controller('VerifyUserNumberModalCtrl', VerifyUserNumberModalCtrl);
 
-    function VerifyUserNumberModalCtrl($scope,$uibModalInstance,number,user,toastr,$http,environmentConfig,cookieManagement,errorHandler) {
+    function VerifyUserNumberModalCtrl($scope,$uibModalInstance,number,user,toastr,$http,environmentConfig,localStorageManagement,errorHandler) {
 
         var vm= this;
         $scope.mobile = number;
         $scope.user = user;
-        vm.token = cookieManagement.getCookie('TOKEN');
+        vm.token = localStorageManagement.getValue('TOKEN');
         $scope.verifyingMobile = false;
         vm.company = {};
 

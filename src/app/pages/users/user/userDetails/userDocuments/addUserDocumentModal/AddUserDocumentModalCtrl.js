@@ -4,13 +4,13 @@
     angular.module('BlurAdmin.pages.users.user')
         .controller('AddUserDocumentModalCtrl', AddUserDocumentModalCtrl);
 
-    function AddUserDocumentModalCtrl($scope,uuid,$uibModalInstance,toastr,Upload,environmentConfig,cookieManagement,errorHandler) {
+    function AddUserDocumentModalCtrl($scope,uuid,$uibModalInstance,toastr,Upload,environmentConfig,localStorageManagement,errorHandler) {
 
         var vm = this;
 
         $scope.addingDocument = false;
         vm.uuid = uuid;
-        vm.token = cookieManagement.getCookie('TOKEN');
+        vm.token = localStorageManagement.getValue('TOKEN');
         $scope.userDocumentParams = {
             file: {},
             document_type: 'Utility Bill',

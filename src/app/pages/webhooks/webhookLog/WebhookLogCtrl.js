@@ -5,11 +5,11 @@
         .controller('WebhookLogCtrl', WebhookLogCtrl);
 
     /** @ngInject */
-    function WebhookLogCtrl($scope,environmentConfig,$http,cookieManagement,errorHandler,
+    function WebhookLogCtrl($scope,environmentConfig,$http,localStorageManagement,errorHandler,
                             $window,$stateParams,serializeFiltersService) {
 
         var vm = this;
-        vm.token = cookieManagement.getCookie('TOKEN');
+        vm.token = localStorageManagement.getValue('TOKEN');
         vm.logId = $stateParams.id;
         $scope.loadingWebhooks = true;
         $scope.loadingRequests = false;

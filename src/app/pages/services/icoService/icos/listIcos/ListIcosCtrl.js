@@ -5,11 +5,11 @@
         .controller('ListIcosCtrl', ListIcosCtrl);
 
     /** @ngInject */
-    function ListIcosCtrl($scope,$http,cookieManagement,errorHandler,$location,toastr,$ngConfirm) {
+    function ListIcosCtrl($scope,$http,localStorageManagement,errorHandler,$location,toastr,$ngConfirm) {
 
         var vm = this;
-        vm.token = cookieManagement.getCookie('TOKEN');
-        vm.serviceUrl = cookieManagement.getCookie('SERVICEURL');
+        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
         $scope.icosList = [];
         $scope.icoSettingView = '';
         $scope.searchIcoParams = {

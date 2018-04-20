@@ -5,11 +5,11 @@
         .controller('GroupAccountConfigurationsCtrl', GroupAccountConfigurationsCtrl);
 
     /** @ngInject */
-    function GroupAccountConfigurationsCtrl($scope,$http,environmentConfig,cookieManagement,serializeFiltersService,
+    function GroupAccountConfigurationsCtrl($scope,$http,environmentConfig,localStorageManagement,serializeFiltersService,
                                           $stateParams,$location,errorHandler,toastr,$uibModal,$ngConfirm) {
 
         var vm = this;
-        vm.token = cookieManagement.getCookie('TOKEN');
+        vm.token = localStorageManagement.getValue('TOKEN');
         vm.groupName = $stateParams.groupName;
         vm.updatedGroup = {};
         $scope.loadingGroup = true;

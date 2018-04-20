@@ -5,10 +5,10 @@
         .controller('SubtypesCtrl', SubtypesCtrl);
 
     /** @ngInject */
-    function SubtypesCtrl($scope,environmentConfig,$uibModal,toastr,$http,cookieManagement,errorHandler,$window) {
+    function SubtypesCtrl($scope,environmentConfig,$uibModal,toastr,$http,localStorageManagement,errorHandler,$window) {
 
         var vm = this;
-        vm.token = cookieManagement.getCookie('TOKEN');
+        vm.token = localStorageManagement.getValue('TOKEN');
         vm.updatedSubtype = {};
         $scope.loadingSubtypes = true;
         $scope.editingSubtype = false;

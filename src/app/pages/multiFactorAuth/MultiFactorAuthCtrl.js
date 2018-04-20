@@ -5,10 +5,10 @@
         .controller('MultiFactorAuthCtrl', MultiFactorAuthCtrl);
 
     /** @ngInject */
-    function MultiFactorAuthCtrl($scope,$http,environmentConfig,cookieManagement,errorHandler,$location) {
+    function MultiFactorAuthCtrl($scope,$http,environmentConfig,localStorageManagement,errorHandler,$location) {
 
         var vm = this;
-        vm.token = cookieManagement.getCookie('TOKEN');
+        vm.token = localStorageManagement.getValue('TOKEN');
 
         $scope.getMfa = function(){
             if(vm.token) {

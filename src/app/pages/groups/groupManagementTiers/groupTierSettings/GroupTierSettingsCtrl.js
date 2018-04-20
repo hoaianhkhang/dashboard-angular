@@ -5,10 +5,10 @@
         .controller('GroupTierSettingsCtrl', GroupTierSettingsCtrl);
 
     /** @ngInject */
-    function GroupTierSettingsCtrl($scope,environmentConfig,$http,$stateParams,cookieManagement,errorHandler,$timeout) {
+    function GroupTierSettingsCtrl($scope,environmentConfig,$http,$stateParams,localStorageManagement,errorHandler,$timeout) {
 
         var vm = this;
-        vm.token = cookieManagement.getCookie('TOKEN');
+        vm.token = localStorageManagement.getValue('TOKEN');
         vm.groupName = $stateParams.groupName;
         $scope.activeTabIndex = 0;
         $scope.tierLevelsForSettings = [];

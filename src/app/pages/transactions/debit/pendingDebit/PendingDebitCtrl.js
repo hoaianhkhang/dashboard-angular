@@ -5,7 +5,7 @@
         .controller('PendingDebitCtrl', PendingDebitCtrl);
 
     /** @ngInject */
-    function PendingDebitCtrl($scope,$http,environmentConfig,cookieManagement,$uibModal,errorHandler) {
+    function PendingDebitCtrl($scope,$http,environmentConfig,localStorageManagement,$uibModal,errorHandler) {
 
         var vm = this;
         $scope.transactions = {};
@@ -13,7 +13,7 @@
         $scope.transactionsStateMessage = '';
         $scope.pendingTransactionData = {currency: {}};
         $scope.loadingPendingTransactions = false;
-        vm.token = cookieManagement.getCookie('TOKEN');
+        vm.token = localStorageManagement.getValue('TOKEN');
 
         $scope.pagination = {
             itemsPerPage: 12,

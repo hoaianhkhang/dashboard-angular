@@ -5,10 +5,10 @@
         .controller('ManageGroupAccountConfigModalCtrl', ManageGroupAccountConfigModalCtrl);
 
     function ManageGroupAccountConfigModalCtrl($scope,$uibModalInstance,toastr,$http,$stateParams,_,$timeout,
-                                            environmentConfig,cookieManagement,errorHandler,accountConfig) {
+                                            environmentConfig,localStorageManagement,errorHandler,accountConfig) {
 
         var vm = this;
-        vm.token = cookieManagement.getCookie('TOKEN');
+        vm.token = localStorageManagement.getValue('TOKEN');
         vm.groupName = $stateParams.groupName;
         $scope.loadingGroupAccountConfigurations = false;
         $scope.editAccountConfiguration = accountConfig;

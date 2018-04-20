@@ -5,10 +5,10 @@
         .controller('UserTransactionsModalCtrl', UserTransactionsModalCtrl);
 
     function UserTransactionsModalCtrl($rootScope,$uibModalInstance,$http,$scope,errorHandler,toastr,$timeout,$anchorScroll,$state,
-                                       transaction,metadataTextService,$location,environmentConfig,cookieManagement) {
+                                       transaction,metadataTextService,$location,environmentConfig,localStorageManagement) {
 
         var vm = this;
-        vm.token = cookieManagement.getCookie('TOKEN');
+        vm.token = localStorageManagement.getValue('TOKEN');
         $scope.updateTransactionObj = {};
         $scope.formatted = {};
         $scope.formatted.metadata = {};

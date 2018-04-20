@@ -5,11 +5,11 @@
         .controller('EditIcoCtrl', EditIcoCtrl);
 
     /** @ngInject */
-    function EditIcoCtrl($scope,$http,cookieManagement,errorHandler,$location,toastr,$stateParams,$filter,currencyModifiers) {
+    function EditIcoCtrl($scope,$http,localStorageManagement,errorHandler,$location,toastr,$stateParams,$filter,currencyModifiers) {
 
         var vm = this;
-        vm.token = cookieManagement.getCookie('TOKEN');
-        vm.serviceUrl = cookieManagement.getCookie('SERVICEURL');
+        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
         $scope.editIcoObj = {};
         $scope.editingIco = false;
         $scope.icoStatusOptions = ['Hidden','Open','Closed'];

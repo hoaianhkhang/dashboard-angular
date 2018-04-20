@@ -6,11 +6,11 @@
 
     /** @ngInject */
     function BitcoinServiceUsersCtrl($scope,$http,typeaheadService,
-                                     cookieManagement,errorHandler,serializeFiltersService) {
+                                     localStorageManagement,errorHandler,serializeFiltersService) {
 
         var vm = this;
-        vm.token = cookieManagement.getCookie('TOKEN');
-        vm.serviceUrl = cookieManagement.getCookie('SERVICEURL');
+        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
         $scope.usersStateMessage = '';
         $scope.users = [];
         $scope.usersData = {};

@@ -5,11 +5,11 @@
         .controller('ListPhaseCtrl', ListPhaseCtrl);
 
     /** @ngInject */
-    function ListPhaseCtrl($scope,$http,cookieManagement,errorHandler,$location,toastr,$stateParams,$ngConfirm) {
+    function ListPhaseCtrl($scope,$http,localStorageManagement,errorHandler,$location,toastr,$stateParams,$ngConfirm) {
 
         var vm = this;
-        vm.token = cookieManagement.getCookie('TOKEN');
-        vm.serviceUrl = cookieManagement.getCookie('SERVICEURL');
+        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
         $scope.icoPhases = {};
         $scope.loadingPhases = false;
 

@@ -5,11 +5,11 @@
         .controller('WebhooksCtrl', WebhooksCtrl);
 
     /** @ngInject */
-    function WebhooksCtrl($rootScope,$scope,$location,cookieManagement) {
+    function WebhooksCtrl($rootScope,$scope,$location,localStorageManagement) {
 
         var vm = this;
         vm.updatedWebhook = {};
-        vm.token = cookieManagement.getCookie('TOKEN');
+        vm.token = localStorageManagement.getValue('TOKEN');
         $rootScope.dashboardTitle = 'Webhooks | Rehive';
         $scope.loadingWebhooks = true;
 

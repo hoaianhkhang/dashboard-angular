@@ -5,17 +5,16 @@
         .controller('WelcomeToRehiveCtrl', WelcomeToRehiveCtrl);
 
     /** @ngInject */
-    function WelcomeToRehiveCtrl($rootScope,$scope,cookieManagement,$location) {
+    function WelcomeToRehiveCtrl($rootScope,$scope,$location) {
 
         var vm = this;
         vm.user = {};
-        vm.token = cookieManagement.getCookie('TOKEN');
         $rootScope.dashboardTitle = 'Setup | Rehive';
         $scope.verifyingEmail = false;
         $rootScope.$pageFinishedLoading = true;
 
         $scope.goToNextView = function () {
             $location.path('/company/info_request');
-        }
+        };
     }
 })();

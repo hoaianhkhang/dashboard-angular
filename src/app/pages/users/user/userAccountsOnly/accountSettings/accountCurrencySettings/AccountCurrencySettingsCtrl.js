@@ -6,10 +6,10 @@
 
     /** @ngInject */
     function AccountCurrencySettingsCtrl($scope,$stateParams,$http,environmentConfig,
-                                       cookieManagement,errorHandler,$rootScope) {
+                                         localStorageManagement,errorHandler,$rootScope) {
 
         var vm = this;
-        vm.token = cookieManagement.getCookie('TOKEN');
+        vm.token = localStorageManagement.getValue('TOKEN');
         $rootScope.shouldBeBlue = 'Users';
         vm.currencyCode = $stateParams.currencyCode;
         vm.reference = $stateParams.reference;

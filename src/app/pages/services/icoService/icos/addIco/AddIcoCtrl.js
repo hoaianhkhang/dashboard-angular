@@ -5,11 +5,11 @@
         .controller('AddIcoCtrl', AddIcoCtrl);
 
     /** @ngInject */
-    function AddIcoCtrl($scope,$http,cookieManagement,errorHandler,$location,toastr,currencyModifiers) {
+    function AddIcoCtrl($scope,$http,localStorageManagement,errorHandler,$location,toastr,currencyModifiers) {
 
         var vm = this;
-        vm.token = cookieManagement.getCookie('TOKEN');
-        vm.serviceUrl = cookieManagement.getCookie('SERVICEURL');
+        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
         $scope.creatingIco = false;
         $scope.icoParams = {
             currency: {},

@@ -5,11 +5,11 @@
         .controller('CurrencyConversionRatesCtrl', CurrencyConversionRatesCtrl);
 
     /** @ngInject */
-    function CurrencyConversionRatesCtrl($rootScope,$scope,$http,cookieManagement,errorHandler,$uibModal) {
+    function CurrencyConversionRatesCtrl($rootScope,$scope,$http,localStorageManagement,errorHandler,$uibModal) {
 
         var vm = this;
-        vm.token = cookieManagement.getCookie('TOKEN');
-        vm.baseUrl = cookieManagement.getCookie('SERVICEURL');
+        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.baseUrl = localStorageManagement.getValue('SERVICEURL');
         $rootScope.dashboardTitle = 'Conversion service | Rehive';
         $scope.loadingRates =  true;
 

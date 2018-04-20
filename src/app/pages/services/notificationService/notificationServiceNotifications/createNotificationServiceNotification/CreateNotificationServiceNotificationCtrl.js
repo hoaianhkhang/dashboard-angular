@@ -5,11 +5,11 @@
         .controller('CreateNotificationServiceNotificationsCtrl', CreateNotificationServiceNotificationsCtrl);
 
     /** @ngInject */
-    function CreateNotificationServiceNotificationsCtrl($scope,$http,cookieManagement,$location,errorHandler,$window,toastr) {
+    function CreateNotificationServiceNotificationsCtrl($scope,$http,localStorageManagement,$location,errorHandler,toastr) {
 
         var vm = this;
-        vm.token = cookieManagement.getCookie('TOKEN');
-        vm.baseUrl = cookieManagement.getCookie('SERVICEURL');
+        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.baseUrl = localStorageManagement.getValue('SERVICEURL');
         vm.updatedNotification = {};
         $scope.loadingNotifications =  false;
         $scope.notificationParams = {

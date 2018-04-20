@@ -4,14 +4,14 @@
     angular.module('BlurAdmin.pages.users.user')
         .controller('AddUserBankAccountModalCtrl', AddUserBankAccountModalCtrl);
 
-    function AddUserBankAccountModalCtrl($scope,$uibModalInstance,toastr,$stateParams,$http,environmentConfig,cookieManagement,errorHandler) {
+    function AddUserBankAccountModalCtrl($scope,$uibModalInstance,toastr,$stateParams,$http,environmentConfig,localStorageManagement,errorHandler) {
 
         var vm = this;
 
         $scope.userBankAccountParams = {status: 'Pending'};
         vm.uuid = $stateParams.uuid;
         $scope.bankStatusOptions = ['Pending', 'Incomplete', 'Declined', 'Obsolete', 'Verified'];
-        vm.token = cookieManagement.getCookie('TOKEN');
+        vm.token = localStorageManagement.getValue('TOKEN');
 
         $scope.addUserBankAccount = function(userBankAccountParams){
             if(vm.token) {

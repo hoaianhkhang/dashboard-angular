@@ -4,11 +4,11 @@
     angular.module('BlurAdmin.pages.services.bitcoinService.bitcoinServiceAccounts')
         .controller('AddPublicAddressModalCtrl', AddPublicAddressModalCtrl);
 
-    function AddPublicAddressModalCtrl($scope,$uibModalInstance,toastr,$http,cookieManagement,errorHandler) {
+    function AddPublicAddressModalCtrl($scope,$uibModalInstance,toastr,$http,localStorageManagement,errorHandler) {
 
         var vm = this;
-        vm.token = cookieManagement.getCookie('TOKEN');
-        vm.serviceUrl = cookieManagement.getCookie('SERVICEURL');
+        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
         $scope.addingPublicAddress = false;
         $scope.publicAddressParams = {
             address: ''

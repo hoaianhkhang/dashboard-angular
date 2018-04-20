@@ -4,14 +4,14 @@
     angular.module('BlurAdmin.pages.users.user')
         .controller('AddUserAddressModalCtrl', AddUserAddressModalCtrl);
 
-    function AddUserAddressModalCtrl($scope,$uibModalInstance,toastr,$stateParams,$http,environmentConfig,cookieManagement,errorHandler) {
+    function AddUserAddressModalCtrl($scope,$uibModalInstance,toastr,$stateParams,$http,environmentConfig,localStorageManagement,errorHandler) {
 
         var vm = this;
 
         $scope.userAddressParams = {country: 'US', status: 'Pending'};
         vm.uuid = $stateParams.uuid;
         $scope.kycStatusOptions = ['Pending', 'Incomplete', 'Declined', 'Obsolete', 'Verified'];
-        vm.token = cookieManagement.getCookie('TOKEN');
+        vm.token = localStorageManagement.getValue('TOKEN');
 
         $scope.addUserAddress = function(userAddressParams){
             if(vm.token) {

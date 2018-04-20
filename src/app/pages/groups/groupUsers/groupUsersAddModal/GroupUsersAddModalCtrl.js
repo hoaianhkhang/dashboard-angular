@@ -4,12 +4,12 @@
     angular.module('BlurAdmin.pages.groups.groupUsers')
         .controller('GroupUsersAddModalCtrl', GroupUsersAddModalCtrl);
 
-    function GroupUsersAddModalCtrl($scope,$uibModalInstance,toastr,group,$http,typeaheadService,
-                                    environmentConfig,cookieManagement,errorHandler) {
+    function GroupUsersAddModalCtrl($scope,$uibModalInstance,toastr,group,$http,
+                                    environmentConfig,localStorageManagement,errorHandler) {
 
         var vm = this;
         vm.group = group;
-        vm.token = cookieManagement.getCookie('TOKEN');
+        vm.token = localStorageManagement.getValue('TOKEN');
         $scope.userGroupParams = {
             inputType: 'Email'
         };

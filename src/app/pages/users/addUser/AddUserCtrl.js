@@ -6,10 +6,10 @@
 
     /** @ngInject */
     function AddUserCtrl($scope,environmentConfig,$location,cleanObject,
-                       cookieManagement,errorHandler,$http,Upload,toastr) {
+                         localStorageManagement,errorHandler,$http,Upload,toastr) {
 
         var vm = this;
-        vm.token = cookieManagement.getCookie('TOKEN');
+        vm.token = localStorageManagement.getValue('TOKEN');
         $scope.showingMoreDetails = false;
         $scope.newUserParams = {
             first_name: '',

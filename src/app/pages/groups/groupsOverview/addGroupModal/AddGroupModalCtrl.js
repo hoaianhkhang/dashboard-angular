@@ -4,10 +4,10 @@
     angular.module('BlurAdmin.pages.groups.overview')
         .controller('AddGroupsModalCtrl', AddGroupsModalCtrl);
 
-    function AddGroupsModalCtrl($scope,$uibModalInstance,cookieManagement,environmentConfig,toastr,errorHandler,$http) {
+    function AddGroupsModalCtrl($scope,$uibModalInstance,localStorageManagement,environmentConfig,errorHandler,$http) {
 
         var vm = this;
-        vm.token = cookieManagement.getCookie('TOKEN');
+        vm.token = localStorageManagement.getValue('TOKEN');
         $scope.addingGroups = false;
         $scope.groupsParams = {};
 

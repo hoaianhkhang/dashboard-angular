@@ -6,11 +6,11 @@
 
     /** @ngInject */
     function UsersCtrl($rootScope,$state,$scope,environmentConfig,$http,typeaheadService,$location,
-                       cookieManagement,errorHandler,$window,toastr,serializeFiltersService,$filter,localStorageManagement) {
+                       localStorageManagement,errorHandler,$window,toastr,serializeFiltersService,$filter) {
 
         var vm = this;
-        vm.token = cookieManagement.getCookie('TOKEN');
-        vm.companyIdentifier = cookieManagement.getCookie('companyIdentifier');
+        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.companyIdentifier = localStorageManagement.getValue('companyIdentifier');
         vm.savedUserTableColumns = vm.companyIdentifier + 'usersTable';
         $rootScope.dashboardTitle = 'Users | Rehive';
         vm.currenciesList = JSON.parse($window.sessionStorage.currenciesList || '[]');

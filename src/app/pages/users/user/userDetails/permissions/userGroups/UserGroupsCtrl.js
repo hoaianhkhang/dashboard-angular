@@ -6,10 +6,10 @@
 
     /** @ngInject */
     function UserGroupsCtrl($scope,environmentConfig,$stateParams,$http,$window,
-                                 cookieManagement,errorHandler,toastr,$uibModal) {
+                            localStorageManagement,errorHandler,toastr,$uibModal) {
 
         var vm = this;
-        vm.token = cookieManagement.getCookie('TOKEN');
+        vm.token = localStorageManagement.getValue('TOKEN');
         vm.uuid = $stateParams.uuid;
         $scope.userData = JSON.parse($window.sessionStorage.userData);
         $scope.loadingUserGroups = true;

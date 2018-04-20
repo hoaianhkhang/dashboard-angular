@@ -5,11 +5,11 @@
         .controller('CurrencyConversionQuotesCtrl', CurrencyConversionQuotesCtrl);
 
     /** @ngInject */
-    function CurrencyConversionQuotesCtrl($scope,$http,cookieManagement,errorHandler,$uibModal,cleanObject,serializeFiltersService) {
+    function CurrencyConversionQuotesCtrl($scope,$http,localStorageManagement,errorHandler,$uibModal,cleanObject,serializeFiltersService) {
 
         var vm = this;
-        vm.token = cookieManagement.getCookie('TOKEN');
-        vm.baseUrl = cookieManagement.getCookie('SERVICEURL');
+        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.baseUrl = localStorageManagement.getValue('SERVICEURL');
         $scope.loadingQuotes =  true;
         $scope.quotesList = [];
         $scope.showingQuotesFilters = false;

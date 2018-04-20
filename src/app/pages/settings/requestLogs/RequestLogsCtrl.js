@@ -5,9 +5,9 @@
         .controller('RequestLogsCtrl', RequestLogsCtrl);
 
     /** @ngInject */
-    function RequestLogsCtrl($scope,environmentConfig,$http,cookieManagement,errorHandler,serializeFiltersService,$location) {
+    function RequestLogsCtrl($scope,environmentConfig,$http,localStorageManagement,errorHandler,serializeFiltersService,$location) {
         var vm = this;
-        vm.token = cookieManagement.getCookie('TOKEN');
+        vm.token = localStorageManagement.getValue('TOKEN');
         $scope.loadingRequestLogs = true;
 
         $scope.pagination = {

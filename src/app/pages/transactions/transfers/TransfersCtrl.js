@@ -5,10 +5,10 @@
         .controller('TransfersCtrl', TransfersCtrl);
 
     /** @ngInject */
-    function TransfersCtrl($rootScope,$scope,typeaheadService,$http,environmentConfig,cookieManagement,toastr,errorHandler,currencyModifiers) {
+    function TransfersCtrl($rootScope,$scope,typeaheadService,$http,environmentConfig,localStorageManagement,toastr,errorHandler,currencyModifiers) {
 
         var vm = this;
-        vm.token = cookieManagement.getCookie('TOKEN');
+        vm.token = localStorageManagement.getValue('TOKEN');
         $rootScope.dashboardTitle = 'Transfers | Rehive';
 
         $scope.transferData = {

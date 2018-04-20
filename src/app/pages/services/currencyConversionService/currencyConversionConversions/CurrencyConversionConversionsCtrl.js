@@ -5,11 +5,11 @@
         .controller('CurrencyConversionConversionsCtrl', CurrencyConversionConversionsCtrl);
 
     /** @ngInject */
-    function CurrencyConversionConversionsCtrl($scope,$http,cookieManagement,errorHandler,$uibModal) {
+    function CurrencyConversionConversionsCtrl($scope,$http,localStorageManagement,errorHandler,$uibModal) {
 
         var vm = this;
-        vm.token = cookieManagement.getCookie('TOKEN');
-        vm.baseUrl = cookieManagement.getCookie('SERVICEURL');
+        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.baseUrl = localStorageManagement.getValue('SERVICEURL');
         $scope.loadingConversions =  true;
 
         $scope.pagination = {

@@ -4,10 +4,10 @@
     angular.module('BlurAdmin.pages.groups.groupManagementTiers.list')
         .controller('GroupTiersCtrl', GroupTiersCtrl);
 
-    function GroupTiersCtrl($scope,$stateParams,$uibModal,$http,cookieManagement,environmentConfig,toastr,errorHandler,$ngConfirm) {
+    function GroupTiersCtrl($scope,$stateParams,$uibModal,$http,localStorageManagement,environmentConfig,toastr,errorHandler,$ngConfirm) {
 
     var vm = this;
-    vm.token = cookieManagement.getCookie('TOKEN');
+    vm.token = localStorageManagement.getValue('TOKEN');
     vm.groupName = $stateParams.groupName;
     $scope.loadingTiers = true;
 

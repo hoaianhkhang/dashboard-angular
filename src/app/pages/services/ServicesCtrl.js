@@ -5,10 +5,11 @@
         .controller('ServicesCtrl', ServicesCtrl);
 
     /** @ngInject */
-    function ServicesCtrl($rootScope,$scope,$location,$http,environmentConfig,errorHandler,$ngConfirm,$timeout,cookieManagement,toastr) {
+    function ServicesCtrl($rootScope,$scope,$location,$http,environmentConfig,localStorageManagement,
+                          errorHandler,$ngConfirm,$timeout,toastr) {
 
         var vm = this;
-        vm.token = cookieManagement.getCookie('TOKEN');
+        vm.token = localStorageManagement.getValue('TOKEN');
         $rootScope.dashboardTitle = 'Services | Rehive';
         $scope.loadingServices = true;
         $scope.showingFilters = false;
@@ -96,10 +97,10 @@
         };
 
         $scope.goToService = function(service) {
-          cookieManagement.setCookie('SERVICEURL',service.url);
-          var serviceNameArray = service.name.split(' ');
-          var pathName = serviceNameArray[0].toLowerCase();
-          $location.path('/services/' + pathName);
+            localStorageManagement.setValue('SERVICEURL',service.url);
+            var serviceNameArray = service.name.split(' ');
+            var pathName = serviceNameArray[0].toLowerCase();
+            $location.path('/services/' + pathName);
         };
     }
 })();

@@ -4,13 +4,13 @@
     angular.module('BlurAdmin.pages.users.user')
         .controller('AddUserEmailModalCtrl', AddUserEmailModalCtrl);
 
-    function AddUserEmailModalCtrl($scope,$stateParams,$uibModalInstance,user,toastr,$http,environmentConfig,cookieManagement,errorHandler) {
+    function AddUserEmailModalCtrl($scope,$stateParams,$uibModalInstance,user,toastr,$http,environmentConfig,localStorageManagement,errorHandler) {
 
         var vm = this;
         $scope.user = user;
         vm.uuid = $stateParams.uuid;
         $scope.newUserEmail = {primary: false, verified: false};
-        vm.token = cookieManagement.getCookie('TOKEN');
+        vm.token = localStorageManagement.getValue('TOKEN');
         $scope.loadingUserEmails = false;
 
 

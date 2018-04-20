@@ -5,7 +5,7 @@
         .controller('EditUserBankAccountModalCtrl', EditUserBankAccountModalCtrl);
 
     function EditUserBankAccountModalCtrl($scope,$uibModalInstance,bankAccount,toastr,$stateParams,$filter,
-                                      $http,environmentConfig,cookieManagement,errorHandler) {
+                                      $http,environmentConfig,localStorageManagement,errorHandler) {
 
         var vm = this;
         vm.uuid = $stateParams.uuid;
@@ -14,7 +14,7 @@
         $scope.editUserBankAccount = {};
         $scope.editingUserBankAccount = true;
         $scope.bankStatusOptions = ['Pending', 'Incomplete', 'Declined', 'Obsolete', 'Verified'];
-        vm.token = cookieManagement.getCookie('TOKEN');
+        vm.token = localStorageManagement.getValue('TOKEN');
 
         vm.getUserBankAccount = function () {
             $scope.editingUserBankAccount = true;

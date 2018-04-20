@@ -4,13 +4,13 @@
     angular.module('BlurAdmin.pages.services.currencyConversionService.currencyConversionRates')
         .controller('DeleteCurrencyConversionRatesModalCtrl', DeleteCurrencyConversionRatesModalCtrl);
 
-    function DeleteCurrencyConversionRatesModalCtrl($scope,$uibModalInstance,rate,toastr,$http,cookieManagement,errorHandler) {
+    function DeleteCurrencyConversionRatesModalCtrl($scope,$uibModalInstance,rate,toastr,$http,localStorageManagement,errorHandler) {
 
         var vm = this;
 
         $scope.rate = rate;
-        vm.token = cookieManagement.getCookie('TOKEN');
-        vm.baseUrl = cookieManagement.getCookie('SERVICEURL');
+        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.baseUrl = localStorageManagement.getValue('SERVICEURL');
         $scope.deletingRate = false;
 
 

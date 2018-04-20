@@ -5,11 +5,11 @@
         .controller('PendingCreditModalCtrl', PendingCreditModalCtrl);
 
     /** @ngInject */
-    function PendingCreditModalCtrl($rootScope,$uibModalInstance,$scope,$http,environmentConfig,cookieManagement,$anchorScroll,
+    function PendingCreditModalCtrl($rootScope,$uibModalInstance,$scope,$http,environmentConfig,localStorageManagement,$anchorScroll,
                                     $timeout,toastr,transaction,errorHandler,metadataTextService,$location) {
 
         var vm = this;
-        vm.token = cookieManagement.getCookie('TOKEN');
+        vm.token = localStorageManagement.getValue('TOKEN');
         $scope.updateTransactionObj = {};
         $scope.formatted = {};
         $scope.formatted.metadata = {};

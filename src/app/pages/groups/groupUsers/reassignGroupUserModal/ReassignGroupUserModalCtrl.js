@@ -4,12 +4,12 @@
     angular.module('BlurAdmin.pages.groups.groupUsers')
         .controller('ReassignGroupUserModalCtrl', ReassignGroupUserModalCtrl);
 
-    function ReassignGroupUserModalCtrl($scope,$uibModalInstance,toastr,user,$http,typeaheadService,
-                                      environmentConfig,cookieManagement,errorHandler) {
+    function ReassignGroupUserModalCtrl($scope,$uibModalInstance,toastr,user,$http,
+                                      environmentConfig,localStorageManagement,errorHandler) {
 
         var vm = this;
         vm.user = user;
-        vm.token = cookieManagement.getCookie('TOKEN');
+        vm.token = localStorageManagement.getValue('TOKEN');
         $scope.groupForReassigning = {};
         $scope.groups = [];
 

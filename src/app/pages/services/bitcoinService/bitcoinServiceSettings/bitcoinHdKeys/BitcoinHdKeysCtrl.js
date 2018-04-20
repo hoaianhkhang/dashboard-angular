@@ -5,12 +5,12 @@
         .controller('BitcoinHdKeysCtrl', BitcoinHdKeysCtrl);
 
     /** @ngInject */
-    function BitcoinHdKeysCtrl($scope,$http,cookieManagement,toastr,errorHandler,$ngConfirm) {
+    function BitcoinHdKeysCtrl($scope,$http,localStorageManagement,toastr,errorHandler,$ngConfirm) {
 
 
         var vm = this;
-        vm.serviceUrl = cookieManagement.getCookie('SERVICEURL');
-        vm.token = cookieManagement.getCookie('TOKEN');
+        vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
+        vm.token = localStorageManagement.getValue('TOKEN');
         $scope.loadingHdkeys =  true;
         $scope.addingHdkey =  false;
         $scope.newHdKey = {

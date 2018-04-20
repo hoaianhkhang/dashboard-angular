@@ -4,10 +4,10 @@
     angular.module('BlurAdmin.pages.groups.groupManagementTiers.list')
         .controller('AddGroupTierModalCtrl', AddGroupTierModalCtrl);
 
-    function AddGroupTierModalCtrl($scope,$stateParams,$uibModalInstance,toastr,$http,environmentConfig,cookieManagement,errorHandler) {
+    function AddGroupTierModalCtrl($scope,$stateParams,$uibModalInstance,toastr,$http,environmentConfig,localStorageManagement,errorHandler) {
 
         var vm = this;
-        vm.token = cookieManagement.getCookie('TOKEN');
+        vm.token = localStorageManagement.getValue('TOKEN');
         vm.groupName = $stateParams.groupName;
         $scope.addingTiers = false;
         $scope.tierLevels = [1,2,3,4,5,6,7];

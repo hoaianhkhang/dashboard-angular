@@ -5,10 +5,10 @@
         .controller('MultiFactorAuthVerifyCtrl', MultiFactorAuthVerifyCtrl);
 
     /** @ngInject */
-    function MultiFactorAuthVerifyCtrl($scope,$http,environmentConfig,userVerification,cookieManagement,errorHandler,toastr,$stateParams,$location) {
+    function MultiFactorAuthVerifyCtrl($scope,$http,environmentConfig,localStorageManagement,errorHandler,toastr,$stateParams,$location) {
 
         var vm = this;
-        vm.token = cookieManagement.getCookie('TOKEN');
+        vm.token = localStorageManagement.getValue('TOKEN');
         $scope.authType = $stateParams.authType;
         $scope.verifyTokenObj = {token: ''};
         $scope.tokenAuthenticationEnabled = false;

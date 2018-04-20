@@ -4,7 +4,7 @@
     angular.module('BlurAdmin.pages.users.user')
         .controller('AddUserCryptoAccountsModalCtrl', AddUserCryptoAccountsModalCtrl);
 
-    function AddUserCryptoAccountsModalCtrl($scope,$uibModalInstance,toastr,$stateParams,$http,environmentConfig,cookieManagement,errorHandler) {
+    function AddUserCryptoAccountsModalCtrl($scope,$uibModalInstance,toastr,$stateParams,$http,environmentConfig,localStorageManagement,errorHandler) {
 
         var vm = this;
         vm.uuid = $stateParams.uuid;
@@ -16,7 +16,7 @@
             status: 'Pending'
         };
         $scope.cryptoStatusOptions = ['Pending', 'Incomplete', 'Declined', 'Obsolete', 'Verified'];
-        vm.token = cookieManagement.getCookie('TOKEN');
+        vm.token = localStorageManagement.getValue('TOKEN');
 
         vm.isJson = function (str) {
             try {

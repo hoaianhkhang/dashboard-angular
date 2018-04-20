@@ -5,7 +5,7 @@
         .controller('EditUserAddressModalCtrl', EditUserAddressModalCtrl);
 
     function EditUserAddressModalCtrl($scope,$uibModalInstance,address,toastr,$stateParams,$filter,
-                                      $http,environmentConfig,cookieManagement,errorHandler) {
+                                      $http,environmentConfig,localStorageManagement,errorHandler) {
 
         var vm = this;
         vm.uuid = $stateParams.uuid;
@@ -14,7 +14,7 @@
         $scope.editUserAddress = {};
         $scope.editingUserAddress = true;
         $scope.kycStatusOptions = ['Pending', 'Incomplete', 'Declined', 'Obsolete', 'Verified'];
-        vm.token = cookieManagement.getCookie('TOKEN');
+        vm.token = localStorageManagement.getValue('TOKEN');
 
         vm.getAddress = function () {
             $scope.editingUserAddress = true;

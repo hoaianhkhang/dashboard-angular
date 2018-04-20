@@ -5,11 +5,11 @@
         .controller('BankAccountsCtrl', BankAccountsCtrl);
 
     /** @ngInject */
-    function BankAccountsCtrl($scope,environmentConfig,$uibModal,toastr,$http,cookieManagement,
+    function BankAccountsCtrl($scope,environmentConfig,$uibModal,$http,localStorageManagement,
                               errorHandler,serializeFiltersService,_) {
 
         var vm = this;
-        vm.token = cookieManagement.getCookie('TOKEN');
+        vm.token = localStorageManagement.getValue('TOKEN');
         $scope.loadingBankAccounts = true;
         $scope.bankAccounts = [];
 

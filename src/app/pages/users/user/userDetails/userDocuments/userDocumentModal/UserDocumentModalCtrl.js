@@ -5,13 +5,13 @@
         .controller('UserDocumentModalCtrl', UserDocumentModalCtrl);
 
     function UserDocumentModalCtrl($scope,$uibModalInstance,document,Upload,toastr,$http,$filter,uuid,
-                                   $ngConfirm,environmentConfig,cookieManagement,errorHandler) {
+                                   $ngConfirm,environmentConfig,localStorageManagement,errorHandler) {
 
         var vm = this;
         vm.uuid = uuid;
         vm.updatedDocument = {};
         vm.addressTracking = {};
-        vm.token = cookieManagement.getCookie('TOKEN');
+        vm.token = localStorageManagement.getValue('TOKEN');
         $scope.document = document;
         $scope.updatingDocument = false;
         $scope.showingDocumentFile = true;

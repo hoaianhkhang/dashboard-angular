@@ -5,13 +5,13 @@
         .controller('BitcoinHotwalletCtrl', BitcoinHotwalletCtrl);
 
     /** @ngInject */
-    function BitcoinHotwalletCtrl($scope,cookieManagement,currenciesList,$http,errorHandler,toastr,sharedResources,
+    function BitcoinHotwalletCtrl($scope,localStorageManagement,currenciesList,$http,errorHandler,toastr,sharedResources,
                                   $uibModal,currencyModifiers,serializeFiltersService,environmentConfig) {
         $scope.bitcoinAccountSettingView = '';
 
         var vm = this;
-        vm.serviceUrl = cookieManagement.getCookie('SERVICEURL');
-        vm.token = cookieManagement.getCookie('TOKEN');
+        vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
+        vm.token = localStorageManagement.getValue('TOKEN');
         $scope.bitcoinCurrency = currenciesList.find(function (element) {
             return element.code == 'XBT';
         });

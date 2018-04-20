@@ -4,11 +4,11 @@
     angular.module('BlurAdmin.pages.newCompanySetup.setupCurrencies')
         .controller("AddCustomCurrencyModalCtrl", AddCustomCurrencyModalCtrl);
 
-    function AddCustomCurrencyModalCtrl($scope,$http,toastr,cookieManagement,
+    function AddCustomCurrencyModalCtrl($scope,$http,toastr,localStorageManagement,
                                  environmentConfig,errorHandler,$uibModalInstance) {
 
         var vm = this;
-        vm.token = cookieManagement.getCookie("TOKEN");
+        vm.token = localStorageManagement.getValue("TOKEN");
         $scope.newCurrencyParams = {};
         $scope.loadingCustomCurrencies = false;
 

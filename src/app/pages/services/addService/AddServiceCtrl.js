@@ -5,13 +5,13 @@
         .controller('AddServiceCtrl', AddServiceCtrl);
 
     /** @ngInject */
-    function AddServiceCtrl($scope,$location,$http,environmentConfig,errorHandler,toastr,cookieManagement,$ngConfirm,$timeout) {
+    function AddServiceCtrl($scope,$location,$http,environmentConfig,errorHandler,toastr,localStorageManagement,$ngConfirm,$timeout) {
 
         $scope.selectedService = {};
         $scope.loadingServices = true;
 
         var vm = this;
-        vm.token = cookieManagement.getCookie('TOKEN');
+        vm.token = localStorageManagement.getValue('TOKEN');
 
         $scope.getServices = function(){
             $scope.loadingServices = true;

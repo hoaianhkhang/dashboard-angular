@@ -5,11 +5,11 @@
         .controller('UserCtrl', UserCtrl);
 
     /** @ngInject */
-    function UserCtrl($scope,environmentConfig,$http,cookieManagement,$uibModal,_,toastr,
+    function UserCtrl($scope,environmentConfig,$http,localStorageManagement,$uibModal,_,toastr,
                       $rootScope,errorHandler,$stateParams,$location,$window,$filter) {
 
         var vm = this;
-        vm.token = cookieManagement.getCookie('TOKEN');
+        vm.token = localStorageManagement.getValue('TOKEN');
         $rootScope.dashboardTitle = 'User | Rehive';
         $rootScope.shouldBeBlue = 'Users';
         vm.uuid = $stateParams.uuid;

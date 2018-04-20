@@ -5,13 +5,13 @@
         .controller('BitcoinServiceTransactionsCtrl', BitcoinServiceTransactionsCtrl);
 
     /** @ngInject */
-    function BitcoinServiceTransactionsCtrl($scope,$http,cookieManagement,$uibModal,toastr,
+    function BitcoinServiceTransactionsCtrl($scope,$http,localStorageManagement,$uibModal,toastr,
                                             errorHandler,$state,$window,typeaheadService,serializeFiltersService) {
 
         var vm = this;
-        vm.token = cookieManagement.getCookie('TOKEN');
+        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
         vm.currenciesList = JSON.parse($window.sessionStorage.currenciesList || '[]');
-        vm.serviceUrl = cookieManagement.getCookie('SERVICEURL');
         $scope.showingFilters = false;
         $scope.dateFilterOptions = ['Is in the last','In between','Is equal to','Is after','Is before'];
         $scope.amountFilterOptions = ['Is equal to','Is between','Is greater than','Is less than'];

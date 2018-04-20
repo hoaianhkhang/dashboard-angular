@@ -4,9 +4,9 @@
     angular.module('BlurAdmin.pages.newCompanySetup')
         .controller("NewCompanySetupCtrl", NewCompanySetupCtrl);
 
-    function NewCompanySetupCtrl($rootScope, $scope, $location,cookieManagement,localStorageManagement) {
+    function NewCompanySetupCtrl($rootScope, $scope, $location,localStorageManagement) {
         var vm=this;
-        vm.token=cookieManagement.getCookie("TOKEN");
+        vm.token = localStorageManagement.getValue("TOKEN");
         $scope.companySetupView = 'initialSetupScreen';
         $rootScope.setupUsers = localStorageManagement.getValue('setupUsers') || 0;
         $rootScope.setupCurrencies = localStorageManagement.getValue('setupCurrencies') || 0;

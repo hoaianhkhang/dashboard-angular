@@ -5,11 +5,11 @@
         .controller('GroupManagementTiersCtrl', GroupManagementTiersCtrl);
 
     /** @ngInject */
-    function GroupManagementTiersCtrl($scope,$http,environmentConfig,cookieManagement,
+    function GroupManagementTiersCtrl($scope,$http,environmentConfig,localStorageManagement,
                                           $stateParams,$location,errorHandler) {
 
         var vm = this;
-        vm.token = cookieManagement.getCookie('TOKEN');
+        vm.token = localStorageManagement.getValue('TOKEN');
         vm.groupName = $stateParams.groupName;
         vm.updatedGroup = {};
         $scope.loadingGroup = true;

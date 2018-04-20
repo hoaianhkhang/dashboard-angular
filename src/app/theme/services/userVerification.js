@@ -5,11 +5,11 @@
         .factory('userVerification', userVerification);
 
     /** @ngInject */
-    function userVerification($http,cookieManagement,environmentConfig,$location,errorHandler) {
+    function userVerification($http,localStorageManagement,environmentConfig,errorHandler) {
 
         return {
             verify: function (cb) {
-                var token = cookieManagement.getCookie('TOKEN');
+                var token = localStorageManagement.getValue('TOKEN');
                 var emailVerified = false;
 
                 if(token) {

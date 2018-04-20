@@ -5,10 +5,10 @@
         .controller('EditAccountCurrencyFeeCtrl', EditAccountCurrencyFeeCtrl);
 
     function EditAccountCurrencyFeeCtrl($scope,$uibModalInstance,currencyCode,reference,accountCurrencyFee,sharedResources,$window,
-                                          toastr,$http,environmentConfig,cookieManagement,currencyModifiers,errorHandler) {
+                                          toastr,$http,environmentConfig,localStorageManagement,currencyModifiers,errorHandler) {
 
         var vm = this;
-        vm.token = cookieManagement.getCookie('TOKEN');
+        vm.token = localStorageManagement.getValue('TOKEN');
         vm.currencyCode = currencyCode;
         vm.reference = reference;
         vm.accountCurrencyFee = accountCurrencyFee;
