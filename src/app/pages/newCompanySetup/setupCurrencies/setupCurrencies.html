@@ -30,7 +30,7 @@
                                     required>
                             </select>
                         </div>
-                        <p ng-show="currenciesToAdd.length > 0">Currencies selected:
+                        <p class="new-company-setup-selected-currencies" ng-show="currenciesToAdd.length > 0">Currencies selected:
                             <span ng-repeat="currency in currenciesToAdd | orderBy: 'code'">
                                 {{$last ? ' ' + currency.code : currency.code + ',' }}
                             </span>
