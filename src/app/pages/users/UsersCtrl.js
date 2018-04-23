@@ -44,6 +44,7 @@
             {colName: 'Mobile number',fieldName: 'mobile_number',visible: true},
             {colName: 'Group name',fieldName: 'groupName',visible: true},
             {colName: 'Created',fieldName: 'created',visible: true},
+            {colName: 'Updated',fieldName: 'updated',visible: false},
             {colName: 'Status',fieldName: 'status',visible: false},
             {colName: 'KYC status',fieldName: 'kycStatus',visible: false},
             {colName: 'Active',fieldName: 'active',visible: false},
@@ -65,7 +66,8 @@
             accountReferenceFilter: false,
             groupFilter: false,
             currencyFilter: false,
-            joinedDateFilter: false,
+            createdFilter: false,
+            updatedFilter: false,
             lastLoginDateFilter: false,
             kycFilter:  false,
             pageSizeFilter: false
@@ -97,7 +99,15 @@
             currencyFilter: {
                 selectedCurrency: {}
             },
-            joinedDateFilter: {
+            createdFilter: {
+                selectedDateOption: 'Is in the last',
+                selectedDayIntervalOption: 'days',
+                dayInterval: '',
+                dateFrom: '',
+                dateTo: '',
+                dateEqualTo: ''
+            },
+            updatedFilter: {
                 selectedDateOption: 'Is in the last',
                 selectedDayIntervalOption: 'days',
                 dayInterval: '',
@@ -241,15 +251,22 @@
                 accountReferenceFilter: false,
                 groupFilter: false,
                 currencyFilter: false,
-                joinedDateFilter: false,
+                createdFilter: false,
+                updatedFilter: false,
                 lastLoginDateFilter: false,
                 kycFilter:  false,
                 pageSizeFilter: false
             };
         };
 
-        $scope.joinedDayIntervalChanged = function () {
-            if($scope.applyFiltersObj.joinedDateFilter.dayInterval <= 0){
+        $scope.createdIntervalChanged = function () {
+            if($scope.applyFiltersObj.createdFilter.dayInterval <= 0){
+                toastr.success('Please enter a positive value');
+            }
+        };
+
+        $scope.updatedIntervalChanged = function () {
+            if($scope.applyFiltersObj.updatedFilter.dayInterval <= 0){
                 toastr.success('Please enter a positive value');
             }
         };
@@ -276,33 +293,33 @@
                 created__gt: null
             };
 
-            switch($scope.applyFiltersObj.joinedDateFilter.selectedDateOption) {
+            switch($scope.applyFiltersObj.createdFilter.selectedDateOption) {
                 case 'Is in the last':
-                    if($scope.applyFiltersObj.joinedDateFilter.selectedDayIntervalOption == 'days'){
+                    if($scope.applyFiltersObj.createdFilter.selectedDayIntervalOption == 'days'){
                         dateObj.created__lt = moment().add(1,'days').format('YYYY-MM-DD');
-                        dateObj.created__gt = moment().subtract($scope.applyFiltersObj.joinedDateFilter.dayInterval,'days').format('YYYY-MM-DD');
+                        dateObj.created__gt = moment().subtract($scope.applyFiltersObj.createdFilter.dayInterval,'days').format('YYYY-MM-DD');
                     } else {
                         dateObj.created__lt = moment().add(1,'days').format('YYYY-MM-DD');
-                        dateObj.created__gt = moment().subtract($scope.applyFiltersObj.joinedDateFilter.dayInterval,'months').format('YYYY-MM-DD');
+                        dateObj.created__gt = moment().subtract($scope.applyFiltersObj.createdFilter.dayInterval,'months').format('YYYY-MM-DD');
                     }
 
                     break;
                 case 'In between':
-                    dateObj.created__lt = moment(new Date($scope.applyFiltersObj.joinedDateFilter.dateTo)).add(1,'days').format('YYYY-MM-DD');
-                    dateObj.created__gt = moment(new Date($scope.applyFiltersObj.joinedDateFilter.dateFrom)).format('YYYY-MM-DD');
+                    dateObj.created__lt = moment(new Date($scope.applyFiltersObj.createdFilter.dateTo)).add(1,'days').format('YYYY-MM-DD');
+                    dateObj.created__gt = moment(new Date($scope.applyFiltersObj.createdFilter.dateFrom)).format('YYYY-MM-DD');
 
                     break;
                 case 'Is equal to':
-                    dateObj.created__lt = moment(new Date($scope.applyFiltersObj.joinedDateFilter.dateEqualTo)).add(1,'days').format('YYYY-MM-DD');
-                    dateObj.created__gt = moment(new Date($scope.applyFiltersObj.joinedDateFilter.dateEqualTo)).format('YYYY-MM-DD');
+                    dateObj.created__lt = moment(new Date($scope.applyFiltersObj.createdFilter.dateEqualTo)).add(1,'days').format('YYYY-MM-DD');
+                    dateObj.created__gt = moment(new Date($scope.applyFiltersObj.createdFilter.dateEqualTo)).format('YYYY-MM-DD');
 
                     break;
                 case 'Is after':
                     dateObj.created__lt = null;
-                    dateObj.created__gt = moment(new Date($scope.applyFiltersObj.joinedDateFilter.dateFrom)).add(1,'days').format('YYYY-MM-DD');
+                    dateObj.created__gt = moment(new Date($scope.applyFiltersObj.createdFilter.dateFrom)).add(1,'days').format('YYYY-MM-DD');
                     break;
                 case 'Is before':
-                    dateObj.created__lt = moment(new Date($scope.applyFiltersObj.joinedDateFilter.dateTo)).format('YYYY-MM-DD');
+                    dateObj.created__lt = moment(new Date($scope.applyFiltersObj.createdFilter.dateTo)).format('YYYY-MM-DD');
                     dateObj.created__gt = null;
                     break;
                 default:
@@ -365,7 +382,7 @@
                 }
             }
 
-            if($scope.filtersObj.joinedDateFilter){
+            if($scope.filtersObj.createdFilter){
                 vm.dateObj = vm.getJoinedDateFilters();
             } else{
                 vm.dateObj = {
@@ -455,6 +472,7 @@
                     mobile_number: userObj.mobile_number,
                     groupName: userObj.groups.length > 0 ? userObj.groups[0].name: null,
                     created: userObj.created ? $filter("date")(userObj.created,'mediumDate') + ' ' + $filter("date")(userObj.created,'shortTime'): null,
+                    updated: userObj.updated ? $filter("date")(userObj.updated,'mediumDate') + ' ' + $filter("date")(userObj.updated,'shortTime'): null,
                     status: $filter("capitalizeWord")(userObj.status),
                     kycStatus: $filter("capitalizeWord")(userObj.kyc.status),
                     active: userObj.active ? 'Yes' : 'No',
