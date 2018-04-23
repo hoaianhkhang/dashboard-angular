@@ -36,6 +36,18 @@
             maxSize: 5
         };
 
+        if(localStorageManagement.getValue(vm.savedUserTableColumns)){
+             var headerColumns = JSON.parse(localStorageManagement.getValue(vm.savedUserTableColumns));
+             headerColumns.forEach(function (col) {
+                 if(col.colName == 'Date joined'){
+                     col.colName = 'Created';
+                     col.fieldName = 'created';
+                 }
+             });
+
+            localStorageManagement.setValue(vm.savedUserTableColumns,JSON.stringify(headerColumns));
+        }
+
         $scope.headerColumns = localStorageManagement.getValue(vm.savedUserTableColumns) ? JSON.parse(localStorageManagement.getValue(vm.savedUserTableColumns)) : [
             {colName: 'Identifier',fieldName: 'identifier',visible: true},
             {colName: 'First name',fieldName: 'first_name',visible: true},
