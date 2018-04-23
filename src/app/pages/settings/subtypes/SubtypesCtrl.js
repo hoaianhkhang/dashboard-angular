@@ -13,9 +13,8 @@
         $scope.loadingSubtypes = true;
         $scope.editingSubtype = false;
         $scope.editSubtype = {};
-        $scope.subtypeOptions = ['Credit','Debit'];
         $scope.newSubtype = {
-            tx_type: 'Credit'
+            tx_type: 'credit'
         };
 
         $scope.toggleSubtypeEditView = function(subtype){
@@ -71,7 +70,6 @@
 
         $scope.addSubtype = function(){
             $scope.loadingSubtypes = true;
-            $scope.newSubtype.tx_type = $scope.newSubtype.tx_type.toLowerCase();
             $http.post(environmentConfig.API + '/admin/subtypes/', $scope.newSubtype, {
                 headers: {
                     'Content-Type': 'application/json',
@@ -82,7 +80,7 @@
                 if (res.status === 201) {
                     vm.getSubtypes();
                     toastr.success('You have successfully added a new subtype');
-                    $scope.newSubtype = {tx_type: 'Credit'};
+                    $scope.newSubtype = {tx_type: 'credit'};
                     $window.scrollTo(0, 0);
                 }
             }).catch(function (error) {

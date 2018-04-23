@@ -1,3 +1,18 @@
+.setting-subtype{
+  position: relative;
+  display: inline-block;
+  & > span.setting-subtype-label{
+    position: absolute;
+    top: 2px;
+    left: 22px;
+  }
+  & > span.setting-subtype-label2{
+    position: absolute;
+    top: 2px;
+    left: 60px;
+  }
+}
+
 .rehive-settings-buttons{
   width: 60px;
   margin: 0 0 0 10px;
