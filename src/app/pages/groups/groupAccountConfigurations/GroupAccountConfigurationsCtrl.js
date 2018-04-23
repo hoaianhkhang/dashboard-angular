@@ -49,7 +49,7 @@
         vm.getGroupUsers = function (group) {
             if(vm.token) {
                 $scope.loadingGroup = true;
-                $http.get(environmentConfig.API + '/admin/users/overview?group=' + group.name, {
+                $http.get(environmentConfig.API + '/admin/users/overview/?group=' + group.name, {
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': vm.token
