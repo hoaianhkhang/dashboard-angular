@@ -231,6 +231,16 @@
         $scope.open4 = function() {
             $scope.popup4.opened = true;
         };
+
+        $scope.popup5 = {};
+        $scope.open5 = function() {
+            $scope.popup5.opened = true;
+        };
+
+        $scope.popup6 = {};
+        $scope.open6 = function() {
+            $scope.popup6.opened = true;
+        };
         // end
 
         $scope.getUsersEmailTypeahead = typeaheadService.getUsersEmailTypeahead();
@@ -287,7 +297,7 @@
             return ($scope.applyFiltersObj.orderByFilter.selectedOrderByOption == 'Created' ? '-created' : '-last_login');
         };
 
-        vm.getJoinedDateFilters = function () {
+        vm.getCreatedDateFilters = function () {
             var dateObj = {
                 created__lt: null,
                 created__gt: null
@@ -371,6 +381,48 @@
             return dateObj;
         };
 
+        vm.getUpdatedDateFilters = function () {
+            var dateObj = {
+                updated__lt: null,
+                updated__gt: null
+            };
+
+            switch($scope.applyFiltersObj.updatedFilter.selectedDateOption) {
+                case 'Is in the last':
+                    if($scope.applyFiltersObj.createdFilter.selectedDayIntervalOption == 'days'){
+                        dateObj.updated__lt = moment().add(1,'days').format('YYYY-MM-DD');
+                        dateObj.updated__gt = moment().subtract($scope.applyFiltersObj.updatedFilter.dayInterval,'days').format('YYYY-MM-DD');
+                    } else {
+                        dateObj.updated__lt = moment().add(1,'days').format('YYYY-MM-DD');
+                        dateObj.updated__gt = moment().subtract($scope.applyFiltersObj.updatedFilter.dayInterval,'months').format('YYYY-MM-DD');
+                    }
+
+                    break;
+                case 'In between':
+                    dateObj.updated__lt = moment(new Date($scope.applyFiltersObj.updatedFilter.dateTo)).add(1,'days').format('YYYY-MM-DD');
+                    dateObj.updated__gt = moment(new Date($scope.applyFiltersObj.updatedFilter.dateFrom)).format('YYYY-MM-DD');
+
+                    break;
+                case 'Is equal to':
+                    dateObj.updated__lt = moment(new Date($scope.applyFiltersObj.updatedFilter.dateEqualTo)).add(1,'days').format('YYYY-MM-DD');
+                    dateObj.updated__gt = moment(new Date($scope.applyFiltersObj.updatedFilter.dateEqualTo)).format('YYYY-MM-DD');
+
+                    break;
+                case 'Is after':
+                    dateObj.updated__lt = null;
+                    dateObj.updated__gt = moment(new Date($scope.applyFiltersObj.updatedFilter.dateFrom)).add(1,'days').format('YYYY-MM-DD');
+                    break;
+                case 'Is before':
+                    dateObj.updated__lt = moment(new Date($scope.applyFiltersObj.updatedFilter.dateTo)).format('YYYY-MM-DD');
+                    dateObj.updated__gt = null;
+                    break;
+                default:
+                    break;
+            }
+
+            return dateObj;
+        };
+
         vm.getUsersUrl = function(){
             $scope.filtersCount = 0;
 
@@ -383,11 +435,20 @@
             }
 
             if($scope.filtersObj.createdFilter){
-                vm.dateObj = vm.getJoinedDateFilters();
+                vm.dateObj = vm.getCreatedDateFilters();
             } else{
                 vm.dateObj = {
                     created__gt: null,
                     created__lt: null
+                };
+            }
+
+            if($scope.filtersObj.updatedFilter){
+                vm.updatedDateObj = vm.getUpdatedDateFilters();
+            } else{
+                vm.updatedDateObj = {
+                    updated__gt: null,
+                    updated__lt: null
                 };
             }
 
@@ -414,6 +475,8 @@
                 group__isnull: $scope.filtersObj.groupFilter ? $scope.applyFiltersObj.groupFilter.selectedGroupOption == 'In a group'? (!$scope.applyFiltersObj.groupFilter.existsInGroup).toString(): null : null,
                 created__gt: vm.dateObj.created__gt ? Date.parse(vm.dateObj.created__gt +'T00:00:00') : null,
                 created__lt: vm.dateObj.created__lt ? Date.parse(vm.dateObj.created__lt +'T00:00:00') : null,
+                updated__gt: vm.updatedDateObj.updated__gt ? Date.parse(vm.updatedDateObj.updated__gt +'T00:00:00') : null,
+                updated__lt: vm.updatedDateObj.updated__lt ? Date.parse(vm.updatedDateObj.updated__lt +'T00:00:00') : null,
                 last_login__gt: vm.lastLogindateObj.last_login__gt ? Date.parse(vm.lastLogindateObj.last_login__gt +'T00:00:00') : null,
                 last_login__lt: vm.lastLogindateObj.last_login__lt ? Date.parse(vm.lastLogindateObj.last_login__lt +'T00:00:00') : null,
                 kyc__status: $scope.filtersObj.kycFilter ? ($scope.applyFiltersObj.kycFilter.selectedKycFilter == 'Status' ? null : $scope.applyFiltersObj.kycFilter.selectedKycFilter.toLowerCase()): null,
