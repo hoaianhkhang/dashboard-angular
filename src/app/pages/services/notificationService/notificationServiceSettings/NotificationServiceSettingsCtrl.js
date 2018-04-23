@@ -10,6 +10,7 @@
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
         vm.baseUrl = localStorageManagement.getValue('SERVICEURL');
+        vm.webhookUrl = "https://notification.services.rehive.io/api/admin/webhook/";
         $rootScope.dashboardTitle = 'Notification service | Rehive';
         $scope.notificationSettingView = '';
         $scope.updatingCompanyDetails =  false;
@@ -69,12 +70,8 @@
             }
         };
 
-        $scope.goToTransactionsWebhooks = function(secret){
-            $state.go('webhooks.list',{"secret": secret});
-        };
-
         $scope.goToGeneralWebhooks = function(secret){
-            $state.go('webhooks.list',{"secret": secret});
+            $state.go('webhooks.list',{"secret": secret,"webhookUrl": vm.webhookUrl});
         };
 
 
