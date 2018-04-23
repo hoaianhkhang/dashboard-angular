@@ -5,10 +5,10 @@
         .controller('EditGroupCtrl', EditGroupCtrl);
 
     /** @ngInject */
-    function EditGroupCtrl($scope,$http,environmentConfig,cookieManagement,$stateParams,$location,errorHandler,toastr) {
+    function EditGroupCtrl($scope,$http,environmentConfig,localStorageManagement,$stateParams,$location,errorHandler,toastr) {
 
         var vm = this;
-        vm.token = cookieManagement.getCookie('TOKEN');
+        vm.token = localStorageManagement.getValue('TOKEN');
         $scope.groupName = $stateParams.groupName;
         vm.updatedGroup = {};
         $scope.loadingGroup = true;

@@ -6,10 +6,10 @@
 
     /** @ngInject */
     function UserCryptoAccountsCtrl($scope,environmentConfig,$stateParams,$http,
-                              $filter,cookieManagement,errorHandler,toastr,$uibModal) {
+                                    localStorageManagement,errorHandler,$uibModal) {
 
         var vm = this;
-        vm.token = cookieManagement.getCookie('TOKEN');
+        vm.token = localStorageManagement.getValue('TOKEN');
         vm.uuid = $stateParams.uuid;
         $scope.userCryptoAccountsList = [];
         $scope.loadingUserCryptoAccounts = true;

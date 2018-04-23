@@ -5,10 +5,10 @@
         .controller('ChangePasswordCtrl', ChangePasswordCtrl);
 
     /** @ngInject */
-    function ChangePasswordCtrl($rootScope,$scope,$http,environmentConfig,cookieManagement,errorHandler,$location,toastr) {
+    function ChangePasswordCtrl($rootScope,$scope,$http,environmentConfig,localStorageManagement,errorHandler,$location,toastr) {
 
         var vm = this;
-        vm.token = cookieManagement.getCookie('TOKEN');
+        vm.token = localStorageManagement.getValue('TOKEN');
         $scope.passwordChanged = false;
 
         $scope.goToDashboard = function(){

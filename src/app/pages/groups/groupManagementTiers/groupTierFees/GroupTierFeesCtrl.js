@@ -5,11 +5,11 @@
         .controller('GroupTierFeesCtrl', GroupTierFeesCtrl);
 
     /** @ngInject */
-    function GroupTierFeesCtrl($scope,$stateParams,cookieManagement,$http,environmentConfig,_,$window,$ngConfirm,
-                          sharedResources,$timeout,errorHandler,toastr,$uibModal,currencyModifiers) {
+    function GroupTierFeesCtrl($scope,$stateParams,localStorageManagement,$http,environmentConfig,_,$window,$ngConfirm,
+                          $timeout,errorHandler,toastr,$uibModal) {
 
         var vm = this;
-        vm.token = cookieManagement.getCookie('TOKEN');
+        vm.token = localStorageManagement.getValue('TOKEN');
         vm.groupName = $stateParams.groupName;
         $scope.currenciesList = JSON.parse($window.sessionStorage.currenciesList || '[]');
         $scope.activeTabIndex = 0;

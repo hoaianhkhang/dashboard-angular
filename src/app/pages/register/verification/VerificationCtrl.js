@@ -5,11 +5,12 @@
         .controller('VerificationCtrl', VerificationCtrl);
 
     /** @ngInject */
-    function VerificationCtrl($rootScope,$scope,$http,toastr,cookieManagement,environmentConfig,$location,errorHandler,userVerification,_) {
+    function VerificationCtrl($rootScope,$scope,$http,toastr,environmentConfig,
+                              localStorageManagement,$location,errorHandler,userVerification,_) {
 
         var vm = this;
         vm.user = {};
-        vm.token = cookieManagement.getCookie('TOKEN');
+        vm.token = localStorageManagement.getValue('TOKEN');
         $scope.verifyingEmail = false;
         $rootScope.$pageFinishedLoading = false;
 
@@ -78,7 +79,7 @@
             $rootScope.securityConfigured = true;
             $rootScope.pageTopObj = {};
             $rootScope.userFullyVerified = false;
-            cookieManagement.deleteCookie('TOKEN');
+            localStorageManagement.deleteValue('TOKEN');
             $location.path('/login');
         };
 

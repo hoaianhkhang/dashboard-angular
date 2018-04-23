@@ -5,11 +5,11 @@
         .controller('ExchangeServiceSettingsCtrl', ExchangeServiceSettingsCtrl);
 
     /** @ngInject */
-    function ExchangeServiceSettingsCtrl($rootScope,$scope,$http,cookieManagement,toastr,errorHandler,$state) {
+    function ExchangeServiceSettingsCtrl($rootScope,$scope,$http,localStorageManagement,toastr,errorHandler,$state) {
 
         var vm = this;
-        vm.token = cookieManagement.getCookie('TOKEN');
-        vm.baseUrl = cookieManagement.getCookie('SERVICEURL');
+        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.baseUrl = localStorageManagement.getValue('SERVICEURL');
         $rootScope.dashboardTitle = 'Exchange service | Rehive';
         $scope.exchangeSettingView = '';
         $scope.updatingCompanyDetails =  false;

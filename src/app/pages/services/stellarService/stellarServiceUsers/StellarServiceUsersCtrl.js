@@ -5,12 +5,12 @@
              .controller('StellarServiceUsersCtrl', StellarServiceUsersCtrl);
 
     /** @ngInject */
-    function StellarServiceUsersCtrl($state,$scope,$http,typeaheadService,$location,
-                       cookieManagement,errorHandler,serializeFiltersService) {
+    function StellarServiceUsersCtrl($scope,$http,typeaheadService,
+                                     localStorageManagement,errorHandler,serializeFiltersService) {
 
         var vm = this;
-        vm.token = cookieManagement.getCookie('TOKEN');
-        vm.serviceUrl = cookieManagement.getCookie('SERVICEURL');
+        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
         $scope.usersStateMessage = '';
         $scope.users = [];
         $scope.usersData = {};

@@ -21,7 +21,7 @@ angular.module('BlurAdmin', [
     .config(function (ngIntlTelInputProvider) {
     ngIntlTelInputProvider.set({initialCountry: 'us',utilsScript: 'https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/12.0.1/js/utils.js'});
 })
-    .run(function($rootScope,cookieManagement,errorHandler,localStorageManagement,toastr,
+    .run(function($rootScope,errorHandler,localStorageManagement,toastr,
                   userVerification,$http,environmentConfig,$window,$location,_){
 
         $window.onload = function(){
@@ -71,7 +71,7 @@ angular.module('BlurAdmin', [
         });
 
         function routeManagement(event,newUrl){
-            var token = cookieManagement.getCookie('TOKEN'),
+            var token = localStorageManagement.getValue('TOKEN'),
                 newUrlArray = newUrl.split('/'),
                 newUrlLastElement = _.last(newUrlArray);
 
@@ -87,7 +87,7 @@ angular.module('BlurAdmin', [
                             if (res.status === 200) {
                                 $rootScope.pageTopObj.companyObj = {};
                                 $rootScope.pageTopObj.companyObj = res.data.data;
-                                cookieManagement.setCookie('companyIdentifier',$rootScope.pageTopObj.companyObj.identifier);
+                                localStorageManagement.setValue('companyIdentifier',$rootScope.pageTopObj.companyObj.identifier);
                             }
                         }).catch(function (error) {
                             errorHandler.evaluateErrors(error.data);
@@ -121,7 +121,7 @@ angular.module('BlurAdmin', [
             }
 
             if(newUrlLastElement == 'login'){
-                cookieManagement.deleteCookie('TOKEN');
+                localStorageManagement.deleteValue('TOKEN');
                 $rootScope.dashboardTitle = 'Rehive';
                 $rootScope.gotToken = false;
                 $rootScope.securityConfigured = true;

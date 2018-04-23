@@ -4,13 +4,13 @@
     angular.module('BlurAdmin.pages.services.notificationService.listNotificationServiceNotifications')
         .controller('NotificationServiceNotificationModalCtrl', NotificationServiceNotificationModalCtrl);
 
-    function NotificationServiceNotificationModalCtrl($scope,$uibModalInstance,notification,toastr,$http,cookieManagement,errorHandler) {
+    function NotificationServiceNotificationModalCtrl($scope,$uibModalInstance,notification,toastr,$http,localStorageManagement,errorHandler) {
 
         var vm = this;
 
         $scope.notification = notification;
-        vm.token = cookieManagement.getCookie('TOKEN');
-        vm.baseUrl = cookieManagement.getCookie('SERVICEURL');
+        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.baseUrl = localStorageManagement.getValue('SERVICEURL');
         $scope.deletingNotification = false;
 
 

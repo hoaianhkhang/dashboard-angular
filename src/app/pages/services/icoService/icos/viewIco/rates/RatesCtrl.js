@@ -5,11 +5,11 @@
         .controller('RatesCtrl', RatesCtrl);
 
     /** @ngInject */
-    function RatesCtrl($scope,$http,cookieManagement,errorHandler,$location,toastr,$stateParams,$ngConfirm) {
+    function RatesCtrl($scope,$http,localStorageManagement,errorHandler,$location,$stateParams) {
 
         var vm = this;
-        vm.token = cookieManagement.getCookie('TOKEN');
-        vm.serviceUrl = cookieManagement.getCookie('SERVICEURL');
+        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
         $scope.loadingRates = false;
 
         vm.getIcoRates =  function () {

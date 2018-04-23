@@ -5,10 +5,10 @@
         .controller('CompanyInfoRequestCtrl', CompanyInfoRequestCtrl);
 
     /** @ngInject */
-    function CompanyInfoRequestCtrl($rootScope,$scope,$http,toastr,cookieManagement,environmentConfig,$location,errorHandler,userVerification) {
+    function CompanyInfoRequestCtrl($rootScope,$scope,$http,toastr,localStorageManagement,environmentConfig,$location,errorHandler,userVerification) {
 
         var vm = this;
-        vm.token = cookieManagement.getCookie('TOKEN');
+        vm.token = localStorageManagement.getValue('TOKEN');
         $rootScope.$pageFinishedLoading = false;
         $scope.company = {
             name: ''

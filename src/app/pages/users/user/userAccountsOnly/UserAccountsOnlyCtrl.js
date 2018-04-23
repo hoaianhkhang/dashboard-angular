@@ -6,10 +6,10 @@
 
     /** @ngInject */
     function UserAccountsOnlyCtrl($scope,environmentConfig,$stateParams,$rootScope,$uibModal,
-                              $http,cookieManagement,errorHandler,$location,$state,serializeFiltersService) {
+                              $http,localStorageManagement,errorHandler,$location,$state,serializeFiltersService) {
 
         var vm = this;
-        vm.token = cookieManagement.getCookie('TOKEN');
+        vm.token = localStorageManagement.getValue('TOKEN');
         $rootScope.shouldBeBlue = 'Users';
         vm.uuid = $stateParams.uuid;
         vm.reference = '';

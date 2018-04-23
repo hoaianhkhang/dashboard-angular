@@ -5,10 +5,10 @@
         .controller('SettingsCtrl', SettingsCtrl);
 
     /** @ngInject */
-    function SettingsCtrl($rootScope,$scope,environmentConfig,Upload,$http,cookieManagement,errorHandler,$window,$timeout,$location) {
+    function SettingsCtrl($rootScope,$scope,environmentConfig,Upload,$http,localStorageManagement,errorHandler,$window,$timeout,$location) {
 
         var vm = this;
-        vm.token = cookieManagement.getCookie('TOKEN');
+        vm.token = localStorageManagement.getValue('TOKEN');
         $scope.settingView = 'accountInfo';
         $rootScope.dashboardTitle = 'Settings | Rehive';
         $scope.companyImageUrl = null;

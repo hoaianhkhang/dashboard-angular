@@ -5,11 +5,11 @@
         .controller('WebhooksListCtrl', WebhooksListCtrl);
 
     /** @ngInject */
-    function WebhooksListCtrl($scope,environmentConfig,$uibModal,toastr,$filter,$http,$location,cookieManagement,errorHandler,$window,$state) {
+    function WebhooksListCtrl($scope,environmentConfig,$uibModal,toastr,$filter,$http,$location,localStorageManagement,errorHandler,$window,$state) {
 
         var vm = this;
         vm.updatedWebhook = {};
-        vm.token = cookieManagement.getCookie('TOKEN');
+        vm.token = localStorageManagement.getValue('TOKEN');
         $scope.loadingWebhooks = true;
         $scope.editWebhook = {};
 

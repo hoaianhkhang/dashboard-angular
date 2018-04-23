@@ -5,13 +5,13 @@
         .controller('EditGroupTierFeeModalCtrl', EditGroupTierFeeModalCtrl);
 
     function EditGroupTierFeeModalCtrl($scope,$uibModalInstance,tierFee,currencyModifiers,selectedTier,toastr,$http,_,
-                                      environmentConfig,cookieManagement,errorHandler,$stateParams,sharedResources) {
+                                      environmentConfig,localStorageManagement,errorHandler,$stateParams,sharedResources) {
 
         var vm = this;
         $scope.selectedTier = selectedTier;
         $scope.tierFee = tierFee;
         vm.groupName = $stateParams.groupName;
-        vm.token = cookieManagement.getCookie('TOKEN');
+        vm.token = localStorageManagement.getValue('TOKEN');
         $scope.editingTierFees = false;
         $scope.loadingSubtypes = false;
         $scope.editTierFee = {};

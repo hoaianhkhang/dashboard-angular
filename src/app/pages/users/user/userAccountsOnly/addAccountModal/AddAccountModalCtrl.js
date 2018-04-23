@@ -4,14 +4,14 @@
     angular.module('BlurAdmin.pages.users.user.accounts')
         .controller('AddAccountModalCtrl', AddAccountModalCtrl);
 
-    function AddAccountModalCtrl($scope,$uibModalInstance,toastr,currenciesList,
-                                 $stateParams,$http,environmentConfig,cookieManagement,errorHandler) {
+    function AddAccountModalCtrl($scope,$uibModalInstance,toastr,
+                                 $stateParams,$http,environmentConfig,localStorageManagement,errorHandler) {
 
         var vm = this;
 
         $scope.newUserAccountParams = {};
         vm.uuid = $stateParams.uuid;
-        vm.token = cookieManagement.getCookie('TOKEN');
+        vm.token = localStorageManagement.getValue('TOKEN');
         $scope.addingUserAccount = true;
         $scope.currenciesForNewAccount = {
             list: []

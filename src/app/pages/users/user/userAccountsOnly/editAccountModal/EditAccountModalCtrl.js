@@ -5,7 +5,7 @@
         .controller('EditAccountModalCtrl', EditAccountModalCtrl);
 
     function EditAccountModalCtrl($scope,$uibModalInstance,account,toastr,$stateParams,currenciesList,
-                                      $http,environmentConfig,cookieManagement,errorHandler) {
+                                      $http,environmentConfig,localStorageManagement,errorHandler) {
 
         var vm = this;
         vm.uuid = $stateParams.uuid;
@@ -16,7 +16,7 @@
         $scope.editingUserAddress = true;
         $scope.statusOptions = ['Pending', 'Incomplete', 'Declined', 'Verified'];
         $scope.newAccountCurrencies = {list: []};
-        vm.token = cookieManagement.getCookie('TOKEN');
+        vm.token = localStorageManagement.getValue('TOKEN');
 
         vm.getCompanyCurrencies = function(){
             if(vm.token){

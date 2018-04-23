@@ -4,11 +4,11 @@
     angular.module('BlurAdmin.pages.services.bitcoinService.bitcoinServiceAccounts')
         .controller('HotwalletTransactionsModalCtrl', HotwalletTransactionsModalCtrl);
 
-    function HotwalletTransactionsModalCtrl($uibModalInstance,$scope,uuid,cookieManagement,$state,
+    function HotwalletTransactionsModalCtrl($uibModalInstance,$scope,uuid,localStorageManagement,$state,
                                              transaction,metadataTextService,$location) {
 
         var vm = this;
-        vm.token = cookieManagement.getCookie('TOKEN');
+        vm.token = localStorageManagement.getValue('TOKEN');
         $scope.transaction = transaction;
         vm.uuid = uuid;
         $scope.updateTransactionObj = {};

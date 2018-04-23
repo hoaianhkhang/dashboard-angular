@@ -6,10 +6,10 @@
 
     /** @ngInject */
     function UserNumbersCtrl($scope,environmentConfig,$stateParams,$http,$window,$ngConfirm,
-                            cookieManagement,errorHandler,toastr,$uibModal) {
+                             localStorageManagement,errorHandler,toastr,$uibModal) {
 
         var vm = this;
-        vm.token = cookieManagement.getCookie('TOKEN');
+        vm.token = localStorageManagement.getValue('TOKEN');
         vm.uuid = $stateParams.uuid;
         $scope.optionsId = '';
 

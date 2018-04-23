@@ -5,10 +5,10 @@
         .controller('AddGroupAccountConfigModalCtrl', AddGroupAccountConfigModalCtrl);
 
     function AddGroupAccountConfigModalCtrl($scope,$uibModalInstance,toastr,$http,$stateParams,
-                                    environmentConfig,cookieManagement,errorHandler,$timeout) {
+                                    environmentConfig,localStorageManagement,errorHandler,$timeout) {
 
         var vm = this;
-        vm.token = cookieManagement.getCookie('TOKEN');
+        vm.token = localStorageManagement.getValue('TOKEN');
         vm.groupName = $stateParams.groupName;
         $scope.loadingGroupAccountConfigurations = false;
         $scope.groupAccountConfigurationParams = {};

@@ -5,14 +5,14 @@
         .controller('ExchangeServiceQuoteModalCtrl', ExchangeServiceQuoteModalCtrl);
 
     function ExchangeServiceQuoteModalCtrl($scope,environmentConfig,$uibModalInstance,$location,$state,
-                                           quote,toastr,$http,cookieManagement,errorHandler) {
+                                           quote,$http,localStorageManagement,errorHandler) {
 
         var vm = this;
 
         $scope.quote = quote;
         $scope.loadingTransactions = true;
-        vm.token = cookieManagement.getCookie('TOKEN');
-        vm.baseUrl = cookieManagement.getCookie('SERVICEURL');
+        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.baseUrl = localStorageManagement.getValue('SERVICEURL');
         $scope.deletingExchange = false;
 
         vm.getTransactions = function() {

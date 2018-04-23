@@ -5,12 +5,12 @@
         .controller('EditBankAccountModalCtrl', EditBankAccountModalCtrl);
 
     function EditBankAccountModalCtrl($scope,$uibModalInstance,bankAccount,toastr,$http,$timeout,
-                                      environmentConfig,cookieManagement,errorHandler,_) {
+                                      environmentConfig,localStorageManagement,errorHandler,_) {
 
         var vm = this;
 
         $scope.bankAccount = bankAccount;
-        vm.token = cookieManagement.getCookie('TOKEN');
+        vm.token = localStorageManagement.getValue('TOKEN');
         $scope.updatingBankAccount = false;
         $scope.editBankData = {};
         vm.updatedBankAccount = {};

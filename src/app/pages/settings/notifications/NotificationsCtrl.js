@@ -5,10 +5,10 @@
         .controller('NotificationsCtrl', NotificationsCtrl);
 
     /** @ngInject */
-    function NotificationsCtrl($scope,environmentConfig,toastr,$http,cookieManagement,errorHandler) {
+    function NotificationsCtrl($scope,environmentConfig,toastr,$http,localStorageManagement,errorHandler) {
 
         var vm = this;
-        vm.token = cookieManagement.getCookie('TOKEN');
+        vm.token = localStorageManagement.getValue('TOKEN');
         $scope.loadingCompanyNotifications = true;
 
         vm.getCompanyNotifications = function () {

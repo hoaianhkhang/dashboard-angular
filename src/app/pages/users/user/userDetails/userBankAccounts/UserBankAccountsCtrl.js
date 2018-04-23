@@ -6,10 +6,10 @@
 
     /** @ngInject */
     function UserBankAccountsCtrl($scope,environmentConfig,$stateParams,$uibModal,$http,$window,
-                                  cookieManagement,errorHandler,toastr,$filter,$ngConfirm) {
+                                  localStorageManagement,errorHandler,toastr,$ngConfirm) {
 
         var vm = this;
-        vm.token = cookieManagement.getCookie('TOKEN');
+        vm.token = localStorageManagement.getValue('TOKEN');
         vm.uuid = $stateParams.uuid;
         $scope.isBankDetailsCollapsed = true;
         $scope.uncollapsedBank = {};

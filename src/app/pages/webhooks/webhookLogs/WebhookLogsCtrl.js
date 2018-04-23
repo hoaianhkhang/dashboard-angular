@@ -5,10 +5,10 @@
         .controller('WebhookLogsCtrl', WebhookLogsCtrl);
 
     /** @ngInject */
-    function WebhookLogsCtrl($scope,environmentConfig,$http,cookieManagement,serializeFiltersService,errorHandler,$window,$location) {
+    function WebhookLogsCtrl($scope,environmentConfig,$http,localStorageManagement,serializeFiltersService,errorHandler,$window,$location) {
 
         var vm = this;
-        vm.token = cookieManagement.getCookie('TOKEN');
+        vm.token = localStorageManagement.getValue('TOKEN');
         $scope.loadingWebhooks = true;
 
         $scope.pagination = {

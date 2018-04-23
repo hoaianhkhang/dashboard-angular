@@ -5,11 +5,11 @@
         .controller('IcoServiceSettingsCtrl', IcoServiceSettingsCtrl);
 
     /** @ngInject */
-    function IcoServiceSettingsCtrl($rootScope,$scope,$http,cookieManagement,errorHandler,$state,toastr) {
+    function IcoServiceSettingsCtrl($rootScope,$scope,$http,localStorageManagement,errorHandler,$state,toastr) {
 
         var vm = this;
-        vm.token = cookieManagement.getCookie('TOKEN');
-        vm.serviceUrl = cookieManagement.getCookie('SERVICEURL');
+        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
         $rootScope.dashboardTitle = 'Ico service | Rehive';
         $scope.updatingCompanyInfo = false;
         $scope.icoSettingView = '';

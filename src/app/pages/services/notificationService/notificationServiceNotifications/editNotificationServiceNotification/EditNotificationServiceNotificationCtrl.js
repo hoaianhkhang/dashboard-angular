@@ -5,11 +5,11 @@
         .controller('EditNotificationServiceNotificationCtrl', EditNotificationServiceNotificationCtrl);
 
     /** @ngInject */
-    function EditNotificationServiceNotificationCtrl($scope,$http,cookieManagement,$filter,errorHandler,$location,$stateParams,toastr) {
+    function EditNotificationServiceNotificationCtrl($scope,$http,localStorageManagement,$filter,errorHandler,$location,$stateParams,toastr) {
 
         var vm = this;
-        vm.token = cookieManagement.getCookie('TOKEN');
-        vm.baseUrl = cookieManagement.getCookie('SERVICEURL');
+        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.baseUrl = localStorageManagement.getValue('SERVICEURL');
         vm.updatedNotification = {};
         $scope.loadingNotifications =  false;
 

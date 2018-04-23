@@ -4,13 +4,13 @@
     angular.module('BlurAdmin.pages.webhooks')
         .controller('WebhooksModalCtrl', WebhooksModalCtrl);
 
-    function WebhooksModalCtrl($scope,$uibModalInstance,webhook,toastr,$http,environmentConfig,cookieManagement,errorHandler) {
+    function WebhooksModalCtrl($scope,$uibModalInstance,webhook,toastr,$http,environmentConfig,localStorageManagement,errorHandler) {
 
         var vm = this;
 
         $scope.webhook = webhook;
         $scope.deletingWebhook = false;
-        vm.token = cookieManagement.getCookie('TOKEN');
+        vm.token = localStorageManagement.getValue('TOKEN');
 
         $scope.deleteWebhook = function () {
             $scope.deletingWebhook = true;

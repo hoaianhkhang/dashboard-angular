@@ -5,10 +5,10 @@
         .controller('AddBankAccountModalCtrl', AddBankAccountModalCtrl);
 
     function AddBankAccountModalCtrl($scope,$uibModalInstance,toastr,$http,
-                                      environmentConfig,cookieManagement,errorHandler) {
+                                      environmentConfig,localStorageManagement,errorHandler) {
 
         var vm = this;
-        vm.token = cookieManagement.getCookie('TOKEN');
+        vm.token = localStorageManagement.getValue('TOKEN');
         $scope.addingBankAccount = false;
         $scope.newBankData = {};
         $scope.bankAccountCurrencies = {

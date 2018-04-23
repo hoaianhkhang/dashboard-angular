@@ -5,10 +5,10 @@
         .controller('AdminEmailsCtrl', AdminEmailsCtrl);
 
     /** @ngInject */
-    function AdminEmailsCtrl($scope,environmentConfig,$location,$http,cookieManagement,errorHandler,toastr) {
+    function AdminEmailsCtrl($scope,environmentConfig,$location,$http,localStorageManagement,errorHandler,toastr) {
 
         var vm = this;
-        vm.token = cookieManagement.getCookie('TOKEN');
+        vm.token = localStorageManagement.getValue('TOKEN');
         $scope.addingEmail = false;
         $scope.loadingAdminEmails = true;
         $scope.newEmail = {primary: true};

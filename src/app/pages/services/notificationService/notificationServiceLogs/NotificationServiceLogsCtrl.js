@@ -5,11 +5,11 @@
         .controller('NotificationServiceLogsCtrl', NotificationServiceLogsCtrl);
 
     /** @ngInject */
-    function NotificationServiceLogsCtrl($scope,$http,cookieManagement,$uibModal,errorHandler,$ngConfirm,toastr) {
+    function NotificationServiceLogsCtrl($scope,$http,localStorageManagement,$uibModal,errorHandler) {
 
         var vm = this;
-        vm.token = cookieManagement.getCookie('TOKEN');
-        vm.baseUrl = cookieManagement.getCookie('SERVICEURL');
+        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.baseUrl = localStorageManagement.getValue('SERVICEURL');
         $scope.loadingLogs =  false;
         $scope.notificationLogs = [];
 

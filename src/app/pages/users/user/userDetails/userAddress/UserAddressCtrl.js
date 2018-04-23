@@ -5,11 +5,11 @@
         .controller('UserAddressCtrl', UserAddressCtrl);
 
     /** @ngInject */
-    function UserAddressCtrl($scope,environmentConfig,$stateParams,$http,cookieManagement,
-                             $window,errorHandler,$uibModal,toastr,$filter,$ngConfirm) {
+    function UserAddressCtrl($scope,environmentConfig,$stateParams,$http,localStorageManagement,
+                             $window,errorHandler,$uibModal,toastr,$ngConfirm) {
 
         var vm = this;
-        vm.token = cookieManagement.getCookie('TOKEN');
+        vm.token = localStorageManagement.getValue('TOKEN');
         vm.uuid = $stateParams.uuid;
         $scope.userAddressParams = {
             country: 'US',

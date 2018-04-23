@@ -5,7 +5,7 @@
         .controller('BasicInfoModalCtrl', BasicInfoModalCtrl);
 
     function BasicInfoModalCtrl($scope,$uibModalInstance,user,toastr,$filter,$http,environmentConfig,
-                                $window,cookieManagement,errorHandler) {
+                                $window,localStorageManagement,errorHandler) {
 
         var vm = this;
 
@@ -13,7 +13,7 @@
         $scope.updatingUserBasicInfo = false;
         vm.updatedUserBasicInfo = {};
         $scope.editUserBasicInfo = {};
-        vm.token = cookieManagement.getCookie('TOKEN');
+        vm.token = localStorageManagement.getValue('TOKEN');
 
         vm.getUserBasicInfo = function(){
             if(vm.token) {

@@ -5,11 +5,11 @@
         .controller('AddPhaseCtrl', AddPhaseCtrl);
 
     /** @ngInject */
-    function AddPhaseCtrl($scope,$http,cookieManagement,errorHandler,$location,toastr,$stateParams,currencyModifiers) {
+    function AddPhaseCtrl($scope,$http,localStorageManagement,errorHandler,$location,toastr,$stateParams,currencyModifiers) {
 
         var vm = this;
-        vm.token = cookieManagement.getCookie('TOKEN');
-        vm.serviceUrl = cookieManagement.getCookie('SERVICEURL');
+        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
         $scope.createPhaseParams = {
             level: 1
         };

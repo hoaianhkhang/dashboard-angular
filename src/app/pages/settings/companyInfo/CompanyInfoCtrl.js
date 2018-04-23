@@ -5,10 +5,10 @@
         .controller('CompanyInfoCtrl', CompanyInfoCtrl);
 
     /** @ngInject */
-    function CompanyInfoCtrl($scope,environmentConfig,$rootScope,toastr,$http,cookieManagement,errorHandler,_) {
+    function CompanyInfoCtrl($scope,environmentConfig,$rootScope,toastr,$http,localStorageManagement,errorHandler,_) {
 
         var vm = this;
-        vm.token = cookieManagement.getCookie('TOKEN');
+        vm.token = localStorageManagement.getValue('TOKEN');
         $scope.companyImageUrl = "/assets/img/app/placeholders/hex_grey.svg";
         $scope.loadingCompanyInfo = true;
         $scope.company = {

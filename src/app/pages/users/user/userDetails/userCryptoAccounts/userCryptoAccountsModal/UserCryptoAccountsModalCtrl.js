@@ -4,15 +4,15 @@
     angular.module('BlurAdmin.pages.users.user')
         .controller('UserCryptoAccountsModalCtrl', UserCryptoAccountsModalCtrl);
 
-    function UserCryptoAccountsModalCtrl($scope,$uibModalInstance,userCryptoAccount,uuid,metadataTextService,
-                                         toastr,$http,environmentConfig,cookieManagement,errorHandler) {
+    function UserCryptoAccountsModalCtrl($scope,$uibModalInstance,userCryptoAccount,uuid,
+                                         toastr,$http,environmentConfig,localStorageManagement,errorHandler) {
 
         var vm = this;
 
         $scope.userCryptoAccount = userCryptoAccount;
         vm.uuid = uuid;
         $scope.deletingUserCryptoAccount = false;
-        vm.token = cookieManagement.getCookie('TOKEN');
+        vm.token = localStorageManagement.getValue('TOKEN');
 
         $scope.deleteUserCryptoAccount = function () {
             $scope.deletingUserCryptoAccount = true;

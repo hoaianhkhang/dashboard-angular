@@ -5,11 +5,11 @@
         .controller('PageTopCtrl', PageTopCtrl);
 
     /** @ngInject */
-    function PageTopCtrl($rootScope,$scope,$http,cookieManagement,$state,
+    function PageTopCtrl($rootScope,$scope,$http,localStorageManagement,$state,
                          environmentConfig,$location,errorHandler,$window,_,identifySearchInput) {
         var vm = this;
 
-        vm.token = cookieManagement.getCookie('TOKEN');
+        vm.token = localStorageManagement.getValue('TOKEN');
         $scope.currencies = [];
         $scope.hideSearchBar = true;
         $scope.searchString = '';
@@ -42,11 +42,11 @@
                         if (res.status === 200) {
                             $rootScope.pageTopObj.companyObj = {};
                             $rootScope.pageTopObj.companyObj = res.data.data;
-                            cookieManagement.setCookie('companyIdentifier',$rootScope.pageTopObj.companyObj.identifier);
+                            localStorageManagement.setValue('companyIdentifier',$rootScope.pageTopObj.companyObj.identifier);
 
                             // delete following two lines after a few days of deployment
-                            cookieManagement.deleteCookie($rootScope.pageTopObj.companyObj.identifier + 'transactionsTable');
-                            cookieManagement.deleteCookie($rootScope.pageTopObj.companyObj.identifier + 'usersTable');
+                            localStorageManagement.deleteValue($rootScope.pageTopObj.companyObj.identifier + 'transactionsTable');
+                            localStorageManagement.deleteValue($rootScope.pageTopObj.companyObj.identifier + 'usersTable');
                         }
                     }).catch(function (error) {
                     });
@@ -237,7 +237,7 @@
             $window.sessionStorage.currenciesList = '';
             $rootScope.pageTopObj = {};
             $rootScope.userFullyVerified = false;
-            cookieManagement.deleteCookie('TOKEN');
+            localStorageManagement.deleteValue('TOKEN');
             $location.path('/login');
         };
     }

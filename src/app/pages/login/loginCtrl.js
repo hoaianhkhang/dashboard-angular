@@ -5,10 +5,10 @@
         .controller('LoginCtrl', LoginCtrl);
 
     /** @ngInject */
-    function LoginCtrl($rootScope,$scope,$http,cookieManagement,environmentConfig,$location,errorHandler,userVerification,$timeout) {
+    function LoginCtrl($rootScope,$scope,$http,localStorageManagement,environmentConfig,$location,errorHandler,userVerification,$timeout) {
 
         var vm = this;
-        cookieManagement.deleteCookie('TOKEN');
+        localStorageManagement.deleteValue('TOKEN');
         $rootScope.dashboardTitle = 'Rehive';
         $scope.path = $location.path();
         $scope.showLoginPassword = false;
@@ -26,7 +26,7 @@
                 password: password
             }).then(function (res) {
                 if (res.status === 200) {
-                    cookieManagement.setCookie('TOKEN','Token ' + res.data.data.token);
+                    localStorageManagement.setValue('TOKEN','Token ' + res.data.data.token);
                     vm.checkMultiFactorAuthEnabled(res.data.data.token);
 
                 }

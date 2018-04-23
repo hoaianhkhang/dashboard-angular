@@ -5,14 +5,14 @@
         .controller('AddGroupTierFeeModalCtrl', AddGroupTierFeeModalCtrl);
 
     function AddGroupTierFeeModalCtrl($scope,$uibModalInstance,currencyModifiers,selectedTier,toastr,$http,_,
-                                      environmentConfig,cookieManagement,errorHandler,$stateParams,sharedResources) {
+                                      environmentConfig,localStorageManagement,errorHandler,$stateParams,sharedResources) {
 
         var vm = this;
         $scope.selectedTier = selectedTier;
         $scope.addingTierFees = false;
         $scope.loadingSubtypes = false;
         vm.groupName = $stateParams.groupName;
-        vm.token = cookieManagement.getCookie('TOKEN');
+        vm.token = localStorageManagement.getValue('TOKEN');
         $scope.tierFeesParams = {
             tx_type: 'Credit',
             subtype: ''

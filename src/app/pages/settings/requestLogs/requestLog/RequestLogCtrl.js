@@ -5,9 +5,9 @@
         .controller('RequestLogCtrl', RequestLogCtrl);
 
     /** @ngInject */
-    function RequestLogCtrl($scope,environmentConfig,$http,$state,cookieManagement,errorHandler,metadataTextService) {
+    function RequestLogCtrl($scope,environmentConfig,$http,$state,localStorageManagement,errorHandler,metadataTextService) {
         var vm = this;
-        vm.token = cookieManagement.getCookie('TOKEN');
+        vm.token = localStorageManagement.getValue('TOKEN');
         vm.requestLogId = $state.params.logId;
         $scope.loadingRequestLog = true;
 

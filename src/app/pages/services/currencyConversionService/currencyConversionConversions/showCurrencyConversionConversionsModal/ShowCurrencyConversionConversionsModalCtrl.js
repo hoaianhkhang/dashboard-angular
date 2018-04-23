@@ -5,11 +5,11 @@
         .controller('ShowCurrencyConversionConversionsModalCtrl', ShowCurrencyConversionConversionsModalCtrl);
 
     function ShowCurrencyConversionConversionsModalCtrl($scope,metadataTextService,conversion,environmentConfig,
-                                                        $http,cookieManagement,$window,$state,toastr,errorHandler) {
+                                                        $http,localStorageManagement,$window,$state,toastr,errorHandler) {
 
         var vm = this;
-        vm.token = cookieManagement.getCookie('TOKEN');
-        vm.baseUrl = cookieManagement.getCookie('SERVICEURL');
+        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.baseUrl = localStorageManagement.getValue('SERVICEURL');
         $scope.conversion = conversion;
         $scope.formatted = {};
         $scope.formatted.metadata = metadataTextService.convertToText(conversion.quote.metadata);

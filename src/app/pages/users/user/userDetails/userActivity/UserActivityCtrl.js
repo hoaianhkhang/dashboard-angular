@@ -5,10 +5,10 @@
         .controller('UserActivityCtrl', UserActivityCtrl);
 
     /** @ngInject */
-    function UserActivityCtrl($scope,environmentConfig,$stateParams,$http,cookieManagement,errorHandler,$state) {
+    function UserActivityCtrl($scope,environmentConfig,$stateParams,$http,localStorageManagement,errorHandler,$state) {
 
         var vm = this;
-        vm.token = cookieManagement.getCookie('TOKEN');
+        vm.token = localStorageManagement.getValue('TOKEN');
         vm.uuid = $stateParams.uuid;
         $scope.loadingUserActivity = true;
 

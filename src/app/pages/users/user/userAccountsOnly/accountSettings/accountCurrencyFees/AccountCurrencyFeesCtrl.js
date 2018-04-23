@@ -6,10 +6,10 @@
 
     /** @ngInject */
     function AccountCurrencyFeesCtrl($scope,$window,$stateParams,$http,$uibModal,environmentConfig,_,$rootScope,
-                                     sharedResources,cookieManagement,errorHandler,currencyModifiers,toastr) {
+                                     localStorageManagement,errorHandler) {
 
         var vm = this;
-        vm.token = cookieManagement.getCookie('TOKEN');
+        vm.token = localStorageManagement.getValue('TOKEN');
         $rootScope.shouldBeBlue = 'Users';
         vm.currencyCode = $stateParams.currencyCode;
         vm.currenciesList = JSON.parse($window.sessionStorage.currenciesList);

@@ -5,11 +5,11 @@
         .controller('GroupTransactionSettingsCtrl', GroupTransactionSettingsCtrl);
 
     /** @ngInject */
-    function GroupTransactionSettingsCtrl($scope,$http,environmentConfig,cookieManagement,
+    function GroupTransactionSettingsCtrl($scope,$http,environmentConfig,localStorageManagement,
                                           $stateParams,$location,errorHandler) {
 
         var vm = this;
-        vm.token = cookieManagement.getCookie('TOKEN');
+        vm.token = localStorageManagement.getValue('TOKEN');
         vm.groupName = $stateParams.groupName;
         vm.updatedGroup = {};
         $scope.loadingGroup = true;

@@ -5,10 +5,10 @@
         .controller('EditGroupTierLimitsCtrl', EditGroupTierLimitsCtrl);
 
     function EditGroupTierLimitsCtrl($scope,$uibModalInstance,tierLimit,selectedTier,toastr,$stateParams,sharedResources,
-                                     $http,environmentConfig,cookieManagement,errorHandler,currencyModifiers,_) {
+                                     $http,environmentConfig,localStorageManagement,errorHandler,currencyModifiers,_) {
 
         var vm = this;
-        vm.token = cookieManagement.getCookie('TOKEN');
+        vm.token = localStorageManagement.getValue('TOKEN');
         $scope.tierLimit = tierLimit;
         $scope.selectedTier = selectedTier;
         $scope.editingTierLimits = false;

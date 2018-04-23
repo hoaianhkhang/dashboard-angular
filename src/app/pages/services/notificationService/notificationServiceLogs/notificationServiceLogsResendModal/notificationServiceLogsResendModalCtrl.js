@@ -5,11 +5,11 @@
         .controller('NotificationServiceLogsResendModalCtrl', NotificationServiceLogsResendModalCtrl);
 
     /** @ngInject */
-    function NotificationServiceLogsResendModalCtrl($scope,log,$http,$uibModalInstance,cookieManagement,errorHandler,toastr) {
+    function NotificationServiceLogsResendModalCtrl($scope,log,$http,$uibModalInstance,localStorageManagement,errorHandler,toastr) {
 
         var vm = this;
-        vm.token = cookieManagement.getCookie('TOKEN');
-        vm.baseUrl = cookieManagement.getCookie('SERVICEURL');
+        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.baseUrl = localStorageManagement.getValue('SERVICEURL');
         $scope.log = log;
         $scope.recipient = {};
         $scope.recipient.email = log.recipient

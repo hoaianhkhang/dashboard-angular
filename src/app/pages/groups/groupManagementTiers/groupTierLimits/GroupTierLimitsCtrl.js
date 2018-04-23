@@ -5,11 +5,11 @@
         .controller('GroupTierLimitsCtrl', GroupTierLimitsCtrl);
 
     /** @ngInject */
-    function GroupTierLimitsCtrl($scope,$stateParams,cookieManagement,$http,environmentConfig,_,$window,
+    function GroupTierLimitsCtrl($scope,$stateParams,localStorageManagement,$http,environmentConfig,_,$window,
                             $timeout,errorHandler,toastr,$uibModal,$ngConfirm) {
 
         var vm = this;
-        vm.token = cookieManagement.getCookie('TOKEN');
+        vm.token = localStorageManagement.getValue('TOKEN');
         vm.groupName = $stateParams.groupName;
         $scope.currenciesList = JSON.parse($window.sessionStorage.currenciesList || '[]');
         $scope.activeTabIndex = 0;

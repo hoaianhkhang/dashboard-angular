@@ -5,11 +5,11 @@
         .controller('AddCurrencyModalCtrl', AddCurrencyModalCtrl);
 
     /** @ngInject */
-    function AddCurrencyModalCtrl($scope,$http,environmentConfig,cookieManagement,$uibModalInstance,
+    function AddCurrencyModalCtrl($scope,$http,environmentConfig,localStorageManagement,$uibModalInstance,
                                   $window,currenciesList,errorHandler,toastr) {
 
         var vm = this;
-        vm.token = cookieManagement.getCookie('TOKEN');
+        vm.token = localStorageManagement.getValue('TOKEN');
 
         $scope.currenciesToAdd = [];
         $scope.currenciesThatWillBeAdded = [];

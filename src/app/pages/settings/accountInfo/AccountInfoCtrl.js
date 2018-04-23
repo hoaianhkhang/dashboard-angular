@@ -5,9 +5,9 @@
         .controller('AccountInfoCtrl', AccountInfoCtrl);
 
     /** @ngInject */
-    function AccountInfoCtrl($scope,environmentConfig,$http,cookieManagement,errorHandler,toastr,$location) {
+    function AccountInfoCtrl($scope,environmentConfig,$http,localStorageManagement,errorHandler,toastr,$location) {
         var vm = this;
-        vm.token = cookieManagement.getCookie('TOKEN');
+        vm.token = localStorageManagement.getValue('TOKEN');
         $scope.loadingAccountInfo = true;
         $scope.showAdminEmails = false;
         vm.updatedAdministrator = {};

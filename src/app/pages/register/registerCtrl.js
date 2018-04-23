@@ -5,7 +5,7 @@
         .controller('RegisterCtrl', RegisterCtrl);
 
     /** @ngInject */
-    function RegisterCtrl($rootScope,$scope,$http,environmentConfig,errorHandler,$location,cookieManagement) {
+    function RegisterCtrl($rootScope,$scope,$http,environmentConfig,errorHandler,$location,localStorageManagement) {
 
         //var vm = this;
         $scope.path = $location.path();
@@ -36,7 +36,7 @@
                     if (res.status === 201) {
                         $rootScope.pageTopObj.userInfoObj = {};
                         $rootScope.pageTopObj.userInfoObj = res.data.data.user;
-                        cookieManagement.setCookie('TOKEN','Token ' + res.data.data.token);
+                        localStorageManagement.setValue('TOKEN','Token ' + res.data.data.token);
                         $location.path('/verification');
                         $rootScope.$pageFinishedLoading = true;
                         $rootScope.userFullyVerified = false;
@@ -53,7 +53,7 @@
         $scope.fixformat = function(){
             $scope.registerData.company = $scope.registerData.company.toLowerCase();
             $scope.registerData.company = $scope.registerData.company.replace(/ /g, '_');
-        }
+        };
 
     }
 })();

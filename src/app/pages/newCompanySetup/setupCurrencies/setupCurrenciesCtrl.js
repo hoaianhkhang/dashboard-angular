@@ -4,17 +4,15 @@
     angular.module('BlurAdmin.pages.newCompanySetup.setupCurrencies')
         .controller("SetupCurrenciesCtrl", SetupCurrenciesCtrl);
 
-    function SetupCurrenciesCtrl($rootScope,$scope,$http,toastr,cookieManagement,currenciesList,$ngConfirm,
+    function SetupCurrenciesCtrl($rootScope,$scope,$http,toastr,currenciesList,$ngConfirm,
         environmentConfig,$location,errorHandler,$uibModal,localStorageManagement,$window,$timeout) {
 
         var vm = this;
-        vm.token=cookieManagement.getCookie("TOKEN");
+        vm.token = localStorageManagement.getValue("TOKEN");
         $scope.currenciesToAdd = [];
         $rootScope.activeSetupRoute = 1;
         localStorageManagement.setValue('activeSetupRoute',1);
         $scope.initialCurrencies = currenciesList.slice();
-
-        console.log(currenciesList)
         $scope.loadingCurrencies = true;
 
         $scope.goToNextView=function () {
@@ -67,7 +65,7 @@
                 $rootScope.securityConfigured = true;
                 $rootScope.pageTopObj = {};
                 $rootScope.userFullyVerified = false;
-                cookieManagement.deleteCookie('TOKEN');
+                localStorageManagement.deleteValue('TOKEN');
                 toastr.error('Your session has expired, please log in again');
                 $location.path('/login');
             }

@@ -5,12 +5,12 @@
         .controller('HistoryCtrl', HistoryCtrl);
 
     /** @ngInject */
-    function HistoryCtrl($rootScope,$scope,environmentConfig,$http,cookieManagement,$uibModal,sharedResources,toastr,currencyModifiers,
-                         errorHandler,$state,$window,typeaheadService,$filter,serializeFiltersService,$location,_,localStorageManagement) {
+    function HistoryCtrl($rootScope,$scope,environmentConfig,$http,localStorageManagement,$uibModal,sharedResources,toastr,currencyModifiers,
+                         errorHandler,$state,$window,typeaheadService,$filter,serializeFiltersService,$location,_) {
 
         var vm = this;
-        vm.token = cookieManagement.getCookie('TOKEN');
-        vm.companyIdentifier = cookieManagement.getCookie('companyIdentifier');
+        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.companyIdentifier = localStorageManagement.getValue('companyIdentifier');
         vm.savedTransactionTableColumns = vm.companyIdentifier + 'transactionsTable';
         $rootScope.dashboardTitle = 'Transactions history | Rehive';
         vm.currenciesList = JSON.parse($window.sessionStorage.currenciesList || '[]');

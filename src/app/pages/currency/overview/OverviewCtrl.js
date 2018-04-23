@@ -5,10 +5,10 @@
         .controller('OverviewCtrl', OverviewCtrl);
 
     /** @ngInject */
-    function OverviewCtrl($scope,$location,$stateParams,cookieManagement,$window,environmentConfig,$http,errorHandler) {
+    function OverviewCtrl($scope,$location,$stateParams,localStorageManagement,$window,environmentConfig,$http,errorHandler) {
 
         var vm = this;
-        vm.token = cookieManagement.getCookie('TOKEN');
+        vm.token = localStorageManagement.getValue('TOKEN');
         $scope.currencyCode = $stateParams.currencyCode;
         vm.currenciesList = JSON.parse($window.sessionStorage.currenciesList || '[]');
         $scope.loadingCurrencies = true;

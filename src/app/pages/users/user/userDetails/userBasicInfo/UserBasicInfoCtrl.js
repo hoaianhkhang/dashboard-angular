@@ -5,10 +5,10 @@
         .controller('UserBasicInfoCtrl', UserBasicInfoCtrl);
 
     /** @ngInject */
-    function UserBasicInfoCtrl($scope,environmentConfig,$stateParams,$http,cookieManagement,$uibModal,errorHandler,toastr,$filter) {
+    function UserBasicInfoCtrl($scope,environmentConfig,$stateParams,$http,localStorageManagement,$uibModal,errorHandler) {
 
         var vm = this;
-        vm.token = cookieManagement.getCookie('TOKEN');
+        vm.token = localStorageManagement.getValue('TOKEN');
         vm.uuid = $stateParams.uuid;
         $scope.loadingUserBasicInfo = true;
         $scope.birthDate = {

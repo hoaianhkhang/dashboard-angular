@@ -4,7 +4,7 @@
     angular.module('BlurAdmin.pages.users.user')
         .controller('EditUserEmailModalCtrl', EditUserEmailModalCtrl);
 
-    function EditUserEmailModalCtrl($scope,$stateParams,$uibModalInstance,user,email,toastr,$http,environmentConfig,cookieManagement,errorHandler) {
+    function EditUserEmailModalCtrl($scope,$stateParams,$uibModalInstance,user,email,toastr,$http,environmentConfig,localStorageManagement,errorHandler) {
 
         var vm = this;
         $scope.user = user;
@@ -12,7 +12,7 @@
         vm.uuid = $stateParams.uuid;
         $scope.editUserEmailObj = {};
         vm.updatedUserEmail = {};
-        vm.token = cookieManagement.getCookie('TOKEN');
+        vm.token = localStorageManagement.getValue('TOKEN');
         $scope.loadingUserEmails = false;
 
 

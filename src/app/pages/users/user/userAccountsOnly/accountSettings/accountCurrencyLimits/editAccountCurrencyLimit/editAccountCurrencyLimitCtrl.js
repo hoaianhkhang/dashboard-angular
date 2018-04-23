@@ -5,10 +5,10 @@
         .controller('EditAccountCurrencyLimitCtrl', EditAccountCurrencyLimitCtrl);
 
     function EditAccountCurrencyLimitCtrl($scope,$uibModalInstance,currencyCode,reference,accountCurrencyLimit,sharedResources,$window,
-                                         toastr,$http,environmentConfig,cookieManagement,currencyModifiers,errorHandler) {
+                                         toastr,$http,environmentConfig,localStorageManagement,currencyModifiers,errorHandler) {
 
         var vm = this;
-        vm.token = cookieManagement.getCookie('TOKEN');
+        vm.token = localStorageManagement.getValue('TOKEN');
         vm.currencyCode = currencyCode;
         vm.reference = reference;
         $scope.editingAccountCurrencyLimits = false;

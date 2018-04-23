@@ -4,7 +4,7 @@
     angular.module('BlurAdmin.pages.users.user')
         .controller('EditUserNumberModalCtrl', EditUserNumberModalCtrl);
 
-    function EditUserNumberModalCtrl($scope,$stateParams,$uibModalInstance,user,number,toastr,$http,environmentConfig,cookieManagement,errorHandler) {
+    function EditUserNumberModalCtrl($scope,$stateParams,$uibModalInstance,user,number,toastr,$http,environmentConfig,localStorageManagement,errorHandler) {
 
         var vm = this;
         $scope.user = user;
@@ -12,7 +12,7 @@
         vm.uuid = $stateParams.uuid;
         $scope.editUserNumberObj = {};
         vm.updatedUserNumber = {};
-        vm.token = cookieManagement.getCookie('TOKEN');
+        vm.token = localStorageManagement.getValue('TOKEN');
         $scope.loadingUserNumbers = false;
 
 

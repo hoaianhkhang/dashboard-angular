@@ -5,9 +5,9 @@
         .controller('AllowedCountriesCtrl', AllowedCountriesCtrl);
 
     /** @ngInject */
-    function AllowedCountriesCtrl($scope,environmentConfig,$http,cookieManagement,errorHandler,toastr,$window) {
+    function AllowedCountriesCtrl($scope,environmentConfig,$http,localStorageManagement,errorHandler,toastr,$window) {
         var vm = this;
-        vm.token = cookieManagement.getCookie('TOKEN');
+        vm.token = localStorageManagement.getValue('TOKEN');
         $scope.loadingAllowedCountries = false;
         $scope.trackedCountries = [];
 

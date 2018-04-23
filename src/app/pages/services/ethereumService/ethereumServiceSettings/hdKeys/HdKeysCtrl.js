@@ -5,12 +5,11 @@
         .controller('HdKeysCtrl', HdKeysCtrl);
 
     /** @ngInject */
-    function HdKeysCtrl($scope,$http,cookieManagement,toastr,errorHandler,$ngConfirm) {
-
+    function HdKeysCtrl($scope,$http,localStorageManagement,toastr,errorHandler,$ngConfirm) {
 
         var vm = this;
-        vm.serviceUrl = cookieManagement.getCookie('SERVICEURL');
-        vm.token = cookieManagement.getCookie('TOKEN');
+        vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
+        vm.token = localStorageManagement.getValue('TOKEN');
         $scope.loadingHdkeys =  true;
         $scope.addingHdkey =  false;
         $scope.newHdKey = {

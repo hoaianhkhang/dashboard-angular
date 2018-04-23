@@ -4,13 +4,13 @@
     angular.module('BlurAdmin.pages.users.user')
         .controller('UserVerifyEmailModalCtrl', UserVerifyEmailModalCtrl);
 
-    function UserVerifyEmailModalCtrl($scope,$uibModalInstance,email,user,toastr,$http,environmentConfig,cookieManagement,errorHandler) {
+    function UserVerifyEmailModalCtrl($scope,$uibModalInstance,email,user,toastr,$http,environmentConfig,localStorageManagement,errorHandler) {
 
         var vm = this;
 
         $scope.email = email;
         $scope.user = user;
-        vm.token = cookieManagement.getCookie('TOKEN');
+        vm.token = localStorageManagement.getValue('TOKEN');
         $scope.verifyingEmail = false;
         vm.company = {};
 

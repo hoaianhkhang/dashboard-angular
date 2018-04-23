@@ -5,10 +5,10 @@
         .controller('AddGroupTierLimitCtrl', AddGroupTierLimitCtrl);
 
     function AddGroupTierLimitCtrl($scope,$uibModalInstance,sharedResources,selectedTier,toastr,currencyModifiers,
-                                   $http,environmentConfig,cookieManagement,errorHandler,_,$stateParams) {
+                                   $http,environmentConfig,localStorageManagement,errorHandler,_,$stateParams) {
 
         var vm = this;
-        vm.token = cookieManagement.getCookie('TOKEN');
+        vm.token = localStorageManagement.getValue('TOKEN');
         vm.groupName = $stateParams.groupName;
         $scope.selectedTier = selectedTier;
         $scope.addingTierLimit = false;

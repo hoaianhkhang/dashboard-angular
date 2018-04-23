@@ -5,13 +5,13 @@
         .controller('UserProfilePictureModalCtrl', UserProfilePictureModalCtrl);
 
     function UserProfilePictureModalCtrl($scope,$uibModalInstance,user,toastr,environmentConfig,$stateParams,
-                                         Upload,$timeout,cookieManagement,errorHandler) {
+                                         Upload,$timeout,localStorageManagement,errorHandler) {
 
         var vm = this;
         $scope.user = user;
         $scope.profilePictureFile.file = $scope.user.profile;
         vm.uuid = $stateParams.uuid;
-        vm.token = cookieManagement.getCookie('TOKEN');
+        vm.token = localStorageManagement.getValue('TOKEN');
 
         $scope.uploadProfilePicture = function () {
             $scope.loadingProfilePic = true;

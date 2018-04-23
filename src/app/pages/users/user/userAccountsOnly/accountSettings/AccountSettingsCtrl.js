@@ -5,10 +5,10 @@
         .controller('AccountSettingsCtrl', AccountSettingsCtrl);
 
     /** @ngInject */
-    function AccountSettingsCtrl($scope,cookieManagement,$stateParams,$location,$rootScope) {
+    function AccountSettingsCtrl($scope,localStorageManagement,$stateParams,$location,$rootScope) {
 
         var vm = this;
-        vm.token = cookieManagement.getCookie('TOKEN');
+        vm.token = localStorageManagement.getValue('TOKEN');
         $rootScope.shouldBeBlue = 'Users';
         $scope.reference = $stateParams.reference;
         $scope.currencyCode = $stateParams.currencyCode;

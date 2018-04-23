@@ -5,11 +5,11 @@
         .controller('StellarServiceSettingsCtrl', StellarServiceSettingsCtrl);
 
     /** @ngInject */
-    function StellarServiceSettingsCtrl($scope,$http,cookieManagement,errorHandler,$state) {
+    function StellarServiceSettingsCtrl($scope,$http,localStorageManagement,errorHandler,$state) {
 
         var vm = this;
-        vm.token = cookieManagement.getCookie('TOKEN');
-        vm.serviceUrl = cookieManagement.getCookie('SERVICEURL');
+        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
         vm.webhookUrl = "https://stellar.services.rehive.io/api/1/hooks/debit/";
         $scope.updatingCompanyDetails =  false;
         $scope.stellarSettingView = '';

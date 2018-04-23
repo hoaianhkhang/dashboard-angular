@@ -5,11 +5,11 @@
         .controller('ListNotificationServiceNotificationsCtrl', ListNotificationServiceNotificationsCtrl);
 
     /** @ngInject */
-    function ListNotificationServiceNotificationsCtrl($scope,$http,cookieManagement,$uibModal,errorHandler,$location,toastr) {
+    function ListNotificationServiceNotificationsCtrl($scope,$http,localStorageManagement,$uibModal,errorHandler,$location,toastr) {
 
         var vm = this;
-        vm.token = cookieManagement.getCookie('TOKEN');
-        vm.baseUrl = cookieManagement.getCookie('SERVICEURL');
+        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.baseUrl = localStorageManagement.getValue('SERVICEURL');
         $scope.loadingNotifications =  false;
 
         $scope.pagination = {

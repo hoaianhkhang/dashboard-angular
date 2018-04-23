@@ -5,10 +5,10 @@
         .controller('UserDocumentsCtrl', UserDocumentsCtrl);
 
     /** @ngInject */
-    function UserDocumentsCtrl($scope,environmentConfig,$uibModal,$stateParams,$http,cookieManagement,errorHandler,toastr,$window) {
+    function UserDocumentsCtrl($scope,environmentConfig,$uibModal,$stateParams,$http,localStorageManagement,errorHandler,$window) {
 
         var vm = this;
-        vm.token = cookieManagement.getCookie('TOKEN');
+        vm.token = localStorageManagement.getValue('TOKEN');
         vm.uuid = $stateParams.uuid;
         $scope.loadingUserDocuments = true;
 

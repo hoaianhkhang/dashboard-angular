@@ -5,11 +5,11 @@
         .service('sharedResources', sharedResources);
 
     /** @ngInject */
-    function sharedResources($http,environmentConfig,_,cookieManagement) {
+    function sharedResources($http,environmentConfig,_,localStorageManagement) {
 
         return {
             getSubtypes : function () {
-                var token = cookieManagement.getCookie('TOKEN');
+                var token = localStorageManagement.getValue('TOKEN');
                 return $http.get(environmentConfig.API + '/admin/subtypes/', {
                     headers: {
                         'Content-Type': 'application/json',

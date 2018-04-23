@@ -4,12 +4,12 @@
     angular.module('BlurAdmin.pages.services.currencyConversionService.currencyConversionQuotes')
         .controller('CurrencyConversionQuotesModalCtrl', CurrencyConversionQuotesModalCtrl);
 
-    function CurrencyConversionQuotesModalCtrl($scope,metadataTextService,quote,cookieManagement,$uibModal,$http,
+    function CurrencyConversionQuotesModalCtrl($scope,metadataTextService,quote,localStorageManagement,$uibModal,$http,
                                                $uibModalInstance,toastr,errorHandler,$ngConfirm,$window) {
 
         var vm = this;
-        vm.token = cookieManagement.getCookie('TOKEN');
-        vm.baseUrl = cookieManagement.getCookie('SERVICEURL');
+        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.baseUrl = localStorageManagement.getValue('SERVICEURL');
         $scope.quote = quote;
         $scope.formatted = {};
         $scope.formatted.metadata = metadataTextService.convertToText(quote.metadata);

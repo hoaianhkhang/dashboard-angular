@@ -5,10 +5,10 @@
         .controller('SmsAuthenticationCtrl', SmsAuthenticationCtrl);
 
     /** @ngInject */
-    function SmsAuthenticationCtrl($scope,$http,environmentConfig,cookieManagement,errorHandler,toastr,$location) {
+    function SmsAuthenticationCtrl($scope,$http,environmentConfig,localStorageManagement,errorHandler,toastr,$location) {
 
         var vm = this;
-        vm.token = cookieManagement.getCookie('TOKEN');
+        vm.token = localStorageManagement.getValue('TOKEN');
         $scope.smsAuthObj = {mobile_number: ''};
         $scope.numberFromGetCall = false;
 

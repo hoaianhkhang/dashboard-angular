@@ -5,11 +5,11 @@
         .controller('PurchasesCtrl', PurchasesCtrl);
 
     /** @ngInject */
-    function PurchasesCtrl($scope,$http,cookieManagement,errorHandler,$location,toastr,$uibModal,$stateParams) {
+    function PurchasesCtrl($scope,$http,localStorageManagement,errorHandler,$uibModal,$stateParams) {
 
         var vm = this;
-        vm.token = cookieManagement.getCookie('TOKEN');
-        vm.serviceUrl = cookieManagement.getCookie('SERVICEURL');
+        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
         $scope.loadingPurchases = false;
         $scope.searchPurchasesParams = {
             searchId: '',

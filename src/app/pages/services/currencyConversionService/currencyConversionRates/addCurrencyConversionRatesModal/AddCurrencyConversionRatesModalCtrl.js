@@ -5,11 +5,11 @@
         .controller('AddCurrencyConversionRatesModalCtrl', AddCurrencyConversionRatesModalCtrl);
 
     function AddCurrencyConversionRatesModalCtrl($scope,$uibModalInstance,currenciesList,toastr,cleanObject,
-                                                 currencyModifiers,$http,cookieManagement,errorHandler) {
+                                                 currencyModifiers,$http,localStorageManagement,errorHandler) {
 
         var vm = this;
-        vm.token = cookieManagement.getCookie('TOKEN');
-        vm.baseUrl = cookieManagement.getCookie('SERVICEURL');
+        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.baseUrl = localStorageManagement.getValue('SERVICEURL');
         $scope.addingRate = false;
         $scope.invalidAmount = false;
         $scope.rateParams = {

@@ -5,11 +5,11 @@
         .controller('NotificationServiceSettingsCtrl', NotificationServiceSettingsCtrl);
 
     /** @ngInject */
-    function NotificationServiceSettingsCtrl($rootScope,$scope,$http,cookieManagement,toastr,errorHandler,$state) {
+    function NotificationServiceSettingsCtrl($rootScope,$scope,$http,localStorageManagement,toastr,errorHandler,$state) {
 
         var vm = this;
-        vm.token = cookieManagement.getCookie('TOKEN');
-        vm.baseUrl = cookieManagement.getCookie('SERVICEURL');
+        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.baseUrl = localStorageManagement.getValue('SERVICEURL');
         $rootScope.dashboardTitle = 'Notification service | Rehive';
         $scope.notificationSettingView = '';
         $scope.updatingCompanyDetails =  false;

@@ -6,10 +6,10 @@
 
     /** @ngInject */
     function AccountCurrencyLimitsCtrl($window,$scope,$stateParams,$http,$uibModal,environmentConfig,_,$rootScope,
-                                       cookieManagement,errorHandler) {
+                                       localStorageManagement,errorHandler) {
 
         var vm = this;
-        vm.token = cookieManagement.getCookie('TOKEN');
+        vm.token = localStorageManagement.getValue('TOKEN');
         $rootScope.shouldBeBlue = 'Users';
         vm.currencyCode = $stateParams.currencyCode;
         vm.reference = $stateParams.reference;

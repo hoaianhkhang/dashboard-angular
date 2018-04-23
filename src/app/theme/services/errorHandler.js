@@ -5,7 +5,7 @@
         .factory('errorHandler', errorHandler);
 
     /** @ngInject */
-    function errorHandler(toastr,$location,cookieManagement,$rootScope) {
+    function errorHandler(toastr,$location,localStorageManagement,$rootScope) {
 
         return {
             evaluateErrors: function (errors) {
@@ -39,12 +39,12 @@
                         $rootScope.securityConfigured = true;
                         $rootScope.pageTopObj = {};
                         $rootScope.userFullyVerified = false;
-                        cookieManagement.deleteCookie('TOKEN');
+                        localStorageManagement.deleteValue('TOKEN');
                         $location.path('/login');
                     }
                 }
             }
-        }
+        };
     }
 
 })();

@@ -4,11 +4,11 @@
     angular.module('BlurAdmin.pages.services.bitcoinService.bitcoinServiceAccounts')
         .controller('FundBitcoinHotwalletModalCtrl', FundBitcoinHotwalletModalCtrl);
 
-    function FundBitcoinHotwalletModalCtrl($scope,$uibModalInstance,toastr,$http,cookieManagement,errorHandler) {
+    function FundBitcoinHotwalletModalCtrl($scope,toastr,$http,localStorageManagement,errorHandler) {
 
         var vm = this;
-        vm.token = cookieManagement.getCookie('TOKEN');
-        vm.baseUrl = cookieManagement.getCookie('SERVICEURL');
+        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.baseUrl = localStorageManagement.getValue('SERVICEURL');
         $scope.fundingHotwallet = false;
         $scope.hotwalletParams = {
             low_balance_percentage: 0.1

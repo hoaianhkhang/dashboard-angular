@@ -4,14 +4,14 @@
     angular.module('BlurAdmin.pages.permissions.groups')
         .controller('UserGroupsModalCtrl', UserGroupsModalCtrl);
 
-    function UserGroupsModalCtrl($scope,$uibModalInstance,userGroup,uuid,toastr,$http,environmentConfig,cookieManagement,errorHandler) {
+    function UserGroupsModalCtrl($scope,$uibModalInstance,userGroup,uuid,toastr,$http,environmentConfig,localStorageManagement,errorHandler) {
 
         var vm = this;
 
         $scope.userGroup = userGroup;
         vm.uuid = uuid;
         $scope.deletingUserGroup = false;
-        vm.token = cookieManagement.getCookie('TOKEN');
+        vm.token = localStorageManagement.getValue('TOKEN');
 
         $scope.deleteUserGroup = function () {
             $scope.deletingUserGroup = true;
