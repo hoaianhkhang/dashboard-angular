@@ -11,7 +11,7 @@
                 url: '/overview',
                 controller: 'GroupsOverviewCtrl',
                 templateUrl: 'app/pages/groups/groupsOverview/groupsOverview.html',
-                title: "Groups details",
+                title: "Groups details"
             });
 
     }
