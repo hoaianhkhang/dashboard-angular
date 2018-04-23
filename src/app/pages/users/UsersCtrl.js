@@ -39,7 +39,7 @@
         if(localStorageManagement.getValue(vm.savedUserTableColumns)){
              var headerColumns = JSON.parse(localStorageManagement.getValue(vm.savedUserTableColumns));
              headerColumns.forEach(function (col) {
-                 if(col.colName == 'Date joined'){
+                 if(col.colName == 'Date joined' || col.fieldName == 'date_joined'){
                      col.colName = 'Created';
                      col.fieldName = 'created';
                  }
