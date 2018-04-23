@@ -49,7 +49,7 @@ $modal-input-border: #e7e7e7;
       color: $github-color;
       background-color: transparent;
       border: 1px solid $modal-input-border;
-      @include placeholderStyle($dropdown-text, 0.7);
+      @include placeholderStyle($github-color, 0.4);
     }
     .modal-body p, .modal-body div, .modal-body span{
       margin: 0;
