@@ -22,6 +22,11 @@
         </div>
     </div>
     <div class="panel-body">
+        <div ng-show="users.length > 0" class="upper-pagination">
+            <p uib-pagination boundary-links="true" items-per-page="usersPagination.itemsPerPage"  total-items="usersData.count" ng-model="usersPagination.pageNo"
+               max-size="usersPagination.maxSize" class="pagination-sm pull-right no-margin" force-ellipses="true" ng-change="getAllUsers()"
+               previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></p>
+        </div>
         <div ng-show="users.length > 0" class="divider">
             <div class="draggable-table">
                 <!--draggable on-drag-end="tableColDrag($start, $target)"-->
@@ -41,7 +46,7 @@
                     </tbody>
                 </table>
             </div>
-            <div>
+            <div ng-show="users.length > 0">
                 <p uib-pagination boundary-links="true" items-per-page="usersPagination.itemsPerPage"  total-items="usersData.count" ng-model="usersPagination.pageNo"
                    max-size="usersPagination.maxSize" class="pagination-sm pull-right transaction-history-pagination" force-ellipses="true" ng-change="getAllUsers()"
                    previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></p>
