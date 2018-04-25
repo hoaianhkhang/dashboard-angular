@@ -14,10 +14,6 @@
                        placeholder="Enter account name" required/>
             </div>
             <div class="form-group">
-                <label>Reference</label>
-                <input type="text" class="form-control" ng-model="newUserAccountParams.reference" placeholder="Enter account reference"/>
-            </div>
-            <div class="form-group">
                 <label>Primary</label>
                 <br>
                 <input class="custom-rehive-checkbox" ng-model="newUserAccountParams.primary" type="checkbox">
@@ -35,6 +31,12 @@
                     {{$last ? ' ' + currency.code : currency.code + ',' }}
                 </span>
                 </p>
+            </div>
+            <a ng-click="toggleAdvancedOption()" ng-class="{'divider-20': advancedOption == false,'divider': advancedOption == true}"
+               class="accounts-advanced-options pointer">Advanced options</a>
+            <div ng-show="advancedOption" class="form-group">
+                <label>Reference</label>
+                <input type="text" class="form-control" ng-model="newUserAccountParams.reference" placeholder="Enter account reference"/>
             </div>
             <div class="form-group">
                 <button ng-click="addNewUserAccount(newUserAccountParams)" ng-disabled="!userAccountForm.$valid" class="btn btn-primary user-accounts-btn pull-right">Add</button>
