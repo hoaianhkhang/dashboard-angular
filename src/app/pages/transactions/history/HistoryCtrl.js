@@ -106,7 +106,7 @@
             }
         };
         $scope.pagination = {
-            itemsPerPage: 26,
+            itemsPerPage: 25,
             pageNo: 1,
             maxSize: 5
         };
@@ -422,7 +422,7 @@
 
             var searchObj = {
                 page: $scope.pagination.pageNo,
-                page_size: $scope.filtersObj.pageSizeFilter? $scope.pagination.itemsPerPage : 26,
+                page_size: $scope.filtersObj.pageSizeFilter? $scope.pagination.itemsPerPage : 25,
                 amount: vm.amountObj.amount ? currencyModifiers.convertToCents(vm.amountObj.amount,$scope.applyFiltersObj.currencyFilter.selectedCurrencyOption.divisibility) : null,
                 amount__lt: vm.amountObj.amount__lt ? currencyModifiers.convertToCents(vm.amountObj.amount__lt,$scope.applyFiltersObj.currencyFilter.selectedCurrencyOption.divisibility) : null,
                 amount__gt: vm.amountObj.amount__gt ? currencyModifiers.convertToCents(vm.amountObj.amount__gt,$scope.applyFiltersObj.currencyFilter.selectedCurrencyOption.divisibility) : null,
