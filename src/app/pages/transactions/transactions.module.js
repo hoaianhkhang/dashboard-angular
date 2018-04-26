@@ -5,7 +5,8 @@
             'BlurAdmin.pages.transactions.history',
             'BlurAdmin.pages.transactions.debit',
             'BlurAdmin.pages.transactions.credit',
-            'BlurAdmin.pages.transactions.transfers'
+            'BlurAdmin.pages.transactions.transfers',
+            'BlurAdmin.pages.transactions.subtypes'
         ])
         .config(routeConfig);
 
@@ -14,8 +15,7 @@
         $stateProvider
             .state('transactions', {
                 url: '/transactions',
-                template : '<ui-view  autoscroll="true" autoscroll-body-top></ui-view>',
-                abstract: true,
+                template : '<div ui-view="transactionsViews"></div>',
                 title: 'Transactions',
                 sidebarMeta: {
                     order: 100
