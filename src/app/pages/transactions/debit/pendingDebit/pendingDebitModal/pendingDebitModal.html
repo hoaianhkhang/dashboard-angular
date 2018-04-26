@@ -109,7 +109,7 @@
                 <p class="text-subtle">Destination Id: </p>
             </div>
             <div ng-show="transaction.destination_transaction" class="col-lg-8 col-md-8 col-sm-8 col-xs-8 no-right-padding">
-                <p ng-bind="transaction.destination_transaction.id"></p>
+                <p ng-bind="transaction.destination_transaction.id || 'ID pending creation'"></p>
             </div>
         </div>
         <div class="row">

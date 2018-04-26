@@ -509,7 +509,7 @@
                     identifier: transactionObj.user.identifier,
                     updatedDate: transactionObj.updated ? $filter("date")(transactionObj.updated,'mediumDate') + ' ' + $filter("date")(transactionObj.updated,'shortTime'): null,
                     mobile_number: transactionObj.user.mobile_number,
-                    destination_tx_id: transactionObj.destination_transaction ? transactionObj.destination_transaction.id : "",
+                    destination_tx_id: transactionObj.destination_transaction ? transactionObj.destination_transaction.id ? transactionObj.destination_transaction.id : 'ID pending creation' : "",
                     source_tx_id: transactionObj.source_transaction ? transactionObj.source_transaction.id : "",
                     label: transactionObj.label,
                     reference: transactionObj.reference,

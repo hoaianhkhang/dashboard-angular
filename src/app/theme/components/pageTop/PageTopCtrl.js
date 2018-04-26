@@ -43,10 +43,6 @@
                             $rootScope.pageTopObj.companyObj = {};
                             $rootScope.pageTopObj.companyObj = res.data.data;
                             localStorageManagement.setValue('companyIdentifier',$rootScope.pageTopObj.companyObj.identifier);
-
-                            // delete following two lines after a few days of deployment
-                            localStorageManagement.deleteValue($rootScope.pageTopObj.companyObj.identifier + 'transactionsTable');
-                            localStorageManagement.deleteValue($rootScope.pageTopObj.companyObj.identifier + 'usersTable');
                         }
                     }).catch(function (error) {
                     });

@@ -104,19 +104,19 @@
                 </select>
             </div>
         </div>
-        <div class="row">
+        <div ng-show="transaction.destination_transaction" class="row">
             <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-left-padding divider">
                 <p class="text-subtle">Destination Id: </p>
             </div>
-            <div ng-show="transaction.destination_transaction" class="col-lg-8 col-md-8 col-sm-8 col-xs-8 no-right-padding">
-                <p ng-bind="transaction.destination_transaction.id"></p>
+            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 no-right-padding">
+                <p ng-bind="transaction.destination_transaction.id || 'ID pending creation'"></p>
             </div>
         </div>
-        <div class="row">
+        <div ng-show="transaction.source_transaction" class="row">
             <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-left-padding divider">
                 <p class="text-subtle">Source Id: </p>
             </div>
-            <div ng-show="transaction.source_transaction" class="col-lg-8 col-md-8 col-sm-8 col-xs-8 no-right-padding">
+            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 no-right-padding">
                 <p ng-bind="transaction.source_transaction.id"></p>
             </div>
         </div>
