@@ -6,7 +6,7 @@
 
     /** @ngInject */
     function PendingDebitModalCtrl($rootScope,$uibModalInstance,$scope,$http,environmentConfig,localStorageManagement,toastr,$anchorScroll,
-                                   $timeout,transaction,errorHandler,metadataTextService,$location) {
+                                   $timeout,transaction,errorHandler,metadataTextService,$location,$window) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
@@ -146,7 +146,7 @@
 
         $scope.goToUser = function () {
             $uibModalInstance.close();
-            $location.path('/user/' + $scope.transaction.user.identifier + '/details');
+            $window.open('/#/user/' + $scope.transaction.user.identifier + '/details','_blank');
         };
 
     }

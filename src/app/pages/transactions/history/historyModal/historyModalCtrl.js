@@ -5,7 +5,7 @@
         .controller('historyModalCtrl', historyModalCtrl);
 
     function historyModalCtrl($rootScope,$uibModalInstance,$http,$scope,errorHandler,toastr,$timeout,$anchorScroll,
-                              transaction,metadataTextService,$location,environmentConfig,localStorageManagement) {
+                              transaction,metadataTextService,$location,environmentConfig,localStorageManagement,$window) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
@@ -145,7 +145,7 @@
 
         $scope.goToUser = function () {
             $uibModalInstance.close();
-            $location.path('/user/' + $scope.transaction.user.identifier + '/details');
+            $window.open('/#/user/' + $scope.transaction.user.identifier + '/details','_blank');
         };
 
 
