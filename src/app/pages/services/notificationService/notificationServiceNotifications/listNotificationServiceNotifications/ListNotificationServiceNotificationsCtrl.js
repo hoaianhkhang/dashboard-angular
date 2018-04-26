@@ -10,12 +10,23 @@
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
         vm.baseUrl = localStorageManagement.getValue('SERVICEURL');
+        $scope.allNotifications = {
+            enabled: false,
+            count: 0
+        };
         $scope.loadingNotifications =  false;
 
         $scope.pagination = {
             itemsPerPage: 20,
             pageNo: 1,
             maxSize: 5
+        };
+
+        $scope.toggleAllNotificationsStatus = function () {
+            $scope.notificationsList.forEach(function (notification) {
+                notification.enabled = $scope.allNotifications.enabled;
+                $scope.toggleNotificationStatus(notification);
+            });
         };
 
         vm.getNotificationListUrl = function(){
@@ -42,6 +53,16 @@
                     if (res.status === 200) {
                         $scope.notificationsListData = res.data.data;
                         $scope.notificationsList = res.data.data.results;
+                        $scope.notificationsList.forEach(function (notification,index,array) {
+                            if(notification.enabled){
+                                $scope.allNotifications.count = $scope.allNotifications.count + 1;
+                            }
+                            if(index == (array.length - 1)){
+                                if($scope.allNotifications.count == $scope.notificationsListData.count){
+                                    $scope.allNotifications.enabled = true;
+                                }
+                            }
+                        });
                     }
                 }).catch(function (error) {
                     $scope.loadingNotifications =  false;
@@ -61,6 +82,15 @@
                     }
                 }).then(function (res) {
                     if (res.status === 200) {
+                        if(notification.enabled){
+                            $scope.allNotifications.count = $scope.allNotifications.count + 1;
+                            if($scope.allNotifications.count == $scope.notificationsListData.count){
+                                $scope.allNotifications.enabled = true;
+                            }
+                        } else {
+                            $scope.allNotifications.count = $scope.allNotifications.count - 1;
+                            $scope.allNotifications.enabled = false;
+                        }
                         toastr.success('Notification updated successfully');
                     }
                 }).catch(function (error) {

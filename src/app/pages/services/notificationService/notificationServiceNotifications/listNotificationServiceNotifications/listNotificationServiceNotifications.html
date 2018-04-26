@@ -10,7 +10,14 @@
                 <tr>
                     <th class="rehive-table-row-first-child">Name</th>
                     <th>Subject</th>
-                    <th>Enabled</th>
+                    <th>
+                        Enabled
+                        <div class="notification-select-all-checkbox">
+                            <input class="custom-rehive-checkbox" ng-click="toggleAllNotificationsStatus()"
+                                   ng-model="allNotifications.enabled" type="checkbox">
+                            <label>Select all</label>
+                        </div>
+                    </th>
                     <th>Event</th>
                     <th></th>
                 </tr>
