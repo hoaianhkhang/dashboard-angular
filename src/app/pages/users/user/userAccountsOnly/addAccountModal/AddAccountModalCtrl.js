@@ -13,8 +13,13 @@
         vm.uuid = $stateParams.uuid;
         vm.token = localStorageManagement.getValue('TOKEN');
         $scope.addingUserAccount = true;
+        $scope.advancedOption = false;
         $scope.currenciesForNewAccount = {
             list: []
+        };
+
+        $scope.toggleAdvancedOption = function () {
+            $scope.advancedOption = !$scope.advancedOption;
         };
 
         vm.getCompanyCurrencies = function(){
