@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    angular.module('BlurAdmin.pages.settings.subtypes')
+    angular.module('BlurAdmin.pages.transactions.subtypes')
         .controller('SubtypeModalCtrl', SubtypeModalCtrl);
 
     function SubtypeModalCtrl($scope,$uibModalInstance,subtype,toastr,$http,environmentConfig,localStorageManagement,errorHandler) {

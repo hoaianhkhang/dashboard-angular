@@ -11,8 +11,12 @@
         $stateProvider
             .state('transactions.debit', {
                 url: '/debit',
-                templateUrl: 'app/pages/transactions/debit/debit.html',
-                controller: "DebitCtrl",
+                views: {
+                    'transactionsViews': {
+                        templateUrl: 'app/pages/transactions/debit/debit.html',
+                        controller: "DebitCtrl"
+                    }
+                },
                 params: {
                     email: null,
                     account: null,

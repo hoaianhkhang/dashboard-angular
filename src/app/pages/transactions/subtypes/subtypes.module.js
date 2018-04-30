@@ -1,18 +1,18 @@
 (function () {
     'use strict';
 
-    angular.module('BlurAdmin.pages.settings.subtypes', [])
+    angular.module('BlurAdmin.pages.transactions.subtypes', [])
         .config(routeConfig);
 
     /** @ngInject */
     function routeConfig($stateProvider,$urlRouterProvider) {
         $stateProvider
-            .state('settings.subtypes', {
+            .state('transactions.subtypes', {
                 url: '/subtypes',
                 views: {
-                  'generalSettings': {
+                  'transactionsViews': {
                     controller: 'SubtypesCtrl',
-                    templateUrl: 'app/pages/settings/subtypes/subtypes.html'
+                    templateUrl: 'app/pages/transactions/subtypes/subtypes.html'
                   }
                 },
                 title: "Subtypes"

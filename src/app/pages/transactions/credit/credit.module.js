@@ -11,8 +11,12 @@
         $stateProvider
             .state('transactions.credit', {
                 url: '/credit',
-                templateUrl: 'app/pages/transactions/credit/credit.html',
-                controller: "CreditCtrl",
+                views: {
+                    'transactionsViews': {
+                        templateUrl: 'app/pages/transactions/credit/credit.html',
+                        controller: "CreditCtrl"
+                    }
+                },
                 params: {
                     email: null,
                     account: null,

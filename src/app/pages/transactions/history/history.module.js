@@ -9,13 +9,17 @@
         $stateProvider
             .state('transactions.history', {
                 url: '/history',
-                templateUrl: 'app/pages/transactions/history/history.html',
+                views: {
+                    'transactionsViews': {
+                        templateUrl: 'app/pages/transactions/history/history.html',
+                        controller: "HistoryCtrl"
+                    }
+                },
                 params: {
                     identifier: null,
                     transactionId: null,
                     currencyCode: null
                 },
-                controller: "HistoryCtrl",
                 title: 'History',
                 sidebarMeta: {
                     order: 100

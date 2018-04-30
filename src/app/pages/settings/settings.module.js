@@ -8,7 +8,6 @@
         'BlurAdmin.pages.settings.companyInfo',
         'BlurAdmin.pages.settings.companySettings',
         'BlurAdmin.pages.settings.bankAccounts',
-        'BlurAdmin.pages.settings.subtypes',
         'BlurAdmin.pages.settings.notifications',
         'BlurAdmin.pages.settings.requestLogs',
         'BlurAdmin.pages.settings.requestLog',
