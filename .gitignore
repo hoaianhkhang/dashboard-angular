@@ -56,3 +56,5 @@ build
 /bower_components
 
 *.DS_Store
+
+package-lock.json
