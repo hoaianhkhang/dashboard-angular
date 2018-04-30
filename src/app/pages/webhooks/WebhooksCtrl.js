@@ -5,7 +5,7 @@
         .controller('WebhooksCtrl', WebhooksCtrl);
 
     /** @ngInject */
-    function WebhooksCtrl($rootScope,$scope,$location,localStorageManagement) {
+    function WebhooksCtrl($rootScope,$scope,$location,localStorageManagement,$state) {
 
         var vm = this;
         vm.updatedWebhook = {};
@@ -13,9 +13,14 @@
         $rootScope.dashboardTitle = 'Webhooks | Rehive';
         $scope.loadingWebhooks = true;
 
-        $scope.goToSetting = function(path){
-            $scope.settingView = '';
-            $location.path(path);
-        };
+        $scope.$on('$locationChangeStart', function (event,newUrl) {
+            vm.location = $location.path();
+            vm.locationArray = vm.location.split('/');
+            $scope.locationIndicator = vm.locationArray[vm.locationArray.length - 1];
+            if($scope.locationIndicator == 'webhooks'){
+                $state.go('webhooks.list');
+            }
+        });
+
     }
 })();
