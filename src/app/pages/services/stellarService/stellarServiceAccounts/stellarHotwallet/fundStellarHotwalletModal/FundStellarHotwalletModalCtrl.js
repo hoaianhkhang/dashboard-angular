@@ -1,10 +1,10 @@
 (function () {
     'use strict';
 
-    angular.module('BlurAdmin.pages.services.bitcoinService.bitcoinServiceAccounts')
-        .controller('FundBitcoinHotwalletModalCtrl', FundBitcoinHotwalletModalCtrl);
+    angular.module('BlurAdmin.pages.services.stellarService.stellarServiceAccounts')
+        .controller('FundStellarHotwalletModalCtrl', FundStellarHotwalletModalCtrl);
 
-    function FundBitcoinHotwalletModalCtrl($scope,toastr,$http,localStorageManagement,errorHandler) {
+    function FundStellarHotwalletModalCtrl($scope,toastr,$http,localStorageManagement,errorHandler) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');

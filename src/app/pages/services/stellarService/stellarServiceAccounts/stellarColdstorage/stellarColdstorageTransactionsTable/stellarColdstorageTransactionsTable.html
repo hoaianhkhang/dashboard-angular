@@ -1,0 +1,55 @@
+<div class="panel">
+    <div class="panel-heading">
+        <div class="table-filter-heading">
+            <div>
+                <button ng-click="showColdstorageFilters()" ng-class="{'transactions-filter-btn': (filtersColdstorageCount > 0), 'transactions-btn': (filtersColdstorageCount == 0)}"
+                        class="btn btn-default">Filters
+                    <span ng-show="filtersColdstorageCount > 0">|</span> <span ng-show="filtersColdstorageCount > 0" class="filter-count">{{filtersColdstorageCount}}</span>
+                </button>
+                <div ng-show="showingColdstorageFilters">
+                    <stellar-coldstorage-transactions-filters></stellar-coldstorage-transactions-filters>
+                </div>
+            </div>
+            <button ng-click="refreshColdstoragePage('applyFilter')" class="btn btn-default transactions-btn panel-header-button">Refresh</button>
+        </div>
+    </div>
+    <div class="panel-body">
+        <div ng-hide="transactionsColdstorage.length == 0" class="divider">
+            <table class="table custom-table">
+                <tr>
+                    <th>Type</th>
+                    <th>Subtype</th>
+                    <th>Currency</th>
+                    <th>Amount</th>
+                    <th>Fee</th>
+                    <th>Status</th>
+                    <th class="align-right">Date</th>
+                </tr>
+                <tr ng-repeat="transaction in transactionsColdstorage | orderBy: orderByFunctionColdstorage" data-toggle="modal"
+                    ng-click="openColdstorageModal('app/pages/services/stellarService/stellarServiceAccounts/stellarColdstorage/stellarColdstorageTransactionModal/stellarColdstorageTransactionModal.html', 'md',transaction)"
+                    class="editable-row center pointer user-details-table-hover">
+                    <td><div title="{{transaction.tx_type}}" class="transactions-list-element" ng-bind="transaction.tx_type | capitalizeWord"></div></td>
+                    <td><div title="{{transaction.subtype}}" class="transactions-list-element" ng-bind="transaction.subtype || 'None'"></div></td>
+                    <td><div title="{{transaction.currency.code}}" class="transactions-list-element" ng-bind="transaction.currency.code"></div></td>
+                    <td><div title="{{transaction.amount  | currencyModifiersFilter: transaction.currency.divisibility}}" class="transactions-list-element" ng-bind="transaction.amount  | currencyModifiersFilter: transaction.currency.divisibility"></div></td>
+                    <td><div title="{{transaction.fee | currencyModifiersFilter: transaction.currency.divisibility}}"
+                             class="transactions-list-element" ng-bind="transaction.fee | currencyModifiersFilter: transaction.currency.divisibility"></div></td>
+                    <td><div title="{{transaction.status | capitalizeWord}}" class="transactions-list-element" ng-bind="transaction.status | capitalizeWord"></div></td>
+                    <td class="align-right"><div title="{{transaction.created | date:'mediumDate'}} {{transaction.created | date:'shortTime'}}">
+                        {{transaction.created | date:'mediumDate'}} {{transaction.created | date:'shortTime'}}</div></td>
+                </tr>
+            </table>
+            <div>
+                <p uib-pagination boundary-links="true" items-per-page="coldstoragePagination.itemsPerPage"  total-items="transactionsColdstorageData.count" ng-model="coldstoragePagination.pageNo"
+                   max-size="coldstoragePagination.maxSize" class="pagination-sm pull-right transaction-history-pagination" force-ellipses="true" ng-change="getLatestColdstorageTransactions()"
+                   previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></p>
+            </div>
+        </div>
+        <div ng-show="transactionsColdstorage.length == 0">
+            <i ng-hide="transactionsColdstorageStateMessage == ''" ng-bind="transactionsColdstorageStateMessage"></i>
+            <loading-image ng-show="transactionsColdstorageStateMessage == ''"></loading-image>
+        </div>
+    </div>
+</div>
+
+
