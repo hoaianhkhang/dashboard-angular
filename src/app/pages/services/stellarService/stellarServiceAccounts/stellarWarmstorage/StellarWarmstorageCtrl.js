@@ -5,7 +5,7 @@
         .controller('StellarWarmstorageCtrl', StellarWarmstorageCtrl);
 
     /** @ngInject */
-    function StellarWarmstorageCtrl($scope,localStorageManagement,errorHandler,currenciesList,$http,$uibModal,$state,
+    function StellarWarmstorageCtrl($scope,localStorageManagement,errorHandler,currenciesList,$http,$uibModal,$state,cleanObject,
                                     sharedResources,_,environmentConfig,currencyModifiers,toastr,serializeFiltersService) {
 
         var vm = this;
@@ -50,6 +50,68 @@
             }
         };
         vm.getWarmstorage();
+
+        //Public address logic
+
+        $scope.warmStoragePublicAddressPagination = {
+            itemsPerPage: 3,
+            pageNo: 1,
+            maxSize: 5
+        };
+
+        vm.getWarmStoragePublicAddressUrl = function(){
+
+            var searchObj = {
+                page: $scope.warmStoragePublicAddressPagination.pageNo,
+                page_size: $scope.warmStoragePublicAddressPagination.itemsPerPage
+            };
+
+            return vm.serviceUrl + 'admin/warmstorage/accounts/?' +
+                serializeFiltersService.serializeFilters(cleanObject.cleanObj(searchObj));
+        };
+
+        $scope.getWarmStoragePublicAddresses = function () {
+            if(vm.token) {
+                $scope.loadingWarmStoragePublicAddresses = true;
+                var publicAddressUrl = vm.getWarmStoragePublicAddressUrl();
+
+                $http.get(publicAddressUrl, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': vm.token
+                    }
+                }).then(function (res) {
+                    if (res.status === 200) {
+                        $scope.loadingWarmStoragePublicAddresses = false;
+                        $scope.warmStoragePublicAddressData = res.data.data;
+                        $scope.warmStoragePublicAddressesList = $scope.warmStoragePublicAddressData.results;
+                    }
+                }).catch(function (error) {
+                    $scope.loadingWarmStoragePublicAddresses = false;
+                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.handleErrors(error);
+                });
+            }
+        };
+        $scope.getWarmStoragePublicAddresses();
+
+        $scope.addWarmStoragePublicAddressModal = function (page,size) {
+            vm.thePublicAddressModal = $uibModal.open({
+                animation: true,
+                templateUrl: page,
+                size: size,
+                controller: 'AddStellarWarmstoragePublicAddressModalCtrl'
+            });
+
+            vm.thePublicAddressModal.result.then(function(address){
+                if(address){
+                    $scope.getWarmStoragePublicAddresses();
+                }
+            }, function(){
+            });
+        };
+
+        //Public address logic ends
 
         //transactions logic
 

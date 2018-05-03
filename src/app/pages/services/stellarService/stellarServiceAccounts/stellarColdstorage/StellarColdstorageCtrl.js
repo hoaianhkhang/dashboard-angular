@@ -67,7 +67,7 @@
                 page_size: $scope.publicAddressPagination.itemsPerPage
             };
 
-            return vm.serviceUrl + 'admin/coldstorage/public-addresses/?' +
+            return vm.serviceUrl + 'admin/coldstorage/accounts/?' +
                 serializeFiltersService.serializeFilters(cleanObject.cleanObj(searchObj));
         };
 
@@ -401,7 +401,6 @@
                         $scope.transactionsColdstorageStateMessage = '';
                     }
                 }).catch(function (error) {
-                    console.log('eeasdsa')
                     $scope.loadingColdstorage =  false;
                     $scope.transactionsColdstorageStateMessage = 'Failed to load data';
                     errorHandler.evaluateErrors(error.data);

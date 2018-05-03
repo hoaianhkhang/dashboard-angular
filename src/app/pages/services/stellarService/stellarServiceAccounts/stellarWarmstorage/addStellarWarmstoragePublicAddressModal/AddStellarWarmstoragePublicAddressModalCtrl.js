@@ -2,9 +2,9 @@
     'use strict';
 
     angular.module('BlurAdmin.pages.services.stellarService.stellarServiceAccounts')
-        .controller('AddStellarPublicAddressModalCtrl', AddStellarPublicAddressModalCtrl);
+        .controller('AddStellarWarmstoragePublicAddressModalCtrl', AddStellarWarmstoragePublicAddressModalCtrl);
 
-    function AddStellarPublicAddressModalCtrl($scope,$uibModalInstance,toastr,$http,localStorageManagement,errorHandler) {
+    function AddStellarWarmstoragePublicAddressModalCtrl($scope,$uibModalInstance,toastr,$http,localStorageManagement,errorHandler) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
@@ -17,7 +17,7 @@
         $scope.addPublicAddress = function (publicAddressParams) {
             $scope.addingPublicAddress = true;
             publicAddressParams.status = 'Active';
-            $http.post(vm.serviceUrl + 'admin/coldstorage/accounts/', publicAddressParams, {
+            $http.post(vm.serviceUrl + 'admin/warmstorage/accounts/', publicAddressParams, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': vm.token
