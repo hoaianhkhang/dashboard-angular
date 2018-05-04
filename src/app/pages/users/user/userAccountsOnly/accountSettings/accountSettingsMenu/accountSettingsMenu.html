@@ -1,4 +1,4 @@
-<div ng-hide="loadingAccount" ba-panel class="menu-box" ba-panel-class="light-text">
+<div ng-hide="loadingAccount" ba-panel class="menu-box account-currency-menu-box" ba-panel-class="light-text">
     <div class="account-currency-settings-title">
         <div class="user-account-currency-menu-heading">
             <div class="user-account-currency-menu-title">
@@ -7,7 +7,7 @@
                 <span class="currencies-details-value">{{accountName}}</span>
             </div>
             <div class="pull-right">
-                <div class="dashboard-currencies-code"
+                <div class="dashboard-currencies-code account-currency-code"
                      ng-class="{'long-text': (currencyCode.length > 4), 'very-long-text': (currencyCode.length > 6)}">{{currencyCode}}
                 </div>
             </div>
