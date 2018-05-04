@@ -33,7 +33,7 @@
                     if (res.status === 200) {
                         $scope.loadingAccount = false;
                         $scope.accountName = res.data.data.name;
-                        $rootScope.accountBreadCrumbTitle = $scope.accountName + ' account ' + $scope.currencyCode;
+                        $rootScope.accountBreadCrumbTitle = $scope.accountName + ' - ' + $scope.currencyCode;
                     }
                 }).catch(function (error) {
                     $scope.loadingAccount = false;

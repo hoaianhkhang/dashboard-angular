@@ -1,6 +1,18 @@
 <div ng-hide="loadingAccount" ba-panel class="menu-box" ba-panel-class="light-text">
     <div class="account-currency-settings-title">
-       <strong>{{accountName}} account {{currencyCode}} settings</strong>
+        <div class="user-account-panel-heading">
+            <div class="user-account-panel-title">
+                <span class="currencies-details-heading">Account name</span>
+                <br>
+                <span class="currencies-details-value">{{accountName}}</span>
+            </div>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <div class="user-account-panel-title">
+                <span class="currencies-details-heading">Currency settings</span>
+                <br>
+                <span class="currencies-details-value">{{currencyCode}}</span>
+            </div>
+        </div>
     </div>
     <hr class="no-margin">
     <div ng-click="goToSetting('limits')" class="pointer menu-box-options"
