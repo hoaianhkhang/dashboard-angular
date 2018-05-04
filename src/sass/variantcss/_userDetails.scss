@@ -1,3 +1,14 @@
+.user-account-currency-menu-heading{
+  height: 56px;
+  & > .user-account-currency-menu-title{
+    margin-top: 10px;
+    display: inline-block;
+    & > .currencies-details-value{
+      font-weight: 600;
+    }
+  }
+}
+
 .account-currency-settings-title{
   margin: 0 4px 15px 4px;
 }
