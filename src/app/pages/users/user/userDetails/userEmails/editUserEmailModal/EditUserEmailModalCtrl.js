@@ -4,7 +4,7 @@
     angular.module('BlurAdmin.pages.users.user')
         .controller('EditUserEmailModalCtrl', EditUserEmailModalCtrl);
 
-    function EditUserEmailModalCtrl($scope,$stateParams,$uibModalInstance,user,email,toastr,$http,environmentConfig,localStorageManagement,errorHandler) {
+    function EditUserEmailModalCtrl($rootScope,$scope,$stateParams,$uibModalInstance,user,email,toastr,$http,environmentConfig,localStorageManagement,errorHandler) {
 
         var vm = this;
         $scope.user = user;

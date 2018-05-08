@@ -5,7 +5,7 @@
         .controller('UserEmailsCtrl', UserEmailsCtrl);
 
     /** @ngInject */
-    function UserEmailsCtrl($scope,environmentConfig,$stateParams,$http,$window,$ngConfirm,
+    function UserEmailsCtrl($rootScope,$scope,environmentConfig,$stateParams,$http,$window,$ngConfirm,
                             localStorageManagement,errorHandler,toastr,$uibModal) {
 
         var vm = this;
