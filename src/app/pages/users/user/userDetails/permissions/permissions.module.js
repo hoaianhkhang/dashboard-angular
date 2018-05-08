@@ -2,8 +2,7 @@
     'use strict';
 
     angular.module('BlurAdmin.pages.permissions', [
-        'BlurAdmin.pages.permissions.groups',
-        'BlurAdmin.pages.permissions.userPermissions'
+        'BlurAdmin.pages.permissions.groups'
     ])
         .config(routeConfig);
 

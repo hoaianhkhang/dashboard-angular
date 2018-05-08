@@ -5,7 +5,8 @@
         'BlurAdmin.pages.users.user.details',
         'BlurAdmin.pages.users.user.transactions',
         'BlurAdmin.pages.users.user.accounts',
-        'BlurAdmin.pages.users.user.accountSettings'
+        'BlurAdmin.pages.users.user.accountSettings',
+        'BlurAdmin.pages.users.user.permissions'
     ])
         .config(routeConfig);
 

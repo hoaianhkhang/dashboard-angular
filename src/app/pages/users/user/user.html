@@ -14,6 +14,8 @@
                 <span ng-click="goToBreadCrumbsView('/user/' + user.identifier + '/details')" ng-class="{'text-bold': trackedLocation == 'details'}" class="pointer">Current user</span>
                 <span ng-show="(trackedLocation == 'accounts' || trackedLocation == 'account')" ng-class="{'text-bold': trackedLocation == 'accounts','pointer': trackedLocation == 'account'}"
                       ng-click="goToBreadCrumbsView('/user/' + user.identifier + '/accounts')">&nbsp;/&nbsp; Accounts</span>
+                <span ng-show="(trackedLocation == 'permissions')" ng-class="{'text-bold': trackedLocation == 'permissions'}"
+                      ng-click="goToBreadCrumbsView('/user/' + user.identifier + '/permissions')">&nbsp;/&nbsp; Permissions</span>
                 <span ng-show="trackedLocation == 'transactions'" ng-class="{'text-bold': trackedLocation == 'transactions'}">&nbsp;/&nbsp; Transactions</span>
                 <span ng-show="secondaryTrackedLocation == 'limits'" ng-class="{'text-bold': secondaryTrackedLocation == 'limits'}">&nbsp;/&nbsp; {{accountBreadCrumbTitle}} limits</span>
                 <span ng-show="secondaryTrackedLocation == 'fees'" ng-class="{'text-bold': secondaryTrackedLocation == 'fees'}">&nbsp;/&nbsp; {{accountBreadCrumbTitle}} fees</span>
@@ -48,9 +50,9 @@
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <ul class="user-details-nav-bar">
                 <li><a href="/#/user/{{user.identifier}}/details" ng-class="{'transaction-location': locationIndicator == 'details'}">Details</a></li>
-                <!--<li><a href="/#/user/{{user.identifier}}/currencies" ng-class="{'transaction-location': locationIndicator == 'currencies'}">Currencies</a></li>-->
                 <li><a href="/#/user/{{user.identifier}}/accounts" ng-class="{'transaction-location': locationIndicator == 'accounts'}">Accounts</a></li>
                 <li><a href="/#/user/{{user.identifier}}/transactions" ng-class="{'transaction-location': locationIndicator == 'transactions'}">Transactions</a></li>
+                <li><a href="/#/user/{{user.identifier}}/permissions" ng-class="{'transaction-location': locationIndicator == 'permissions'}">Permissions</a></li>
             </ul>
         </div>
     </div>
