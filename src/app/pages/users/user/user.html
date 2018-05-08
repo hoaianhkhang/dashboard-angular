@@ -15,9 +15,9 @@
                 <span ng-show="(trackedLocation == 'accounts' || trackedLocation == 'account')" ng-class="{'text-bold': trackedLocation == 'accounts','pointer': trackedLocation == 'account'}"
                       ng-click="goToBreadCrumbsView('/user/' + user.identifier + '/accounts')">&nbsp;/&nbsp; Accounts</span>
                 <span ng-show="trackedLocation == 'transactions'" ng-class="{'text-bold': trackedLocation == 'transactions'}">&nbsp;/&nbsp; Transactions</span>
-                <span ng-show="secondaryTrackedLocation == 'limits'" ng-class="{'text-bold': secondaryTrackedLocation == 'limits'}">&nbsp;/&nbsp; Account currency limits</span>
-                <span ng-show="secondaryTrackedLocation == 'fees'" ng-class="{'text-bold': secondaryTrackedLocation == 'fees'}">&nbsp;/&nbsp; Account currency fees</span>
-                <span ng-show="secondaryTrackedLocation == 'settings'" ng-class="{'text-bold': secondaryTrackedLocation == 'settings'}">&nbsp;/&nbsp; Account currency settings</span>
+                <span ng-show="secondaryTrackedLocation == 'limits'" ng-class="{'text-bold': secondaryTrackedLocation == 'limits'}">&nbsp;/&nbsp; {{accountBreadCrumbTitle}} limits</span>
+                <span ng-show="secondaryTrackedLocation == 'fees'" ng-class="{'text-bold': secondaryTrackedLocation == 'fees'}">&nbsp;/&nbsp; {{accountBreadCrumbTitle}} fees</span>
+                <span ng-show="secondaryTrackedLocation == 'settings'" ng-class="{'text-bold': secondaryTrackedLocation == 'settings'}">&nbsp;/&nbsp; {{accountBreadCrumbTitle}} settings</span>
             </span>
         </div>
     </div>
@@ -39,8 +39,8 @@
                 <p class="user-details-info">user for {{beenAUser}}</p>
                 <p class="user-details-info">user group: {{user.groups[0].name || 'None'}}</p>
                 <p class="user-details-info">kyc status: {{user.kyc.status}}</p>
-                <p ng-show="user.active" ng-click="toggleActivateUser(false)"  class="user-details-info"><a class="pointer">Deactivate</a></p>
-                <p ng-hide="user.active" ng-click="toggleActivateUser(true)" class="user-details-info"><a class="pointer">Activate</a></p>
+                <p class="user-details-info"><a ng-show="user.active" ng-click="toggleActivateUser(false)" class="pointer">Deactivate</a></p>
+                <p class="user-details-info"><a ng-hide="user.active" ng-click="toggleActivateUser(true)" class="pointer">Activate</a></p>
             </div>
         </div>
     </div>

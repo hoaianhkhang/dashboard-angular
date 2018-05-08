@@ -1,3 +1,30 @@
+.user-account-currency-menu-heading{
+  height: 44px;
+  & > .user-account-currency-menu-title{
+    margin-top: 6px;
+    display: inline-block;
+    & > .currencies-details-value{
+      font-weight: 600;
+    }
+  }
+}
+
+.account-currency-menu-box > .panel > .panel-body{
+  padding: 0 10px 15px 10px!important;
+}
+
+.account-currency-code{
+  width: 45px!important;
+  border-radius: 50px!important;
+  padding: 14px 0!important;
+  font-size: 14px!important;
+}
+
+.account-currency-settings-title{
+  margin: 12px 4px 12px 4px;
+  font-size: 12px;
+}
+
 .accounts-advanced-options{
   display: block;
 }
