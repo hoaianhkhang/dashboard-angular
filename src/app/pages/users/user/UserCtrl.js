@@ -62,6 +62,12 @@
         };
         vm.locationTracker(vm.location);
 
+        $rootScope.$on('userGroupChanged',function (event,groupChanged) {
+            if(groupChanged){
+                vm.getUser();
+            }
+        });
+
         vm.getUser = function(){
             if(vm.token) {
                 $scope.loadingUser = true;
