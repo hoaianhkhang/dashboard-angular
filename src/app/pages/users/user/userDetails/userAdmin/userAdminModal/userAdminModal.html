@@ -18,13 +18,15 @@
             </form>
         </div>
         <div ng-show="userEmailsList.length == 0">
-            <i>No email address created yet</i>
+            <i>No email address found for this user. Please
+                <a ng-click="openAddEmailModal('app/pages/users/user/userDetails/userEmails/addUserEmailModal/addUserEmailModal.html','md')" class="pointer">add an email address</a>
+                before resending a verification email.</i>
         </div>
     </div>
-    <div class="modal-footer" ng-show="userEmailsList.length > 0">
-        <button type="button" ng-click="resendEmailVerificationLink()"
+    <div class="modal-footer" >
+        <button ng-show="userEmailsList.length > 0" type="button" ng-click="resendEmailVerificationLink()"
                 class="dashboard-btn btn btn-primary pull-right">Resend</button>
-        <button type="button" ng-click="$dismiss()"
+        <button ng-show="userEmailsList.length > 0" type="button" ng-click="$dismiss()"
                 class="dashboard-btn btn-default no-margin btn pull-left">Close</button>
     </div>
 </div>
