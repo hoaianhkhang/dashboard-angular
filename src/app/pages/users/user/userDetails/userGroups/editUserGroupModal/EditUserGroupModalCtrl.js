@@ -12,7 +12,22 @@
         vm.uuid = uuid;
         vm.user = {};
         $scope.groupForReassigning = {};
+        $scope.oldGroup = {};
+        $scope.sameGroup = true;
+        $scope.changeUserGroupDecision = false;
         $scope.loadingGroups = true;
+
+        $scope.checkIfNewGroup = function () {
+            if($scope.oldGroup.name == $scope.groupForReassigning.name){
+                $scope.sameGroup = true;
+            } else {
+                $scope.sameGroup = false;
+            }
+        };
+
+        $scope.changeUserGroupConfirm = function () {
+            $scope.changeUserGroupDecision = !$scope.changeUserGroupDecision;
+        };
 
         vm.getUser = function(){
             if(vm.token) {
@@ -24,6 +39,7 @@
                 }).then(function (res) {
                     if (res.status === 200) {
                         vm.user = res.data.data;
+                        $scope.userEmail = res.data.data.email;
                     }
                 }).catch(function (error) {
                     errorHandler.evaluateErrors(error.data);
@@ -47,6 +63,7 @@
                         res.data.data.results.forEach(function (group) {
                             if(group.name == userGroup.name){
                                 $scope.groupForReassigning = group;
+                                $scope.oldGroup = group;
                             }
                         });
                         $scope.groups = res.data.data.results;
