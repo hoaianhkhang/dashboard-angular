@@ -169,9 +169,6 @@
                 resolve: {
                     email: function () {
                         return email;
-                    },
-                    user: function () {
-                        return $scope.user;
                     }
                 }
             });
