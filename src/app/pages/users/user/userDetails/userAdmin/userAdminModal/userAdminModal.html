@@ -8,12 +8,15 @@
     <div class="modal-body">
         <div ng-show="userEmailsList.length > 0">
             <form name="userAdminForm" class="custom-form">
-                <div>
+                <div ng-show="filteredEmails.length >0">
                     <label>Select email address <span class="required-icon">*</span></label>
                     <br>
                     <select class="form-control pointer" ng-model="selectedEmail"
-                            ng-options="email.email for email in userEmailsList" required>
+                            ng-options="email.email for email in  (filteredEmails = (userEmailsList | filter: { verified: false}))" required>
                     </select>
+                </div>
+                <div ng-show="filteredEmails.length == 0">
+                    <i>There are no unverified email addresses associated with this account.</i>
                 </div>
             </form>
         </div>
@@ -24,9 +27,9 @@
         </div>
     </div>
     <div class="modal-footer" >
-        <button ng-show="userEmailsList.length > 0" type="button" ng-click="resendEmailVerificationLink()"
+        <button ng-show="filteredEmails.length > 0" type="button" ng-click="resendEmailVerificationLink()"
                 class="dashboard-btn btn btn-primary pull-right">Resend</button>
-        <button ng-show="userEmailsList.length > 0" type="button" ng-click="$dismiss()"
+        <button ng-show="filteredEmails.length > 0" type="button" ng-click="$dismiss()"
                 class="dashboard-btn btn-default no-margin btn pull-left">Close</button>
     </div>
 </div>
