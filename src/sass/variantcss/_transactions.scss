@@ -1,3 +1,42 @@
+.transaction-radio-inputs{
+  display: inline-block;
+  & label{
+    display: block;
+  }
+  & .transaction-radio-input-block{
+    display: inline-flex;
+    position: relative;
+    & .transaction-radio-labels1{
+      position: absolute;
+      top: 2px;
+      left: 21px;
+    }
+    & .transaction-radio-labels2{
+      position: absolute;
+      top: 2px;
+      left: 94px;
+    }
+    & .transaction-radio-labels3{
+      position: absolute;
+      top: 2px;
+      left: 167px;
+    }
+  }
+}
+
+.panel-header-transaction-export{
+  position: absolute;
+  top: 25px;
+  right: 213px;
+}
+
+.panel-transaction-newTx-button{
+  position: absolute;
+  top: 25px;
+  right: 25px;
+  padding: 6px 8px;
+}
+
 .metadata-copy-icon{
   font-size: 18px;
   position: absolute;

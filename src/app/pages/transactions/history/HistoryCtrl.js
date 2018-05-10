@@ -538,6 +538,23 @@
 
         };
 
+        $scope.openMakeTransactionModal = function (page, size) {
+            vm.theCreateModal = $uibModal.open({
+                animation: true,
+                templateUrl: page,
+                size: size,
+                controller: 'MakeTransactionModalCtrl'
+            });
+
+            vm.theCreateModal.result.then(function(transaction){
+                if(transaction){
+                    $scope.getLatestTransactions();
+                }
+            }, function(){
+            });
+
+        };
+
         $scope.$on("modalClosing",function(event,transactionHasBeenUpdated){
            if(transactionHasBeenUpdated){
                $scope.clearFilters();
