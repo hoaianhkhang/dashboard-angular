@@ -4,7 +4,7 @@
     angular.module('BlurAdmin.pages.transactions.history')
         .controller('MakeTransactionModalCtrl', MakeTransactionModalCtrl);
 
-    function MakeTransactionModalCtrl($uibModalInstance,$http,$scope,errorHandler,toastr,environmentConfig,
+    function MakeTransactionModalCtrl($uibModalInstance,$http,$scope,errorHandler,toastr,environmentConfig,_,
                                       sharedResources,localStorageManagement,$state,typeaheadService,currencyModifiers) {
 
         var vm = this;
@@ -19,7 +19,7 @@
             currency: null,
             subtype: "",
             note: "",
-            account: ""
+            account: {}
         };
         $scope.showAdvancedOption = false;
         $scope.retrievedUserObj = {};
@@ -47,13 +47,17 @@
             return true;
         };
 
-        sharedResources.getSubtypes().then(function (res) {
-            res.data.data = res.data.data.filter(function (element) {
-                return element.tx_type == 'credit';
+        $scope.getSubtypes = function () {
+            sharedResources.getSubtypes().then(function (res) {
+                res.data.data = res.data.data.filter(function (element) {
+                    return element.tx_type == $scope.transactionData.tx_type;
+                });
+                $scope.subtypeOptions = _.pluck(res.data.data,'name');
+                $scope.subtypeOptions.unshift('');
             });
-            $scope.subtypeOptions = _.pluck(res.data.data,'name');
-            $scope.subtypeOptions.unshift('');
-        });
+        };
+        $scope.getSubtypes();
+
 
         vm.getCompanyCurrencies = function(){
             if(vm.token){
@@ -112,6 +116,9 @@
         });
 
         $scope.currencySelected = function () {
+            $scope.transactionData.account = {};
+            $scope.retrievedUserAccountsArray = [];
+
             if($scope.retrievedUserObj.identifier && $scope.transactionData.currency && $scope.transactionData.currency.code){
                 $http.get(environmentConfig.API + '/admin/accounts/?user='+ $scope.retrievedUserObj.identifier + '&currency=' + $scope.transactionData.currency.code, {
                     headers: {
@@ -120,6 +127,12 @@
                     }
                 }).then(function (res) {
                     if (res.status === 200) {
+                        res.data.data.results.forEach(function (account) {
+                            if(account.primary){
+                                account.name = account.name + ' - (primary)';
+                                $scope.transactionData.account = account;
+                            }
+                        });
                         $scope.retrievedUserAccountsArray = res.data.data.results;
                     }
                 }).catch(function (error) {
@@ -142,7 +155,7 @@
                 currency: $scope.transactionData.currency.code,
                 subtype: $scope.transactionData.subtype,
                 note: $scope.transactionData.note,
-                account: $scope.transactionData.account
+                account: $scope.transactionData.account.reference
             };
 
             if($scope.transactionData.tx_type == 'credit'){
