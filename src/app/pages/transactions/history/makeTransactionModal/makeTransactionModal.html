@@ -24,9 +24,36 @@
                     </div>
                 </div>
             </div>
-            <div id="creditDebitForm" ng-show="transactionData.tx_type == 'debit' || transactionData.tx_type == 'credit'">
+            <div class="transaction-form" id="creditDebitForm" ng-show="transactionData.tx_type == 'debit' || transactionData.tx_type == 'credit'">
+
                 <div class="form-group">
-                    <label>User <span class="required-icon">*</span></label>
+                    <label>User <span class="required-icon">*</span>&nbsp;
+                        <i ng-show="retrievedUserObj.identifier" class="fa fa-user transaction-user-icon" aria-hidden="true"></i>
+                        <div class="row transaction-user-details">
+                            <table>
+                                <tr>
+                                    <th style="text-align: right" width="45%">Name:</th>
+                                    <td style="padding-left: 15px">{{retrievedUserObj.first_name}} {{retrievedUserObj.last_name}}</td>
+                                </tr>
+                                <tr>
+                                    <th style="text-align: right" width="45%">Created date:</th>
+                                    <td style="padding-left: 15px" ng-show="retrievedUserObj.created">{{retrievedUserObj.created | date:'mediumDate'}}, {{retrievedUserObj.created | date:'shortTime'}}</td>
+                                </tr>
+                                <tr>
+                                    <th style="text-align: right" width="45%">Group:</th>
+                                    <td style="padding-left: 15px" ng-bind="retrievedUserObj.groups[0].name"></td>
+                                </tr>
+                                <tr>
+                                    <th style="text-align: right" width="45%">KYC status:</th>
+                                    <td style="padding-left: 15px" ng-bind="retrievedUserObj.kyc.status | capitalizeWord"></td>
+                                </tr>
+                                <tr>
+                                    <th style="text-align: right" width="45%">User metadata:</th>
+                                    <td style="padding-left: 15px" ng-bind="retrievedUserObj.metadata"></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </label>
                     <input type="text" ng-model="transactionData.user" placeholder="e.g. email@domain.com" ng-change="userSelected()"
                            uib-typeahead="email for email in getUsersEmailTypeahead($viewValue)" ng-model-options='{ debounce: 800 }'
                            class="form-control" size="12" required>
@@ -45,11 +72,31 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <label>Account <span class="required-icon">*</span>
+                    <label>Account <span class="required-icon">*</span>&nbsp;
+                        <i ng-show="retrievedAccountTransactions.length > 0" class="fa fa-list-alt transaction-account-icon" aria-hidden="true"></i>
+                        <div class="row transaction-account-details">
+                            <p class="transaction-tooltip-title">Recent transactions:</p>
+                            <table class="table custom-table">
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Currency</th>
+                                    <th>Amount</th>
+                                    <th>Status</th>
+                                    <th>Date</th>
+                                </tr>
+                                <tr ng-repeat="transaction in retrievedAccountTransactions | orderBy: '-created'">
+                                    <td>{{transaction.tx_type}}</td>
+                                    <td>{{transaction.currency.code}}</td>
+                                    <td>{{transaction.amount | currencyModifiersFilter: transaction.currency.divisibility}}</td>
+                                    <td>{{transaction.status | capitalizeWord}}</td>
+                                    <td>{{transaction.created | date:'mediumDate'}}, {{transaction.created | date:'shortTime'}}</td>
+                                </tr>
+                            </table>
+                        </div>
                         <span ng-hide="transactionData.currency.code">(Please choose currency first)</span>
                         <span ng-show="transactionData.currency.code && !transactionData.account.name">(Please choose an account)</span>
                     </label>
-                    <select class="form-control pointer" ng-model="transactionData.account" ng-disabled="!transactionData.currency.code || !retrievedUserObj.identifier"
+                    <select class="form-control pointer" ng-model="transactionData.account" ng-change="accountSelected()" ng-disabled="!transactionData.currency.code || !retrievedUserObj.identifier"
                             ng-options="account.name disable when account.disable for account in retrievedUserAccountsArray | orderBy: 'name' track by account.name" required>
                     </select>
                 </div>
