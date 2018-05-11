@@ -8,13 +8,13 @@
     </div>
 </div>
 <div ng-hide="loadingSubtypes">
-    <div ng-show="subtypes.length > 0" class="panel">
+    <div class="panel">
         <div class="panel-heading">
             <span class="user-details-panel-title">Transaction subtypes</span>
             <a ng-click="openAddSubtypeModal('app/pages/transactions/subtypes/addSubtypeModal/addSubtypeModal.html','md')" class="user-details-panel-link pull-right pointer">Add subtype</a>
         </div>
         <div class="panel-body">
-            <table class="table">
+            <table ng-show="subtypes.length > 0" class="table">
                 <tr class="divider">
                     <th class="rehive-table-row-first-child">Type</th>
                     <th>Name</th>
@@ -35,6 +35,9 @@
                     </td>
                 </tr>
             </table>
+            <div ng-show="subtypes.length == 0">
+                <i>No subtypes have been added yet.</i>
+            </div>
         </div>
     </div>
 </div>
