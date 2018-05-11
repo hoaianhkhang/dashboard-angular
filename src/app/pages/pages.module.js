@@ -24,7 +24,6 @@
       'BlurAdmin.pages.resetPassword',
       'BlurAdmin.pages.resetPasswordConfirmation',
       'BlurAdmin.pages.verifyAdminEmail',
-      'BlurAdmin.pages.permissions',
       'BlurAdmin.pages.verification',
       'BlurAdmin.pages.companyInfoRequest',
       'BlurAdmin.pages.welcomeToRehive',

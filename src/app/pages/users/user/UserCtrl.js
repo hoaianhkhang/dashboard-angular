@@ -44,6 +44,9 @@
             } else if (remainingLocationArray[1] == 'transactions'){
                 $scope.trackedLocation = 'transactions';
                 $scope.secondaryTrackedLocation = '';
+            } else if (remainingLocationArray[1] == 'permissions'){
+                $scope.trackedLocation = 'permissions';
+                $scope.secondaryTrackedLocation = '';
             } else if(remainingLocationArray[1] == 'account'){
                 $scope.locationIndicator = 'accounts';
                 $scope.trackedLocation = 'account';
@@ -58,6 +61,12 @@
             }
         };
         vm.locationTracker(vm.location);
+
+        $rootScope.$on('userGroupChanged',function (event,groupChanged) {
+            if(groupChanged){
+                vm.getUser();
+            }
+        });
 
         vm.getUser = function(){
             if(vm.token) {

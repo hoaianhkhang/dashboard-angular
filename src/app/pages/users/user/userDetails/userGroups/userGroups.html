@@ -1,0 +1,21 @@
+<div ng-hide="loadingUserGroup" class="panel panel-default">
+    <div class="panel-heading">
+        <span class="user-details-panel-title">Group</span>
+    </div>
+    <div class="panel-body">
+        <table class="table">
+            <tr>
+                <td width="25%" class="rehive-table-row-first-child" title="{{userGroups.name}}">
+                    {{userGroups.name}}
+                </td>
+                <td class="rehive-table-row-last-child pull-right">
+                    <a ng-click="openEditUserGroupModal('app/pages/users/user/userDetails/userGroups/editUserGroupModal/editUserGroupModal.html','md',userGroups)"
+                       class="pull-right pointer user-address-edit">Change</a>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div ba-panel ng-show="loadingUserGroup">
+    <loading-image></loading-image>
+</div>

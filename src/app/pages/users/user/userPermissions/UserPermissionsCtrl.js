@@ -1,16 +1,17 @@
 (function () {
     'use strict';
 
-    angular.module('BlurAdmin.pages.permissions.userPermissions')
+    angular.module('BlurAdmin.pages.users.user.permissions')
         .controller('UserPermissionsCtrl', UserPermissionsCtrl);
 
     /** @ngInject */
     function UserPermissionsCtrl($scope,environmentConfig,$stateParams,$http,$window,
-                                 localStorageManagement,errorHandler,toastr) {
+                                 $rootScope,localStorageManagement,errorHandler,toastr) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
         vm.uuid = $stateParams.uuid;
+        $rootScope.shouldBeBlue = 'Users';
         $scope.userData = JSON.parse($window.sessionStorage.userData);
         vm.checkedLevels = [];
         $scope.loadingPermissions = true;
