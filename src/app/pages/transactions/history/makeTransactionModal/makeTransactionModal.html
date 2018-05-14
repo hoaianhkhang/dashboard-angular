@@ -1,167 +1,322 @@
 <div class="panel panel-default">
     <div class="panel-heading">
-        <span class="user-details-panel-title">Create transaction</span>
+        <span class="user-details-panel-title">{{panelTitle}}</span>
     </div>
     <div class="panel-body">
-        <form name="transactionForm" class="custom-form">
-            <div class="form-group transaction-radio-inputs">
-                <label>Select transaction type <span class="required-icon">*</span></label>
-                <div class="transaction-radio-input-block">
-                    <div class="margin-right-10">
-                        <input class="margin-right-10 pointer" type="radio" ng-change="getSubtypes()"
-                               ng-model="transactionData.tx_type" value="credit">
-                        <span class="transaction-radio-labels1">Credit</span>
-                    </div>
-                    <div class="margin-right-10">
-                        <input class="horizontal-divider-40 margin-right-10 pointer" type="radio"
-                               ng-model="transactionData.tx_type" ng-change="getSubtypes()"
-                               value="debit"> <span class="transaction-radio-labels2">Debit</span>
-                    </div>
-                    <div class="margin-right-10">
-                        <input class="horizontal-divider-40 margin-right-10 pointer" type="radio"
-                               ng-model="transactionData.tx_type" ng-change="getSubtypes()"
-                               value="transfer"> <span class="transaction-radio-labels3">Transfer</span>
+        <div ng-hide="confirmTransaction || completeTransaction">
+            <form name="transactionForm" class="custom-form">
+                <div class="form-group transaction-radio-inputs">
+                    <label>Select transaction type <span class="required-icon">*</span></label>
+                    <div class="transaction-radio-input-block">
+                        <div class="margin-right-10">
+                            <input class="margin-right-10 pointer" type="radio" ng-change="getSubtypes()"
+                                   ng-model="transactionData.tx_type" value="credit">
+                            <span class="transaction-radio-labels1">Credit</span>
+                        </div>
+                        <div class="margin-right-10">
+                            <input class="horizontal-divider-40 margin-right-10 pointer" type="radio"
+                                   ng-model="transactionData.tx_type" ng-change="getSubtypes()"
+                                   value="debit"> <span class="transaction-radio-labels2">Debit</span>
+                        </div>
+                        <div class="margin-right-10">
+                            <input class="horizontal-divider-40 margin-right-10 pointer" type="radio"
+                                   ng-model="transactionData.tx_type" ng-change="getSubtypes()"
+                                   value="transfer"> <span class="transaction-radio-labels3">Transfer</span>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="transaction-form" id="creditDebitForm" ng-show="transactionData.tx_type == 'debit' || transactionData.tx_type == 'credit'">
+                <div class="transaction-form" id="creditDebitForm" ng-show="transactionData.tx_type == 'debit' || transactionData.tx_type == 'credit'">
 
-                <div class="form-group">
-                    <label>User <span class="required-icon">*</span>&nbsp;
-                        <i ng-show="retrievedUserObj.identifier" class="fa fa-user transaction-user-icon" aria-hidden="true"></i>
-                        <div class="row transaction-user-details">
-                            <table>
-                                <tr>
-                                    <th style="text-align: right" width="45%">Name:</th>
-                                    <td style="padding-left: 15px">{{retrievedUserObj.first_name}} {{retrievedUserObj.last_name}}</td>
-                                </tr>
-                                <tr>
-                                    <th style="text-align: right" width="45%">Created date:</th>
-                                    <td style="padding-left: 15px" ng-show="retrievedUserObj.created">{{retrievedUserObj.created | date:'mediumDate'}}, {{retrievedUserObj.created | date:'shortTime'}}</td>
-                                </tr>
-                                <tr>
-                                    <th style="text-align: right" width="45%">Group:</th>
-                                    <td style="padding-left: 15px" ng-bind="retrievedUserObj.groups[0].name"></td>
-                                </tr>
-                                <tr>
-                                    <th style="text-align: right" width="45%">KYC status:</th>
-                                    <td style="padding-left: 15px" ng-bind="retrievedUserObj.kyc.status | capitalizeWord"></td>
-                                </tr>
-                                <tr>
-                                    <th style="text-align: right" width="45%">User metadata:</th>
-                                    <td style="padding-left: 15px" ng-bind="retrievedUserObj.metadata"></td>
-                                </tr>
-                            </table>
-                        </div>
-                    </label>
-                    <input type="text" ng-model="transactionData.user" placeholder="e.g. email@domain.com" ng-change="userSelected()"
-                           uib-typeahead="email for email in getUsersEmailTypeahead($viewValue)" ng-model-options='{ debounce: 800 }'
-                           class="form-control" size="12" required>
-                </div>
-                <div class="form-group">
-                    <label>Amount <span class="required-icon">*</span></label>
-                    <input type="text" ng-model="transactionData.amount" class="form-control"  placeholder="e.g. 100000000" required>
-                </div>
-                <div class="form-group">
-                    <label>Currency <span class="required-icon">*</span>
-                        <span ng-hide="retrievedUserObj.identifier">(Please choose user first)</span>
-                    </label>
-                    <br>
-                    <select class="form-control pointer" ng-model="transactionData.currency" ng-change="currencySelected()" ng-disabled="!retrievedUserObj.identifier"
-                            ng-options="currency.code for currency in currencyOptions | orderBy: 'code' track by currency.code" required>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Account <span class="required-icon">*</span>&nbsp;
-                        <i ng-show="retrievedAccountTransactions.length > 0" class="fa fa-list-alt transaction-account-icon" aria-hidden="true"></i>
-                        <div class="row transaction-account-details">
-                            <p class="transaction-tooltip-title">Recent transactions:</p>
-                            <table class="table custom-table">
-                                <tr>
-                                    <th>Type</th>
-                                    <th>Currency</th>
-                                    <th>Amount</th>
-                                    <th>Status</th>
-                                    <th>Date</th>
-                                </tr>
-                                <tr ng-repeat="transaction in retrievedAccountTransactions | orderBy: '-created'">
-                                    <td>{{transaction.tx_type}}</td>
-                                    <td>{{transaction.currency.code}}</td>
-                                    <td>{{transaction.amount | currencyModifiersFilter: transaction.currency.divisibility}}</td>
-                                    <td>{{transaction.status | capitalizeWord}}</td>
-                                    <td>{{transaction.created | date:'mediumDate'}}, {{transaction.created | date:'shortTime'}}</td>
-                                </tr>
-                            </table>
-                        </div>
-                        <span ng-hide="transactionData.currency.code">(Please choose currency first)</span>
-                        <span ng-show="transactionData.currency.code && !transactionData.account.name">(Please choose an account)</span>
-                    </label>
-                    <select class="form-control pointer" ng-model="transactionData.account" ng-change="accountSelected()" ng-disabled="!transactionData.currency.code || !retrievedUserObj.identifier"
-                            ng-options="account.name disable when account.disable for account in retrievedUserAccountsArray | orderBy: 'name' track by account.name" required>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Reference</label>
-                    <input type="text" ng-model="transactionData.reference" class="form-control"  placeholder="e.g. # 1234">
-                </div>
-                <div class="form-group">
-                    <div ng-hide="showAdvancedOption">
-                        <a class="pointer" ng-click="displayAdvancedOption()">Advanced options</a>
+                    <div class="form-group">
+                        <label>User <span class="required-icon">*</span>&nbsp;
+                            <i ng-show="retrievedUserObj.identifier" class="fa fa-user transaction-user-icon" aria-hidden="true"></i>
+                            <div class="row transaction-user-details">
+                                <table>
+                                    <tr>
+                                        <th style="text-align: right" width="45%">Name:</th>
+                                        <td style="padding-left: 15px">{{retrievedUserObj.first_name}} {{retrievedUserObj.last_name}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th style="text-align: right" width="45%">Created date:</th>
+                                        <td style="padding-left: 15px" ng-show="retrievedUserObj.created">{{retrievedUserObj.created | date:'mediumDate'}}, {{retrievedUserObj.created | date:'shortTime'}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th style="text-align: right" width="45%">Group:</th>
+                                        <td style="padding-left: 15px" ng-bind="retrievedUserObj.groups[0].name"></td>
+                                    </tr>
+                                    <tr>
+                                        <th style="text-align: right" width="45%">KYC status:</th>
+                                        <td style="padding-left: 15px" ng-bind="retrievedUserObj.kyc.status | capitalizeWord"></td>
+                                    </tr>
+                                    <tr>
+                                        <th style="text-align: right" width="45%">User metadata:</th>
+                                        <td style="padding-left: 15px" ng-bind="retrievedUserObj.metadata"></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </label>
+                        <input type="text" ng-model="transactionData.user" placeholder="e.g. email@domain.com"
+                               uib-typeahead="email for email in getUsersEmailTypeahead($viewValue)" ng-model-options='{ debounce: 800 }'
+                               class="form-control" size="12">
                     </div>
-                    <div ng-show="showAdvancedOption">
-                        <div class="form-group">
-                            <label>Subtype</label>
-                            <select class="form-control pointer" ng-model="transactionData.subtype"
-                                    ng-options="subtypeOption for subtypeOption in subtypeOptions">
-                            </select>
+                    <div class="form-group">
+                        <label>Amount <span class="required-icon">*</span></label>
+                        <input type="text" ng-model="transactionData.amount" class="form-control"  placeholder="e.g. 100000000">
+                    </div>
+                    <div class="form-group">
+                        <label>Currency <span class="required-icon">*</span>
+                            <span ng-hide="retrievedUserObj.identifier">(Please choose user first)</span>
+                        </label>
+                        <br>
+                        <select class="form-control pointer" ng-model="transactionData.currency" ng-change="currencySelected(transactionData)" ng-disabled="!retrievedUserObj.identifier"
+                                ng-options="currency.code for currency in currencyOptions | orderBy: 'code' track by currency.code">
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Account <span class="required-icon">*</span>&nbsp;
+                            <i ng-show="retrievedAccountTransactions.length > 0" class="fa fa-list-alt transaction-account-icon" aria-hidden="true"></i>
+                            <div class="row transaction-account-details">
+                                <p class="transaction-tooltip-title">Recent transactions:</p>
+                                <table class="table custom-table">
+                                    <tr>
+                                        <th>Type</th>
+                                        <th>Currency</th>
+                                        <th>Amount</th>
+                                        <th>Status</th>
+                                        <th>Date</th>
+                                    </tr>
+                                    <tr ng-repeat="transaction in retrievedAccountTransactions | orderBy: '-created'">
+                                        <td>{{transaction.tx_type}}</td>
+                                        <td>{{transaction.currency.code}}</td>
+                                        <td>{{transaction.amount | currencyModifiersFilter: transaction.currency.divisibility}}</td>
+                                        <td>{{transaction.status | capitalizeWord}}</td>
+                                        <td>{{transaction.created | date:'mediumDate'}}, {{transaction.created | date:'shortTime'}}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <span ng-hide="transactionData.currency.code">(Please choose currency first)</span>
+                            <span ng-show="transactionData.currency.code && !transactionData.account.name">(Please choose an account)</span>
+                        </label>
+                        <select class="form-control pointer" ng-model="transactionData.account" ng-change="accountSelected()" ng-disabled="!transactionData.currency.code || !retrievedUserObj.identifier"
+                                ng-options="account.name disable when account.disable for account in retrievedUserAccountsArray | orderBy: 'name' track by account.name">
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Reference</label>
+                        <input type="text" ng-model="transactionData.reference" class="form-control"  placeholder="e.g. # 1234">
+                    </div>
+                    <div class="form-group">
+                        <div ng-hide="showAdvancedOption">
+                            <a class="pointer" ng-click="displayAdvancedOption()">Advanced options</a>
                         </div>
-                        <div class="form-group">
-                            <label>Note</label>
-                            <textarea rows="4" type="text" ng-model="transactionData.note" class="form-control"  placeholder='Enter note'></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label>Metadata <i uib-tooltip-html="'<strong>Metadata should be entered in JSON format. e.g. {&#34;Hello&#34;: &#34;World&#34;}</strong>'" class="ion-information-circled"></i></label>
-                            <textarea rows="4" type="text" ng-model="transactionData.metadata" class="form-control"  placeholder='e.g. {"Hello" : "World"}'></textarea>
-                        </div>
-                        <div class="divider">
+                        <div ng-show="showAdvancedOption">
                             <div class="form-group">
-                                <label>Status</label>
-                                <select class="form-control pointer" ng-model="transactionData.status"
-                                        ng-options="status for status in transactionStatus">
+                                <label>Subtype</label>
+                                <select class="form-control pointer" ng-model="transactionData.subtype"
+                                        ng-options="subtypeOption for subtypeOption in subtypeOptions">
                                 </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Note</label>
+                                <textarea rows="4" type="text" ng-model="transactionData.note" class="form-control"  placeholder='Enter note'></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>Metadata <i uib-tooltip-html="'<strong>Metadata should be entered in JSON format. e.g. {&#34;Hello&#34;: &#34;World&#34;}</strong>'" class="ion-information-circled"></i></label>
+                                <textarea rows="4" type="text" ng-model="transactionData.metadata" class="form-control"  placeholder='e.g. {"Hello" : "World"}'></textarea>
+                            </div>
+                            <div class="divider">
+                                <div class="form-group">
+                                    <label>Status</label>
+                                    <select class="form-control pointer" ng-model="transactionData.status"
+                                            ng-options="status for status in transactionStatus">
+                                    </select>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+                <div class="transaction-form" id="transferForm" ng-show="transactionData.tx_type == 'transfer'">
+                    <div class="form-group">
+                        <label>Sender <span class="required-icon">*</span>&nbsp;
+                            <i ng-show="retrievedUserObj.identifier" class="fa fa-user transaction-transfer-sender-user-icon" aria-hidden="true"></i>
+                            <div class="row transaction-transfer-sender-user-details">
+                                <table>
+                                    <tr>
+                                        <th style="text-align: right" width="45%">Name:</th>
+                                        <td style="padding-left: 15px">{{retrievedUserObj.first_name}} {{retrievedUserObj.last_name}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th style="text-align: right" width="45%">Created date:</th>
+                                        <td style="padding-left: 15px" ng-show="retrievedUserObj.created">{{retrievedUserObj.created | date:'mediumDate'}}, {{retrievedUserObj.created | date:'shortTime'}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th style="text-align: right" width="45%">Group:</th>
+                                        <td style="padding-left: 15px" ng-bind="retrievedUserObj.groups[0].name"></td>
+                                    </tr>
+                                    <tr>
+                                        <th style="text-align: right" width="45%">KYC status:</th>
+                                        <td style="padding-left: 15px" ng-bind="retrievedUserObj.kyc.status | capitalizeWord"></td>
+                                    </tr>
+                                    <tr>
+                                        <th style="text-align: right" width="45%">User metadata:</th>
+                                        <td style="padding-left: 15px" ng-bind="retrievedUserObj.metadata"></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </label>
+                        <input type="text" ng-model="transferTransactionData.user" placeholder="e.g. email@domain.com"
+                               uib-typeahead="email for email in getUsersEmailTypeahead($viewValue)" ng-model-options='{ debounce: 800 }'
+                               class="form-control" size="12">
+                    </div>
+                    <div class="form-group">
+                        <label>Recipient <span class="required-icon">*</span>&nbsp;
+                            <i ng-show="retrievedRecipientObj.identifier" class="fa fa-user transaction-transfer-recipient-user-icon" aria-hidden="true"></i>
+                            <div class="row transaction-transfer-recipient-user-details">
+                                <table>
+                                    <tr>
+                                        <th style="text-align: right" width="45%">Name:</th>
+                                        <td style="padding-left: 15px">{{retrievedRecipientObj.first_name}} {{retrievedRecipientObj.last_name}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th style="text-align: right" width="45%">Created date:</th>
+                                        <td style="padding-left: 15px" ng-show="retrievedRecipientObj.created">{{retrievedRecipientObj.created | date:'mediumDate'}}, {{retrievedRecipientObj.created | date:'shortTime'}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th style="text-align: right" width="45%">Group:</th>
+                                        <td style="padding-left: 15px" ng-bind="retrievedRecipientObj.groups[0].name"></td>
+                                    </tr>
+                                    <tr>
+                                        <th style="text-align: right" width="45%">KYC status:</th>
+                                        <td style="padding-left: 15px" ng-bind="retrievedRecipientObj.kyc.status | capitalizeWord"></td>
+                                    </tr>
+                                    <tr>
+                                        <th style="text-align: right" width="45%">User metadata:</th>
+                                        <td style="padding-left: 15px" ng-bind="retrievedRecipientObj.metadata"></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </label>
+                        <input type="text" ng-model="transferTransactionData.recipient" placeholder="e.g. email@domain.com"
+                               uib-typeahead="email for email in getUsersEmailTypeahead($viewValue)" ng-model-options='{ debounce: 800 }'
+                               class="form-control" size="12">
+                    </div>
+                    <div class="form-group">
+                        <label>Amount <span class="required-icon">*</span></label>
+                        <input type="text" ng-model="transferTransactionData.amount" class="form-control"  placeholder="e.g. 100000000">
+                    </div>
+                    <div class="form-group">
+                        <label>Currency <span class="required-icon">*</span>
+                            <span ng-hide="(retrievedUserObj.identifier && retrievedRecipientObj.identifier)">(Please choose user and recipient first)</span>
+                        </label>
+                        <br>
+                        <select class="form-control pointer" ng-model="transferTransactionData.currency" ng-change="currencySelected(transferTransactionData,'recipient')" ng-disabled="(!retrievedUserObj.identifier || !retrievedRecipientObj.identifier)"
+                                ng-options="currency.code for currency in currencyOptions | orderBy: 'code' track by currency.code">
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Sender account &nbsp;
+                            <i ng-show="retrievedAccountTransactions.length > 0" class="fa fa-list-alt transaction-sender-account-icon" aria-hidden="true"></i>
+                            <div class="row transaction-sender-account-details">
+                                <p class="transaction-tooltip-title">Recent transactions:</p>
+                                <table class="table custom-table">
+                                    <tr>
+                                        <th>Type</th>
+                                        <th>Currency</th>
+                                        <th>Amount</th>
+                                        <th>Status</th>
+                                        <th>Date</th>
+                                    </tr>
+                                    <tr ng-repeat="transaction in retrievedAccountTransactions | orderBy: '-created'">
+                                        <td>{{transaction.tx_type}}</td>
+                                        <td>{{transaction.currency.code}}</td>
+                                        <td>{{transaction.amount | currencyModifiersFilter: transaction.currency.divisibility}}</td>
+                                        <td>{{transaction.status | capitalizeWord}}</td>
+                                        <td>{{transaction.created | date:'mediumDate'}}, {{transaction.created | date:'shortTime'}}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <span ng-hide="transferTransactionData.currency.code">(Please choose currency first)</span>
+                            <span ng-show="transferTransactionData.currency.code && !transferTransactionData.account.name">(Please choose an account)</span>
+                        </label>
+                        <select class="form-control pointer" ng-model="transferTransactionData.account" ng-change="accountSelected()" ng-disabled="(!transferTransactionData.currency.code || !retrievedUserObj.identifier)"
+                                ng-options="account.name disable when account.disable for account in retrievedUserAccountsArray | orderBy: 'name' track by account.name">
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Recipient account&nbsp;
+                            <i ng-show="retrievedRecipientAccountTransactions.length > 0" class="fa fa-list-alt transaction-recipient-account-icon" aria-hidden="true"></i>
+                            <div class="row transaction-recipient-account-details">
+                                <p class="transaction-tooltip-title">Recent transactions:</p>
+                                <table class="table custom-table">
+                                    <tr>
+                                        <th>Type</th>
+                                        <th>Currency</th>
+                                        <th>Amount</th>
+                                        <th>Status</th>
+                                        <th>Date</th>
+                                    </tr>
+                                    <tr ng-repeat="transaction in retrievedRecipientAccountTransactions | orderBy: '-created'">
+                                        <td>{{transaction.tx_type}}</td>
+                                        <td>{{transaction.currency.code}}</td>
+                                        <td>{{transaction.amount | currencyModifiersFilter: transaction.currency.divisibility}}</td>
+                                        <td>{{transaction.status | capitalizeWord}}</td>
+                                        <td>{{transaction.created | date:'mediumDate'}}, {{transaction.created | date:'shortTime'}}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <span ng-hide="transferTransactionData.currency.code">(Please choose currency first)</span>
+                            <span ng-show="transferTransactionData.currency.code && !transferTransactionData.credit_account.name">(Please choose an account)</span>
+                        </label>
+                        <select class="form-control pointer" ng-model="transferTransactionData.credit_account" ng-change="accountSelected()" ng-disabled="!transferTransactionData.currency.code || !retrievedRecipientObj.identifier"
+                                ng-options="account.name disable when account.disable for account in retrievedRecipientAccountsArray | orderBy: 'name' track by account.name">
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Sender reference</label>
+                        <input type="text" ng-model="transferTransactionData.debit_reference" class="form-control"  placeholder="e.g. # 1234">
+                    </div>
+                    <div class="form-group">
+                        <label>Recipient reference</label>
+                        <input type="text" ng-model="transferTransactionData.credit_reference" class="form-control"  placeholder="e.g. # 1234">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <button ng-click="toggleConfirmTransaction()" class="btn dashboard-btn btn-primary pull-right">Next</button>
+                </div>
+            </form>
+        </div>
+        <div ng-show="confirmTransaction">
+            <div class="form-group" ng-show="transactionData.tx_type == 'credit'">
+                <span>You are about to credit <strong>${{transactionData.amount}}</strong> to
+                    <strong>{{retrievedUserObj.email}}</strong></span>
             </div>
-            <!--<div id="transferForm" ng-show="transactionData.tx_type == 'transfer'">-->
-                <!--<div class="form-group">-->
-                    <!--<label>Sender <span class="required-icon">*</span></label>-->
-                    <!--<input type="email" ng-model="transferData.user" placeholder="e.g. email@domain.com"-->
-                           <!--uib-typeahead="email for email in getUsersEmailTypeahead($viewValue)" ng-model-options='{ debounce: 800 }'-->
-                           <!--class="form-control" size="12" required>-->
-                <!--</div>-->
-                <!--<div class="form-group">-->
-                    <!--<label>Recipient <span class="required-icon">*</span></label>-->
-                    <!--<input type="email" ng-model="transferData.recipient" placeholder="e.g. email@domain.com"-->
-                           <!--uib-typeahead="email for email in getUsersEmailTypeahead($viewValue)" ng-model-options='{ debounce: 800 }'-->
-                           <!--class="form-control" size="12" required>-->
-                <!--</div>-->
-                <!--<div class="form-group">-->
-                    <!--<label>Amount <span class="required-icon">*</span></label>-->
-                    <!--<input type="text" ng-model="transferData.amount" class="form-control"  placeholder="e.g. 100000000" required>-->
-                <!--</div>-->
-                <!--<div class="form-group">-->
-                    <!--<label>Currency <span class="required-icon">*</span></label>-->
-                    <!--<br>-->
-                    <!--<select class="form-control pointer" ng-model="transferData.currency"-->
-                            <!--ng-options="currency.code for currency in currencyOptions | orderBy: 'code' track by currency.code" required>-->
-                    <!--</select>-->
-                <!--</div>-->
-            <!--</div>-->
+            <div class="form-group" ng-show="transactionData.tx_type == 'debit'">
+                <span>You are about to debit <strong>${{transactionData.amount}}</strong> to <strong>{{retrievedUserObj.email}}</strong></span>
+            </div>
+            <div class="form-group" ng-show="transactionData.tx_type == 'transfer'">
+                <span>You are about to transfer <strong>${{transferTransactionData.amount}}</strong>
+                    from <strong>{{retrievedUserObj.email}}</strong>
+                    to <strong>{{retrievedRecipientObj.email}}</strong></span>
+            </div>
             <div class="form-group">
-                <button ng-disabled="!transactionForm.$valid" ng-click="createTransaction('confirmCredit')" class="btn dashboard-btn btn-primary pull-right">Next</button>
+                <button ng-click="createTransaction()" class="btn dashboard-btn btn-primary pull-right">Confirm</button>
+                <button ng-click="toggleConfirmTransaction()" class="btn dashboard-btn btn-default pull-left">Back</button>
             </div>
-        </form>
+        </div>
+        <div ng-show="completeTransaction">
+            <div class="form-group" ng-show="transactionData.tx_type == 'credit'">
+                <span><strong>${{transactionData.amount}}</strong> has been credited to
+                    <strong>{{retrievedUserObj.email}}</strong></span>
+            </div>
+            <div class="form-group" ng-show="transactionData.tx_type == 'debit'">
+                <span><strong>${{transactionData.amount}}</strong> has been debited to
+                    <strong>{{retrievedUserObj.email}}</strong></span>
+            </div>
+            <div class="form-group" ng-show="transactionData.tx_type == 'transfer'">
+                <span><strong>${{transferTransactionData.amount}}</strong> has been transferred from
+                    from <strong>{{retrievedUserObj.email}}</strong>
+                    to <strong>{{retrievedRecipientObj.email}}</strong></span>
+            </div>
+        </div>
     </div>
 </div>
