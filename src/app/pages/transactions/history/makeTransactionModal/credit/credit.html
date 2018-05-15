@@ -1,0 +1,114 @@
+<form name="creditTransactionForm" class="custom-form">
+    <div class="transaction-form" id="creditForm">
+        <div class="form-group">
+            <label>User <span class="required-icon">*</span>&nbsp;
+                <i ng-show="retrievedCreditUserObj.identifier" class="fa fa-user transaction-user-icon" aria-hidden="true"></i>
+                <div class="row transaction-user-details">
+                    <table>
+                        <tr>
+                            <th style="text-align: right" width="45%">Name:</th>
+                            <td style="padding-left: 15px">{{retrievedCreditUserObj.first_name}} {{retrievedCreditUserObj.last_name}}</td>
+                        </tr>
+                        <tr>
+                            <th style="text-align: right" width="45%">Created date:</th>
+                            <td style="padding-left: 15px" ng-show="retrievedCreditUserObj.created">{{retrievedCreditUserObj.created | date:'mediumDate'}}, {{retrievedCreditUserObj.created | date:'shortTime'}}</td>
+                        </tr>
+                        <tr>
+                            <th style="text-align: right" width="45%">Group:</th>
+                            <td style="padding-left: 15px" ng-bind="retrievedCreditUserObj.groups[0].name"></td>
+                        </tr>
+                        <tr>
+                            <th style="text-align: right" width="45%">KYC status:</th>
+                            <td style="padding-left: 15px" ng-bind="retrievedCreditUserObj.kyc.status | capitalizeWord"></td>
+                        </tr>
+                        <tr>
+                            <th style="text-align: right" width="45%">User metadata:</th>
+                            <td style="padding-left: 15px" ng-bind="retrievedCreditUserObj.metadata"></td>
+                        </tr>
+                    </table>
+                </div>
+            </label>
+            <input type="text" ng-model="creditTransactionData.user" placeholder="e.g. email@domain.com"
+                   uib-typeahead="email for email in getUsersEmailTypeahead($viewValue)" ng-model-options='{ debounce: 800 }'
+                   class="form-control" size="12">
+        </div>
+        <div class="form-group">
+            <label>Amount <span class="required-icon">*</span></label>
+            <input type="text" ng-model="creditTransactionData.amount" class="form-control"  placeholder="e.g. 100000000">
+        </div>
+        <div class="form-group">
+            <label>Currency <span class="required-icon">*</span>
+                <span ng-hide="retrievedCreditUserObj.identifier">(Please choose user first)</span>
+            </label>
+            <br>
+            <select class="form-control pointer" ng-model="creditTransactionData.currency" ng-change="creditCurrencySelected(creditTransactionData)" ng-disabled="!retrievedCreditUserObj.identifier"
+                    ng-options="currency.code for currency in currencyOptions | orderBy: 'code' track by currency.code">
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Account <span class="required-icon">*</span>&nbsp;
+                <i ng-show="retrievedCreditAccountTransactions.length > 0" class="fa fa-list-alt transaction-account-icon" aria-hidden="true"></i>
+                <div class="row transaction-account-details">
+                    <p class="transaction-tooltip-title">Recent transactions:</p>
+                    <table class="table custom-table">
+                        <tr>
+                            <th>Type</th>
+                            <th>Currency</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                            <th>Date</th>
+                        </tr>
+                        <tr ng-repeat="transaction in retrievedCreditAccountTransactions | orderBy: '-created'">
+                            <td>{{transaction.tx_type}}</td>
+                            <td>{{transaction.currency.code}}</td>
+                            <td>{{transaction.amount | currencyModifiersFilter: transaction.currency.divisibility}}</td>
+                            <td>{{transaction.status | capitalizeWord}}</td>
+                            <td>{{transaction.created | date:'mediumDate'}}, {{transaction.created | date:'shortTime'}}</td>
+                        </tr>
+                    </table>
+                </div>
+                <span ng-hide="creditTransactionData.currency.code">(Please choose currency first)</span>
+                <span ng-show="creditTransactionData.currency.code && !creditTransactionData.account.name">(Please choose an account)</span>
+            </label>
+            <select class="form-control pointer" ng-model="creditTransactionData.account" ng-change="creditAccountSelected()" ng-disabled="!creditTransactionData.currency.code || !retrievedCreditUserObj.identifier"
+                    ng-options="account.name disable when account.disable for account in retrievedCreditUserAccountsArray | orderBy: 'name' track by account.name">
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Reference</label>
+            <input type="text" ng-model="creditTransactionData.reference" class="form-control"  placeholder="e.g. # 1234">
+        </div>
+        <div class="form-group">
+            <div ng-hide="showAdvancedCreditOption">
+                <a class="pointer" ng-click="displayAdvancedCreditOption()">Advanced options</a>
+            </div>
+            <div ng-show="showAdvancedCreditOption">
+                <div class="form-group">
+                    <label>Subtype</label>
+                    <select class="form-control pointer" ng-model="creditTransactionData.subtype"
+                            ng-options="subtypeOption for subtypeOption in subtypeOptions">
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Note</label>
+                    <textarea rows="4" type="text" ng-model="creditTransactionData.note" class="form-control"  placeholder='Enter note'></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Metadata <i uib-tooltip-html="'<strong>Metadata should be entered in JSON format. e.g. {&#34;Hello&#34;: &#34;World&#34;}</strong>'" class="ion-information-circled"></i></label>
+                    <textarea rows="4" type="text" ng-model="creditTransactionData.metadata" class="form-control"  placeholder='e.g. {"Hello" : "World"}'></textarea>
+                </div>
+                <div class="divider">
+                    <div class="form-group">
+                        <label>Status</label>
+                        <select class="form-control pointer" ng-model="creditTransactionData.status"
+                                ng-options="status for status in creditTransactionStatus">
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <button ng-click="toggleConfirmTransaction()" class="btn dashboard-btn btn-primary pull-right">Next</button>
+    </div>
+</form>
