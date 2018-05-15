@@ -10,14 +10,13 @@
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
         $scope.creditTransactionData = {
-            tx_type: 'credit',
             user: null,
             amount: null,
             reference: "",
             status: 'Complete',
             metadata: "",
             currency: {},
-            subtype: "",
+            subtype: {},
             note: "",
             account: {}
         };
@@ -31,15 +30,6 @@
 
         $scope.displayAdvancedCreditOption = function () {
             $scope.showAdvancedCreditOption = !$scope.showAdvancedCreditOption;
-        };
-
-        vm.isJson = function (str) {
-            try {
-                JSON.parse(str);
-            } catch (e) {
-                return false;
-            }
-            return true;
         };
 
         vm.getCreditUserObj = function (creditTransactionData) {

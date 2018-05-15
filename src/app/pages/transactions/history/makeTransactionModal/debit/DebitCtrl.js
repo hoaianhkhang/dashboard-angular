@@ -17,7 +17,7 @@
             status: 'Complete',
             metadata: "",
             currency: {},
-            subtype: "",
+            subtype: {},
             note: "",
             account: {}
         };
@@ -31,15 +31,6 @@
 
         $scope.displayAdvancedDebitOption = function () {
             $scope.showAdvancedDebitOption = !$scope.showAdvancedDebitOption;
-        };
-
-        vm.isJson = function (str) {
-            try {
-                JSON.parse(str);
-            } catch (e) {
-                return false;
-            }
-            return true;
         };
 
         vm.getDebitUserObj = function (debitTransactionData) {

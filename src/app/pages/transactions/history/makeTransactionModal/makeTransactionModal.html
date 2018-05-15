@@ -5,39 +5,40 @@
     <div class="panel-body">
         <div ng-hide="confirmTransaction || completeTransaction">
             <div class="form-group transaction-radio-inputs">
-                <label>Select transaction type <span class="required-icon">*</span></label>
+                <label>Select transaction type <span style="color: #ed675A !important;" class="required-icon">*</span></label>
                 <div class="transaction-radio-input-block">
                     <div class="margin-right-10">
-                        <input class="margin-right-10 pointer" type="radio" ng-change="getSubtypes()"
+                        <input class="margin-right-10 pointer" type="radio"
                                ng-model="transactionType.tx_type" value="credit">
                         <span class="transaction-radio-labels1">Credit</span>
                     </div>
                     <div class="margin-right-10">
                         <input class="horizontal-divider-40 margin-right-10 pointer" type="radio"
-                               ng-model="transactionType.tx_type" ng-change="getSubtypes()"
+                               ng-model="transactionType.tx_type"
                                value="debit"> <span class="transaction-radio-labels2">Debit</span>
                     </div>
                     <div class="margin-right-10">
                         <input class="horizontal-divider-40 margin-right-10 pointer" type="radio"
-                               ng-model="transactionType.tx_type" ng-change="getSubtypes()"
+                               ng-model="transactionType.tx_type"
                                value="transfer"> <span class="transaction-radio-labels3">Transfer</span>
                     </div>
                 </div>
             </div>
             <credit ng-show="transactionType.tx_type == 'credit'"></credit>
             <debit ng-show="transactionType.tx_type == 'debit'"></debit>
+            <transfer ng-show="transactionType.tx_type == 'transfer'"></transfer>
         </div>
         <div ng-show="confirmTransaction">
-            <div class="form-group" ng-show="transactionData.tx_type == 'credit'">
-                <span>You are about to credit <strong>${{transactionData.amount}}</strong> to
-                    <strong>{{retrievedUserObj.email}}</strong></span>
+            <div class="form-group" ng-show="transactionType.tx_type == 'credit'">
+                <span>You are about to credit <strong>${{creditTransactionData.amount}}</strong> to
+                    <strong>{{retrievedCreditUserObj.email}}</strong></span>
             </div>
-            <div class="form-group" ng-show="transactionData.tx_type == 'debit'">
-                <span>You are about to debit <strong>${{transactionData.amount}}</strong> to <strong>{{retrievedUserObj.email}}</strong></span>
+            <div class="form-group" ng-show="transactionType.tx_type == 'debit'">
+                <span>You are about to debit <strong>${{debitTransactionData.amount}}</strong> to <strong>{{retrievedDebitUserObj.email}}</strong></span>
             </div>
-            <div class="form-group" ng-show="transactionData.tx_type == 'transfer'">
+            <div class="form-group" ng-show="transactionType.tx_type == 'transfer'">
                 <span>You are about to transfer <strong>${{transferTransactionData.amount}}</strong>
-                    from <strong>{{retrievedUserObj.email}}</strong>
+                    from <strong>{{retrievedSenderUserObj.email}}</strong>
                     to <strong>{{retrievedRecipientObj.email}}</strong></span>
             </div>
             <div class="form-group">
@@ -46,17 +47,17 @@
             </div>
         </div>
         <div ng-show="completeTransaction">
-            <div class="form-group" ng-show="transactionData.tx_type == 'credit'">
-                <span><strong>${{transactionData.amount}}</strong> has been credited to
-                    <strong>{{retrievedUserObj.email}}</strong></span>
+            <div class="form-group" ng-show="transactionType.tx_type == 'credit'">
+                <span><strong>${{creditTransactionData.amount}}</strong> has been credited to
+                    <strong>{{retrievedCreditUserObj.email}}</strong></span>
             </div>
-            <div class="form-group" ng-show="transactionData.tx_type == 'debit'">
-                <span><strong>${{transactionData.amount}}</strong> has been debited to
-                    <strong>{{retrievedUserObj.email}}</strong></span>
+            <div class="form-group" ng-show="transactionType.tx_type == 'debit'">
+                <span><strong>${{debitTransactionData.amount}}</strong> has been debited to
+                    <strong>{{retrievedDebitUserObj.email}}</strong></span>
             </div>
-            <div class="form-group" ng-show="transactionData.tx_type == 'transfer'">
+            <div class="form-group" ng-show="transactionType.tx_type == 'transfer'">
                 <span><strong>${{transferTransactionData.amount}}</strong> has been transferred from
-                    from <strong>{{retrievedUserObj.email}}</strong>
+                    from <strong>{{retrievedSenderUserObj.email}}</strong>
                     to <strong>{{retrievedRecipientObj.email}}</strong></span>
             </div>
         </div>
