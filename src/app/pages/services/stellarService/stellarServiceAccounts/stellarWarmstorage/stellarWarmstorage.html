@@ -1,0 +1,74 @@
+<div ng-hide="loadingWarmstorage" class="panel">
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                <div class="dashboard-currencies-code">
+                    XLM
+                </div>
+            </div>
+            <div class="currencies-page-row">
+                <div>
+                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                        <div>
+                            <span><strong>{{warmstorageObj.rehive_account_reference}}</strong></span>
+                            <br>
+                            <span class="currencies-details-heading">Account reference</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                        <div>
+                            <span><strong>{{stellarCurrency.symbol}} {{warmstorageObj.balance | currencyModifiersFilter: stellarCurrency.divisibility}}</strong></span>
+                            <br>
+                            <span class="currencies-details-heading">Total</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" ng-click="toggleCurrenciesOptions(); $event.stopPropagation()" click-outside="closeOptionsBox()">
+                        <div>
+                            <span class="fa fa-ellipsis-h pull-right pointer currencies-options"></span>
+                            <ul ng-show="showOptionsAccountRef" class="currencies-options-box">
+                                <li ng-click="toggleCurrenciesOptions()"><i class="dropdown-arr"></i></li>
+                                <li ng-click="addWarmStoragePublicAddressModal('app/pages/services/stellarService/stellarServiceAccounts/stellarWarmstorage/addStellarWarmstoragePublicAddressModal/addStellarWarmstoragePublicAddressModal.html', 'md')">
+                                    Create deposit key</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="panel">
+    <div class="panel-heading">
+        <span class="user-details-panel-title">Public keys</span>
+    </div>
+    <div class="panel-body">
+        <div ng-hide="loadingWarmStoragePublicAddresses">
+            <div ng-hide="warmStoragePublicAddressesList.length == 0">
+                <table class="table custom-table">
+                    <tr>
+                        <th class="no-left-padding">Keys</th>
+                    </tr>
+                    <tr ng-repeat="publicAddress in warmStoragePublicAddressesList" data-toggle="modal"
+                        class="editable-row center">
+                        <td class="no-left-padding"><div title="{{publicAddress.account_address}}" ng-bind="publicAddress.account_address"></div></td>
+                    </tr>
+                </table>
+                <div>
+                    <p uib-pagination boundary-links="true" items-per-page="warmStoragePublicAddressPagination.itemsPerPage"  total-items="warmStoragePublicAddressData.count" ng-model="warmStoragePublicAddressPagination.pageNo"
+                       max-size="publicAddressPagination.maxSize" class="pagination-sm pull-right transaction-history-pagination" force-ellipses="true" ng-change="getPublicAddresses()"
+                       previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></p>
+                </div>
+            </div>
+            <div ng-show="warmStoragePublicAddressesList.length == 0">
+                <i>No public addresses created.</i>
+            </div>
+        </div>
+        <div ng-show="loadingWarmStoragePublicAddresses">
+            <loading-image></loading-image>
+        </div>
+    </div>
+</div>
+<stellar-warmstorage-transactions-table ng-hide="loadingWarmstorage"></stellar-warmstorage-transactions-table>
+<div ba-panel ng-show="loadingWarmstorage">
+    <loading-image></loading-image>
+</div>
