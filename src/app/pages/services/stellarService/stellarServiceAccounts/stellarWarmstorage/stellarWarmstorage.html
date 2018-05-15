@@ -28,7 +28,7 @@
                             <ul ng-show="showOptionsAccountRef" class="currencies-options-box">
                                 <li ng-click="toggleCurrenciesOptions()"><i class="dropdown-arr"></i></li>
                                 <li ng-click="addWarmStoragePublicAddressModal('app/pages/services/stellarService/stellarServiceAccounts/stellarWarmstorage/addStellarWarmstoragePublicAddressModal/addStellarWarmstoragePublicAddressModal.html', 'md')">
-                                    Create deposit address</li>
+                                    Create deposit key</li>
                             </ul>
                         </div>
                     </div>
@@ -39,14 +39,14 @@
 </div>
 <div class="panel">
     <div class="panel-heading">
-        <span class="user-details-panel-title">Public addresses</span>
+        <span class="user-details-panel-title">Public keys</span>
     </div>
     <div class="panel-body">
         <div ng-hide="loadingWarmStoragePublicAddresses">
             <div ng-hide="warmStoragePublicAddressesList.length == 0">
                 <table class="table custom-table">
                     <tr>
-                        <th class="no-left-padding">Address</th>
+                        <th class="no-left-padding">Keys</th>
                     </tr>
                     <tr ng-repeat="publicAddress in warmStoragePublicAddressesList" data-toggle="modal"
                         class="editable-row center">

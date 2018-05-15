@@ -28,7 +28,7 @@
                             <ul ng-show="showOptionsAccountRef" class="currencies-options-box">
                                 <li ng-click="toggleCurrenciesOptions()"><i class="dropdown-arr"></i></li>
                                 <li ng-click="addPublicAddressModal('app/pages/services/stellarService/stellarServiceAccounts/stellarColdstorage/addStellarPublicAddressModal/addStellarPublicAddressModal.html', 'md')">
-                                    Add address</li>
+                                    Add key</li>
                                 <li ng-click="goToDebit()">Create debit</li>
                                 <li ng-click="goToCredit()">Create credit</li>
                             </ul>
@@ -41,14 +41,14 @@
 </div>
 <div class="panel">
     <div class="panel-heading">
-        <span class="user-details-panel-title">Public addresses</span>
+        <span class="user-details-panel-title">Public keys</span>
     </div>
     <div class="panel-body">
         <div ng-hide="loadingPublicAddresses">
             <div ng-hide="publicAddressesList.length == 0">
                 <table class="table custom-table">
                     <tr>
-                        <th class="no-left-padding">Address</th>
+                        <th class="no-left-padding">Keys</th>
                     </tr>
                     <tr ng-repeat="publicAddress in publicAddressesList" data-toggle="modal"
                         class="editable-row center">
