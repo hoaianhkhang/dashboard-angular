@@ -2,6 +2,7 @@
   background-color: transparent;
   height: 67px;
   width: 100%;
+  margin-top: 26px;
 }
 
 .auth-nav-table{
@@ -13,6 +14,11 @@
 .auth-nav-table > .auth-nav-cell{
   display: table-cell;
   vertical-align: middle;
+}
+
+.auth-nav-table > .auth-nav-cell > .auth-nav-img{
+  width: 120px;
+  margin-left: 24px;
 }
 
 .auth-nav-table > .auth-nav-cell > a > .auth-nav-buttons {

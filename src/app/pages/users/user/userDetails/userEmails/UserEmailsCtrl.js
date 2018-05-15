@@ -5,11 +5,12 @@
         .controller('UserEmailsCtrl', UserEmailsCtrl);
 
     /** @ngInject */
-    function UserEmailsCtrl($scope,environmentConfig,$stateParams,$http,$window,$ngConfirm,
+    function UserEmailsCtrl($rootScope,$scope,environmentConfig,$stateParams,$http,$window,$ngConfirm,
                             localStorageManagement,errorHandler,toastr,$uibModal) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
+        $scope.emailsList = [];
         vm.uuid = $stateParams.uuid;
         $scope.optionsId = '';
 
@@ -136,8 +137,8 @@
                 controller: 'AddUserEmailModalCtrl',
                 scope: $scope,
                 resolve: {
-                    user: function () {
-                        return $scope.user;
+                    emailsCount: function () {
+                        return $scope.emailsList.length;
                     }
                 }
             });
@@ -151,6 +152,13 @@
             });
         };
 
+        $rootScope.$on('firstEmailAdded',function (event,firstEmailAdded) {
+            if(firstEmailAdded){
+                $scope.optionsId = '';
+                vm.getUserEmails();
+            }
+        });
+
         $scope.openEditUserEmailModal = function (page,size,email) {
             vm.theModal = $uibModal.open({
                 animation: true,
@@ -161,9 +169,6 @@
                 resolve: {
                     email: function () {
                         return email;
-                    },
-                    user: function () {
-                        return $scope.user;
                     }
                 }
             });

@@ -4,15 +4,26 @@
     angular.module('BlurAdmin.pages.users.user')
         .controller('AddUserEmailModalCtrl', AddUserEmailModalCtrl);
 
-    function AddUserEmailModalCtrl($scope,$stateParams,$uibModalInstance,user,toastr,$http,environmentConfig,localStorageManagement,errorHandler) {
+    function AddUserEmailModalCtrl($scope,$stateParams,$uibModalInstance,emailsCount,
+                                   toastr,$http,environmentConfig,localStorageManagement,errorHandler) {
 
         var vm = this;
-        $scope.user = user;
         vm.uuid = $stateParams.uuid;
+        vm.emailsCount = emailsCount;
         $scope.newUserEmail = {primary: false, verified: false};
         vm.token = localStorageManagement.getValue('TOKEN');
         $scope.loadingUserEmails = false;
 
+        if(vm.emailsCount === 0){
+            $scope.newUserEmail.primary = true;
+        }
+
+        $scope.changingPrimaryStatus = function () {
+            if(vm.emailsCount === 0){
+                $scope.newUserEmail.primary = true;
+                toastr.info('Initial email must be primary.');
+            }
+        };
 
         $scope.createUserEmail = function (newUserEmail) {
             $scope.loadingUserEmails = true;
