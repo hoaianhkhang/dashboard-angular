@@ -6,7 +6,7 @@
 
     /** @ngInject */
     function UserAccountsOnlyCtrl($scope,environmentConfig,$stateParams,$rootScope,$uibModal,
-                              $http,localStorageManagement,errorHandler,$location,$state,serializeFiltersService) {
+                              $http,localStorageManagement,errorHandler,$location,serializeFiltersService) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
@@ -103,12 +103,8 @@
         };
         $scope.getUserAccounts();
 
-        $scope.goToView = function(state,currency,email,account){
-            if(email){
-                $state.go(state,{"email": email, "account": account});
-            } else {
-                $state.go(state,{"email": vm.uuid, "account": account});
-            }
+        $scope.goToView = function(txType,currency,email,account){
+            $location.path('/transactions/history').search({txType: txType,currencyCode: currency.code,emailUser: email,accountUser: account});
 
         };
 

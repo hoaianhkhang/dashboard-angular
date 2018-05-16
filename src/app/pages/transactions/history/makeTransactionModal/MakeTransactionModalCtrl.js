@@ -4,18 +4,22 @@
     angular.module('BlurAdmin.pages.transactions.history')
         .controller('MakeTransactionModalCtrl', MakeTransactionModalCtrl);
 
-    function MakeTransactionModalCtrl($http,$scope,errorHandler,toastr,environmentConfig,_,metadataTextService,$filter,
-                                      sharedResources,localStorageManagement,$state,typeaheadService,currencyModifiers) {
+    function MakeTransactionModalCtrl($http,$scope,errorHandler,toastr,environmentConfig,$filter,
+                                      newTransactionParams,localStorageManagement,$state,currencyModifiers) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
         $scope.transactionType = {
             tx_type: 'credit'
         };
-
+        $scope.newTransactionParams = newTransactionParams || {};
         $scope.panelTitle = 'Create transaction';
         $scope.confirmTransaction = false;
         $scope.completeTransaction = false;
+
+        if($scope.newTransactionParams.txType){
+            $scope.transactionType.tx_type = $scope.newTransactionParams.txType;
+        }
 
         $scope.toggleConfirmTransaction = function () {
             if($scope.confirmTransaction){
@@ -26,15 +30,6 @@
                 $scope.panelTitle = 'Confirm ' + $scope.transactionType.tx_type;
             }
         };
-
-        $scope.getSubtypes = function () {
-            sharedResources.getSubtypes().then(function (res) {
-                $scope.subtypeOptions = res.data.data;
-                $scope.subtypeOptions.unshift({name: '',tx_type: 'credit'});
-                $scope.subtypeOptions.unshift({name: '',tx_type: 'debit'});
-            });
-        };
-        $scope.getSubtypes();
 
         vm.getCompanyCurrencies = function(){
             if(vm.token){
@@ -75,7 +70,7 @@
                     status: $scope.creditTransactionData.status,
                     metadata: $scope.creditTransactionData.metadata ? JSON.parse($scope.creditTransactionData.metadata) : {},
                     currency: $scope.creditTransactionData.currency.code,
-                    subtype: $scope.creditTransactionData.subtype,
+                    subtype: $scope.creditTransactionData.subtype ? $scope.creditTransactionData.subtype.name ? $scope.creditTransactionData.subtype.name : null : null,
                     note: $scope.creditTransactionData.note,
                     account: $scope.creditTransactionData.account.reference
                 };
@@ -95,7 +90,7 @@
                     status: $scope.debitTransactionData.status,
                     metadata: $scope.debitTransactionData.metadata ? JSON.parse($scope.debitTransactionData.metadata) : {},
                     currency: $scope.debitTransactionData.currency.code,
-                    subtype: $scope.debitTransactionData.subtype,
+                    subtype: $scope.debitTransactionData.subtype ? $scope.debitTransactionData.subtype.name ? $scope.debitTransactionData.subtype.name : null : null,
                     note: $scope.debitTransactionData.note,
                     account: $scope.debitTransactionData.account.reference
                 };

@@ -5,10 +5,11 @@
         .controller('CreditCtrl', CreditCtrl);
 
     function CreditCtrl($http,$scope,errorHandler,toastr,environmentConfig,_,metadataTextService,$filter,
-                                      sharedResources,localStorageManagement,$state,typeaheadService,currencyModifiers) {
+                        sharedResources,localStorageManagement,$state,typeaheadService,currencyModifiers) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
+        $scope.creditSubtypeOptions = [];
         $scope.creditTransactionData = {
             user: null,
             amount: null,
@@ -25,6 +26,24 @@
         $scope.retrievedCreditUserAccountsArray = [];
         $scope.retrievedCreditAccountTransactions = [];
         $scope.creditTransactionStatus = ['Complete','Pending','Failed','Deleted'];
+
+        if($scope.newTransactionParams.userEmail){
+            $scope.creditTransactionData.user = $scope.newTransactionParams.userEmail;
+        }
+
+        if($scope.newTransactionParams.txType){
+            $scope.creditTransactionData.user = $scope.newTransactionParams.emailUser;
+            $scope.creditTransactionData.currency = $scope.currencyOptions.find(function (element) {
+                    return element.code == $scope.newTransactionParams.currencyCode;
+                });
+        }
+
+        $scope.getSubtypes = function () {
+            sharedResources.getSubtypes().then(function (res) {
+                $scope.creditSubtypeOptions = res.data.data;
+            });
+        };
+        $scope.getSubtypes();
 
         $scope.getUsersEmailTypeahead = typeaheadService.getUsersEmailTypeahead();
 

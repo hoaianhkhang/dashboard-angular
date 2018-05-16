@@ -9,6 +9,7 @@
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
+        $scope.debitSubtypeOptions = [];
         $scope.debitTransactionData = {
             tx_type: 'debit',
             user: null,
@@ -26,6 +27,17 @@
         $scope.retrievedDebitUserAccountsArray = [];
         $scope.retrievedDebitAccountTransactions = [];
         $scope.debitTransactionStatus = ['Complete','Pending','Failed','Deleted'];
+
+        if($scope.newTransactionParams.userEmail){
+            $scope.debitTransactionData.user = $scope.newTransactionParams.userEmail;
+        }
+
+        $scope.getSubtypes = function () {
+            sharedResources.getSubtypes().then(function (res) {
+                $scope.debitSubtypeOptions = res.data.data;
+            });
+        };
+        $scope.getSubtypes();
 
         $scope.getUsersEmailTypeahead = typeaheadService.getUsersEmailTypeahead();
 

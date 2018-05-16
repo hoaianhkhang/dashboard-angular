@@ -5,7 +5,7 @@
         .controller('TransferCtrl', TransferCtrl);
 
     function TransferCtrl($http,$scope,errorHandler,toastr,environmentConfig,_,metadataTextService,$filter,
-                       sharedResources,localStorageManagement,$state,typeaheadService,currencyModifiers) {
+                          $location,localStorageManagement,$state,typeaheadService,currencyModifiers) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
@@ -26,6 +26,11 @@
             debit_reference: null,
             credit_reference: null
         };
+
+        if($scope.newTransactionParams.userEmail){
+            $scope.transferTransactionData.user = $scope.newTransactionParams.userEmail;
+            $location.search('userEmail', null);
+        }
 
         $scope.$watch('transferTransactionData.user',function () {
             if($scope.transferTransactionData.user){

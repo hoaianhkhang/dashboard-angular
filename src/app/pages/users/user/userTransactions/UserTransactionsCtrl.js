@@ -6,7 +6,7 @@
 
     /** @ngInject */
     function UserTransactionsCtrl($scope,environmentConfig,$http,localStorageManagement,$uibModal,sharedResources,toastr,currencyModifiers,
-                         errorHandler,$state,$window,typeaheadService,$filter,serializeFiltersService,$rootScope,$stateParams) {
+                         errorHandler,$state,$location,$window,typeaheadService,$filter,serializeFiltersService,$rootScope,$stateParams) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
@@ -409,6 +409,9 @@
             }
         });
 
+        $scope.goToNewTransactionModal = function () {
+            $location.path('/transactions/history').search({userEmail:  ($scope.user.email).toString()});
+        };
 
     }
 })();
