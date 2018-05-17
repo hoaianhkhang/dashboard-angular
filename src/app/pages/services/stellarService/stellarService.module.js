@@ -6,7 +6,8 @@
       "BlurAdmin.pages.services.stellarService.stellarServiceUsers",
       "BlurAdmin.pages.services.stellarService.stellarServiceSettings",
       "BlurAdmin.pages.services.stellarService.stellarServiceSetup",
-      "BlurAdmin.pages.services.stellarService.stellarServiceAccounts"
+      "BlurAdmin.pages.services.stellarService.stellarServiceAccounts",
+      "BlurAdmin.pages.services.stellarService.stellarServiceAssets"
     ])
         .config(routeConfig);
 
