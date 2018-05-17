@@ -4,7 +4,7 @@
     angular.module('BlurAdmin.pages.services.stellarService.stellarServiceAssets')
         .controller('FundStellarAssetsModalCtrl', FundStellarAssetsModalCtrl);
 
-    function FundStellarAssetsModalCtrl($scope,toastr,$http,localStorageManagement,errorHandler) {
+    function FundStellarAssetsModalCtrl($scope,toastr,$http,localStorageManagement,errorHandler, assetId) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
@@ -36,16 +36,16 @@
         $scope.addassets = function (assetParams) {
             $scope.addingassets = true;
 
-            $http.post(vm.baseUrl + 'admin/asset/', assetParams, {
+            $http.post(vm.baseUrl + 'admin/asset/' + assetId + '/fund/', assetParams, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': vm.token
                 }
             }).then(function (res) {
                 $scope.addingassets = false;
-                if (res.status === 201) {
+                if (res.status === 200) {
                     toastr.success('Asset successfully funded');
-                    $uibModalInstance.close(res.data);
+                    $uibModalInstance.close();
                 }
             }).catch(function (error) {
                 $scope.addingassets = false;

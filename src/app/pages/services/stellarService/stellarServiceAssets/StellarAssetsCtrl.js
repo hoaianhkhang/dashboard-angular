@@ -57,13 +57,18 @@
             });
         };
 
-        $scope.openFundAssetsModal = function (page, size) {
+        $scope.openFundAssetsModal = function (page, size, asset_id) {
             vm.theFundModal = $uibModal.open({
                 animation: true,
                 templateUrl: page,
                 size: size,
                 controller: 'FundStellarAssetsModalCtrl',
-                scope: $scope
+                scope: $scope,
+                resolve: {
+                    assetId: function(){
+                        return asset_id
+                    }
+                 }
             });
         };
     }
