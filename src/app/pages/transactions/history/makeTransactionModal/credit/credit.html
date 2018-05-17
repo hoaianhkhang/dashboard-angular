@@ -42,7 +42,7 @@
             </label>
             <br>
             <select class="form-control pointer" ng-model="creditTransactionData.currency" ng-change="creditCurrencySelected(creditTransactionData)" ng-disabled="!retrievedCreditUserObj.identifier"
-                    ng-options="currency.code for currency in currencyOptions | orderBy: 'code' track by currency.code">
+                    ng-options="currency.code for currency in creditCurrencyOptions | orderBy: 'code' track by currency.code">
             </select>
         </div>
         <div class="form-group">

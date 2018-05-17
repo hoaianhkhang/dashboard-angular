@@ -9,6 +9,7 @@
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
+        $scope.transferCurrencyOptions = [];
         $scope.retrievedSenderUserObj = {};
         $scope.retrievedSenderUserAccountsArray = [];
         $scope.retrievedSenderAccountTransactions = [];
@@ -31,6 +32,25 @@
             $scope.transferTransactionData.user = $scope.newTransactionParams.userEmail;
             $location.search('userEmail', null);
         }
+
+        vm.getTransferCompanyCurrencies = function(){
+            if(vm.token){
+                $http.get(environmentConfig.API + '/admin/currencies/?enabled=true&page_size=250', {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': vm.token
+                    }
+                }).then(function (res) {
+                    if (res.status === 200) {
+                        $scope.transferCurrencyOptions = res.data.data.results;
+                    }
+                }).catch(function (error) {
+                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.handleErrors(error);
+                });
+            }
+        };
+        vm.getTransferCompanyCurrencies();
 
         $scope.$watch('transferTransactionData.user',function () {
             if($scope.transferTransactionData.user){

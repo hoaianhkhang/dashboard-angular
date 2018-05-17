@@ -16,6 +16,7 @@
         $scope.panelTitle = 'Create transaction';
         $scope.confirmTransaction = false;
         $scope.completeTransaction = false;
+        $scope.loadingTransactionSettings = false;
 
         if($scope.newTransactionParams.txType){
             $scope.transactionType.tx_type = $scope.newTransactionParams.txType;
@@ -30,32 +31,6 @@
                 $scope.panelTitle = 'Confirm ' + $scope.transactionType.tx_type;
             }
         };
-
-        vm.getCompanyCurrencies = function(){
-            if(vm.token){
-                $http.get(environmentConfig.API + '/admin/currencies/?enabled=true&page_size=250', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
-                    if (res.status === 200) {
-                        $scope.currencyOptions = res.data.data.results;
-                        if ($state.params.currencyCode) {
-                            // $scope.transactionData.currency = $scope.currencyOptions.find(function (element) {
-                            //     return element.code == $state.params.currencyCode;
-                            // });
-                            // will change when calling each using shortcuts
-
-                        }
-                    }
-                }).catch(function (error) {
-                    errorHandler.evaluateErrors(error.data);
-                    errorHandler.handleErrors(error);
-                });
-            }
-        };
-        vm.getCompanyCurrencies();
 
         $scope.createTransaction = function () {
 

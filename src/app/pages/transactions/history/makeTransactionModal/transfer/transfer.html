@@ -74,7 +74,7 @@
             </label>
             <br>
             <select class="form-control pointer" ng-model="transferTransactionData.currency" ng-change="currencySelected(transferTransactionData,'recipient')" ng-disabled="(!retrievedSenderUserObj.identifier || !retrievedRecipientObj.identifier)"
-                    ng-options="currency.code for currency in currencyOptions | orderBy: 'code' track by currency.code">
+                    ng-options="currency.code for currency in transferCurrencyOptions | orderBy: 'code' track by currency.code">
             </select>
         </div>
         <div class="form-group">

@@ -1,4 +1,4 @@
-<div class="panel panel-default">
+<div class="panel panel-default" ng-hide="loadingTransactionSettings">
     <div class="panel-heading">
         <span class="user-details-panel-title">{{panelTitle}}</span>
     </div>
@@ -62,4 +62,7 @@
             </div>
         </div>
     </div>
+</div>
+<div ba-panel ng-show="loadingTransactionSettings">
+    <loading-image></loading-image>
 </div>

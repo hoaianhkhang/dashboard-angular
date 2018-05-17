@@ -10,6 +10,7 @@
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
         $scope.debitSubtypeOptions = [];
+        $scope.debitCurrencyOptions = [];
         $scope.debitTransactionData = {
             tx_type: 'debit',
             user: null,
@@ -28,8 +29,39 @@
         $scope.retrievedDebitAccountTransactions = [];
         $scope.debitTransactionStatus = ['Complete','Pending','Failed','Deleted'];
 
+        vm.getDebitCompanyCurrencies = function(){
+            if(vm.token){
+                $http.get(environmentConfig.API + '/admin/currencies/?enabled=true&page_size=250', {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': vm.token
+                    }
+                }).then(function (res) {
+                    if (res.status === 200) {
+                        $scope.debitCurrencyOptions = res.data.data.results;
+                        if ($scope.newTransactionParams.currencyCode) {
+                            $scope.debitTransactionData.currency = $scope.debitCurrencyOptions.find(function (element) {
+                                return element.code == $scope.newTransactionParams.currencyCode;
+                            });
+                            vm.getDebitAccounts($scope.retrievedDebitUserObj,$scope.debitTransactionData);
+                        }
+                    }
+                }).catch(function (error) {
+                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.handleErrors(error);
+                });
+            }
+        };
+        vm.getDebitCompanyCurrencies();
+
         if($scope.newTransactionParams.userEmail){
             $scope.debitTransactionData.user = $scope.newTransactionParams.userEmail;
+        }
+
+        if($scope.newTransactionParams.txType){
+            $scope.loadingTransactionSettings = true;
+            $scope.debitTransactionData.user = $scope.newTransactionParams.emailUser;
+            vm.getDebitCompanyCurrencies();
         }
 
         $scope.getSubtypes = function () {
@@ -115,11 +147,15 @@
                             debitTransactionData.account = account;
                             $scope.debitAccountSelected(debitTransactionData);
 
+                        } else if(account.id && $scope.newTransactionParams.accountUser){
+                            debitTransactionData.account = account;
+                            $scope.debitAccountSelected(debitTransactionData);
                         }
                     });
                     $scope.retrievedDebitUserAccountsArray = res.data.data.results;
                 }
             }).catch(function (error) {
+                $scope.loadingTransactionSettings = false;
                 errorHandler.evaluateErrors(error.data);
                 errorHandler.handleErrors(error);
             });
@@ -140,6 +176,7 @@
                     }
                 }).then(function (res) {
                     if (res.status === 200) {
+                        $scope.loadingTransactionSettings = false;
                         $scope.retrievedDebitAccountTransactions = res.data.data.results;
                     }
                 }).catch(function (error) {

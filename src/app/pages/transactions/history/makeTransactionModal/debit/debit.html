@@ -42,7 +42,7 @@
             </label>
             <br>
             <select class="form-control pointer" ng-model="debitTransactionData.currency" ng-change="debitCurrencySelected(debitTransactionData)" ng-disabled="!retrievedDebitUserObj.identifier"
-                    ng-options="currency.code for currency in currencyOptions | orderBy: 'code' track by currency.code">
+                    ng-options="currency.code for currency in debitCurrencyOptions | orderBy: 'code' track by currency.code">
             </select>
         </div>
         <div class="form-group">

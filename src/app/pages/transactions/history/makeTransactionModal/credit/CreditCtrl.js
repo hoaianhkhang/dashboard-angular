@@ -10,6 +10,7 @@
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
         $scope.creditSubtypeOptions = [];
+        $scope.creditCurrencyOptions = [];
         $scope.creditTransactionData = {
             user: null,
             amount: null,
@@ -27,15 +28,39 @@
         $scope.retrievedCreditAccountTransactions = [];
         $scope.creditTransactionStatus = ['Complete','Pending','Failed','Deleted'];
 
+        vm.getCreditCompanyCurrencies = function(){
+            if(vm.token){
+                $http.get(environmentConfig.API + '/admin/currencies/?enabled=true&page_size=250', {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': vm.token
+                    }
+                }).then(function (res) {
+                    if (res.status === 200) {
+                        $scope.creditCurrencyOptions = res.data.data.results;
+                        if ($scope.newTransactionParams.currencyCode) {
+                            $scope.creditTransactionData.currency = $scope.creditCurrencyOptions.find(function (element) {
+                                return element.code == $scope.newTransactionParams.currencyCode;
+                            });
+                            vm.getCreditAccounts($scope.retrievedCreditUserObj,$scope.creditTransactionData);
+                        }
+                    }
+                }).catch(function (error) {
+                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.handleErrors(error);
+                });
+            }
+        };
+        vm.getCreditCompanyCurrencies();
+
         if($scope.newTransactionParams.userEmail){
             $scope.creditTransactionData.user = $scope.newTransactionParams.userEmail;
         }
 
         if($scope.newTransactionParams.txType){
+            $scope.loadingTransactionSettings = true;
             $scope.creditTransactionData.user = $scope.newTransactionParams.emailUser;
-            $scope.creditTransactionData.currency = $scope.currencyOptions.find(function (element) {
-                    return element.code == $scope.newTransactionParams.currencyCode;
-                });
+            vm.getCreditCompanyCurrencies();
         }
 
         $scope.getSubtypes = function () {
@@ -107,7 +132,6 @@
         };
 
         vm.getCreditAccounts = function (user,creditTransactionData) {
-
             $http.get(environmentConfig.API + '/admin/accounts/?user='+ user.identifier + '&currency=' + creditTransactionData.currency.code, {
                 headers: {
                     'Content-Type': 'application/json',
@@ -121,11 +145,15 @@
                             creditTransactionData.account = account;
                             $scope.creditAccountSelected(creditTransactionData);
 
+                        } else if(account.id && $scope.newTransactionParams.accountUser){
+                            creditTransactionData.account = account;
+                            $scope.creditAccountSelected(creditTransactionData);
                         }
                     });
                     $scope.retrievedCreditUserAccountsArray = res.data.data.results;
                 }
             }).catch(function (error) {
+                $scope.loadingTransactionSettings = false;
                 errorHandler.evaluateErrors(error.data);
                 errorHandler.handleErrors(error);
             });
@@ -146,6 +174,7 @@
                     }
                 }).then(function (res) {
                     if (res.status === 200) {
+                        $scope.loadingTransactionSettings = false;
                         $scope.retrievedCreditAccountTransactions = res.data.data.results;
                     }
                 }).catch(function (error) {
