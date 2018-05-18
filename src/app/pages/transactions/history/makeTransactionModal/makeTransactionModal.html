@@ -1,0 +1,90 @@
+<div class="panel panel-default" ng-hide="loadingTransactionSettings">
+    <div class="panel-heading">
+        <span class="user-details-panel-title">{{panelTitle}}</span>
+    </div>
+    <div class="panel-body">
+        <div ng-hide="confirmTransaction || completeTransaction">
+            <div class="form-group transaction-radio-inputs">
+                <label>Select transaction type <span style="color: #ed675A !important;" class="required-icon">*</span></label>
+                <div class="transaction-radio-input-block">
+                    <div class="margin-right-10">
+                        <input class="margin-right-10 pointer" type="radio"
+                               ng-model="transactionType.tx_type" value="credit">
+                        <span class="transaction-radio-labels1">Credit</span>
+                    </div>
+                    <div class="margin-right-10">
+                        <input class="horizontal-divider-40 margin-right-10 pointer" type="radio"
+                               ng-model="transactionType.tx_type"
+                               value="debit"> <span class="transaction-radio-labels2">Debit</span>
+                    </div>
+                    <div class="margin-right-10">
+                        <input class="horizontal-divider-40 margin-right-10 pointer" type="radio"
+                               ng-model="transactionType.tx_type"
+                               value="transfer"> <span class="transaction-radio-labels3">Transfer</span>
+                    </div>
+                </div>
+            </div>
+            <credit ng-show="transactionType.tx_type == 'credit'"></credit>
+            <debit ng-show="transactionType.tx_type == 'debit'"></debit>
+            <transfer ng-show="transactionType.tx_type == 'transfer'"></transfer>
+        </div>
+        <div ng-show="confirmTransaction">
+            <div class="form-group" ng-show="transactionType.tx_type == 'credit'">
+                <span>You are about to credit <strong>{{creditTransactionData.currency.symbol}}{{creditTransactionData.amount}}</strong> to
+                    <strong>{{retrievedCreditUserObj.email}}</strong></span>
+            </div>
+            <div class="form-group" ng-show="transactionType.tx_type == 'debit'">
+                <span>You are about to debit <strong>{{debitTransactionData.currency.symbol}}{{debitTransactionData.amount}}</strong>
+                    to <strong>{{retrievedDebitUserObj.email}}</strong></span>
+            </div>
+            <div class="form-group" ng-show="transactionType.tx_type == 'transfer'">
+                <span>You are about to transfer <strong>{{transferTransactionData.currency.symbol}}{{transferTransactionData.amount}}</strong>
+                    from <strong>{{retrievedSenderUserObj.email}}</strong>
+                    to <strong>{{retrievedRecipientObj.email || transferTransactionData.recipient}}</strong></span>
+            </div>
+            <div class="form-group">
+                <button ng-click="createTransaction()" class="btn dashboard-btn btn-primary pull-right">Confirm</button>
+                <button ng-click="toggleConfirmTransaction()" class="btn dashboard-btn btn-default pull-left">Back</button>
+            </div>
+        </div>
+        <div ng-show="completeTransaction">
+            <div ng-show="transactionType.tx_type == 'credit'">
+                <div class="form-group">
+                    <span><strong>{{creditTransactionData.currency.symbol}}{{creditTransactionData.amount}}</strong> has been credited to
+                    <strong>{{retrievedCreditUserObj.email}}</strong></span>
+                </div>
+                <div class="form-group">
+                    <button ng-click="closeModal()" class="btn dashboard-btn btn-primary pull-right">Ok</button>
+                    <button ng-click="takeToUser(retrievedCreditUserObj.identifier)" class="btn dashboard-btn btn-primary pull-right margin-right-10">View user</button>
+                    <button ng-click="showTransactionModal()" class="btn btn-primary pull-right margin-right-10">View transaction</button>
+                </div>
+            </div>
+            <div ng-show="transactionType.tx_type == 'debit'">
+                <div class="form-group">
+                    <span><strong>{{debitTransactionData.currency.symbol}}{{debitTransactionData.amount}}</strong> has been debited to
+                    <strong>{{retrievedDebitUserObj.email}}</strong></span>
+                </div>
+                <div class="form-group">
+                    <button ng-click="closeModal()" class="btn dashboard-btn btn-primary pull-right">Ok</button>
+                    <button ng-click="takeToUser(retrievedDebitUserObj.identifier)" class="btn dashboard-btn btn-primary pull-right margin-right-10">View user</button>
+                    <button ng-click="showTransactionModal()" class="btn btn-primary pull-right margin-right-10">View transaction</button>
+                </div>
+            </div>
+            <div class="form-group" ng-show="transactionType.tx_type == 'transfer'">
+                <div class="form-group">
+                    <span><strong>{{transferTransactionData.currency.symbol}}{{transferTransactionData.amount}}</strong> has been transferred from
+                    from <strong>{{retrievedSenderUserObj.email}}</strong>
+                    to <strong>{{retrievedRecipientObj.email || transferTransactionData.recipient}}</strong></span>
+                </div>
+                <div class="form-group">
+                    <button ng-click="closeModal()" class="btn dashboard-btn btn-primary pull-right">Ok</button>
+                    <button ng-click="takeToUser(retrievedSenderUserObj.identifier)" class="btn dashboard-btn btn-primary pull-right margin-right-10">View user</button>
+                    <button ng-click="showTransactionModal()" class="btn btn-primary pull-right margin-right-10">View transaction</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div ba-panel ng-show="loadingTransactionSettings">
+    <loading-image></loading-image>
+</div>

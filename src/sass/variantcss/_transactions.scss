@@ -1,3 +1,241 @@
+.transaction-form{
+  position: relative;
+  & .transaction-user-details{
+    display: none;
+    position: absolute;
+    top: -10px;
+    left: 75px;
+    width: 300px;
+    background-color: #4d4d4d!important;
+    padding: 4px 6px;
+    border-radius: 0;
+    text-align: left;
+    line-height: 20px;
+    color: white;
+  }
+  & .transaction-user-icon:hover ~ .transaction-user-details{
+    display: block;
+  }
+  & .transaction-user-details::after{
+    content: " ";
+    position: absolute;
+    top: 10%;
+    z-index: 1000;
+    left: 0%;
+    margin-left: -10px;
+    border-width: 5px;
+    border-style: solid;
+    border-color:transparent  black transparent transparent;
+  }
+  & .transaction-transfer-sender-user-details{
+    display: none;
+    position: absolute;
+    top: -10px;
+    left: 90px;
+    width: 300px;
+    background-color: #4d4d4d!important;
+    padding: 4px 6px;
+    border-radius: 0;
+    text-align: left;
+    line-height: 20px;
+    color: white;
+  }
+  & .transaction-transfer-sender-user-details::after{
+    content: " ";
+    position: absolute;
+    top: 10%;
+    z-index: 1000;
+    left: 0%;
+    margin-left: -10px;
+    border-width: 5px;
+    border-style: solid;
+    border-color:transparent  black transparent transparent;
+  }
+  & .transaction-transfer-sender-user-icon:hover ~ .transaction-transfer-sender-user-details{
+    display: block;
+  }
+  & .transaction-transfer-recipient-user-details{
+    display: none;
+    position: absolute;
+    top: 66px;
+    left: 104px;
+    width: 300px;
+    background-color: #4d4d4d!important;
+    padding: 4px 6px;
+    border-radius: 0;
+    text-align: left;
+    line-height: 20px;
+    color: white;
+  }
+  & .transaction-transfer-recipient-user-details::after{
+    content: " ";
+    position: absolute;
+    top: 10%;
+    z-index: 1000;
+    left: 0%;
+    margin-left: -10px;
+    border-width: 5px;
+    border-style: solid;
+    border-color:transparent  black transparent transparent;
+  }
+  & .transaction-transfer-recipient-user-icon:hover ~ .transaction-transfer-recipient-user-details{
+    display: block;
+  }
+  & .transaction-account-details{
+    display: none;
+    position: absolute;
+    top: 210px;
+    left: 100px;
+    width: 465px;
+    background-color: #4d4d4d!important;
+    padding: 4px 6px;
+    border-radius: 0;
+    text-align: left;
+    line-height: 20px;
+    color: white;
+  }
+  & .transaction-account-icon:hover ~ .transaction-account-details{
+    display: block;
+  }
+  & .transaction-account-details::after{
+    content: " ";
+    position: absolute;
+    top: 10%;
+    z-index: 1000;
+    left: 0%;
+    margin-left: -10px;
+    border-width: 5px;
+    border-style: solid;
+    border-color:transparent  black transparent transparent;
+  }
+  & .transaction-sender-account-details{
+    display: none;
+    position: absolute;
+    top: 282px;
+    left: 138px;
+    width: 465px;
+    background-color: #4d4d4d!important;
+    padding: 4px 6px;
+    border-radius: 0;
+    text-align: left;
+    line-height: 20px;
+    color: white;
+  }
+  & .transaction-sender-account-icon:hover ~ .transaction-sender-account-details{
+    display: block;
+  }
+  & .transaction-sender-account-details::after{
+    content: " ";
+    position: absolute;
+    top: 10%;
+    z-index: 1000;
+    left: 0%;
+    margin-left: -10px;
+    border-width: 5px;
+    border-style: solid;
+    border-color:transparent  black transparent transparent;
+  }
+  & .transaction-recipient-account-details{
+    display: none;
+    position: absolute;
+    top: 358px;
+    left: 149px;
+    width: 465px;
+    background-color: #4d4d4d!important;
+    padding: 4px 6px;
+    border-radius: 0;
+    text-align: left;
+    line-height: 20px;
+    color: white;
+  }
+  & .transaction-recipient-account-icon:hover ~ .transaction-recipient-account-details{
+    display: block;
+  }
+  & .transaction-recipient-account-details::after{
+    content: " ";
+    position: absolute;
+    top: 10%;
+    z-index: 1000;
+    left: 0%;
+    margin-left: -10px;
+    border-width: 5px;
+    border-style: solid;
+    border-color:transparent  black transparent transparent;
+  }
+  & p.transaction-tooltip-title{
+    padding: 0 6px;
+  }
+}
+
+.transaction-recipient-account-icon{
+  color: $primary!important;
+  cursor: pointer;
+}
+
+.transaction-sender-account-icon{
+  color: $primary!important;
+  cursor: pointer;
+}
+
+.transaction-transfer-sender-user-icon{
+  color: $primary!important;
+  cursor: pointer;
+}
+
+.transaction-transfer-recipient-user-icon{
+  color: $primary!important;
+  cursor: pointer;
+}
+
+.transaction-account-icon{
+  color: $primary!important;
+  cursor: pointer;
+}
+
+.transaction-user-icon{
+  color: $primary!important;
+  cursor: pointer;
+}
+
+.transaction-radio-inputs{
+  display: inline-block;
+  & label{
+    display: block;
+  }
+  & .transaction-radio-input-block{
+    display: inline-flex;
+    position: relative;
+    & .transaction-radio-labels1{
+      position: absolute;
+      top: 2px;
+      left: 21px;
+    }
+    & .transaction-radio-labels2{
+      position: absolute;
+      top: 2px;
+      left: 94px;
+    }
+    & .transaction-radio-labels3{
+      position: absolute;
+      top: 2px;
+      left: 167px;
+    }
+  }
+}
+
+.panel-header-transaction-export{
+  position: absolute;
+  top: 25px;
+  right: 213px;
+}
+
+.panel-transaction-newTx-button{
+  position: absolute;
+  top: 25px;
+  right: 25px;
+  padding: 6px 8px;
+}
+
 .metadata-copy-icon{
   font-size: 18px;
   position: absolute;

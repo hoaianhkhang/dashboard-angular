@@ -5,7 +5,7 @@
         .controller('BitcoinWarmstorageCtrl', BitcoinWarmstorageCtrl);
 
     /** @ngInject */
-    function BitcoinWarmstorageCtrl($scope,localStorageManagement,errorHandler,currenciesList,$http,$uibModal,$state,
+    function BitcoinWarmstorageCtrl($scope,localStorageManagement,errorHandler,currenciesList,$http,$uibModal,$state,$location,
                                     sharedResources,_,environmentConfig,currencyModifiers,toastr,serializeFiltersService) {
 
         var vm = this;
@@ -351,15 +351,21 @@
         };
 
         $scope.goToCredit = function () {
-            $state.go('transactions.credit',{"email": $scope.warmstorageObj.user_account_identifier,
-                "account": $scope.warmstorageObj.rehive_account_reference,
-                "currencyCode": 'XBT'});
+            $location.path('/transactions/history').search({
+                txType: 'credit',
+                currencyCode: 'XBT',
+                emailUser: $scope.warmstorageObj.user_account_identifier,
+                accountUser: $scope.warmstorageObj.rehive_account_reference
+            });
         };
 
         $scope.goToDebit = function () {
-            $state.go('transactions.debit',{"email": $scope.warmstorageObj.user_account_identifier,
-                "account": $scope.warmstorageObj.rehive_account_reference,
-                "currencyCode": 'XBT'});
+            $location.path('/transactions/history').search({
+                txType: 'debit',
+                currencyCode: 'XBT',
+                emailUser: $scope.warmstorageObj.user_account_identifier,
+                accountUser: $scope.warmstorageObj.rehive_account_reference
+            });
         };
 
         $scope.openWarmstorageModal = function (page, size,transaction) {

@@ -20,10 +20,7 @@
                     transactionId: null,
                     currencyCode: null
                 },
-                title: 'History',
-                sidebarMeta: {
-                    order: 100
-                }
+                title: 'History'
             });
     }
 
