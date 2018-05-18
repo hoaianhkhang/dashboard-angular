@@ -5,13 +5,15 @@
         .controller('HistoryCtrl', HistoryCtrl);
 
     /** @ngInject */
-    function HistoryCtrl($rootScope,$scope,environmentConfig,$http,localStorageManagement,$uibModal,sharedResources,toastr,currencyModifiers,
-                         errorHandler,$state,$window,typeaheadService,$filter,serializeFiltersService,$location,_) {
+    function HistoryCtrl($rootScope,$scope,environmentConfig,$http,localStorageManagement,$uibModal,sharedResources,
+                         toastr,currencyModifiers,errorHandler,$state,$window,typeaheadService,$filter,
+                         serializeFiltersService,$location,_) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
         vm.companyIdentifier = localStorageManagement.getValue('companyIdentifier');
         vm.savedTransactionTableColumns = vm.companyIdentifier + 'transactionsTable';
+        vm.newTransactionParams = $location.search();
         $rootScope.dashboardTitle = 'Transactions history | Rehive';
         vm.currenciesList = JSON.parse($window.sessionStorage.currenciesList || '[]');
         $scope.showingFilters = false;
@@ -538,6 +540,30 @@
 
         };
 
+        $scope.openMakeTransactionModal = function (page, size,newTransactionParams) {
+            vm.theCreateModal = $uibModal.open({
+                animation: true,
+                templateUrl: page,
+                size: size,
+                controller: 'MakeTransactionModalCtrl',
+                resolve: {
+                    newTransactionParams: function () {
+                        return newTransactionParams;
+                    }
+                }
+            });
+
+            vm.theCreateModal.result.then(function(transaction){
+                if(transaction.id){
+                    $scope.openModal('app/pages/transactions/history/historyModal/historyModal.html','md',transaction);
+                } else if(transaction){
+                    $scope.getLatestTransactions();
+                }
+            }, function(){
+            });
+
+        };
+
         $scope.$on("modalClosing",function(event,transactionHasBeenUpdated){
            if(transactionHasBeenUpdated){
                $scope.clearFilters();
@@ -549,6 +575,15 @@
             $scope.showingColumnFilters = false;
         };
 
+        // shortcuts from other places
+
+        if(vm.newTransactionParams.userEmail){
+            $scope.openMakeTransactionModal('app/pages/transactions/history/makeTransactionModal/makeTransactionModal.html', 'md',vm.newTransactionParams);
+        }
+
+        if(vm.newTransactionParams.txType){
+            $scope.openMakeTransactionModal('app/pages/transactions/history/makeTransactionModal/makeTransactionModal.html', 'md',vm.newTransactionParams);
+        }
 
     }
 })();

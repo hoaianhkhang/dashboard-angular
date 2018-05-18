@@ -58,7 +58,7 @@
                 newUserParams.metadata = {};
             } else {
                 if(vm.isJson(newUserParams.metadata)){
-                    newUserParams.metadata = JSON.parse(newUserParams.metadata);
+                    newUserParams.metadata = newUserParams.metadata;
                 } else {
                     toastr.error('Invalid metadata format');
                     return;
