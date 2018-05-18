@@ -1,0 +1,35 @@
+<div ng-hide="loadingDefaultValues" class="modal-content">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="$dismiss()" aria-label="Close">
+            <em class="ion-ios-close-empty sn-link-close"></em>
+        </button>
+        <h4 class="modal-title" id="myModalLabel">{{showCustomCurrency ? 'Add custom currency': 'Add currency'}}</h4>
+    </div>
+    <div class="modal-body">
+        <div id="addNormalCurrency">
+            <div class="form-group custom-form">
+                <label>Currencies <span class="required-icon">*</span>
+                    <small class="text-muted">(Hold CTRL to select multiple currencies)</small>
+                </label>
+                <br>
+                <select class="form-control pointer divider currencies-setup-dropdown" ng-model="currenciesToAdd" multiple
+                        ng-options="currency.code + ' - ' + currency.description for currency in initialCurrencies | orderBy: 'code'"
+                        required>
+                </select>
+            </div>
+            <p>Currencies selected:
+                <span ng-repeat="currency in currenciesToAdd | orderBy: 'code'">
+                    <strong>{{$last ? ' ' + currency.code : currency.code + ',' }}</strong>
+                </span>
+            </p>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button ng-click="addCompanyCurrency(currenciesToAdd)" ng-disabled="currenciesToAdd.length == 0"
+                class="btn btn-primary pull-right dashboard-btn">Add
+        </button>
+    </div>
+</div>
+<div ba-panel ng-show="loadingDefaultValues">
+    <loading-image></loading-image>
+</div>

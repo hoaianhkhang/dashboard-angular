@@ -79,25 +79,30 @@
             <span class="user-details-panel-title">Added groups</span>
         </div>
         <div class="panel-body">
-            <div class="divider-20" ng-repeat="group in addedGroups | orderBy: 'name'" ng-class="{'no-margin-bottom': $last}">
-                <div ng-class="{'divider': group.public || group.default}">
-                    <span>{{group.name}}</span>
-                    <span class="pull-right groups-delete-x-icon pointer"
-                          ng-hide="group.name=='admin' || group.name=='service'"
-                          ng-click="deleteGroupConfirm(group.name)">x</span>
-                    <span style="font-size: 10px;line-height: 20px;font-weight: 500; padding: 0 5px 5px 5px;"
-                          ng-class="{'pointer': group.name!='admin' && group.name!='service'}"
-                          ng-click="group.name!='admin' && group.name!='service' ? editUser(group):null"
-                          class="pull-right margin-right-10" ng-click="deleteCurrencyConfirm(currency.code)"
-                          ng-hide="group.name=='admin' || group.name=='service'">
+            <div ng-show="addedGroups.length > 0">
+                <div class="divider-20" ng-repeat="group in addedGroups | orderBy: 'name'" ng-class="{'no-margin-bottom': $last}">
+                    <div ng-class="{'divider': group.public || group.default}">
+                        <span>{{group.name}}</span>
+                        <span class="pull-right groups-delete-x-icon pointer"
+                              ng-hide="group.name=='admin' || group.name=='service'"
+                              ng-click="deleteGroupConfirm(group.name)">x</span>
+                        <span style="font-size: 10px;line-height: 20px;font-weight: 500; padding: 0 5px 5px 5px;"
+                              ng-class="{'pointer': group.name!='admin' && group.name!='service'}"
+                              ng-click="group.name!='admin' && group.name!='service' ? editUser(group):null"
+                              class="pull-right margin-right-10" ng-click="deleteCurrencyConfirm(currency.code)"
+                              ng-hide="group.name=='admin' || group.name=='service'">
                         <i class="fa fa-pencil"></i>
                     </span>
+                    </div>
+                    <div ng-class="{'invisible-with-no-space': !group.public && !group.default}">
+                        <span class="group-properties" ng-show="group.public"><i class="fa fa-check"></i>&nbsp;&nbsp; Public</span>
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+                        <span class="group-properties" ng-show="group.default"><i class="fa fa-check"></i>&nbsp;&nbsp; Default</span>
+                    </div>
                 </div>
-                <div ng-class="{'invisible-with-no-space': !group.public && !group.default}">
-                    <span class="group-properties" ng-show="group.public"><i class="fa fa-check"></i>&nbsp;&nbsp; Public</span>
-                    &nbsp;&nbsp;&nbsp;&nbsp;
-                    <span class="group-properties" ng-show="group.default"><i class="fa fa-check"></i>&nbsp;&nbsp; Default</span>
-                </div>
+            </div>
+            <div ng-show="addedGroups.length == 0">
+                <i>No groups have been added yet.</i>
             </div>
         </div>
     </div>
