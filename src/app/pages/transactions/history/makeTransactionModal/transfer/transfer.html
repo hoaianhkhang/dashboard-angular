@@ -70,17 +70,17 @@
         </div>
         <div class="form-group">
             <label>Currency <span class="required-icon">*</span>
-                <span ng-hide="(retrievedSenderUserObj.identifier && retrievedRecipientObj.identifier)">(Please choose user and recipient first)</span>
+                <span ng-hide="(retrievedSenderUserObj.identifier)">(Please choose sender first)</span>
             </label>
             <br>
-            <select class="form-control pointer" ng-model="transferTransactionData.currency" ng-change="currencySelected(transferTransactionData,'recipient')" ng-disabled="(!retrievedSenderUserObj.identifier || !retrievedRecipientObj.identifier)"
+            <select class="form-control pointer" ng-model="transferTransactionData.currency" ng-change="currencySelected(transferTransactionData,'recipient')" ng-disabled="(!retrievedSenderUserObj.identifier)"
                     ng-options="currency.code for currency in transferCurrencyOptions | orderBy: 'code' track by currency.code">
             </select>
         </div>
         <div class="form-group">
             <label>Sender account &nbsp;
-                <i ng-show="retrievedSenderAccountTransactions.length > 0" class="fa fa-list-alt transaction-sender-account-icon" aria-hidden="true"></i>
-                <div class="row transaction-sender-account-details">
+                <i ng-show="transferTransactionData.account && transferTransactionData.account.name" class="fa fa-list-alt transaction-sender-account-icon" aria-hidden="true"></i>
+                <div ng-show="retrievedSenderAccountTransactions.length > 0" class="row transaction-sender-account-details">
                     <p class="transaction-tooltip-title">Recent transactions:</p>
                     <table class="table custom-table">
                         <tr>
@@ -99,6 +99,9 @@
                         </tr>
                     </table>
                 </div>
+                <div ng-show="retrievedSenderAccountTransactions.length == 0" class="row transaction-sender-account-details">
+                    <i>No transactions exist for this account.</i>
+                </div>
                 <span ng-hide="transferTransactionData.currency.code">(Please choose currency first)</span>
                 <span ng-show="transferTransactionData.currency.code && !transferTransactionData.account.name">(Please choose an account)</span>
             </label>
@@ -108,8 +111,8 @@
         </div>
         <div class="form-group">
             <label>Recipient account&nbsp;
-                <i ng-show="retrievedRecipientAccountTransactions.length > 0" class="fa fa-list-alt transaction-recipient-account-icon" aria-hidden="true"></i>
-                <div class="row transaction-recipient-account-details">
+                <i ng-show="transferTransactionData.credit_account && transferTransactionData.credit_account.name" class="fa fa-list-alt transaction-recipient-account-icon" aria-hidden="true"></i>
+                <div ng-show="retrievedRecipientAccountTransactions.length > 0" class="row transaction-recipient-account-details">
                     <p class="transaction-tooltip-title">Recent transactions:</p>
                     <table class="table custom-table">
                         <tr>
@@ -127,6 +130,9 @@
                             <td>{{transaction.created | date:'mediumDate'}}, {{transaction.created | date:'shortTime'}}</td>
                         </tr>
                     </table>
+                </div>
+                <div ng-show="retrievedRecipientAccountTransactions.length == 0" class="row transaction-recipient-account-details">
+                    <i>No transactions exist for this account.</i>
                 </div>
                 <span ng-hide="transferTransactionData.currency.code">(Please choose currency first)</span>
                 <span ng-show="transferTransactionData.currency.code && !transferTransactionData.credit_account.name">(Please choose an account)</span>

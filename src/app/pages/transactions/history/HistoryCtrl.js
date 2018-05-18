@@ -554,7 +554,9 @@
             });
 
             vm.theCreateModal.result.then(function(transaction){
-                if(transaction){
+                if(transaction.id){
+                    $scope.openModal('app/pages/transactions/history/historyModal/historyModal.html','md',transaction);
+                } else if(transaction){
                     $scope.getLatestTransactions();
                 }
             }, function(){

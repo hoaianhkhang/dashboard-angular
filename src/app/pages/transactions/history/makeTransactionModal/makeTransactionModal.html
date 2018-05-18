@@ -30,14 +30,15 @@
         </div>
         <div ng-show="confirmTransaction">
             <div class="form-group" ng-show="transactionType.tx_type == 'credit'">
-                <span>You are about to credit <strong>${{creditTransactionData.amount}}</strong> to
+                <span>You are about to credit <strong>{{creditTransactionData.currency.symbol}}{{creditTransactionData.amount}}</strong> to
                     <strong>{{retrievedCreditUserObj.email}}</strong></span>
             </div>
             <div class="form-group" ng-show="transactionType.tx_type == 'debit'">
-                <span>You are about to debit <strong>${{debitTransactionData.amount}}</strong> to <strong>{{retrievedDebitUserObj.email}}</strong></span>
+                <span>You are about to debit <strong>{{debitTransactionData.currency.symbol}}{{debitTransactionData.amount}}</strong>
+                    to <strong>{{retrievedDebitUserObj.email}}</strong></span>
             </div>
             <div class="form-group" ng-show="transactionType.tx_type == 'transfer'">
-                <span>You are about to transfer <strong>${{transferTransactionData.amount}}</strong>
+                <span>You are about to transfer <strong>{{transferTransactionData.currency.symbol}}{{transferTransactionData.amount}}</strong>
                     from <strong>{{retrievedSenderUserObj.email}}</strong>
                     to <strong>{{retrievedRecipientObj.email}}</strong></span>
             </div>
@@ -47,18 +48,39 @@
             </div>
         </div>
         <div ng-show="completeTransaction">
-            <div class="form-group" ng-show="transactionType.tx_type == 'credit'">
-                <span><strong>${{creditTransactionData.amount}}</strong> has been credited to
+            <div ng-show="transactionType.tx_type == 'credit'">
+                <div class="form-group">
+                    <span><strong>{{creditTransactionData.currency.symbol}}{{creditTransactionData.amount}}</strong> has been credited to
                     <strong>{{retrievedCreditUserObj.email}}</strong></span>
+                </div>
+                <div class="form-group">
+                    <button ng-click="closeModal()" class="btn dashboard-btn btn-primary pull-right">Ok</button>
+                    <button ng-click="takeToUser(retrievedCreditUserObj.identifier)" class="btn dashboard-btn btn-primary pull-right margin-right-10">View user</button>
+                    <button ng-click="showTransactionModal()" class="btn btn-primary pull-right margin-right-10">View transaction</button>
+                </div>
             </div>
-            <div class="form-group" ng-show="transactionType.tx_type == 'debit'">
-                <span><strong>${{debitTransactionData.amount}}</strong> has been debited to
+            <div ng-show="transactionType.tx_type == 'debit'">
+                <div class="form-group">
+                    <span><strong>{{debitTransactionData.currency.symbol}}{{debitTransactionData.amount}}</strong> has been debited to
                     <strong>{{retrievedDebitUserObj.email}}</strong></span>
+                </div>
+                <div class="form-group">
+                    <button ng-click="closeModal()" class="btn dashboard-btn btn-primary pull-right">Ok</button>
+                    <button ng-click="takeToUser(retrievedDebitUserObj.identifier)" class="btn dashboard-btn btn-primary pull-right margin-right-10">View user</button>
+                    <button ng-click="showTransactionModal()" class="btn btn-primary pull-right margin-right-10">View transaction</button>
+                </div>
             </div>
             <div class="form-group" ng-show="transactionType.tx_type == 'transfer'">
-                <span><strong>${{transferTransactionData.amount}}</strong> has been transferred from
+                <div class="form-group">
+                    <span><strong>{{transferTransactionData.currency.symbol}}{{transferTransactionData.amount}}</strong> has been transferred from
                     from <strong>{{retrievedSenderUserObj.email}}</strong>
                     to <strong>{{retrievedRecipientObj.email}}</strong></span>
+                </div>
+                <div class="form-group">
+                    <button ng-click="closeModal()" class="btn dashboard-btn btn-primary pull-right">Ok</button>
+                    <button ng-click="takeToUser(retrievedSenderUserObj.identifier)" class="btn dashboard-btn btn-primary pull-right margin-right-10">View user</button>
+                    <button ng-click="showTransactionModal()" class="btn btn-primary pull-right margin-right-10">View transaction</button>
+                </div>
             </div>
         </div>
     </div>

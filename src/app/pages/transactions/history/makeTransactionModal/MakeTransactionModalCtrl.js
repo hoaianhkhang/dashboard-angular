@@ -4,8 +4,8 @@
     angular.module('BlurAdmin.pages.transactions.history')
         .controller('MakeTransactionModalCtrl', MakeTransactionModalCtrl);
 
-    function MakeTransactionModalCtrl($http,$scope,errorHandler,toastr,environmentConfig,$filter,
-                                      newTransactionParams,localStorageManagement,$state,currencyModifiers) {
+    function MakeTransactionModalCtrl($http,$scope,errorHandler,toastr,environmentConfig,$filter,$uibModalInstance,
+                                      newTransactionParams,localStorageManagement,currencyModifiers,$location) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
@@ -14,6 +14,7 @@
         };
         $scope.newTransactionParams = newTransactionParams || {};
         $scope.panelTitle = 'Create transaction';
+        vm.completedTransaction = {};
         $scope.confirmTransaction = false;
         $scope.completeTransaction = false;
         $scope.loadingTransactionSettings = false;
@@ -107,6 +108,7 @@
             }).then(function (res) {
                 $scope.onGoingTransaction = false;
                 if (res.status === 201) {
+                    vm.completedTransaction = res.data.data;
                     $scope.completeTransaction = true;
                     $scope.confirmTransaction = false;
                     $scope.panelTitle = $filter('capitalizeWord')($scope.transactionType.tx_type) + ' successful';
@@ -117,6 +119,19 @@
                 errorHandler.evaluateErrors(error.data);
                 errorHandler.handleErrors(error);
             });
+        };
+
+        $scope.closeModal = function () {
+            $uibModalInstance.close(true);
+        };
+
+        $scope.takeToUser = function (identifier) {
+            $location.path('/user/' + identifier + '/details');
+            $scope.$dismiss();
+        };
+
+        $scope.showTransactionModal = function () {
+            $uibModalInstance.close(vm.completedTransaction);
         };
 
     }

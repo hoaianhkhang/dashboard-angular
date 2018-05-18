@@ -5,8 +5,8 @@
         .controller('BitcoinColdstorageCtrl', BitcoinColdstorageCtrl);
 
     /** @ngInject */
-    function BitcoinColdstorageCtrl($scope,localStorageManagement,errorHandler,currenciesList,$http,$uibModal,$state,cleanObject,
-                                    sharedResources,_,environmentConfig,currencyModifiers,toastr,serializeFiltersService) {
+    function BitcoinColdstorageCtrl($scope,localStorageManagement,errorHandler,currenciesList,$http,$uibModal,$location,
+                                    cleanObject,sharedResources,_,environmentConfig,currencyModifiers,toastr,serializeFiltersService) {
 
         var vm = this;
         vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
@@ -413,15 +413,21 @@
         };
 
         $scope.goToCredit = function () {
-            $state.go('transactions.credit',{"email": $scope.coldstorageObj.user_account_identifier,
-                "account": $scope.coldstorageObj.rehive_account_reference,
-                "currencyCode": 'XBT'});
+            $location.path('/transactions/history').search({
+                txType: 'credit',
+                currencyCode: 'XBT',
+                emailUser: $scope.coldstorageObj.user_account_identifier,
+                accountUser: $scope.coldstorageObj.rehive_account_reference
+            });
         };
 
         $scope.goToDebit = function () {
-            $state.go('transactions.debit',{"email": $scope.coldstorageObj.user_account_identifier,
-                "account": $scope.coldstorageObj.rehive_account_reference,
-                "currencyCode": 'XBT'});
+            $location.path('/transactions/history').search({
+                txType: 'debit',
+                currencyCode: 'XBT',
+                emailUser: $scope.coldstorageObj.user_account_identifier,
+                accountUser: $scope.coldstorageObj.rehive_account_reference
+            });
         };
 
         $scope.openColdstorageModal = function (page, size,transaction) {

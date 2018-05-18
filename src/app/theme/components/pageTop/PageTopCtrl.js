@@ -26,7 +26,7 @@
 
         $scope.goToCreditUser = function (email) {
             $scope.hidingSearchBar();
-            $state.go('transactions.credit',{"email": email});
+            $location.path('/transactions/history').search({userEmail:  (email).toString()});
         };
 
         //when page refreshed
