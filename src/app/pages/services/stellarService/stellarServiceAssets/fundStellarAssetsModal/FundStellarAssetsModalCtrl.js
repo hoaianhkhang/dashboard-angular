@@ -4,7 +4,7 @@
     angular.module('BlurAdmin.pages.services.stellarService.stellarServiceAssets')
         .controller('FundStellarAssetsModalCtrl', FundStellarAssetsModalCtrl);
 
-    function FundStellarAssetsModalCtrl($scope,toastr,$http,localStorageManagement,errorHandler, assetId) {
+    function FundStellarAssetsModalCtrl($scope,$uibModalInstance,toastr,$http,localStorageManagement,errorHandler, assetId) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
