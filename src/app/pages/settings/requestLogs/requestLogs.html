@@ -60,6 +60,9 @@
                    previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></p>
             </div>
         </div>
+        <div ng-show="requestLogs.length == 0">
+            <i>No request logs found.</i>
+        </div>
     </div>
 </div>
 <div ba-panel ng-show="loadingRequestLogs">
