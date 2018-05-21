@@ -6,14 +6,61 @@
 
     /** @ngInject */
     function RequestLogsCtrl($scope,environmentConfig,$http,localStorageManagement,errorHandler,
-                             typeaheadService,serializeFiltersService,$location) {
+                             typeaheadService,serializeFiltersService,$location,$filter) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
+        vm.companyIdentifier = localStorageManagement.getValue('companyIdentifier');
+        vm.savedRequestTableColumns = vm.companyIdentifier + 'requestTable';
         $scope.requestLogs = [];
         $scope.loadingRequestLogs = true;
         $scope.showingFilters = false;
         $scope.filtersCount = 0;
+        $scope.showingColumnFilters = false;
+
+        $scope.requestHeaderColumns = localStorageManagement.getValue(vm.savedRequestTableColumns) ? JSON.parse(localStorageManagement.getValue(vm.savedRequestTableColumns)) : [
+            {colName: 'Id',fieldName: 'id',visible: true},
+            {colName: 'User',fieldName: 'user',visible: false},
+            {colName: 'Key',fieldName: 'key',visible: false},
+            {colName: 'Scheme',fieldName: 'scheme',visible: false},
+            {colName: 'Path',fieldName: 'path',visible: true},
+            {colName: 'Method',fieldName: 'method',visible: true},
+            {colName: 'Content type',fieldName: 'content_type',visible: false},
+            {colName: 'Status code',fieldName: 'status_code',visible: true},
+            {colName: 'Created',fieldName: 'createdDate',visible: true},
+            {colName: 'Updated',fieldName: 'updatedDate',visible: false}
+        ];
+
+        $scope.selectAllColumns = function () {
+            $scope.requestHeaderColumns.forEach(function (headerObj) {
+                headerObj.visible = true;
+            });
+            localStorageManagement.setValue(vm.savedRequestTableColumns,JSON.stringify($scope.requestHeaderColumns));
+        };
+
+        $scope.toggleColumnVisibility = function () {
+            localStorageManagement.setValue(vm.savedRequestTableColumns,JSON.stringify($scope.requestHeaderColumns));
+        };
+
+        $scope.restoreColDefaults = function () {
+            var defaultVisibleHeader = ['Id','Path','Status code','Method',
+                'Created'];
+
+            $scope.requestHeaderColumns.forEach(function (headerObj) {
+                if(defaultVisibleHeader.indexOf(headerObj.colName) > -1){
+                    headerObj.visible = true;
+                } else {
+                    headerObj.visible = false;
+                }
+            });
+
+            localStorageManagement.setValue(vm.savedRequestTableColumns,JSON.stringify($scope.requestHeaderColumns));
+        };
+
+        $scope.showColumnFilters = function () {
+            $scope.showingFilters = false;
+            $scope.showingColumnFilters = !$scope.showingColumnFilters;
+        };
 
         $scope.showRequestLogsFilters = function () {
             $scope.showingFilters = !$scope.showingFilters;
@@ -109,10 +156,9 @@
                         'Authorization': vm.token
                     }
                 }).then(function (res) {
-                    $scope.loadingRequestLogs = false;
                     if (res.status === 200) {
                         $scope.requestLogsData = res.data.data;
-                        $scope.requestLogs = res.data.data.results;
+                        vm.formatRequestLogsArray($scope.requestLogsData.results);
                     }
                 }).catch(function (error) {
                     $scope.loadingRequestLogs = false;
@@ -122,6 +168,25 @@
             }
         };
         $scope.getRequestLogs();
+
+        vm.formatRequestLogsArray = function (requestLogsArray) {
+            requestLogsArray.forEach(function (requestLogObj,index,array) {
+                $scope.requestLogs.push({
+                    id: requestLogObj.id,
+                    user: requestLogObj.user.email || requestLogObj.user.mobile_number,
+                    key: requestLogObj.key,
+                    scheme: requestLogObj.scheme,
+                    path: requestLogObj.path,
+                    method: requestLogObj.method,
+                    content_type: requestLogObj.content_type,
+                    status_code: requestLogObj.status_code,
+                    createdDate: $filter("date")(requestLogObj.created,'mediumDate') + ' ' + $filter("date")(requestLogObj.created,'shortTime'),
+                    updatedDate: $filter("date")(requestLogObj.updated,'mediumDate') + ' ' + $filter("date")(requestLogObj.updated,'shortTime')
+                });
+            });
+            
+            $scope.loadingRequestLogs = false;
+        };
 
         $scope.clearFilters = function () {
             $scope.filtersObj = {
@@ -137,6 +202,10 @@
 
         $scope.goToRequestLog = function (log) {
             $location.path('/settings/request-log/' + log.id + '/');
+        };
+
+        $scope.closeColumnFiltersBox = function () {
+            $scope.showingColumnFilters = false;
         };
 
     }
