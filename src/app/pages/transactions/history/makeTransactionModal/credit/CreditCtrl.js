@@ -39,7 +39,7 @@
                 }).then(function (res) {
                     if (res.status === 200) {
                         $scope.creditCurrencyOptions = res.data.data.results;
-                        if ($scope.newTransactionParams.currencyCode) {
+                        if($scope.newTransactionParams.currencyCode) {
                             $scope.creditTransactionData.currency = $scope.creditCurrencyOptions.find(function (element) {
                                 return element.code == $scope.newTransactionParams.currencyCode;
                             });
@@ -93,6 +93,10 @@
                     if(res.data.data.results.length == 1){
                         $scope.retrievedCreditUserObj = res.data.data.results[0];
                         $scope.retrievedCreditUserObj.metadata = metadataTextService.convertToText($scope.retrievedCreditUserObj.metadata);
+                        if($scope.creditCurrencyOptions.length === 1){
+                            $scope.creditTransactionData.currency = $scope.creditCurrencyOptions[0];
+                            vm.getCreditAccounts($scope.retrievedCreditUserObj,$scope.creditTransactionData);
+                        }
                     } else {
                         $scope.retrievedCreditUserObj = {};
                         $scope.retrievedUserAccountsArray = [];

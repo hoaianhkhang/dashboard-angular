@@ -112,6 +112,10 @@
                         if(recipient){
                             $scope.retrievedRecipientObj = res.data.data.results[0];
                             $scope.retrievedRecipientObj.metadata = metadataTextService.convertToText($scope.retrievedRecipientObj.metadata);
+                            if($scope.transferCurrencyOptions.length === 1){
+                                $scope.transferTransactionData.currency = $scope.transferCurrencyOptions[0];
+                                $scope.currencySelected($scope.transferTransactionData,'recipient');
+                            }
                         } else {
                             $scope.retrievedSenderUserObj = res.data.data.results[0];
                             $scope.retrievedSenderUserObj.metadata = metadataTextService.convertToText($scope.retrievedSenderUserObj.metadata);
