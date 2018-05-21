@@ -79,7 +79,7 @@
                 </span>
             </label>
             <select class="form-control pointer" ng-model="creditTransactionData.account" ng-change="creditAccountSelected(creditTransactionData)" ng-disabled="!creditTransactionData.currency.code || !retrievedCreditUserObj.identifier"
-                    ng-options="account.name disable when account.disable for account in retrievedCreditUserAccountsArray | orderBy: 'name' track by account.name">
+                    ng-options="account.name + ' - ' + account.reference disable when account.disable for account in retrievedCreditUserAccountsArray | orderBy: 'name' track by account.name">
             </select>
         </div>
         <div class="form-group">

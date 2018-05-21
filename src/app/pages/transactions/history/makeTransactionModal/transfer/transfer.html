@@ -111,7 +111,7 @@
                 </span>
             </label>
             <select class="form-control pointer" ng-model="transferTransactionData.account" ng-change="accountSelected(transferTransactionData)" ng-disabled="(!transferTransactionData.currency.code || !retrievedSenderUserObj.identifier)"
-                    ng-options="account.name disable when account.disable for account in retrievedSenderUserAccountsArray | orderBy: 'name' track by account.name">
+                    ng-options="account.name + ' - ' + account.reference disable when account.disable for account in retrievedSenderUserAccountsArray | orderBy: 'name' track by account.name">
             </select>
         </div>
         <div class="form-group">
@@ -148,7 +148,7 @@
                 </span>
             </label>
             <select class="form-control pointer" ng-model="transferTransactionData.credit_account" ng-change="accountSelected(transferTransactionData,'recipient')" ng-disabled="!transferTransactionData.currency.code || !retrievedRecipientObj.identifier"
-                    ng-options="account.name disable when account.disable for account in retrievedRecipientAccountsArray | orderBy: 'name' track by account.name">
+                    ng-options="account.name + ' - ' + account.reference disable when account.disable for account in retrievedRecipientAccountsArray | orderBy: 'name' track by account.name">
             </select>
         </div>
         <div class="form-group">

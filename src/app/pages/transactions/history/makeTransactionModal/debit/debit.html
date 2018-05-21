@@ -80,7 +80,7 @@
                 </span>
             </label>
             <select class="form-control pointer" ng-model="debitTransactionData.account" ng-change="debitAccountSelected(debitTransactionData)" ng-disabled="!debitTransactionData.currency.code || !retrievedDebitUserObj.identifier"
-                    ng-options="account.name disable when account.disable for account in retrievedDebitUserAccountsArray | orderBy: 'name' track by account.name">
+                    ng-options="account.name + ' - ' + account.reference disable when account.disable for account in retrievedDebitUserAccountsArray | orderBy: 'name' track by account.name">
             </select>
         </div>
         <div class="form-group">
