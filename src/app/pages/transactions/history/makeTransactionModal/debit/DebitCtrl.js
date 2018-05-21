@@ -4,7 +4,7 @@
     angular.module('BlurAdmin.pages.transactions.history')
         .controller('DebitCtrl', DebitCtrl);
 
-    function DebitCtrl($http,$scope,errorHandler,toastr,environmentConfig,_,metadataTextService,$filter,
+    function DebitCtrl($http,$scope,errorHandler,toastr,environmentConfig,_,metadataTextService,$window,
                         sharedResources,localStorageManagement,$state,typeaheadService,currencyModifiers) {
 
         var vm = this;
@@ -28,6 +28,7 @@
         $scope.retrievedDebitUserAccountsArray = [];
         $scope.retrievedDebitAccountTransactions = [];
         $scope.debitTransactionStatus = ['Complete','Pending','Failed','Deleted'];
+        $scope.debitAccountsAvailable = true;
 
         vm.getDebitCompanyCurrencies = function(){
             if(vm.token){
@@ -141,18 +142,24 @@
                 }
             }).then(function (res) {
                 if (res.status === 200) {
-                    res.data.data.results.forEach(function (account) {
-                        if(account.primary){
-                            account.name = account.name + ' - (primary)';
-                            debitTransactionData.account = account;
-                            $scope.debitAccountSelected(debitTransactionData);
+                    if(res.data.data.results.length > 0){
+                        $scope.debitAccountsAvailable = true;
+                        res.data.data.results.forEach(function (account) {
+                            if(account.primary){
+                                account.name = account.name + ' - (primary)';
+                                debitTransactionData.account = account;
+                                $scope.debitAccountSelected(debitTransactionData);
 
-                        } else if(account.id && $scope.newTransactionParams.accountUser){
-                            debitTransactionData.account = account;
-                            $scope.debitAccountSelected(debitTransactionData);
-                        }
-                    });
-                    $scope.retrievedDebitUserAccountsArray = res.data.data.results;
+                            } else if(account.id && $scope.newTransactionParams.accountUser){
+                                debitTransactionData.account = account;
+                                $scope.debitAccountSelected(debitTransactionData);
+                            }
+                        });
+                        $scope.retrievedDebitUserAccountsArray = res.data.data.results;
+                    } else {
+                        $scope.debitAccountsAvailable = false;
+                        $scope.retrievedDebitUserAccountsArray = res.data.data.results;
+                    }
                 }
             }).catch(function (error) {
                 $scope.loadingTransactionSettings = false;
@@ -184,6 +191,10 @@
                     errorHandler.handleErrors(error);
                 });
             }
+        };
+
+        $scope.goToDebitUserAccountCreate = function () {
+            $window.open('/#/user/' + $scope.retrievedDebitUserObj.identifier + '/accounts?accountAction=newAccount','_blank');
         };
 
     }

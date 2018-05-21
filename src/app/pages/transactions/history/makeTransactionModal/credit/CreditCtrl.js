@@ -4,7 +4,7 @@
     angular.module('BlurAdmin.pages.transactions.history')
         .controller('CreditCtrl', CreditCtrl);
 
-    function CreditCtrl($http,$scope,errorHandler,toastr,environmentConfig,_,metadataTextService,$filter,
+    function CreditCtrl($http,$scope,errorHandler,toastr,environmentConfig,_,metadataTextService,$window,
                         sharedResources,localStorageManagement,$state,typeaheadService,currencyModifiers) {
 
         var vm = this;
@@ -27,6 +27,7 @@
         $scope.retrievedCreditUserAccountsArray = [];
         $scope.retrievedCreditAccountTransactions = [];
         $scope.creditTransactionStatus = ['Complete','Pending','Failed','Deleted'];
+        $scope.creditAccountsAvailable = true;
 
         vm.getCreditCompanyCurrencies = function(){
             if(vm.token){
@@ -139,18 +140,24 @@
                 }
             }).then(function (res) {
                 if (res.status === 200) {
-                    res.data.data.results.forEach(function (account) {
-                        if(account.primary){
-                            account.name = account.name + ' - (primary)';
-                            creditTransactionData.account = account;
-                            $scope.creditAccountSelected(creditTransactionData);
+                    if(res.data.data.results.length > 0){
+                        $scope.creditAccountsAvailable = true;
+                        res.data.data.results.forEach(function (account) {
+                            if(account.primary){
+                                account.name = account.name + ' - (primary)';
+                                creditTransactionData.account = account;
+                                $scope.creditAccountSelected(creditTransactionData);
 
-                        } else if(account.id && $scope.newTransactionParams.accountUser){
-                            creditTransactionData.account = account;
-                            $scope.creditAccountSelected(creditTransactionData);
-                        }
-                    });
-                    $scope.retrievedCreditUserAccountsArray = res.data.data.results;
+                            } else if(account.id && $scope.newTransactionParams.accountUser){
+                                creditTransactionData.account = account;
+                                $scope.creditAccountSelected(creditTransactionData);
+                            }
+                        });
+                        $scope.retrievedCreditUserAccountsArray = res.data.data.results;
+                    } else {
+                        $scope.creditAccountsAvailable = false;
+                        $scope.retrievedCreditUserAccountsArray = res.data.data.results;
+                    }
                 }
             }).catch(function (error) {
                 $scope.loadingTransactionSettings = false;
@@ -182,6 +189,10 @@
                     errorHandler.handleErrors(error);
                 });
             }
+        };
+
+        $scope.goToCreditUserAccountCreate = function () {
+            $window.open('/#/user/' + $scope.retrievedCreditUserObj.identifier + '/accounts?accountAction=newAccount','_blank');
         };
 
     }

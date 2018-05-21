@@ -74,7 +74,10 @@
                     <i>No transactions exist for this account.</i>
                 </div>
                 <span ng-hide="debitTransactionData.currency.code">(Please choose currency first)</span>
-                <span ng-show="debitTransactionData.currency.code && !debitTransactionData.account.name">(Please choose an account)</span>
+                <span ng-show="debitTransactionData.currency.code && debitAccountsAvailable && !debitTransactionData.account.name">(Please choose an account)</span>
+                <span class="no-accounts-available" ng-click="goToDebitUserAccountCreate()"
+                      ng-hide="debitAccountsAvailable">(No accounts found for this user. Add an account?)
+                </span>
             </label>
             <select class="form-control pointer" ng-model="debitTransactionData.account" ng-change="debitAccountSelected(debitTransactionData)" ng-disabled="!debitTransactionData.currency.code || !retrievedDebitUserObj.identifier"
                     ng-options="account.name disable when account.disable for account in retrievedDebitUserAccountsArray | orderBy: 'name' track by account.name">

@@ -4,7 +4,7 @@
     angular.module('BlurAdmin.pages.transactions.history')
         .controller('TransferCtrl', TransferCtrl);
 
-    function TransferCtrl($http,$scope,errorHandler,toastr,environmentConfig,_,metadataTextService,$filter,
+    function TransferCtrl($http,$scope,errorHandler,toastr,environmentConfig,_,metadataTextService,$window,
                           $location,localStorageManagement,$state,typeaheadService,currencyModifiers) {
 
         var vm = this;
@@ -16,6 +16,8 @@
         $scope.retrievedRecipientObj = {};
         $scope.retrievedRecipientAccountsArray = [];
         $scope.retrievedRecipientAccountTransactions = [];
+        $scope.senderAccountsAvailable = true;
+        $scope.recipientAccountsAvailable = true;
 
         $scope.transferTransactionData = {
             user: null,
@@ -156,24 +158,35 @@
                 }
             }).then(function (res) {
                 if (res.status === 200) {
-                    res.data.data.results.forEach(function (account) {
-                        if(account.primary){
-                            if(recipient){
-                                account.name = account.name + ' - (primary)';
-                                transactionData.credit_account = account;
-                                $scope.accountSelected(transactionData,recipient);
-                            } else {
-                                account.name = account.name + ' - (primary)';
-                                transactionData.account = account;
-                                $scope.accountSelected(transactionData);
-                            }
+                    if(res.data.data.results.length > 0 ){
+                        res.data.data.results.forEach(function (account) {
+                            if(account.primary){
+                                if(recipient){
+                                    account.name = account.name + ' - (primary)';
+                                    transactionData.credit_account = account;
+                                    $scope.accountSelected(transactionData,recipient);
+                                } else {
+                                    account.name = account.name + ' - (primary)';
+                                    transactionData.account = account;
+                                    $scope.accountSelected(transactionData);
+                                }
 
+                            }
+                        });
+
+                        if(recipient){
+                            $scope.recipientAccountsAvailable = true;
+                            $scope.retrievedRecipientAccountsArray = res.data.data.results;
+                        } else {
+                            $scope.senderAccountsAvailable = true;
+                            $scope.retrievedSenderUserAccountsArray = res.data.data.results;
                         }
-                    });
-                    if(recipient){
-                        $scope.retrievedRecipientAccountsArray = res.data.data.results;
                     } else {
-                        $scope.retrievedSenderUserAccountsArray = res.data.data.results;
+                        if(recipient){
+                            $scope.recipientAccountsAvailable = false;
+                        } else {
+                            $scope.senderAccountsAvailable = false;
+                        }
                     }
                 }
             }).catch(function (error) {
@@ -187,10 +200,10 @@
             var accountRef;
 
             if(transactionData){
-                if(recipient){
+                if(recipient && transactionData.credit_account){
                     $scope.retrievedRecipientAccountTransactions = [];
                     accountRef = transactionData.credit_account.reference;
-                } else {
+                } else if(transactionData.account) {
                     $scope.retrievedSenderAccountTransactions = [];
                     accountRef = transactionData.account.reference;
                 }
@@ -215,6 +228,9 @@
             }
         };
 
+        $scope.goToTransferUserAccountCreate = function (identifier) {
+            $window.open('/#/user/' + identifier + '/accounts?accountAction=newAccount','_blank');
+        };
 
     }
 })();

@@ -73,7 +73,10 @@
                     <i>No transactions exist for this account.</i>
                 </div>
                 <span ng-hide="creditTransactionData.currency.code">(Please choose currency first)</span>
-                <span ng-show="creditTransactionData.currency.code && !creditTransactionData.account.name">(Please choose an account)</span>
+                <span ng-show="creditTransactionData.currency.code && creditAccountsAvailable && !creditTransactionData.account.name">(Please choose an account)</span>
+                <span class="no-accounts-available" ng-click="goToCreditUserAccountCreate()"
+                      ng-hide="creditAccountsAvailable">(No accounts found for this user. Add an account?)
+                </span>
             </label>
             <select class="form-control pointer" ng-model="creditTransactionData.account" ng-change="creditAccountSelected(creditTransactionData)" ng-disabled="!creditTransactionData.currency.code || !retrievedCreditUserObj.identifier"
                     ng-options="account.name disable when account.disable for account in retrievedCreditUserAccountsArray | orderBy: 'name' track by account.name">
