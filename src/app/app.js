@@ -137,6 +137,13 @@ angular.module('BlurAdmin', [
                     || newUrl.indexOf('company/setup/') > 0){
                     $rootScope.securityConfigured = false;
                 } else if(token){
+
+                    //redirect users from transaction/credit or transactions/debit  to transactions/history
+                    if(newUrl.indexOf('transactions/credit') > 0 || newUrl.indexOf('transactions/debit') > 0 ||
+                        newUrl.indexOf('transactions/transfer') > 0){
+                        $location.path('/transactions/history');
+                    }
+
                     localStorageManagement.deleteValue('setupUsers');
                     localStorageManagement.deleteValue('setupCurrencies');
                     localStorageManagement.deleteValue('setupAccounts');

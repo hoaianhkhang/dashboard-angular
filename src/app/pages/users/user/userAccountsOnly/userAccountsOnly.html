@@ -61,8 +61,8 @@
                                 <ul ng-show="(acc.currency.code == optionsCode) && (account.reference == optionsReference)" class="account-options-box">
                                     <li ng-click="showCurrenciesOptions(acc.currency.code,account.reference)"><i class="dropdown-arr"></i></li>
                                     <li ng-click="goToSettings(acc.currency.code,account.reference)">Settings</li>
-                                    <li ng-click="goToView('transactions.credit',acc.currency,account.user.email,account.reference)">Credit</li>
-                                    <li ng-click="goToView('transactions.debit',acc.currency,account.user.email,account.reference)">Debit</li>
+                                    <li ng-click="goToView('credit',acc.currency,account.user.email,account.reference)">Credit</li>
+                                    <li ng-click="goToView('debit',acc.currency,account.user.email,account.reference)">Debit</li>
                                 </ul>
                             </div>
                         </td>
