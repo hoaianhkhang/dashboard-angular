@@ -48,7 +48,8 @@
         <div class="form-group">
             <label>Account <span class="required-icon">*</span>&nbsp;
                 <i ng-show="debitTransactionData.account && debitTransactionData.account.name" class="fa fa-list-alt transaction-account-icon" aria-hidden="true"></i>
-                <div ng-show="retrievedDebitAccountTransactions.length > 0" class="row transaction-account-details">
+                <div ng-show="retrievedDebitAccountTransactions.length > 0"
+                     class="row transaction-account-details">
                     <p class="transaction-tooltip-title">Recent transactions:</p>
                     <table class="table custom-table">
                         <tr>
@@ -67,13 +68,15 @@
                         </tr>
                     </table>
                 </div>
-                <div ng-show="retrievedDebitAccountTransactions.length == 0" class="row transaction-account-details">
+                <div ng-show="retrievedDebitAccountTransactions.length == 0"
+                     ng-class="{'no-account-transactions': retrievedDebitAccountTransactions.length == 0}"
+                     class="row transaction-account-details">
                     <i>No transactions exist for this account.</i>
                 </div>
                 <span ng-hide="debitTransactionData.currency.code">(Please choose currency first)</span>
                 <span ng-show="debitTransactionData.currency.code && !debitTransactionData.account.name">(Please choose an account)</span>
             </label>
-            <select class="form-control pointer" ng-model="debitTransactionData.account" ng-change="debitAccountSelected()" ng-disabled="!debitTransactionData.currency.code || !retrievedDebitUserObj.identifier"
+            <select class="form-control pointer" ng-model="debitTransactionData.account" ng-change="debitAccountSelected(debitTransactionData)" ng-disabled="!debitTransactionData.currency.code || !retrievedDebitUserObj.identifier"
                     ng-options="account.name disable when account.disable for account in retrievedDebitUserAccountsArray | orderBy: 'name' track by account.name">
             </select>
         </div>
