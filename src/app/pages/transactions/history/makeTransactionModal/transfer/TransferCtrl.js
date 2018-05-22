@@ -58,23 +58,23 @@
 
         $scope.$watch('transferTransactionData.user',function () {
             if($scope.transferTransactionData.user){
-                vm.resetData();
+                vm.resetTransferData();
                 vm.getUserObj($scope.transferTransactionData);
             } else {
-                vm.resetData();
+                vm.resetTransferData();
             }
         });
 
         $scope.$watch('transferTransactionData.recipient',function () {
             if($scope.transferTransactionData.recipient){
-                vm.resetData('recipient');
+                vm.resetTransferData('recipient');
                 vm.getUserObj($scope.transferTransactionData,'recipient');
             } else {
-                vm.resetData('recipient');
+                vm.resetTransferData('recipient');
             }
         });
 
-        vm.resetData = function (recipient) {
+        vm.resetTransferData = function (recipient) {
             if(recipient){
                 $scope.retrievedRecipientObj = {};
                 $scope.retrievedRecipientAccountsArray = [];

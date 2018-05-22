@@ -38,7 +38,7 @@
         </div>
         <div class="form-group">
             <label>Currency <span class="required-icon">*</span>
-                <span ng-hide="retrievedDebitUserObj.identifier">(Please choose user first)</span>
+                <span ng-hide="retrievedDebitUserObj.identifier">Please choose user first.</span>
             </label>
             <br>
             <select class="form-control pointer" ng-model="debitTransactionData.currency" ng-change="debitCurrencySelected(debitTransactionData)" ng-disabled="!retrievedDebitUserObj.identifier"
@@ -73,14 +73,15 @@
                      class="row transaction-account-details">
                     <i>No transactions exist for this account.</i>
                 </div>
-                <span ng-hide="debitTransactionData.currency.code">(Please choose currency first)</span>
+                <span ng-hide="debitTransactionData.currency.code">Please choose currency first.</span>
                 <span ng-show="debitTransactionData.currency.code && debitCurrencyAccountsAvailable
                  && debitUserAccountsAvailable && !debitTransactionData.account.name">(Please choose an account)</span>
-                <span class="no-accounts-available" ng-click="goToDebitUserAccountCreate()"
-                      ng-hide="debitUserAccountsAvailable">(Add an account here.)
+                <span class="no-accounts-available"
+                      ng-hide="debitUserAccountsAvailable">No accounts found for this user.
+                    <span ng-click="goToDebitUserAccountCreate()"> Add an account here.</span>
                 </span>
                 <span class="no-accounts-currency-available" ng-hide="debitCurrencyAccountsAvailable">
-                    (User has no accounts with selected currency.)
+                    User has no accounts with selected currency.
                 </span>
             </label>
             <select class="form-control pointer" ng-model="debitTransactionData.account" ng-change="debitAccountSelected(debitTransactionData)" ng-disabled="!debitTransactionData.currency.code || !retrievedDebitUserObj.identifier"

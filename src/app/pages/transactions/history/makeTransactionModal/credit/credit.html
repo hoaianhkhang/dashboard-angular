@@ -38,7 +38,7 @@
         </div>
         <div class="form-group">
             <label>Currency <span class="required-icon">*</span>
-                <span ng-hide="retrievedCreditUserObj.identifier">(Please choose user first)</span>
+                <span ng-hide="retrievedCreditUserObj.identifier">Please choose user first.</span>
             </label>
             <br>
             <select class="form-control pointer" ng-model="creditTransactionData.currency" ng-change="creditCurrencySelected(creditTransactionData)" ng-disabled="!retrievedCreditUserObj.identifier"
@@ -72,14 +72,15 @@
                      class="row transaction-account-details">
                     <i>No transactions exist for this account.</i>
                 </div>
-                <span ng-hide="creditTransactionData.currency.code">(Please choose currency first)</span>
+                <span ng-hide="creditTransactionData.currency.code">Please choose currency first.</span>
                 <span ng-show="creditTransactionData.currency.code && creditCurrencyAccountsAvailable
                  && creditUserAccountsAvailable && !creditTransactionData.account.name">(Please choose an account)</span>
-                <span class="no-accounts-available" ng-click="goToCreditUserAccountCreate()"
-                      ng-hide="creditUserAccountsAvailable">(Add an account here.)
+                <span class="no-accounts-available"
+                      ng-hide="creditUserAccountsAvailable">No accounts found for this user.
+                    <span ng-click="goToCreditUserAccountCreate()"> Add an account here.</span>
                 </span>
                 <span class="no-accounts-currency-available" ng-hide="creditCurrencyAccountsAvailable">
-                    (User has no accounts with selected currency.)
+                    User has no accounts with selected currency.
                 </span>
             </label>
             <select class="form-control pointer" ng-model="creditTransactionData.account" ng-change="creditAccountSelected(creditTransactionData)" ng-disabled="!creditTransactionData.currency.code || !retrievedCreditUserObj.identifier"

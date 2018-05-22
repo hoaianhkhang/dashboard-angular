@@ -113,24 +113,23 @@
 
         $scope.$watch('debitTransactionData.user',function () {
             if($scope.debitTransactionData.user){
-
-                $scope.retrievedDebitUserObj = {};
-                $scope.retrievedDebitUserAccountsArray = [];
-                $scope.retrievedDebitAccountTransactions = [];
-                $scope.debitTransactionData.currency = {};
-                $scope.debitTransactionData.account = {};
+                vm.resetDebitData();
                 vm.getDebitUserObj($scope.debitTransactionData);
 
             } else {
-
-                $scope.retrievedDebitUserObj = {};
-                $scope.retrievedDebitUserAccountsArray = [];
-                $scope.retrievedDebitAccountTransactions = [];
-                $scope.debitTransactionData.currency = {};
-                $scope.debitTransactionData.account = {};
-
+                vm.resetDebitData();
             }
         });
+
+        vm.resetDebitData = function () {
+            $scope.retrievedDebitUserObj = {};
+            $scope.retrievedDebitUserAccountsArray = [];
+            $scope.retrievedDebitAccountTransactions = [];
+            $scope.debitTransactionData.currency = {};
+            $scope.debitTransactionData.account = {};
+            $scope.debitUserAccountsAvailable = true;
+            $scope.debitCurrencyAccountsAvailable = true;
+        };
 
         $scope.debitCurrencySelected = function (debitTransactionData) {
             $scope.retrievedDebitUserAccountsArray = [];

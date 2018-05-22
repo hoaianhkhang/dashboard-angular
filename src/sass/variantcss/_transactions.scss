@@ -3,8 +3,11 @@
 }
 
 .no-accounts-available{
-  cursor: pointer;
-  color: $primary!important;
+  color: #ed675A!important;
+  & span{
+    cursor: pointer;
+    color: $primary!important;
+  }
 }
 
 .transaction-details-user{

@@ -112,24 +112,23 @@
 
         $scope.$watch('creditTransactionData.user',function () {
             if($scope.creditTransactionData.user){
-
-                $scope.retrievedCreditUserObj = {};
-                $scope.retrievedCreditUserAccountsArray = [];
-                $scope.retrievedCreditAccountTransactions = [];
-                $scope.creditTransactionData.currency = {};
-                $scope.creditTransactionData.account = {};
+                vm.resetCreditData();
                 vm.getCreditUserObj($scope.creditTransactionData);
 
             } else {
-
-                $scope.retrievedCreditUserObj = {};
-                $scope.retrievedCreditUserAccountsArray = [];
-                $scope.retrievedCreditAccountTransactions = [];
-                $scope.creditTransactionData.currency = {};
-                $scope.creditTransactionData.account = {};
-
+                vm.resetCreditData();
             }
         });
+
+        vm.resetCreditData = function () {
+            $scope.retrievedCreditUserObj = {};
+            $scope.retrievedCreditUserAccountsArray = [];
+            $scope.retrievedCreditAccountTransactions = [];
+            $scope.creditTransactionData.currency = {};
+            $scope.creditTransactionData.account = {};
+            $scope.creditUserAccountsAvailable = true;
+            $scope.creditCurrencyAccountsAvailable = true;
+        };
 
         $scope.creditCurrencySelected = function (creditTransactionData) {
             $scope.retrievedCreditUserAccountsArray = [];
