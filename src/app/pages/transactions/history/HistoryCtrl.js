@@ -23,29 +23,41 @@
         $scope.dateFilterIntervalOptions = ['days','months'];
         $scope.groupFilterOptions = ['Group name','In a group'];
         $scope.filtersCount = 0;
+        $scope.orderByVariable = '-createdDate';
+
+        if(localStorageManagement.getValue(vm.savedTransactionTableColumns)){
+            var headerColumns = JSON.parse(localStorageManagement.getValue(vm.savedTransactionTableColumns));
+            headerColumns.forEach(function (col) {
+                if(!col.orderByDirection){
+                    col.orderByDirection = 'desc';
+                }
+            });
+
+            localStorageManagement.setValue(vm.savedTransactionTableColumns,JSON.stringify(headerColumns));
+        }
 
         $scope.headerColumns = localStorageManagement.getValue(vm.savedTransactionTableColumns) ? JSON.parse(localStorageManagement.getValue(vm.savedTransactionTableColumns)) : [
-            {colName: 'User',fieldName: 'user',visible: true},
-            {colName: 'Type',fieldName: 'tx_type',visible: true},
-            {colName: 'Subtype',fieldName: 'subtype',visible: true},
-            {colName: 'Currency',fieldName: 'currencyCode',visible: true},
-            {colName: 'Amount',fieldName: 'amount',visible: true},
-            {colName: 'Fee',fieldName: 'fee',visible: true},
-            {colName: 'Status',fieldName: 'status',visible: true},
-            {colName: 'Id',fieldName: 'id',visible: true},
-            {colName: 'Date',fieldName: 'createdDate',visible: true},
-            {colName: 'Total amount',fieldName: 'totalAmount',visible: false},
-            {colName: 'Balance',fieldName: 'balance',visible: false},
-            {colName: 'Account',fieldName: 'account',visible: false},
-            {colName: 'Username',fieldName: 'username',visible: false},
-            {colName: 'Identifier',fieldName: 'identifier',visible: false},
-            {colName: 'Updated',fieldName: 'updatedDate',visible: false},
-            {colName: 'Mobile',fieldName: 'mobile_number',visible: false},
-            {colName: 'Destination tx id',fieldName: 'destination_tx_id',visible: false},
-            {colName: 'Source tx id',fieldName: 'source_tx_id',visible: false},
-            {colName: 'Label',fieldName: 'label',visible: false},
-            {colName: 'Reference',fieldName: 'reference',visible: false},
-            {colName: 'Note',fieldName: 'note',visible: false}
+            {colName: 'User',fieldName: 'user',visible: true,orderByDirection: 'desc'},
+            {colName: 'Type',fieldName: 'tx_type',visible: true,orderByDirection: 'desc'},
+            {colName: 'Subtype',fieldName: 'subtype',visible: true,orderByDirection: 'desc'},
+            {colName: 'Currency',fieldName: 'currencyCode',visible: true,orderByDirection: 'desc'},
+            {colName: 'Amount',fieldName: 'amount',visible: true,orderByDirection: 'desc'},
+            {colName: 'Fee',fieldName: 'fee',visible: true,orderByDirection: 'desc'},
+            {colName: 'Status',fieldName: 'status',visible: true,orderByDirection: 'desc'},
+            {colName: 'Id',fieldName: 'id',visible: true,orderByDirection: 'desc'},
+            {colName: 'Date',fieldName: 'createdDate',visible: true,orderByDirection: 'desc'},
+            {colName: 'Total amount',fieldName: 'totalAmount',visible: false,orderByDirection: 'desc'},
+            {colName: 'Balance',fieldName: 'balance',visible: false,orderByDirection: 'desc'},
+            {colName: 'Account',fieldName: 'account',visible: false,orderByDirection: 'desc'},
+            {colName: 'Username',fieldName: 'username',visible: false,orderByDirection: 'desc'},
+            {colName: 'Identifier',fieldName: 'identifier',visible: false,orderByDirection: 'desc'},
+            {colName: 'Updated',fieldName: 'updatedDate',visible: false,orderByDirection: 'desc'},
+            {colName: 'Mobile',fieldName: 'mobile_number',visible: false,orderByDirection: 'desc'},
+            {colName: 'Destination tx id',fieldName: 'destination_tx_id',visible: false,orderByDirection: 'desc'},
+            {colName: 'Source tx id',fieldName: 'source_tx_id',visible: false,orderByDirection: 'desc'},
+            {colName: 'Label',fieldName: 'label',visible: false,orderByDirection: 'desc'},
+            {colName: 'Reference',fieldName: 'reference',visible: false,orderByDirection: 'desc'},
+            {colName: 'Note',fieldName: 'note',visible: false,orderByDirection: 'desc'}
         ];
         $scope.filtersObj = {
             dateFilter: false,
@@ -239,10 +251,14 @@
 
         // for CSV ends
 
-        $scope.orderByFunction = function () {
-            return ($scope.applyFiltersObj.orderByFilter.selectedOrderByOption == 'Latest' ? '-created' :
-                $scope.applyFiltersObj.orderByFilter.selectedOrderByOption == 'Largest' ? '-amount' :
-                    $scope.applyFiltersObj.orderByFilter.selectedOrderByOption == 'Smallest' ? 'amount' : '');
+        $scope.orderByFunction = function (header) {
+            if(header.orderByDirection == 'desc'){
+                header.orderByDirection = 'asc';
+                $scope.orderByVariable = header.fieldName;
+            } else {
+                header.orderByDirection = 'desc';
+                $scope.orderByVariable = '-' + header.fieldName;
+            }
         };
 
         $scope.pageSizeChanged =  function () {

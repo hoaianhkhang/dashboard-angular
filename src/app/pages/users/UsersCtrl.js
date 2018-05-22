@@ -40,8 +40,8 @@
         if(localStorageManagement.getValue(vm.savedUserTableColumns)){
              var headerColumns = JSON.parse(localStorageManagement.getValue(vm.savedUserTableColumns));
              headerColumns.forEach(function (col) {
-                 if(col.orderBy){
-                     delete col.orderBy;
+                 if(!col.orderByDirection){
+                     col.orderByDirection = 'desc';
                  }
              });
 

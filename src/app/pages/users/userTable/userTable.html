@@ -33,7 +33,7 @@
                 <table class="table custom-table table-striped">
                     <thead>
                         <tr>
-                            <th ng-click="orderByFunction(header)" class="pointer" ng-repeat="header in headerColumns" ng-if="header.visible">
+                            <th ng-click="orderByFunction(header)" class="pointer sortable-header" ng-repeat="header in headerColumns" ng-if="header.visible">
                                 {{header.colName}}&nbsp;&nbsp;
                                 <i ng-show="header.orderByDirection == 'desc'" class="fa fa-caret-down"></i>
                                 <i ng-show="header.orderByDirection == 'asc'" class="fa fa-caret-up"></i>
