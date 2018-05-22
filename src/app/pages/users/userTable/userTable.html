@@ -33,12 +33,15 @@
                 <table class="table custom-table table-striped">
                     <thead>
                         <tr>
-                            <!--class="pointer"-->
-                            <th ng-repeat="header in headerColumns" ng-if="header.visible"  ng-bind="header.colName"></th>
+                            <th ng-click="orderByFunction(header)" class="pointer" ng-repeat="header in headerColumns" ng-if="header.visible">
+                                {{header.colName}}&nbsp;&nbsp;
+                                <i ng-show="header.orderByDirection == 'desc'" class="fa fa-caret-down"></i>
+                                <i ng-show="header.orderByDirection == 'asc'" class="fa fa-caret-up"></i>
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="user in users | orderBy: orderByFunction" data-toggle="modal"
+                        <tr ng-repeat="user in users | orderBy: orderByVariable" data-toggle="modal"
                             class="editable-row center pointer user-details-table-hover" ng-click="displayUser(user)">
                             <td class="transactions-list-element" ng-repeat="header in headerColumns"
                                 ng-if="header.visible" ng-bind="user[header.fieldName]"></td>

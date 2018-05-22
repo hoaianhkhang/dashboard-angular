@@ -426,20 +426,5 @@
                 </div>
             </div>
         </div>
-        <div id="filterOrderBy">
-            <div>
-                <label class="checkbox-inline custom-checkbox nowrap">
-                    <input type="checkbox" ng-model="filtersObj.orderByFilter">
-                    <span>Order by</span>
-                </label>
-            </div>
-            <div ng-if="filtersObj.orderByFilter" class="row divider-top-6">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 date-filter-view">
-                    <select class="form-control pointer" ng-model="applyFiltersObj.orderByFilter.selectedOrderByOption"
-                            ng-options="orderBy for orderBy in orderByOptions">
-                    </select>
-                </div>
-            </div>
-        </div>
     </div>
 </div>

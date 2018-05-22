@@ -29,6 +29,7 @@
         $scope.groupFilterOptions = ['Group name','In a group'];
         $scope.currencyOptions = [];
         $scope.filtersCount = 0;
+        $scope.orderByVariable = '-created';
 
         $scope.usersPagination = {
             itemsPerPage: 25,
@@ -39,9 +40,8 @@
         if(localStorageManagement.getValue(vm.savedUserTableColumns)){
              var headerColumns = JSON.parse(localStorageManagement.getValue(vm.savedUserTableColumns));
              headerColumns.forEach(function (col) {
-                 if(col.colName == 'Date joined' || col.fieldName == 'date_joined'){
-                     col.colName = 'Created';
-                     col.fieldName = 'created';
+                 if(col.orderBy){
+                     delete col.orderBy;
                  }
              });
 
@@ -49,25 +49,25 @@
         }
 
         $scope.headerColumns = localStorageManagement.getValue(vm.savedUserTableColumns) ? JSON.parse(localStorageManagement.getValue(vm.savedUserTableColumns)) : [
-            {colName: 'Identifier',fieldName: 'identifier',visible: true},
-            {colName: 'First name',fieldName: 'first_name',visible: true},
-            {colName: 'Last name',fieldName: 'last_name',visible: true},
-            {colName: 'Email',fieldName: 'email',visible: true},
-            {colName: 'Mobile number',fieldName: 'mobile_number',visible: true},
-            {colName: 'Group name',fieldName: 'groupName',visible: true},
-            {colName: 'Created',fieldName: 'created',visible: true},
-            {colName: 'Updated',fieldName: 'updated',visible: false},
-            {colName: 'Status',fieldName: 'status',visible: false},
-            {colName: 'KYC status',fieldName: 'kycStatus',visible: false},
-            {colName: 'Active',fieldName: 'active',visible: false},
-            {colName: 'Last login',fieldName: 'last_login',visible: false},
-            {colName: 'Verified',fieldName: 'verified',visible: false},
-            {colName: 'ID Number',fieldName: 'id_number',visible: false},
-            {colName: 'Nationality',fieldName: 'nationality',visible: false},
-            {colName: 'Language',fieldName: 'language',visible: false},
-            {colName: 'Timezone',fieldName: 'timezone',visible: false},
-            {colName: 'Birth date',fieldName: 'birth_date',visible: false},
-            {colName: 'Username',fieldName: 'username',visible: false}
+            {colName: 'Identifier',fieldName: 'identifier',visible: true,orderByDirection: 'desc'},
+            {colName: 'First name',fieldName: 'first_name',visible: true,orderByDirection: 'desc'},
+            {colName: 'Last name',fieldName: 'last_name',visible: true,orderByDirection: 'desc'},
+            {colName: 'Email',fieldName: 'email',visible: true,orderByDirection: 'desc'},
+            {colName: 'Mobile number',fieldName: 'mobile_number',visible: true,orderByDirection: 'desc'},
+            {colName: 'Group name',fieldName: 'groupName',visible: true,orderByDirection: 'desc'},
+            {colName: 'Created',fieldName: 'created',visible: true,orderByDirection: 'desc'},
+            {colName: 'Updated',fieldName: 'updated',visible: false,orderByDirection: 'desc'},
+            {colName: 'Status',fieldName: 'status',visible: false,orderByDirection: 'desc'},
+            {colName: 'KYC status',fieldName: 'kycStatus',visible: false,orderByDirection: 'desc'},
+            {colName: 'Active',fieldName: 'active',visible: false,orderByDirection: 'desc'},
+            {colName: 'Last login',fieldName: 'last_login',visible: false,orderByDirection: 'desc'},
+            {colName: 'Verified',fieldName: 'verified',visible: false,orderByDirection: 'desc'},
+            {colName: 'ID Number',fieldName: 'id_number',visible: false,orderByDirection: 'desc'},
+            {colName: 'Nationality',fieldName: 'nationality',visible: false,orderByDirection: 'desc'},
+            {colName: 'Language',fieldName: 'language',visible: false,orderByDirection: 'desc'},
+            {colName: 'Timezone',fieldName: 'timezone',visible: false,orderByDirection: 'desc'},
+            {colName: 'Birth date',fieldName: 'birth_date',visible: false,orderByDirection: 'desc'},
+            {colName: 'Username',fieldName: 'username',visible: false,orderByDirection: 'desc'}
         ];
         $scope.filtersObj = {
             identifierFilter: false,
@@ -137,9 +137,6 @@
             },
             kycFilter: {
                 selectedKycFilter: 'Status'
-            },
-            orderByFilter: {
-                selectedOrderByOption: 'Created'
             }
         };
 
@@ -305,8 +302,14 @@
             }
         };
 
-        $scope.orderByFunction = function () {
-            return ($scope.applyFiltersObj.orderByFilter.selectedOrderByOption == 'Created' ? '-created' : '-last_login');
+        $scope.orderByFunction = function (header) {
+            if(header.orderByDirection == 'desc'){
+                header.orderByDirection = 'asc';
+                $scope.orderByVariable = header.fieldName;
+            } else {
+                header.orderByDirection = 'desc';
+                $scope.orderByVariable = '-' + header.fieldName;
+            }
         };
 
         vm.getCreatedDateFilters = function () {
