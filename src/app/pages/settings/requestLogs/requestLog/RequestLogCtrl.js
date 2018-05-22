@@ -11,7 +11,7 @@
         vm.requestLogId = $state.params.logId;
         $scope.loadingRequestLog = true;
 
-        $scope.getRequestLogs = function () {
+        $scope.getRequestLog = function () {
             $scope.loadingRequestLog = true;
 
             if(vm.token) {
@@ -34,7 +34,7 @@
                 });
             }
         };
-        $scope.getRequestLogs();
+        $scope.getRequestLog();
 
 
 

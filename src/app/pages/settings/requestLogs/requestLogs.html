@@ -1,31 +1,51 @@
 <div ng-hide="loadingRequestLogs" class="panel">
     <div class="panel-heading">
-        <span class="user-details-panel-title">Request Logs</span>
+        <div class="table-filter-heading">
+            <div>
+                <button ng-click="showRequestLogsFilters()" ng-class="{'transactions-filter-btn': (filtersCount > 0), 'transactions-btn': (filtersCount == 0)}"
+                        class="btn btn-default">Filters
+                    <span ng-show="filtersCount > 0">|</span> <span ng-show="filtersCount > 0" class="filter-count">{{filtersCount}}</span>
+                </button>
+                <span  click-outside="closeColumnFiltersBox()">
+                    <button ng-click="showColumnFilters()" class="btn dynamic-columns btn-default">Columns</button>
+                    <div ng-show="showingColumnFilters">
+                        <request-columns-filter></request-columns-filter>
+                    </div>
+                </span>
+                <div ng-show="showingFilters">
+                    <request-logs-filters></request-logs-filters>
+                </div>
+            </div>
+            <button ng-click="getRequestLogs('applyFilter')" class="btn btn-default transactions-btn panel-header-button">Refresh</button>
+        </div>
     </div>
     <div class="panel-body">
         <div ng-show="requestLogs.length > 0" class="divider">
-            <table class="table custom-table">
-                <tr>
-                    <th>Id</th>
-                    <th>Key</th>
-                    <th>Url</th>
-                    <th>Method</th>
-                    <th>Status code</th>
-                </tr>
-                <tr ng-repeat="requestLog in requestLogs | orderBy:'-created'" data-toggle="modal"
-                    class="editable-row center pointer user-details-table-hover" ng-click="goToRequestLog(requestLog)">
-                    <td><div title="{{requestLog.id}}" ng-bind="requestLog.id"></div></td>
-                    <td><div title="{{requestLog.key}}" class="transactions-list-element" ng-bind="requestLog.key"></div></td>
-                    <td><div title="{{requestLog.path}}" class="transactions-list-element" ng-bind="requestLog.path"></div></td>
-                    <td><div title="{{requestLog.method}}" class="transactions-list-element" ng-bind="requestLog.method"></div></td>
-                    <td><div title="{{requestLog.status_code}}" class="transactions-list-element" ng-bind="requestLog.status_code"></div></td>
-                </tr>
-            </table>
+            <div class="draggable-table">
+                <!--draggable on-drag-end="tableColDrag($start, $target)"-->
+                <table class="table custom-table table-striped">
+                    <thead>
+                    <tr>
+                        <th ng-repeat="header in requestHeaderColumns" ng-if="header.visible"  ng-bind="header.colName"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="requestLog in requestLogs | orderBy:'-created'" data-toggle="modal"
+                        class="editable-row center pointer user-details-table-hover" ng-click="goToRequestLog(requestLog)">
+                        <td class="transactions-list-element" ng-repeat="header in requestHeaderColumns"
+                            ng-if="header.visible" ng-bind="requestLog[header.fieldName]"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
             <div>
                 <p uib-pagination boundary-links="true" items-per-page="pagination.itemsPerPage"  total-items="requestLogsData.count" ng-model="pagination.pageNo"
                    max-size="pagination.maxSize" class="pagination-sm pull-right transaction-history-pagination" force-ellipses="true" ng-change="getRequestLogs()"
                    previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></p>
             </div>
+        </div>
+        <div ng-show="requestLogs.length == 0">
+            <i>No request logs found.</i>
         </div>
     </div>
 </div>
