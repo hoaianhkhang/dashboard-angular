@@ -27,7 +27,8 @@
         $scope.retrievedCreditUserAccountsArray = [];
         $scope.retrievedCreditAccountTransactions = [];
         $scope.creditTransactionStatus = ['Complete','Pending','Failed','Deleted'];
-        $scope.creditAccountsAvailable = true;
+        $scope.creditUserAccountsAvailable = true;
+        $scope.creditCurrencyAccountsAvailable = true;
 
         vm.getCreditCompanyCurrencies = function(){
             if(vm.token){
@@ -43,7 +44,7 @@
                             $scope.creditTransactionData.currency = $scope.creditCurrencyOptions.find(function (element) {
                                 return element.code == $scope.newTransactionParams.currencyCode;
                             });
-                            vm.getCreditAccounts($scope.retrievedCreditUserObj,$scope.creditTransactionData);
+                            vm.getCreditUserAccounts($scope.retrievedCreditUserObj,$scope.creditTransactionData);
                         }
                     }
                 }).catch(function (error) {
@@ -95,7 +96,7 @@
                         $scope.retrievedCreditUserObj.metadata = metadataTextService.convertToText($scope.retrievedCreditUserObj.metadata);
                         if($scope.creditCurrencyOptions.length === 1){
                             $scope.creditTransactionData.currency = $scope.creditCurrencyOptions[0];
-                            vm.getCreditAccounts($scope.retrievedCreditUserObj,$scope.creditTransactionData);
+                            vm.getCreditUserAccounts($scope.retrievedCreditUserObj,$scope.creditTransactionData);
                         }
                     } else {
                         $scope.retrievedCreditUserObj = {};
@@ -133,7 +134,29 @@
         $scope.creditCurrencySelected = function (creditTransactionData) {
             $scope.retrievedCreditUserAccountsArray = [];
             creditTransactionData.account = {};
-            vm.getCreditAccounts($scope.retrievedCreditUserObj,creditTransactionData);
+            vm.getCreditUserAccounts($scope.retrievedCreditUserObj,creditTransactionData);
+        };
+
+        vm.getCreditUserAccounts = function (user,creditTransactionData) {
+            $http.get(environmentConfig.API + '/admin/accounts/?user='+ user.identifier, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': vm.token
+                }
+            }).then(function (res) {
+                if (res.status === 200) {
+                    if(res.data.data.results.length > 0){
+                        $scope.creditUserAccountsAvailable = true;
+                        vm.getCreditAccounts(user,creditTransactionData);
+                    } else {
+                        $scope.creditUserAccountsAvailable = false;
+                    }
+                }
+            }).catch(function (error) {
+                $scope.loadingTransactionSettings = false;
+                errorHandler.evaluateErrors(error.data);
+                errorHandler.handleErrors(error);
+            });
         };
 
         vm.getCreditAccounts = function (user,creditTransactionData) {
@@ -145,7 +168,7 @@
             }).then(function (res) {
                 if (res.status === 200) {
                     if(res.data.data.results.length > 0){
-                        $scope.creditAccountsAvailable = true;
+                        $scope.creditCurrencyAccountsAvailable = true;
                         res.data.data.results.forEach(function (account) {
                             if(account.primary){
                                 account.name = account.name + ' - (primary)';
@@ -159,7 +182,7 @@
                         });
                         $scope.retrievedCreditUserAccountsArray = res.data.data.results;
                     } else {
-                        $scope.creditAccountsAvailable = false;
+                        $scope.creditCurrencyAccountsAvailable = false;
                         $scope.retrievedCreditUserAccountsArray = res.data.data.results;
                     }
                 }

@@ -28,7 +28,8 @@
         $scope.retrievedDebitUserAccountsArray = [];
         $scope.retrievedDebitAccountTransactions = [];
         $scope.debitTransactionStatus = ['Complete','Pending','Failed','Deleted'];
-        $scope.debitAccountsAvailable = true;
+        $scope.debitUserAccountsAvailable = true;
+        $scope.debitCurrencyAccountsAvailable = true;
 
         vm.getDebitCompanyCurrencies = function(){
             if(vm.token){
@@ -44,7 +45,7 @@
                             $scope.debitTransactionData.currency = $scope.debitCurrencyOptions.find(function (element) {
                                 return element.code == $scope.newTransactionParams.currencyCode;
                             });
-                            vm.getDebitAccounts($scope.retrievedDebitUserObj,$scope.debitTransactionData);
+                            vm.getDebitUserAccounts($scope.retrievedDebitUserObj,$scope.debitTransactionData);
                         }
                     }
                 }).catch(function (error) {
@@ -96,7 +97,7 @@
                         $scope.retrievedDebitUserObj.metadata = metadataTextService.convertToText($scope.retrievedDebitUserObj.metadata);
                         if($scope.debitCurrencyOptions.length === 1){
                             $scope.debitTransactionData.currency = $scope.debitCurrencyOptions[0];
-                            vm.getDebitAccounts($scope.retrievedDebitUserObj,$scope.debitTransactionData);
+                            vm.getDebitUserAccounts($scope.retrievedDebitUserObj,$scope.debitTransactionData);
                         }
                     } else {
                         $scope.retrievedDebitUserObj = {};
@@ -134,7 +135,29 @@
         $scope.debitCurrencySelected = function (debitTransactionData) {
             $scope.retrievedDebitUserAccountsArray = [];
             debitTransactionData.account = {};
-            vm.getDebitAccounts($scope.retrievedDebitUserObj,debitTransactionData);
+            vm.getDebitUserAccounts($scope.retrievedDebitUserObj,debitTransactionData);
+        };
+
+        vm.getDebitUserAccounts = function (user,debitTransactionData) {
+            $http.get(environmentConfig.API + '/admin/accounts/?user='+ user.identifier, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': vm.token
+                }
+            }).then(function (res) {
+                if (res.status === 200) {
+                    if(res.data.data.results.length > 0){
+                        $scope.debitUserAccountsAvailable = true;
+                        vm.getDebitAccounts(user,debitTransactionData);
+                    } else {
+                        $scope.debitUserAccountsAvailable = false;
+                    }
+                }
+            }).catch(function (error) {
+                $scope.loadingTransactionSettings = false;
+                errorHandler.evaluateErrors(error.data);
+                errorHandler.handleErrors(error);
+            });
         };
 
         vm.getDebitAccounts = function (user,debitTransactionData) {
@@ -147,7 +170,7 @@
             }).then(function (res) {
                 if (res.status === 200) {
                     if(res.data.data.results.length > 0){
-                        $scope.debitAccountsAvailable = true;
+                        $scope.debitCurrencyAccountsAvailable = true;
                         res.data.data.results.forEach(function (account) {
                             if(account.primary){
                                 account.name = account.name + ' - (primary)';
@@ -161,7 +184,7 @@
                         });
                         $scope.retrievedDebitUserAccountsArray = res.data.data.results;
                     } else {
-                        $scope.debitAccountsAvailable = false;
+                        $scope.debitCurrencyAccountsAvailable = false;
                         $scope.retrievedDebitUserAccountsArray = res.data.data.results;
                     }
                 }

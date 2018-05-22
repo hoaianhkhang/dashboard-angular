@@ -16,8 +16,10 @@
         $scope.retrievedRecipientObj = {};
         $scope.retrievedRecipientAccountsArray = [];
         $scope.retrievedRecipientAccountTransactions = [];
-        $scope.senderAccountsAvailable = true;
-        $scope.recipientAccountsAvailable = true;
+        $scope.senderUserAccountsAvailable = true;
+        $scope.senderCurrencyAccountsAvailable = true;
+        $scope.recipientUserAccountsAvailable = true;
+        $scope.recipientCurrencyAccountsAvailable = true;
 
         $scope.transferTransactionData = {
             user: null,
@@ -56,39 +58,45 @@
 
         $scope.$watch('transferTransactionData.user',function () {
             if($scope.transferTransactionData.user){
-
-                $scope.retrievedSenderUserObj = {};
-                $scope.retrievedSenderUserAccountsArray = [];
-                $scope.retrievedSenderAccountTransactions = [];
-                $scope.transferTransactionData.currency = {};
-                $scope.transferTransactionData.account = {};
+                vm.resetData();
                 vm.getUserObj($scope.transferTransactionData);
             } else {
-                $scope.retrievedSenderUserObj = {};
-                $scope.retrievedSenderUserAccountsArray = [];
-                $scope.retrievedSenderAccountTransactions = [];
-                $scope.transferTransactionData.currency = {};
-                $scope.transferTransactionData.account = {};
+                vm.resetData();
             }
         });
 
         $scope.$watch('transferTransactionData.recipient',function () {
             if($scope.transferTransactionData.recipient){
-
-                $scope.retrievedRecipientObj = {};
-                $scope.retrievedRecipientAccountsArray = [];
-                $scope.retrievedRecipientAccountTransactions = [];
-                $scope.transferTransactionData.currency = {};
-                $scope.transferTransactionData.credit_account = {};
+                vm.resetData('recipient');
                 vm.getUserObj($scope.transferTransactionData,'recipient');
             } else {
+                vm.resetData('recipient');
+            }
+        });
+
+        vm.resetData = function (recipient) {
+            if(recipient){
                 $scope.retrievedRecipientObj = {};
                 $scope.retrievedRecipientAccountsArray = [];
                 $scope.retrievedRecipientAccountTransactions = [];
                 $scope.transferTransactionData.currency = {};
                 $scope.transferTransactionData.credit_account = {};
+                $scope.senderUserAccountsAvailable = true;
+                $scope.senderCurrencyAccountsAvailable = true;
+                $scope.recipientUserAccountsAvailable = true;
+                $scope.recipientCurrencyAccountsAvailable = true;
+            } else {
+                $scope.retrievedSenderUserObj = {};
+                $scope.retrievedSenderUserAccountsArray = [];
+                $scope.retrievedSenderAccountTransactions = [];
+                $scope.transferTransactionData.currency = {};
+                $scope.transferTransactionData.account = {};
+                $scope.senderUserAccountsAvailable = true;
+                $scope.senderCurrencyAccountsAvailable = true;
+                $scope.recipientUserAccountsAvailable = true;
+                $scope.recipientCurrencyAccountsAvailable = true;
             }
-        });
+        };
 
         vm.getUserObj = function (transactionData,recipient) {
             var user;
@@ -144,13 +152,44 @@
                 $scope.retrievedRecipientAccountsArray = [];
                 transactionData.credit_account = {};
                 transactionData.debit_account = {};
-                vm.getAccounts($scope.retrievedRecipientObj,transactionData,recipient);
-                vm.getAccounts($scope.retrievedSenderUserObj,transactionData);
+                vm.getUserAccounts($scope.retrievedRecipientObj,transactionData,recipient);
+                vm.getUserAccounts($scope.retrievedSenderUserObj,transactionData);
             } else {
                 $scope.retrievedSenderUserAccountsArray = [];
                 transactionData.account = {};
-                vm.getAccounts($scope.retrievedSenderUserObj,transactionData);
+                vm.getUserAccounts($scope.retrievedSenderUserObj,transactionData);
             }
+        };
+
+        vm.getUserAccounts = function (user,transactionData,recipient) {
+
+            $http.get(environmentConfig.API + '/admin/accounts/?user='+ user.identifier, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': vm.token
+                }
+            }).then(function (res) {
+                if (res.status === 200) {
+                    if(res.data.data.results.length > 0 ){
+                        if(recipient){
+                            $scope.recipientUserAccountsAvailable = true;
+                            vm.getAccounts(user,transactionData,recipient);
+                        } else {
+                            $scope.senderUserAccountsAvailable = true;
+                            vm.getAccounts(user,transactionData);
+                        }
+                    } else {
+                        if(recipient){
+                            $scope.recipientUserAccountsAvailable = false;
+                        } else {
+                            $scope.senderUserAccountsAvailable = false;
+                        }
+                    }
+                }
+            }).catch(function (error) {
+                errorHandler.evaluateErrors(error.data);
+                errorHandler.handleErrors(error);
+            });
         };
 
         vm.getAccounts = function (user,transactionData,recipient) {
@@ -179,17 +218,17 @@
                         });
 
                         if(recipient){
-                            $scope.recipientAccountsAvailable = true;
+                            $scope.recipientCurrencyAccountsAvailable = true;
                             $scope.retrievedRecipientAccountsArray = res.data.data.results;
                         } else {
-                            $scope.senderAccountsAvailable = true;
+                            $scope.senderCurrencyAccountsAvailable = true;
                             $scope.retrievedSenderUserAccountsArray = res.data.data.results;
                         }
                     } else {
                         if(recipient){
-                            $scope.recipientAccountsAvailable = false;
+                            $scope.recipientCurrencyAccountsAvailable = false;
                         } else {
-                            $scope.senderAccountsAvailable = false;
+                            $scope.senderCurrencyAccountsAvailable = false;
                         }
                     }
                 }

@@ -1,6 +1,10 @@
+.no-accounts-currency-available{
+  color: #ed675A!important;
+}
+
 .no-accounts-available{
   cursor: pointer;
-  color: #ed675A;
+  color: $primary!important;
 }
 
 .transaction-details-user{
