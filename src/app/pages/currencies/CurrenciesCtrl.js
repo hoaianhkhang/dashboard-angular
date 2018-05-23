@@ -5,11 +5,11 @@
         .controller('CurrenciesCtrl', CurrenciesCtrl);
 
     /** @ngInject */
-    function CurrenciesCtrl($rootScope,$scope,$location,localStorageManagement,environmentConfig,$http,
-                            errorHandler,$state,_,serializeFiltersService,$uibModal) {
+    function CurrenciesCtrl($rootScope,$scope,$location,localStorageManagement,
+                            errorHandler,$state,_,serializeFiltersService,$uibModal,Rehive) {
 
         var vm = this;
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
         $rootScope.dashboardTitle = 'Currencies | Rehive';
         $scope.showingFilters = false;
         $scope.loadingCurrencies = true;
@@ -73,7 +73,7 @@
             };
         };
 
-        vm.getCurrenciesUrl = function(){
+        vm.getCurrenciesFiltersObj = function(){
 
 
             var searchObj = {
@@ -84,51 +84,67 @@
                 unit: $scope.filtersObj.unitFilter ? $scope.applyFiltersObj.unitFilter.selectedCurrencyOption.unit: null
             };
 
-            return environmentConfig.API + '/admin/currencies/?' + serializeFiltersService.serializeFilters(searchObj);
+            return serializeFiltersService.objectFilters(searchObj);
         };
 
-        $scope.getCompanyCurrencies = function(){
+        vm.getAllCompanyCurrencies = function () {
+            Rehive.admin.currencies.get({filters: {
+                page:1,
+                page_size: 250,
+                enabled: true
+            }}).then(function (res) {
+                if($scope.currencyOptions.length > 0){
+                    $scope.currencyOptions.length = 0;
+                }
+
+                $scope.currencyOptions = res.results.slice();
+                $scope.$apply();
+            }, function (error) {
+                errorHandler.evaluateErrors(error.data);
+                errorHandler.handleErrors(error);
+                $scope.$apply();
+            });
+        };
+        vm.getAllCompanyCurrencies();
+
+        $scope.getCompanyCurrencies = function(applyFilter){
             if($scope.showingFilters) {
                 $scope.showFilters();
             }
 
-            var currenciesUrl = vm.getCurrenciesUrl();
+            if(applyFilter){
+                $scope.pagination.pageNo = 1;
+            }
+
+            var currenciesFiltersObj = vm.getCurrenciesFiltersObj();
 
             if(vm.token) {
                 $scope.loadingCurrencies = true;
-                $http.get(currenciesUrl, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
-                    if (res.status === 200) {
-                        if(res.data.data.results.length > 0){
-                            $scope.currenciesData = res.data.data;
-                            $scope.currencies = res.data.data.results;
-                            if($scope.currencyOptions.length == 0){
-                                $scope.currencyOptions = res.data.data.results.slice();
-                            }
 
-                            $scope.applyFiltersObj.currencyFilter.selectedCurrencyOption = $scope.currencies[0];
-                            $scope.applyFiltersObj.unitFilter.selectedCurrencyOption = $scope.currencies[0];
-                            
-                            $scope.currencies.forEach(function(element,idx,array){
-                                if(idx === array.length - 1){
-                                    vm.getCurrencyOverview(element,'last');
-                                    return false;
-                                }
-                                vm.getCurrencyOverview(element);
-                            });
-                        } else {
-                            $scope.loadingCurrencies = false;
-                            $scope.currencies = res.data.data.results;
-                        }
+                Rehive.admin.currencies.get({filters: currenciesFiltersObj}).then(function (res) {
+                    if(res.results.length > 0){
+                        $scope.currenciesData = res;
+                        $scope.currencies = res.results;
+                        $scope.applyFiltersObj.currencyFilter.selectedCurrencyOption = $scope.currencies[0];
+                        $scope.applyFiltersObj.unitFilter.selectedCurrencyOption = $scope.currencies[0];
+
+                        $scope.currencies.forEach(function(element,idx,array){
+                            if(idx === array.length - 1){
+                                vm.getCurrencyOverview(element,'last');
+                                return false;
+                            }
+                            vm.getCurrencyOverview(element);
+                        });
+                    } else {
+                        $scope.loadingCurrencies = false;
+                        $scope.currencies = res.results;
+                        $scope.$apply();
                     }
-                }).catch(function (error) {
+                }, function (error) {
                     $scope.loadingCurrencies = false;
                     errorHandler.evaluateErrors(error.data);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };
@@ -137,26 +153,21 @@
         vm.getCurrencyOverview = function (currency,last) {
             if(vm.token) {
                 $scope.loadingCurrencies = true;
-                $http.get(environmentConfig.API + '/admin/currencies/' + currency.code + '/overview/', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
-                    if (res.status === 200) {
-                        $scope.currencies.forEach(function (element,index) {
-                            if(element.code == currency.code){
-                                _.extendOwn(element,res.data.data);
-                            }
-                        });
-                        if(last){
-                            $scope.loadingCurrencies = false;
+                Rehive.admin.currencies.overview.get(currency.code).then(function (res) {
+                    $scope.currencies.forEach(function (element,index) {
+                        if(element.code == currency.code){
+                            _.extendOwn(element,res);
                         }
+                    });
+                    if(last){
+                        $scope.loadingCurrencies = false;
+                        $scope.$apply();
                     }
-                }).catch(function (error) {
+                }, function (error) {
                     $scope.loadingCurrencies = false;
                     errorHandler.evaluateErrors(error.data);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };

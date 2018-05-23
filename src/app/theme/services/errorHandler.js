@@ -40,6 +40,7 @@
                         $rootScope.pageTopObj = {};
                         $rootScope.userFullyVerified = false;
                         localStorageManagement.deleteValue('TOKEN');
+                        localStorageManagement.deleteValue('token');
                         $location.path('/login');
                     }
                 }

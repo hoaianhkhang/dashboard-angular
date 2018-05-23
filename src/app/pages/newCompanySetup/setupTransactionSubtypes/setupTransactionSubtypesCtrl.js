@@ -65,6 +65,7 @@
                 $rootScope.pageTopObj = {};
                 $rootScope.userFullyVerified = false;
                 localStorageManagement.deleteValue('TOKEN');
+                localStorageManagement.deleteValue('token');
                 toastr.error('Your session has expired, please log in again');
                 $location.path('/login');
             }

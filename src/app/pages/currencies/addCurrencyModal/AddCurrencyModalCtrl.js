@@ -5,11 +5,11 @@
         .controller('AddCurrencyModalCtrl', AddCurrencyModalCtrl);
 
     /** @ngInject */
-    function AddCurrencyModalCtrl($scope,$http,environmentConfig,localStorageManagement,$uibModalInstance,
-                                  $window,currenciesList,errorHandler,toastr) {
+    function AddCurrencyModalCtrl($scope,localStorageManagement,$uibModalInstance,
+                                  $window,currenciesList,errorHandler,toastr,Rehive) {
 
         var vm = this;
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
 
         $scope.currenciesToAdd = [];
         $scope.currenciesThatWillBeAdded = [];
@@ -40,27 +40,25 @@
         vm.getCurrencies = function(){
             $scope.loadingCurrencies = true;
             if(vm.token){
-                $http.get(environmentConfig.API + '/admin/currencies/?enabled=true&page_size=250', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
-                    if (res.status === 200) {
-                        res.data.data.results.forEach(function (currency) {
-                            var index = $scope.initialCurrencies.findIndex(function (element) {
-                                return element.code == currency.code;
-                            });
-                            if(index >=0){
-                                $scope.initialCurrencies.splice(index,1);
-                            }
+                Rehive.admin.currencies.get({filters: {
+                    enabled: true,
+                    page_size: 250
+                }}).then(function (res) {
+                    res.results.forEach(function (currency) {
+                        var index = $scope.initialCurrencies.findIndex(function (element) {
+                            return element.code == currency.code;
                         });
-                        $scope.loadingCurrencies = false;
-                    }
-                }).catch(function (error) {
+                        if(index >=0){
+                            $scope.initialCurrencies.splice(index,1);
+                        }
+                    });
+                    $scope.loadingCurrencies = false;
+                    $scope.$apply();
+                }, function (error) {
                     $scope.loadingCurrencies = false;
                     errorHandler.evaluateErrors(error.data);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };
@@ -79,24 +77,18 @@
                 $scope.loadingCurrencies = true;
                 currencies.forEach(function(currency,index,array){
                     currency.enabled = true;
-                    $http.post(environmentConfig.API + '/admin/currencies/',currency, {
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': vm.token
+                    Rehive.admin.currencies.create(currency).then(function (res) {
+                        if(index == (array.length - 1)){
+                            vm.getCompanyCurrencies();
+                            $scope.loadingCurrencies = false;
+                            toastr.success('Currencies have been added successfully');
+                            $uibModalInstance.close(true);
                         }
-                    }).then(function (res) {
-                        if (res.status === 201) {
-                            if(index == (array.length - 1)){
-                                vm.getCompanyCurrencies();
-                                $scope.loadingCurrencies = false;
-                                toastr.success('Currencies have been added successfully');
-                                $uibModalInstance.close(true);
-                            }
-                        }
-                    }).catch(function (error) {
+                    }, function (error) {
                         $scope.loadingCurrencies = false;
                         errorHandler.evaluateErrors(error.data);
                         errorHandler.handleErrors(error);
+                        $scope.$apply();
                     });
                 });
 
@@ -111,40 +103,33 @@
             $scope.loadingCurrencies = true;
             $scope.addCurrency = {};
             newCurrencyParams.enabled = true;
-            $http.post(environmentConfig.API + '/admin/currencies/', newCurrencyParams, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': vm.token
-                }
-            }).then(function (res) {
+
+
+            Rehive.admin.currencies.create(newCurrencyParams).then(function (res) {
+                vm.getCompanyCurrencies();
                 $scope.loadingCurrencies = false;
-                if (res.status === 201) {
-                    vm.getCompanyCurrencies();
-                    $scope.loadingCurrencies = false;
-                    toastr.success('Custom currency have been added successfully');
-                    $uibModalInstance.close(true);
-                }
-            }).catch(function (error) {
+                toastr.success('Custom currency have been added successfully');
+                $scope.$apply();
+                $uibModalInstance.close(true);
+            }, function (error) {
                 $scope.loadingCurrencies = false;
                 errorHandler.evaluateErrors(error.data);
                 errorHandler.handleErrors(error);
+                $scope.$apply();
             });
         };
 
         vm.getCompanyCurrencies = function(){
             if(vm.token){
-                $http.get(environmentConfig.API + '/admin/currencies/?enabled=true&page_size=250', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
-                    if (res.status === 200) {
-                        $window.sessionStorage.currenciesList = JSON.stringify(res.data.data.results);
-                    }
-                }).catch(function (error) {
+                Rehive.admin.currencies.get({filters: {
+                    enabled: true,
+                    page_size: 250
+                }}).then(function (res) {
+                    $window.sessionStorage.currenciesList = JSON.stringify(res.results);
+                }, function (error) {
                     errorHandler.evaluateErrors(error.data);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };

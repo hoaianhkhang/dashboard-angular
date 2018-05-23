@@ -5,31 +5,24 @@
         .factory('userVerification', userVerification);
 
     /** @ngInject */
-    function userVerification($http,localStorageManagement,environmentConfig,errorHandler) {
+    function userVerification(localStorageManagement,Rehive,errorHandler) {
 
         return {
             verify: function (cb) {
-                var token = localStorageManagement.getValue('TOKEN');
+                var token = localStorageManagement.getValue('token');
                 var emailVerified = false;
 
                 if(token) {
-                    $http.get(environmentConfig.API + '/user/emails/', {
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': token
-                        }
-                    }).then(function (res) {
-                        if (res.status === 200) {
-                            var emailArrays = res.data.data;
-                            for(var i = 0; i < emailArrays.length ; i++){
-                                if(emailArrays[i].verified == true){
-                                    emailVerified = true;
-                                    break;
-                                }
+                    Rehive.user.emails.get().then(function (res) {
+                        var emailArrays = res;
+                        for(var i = 0; i < emailArrays.length ; i++){
+                            if(emailArrays[i].verified == true){
+                                emailVerified = true;
+                                break;
                             }
-                            cb(null,emailVerified);
                         }
-                    }).catch(function (error) {
+                        cb(null,emailVerified);
+                    }, function (error) {
                         cb(error,null);
                         errorHandler.handleErrors(error);
                     });
@@ -37,7 +30,7 @@
                     cb(null,false);
                 }
             }
-        }
+        };
     }
 
 })();
