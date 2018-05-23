@@ -37,8 +37,10 @@
                     <tr>
                         <th ng-click="orderByFunction(header)" class="pointer sortable-header" ng-repeat="header in headerColumns" ng-if="header.visible">
                             {{header.colName}}&nbsp;&nbsp;
-                            <i ng-show="header.orderByDirection == 'desc'" class="fa fa-caret-down"></i>
-                            <i ng-show="header.orderByDirection == 'asc'" class="fa fa-caret-up"></i>
+                            <i ng-class="{'selected-sorting-caret': (orderByVariable.indexOf(header.fieldName) >= 0)}"
+                               ng-show="header.orderByDirection == 'desc'" class="fa fa-caret-down"></i>
+                            <i ng-class="{'selected-sorting-caret': (orderByVariable.indexOf(header.fieldName) >= 0)}"
+                               ng-show="header.orderByDirection == 'asc'" class="fa fa-caret-up"></i>
                         </th>
                     </tr>
                     </thead>

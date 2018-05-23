@@ -309,6 +309,7 @@
             } else {
                 header.orderByDirection = 'desc';
                 $scope.orderByVariable = '-' + header.fieldName;
+                localStorageManagement.setValue(vm.savedUserTableColumns,JSON.stringify($scope.headerColumns));
             }
         };
 

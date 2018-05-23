@@ -258,6 +258,7 @@
             } else {
                 header.orderByDirection = 'desc';
                 $scope.orderByVariable = '-' + header.fieldName;
+                localStorageManagement.setValue(vm.savedTransactionTableColumns,JSON.stringify($scope.headerColumns));
             }
         };
 
