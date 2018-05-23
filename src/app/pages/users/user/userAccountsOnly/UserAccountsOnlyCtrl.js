@@ -14,6 +14,7 @@
         vm.uuid = $stateParams.uuid;
         vm.reference = '';
         $scope.newAccountCurrencies = {list: []};
+        vm.createNewAccountRequest = $location.search();
         $scope.loadingUserAccounts = true;
         $scope.optionsCode = '';
         $scope.optionsReference = '';
@@ -135,6 +136,11 @@
             }, function(){
             });
         };
+
+        if(vm.createNewAccountRequest.accountAction == 'newAccount'){
+            $scope.openAddAccountModal('app/pages/users/user/userAccountsOnly/addAccountModal/addAccountModal.html','md');
+            $location.search('accountAction',null);
+        }
 
         $scope.openEditAccountModal = function (page, size,account,currencies) {
             vm.theEditAccountModal = $uibModal.open({

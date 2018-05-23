@@ -24,8 +24,33 @@
             <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-left-padding divider" id="transaction-modal-mid">
                 <p class="text-subtle">User: </p>
             </div>
-            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 no-right-padding">
+            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 no-right-padding transaction-details-user">
                 <a class="pointer" ng-click="goToUser()" ng-bind="transaction.user.email || transaction.user.mobile_number"></a>
+                <i ng-show="retrievedUserObj.identifier" class="fa fa-user transaction-details-user-icon" aria-hidden="true"></i>
+                <div class="row transaction-details-user-details">
+                    <table>
+                        <tr>
+                            <th style="text-align: right" width="45%">Name:</th>
+                            <td style="padding-left: 15px">{{retrievedUserObj.first_name}} {{retrievedUserObj.last_name}}</td>
+                        </tr>
+                        <tr>
+                            <th style="text-align: right" width="45%">Created date:</th>
+                            <td style="padding-left: 15px" ng-show="retrievedUserObj.created">{{retrievedUserObj.created | date:'mediumDate'}}, {{retrievedUserObj.created | date:'shortTime'}}</td>
+                        </tr>
+                        <tr>
+                            <th style="text-align: right" width="45%">Group:</th>
+                            <td style="padding-left: 15px" ng-bind="retrievedUserObj.groups[0].name"></td>
+                        </tr>
+                        <tr>
+                            <th style="text-align: right" width="45%">KYC status:</th>
+                            <td style="padding-left: 15px" ng-bind="retrievedUserObj.kyc.status | capitalizeWord"></td>
+                        </tr>
+                        <tr>
+                            <th style="text-align: right" width="45%">User metadata:</th>
+                            <td style="padding-left: 15px" ng-bind="retrievedUserObj.metadata"></td>
+                        </tr>
+                    </table>
+                </div>
             </div>
         </div>
         <div class="row">

@@ -38,7 +38,7 @@
         </div>
         <div class="form-group">
             <label>Currency <span class="required-icon">*</span>
-                <span ng-hide="retrievedCreditUserObj.identifier">(Please choose user first)</span>
+                <span ng-hide="retrievedCreditUserObj.identifier">Please choose user first.</span>
             </label>
             <br>
             <select class="form-control pointer" ng-model="creditTransactionData.currency" ng-change="creditCurrencySelected(creditTransactionData)" ng-disabled="!retrievedCreditUserObj.identifier"
@@ -58,7 +58,7 @@
                             <th>Status</th>
                             <th>Date</th>
                         </tr>
-                        <tr ng-repeat="transaction in retrievedCreditAccountTransactions | orderBy: '-created'">
+                        <tr ng-repeat="transaction in retrievedCreditAccountTransactions | limitTo: 5 | orderBy: '-created'">
                             <td>{{transaction.tx_type}}</td>
                             <td>{{transaction.currency.code}}</td>
                             <td>{{transaction.amount | currencyModifiersFilter: transaction.currency.divisibility}}</td>
@@ -67,14 +67,24 @@
                         </tr>
                     </table>
                 </div>
-                <div ng-show="retrievedCreditAccountTransactions.length == 0" class="row transaction-account-details">
+                <div ng-show="retrievedCreditAccountTransactions.length == 0"
+                     ng-class="{'no-account-transactions': retrievedCreditAccountTransactions.length == 0}"
+                     class="row transaction-account-details">
                     <i>No transactions exist for this account.</i>
                 </div>
-                <span ng-hide="creditTransactionData.currency.code">(Please choose currency first)</span>
-                <span ng-show="creditTransactionData.currency.code && !creditTransactionData.account.name">(Please choose an account)</span>
+                <span ng-hide="creditTransactionData.currency.code">Please choose currency first.</span>
+                <span ng-show="creditTransactionData.currency.code && creditCurrencyAccountsAvailable
+                 && creditUserAccountsAvailable && !creditTransactionData.account.name">(Please choose an account)</span>
+                <span class="no-accounts-available"
+                      ng-hide="creditUserAccountsAvailable">No accounts found for this user.
+                    <span ng-click="goToCreditUserAccountCreate()"> Add an account here.</span>
+                </span>
+                <span class="no-accounts-currency-available" ng-hide="creditCurrencyAccountsAvailable">
+                    User has no accounts with selected currency.
+                </span>
             </label>
-            <select class="form-control pointer" ng-model="creditTransactionData.account" ng-change="creditAccountSelected()" ng-disabled="!creditTransactionData.currency.code || !retrievedCreditUserObj.identifier"
-                    ng-options="account.name disable when account.disable for account in retrievedCreditUserAccountsArray | orderBy: 'name' track by account.name">
+            <select class="form-control pointer" ng-model="creditTransactionData.account" ng-change="creditAccountSelected(creditTransactionData)" ng-disabled="!creditTransactionData.currency.code || !retrievedCreditUserObj.identifier"
+                    ng-options="account.name + ' - ' + account.reference disable when account.disable for account in retrievedCreditUserAccountsArray | orderBy: 'name' track by account.name">
             </select>
         </div>
         <div class="form-group">

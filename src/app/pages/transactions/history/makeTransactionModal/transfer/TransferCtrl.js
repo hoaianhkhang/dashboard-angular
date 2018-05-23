@@ -4,7 +4,7 @@
     angular.module('BlurAdmin.pages.transactions.history')
         .controller('TransferCtrl', TransferCtrl);
 
-    function TransferCtrl($http,$scope,errorHandler,toastr,environmentConfig,_,metadataTextService,$filter,
+    function TransferCtrl($http,$scope,errorHandler,toastr,environmentConfig,_,metadataTextService,$window,
                           $location,localStorageManagement,$state,typeaheadService,currencyModifiers) {
 
         var vm = this;
@@ -16,6 +16,10 @@
         $scope.retrievedRecipientObj = {};
         $scope.retrievedRecipientAccountsArray = [];
         $scope.retrievedRecipientAccountTransactions = [];
+        $scope.senderUserAccountsAvailable = true;
+        $scope.senderCurrencyAccountsAvailable = true;
+        $scope.recipientUserAccountsAvailable = true;
+        $scope.recipientCurrencyAccountsAvailable = true;
 
         $scope.transferTransactionData = {
             user: null,
@@ -54,39 +58,45 @@
 
         $scope.$watch('transferTransactionData.user',function () {
             if($scope.transferTransactionData.user){
-
-                $scope.retrievedSenderUserObj = {};
-                $scope.retrievedSenderUserAccountsArray = [];
-                $scope.retrievedSenderAccountTransactions = [];
-                $scope.transferTransactionData.currency = {};
-                $scope.transferTransactionData.account = {};
+                vm.resetTransferData();
                 vm.getUserObj($scope.transferTransactionData);
             } else {
-                $scope.retrievedSenderUserObj = {};
-                $scope.retrievedSenderUserAccountsArray = [];
-                $scope.retrievedSenderAccountTransactions = [];
-                $scope.transferTransactionData.currency = {};
-                $scope.transferTransactionData.account = {};
+                vm.resetTransferData();
             }
         });
 
         $scope.$watch('transferTransactionData.recipient',function () {
             if($scope.transferTransactionData.recipient){
-
-                $scope.retrievedRecipientObj = {};
-                $scope.retrievedRecipientAccountsArray = [];
-                $scope.retrievedRecipientAccountTransactions = [];
-                $scope.transferTransactionData.currency = {};
-                $scope.transferTransactionData.credit_account = {};
+                vm.resetTransferData('recipient');
                 vm.getUserObj($scope.transferTransactionData,'recipient');
             } else {
+                vm.resetTransferData('recipient');
+            }
+        });
+
+        vm.resetTransferData = function (recipient) {
+            if(recipient){
                 $scope.retrievedRecipientObj = {};
                 $scope.retrievedRecipientAccountsArray = [];
                 $scope.retrievedRecipientAccountTransactions = [];
                 $scope.transferTransactionData.currency = {};
                 $scope.transferTransactionData.credit_account = {};
+                $scope.senderUserAccountsAvailable = true;
+                $scope.senderCurrencyAccountsAvailable = true;
+                $scope.recipientUserAccountsAvailable = true;
+                $scope.recipientCurrencyAccountsAvailable = true;
+            } else {
+                $scope.retrievedSenderUserObj = {};
+                $scope.retrievedSenderUserAccountsArray = [];
+                $scope.retrievedSenderAccountTransactions = [];
+                $scope.transferTransactionData.currency = {};
+                $scope.transferTransactionData.account = {};
+                $scope.senderUserAccountsAvailable = true;
+                $scope.senderCurrencyAccountsAvailable = true;
+                $scope.recipientUserAccountsAvailable = true;
+                $scope.recipientCurrencyAccountsAvailable = true;
             }
-        });
+        };
 
         vm.getUserObj = function (transactionData,recipient) {
             var user;
@@ -110,6 +120,10 @@
                         if(recipient){
                             $scope.retrievedRecipientObj = res.data.data.results[0];
                             $scope.retrievedRecipientObj.metadata = metadataTextService.convertToText($scope.retrievedRecipientObj.metadata);
+                            if($scope.transferCurrencyOptions.length === 1){
+                                $scope.transferTransactionData.currency = $scope.transferCurrencyOptions[0];
+                                $scope.currencySelected($scope.transferTransactionData,'recipient');
+                            }
                         } else {
                             $scope.retrievedSenderUserObj = res.data.data.results[0];
                             $scope.retrievedSenderUserObj.metadata = metadataTextService.convertToText($scope.retrievedSenderUserObj.metadata);
@@ -138,13 +152,44 @@
                 $scope.retrievedRecipientAccountsArray = [];
                 transactionData.credit_account = {};
                 transactionData.debit_account = {};
-                vm.getAccounts($scope.retrievedRecipientObj,transactionData,recipient);
-                vm.getAccounts($scope.retrievedSenderUserObj,transactionData);
+                vm.getUserAccounts($scope.retrievedRecipientObj,transactionData,recipient);
+                vm.getUserAccounts($scope.retrievedSenderUserObj,transactionData);
             } else {
                 $scope.retrievedSenderUserAccountsArray = [];
                 transactionData.account = {};
-                vm.getAccounts($scope.retrievedSenderUserObj,transactionData);
+                vm.getUserAccounts($scope.retrievedSenderUserObj,transactionData);
             }
+        };
+
+        vm.getUserAccounts = function (user,transactionData,recipient) {
+
+            $http.get(environmentConfig.API + '/admin/accounts/?user='+ user.identifier, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': vm.token
+                }
+            }).then(function (res) {
+                if (res.status === 200) {
+                    if(res.data.data.results.length > 0 ){
+                        if(recipient){
+                            $scope.recipientUserAccountsAvailable = true;
+                            vm.getAccounts(user,transactionData,recipient);
+                        } else {
+                            $scope.senderUserAccountsAvailable = true;
+                            vm.getAccounts(user,transactionData);
+                        }
+                    } else {
+                        if(recipient){
+                            $scope.recipientUserAccountsAvailable = false;
+                        } else {
+                            $scope.senderUserAccountsAvailable = false;
+                        }
+                    }
+                }
+            }).catch(function (error) {
+                errorHandler.evaluateErrors(error.data);
+                errorHandler.handleErrors(error);
+            });
         };
 
         vm.getAccounts = function (user,transactionData,recipient) {
@@ -156,24 +201,35 @@
                 }
             }).then(function (res) {
                 if (res.status === 200) {
-                    res.data.data.results.forEach(function (account) {
-                        if(account.primary){
-                            if(recipient){
-                                account.name = account.name + ' - (primary)';
-                                transactionData.credit_account = account;
-                                $scope.accountSelected(transactionData,recipient);
-                            } else {
-                                account.name = account.name + ' - (primary)';
-                                transactionData.account = account;
-                                $scope.accountSelected(transactionData);
-                            }
+                    if(res.data.data.results.length > 0 ){
+                        res.data.data.results.forEach(function (account) {
+                            if(account.primary){
+                                if(recipient){
+                                    account.name = account.name + ' - (primary)';
+                                    transactionData.credit_account = account;
+                                    $scope.accountSelected(transactionData,recipient);
+                                } else {
+                                    account.name = account.name + ' - (primary)';
+                                    transactionData.account = account;
+                                    $scope.accountSelected(transactionData);
+                                }
 
+                            }
+                        });
+
+                        if(recipient){
+                            $scope.recipientCurrencyAccountsAvailable = true;
+                            $scope.retrievedRecipientAccountsArray = res.data.data.results;
+                        } else {
+                            $scope.senderCurrencyAccountsAvailable = true;
+                            $scope.retrievedSenderUserAccountsArray = res.data.data.results;
                         }
-                    });
-                    if(recipient){
-                        $scope.retrievedRecipientAccountsArray = res.data.data.results;
                     } else {
-                        $scope.retrievedSenderUserAccountsArray = res.data.data.results;
+                        if(recipient){
+                            $scope.recipientCurrencyAccountsAvailable = false;
+                        } else {
+                            $scope.senderCurrencyAccountsAvailable = false;
+                        }
                     }
                 }
             }).catch(function (error) {
@@ -187,10 +243,10 @@
             var accountRef;
 
             if(transactionData){
-                if(recipient){
+                if(recipient && transactionData.credit_account){
                     $scope.retrievedRecipientAccountTransactions = [];
                     accountRef = transactionData.credit_account.reference;
-                } else {
+                } else if(transactionData.account) {
                     $scope.retrievedSenderAccountTransactions = [];
                     accountRef = transactionData.account.reference;
                 }
@@ -215,6 +271,9 @@
             }
         };
 
+        $scope.goToTransferUserAccountCreate = function (identifier) {
+            $window.open('/#/user/' + identifier + '/accounts?accountAction=newAccount','_blank');
+        };
 
     }
 })();

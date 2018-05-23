@@ -4,7 +4,7 @@
     angular.module('BlurAdmin.pages.transactions.history')
         .controller('CreditCtrl', CreditCtrl);
 
-    function CreditCtrl($http,$scope,errorHandler,toastr,environmentConfig,_,metadataTextService,$filter,
+    function CreditCtrl($http,$scope,errorHandler,toastr,environmentConfig,_,metadataTextService,$window,
                         sharedResources,localStorageManagement,$state,typeaheadService,currencyModifiers) {
 
         var vm = this;
@@ -27,6 +27,8 @@
         $scope.retrievedCreditUserAccountsArray = [];
         $scope.retrievedCreditAccountTransactions = [];
         $scope.creditTransactionStatus = ['Complete','Pending','Failed','Deleted'];
+        $scope.creditUserAccountsAvailable = true;
+        $scope.creditCurrencyAccountsAvailable = true;
 
         vm.getCreditCompanyCurrencies = function(){
             if(vm.token){
@@ -38,11 +40,11 @@
                 }).then(function (res) {
                     if (res.status === 200) {
                         $scope.creditCurrencyOptions = res.data.data.results;
-                        if ($scope.newTransactionParams.currencyCode) {
+                        if($scope.newTransactionParams.currencyCode) {
                             $scope.creditTransactionData.currency = $scope.creditCurrencyOptions.find(function (element) {
                                 return element.code == $scope.newTransactionParams.currencyCode;
                             });
-                            vm.getCreditAccounts($scope.retrievedCreditUserObj,$scope.creditTransactionData);
+                            vm.getCreditUserAccounts($scope.retrievedCreditUserObj,$scope.creditTransactionData);
                         }
                     }
                 }).catch(function (error) {
@@ -92,6 +94,10 @@
                     if(res.data.data.results.length == 1){
                         $scope.retrievedCreditUserObj = res.data.data.results[0];
                         $scope.retrievedCreditUserObj.metadata = metadataTextService.convertToText($scope.retrievedCreditUserObj.metadata);
+                        if($scope.creditCurrencyOptions.length === 1){
+                            $scope.creditTransactionData.currency = $scope.creditCurrencyOptions[0];
+                            vm.getCreditUserAccounts($scope.retrievedCreditUserObj,$scope.creditTransactionData);
+                        }
                     } else {
                         $scope.retrievedCreditUserObj = {};
                         $scope.retrievedUserAccountsArray = [];
@@ -106,29 +112,50 @@
 
         $scope.$watch('creditTransactionData.user',function () {
             if($scope.creditTransactionData.user){
-
-                $scope.retrievedCreditUserObj = {};
-                $scope.retrievedCreditUserAccountsArray = [];
-                $scope.retrievedCreditAccountTransactions = [];
-                $scope.creditTransactionData.currency = {};
-                $scope.creditTransactionData.account = {};
+                vm.resetCreditData();
                 vm.getCreditUserObj($scope.creditTransactionData);
 
             } else {
-
-                $scope.retrievedCreditUserObj = {};
-                $scope.retrievedCreditUserAccountsArray = [];
-                $scope.retrievedCreditAccountTransactions = [];
-                $scope.creditTransactionData.currency = {};
-                $scope.creditTransactionData.account = {};
-
+                vm.resetCreditData();
             }
         });
+
+        vm.resetCreditData = function () {
+            $scope.retrievedCreditUserObj = {};
+            $scope.retrievedCreditUserAccountsArray = [];
+            $scope.retrievedCreditAccountTransactions = [];
+            $scope.creditTransactionData.currency = {};
+            $scope.creditTransactionData.account = {};
+            $scope.creditUserAccountsAvailable = true;
+            $scope.creditCurrencyAccountsAvailable = true;
+        };
 
         $scope.creditCurrencySelected = function (creditTransactionData) {
             $scope.retrievedCreditUserAccountsArray = [];
             creditTransactionData.account = {};
-            vm.getCreditAccounts($scope.retrievedCreditUserObj,creditTransactionData);
+            vm.getCreditUserAccounts($scope.retrievedCreditUserObj,creditTransactionData);
+        };
+
+        vm.getCreditUserAccounts = function (user,creditTransactionData) {
+            $http.get(environmentConfig.API + '/admin/accounts/?user='+ user.identifier, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': vm.token
+                }
+            }).then(function (res) {
+                if (res.status === 200) {
+                    if(res.data.data.results.length > 0){
+                        $scope.creditUserAccountsAvailable = true;
+                        vm.getCreditAccounts(user,creditTransactionData);
+                    } else {
+                        $scope.creditUserAccountsAvailable = false;
+                    }
+                }
+            }).catch(function (error) {
+                $scope.loadingTransactionSettings = false;
+                errorHandler.evaluateErrors(error.data);
+                errorHandler.handleErrors(error);
+            });
         };
 
         vm.getCreditAccounts = function (user,creditTransactionData) {
@@ -139,18 +166,24 @@
                 }
             }).then(function (res) {
                 if (res.status === 200) {
-                    res.data.data.results.forEach(function (account) {
-                        if(account.primary){
-                            account.name = account.name + ' - (primary)';
-                            creditTransactionData.account = account;
-                            $scope.creditAccountSelected(creditTransactionData);
+                    if(res.data.data.results.length > 0){
+                        $scope.creditCurrencyAccountsAvailable = true;
+                        res.data.data.results.forEach(function (account) {
+                            if(account.primary){
+                                account.name = account.name + ' - (primary)';
+                                creditTransactionData.account = account;
+                                $scope.creditAccountSelected(creditTransactionData);
 
-                        } else if(account.id && $scope.newTransactionParams.accountUser){
-                            creditTransactionData.account = account;
-                            $scope.creditAccountSelected(creditTransactionData);
-                        }
-                    });
-                    $scope.retrievedCreditUserAccountsArray = res.data.data.results;
+                            } else if(account.id && $scope.newTransactionParams.accountUser){
+                                creditTransactionData.account = account;
+                                $scope.creditAccountSelected(creditTransactionData);
+                            }
+                        });
+                        $scope.retrievedCreditUserAccountsArray = res.data.data.results;
+                    } else {
+                        $scope.creditCurrencyAccountsAvailable = false;
+                        $scope.retrievedCreditUserAccountsArray = res.data.data.results;
+                    }
                 }
             }).catch(function (error) {
                 $scope.loadingTransactionSettings = false;
@@ -182,6 +215,10 @@
                     errorHandler.handleErrors(error);
                 });
             }
+        };
+
+        $scope.goToCreditUserAccountCreate = function () {
+            $window.open('/#/user/' + $scope.retrievedCreditUserObj.identifier + '/accounts?accountAction=newAccount','_blank');
         };
 
     }
