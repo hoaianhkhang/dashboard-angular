@@ -5,7 +5,7 @@
         .controller('EditGroupCtrl', EditGroupCtrl);
 
     /** @ngInject */
-    function EditGroupCtrl($scope,$http,environmentConfig,localStorageManagement,$stateParams,$location,errorHandler,toastr) {
+    function EditGroupCtrl($scope,$http,environmentConfig,localStorageManagement,Rehive,$stateParams,$location,errorHandler,toastr) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
@@ -23,6 +23,8 @@
         $scope.getGroup = function () {
             if(vm.token) {
                 $scope.loadingGroup = true;
+
+                
 
                 $http.get(environmentConfig.API + '/admin/groups/' + $scope.groupName + '/', {
                     headers: {

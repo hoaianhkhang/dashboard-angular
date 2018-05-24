@@ -5,7 +5,7 @@
         .controller('OverviewCtrl', OverviewCtrl);
 
     /** @ngInject */
-    function OverviewCtrl($scope,$location,$stateParams,localStorageManagement,$window,environmentConfig,$http,errorHandler) {
+    function OverviewCtrl($scope,$location,$stateParams,localStorageManagement,$window,Rehive,errorHandler) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
@@ -24,20 +24,15 @@
         vm.getCurrencyOverview = function () {
             if(vm.token) {
                 $scope.loadingCurrencies = true;
-                $http.get(environmentConfig.API + '/admin/currencies/' + $scope.currencyCode + '/overview/', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
-                    if (res.status === 200) {
-                        $scope.currencyOverviewData = res.data.data;
-                        $scope.loadingCurrencies = false;
-                    }
-                }).catch(function (error) {
+                Rehive.admin.currencies.overview.get($scope.currencyCode).then(function (res) {
+                    $scope.currencyOverviewData = res;
+                    $scope.loadingCurrencies = false;
+                    $scope.$apply();
+                }, function (error) {
                     $scope.loadingCurrencies = false;
                     errorHandler.evaluateErrors(error.data);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };
@@ -46,19 +41,14 @@
         vm.getCurrencyOverviewUsersData = function () {
             if(vm.token) {
                 $scope.loadingUsers = true;
-                $http.get(environmentConfig.API + '/admin/users/overview/', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
-                    if (res.status === 200) {
-                        $scope.currencyOverviewUsersData = res.data.data;
-                    }
-                }).catch(function (error) {
+                Rehive.admin.users.overview.get().then(function (res) {
+                    $scope.currencyOverviewUsersData = res;
+                    $scope.$apply();
+                }, function (error) {
                     $scope.loadingUsers = false;
                     errorHandler.evaluateErrors(error.data);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };
