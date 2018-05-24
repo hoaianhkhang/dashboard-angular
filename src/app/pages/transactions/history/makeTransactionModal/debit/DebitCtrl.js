@@ -170,15 +170,16 @@
                 if (res.status === 200) {
                     if(res.data.data.results.length > 0){
                         $scope.debitCurrencyAccountsAvailable = true;
-                        res.data.data.results.forEach(function (account) {
-                            if(account.primary){
+                        res.data.data.results.find(function (account) {
+                            if(account.reference == $scope.newTransactionParams.accountUser){
+                                debitTransactionData.account = account;
+                                $scope.debitAccountSelected(debitTransactionData);
+                                return true;
+                            } else if(account.primary){
                                 account.name = account.name + ' - (primary)';
                                 debitTransactionData.account = account;
                                 $scope.debitAccountSelected(debitTransactionData);
-
-                            } else if(account.id && $scope.newTransactionParams.accountUser){
-                                debitTransactionData.account = account;
-                                $scope.debitAccountSelected(debitTransactionData);
+                                return true;
                             }
                         });
                         $scope.retrievedDebitUserAccountsArray = res.data.data.results;

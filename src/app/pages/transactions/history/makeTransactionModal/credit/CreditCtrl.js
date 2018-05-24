@@ -168,15 +168,16 @@
                 if (res.status === 200) {
                     if(res.data.data.results.length > 0){
                         $scope.creditCurrencyAccountsAvailable = true;
-                        res.data.data.results.forEach(function (account) {
-                            if(account.primary){
+                        res.data.data.results.find(function (account) {
+                            if(account.reference == $scope.newTransactionParams.accountUser){
+                                creditTransactionData.account = account;
+                                $scope.creditAccountSelected(creditTransactionData);
+                                return true;
+                            } else if(account.primary){
                                 account.name = account.name + ' - (primary)';
                                 creditTransactionData.account = account;
                                 $scope.creditAccountSelected(creditTransactionData);
-
-                            } else if(account.id && $scope.newTransactionParams.accountUser){
-                                creditTransactionData.account = account;
-                                $scope.creditAccountSelected(creditTransactionData);
+                                return true;
                             }
                         });
                         $scope.retrievedCreditUserAccountsArray = res.data.data.results;
