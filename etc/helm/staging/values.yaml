@@ -2,11 +2,7 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 deployment:
-  replicaCount: 3
-  resources:
-    requests:
-      memory: 450M
-      cpu: 500m
+  replicaCount: 1
 image:
   repository: gcr.io/rehive-services/rehive-dashboard
   tag: latest
