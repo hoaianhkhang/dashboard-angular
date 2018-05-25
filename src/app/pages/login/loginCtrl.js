@@ -35,7 +35,7 @@
                 vm.checkMultiFactorAuthEnabled(token);
             },function(error){
                 $rootScope.$pageFinishedLoading = true;
-                errorHandler.evaluateErrors(error.data);
+                errorHandler.evaluateErrors(error);
                 errorHandler.handleErrors(error);
                 $scope.$apply();
             });
@@ -67,7 +67,7 @@
                     }
                 }, function (error) {
                     $rootScope.$pageFinishedLoading = true;
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
                     $rootScope.$apply();
                 });

@@ -56,7 +56,7 @@
                     $scope.$apply();
                 }, function (error) {
                     $scope.loadingCurrencies = false;
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
                     $scope.$apply();
                 });
@@ -86,7 +86,7 @@
                         }
                     }, function (error) {
                         $scope.loadingCurrencies = false;
-                        errorHandler.evaluateErrors(error.data);
+                        errorHandler.evaluateErrors(error);
                         errorHandler.handleErrors(error);
                         $scope.$apply();
                     });
@@ -113,7 +113,7 @@
                 $uibModalInstance.close(true);
             }, function (error) {
                 $scope.loadingCurrencies = false;
-                errorHandler.evaluateErrors(error.data);
+                errorHandler.evaluateErrors(error);
                 errorHandler.handleErrors(error);
                 $scope.$apply();
             });
@@ -127,7 +127,7 @@
                 }}).then(function (res) {
                     $window.sessionStorage.currenciesList = JSON.stringify(res.results);
                 }, function (error) {
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
                     $scope.$apply();
                 });

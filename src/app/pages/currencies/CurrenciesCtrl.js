@@ -73,20 +73,6 @@
             };
         };
 
-        vm.getCurrenciesFiltersObj = function(){
-
-
-            var searchObj = {
-                page: $scope.pagination.pageNo,
-                page_size: $scope.pagination.itemsPerPage,
-                enabled: true,
-                code: $scope.filtersObj.currencyFilter ? $scope.applyFiltersObj.currencyFilter.selectedCurrencyOption.code: null,
-                unit: $scope.filtersObj.unitFilter ? $scope.applyFiltersObj.unitFilter.selectedCurrencyOption.unit: null
-            };
-
-            return serializeFiltersService.objectFilters(searchObj);
-        };
-
         vm.getAllCompanyCurrencies = function () {
             Rehive.admin.currencies.get({filters: {
                 page:1,
@@ -100,12 +86,26 @@
                 $scope.currencyOptions = res.results.slice();
                 $scope.$apply();
             }, function (error) {
-                errorHandler.evaluateErrors(error.data);
+                errorHandler.evaluateErrors(error);
                 errorHandler.handleErrors(error);
                 $scope.$apply();
             });
         };
         vm.getAllCompanyCurrencies();
+
+        vm.getCurrenciesFiltersObj = function(){
+
+
+            var searchObj = {
+                page: $scope.pagination.pageNo,
+                page_size: $scope.pagination.itemsPerPage,
+                enabled: true,
+                code: $scope.filtersObj.currencyFilter ? $scope.applyFiltersObj.currencyFilter.selectedCurrencyOption.code: null,
+                unit: $scope.filtersObj.unitFilter ? $scope.applyFiltersObj.unitFilter.selectedCurrencyOption.unit: null
+            };
+
+            return serializeFiltersService.objectFilters(searchObj);
+        };
 
         $scope.getCompanyCurrencies = function(applyFilter){
             if($scope.showingFilters) {
@@ -142,7 +142,7 @@
                     }
                 }, function (error) {
                     $scope.loadingCurrencies = false;
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
                     $scope.$apply();
                 });
@@ -165,7 +165,7 @@
                     }
                 }, function (error) {
                     $scope.loadingCurrencies = false;
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
                     $scope.$apply();
                 });

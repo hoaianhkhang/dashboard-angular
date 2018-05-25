@@ -30,7 +30,7 @@
                     $scope.$apply();
                 }, function (error) {
                     $scope.loadingCurrencies = false;
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
                     $scope.$apply();
                 });
@@ -46,7 +46,7 @@
                     $scope.$apply();
                 }, function (error) {
                     $scope.loadingUsers = false;
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
                     $scope.$apply();
                 });

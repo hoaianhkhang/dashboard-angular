@@ -31,7 +31,7 @@
                 }, function (error) {
                     $scope.groupsParams = {};
                     $scope.addingGroups = false;
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
                     $scope.$apply();
                 });

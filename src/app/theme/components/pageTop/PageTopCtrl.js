@@ -94,7 +94,7 @@
                         $window.sessionStorage.currenciesList = JSON.stringify(res.results);
                     }
                 }, function (error) {
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
                 });
             }
@@ -148,7 +148,7 @@
                     }
                 }, function (error) {
                     $scope.loadingResults = false;
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
                 });
             }
@@ -172,7 +172,7 @@
                     $scope.$apply();
                 }, function (error) {
                     $scope.loadingResults = false;
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
                 });
             }

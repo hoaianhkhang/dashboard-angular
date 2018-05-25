@@ -48,7 +48,7 @@
                     $scope.$apply();
                 }, function (error) {
                     $scope.loadingGroups = false;
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
                     $scope.$apply();
                 });
@@ -73,7 +73,7 @@
                     $scope.$apply();
                 }, function (error) {
                     $scope.loadingGroups = false;
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
                     $scope.$apply();
                 });
@@ -87,6 +87,9 @@
                 group.public = true;
                 updateObj.default = group.default;
                 updateObj.public = true;
+            } else if(type == 'public' && !group.public){
+                updateObj.default = false;
+                updateObj.public = group.public;
             } else {
                 updateObj.public = group.public;
             }
@@ -94,7 +97,7 @@
             if(vm.token) {
                 Rehive.admin.groups.update(group.name,updateObj).then(function (res) {
                     $scope.loadingGroups = false;
-                    if(type == 'default'){
+                    if((type == 'default') || (type == 'public' && !group.public)){
                         $scope.getGroups('dontShowLoadingImage');
                     }
                     toastr.success('Group successfully updated');
@@ -102,7 +105,7 @@
                 }, function (error) {
                     group[type] = !group[type];
                     $scope.loadingGroups = false;
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
                     $scope.$apply();
                 });
@@ -143,7 +146,7 @@
                     $scope.$apply();
                 }, function (error) {
                     $scope.loadingGroups = false;
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
                     $scope.$apply();
                 });

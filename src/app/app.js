@@ -84,7 +84,7 @@ angular.module('BlurAdmin', [
                             localStorageManagement.setValue('companyIdentifier',$rootScope.pageTopObj.companyObj.identifier);
                             $rootScope.$apply();
                         }, function (error) {
-                            errorHandler.evaluateErrors(error.data);
+                            errorHandler.evaluateErrors(error);
                             errorHandler.handleErrors(error);
                             $rootScope.$apply();
                         });
@@ -101,7 +101,7 @@ angular.module('BlurAdmin', [
                             $rootScope.pageTopObj.userInfoObj = user;
                             $rootScope.$apply();
                         },function(error){
-                            errorHandler.evaluateErrors(error.data);
+                            errorHandler.evaluateErrors(error);
                             errorHandler.handleErrors(error);
                             $rootScope.$apply();
                         });

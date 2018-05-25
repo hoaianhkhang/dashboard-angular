@@ -25,7 +25,7 @@
                 $scope.$apply();
             },function(error){
                 $scope.changingPassword = false;
-                errorHandler.evaluateErrors(error.data);
+                errorHandler.evaluateErrors(error);
                 errorHandler.handleErrors(error);
                 $scope.$apply();
             });
