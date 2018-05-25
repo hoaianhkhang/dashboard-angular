@@ -5,11 +5,11 @@
         .controller('GroupPermissionsCtrl', GroupPermissionsCtrl);
 
     /** @ngInject */
-    function GroupPermissionsCtrl($scope,$stateParams,environmentConfig,$http,Rehive,
-                                  localStorageManagement,errorHandler,toastr,$location,$timeout) {
+    function GroupPermissionsCtrl($scope,$stateParams,Rehive,localStorageManagement,
+                                  errorHandler,toastr,$location,$timeout) {
 
         var vm = this;
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
         vm.groupName = $stateParams.groupName;
         vm.checkedLevels = [];
         $scope.loadingPermissions = true;

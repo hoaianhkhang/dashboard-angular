@@ -4,7 +4,8 @@
     angular.module('BlurAdmin.pages.groups.groupManagementTiers.list')
         .controller('AddGroupTierModalCtrl', AddGroupTierModalCtrl);
 
-    function AddGroupTierModalCtrl($scope,$stateParams,$uibModalInstance,toastr,$http,environmentConfig,localStorageManagement,errorHandler) {
+    function AddGroupTierModalCtrl($scope,$stateParams,$uibModalInstance,Rehive,
+                                   toastr,localStorageManagement,errorHandler) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
@@ -16,22 +17,17 @@
         $scope.addGroupTier = function(){
             if(vm.token) {
                 $scope.addingTiers = true;
-                $http.post(environmentConfig.API + '/admin/groups/' + vm.groupName + '/tiers/', $scope.newTier ,{
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
+                Rehive.admin.groups.tiers.create(vm.groupName,$scope.newTier).then(function (res) {
                     $scope.addingTiers = false;
-                    if (res.status === 201) {
-                        $scope.newTier = {currency: $scope.currencyCode,level: 1};
-                        toastr.success('You have successfully added a tier');
-                        $uibModalInstance.close(true);
-                    }
-                }).catch(function (error) {
+                    $scope.newTier = {currency: $scope.currencyCode,level: 1};
+                    toastr.success('You have successfully added a tier');
+                    $uibModalInstance.close(true);
+                    $scope.$apply();
+                }, function (error) {
                     $scope.addingTiers = false;
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };
