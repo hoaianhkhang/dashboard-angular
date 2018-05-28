@@ -22,7 +22,6 @@
                 }
               } else{
                   if(errors && errors.message){
-                      console.log(errors)
                       if(errors.message == 'Invalid token.'){
                           toastr.error('Your session has expired, please log in again');
                       } else {

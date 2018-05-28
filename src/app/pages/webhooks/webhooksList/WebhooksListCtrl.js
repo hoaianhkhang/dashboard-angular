@@ -5,11 +5,11 @@
         .controller('WebhooksListCtrl', WebhooksListCtrl);
 
     /** @ngInject */
-    function WebhooksListCtrl($scope,environmentConfig,$uibModal,toastr,$filter,$http,$location,localStorageManagement,errorHandler,$window,$state) {
+    function WebhooksListCtrl($scope,Rehive,$uibModal,$location,localStorageManagement,errorHandler,$window,$state) {
 
         var vm = this;
         vm.updatedWebhook = {};
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
         $scope.loadingWebhooks = true;
 
         var location = $location.path();
@@ -19,21 +19,16 @@
         vm.getWebhooks = function () {
             if(vm.token) {
                 $scope.loadingWebhooks = true;
-                $http.get(environmentConfig.API + '/admin/webhooks/', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
+                Rehive.admin.webhooks.get().then(function (res) {
                     $scope.loadingWebhooks = false;
-                    if (res.status === 200) {
-                        $scope.webhookList = res.data.data.results;
-                        $window.scrollTo(0, 0);
-                    }
-                }).catch(function (error) {
+                    $scope.webhookList = res.results;
+                    $window.scrollTo(0, 0);
+                    $scope.$apply();
+                }, function (error) {
                     $scope.loadingWebhooks = false;
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };
