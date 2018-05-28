@@ -4,8 +4,8 @@
     angular.module('BlurAdmin.pages.groups.groupAccountConfigurations')
         .controller('ManageGroupAccountConfigModalCtrl', ManageGroupAccountConfigModalCtrl);
 
-    function ManageGroupAccountConfigModalCtrl($scope,$uibModalInstance,toastr,$http,$stateParams,_,$timeout,
-                                            environmentConfig,localStorageManagement,errorHandler,accountConfig) {
+    function ManageGroupAccountConfigModalCtrl($scope,$uibModalInstance,toastr,$stateParams,_,$timeout,
+                                               Rehive,localStorageManagement,errorHandler,accountConfig) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
@@ -20,18 +20,16 @@
 
         vm.getCompanyCurrencies = function(){
             if(vm.token){
-                $http.get(environmentConfig.API + '/admin/currencies/?enabled=true&page_size=250', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
-                    if (res.status === 200) {
-                        $scope.currenciesList = res.data.data.results;
-                    }
-                }).catch(function (error) {
-                    errorHandler.evaluateErrors(error.data);
+                Rehive.admin.currencies.get({filters: {
+                    enabled: true,
+                    page_size: 250
+                }}).then(function (res) {
+                    $scope.currenciesList = res.results;
+                    $scope.$apply();
+                }, function (error) {
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };
@@ -52,19 +50,16 @@
                 primary: editAccountConfiguration.primary
             };
 
-            $http.patch(environmentConfig.API + '/admin/groups/' + vm.groupName + '/account-configurations/' + editAccountConfiguration.prevName + '/',updateAccountConfiguration, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': vm.token
-                }
-            }).then(function (res) {
-                if (res.status === 200) {
-                    $scope.separateCurrencies(editAccountConfiguration);
-                }
-            }).catch(function (error) {
+            Rehive.admin.groups.accountConfigurations.update(vm.groupName,editAccountConfiguration.prevName,updateAccountConfiguration).then(function (res)
+            {
+                editAccountConfiguration.name = res.name;
+                $scope.separateCurrencies(editAccountConfiguration);
+                $scope.$apply();
+            }, function (error) {
                 $scope.loadingGroupAccountConfigurations = false;
-                errorHandler.evaluateErrors(error.data);
+                errorHandler.evaluateErrors(error);
                 errorHandler.handleErrors(error);
+                $scope.$apply();
             });
         };
 
@@ -119,42 +114,31 @@
 
         $scope.deleteAccountConfigCurrency = function(editAccountConfiguration,currencyCode){
             $scope.loadingGroupAccountConfigurations = true;
-            $http.delete(environmentConfig.API + '/admin/groups/' + vm.groupName + '/account-configurations/' + editAccountConfiguration.prevName + '/currencies/' + currencyCode + '/', {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': vm.token
-                }
-            }).then(function (res) {
-                if (res.status === 200) {
+            Rehive.admin.groups.accountConfigurations.currencies.delete(vm.groupName,editAccountConfiguration.name,currencyCode).then(function (res) {
 
-                }
-            }).catch(function (error) {
+            }, function (error) {
                 $scope.loadingGroupAccountConfigurations = false;
-                errorHandler.evaluateErrors(error.data);
+                errorHandler.evaluateErrors(error);
                 errorHandler.handleErrors(error);
             });
         };
 
         $scope.createAccountConfigCurrency = function(editAccountConfiguration,currencyCode,last){
             $scope.loadingGroupAccountConfigurations = true;
-            $http.post(environmentConfig.API + '/admin/groups/' + vm.groupName + '/account-configurations/' + editAccountConfiguration.prevName + '/currencies/',{currency: currencyCode}, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': vm.token
+            Rehive.admin.groups.accountConfigurations.currencies.create(vm.groupName,editAccountConfiguration.name,
+                {
+                    currency: currencyCode
+                }).then(function (res) {
+                if(last){
+                    $timeout(function () {
+                        $scope.loadingGroupAccountConfigurations = false;
+                        toastr.success('Account configuration successfully updated');
+                        $uibModalInstance.close(res);
+                    },800);
                 }
-            }).then(function (res) {
-                if (res.status === 201) {
-                    if(last){
-                        $timeout(function () {
-                            $scope.loadingGroupAccountConfigurations = false;
-                            toastr.success('Account configuration successfully updated');
-                            $uibModalInstance.close(res.data);
-                        },800);
-                    }
-                }
-            }).catch(function (error) {
+            }, function (error) {
                 $scope.loadingGroupAccountConfigurations = false;
-                errorHandler.evaluateErrors(error.data);
+                errorHandler.evaluateErrors(error);
                 errorHandler.handleErrors(error);
             });
         };

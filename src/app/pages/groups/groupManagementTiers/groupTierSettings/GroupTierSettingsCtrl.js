@@ -5,7 +5,7 @@
         .controller('GroupTierSettingsCtrl', GroupTierSettingsCtrl);
 
     /** @ngInject */
-    function GroupTierSettingsCtrl($scope,environmentConfig,$http,$stateParams,Rehive,_,localStorageManagement,errorHandler,$timeout) {
+    function GroupTierSettingsCtrl($scope,$stateParams,Rehive,_,localStorageManagement,errorHandler,$timeout) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('token');
