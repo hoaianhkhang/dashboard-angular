@@ -5,11 +5,11 @@
         .controller('GroupTierFeesCtrl', GroupTierFeesCtrl);
 
     /** @ngInject */
-    function GroupTierFeesCtrl($scope,$stateParams,localStorageManagement,$http,environmentConfig,_,$window,$ngConfirm,
-                          $timeout,errorHandler,toastr,$uibModal) {
+    function GroupTierFeesCtrl($scope,$stateParams,localStorageManagement,_,$window,$ngConfirm,
+                               Rehive,$timeout,errorHandler,toastr,$uibModal) {
 
         var vm = this;
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
         vm.groupName = $stateParams.groupName;
         $scope.currenciesList = JSON.parse($window.sessionStorage.currenciesList || '[]');
         $scope.activeTabIndex = 0;
@@ -25,35 +25,30 @@
         $scope.getAllTiers = function(tierLevel){
             if(vm.token) {
                 $scope.loadingTierFees = true;
-                $http.get(environmentConfig.API + '/admin/groups/' + vm.groupName + '/tiers/', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
+                Rehive.admin.groups.tiers.get(vm.groupName).then(function (res) {
                     $scope.loadingTierFees = false;
-                    if (res.status === 200) {
-                        vm.unsortedTierLevelsArray = _.pluck(res.data.data ,'level');
-                        vm.sortedTierLevelsArray = vm.unsortedTierLevelsArray.sort(function(a, b) {
-                            return a - b;
+                    vm.unsortedTierLevelsArray = _.pluck(res ,'level');
+                    vm.sortedTierLevelsArray = vm.unsortedTierLevelsArray.sort(function(a, b) {
+                        return a - b;
+                    });
+                    $scope.tierLevelsForFees = vm.sortedTierLevelsArray;
+                    $scope.allTiers = res.sort(function(a, b) {
+                        return parseFloat(a.level) - parseFloat(b.level);
+                    });
+                    if(tierLevel){
+                        $scope.selectTier(tierLevel);
+                    } else {
+                        $timeout(function(){
+                            $scope.activeTabIndex = 0;
                         });
-                        $scope.tierLevelsForFees = vm.sortedTierLevelsArray;
-                        $scope.allTiers = res.data.data.sort(function(a, b) {
-                            return parseFloat(a.level) - parseFloat(b.level);
-                        });
-                        if(tierLevel){
-                            $scope.selectTier(tierLevel);
-                        } else {
-                            $timeout(function(){
-                                $scope.activeTabIndex = 0;
-                            });
-                            $scope.selectTier($scope.tierLevelsForFees[0]);
-                        }
+                        $scope.selectTier($scope.tierLevelsForFees[0]);
                     }
-                }).catch(function (error) {
+                    $scope.$apply();
+                }, function (error) {
                     $scope.loadingTierFees = false;
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };
@@ -74,24 +69,19 @@
         $scope.getTierFees = function(){
             if(vm.token) {
                 $scope.loadingTierFees = true;
-                $http.get(environmentConfig.API + '/admin/groups/' + vm.groupName + '/tiers/' + $scope.selectedTier.id + '/fees/',{
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
+                Rehive.admin.groups.tiers.fees.get(vm.groupName,$scope.selectedTier.id).then(function (res) {
                     $scope.loadingTierFees = false;
-                    if (res.status === 200) {
-                        res.data.data.forEach(function (element) {
-                            element.currency = vm.returnCurrencyObj(element.currency);
-                        });
+                    res.forEach(function (element) {
+                        element.currency = vm.returnCurrencyObj(element.currency);
+                    });
 
-                        $scope.tiersFeesList = res.data.data;
-                    }
-                }).catch(function (error) {
+                    $scope.tiersFeesList = res;
+                    $scope.$apply();
+                }, function (error) {
                     $scope.loadingTierFees = false;
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };
@@ -169,21 +159,16 @@
 
         $scope.deleteTierFee = function (tierFee) {
             $scope.loadingTierFees = true;
-            $http.delete(environmentConfig.API + '/admin/groups/' + vm.groupName + '/tiers/' + $scope.selectedTier.id + '/fees/' + tierFee.id + '/', {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': vm.token
-                }
-            }).then(function (res) {
+            Rehive.admin.groups.tiers.fees.delete(vm.groupName,$scope.selectedTier.id, tierFee.id).then(function (res) {
                 $scope.loadingTierFees = false;
-                if (res.status === 200) {
-                    toastr.success('Tier fee successfully deleted');
-                    $scope.getAllTiers($scope.selectedTier.level);
-                }
-            }).catch(function (error) {
+                toastr.success('Tier fee successfully deleted');
+                $scope.getAllTiers($scope.selectedTier.level);
+                $scope.$apply();
+            }, function (error) {
                 $scope.loadingTierFees = false;
-                errorHandler.evaluateErrors(error.data);
+                errorHandler.evaluateErrors(error);
                 errorHandler.handleErrors(error);
+                $scope.$apply();
             });
         };
 

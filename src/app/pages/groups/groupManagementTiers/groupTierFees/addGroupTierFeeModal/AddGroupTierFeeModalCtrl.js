@@ -4,8 +4,8 @@
     angular.module('BlurAdmin.pages.groups.groupManagementTiers.groupTierFees')
         .controller('AddGroupTierFeeModalCtrl', AddGroupTierFeeModalCtrl);
 
-    function AddGroupTierFeeModalCtrl($scope,$uibModalInstance,currencyModifiers,selectedTier,toastr,$http,_,
-                                      environmentConfig,localStorageManagement,errorHandler,$stateParams,sharedResources) {
+    function AddGroupTierFeeModalCtrl($scope,$uibModalInstance,currencyModifiers,selectedTier,toastr,_,
+                                      Rehive,localStorageManagement,errorHandler,$stateParams,sharedResources) {
 
         var vm = this;
         $scope.selectedTier = selectedTier;
@@ -21,18 +21,16 @@
 
         vm.getCompanyCurrencies = function(){
             if(vm.token){
-                $http.get(environmentConfig.API + '/admin/currencies/?enabled=true&page_size=250', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
-                    if (res.status === 200) {
-                        $scope.currenciesOptions = res.data.data.results;
-                    }
-                }).catch(function (error) {
-                    errorHandler.evaluateErrors(error.data);
+                Rehive.admin.currencies.get({filters: {
+                    enabled: true,
+                    page_size: 250
+                }}).then(function (res) {
+                    $scope.currenciesOptions = res.results;
+                    $scope.$apply();
+                }, function (error) {
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };
@@ -46,12 +44,13 @@
                 params.subtype = '';
             }
             sharedResources.getSubtypes().then(function (res) {
-                res.data.data = res.data.data.filter(function (element) {
+                res = res.filter(function (element) {
                     return element.tx_type == (params.tx_type).toLowerCase();
                 });
-                $scope.subtypeOptions = _.pluck(res.data.data,'name');
+                $scope.subtypeOptions = _.pluck(res,'name');
                 $scope.subtypeOptions.unshift('');
                 $scope.loadingSubtypes = false;
+                $scope.$apply();
             });
         };
         $scope.getSubtypesArray($scope.tierFeesParams);
@@ -76,26 +75,20 @@
                 $scope.addingTierFees = true;
                 tierFeesParams.tx_type = tierFeesParams.tx_type.toLowerCase();
                 tierFeesParams.currency = tierFeesParams.currency.code;
-
-                $http.post(environmentConfig.API + '/admin/groups/' + vm.groupName + '/tiers/' + $scope.selectedTier.id + '/fees/',tierFeesParams,{
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
+                Rehive.admin.groups.tiers.fees.create(vm.groupName,$scope.selectedTier.id, tierFeesParams).then(function (res) {
                     $scope.addingTierFees = false;
-                    if (res.status === 201) {
-                        toastr.success('Fee added successfully to tier');
-                        $uibModalInstance.close($scope.selectedTier.level);
-                    }
-                }).catch(function (error) {
+                    toastr.success('Fee added successfully to tier');
+                    $uibModalInstance.close($scope.selectedTier.level);
+                    $scope.$apply();
+                }, function (error) {
                     $scope.tierFeesParams = {
                         tx_type: 'Credit',
                         subtype: ''
                     };
                     $scope.addingTierFees = false;
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };
