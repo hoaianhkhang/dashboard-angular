@@ -26,7 +26,14 @@
 
         $scope.goToCreditUser = function (email) {
             $scope.hidingSearchBar();
-            $location.path('/transactions/history').search({userEmail:  (email).toString()});
+            $scope.searchString = '';
+            var currentPath = $location.path();
+            if(currentPath == '/transactions/history'){
+                $location.search('userEmail',(email).toString());
+                location.reload();
+            } else {
+                $location.path('/transactions/history').search({userEmail:  (email).toString()});
+            }
         };
 
         //when page refreshed
