@@ -5,7 +5,8 @@
         .controller('SettingsCtrl', SettingsCtrl);
 
     /** @ngInject */
-    function SettingsCtrl($rootScope,$scope,environmentConfig,Upload,$http,localStorageManagement,errorHandler,$window,$timeout,$location) {
+    function SettingsCtrl($rootScope,Rehive,$scope,environmentConfig,Upload,
+                          localStorageManagement,errorHandler,$window,$timeout,$location) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
@@ -20,18 +21,13 @@
 
         vm.getCompanyDetails = function(){
             if(vm.token) {
-                $http.get(environmentConfig.API + '/admin/company/', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
-                    if (res.status === 200) {
-                        $scope.companyImageUrl = res.data.data.logo;
-                    }
-                }).catch(function (error) {
-                    errorHandler.evaluateErrors(error.data);
+                Rehive.admin.company.get().then(function (res) {
+                    $scope.companyImageUrl = res.logo;
+                    $scope.$apply();
+                }, function (error) {
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
           };
@@ -70,7 +66,7 @@
                 $scope.updatingLogo = false;
                 errorHandler.evaluateErrors(error.data);
                 errorHandler.handleErrors(error);
-            })
+            });
         };
 
     }
