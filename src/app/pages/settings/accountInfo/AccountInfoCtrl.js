@@ -5,9 +5,9 @@
         .controller('AccountInfoCtrl', AccountInfoCtrl);
 
     /** @ngInject */
-    function AccountInfoCtrl($scope,environmentConfig,$http,localStorageManagement,errorHandler,toastr,$location) {
+    function AccountInfoCtrl($scope,Rehive,localStorageManagement,errorHandler,toastr,$location) {
         var vm = this;
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
         $scope.loadingAccountInfo = true;
         $scope.showAdminEmails = false;
         vm.updatedAdministrator = {};
@@ -18,20 +18,15 @@
 
         vm.getAdminAccountInfo = function () {
             if(vm.token) {
-                $http.get(environmentConfig.API + '/user/', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
+                Rehive.user.get().then(function(user){
                     $scope.loadingAccountInfo = false;
-                    if (res.status === 200) {
-                        $scope.administrator = res.data.data;
-                    }
-                }).catch(function (error) {
+                    $scope.administrator = user;
+                    $scope.$apply();
+                },function(error){
                     $scope.loadingAccountInfo = false;
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };
@@ -39,23 +34,18 @@
 
         $scope.updateAdministratorAccount = function(){
             $scope.loadingAccountInfo = true;
-            $http.patch(environmentConfig.API + '/user/', vm.updatedAdministrator ,{
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': vm.token
-                }
-            }).then(function (res) {
+            Rehive.user.update(vm.updatedAdministrator).then(function (user) {
                 $scope.loadingAccountInfo = false;
-                if (res.status === 200) {
-                    $scope.administrator = res.data.data;
-                    toastr.success('You have successfully updated the administrator info');
-                }
+                $scope.administrator = user;
+                toastr.success('You have successfully updated the administrator info');
                 vm.updatedAdministrator = {};
-            }).catch(function (error) {
+                $scope.$apply();
+            }, function (error) {
                 vm.updatedAdministrator = {};
                 $scope.loadingAccountInfo = false;
-                errorHandler.evaluateErrors(error.data);
+                errorHandler.evaluateErrors(error);
                 errorHandler.handleErrors(error);
+                $scope.$apply();
             });
         };
 

@@ -4,7 +4,7 @@
     angular.module('BlurAdmin.pages.settings.bankAccounts')
         .controller('BankAccountModalCtrl', BankAccountModalCtrl);
 
-    function BankAccountModalCtrl($scope,$uibModalInstance,bankAccount,toastr,$http,environmentConfig,localStorageManagement,errorHandler) {
+    function BankAccountModalCtrl($scope,Rehive,$uibModalInstance,bankAccount,toastr,localStorageManagement,errorHandler) {
 
         var vm = this;
 
@@ -15,21 +15,16 @@
 
         $scope.deleteBankAccount = function () {
             $scope.deletingBankAccount = true;
-            $http.delete(environmentConfig.API + '/admin/bank-accounts/' + $scope.bankAccount.id + '/', {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': vm.token
-                }
-            }).then(function (res) {
+            Rehive.admin.bankAccounts.delete($scope.bankAccount.id).then(function (res) {
                 $scope.deletingBankAccount = false;
-                if (res.status === 200) {
-                    toastr.success('Bank account successfully deleted');
-                    $uibModalInstance.close($scope.bankAccount);
-                }
-            }).catch(function (error) {
+                toastr.success('Bank account successfully deleted');
+                $uibModalInstance.close(res);
+                $scope.$apply();
+            }, function (error) {
                 $scope.deletingBankAccount = false;
-                errorHandler.evaluateErrors(error.data);
+                errorHandler.evaluateErrors(error);
                 errorHandler.handleErrors(error);
+                $scope.$apply();
             });
         };
 

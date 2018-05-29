@@ -5,7 +5,7 @@
         .controller('NotificationsCtrl', NotificationsCtrl);
 
     /** @ngInject */
-    function NotificationsCtrl($scope,environmentConfig,toastr,$http,localStorageManagement,errorHandler) {
+    function NotificationsCtrl($scope,Rehive,toastr,localStorageManagement,errorHandler) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
@@ -14,20 +14,15 @@
         vm.getCompanyNotifications = function () {
             if(vm.token) {
                 $scope.loadingCompanyNotifications = true;
-                $http.get(environmentConfig.API + '/admin/notifications/', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
+                Rehive.admin.notifications.get().then(function (res) {
                     $scope.loadingCompanyNotifications = false;
-                    if (res.status === 200) {
-                        $scope.notifications = res.data.data;
-                    }
-                }).catch(function (error) {
+                    $scope.notifications = res;
+                    $scope.$apply();
+                }, function (error) {
                     $scope.loadingCompanyNotifications = false;
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };
@@ -35,22 +30,17 @@
 
         $scope.saveNotifications = function(notification){
           $scope.loadingCompanyNotifications = true;
-            $http.patch(environmentConfig.API + '/admin/notifications/' + notification.id + '/', {enabled: notification.enabled}, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': vm.token
-                }
-            }).then(function (res) {
-              $scope.loadingCompanyNotifications = false;
-                if (res.status === 200) {
-                    toastr.success('You have successfully updated the notification');
-                }
-            }).catch(function (error) {
-              $scope.loadingCompanyNotifications = false;
-                errorHandler.evaluateErrors(error.data);
+            Rehive.admin.notifications.update(notification.id, {enabled: notification.enabled}).then(function (res) {
+                $scope.loadingCompanyNotifications = false;
+                toastr.success('You have successfully updated the notification');
+                $scope.$apply();
+            }, function (error) {
+                $scope.loadingCompanyNotifications = false;
+                errorHandler.evaluateErrors(error);
                 errorHandler.handleErrors(error);
+                $scope.$apply();
             });
-        }
+        };
 
     }
 })();

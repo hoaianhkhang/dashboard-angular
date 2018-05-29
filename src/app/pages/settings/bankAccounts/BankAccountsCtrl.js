@@ -6,7 +6,7 @@
 
     /** @ngInject */
     function BankAccountsCtrl($scope,environmentConfig,$uibModal,$http,localStorageManagement,
-                              errorHandler,serializeFiltersService,_) {
+                              Rehive,errorHandler,serializeFiltersService) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
@@ -19,14 +19,14 @@
             maxSize: 5
         };
 
-        vm.getBankAccountsUrl = function(){
+        vm.getBankAccountsFilterObj = function(){
 
             var searchObj = {
                 page: $scope.pagination.pageNo,
                 page_size: $scope.pagination.itemsPerPage
             };
 
-            return environmentConfig.API + '/admin/bank-accounts/?' + serializeFiltersService.serializeFilters(searchObj);
+            return serializeFiltersService.objectFilters(searchObj);
         };
 
         $scope.getBankAccounts = function (fromModalDelete) {
@@ -41,27 +41,22 @@
                     $scope.pagination.pageNo = 1;
                 }
 
-                var bankAccountsUrl = vm.getBankAccountsUrl();
+                var bankAccountsFilterObj = vm.getBankAccountsFilterObj();
 
-                $http.get(bankAccountsUrl, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
+                Rehive.admin.bankAccounts.get({filter: bankAccountsFilterObj}).then(function (res) {
+                    if(res.results.length > 0 ){
+                        $scope.bankAccountsData = res;
+                        $scope.bankAccounts = res.results;
+                        vm.getBankAccountCurrencies($scope.bankAccounts);
+                    } else {
+                        $scope.loadingBankAccounts = false;
                     }
-                }).then(function (res) {
-                    if (res.status === 200) {
-                        if(res.data.data.results.length > 0 ){
-                            $scope.bankAccountsData = res.data.data;
-                            $scope.bankAccounts = res.data.data.results;
-                            vm.getBankAccountCurrencies($scope.bankAccounts);
-                        } else {
-                            $scope.loadingBankAccounts = false;
-                        }
-                    }
-                }).catch(function (error) {
+                    $scope.$apply();
+                }, function (error) {
                     $scope.loadingBankAccounts = false;
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };

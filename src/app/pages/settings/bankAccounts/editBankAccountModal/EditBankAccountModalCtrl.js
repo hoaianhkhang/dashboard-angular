@@ -5,7 +5,7 @@
         .controller('EditBankAccountModalCtrl', EditBankAccountModalCtrl);
 
     function EditBankAccountModalCtrl($scope,$uibModalInstance,bankAccount,toastr,$http,$timeout,
-                                      environmentConfig,localStorageManagement,errorHandler,_) {
+                                      Rehive,environmentConfig,localStorageManagement,errorHandler,_) {
 
         var vm = this;
 
@@ -23,18 +23,16 @@
 
         vm.getCompanyCurrencies = function(){
             if(vm.token){
-                $http.get(environmentConfig.API + '/admin/currencies/?enabled=true&page_size=250', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
-                    if (res.status === 200) {
-                        $scope.currenciesList = res.data.data.results;
-                    }
-                }).catch(function (error) {
-                    errorHandler.evaluateErrors(error.data);
+                Rehive.admin.currencies.get({filters: {
+                    enabled: true,
+                    page_size: 250
+                }}).then(function (res) {
+                    $scope.currenciesList = res.results;
+                    $scope.$apply();
+                }, function (error) {
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };
@@ -42,20 +40,15 @@
 
         vm.getBankAccount = function () {
             $scope.updatingBankAccount = true;
-            $http.get(environmentConfig.API + '/admin/bank-accounts/' + bankAccount.id + '/', {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': vm.token
-                }
-            }).then(function (res) {
-                if (res.status === 200) {
-                    $scope.editBankData = res.data.data;
-                    vm.getBankAccountCurrencies();
-                }
-            }).catch(function (error) {
+            Rehive.admin.bankAccounts.get({id: bankAccount.id}).then(function (res) {
+                $scope.editBankData = res;
+                vm.getBankAccountCurrencies();
+                $scope.$apply();
+            }, function (error) {
                 $scope.updatingBankAccount = false;
-                errorHandler.evaluateErrors(error.data);
+                errorHandler.evaluateErrors(error);
                 errorHandler.handleErrors(error);
+                $scope.$apply();
             });
         };
         vm.getBankAccount();
@@ -88,19 +81,14 @@
 
         $scope.updateBankAccount = function () {
             $scope.updatingBankAccount = true;
-            $http.patch(environmentConfig.API + '/admin/bank-accounts/'+ $scope.editBankData.id + '/', vm.updatedBankAccount, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': vm.token
-                }
-            }).then(function (res) {
-                if (res.status === 200) {
-                    $scope.separateCurrencies($scope.editBankAccountCurrencies);
-                }
-            }).catch(function (error) {
+            Rehive.admin.bankAccounts.update($scope.editBankData.id, vm.updatedBankAccount).then(function (res) {
+                $scope.separateCurrencies($scope.editBankAccountCurrencies);
+                $scope.$apply();
+            }, function (error) {
                 $scope.updatingBankAccount = false;
-                errorHandler.evaluateErrors(error.data);
+                errorHandler.evaluateErrors(error);
                 errorHandler.handleErrors(error);
+                $scope.$apply();
             });
         };
 

@@ -5,10 +5,10 @@
         .controller('AdminEmailsCtrl', AdminEmailsCtrl);
 
     /** @ngInject */
-    function AdminEmailsCtrl($scope,environmentConfig,$location,$http,localStorageManagement,errorHandler,toastr) {
+    function AdminEmailsCtrl($scope,Rehive,$location,localStorageManagement,errorHandler,toastr) {
 
         var vm = this;
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
         $scope.addingEmail = false;
         $scope.loadingAdminEmails = true;
         $scope.newEmail = {primary: true};
@@ -16,20 +16,15 @@
         vm.getUserEmails = function () {
             $scope.loadingAdminEmails = true;
             if(vm.token) {
-                $http.get(environmentConfig.API + '/user/emails/', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
+                Rehive.user.emails.get().then(function (res) {
                     $scope.loadingAdminEmails = false;
-                    if (res.status === 200) {
-                        $scope.adminEmailsList = res.data.data;
-                    }
-                }).catch(function (error) {
+                    $scope.adminEmailsList = res;
+                    $scope.$apply();
+                }, function (error) {
                     $scope.loadingAdminEmails = false;
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };
@@ -38,21 +33,16 @@
         $scope.updateEmail = function (email) {
             $scope.loadingAdminEmails = true;
             if(vm.token) {
-                $http.patch(environmentConfig.API + '/user/emails/' + email.id + '/' , {primary: true}, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
+                Rehive.user.emails.update(email.id,{primary: true}).then(function (res) {
                     $scope.loadingAdminEmails = false;
-                    if (res.status === 200) {
-                        toastr.success('Primary email changed successfully');
-                        vm.getUserEmails();
-                    }
-                }).catch(function (error) {
+                    toastr.success('Primary email changed successfully');
+                    vm.getUserEmails();
+                    $scope.$apply();
+                }, function (error) {
                     $scope.loadingAdminEmails = false;
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };
@@ -60,23 +50,19 @@
         $scope.createEmail = function (newEmail) {
             $scope.loadingAdminEmails = true;
             if(vm.token) {
-                $http.post(environmentConfig.API + '/user/emails/', newEmail , {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
+                Rehive.user.emails.create(newEmail).then(function (res)
+                {
                     $scope.loadingAdminEmails = false;
-                    if (res.status === 201) {
-                        toastr.success('Email added successfully');
-                        $scope.toggleAddEmailView();
-                        $scope.newEmail = {primary: true};
-                        vm.getUserEmails();
-                    }
-                }).catch(function (error) {
+                    toastr.success('Email added successfully');
+                    $scope.toggleAddEmailView();
+                    $scope.newEmail = {primary: true};
+                    vm.getUserEmails();
+                    $scope.$apply();
+                }, function (error) {
                     $scope.loadingAdminEmails = false;
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };
@@ -84,21 +70,16 @@
         $scope.deleteEmail = function (email) {
             $scope.loadingAdminEmails = true;
             if(vm.token) {
-                $http.delete(environmentConfig.API + '/user/emails/' + email.id + '/', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
+                Rehive.user.emails.delete(email.id).then(function (res) {
                     $scope.loadingAdminEmails = false;
-                    if (res.status === 200) {
-                        toastr.success('Email deleted successfully');
-                        vm.getUserEmails();
-                    }
-                }).catch(function (error) {
+                    toastr.success('Email deleted successfully');
+                    vm.getUserEmails();
+                    $scope.$apply();
+                }, function (error) {
                     $scope.loadingAdminEmails = false;
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };
