@@ -24,8 +24,25 @@
         $scope.groupFilterOptions = ['Group name','In a group'];
         $scope.filtersCount = 0;
 
+        if(localStorageManagement.getValue(vm.savedTransactionTableColumns)){
+            var headerColumns = JSON.parse(localStorageManagement.getValue(vm.savedTransactionTableColumns));
+            var recipientFieldExists = false;
+            headerColumns.forEach(function (col) {
+                if(col.colName == 'Recipient' || col.fieldName == 'recipient'){
+                    recipientFieldExists = true;
+                }
+            });
+
+            if(!recipientFieldExists){
+                headerColumns.splice(1,0,{colName: 'Recipient',fieldName: 'recipient',visible: true});
+            }
+
+            localStorageManagement.setValue(vm.savedTransactionTableColumns,JSON.stringify(headerColumns));
+        }
+
         $scope.headerColumns = localStorageManagement.getValue(vm.savedTransactionTableColumns) ? JSON.parse(localStorageManagement.getValue(vm.savedTransactionTableColumns)) : [
             {colName: 'User',fieldName: 'user',visible: true},
+            {colName: 'Recipient',fieldName: 'recipient',visible: true},
             {colName: 'Type',fieldName: 'tx_type',visible: true},
             {colName: 'Subtype',fieldName: 'subtype',visible: true},
             {colName: 'Currency',fieldName: 'currencyCode',visible: true},
@@ -496,6 +513,7 @@
             transactionsArray.forEach(function (transactionObj) {
                 $scope.transactions.push({
                     user: transactionObj.user.email || transactionObj.user.mobile_number,
+                    recipient: transactionObj.destination_transaction ? transactionObj.destination_transaction.id ? transactionObj.destination_transaction.user.email : transactionObj.destination_transaction.user.email + ' (new user)' : "",
                     tx_type: $filter("capitalizeWord")(transactionObj.tx_type),
                     subtype: transactionObj.subtype,
                     currencyCode: transactionObj.currency.code,

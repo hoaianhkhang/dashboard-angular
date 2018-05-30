@@ -44,6 +44,7 @@
                         $scope.transaction = res.data.data;
                         $scope.formatted.metadata = metadataTextService.convertToText($scope.transaction.metadata);
                         $scope.updateTransactionObj.status = $scope.transaction.status;
+                        $scope.transaction.recipient = $scope.transaction.destination_transaction ? $scope.transaction.destination_transaction.id ? $scope.transaction.destination_transaction.user.email : $scope.transaction.destination_transaction.user.email + ' (new user)' : "";
                         $scope.updatingTransaction = false;
                         vm.getUserDetails($scope.transaction.user);
                     }
