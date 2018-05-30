@@ -131,7 +131,7 @@
                     } else {
                         if(recipient){
                             $scope.retrievedRecipientAccountsArray = [];
-                            $scope.retrievedRecipientObj = {};
+                            $scope.retrievedRecipientObj = {email: user + ' ( new user )'};
                         } else {
                             $scope.retrievedSenderUserObj = {};
                             $scope.retrievedSenderUserAccountsArray = [];
