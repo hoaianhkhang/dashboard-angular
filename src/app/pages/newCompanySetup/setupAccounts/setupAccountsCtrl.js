@@ -4,8 +4,8 @@
     angular.module('BlurAdmin.pages.newCompanySetup.setupAccounts')
         .controller("SetupAccountsCtrl", SetupAccountsCtrl);
 
-    function SetupAccountsCtrl($rootScope,$scope,$http,toastr,localStorageManagement,$ngConfirm,
-        environmentConfig,$location,errorHandler,$filter) {
+    function SetupAccountsCtrl($rootScope,$scope,toastr,localStorageManagement,$ngConfirm,
+                               Rehive,$location,errorHandler,$filter) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue("TOKEN");
@@ -62,26 +62,20 @@
             $scope.accounts = [];
             if(vm.token){
                 $scope.loadingCompanySetupAccounts = true;
-                $http.get(environmentConfig.API + '/admin/groups/', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
-                    if (res.status === 200) {
-                        res.data.data.results.forEach(function (element) {
-                            if(element.name !== 'admin' && element.name !== 'service'){
-                                $scope.groups.push(element);
-                            }
-                        });
+                Rehive.admin.groups.get().then(function (res) {
+                    res.results.forEach(function (element) {
+                        if(element.name !== 'admin' && element.name !== 'service'){
+                            $scope.groups.push(element);
+                        }
+                    });
 
-                        vm.getAccountConfigurations();
-
-                    }
-                }).catch(function (error) {
+                    vm.getAccountConfigurations();
+                    $scope.$apply();
+                }, function (error) {
                     $scope.loadingCompanySetupAccounts = false;
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             } else {
                 $rootScope.gotToken = false;
@@ -101,34 +95,29 @@
                 $scope.loadingCompanySetupAccounts = true;
                 if($scope.groups.length > 0){
                     $scope.groups.forEach(function (element,ind,array) {
-                        $http.get(environmentConfig.API + '/admin/groups/'+ element.name +"/account-configurations/", {
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'Authorization': vm.token
+                        Rehive.admin.groups.accountConfigurations.get(element.name).then(function (res) {
+                            element.accConfigCount = res.count;
+                            res.results.forEach(function(node){
+                                node.group = element;
+                            });
+                            $scope.accounts = $scope.accounts.concat(res.results);
+                            if($scope.accounts.length == 0) {
+                                $rootScope.setupAccounts = 0;
+                                localStorageManagement.setValue('setupAccounts',0);
+                            } else {
+                                $rootScope.setupAccounts = 1;
+                                localStorageManagement.setValue('setupAccounts',1);
                             }
-                        }).then(function (res) {
-                            if (res.status === 200) {
-                                element.accConfigCount = res.data.data.count;
-                                res.data.data.results.forEach(function(node){
-                                    node.group = element;
-                                });
-                                $scope.accounts = $scope.accounts.concat(res.data.data.results);
-                                if($scope.accounts.length == 0) {
-                                    $rootScope.setupAccounts = 0;
-                                    localStorageManagement.setValue('setupAccounts',0);
-                                } else {
-                                    $rootScope.setupAccounts = 1;
-                                    localStorageManagement.setValue('setupAccounts',1);
-                                }
 
-                                if(ind == (array.length - 1)){
-                                    $scope.loadingCompanySetupAccounts = false;
-                                }
+                            if(ind == (array.length - 1)){
+                                $scope.loadingCompanySetupAccounts = false;
                             }
-                        }).catch(function (error) {
+                            $scope.$apply();
+                        }, function (error) {
                             $scope.loadingCompanySetupAccounts = false;
-                            errorHandler.evaluateErrors(error.data);
+                            errorHandler.evaluateErrors(error);
                             errorHandler.handleErrors(error);
+                            $scope.$apply();
                         });
                     });
                 } else {
@@ -139,18 +128,16 @@
 
         vm.getCurrencies = function(){
             if(vm.token){
-                $http.get(environmentConfig.API + '/admin/currencies/?enabled=true&page_size=250', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
-                    if (res.status === 200) {
-                        $scope.currencies = res.data.data.results;
-                    }
-                }).catch(function (error) {
-                    errorHandler.evaluateErrors(error.data);
+                Rehive.admin.currencies.get({filters: {
+                    enabled: true,
+                    page_size: 250
+                }}).then(function (res) {
+                    $scope.currencies = res.results;
+                    $scope.$apply();
+                }, function (error) {
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };
@@ -164,29 +151,26 @@
                 "primary": account.primary,
                 "default": account.default
             };
-            $http.post(environmentConfig.API + '/admin/groups/'+ account.groupName.name +"/account-configurations/", newaccount, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': vm.token
+
+            Rehive.admin.groups.accountConfigurations.create(account.groupName.name, newaccount).then(function (res)
+            {
+                res.group = account.groupName;
+                $scope.accounts.push(res);
+                if($scope.accounts.length==0) {
+                    $rootScope.setupAccounts = 0;
+                    localStorageManagement.setValue('setupAccounts',0);
+                } else {
+                    $rootScope.setupAccounts = 1;
+                    localStorageManagement.setValue('setupAccounts',1);
                 }
-            }).then(function (res) {
-                if (res.status === 201) {
-                    res.data.data.group = account.groupName;
-                    $scope.accounts.push(res.data.data);
-                    if($scope.accounts.length==0) {
-                        $rootScope.setupAccounts = 0;
-                        localStorageManagement.setValue('setupAccounts',0);
-                    } else {
-                        $rootScope.setupAccounts = 1;
-                        localStorageManagement.setValue('setupAccounts',1);
-                    }
-                    vm.addCurrenciesToAccount(account);
-                }
-            }).catch(function (error) {
+                vm.addCurrenciesToAccount(account);
+                $scope.$apply();
+            }, function (error) {
                 $rootScope.$pageFinishedLoading = true;
                 $scope.loadingCompanySetupAccounts = false;
-                errorHandler.evaluateErrors(error.data);
+                errorHandler.evaluateErrors(error);
                 errorHandler.handleErrors(error);
+                $scope.$apply();
             });
         };
 
@@ -198,31 +182,28 @@
                 "primary": account.primary,
                 "default": account.default
             };
-            $http.patch(environmentConfig.API + '/admin/groups/'+ account.groupName.name +"/account-configurations/" + account.prevName + "/", newaccount, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': vm.token
+
+            Rehive.admin.groups.accountConfigurations.update(account.groupName.name,account.prevName,newaccount).then(function (res)
+            {
+                vm.initializeAccount();
+                $scope.editingAccount = false;
+                toastr.success('Account configuration updated');
+                res.group = account.groupName;
+                if($scope.accounts.length==0) {
+                    $rootScope.setupAccounts = 0;
+                    localStorageManagement.setValue('setupAccounts',0);
+                } else {
+                    $rootScope.setupAccounts = 1;
+                    localStorageManagement.setValue('setupAccounts',1);
                 }
-            }).then(function (res) {
-                if (res.status === 200) {
-                    vm.initializeAccount();
-                    $scope.editingAccount = false;
-                    toastr.success('Account configuration updated');
-                    res.data.data.group = account.groupName;
-                    if($scope.accounts.length==0) {
-                        $rootScope.setupAccounts = 0;
-                        localStorageManagement.setValue('setupAccounts',0);
-                    } else {
-                        $rootScope.setupAccounts = 1;
-                        localStorageManagement.setValue('setupAccounts',1);
-                    }
-                    vm.addCurrenciesToAccount(account);
-                }
-            }).catch(function (error) {
+                vm.addCurrenciesToAccount(account);
+                $scope.$apply();
+            }, function (error) {
                 $scope.loadingCompanySetupAccounts = false;
                 $rootScope.$pageFinishedLoading = true;
-                errorHandler.evaluateErrors(error.data);
+                errorHandler.evaluateErrors(error);
                 errorHandler.handleErrors(error);
+                $scope.$apply();
             });
         };
 
@@ -230,27 +211,21 @@
             $scope.loadingCompanySetupAccounts = true;
             if(account.currencies.length > 0){
                 account.currencies.forEach(function(element,i,array) {
-                    $http.post(environmentConfig.API + '/admin/groups/'+ account.groupName.name +"/account-configurations/"+account.name+"/currencies/",
-                        {
-                            "currency": element.code
-                        },
-                        {
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'Authorization': vm.token
-                            }
-                        }).then(function (res) {
-                        if (res.status === 201) {
-                            if(i == (array.length - 1)){
-                                $scope.alreadySelectedCurrencies = [];
-                                vm.getGroups();
-                            }
+                    Rehive.admin.groups.accountConfigurations.currencies.create(account.groupName.name,account.name,
+                    {
+                        currency: element.code
+                    }).then(function (res) {
+                        if(i == (array.length - 1)){
+                            $scope.alreadySelectedCurrencies = [];
+                            vm.getGroups();
+                            $scope.$apply();
                         }
-                    }).catch(function (error) {
+                    }, function (error) {
                         $scope.loadingCompanySetupAccounts = false;
                         $rootScope.$pageFinishedLoading = true;
-                        errorHandler.evaluateErrors(error.data);
+                        errorHandler.evaluateErrors(error);
                         errorHandler.handleErrors(error);
+                        $scope.$apply();
                     });
                 });
             } else {
@@ -286,29 +261,24 @@
 
         $scope.deleteAccount = function (account) {
             $scope.loadingCompanySetupAccounts = true;
-            $http.delete(environmentConfig.API + '/admin/groups/'+ account.group.name +"/account-configurations/" + account.name + "/", {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': vm.token
+            Rehive.admin.groups.accountConfigurations.delete(account.group.name,account.name).then(function (res) {
+                $scope.alreadySelectedCurrencies = [];
+                var index = $scope.accounts.indexOf(account);
+                $scope.accounts.splice(index,1);
+                if($scope.accounts.length==0) {
+                    $rootScope.setupAccounts = 0;
+                    localStorageManagement.setValue('setupAccounts',0);
+                } else {
+                    $rootScope.setupAccounts = 1;
+                    localStorageManagement.setValue('setupAccounts',1);
                 }
-            }).then(function (res) {
-                if (res.status === 200) {
-                    $scope.alreadySelectedCurrencies = [];
-                    var index = $scope.accounts.indexOf(account);
-                    $scope.accounts.splice(index,1);
-                    if($scope.accounts.length==0) {
-                        $rootScope.setupAccounts = 0;
-                        localStorageManagement.setValue('setupAccounts',0);
-                    } else {
-                        $rootScope.setupAccounts = 1;
-                        localStorageManagement.setValue('setupAccounts',1);
-                    }
-                    vm.getGroups();
-                }
-            }).catch(function (error) {
+                vm.getGroups();
+                $scope.$apply();
+            }, function (error) {
                 $scope.loadingCompanySetupAccounts = false;
-                errorHandler.evaluateErrors(error.data);
+                errorHandler.evaluateErrors(error);
                 errorHandler.handleErrors(error);
+                $scope.$apply();
             });
         };
 

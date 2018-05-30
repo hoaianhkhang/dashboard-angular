@@ -4,8 +4,8 @@
     angular.module('BlurAdmin.pages.newCompanySetup.setupTransactionSubtypes')
         .controller("SetupTransactionSubtypesCtrl", SetupTransactionSubtypesCtrl);
 
-    function SetupTransactionSubtypesCtrl($rootScope,$scope,$http,toastr,$ngConfirm,$filter,
-                                            environmentConfig,$location,errorHandler,localStorageManagement) {
+    function SetupTransactionSubtypesCtrl($rootScope,$scope,toastr,$ngConfirm,$filter,
+                                          Rehive,$location,errorHandler,localStorageManagement) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue("TOKEN");
@@ -36,28 +36,23 @@
         vm.getSubtypes = function(){
             if(vm.token){
                 $scope.loadingSetupSubtypes= true;
-                $http.get(environmentConfig.API + '/admin/subtypes/', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
+                Rehive.admin.subtypes.get().then(function (res) {
+                    $scope.subtypes = res;
+                    if($scope.subtypes.length==0){
+                        $rootScope.setupSubtypes = 0;
+                        localStorageManagement.setValue('setupSubtypes',0);
                     }
-                }).then(function (res) {
-                    if (res.status === 200) {
-                        $scope.subtypes = res.data.data;
-                        if($scope.subtypes.length==0){
-                            $rootScope.setupSubtypes = 0;
-                            localStorageManagement.setValue('setupSubtypes',0);
-                        }
-                        else {
-                            $rootScope.setupSubtypes = 1;
-                            localStorageManagement.setValue('setupSubtypes',1);
-                        }
-                        $scope.loadingSetupSubtypes= false;
+                    else {
+                        $rootScope.setupSubtypes = 1;
+                        localStorageManagement.setValue('setupSubtypes',1);
                     }
-                }).catch(function (error) {
                     $scope.loadingSetupSubtypes= false;
-                    errorHandler.evaluateErrors(error.data);
+                    $scope.$apply();
+                }, function (error) {
+                    $scope.loadingSetupSubtypes= false;
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             } else {
                 $rootScope.gotToken = false;
@@ -74,21 +69,17 @@
         
         $scope.addSubtype = function (subtype) {
             $scope.loadingSetupSubtypes= true;
-            $http.post(environmentConfig.API + '/admin/subtypes/',subtype, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': vm.token
-                }
-            }).then(function (res) {
-                if (res.status === 201) {
-                    $scope.subtype={};
-                    vm.getSubtypes();
-                }
-            }).catch(function (error) {
+            Rehive.admin.subtypes.create(subtype).then(function (res)
+            {
+                $scope.subtype={};
+                vm.getSubtypes();
+                $scope.$apply();
+            }, function (error) {
                 $scope.loadingSetupSubtypes= false;
                 $rootScope.$pageFinishedLoading = true;
-                errorHandler.evaluateErrors(error.data);
+                errorHandler.evaluateErrors(error);
                 errorHandler.handleErrors(error);
+                $scope.$apply();
             });
         };
 
@@ -101,22 +92,18 @@
             if(subtype.prevName!==subtype.name){
                 newSubtype.name = subtype.name;
             }
-            $http.patch(environmentConfig.API + '/admin/subtypes/' + subtype.id + '/', newSubtype, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': vm.token
-                }
-            }).then(function (res) {
-                if (res.status === 200) {
-                    $scope.subtype={};
-                    $scope.editingSubtypes = false;
-                    $scope.loadingSetupSubtypes= false;
-                }
-            }).catch(function (error) {
+
+            Rehive.admin.subtypes.update(subtype.id, newSubtype).then(function (res) {
+                $scope.subtype={};
+                $scope.editingSubtypes = false;
+                $scope.loadingSetupSubtypes= false;
+                $scope.$apply();
+            }, function (error) {
                 $scope.loadingSetupSubtypes= false;
                 $rootScope.$pageFinishedLoading = true;
-                errorHandler.evaluateErrors(error.data);
+                errorHandler.evaluateErrors(error);
                 errorHandler.handleErrors(error);
+                $scope.$apply();
             });
         };
 
@@ -146,19 +133,14 @@
 
         $scope.deleteSelectedItem = function (id) {
             $scope.loadingSetupSubtypes= true;
-            $http.delete(environmentConfig.API + '/admin/subtypes/' + id + '/', {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': vm.token
-                }
-            }).then(function (res) {
-                if (res.status === 200) {
-                    vm.getSubtypes();
-                }
-            }).catch(function (error) {
+            Rehive.admin.subtypes.delete(id).then(function (res) {
+                vm.getSubtypes();
+                $scope.$apply();
+            }, function (error) {
                 $scope.loadingSetupSubtypes= false;
-                errorHandler.evaluateErrors(error.data);
+                errorHandler.evaluateErrors(error);
                 errorHandler.handleErrors(error);
+                $scope.$apply();
             });
         };
 
