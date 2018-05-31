@@ -4,8 +4,8 @@
     angular.module('BlurAdmin.pages.settings.bankAccounts')
         .controller('EditBankAccountModalCtrl', EditBankAccountModalCtrl);
 
-    function EditBankAccountModalCtrl($scope,$uibModalInstance,bankAccount,toastr,$http,$timeout,
-                                      Rehive,environmentConfig,localStorageManagement,errorHandler,_) {
+    function EditBankAccountModalCtrl($scope,$uibModalInstance,bankAccount,toastr,$timeout,
+                                      Rehive,localStorageManagement,errorHandler,_) {
 
         var vm = this;
 
@@ -55,23 +55,18 @@
 
         vm.getBankAccountCurrencies = function () {
             $scope.updatingBankAccount = true;
-            $http.get(environmentConfig.API + '/admin/bank-accounts/' + bankAccount.id + '/currencies/', {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': vm.token
-                }
-            }).then(function (res) {
+            Rehive.admin.bankAccounts.currencies.get(bankAccount.id).then(function (res) {
                 $scope.updatingBankAccount = false;
-                if (res.status === 200) {
-                    $scope.editBankAccountCurrencies.list = res.data.data.results;
-                    $scope.originalBankAccountCurrencies = {
-                        list: _.pluck(res.data.data.results,'code')
-                    };
-                }
-            }).catch(function (error) {
+                $scope.editBankAccountCurrencies.list = res.results;
+                $scope.originalBankAccountCurrencies = {
+                    list: _.pluck(res.results,'code')
+                };
+                $scope.$apply();
+            }, function (error) {
                 $scope.updatingBankAccount = false;
-                errorHandler.evaluateErrors(error.data);
+                errorHandler.evaluateErrors(error);
                 errorHandler.handleErrors(error);
+                $scope.$apply();
             });
         };
 
@@ -145,44 +140,32 @@
 
         $scope.deleteBankAccountCurrency = function(editBankAccountCurrencies,currencyCode){
             $scope.updatingBankAccount = true;
-            $http.delete(environmentConfig.API + '/admin/bank-accounts/' + $scope.editBankData.id + '/currencies/' + currencyCode + '/', {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': vm.token
-                }
-            }).then(function (res) {
-                if (res.status === 200) {
+            Rehive.admin.bankAccounts.currencies.delete($scope.editBankData.id, currencyCode).then(function (res) {
 
-                }
-            }).catch(function (error) {
+            }, function (error) {
                 $scope.updatingBankAccount = false;
-                errorHandler.evaluateErrors(error.data);
+                errorHandler.evaluateErrors(error);
                 errorHandler.handleErrors(error);
             });
         };
 
         $scope.createBankAccountCurrency = function(editBankAccountCurrencies,currencyCode,last){
             $scope.updatingBankAccount = true;
-            $http.post(environmentConfig.API + '/admin/bank-accounts/' + $scope.editBankData.id + '/currencies/',{currency: currencyCode}, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': vm.token
+            Rehive.admin.bankAccounts.currencies.create($scope.editBankData.id,{currency: currencyCode}).then(function (res) {
+                if(last){
+                    $timeout(function () {
+                        vm.updatedBankAccount = {};
+                        $uibModalInstance.close(true);
+                        $scope.updatingBankAccount = false;
+                        toastr.success('Bank account successfully updated');
+                        $scope.$apply();
+                    },800);
                 }
-            }).then(function (res) {
-                if (res.status === 201) {
-                    if(last){
-                        $timeout(function () {
-                            vm.updatedBankAccount = {};
-                            $uibModalInstance.close(true);
-                            $scope.updatingBankAccount = false;
-                            toastr.success('Bank account successfully updated');
-                        },800);
-                    }
-                }
-            }).catch(function (error) {
+            }, function (error) {
                 $scope.updatingBankAccount = false;
-                errorHandler.evaluateErrors(error.data);
+                errorHandler.evaluateErrors(error);
                 errorHandler.handleErrors(error);
+                $scope.$apply();
             });
         };
 

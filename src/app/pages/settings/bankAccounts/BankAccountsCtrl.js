@@ -5,7 +5,7 @@
         .controller('BankAccountsCtrl', BankAccountsCtrl);
 
     /** @ngInject */
-    function BankAccountsCtrl($scope,environmentConfig,$uibModal,$http,localStorageManagement,
+    function BankAccountsCtrl($scope,$uibModal,localStorageManagement,
                               Rehive,errorHandler,serializeFiltersService) {
 
         var vm = this;
@@ -64,24 +64,18 @@
 
         vm.getBankAccountCurrencies = function (bankAccounts) {
             $scope.loadingBankAccounts = true;
-
             bankAccounts.forEach(function (bank,index,array) {
-                $http.get(environmentConfig.API + '/admin/bank-accounts/' + bank.id + '/currencies/', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
+                Rehive.admin.bankAccounts.currencies.get(bank.id).then(function (res) {
+                    bank.currencies = res.results;
+                    if(index == (array.length -1)){
+                        $scope.loadingBankAccounts = false;
                     }
-                }).then(function (res) {
-                    if (res.status === 200) {
-                        bank.currencies = res.data.data.results;
-                        if(index == (array.length -1)){
-                            $scope.loadingBankAccounts = false;
-                        }
-                    }
-                }).catch(function (error) {
+                    $scope.$apply();
+                }, function (error) {
                     $scope.loadingBankAccounts = false;
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             });
         };
