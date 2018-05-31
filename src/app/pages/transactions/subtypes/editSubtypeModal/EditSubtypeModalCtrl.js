@@ -4,7 +4,8 @@
     angular.module('BlurAdmin.pages.transactions.subtypes')
         .controller('EditSubtypeModalCtrl', EditSubtypeModalCtrl);
 
-    function EditSubtypeModalCtrl($scope,$uibModalInstance,subtype,toastr,$http,environmentConfig,localStorageManagement,errorHandler) {
+    function EditSubtypeModalCtrl($scope,Rehive,$uibModalInstance,subtype,toastr,
+                                  localStorageManagement,errorHandler) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
@@ -15,20 +16,15 @@
 
         vm.getSubtype = function (subtype) {
             $scope.editingSubtype = true;
-            $http.get(environmentConfig.API + '/admin/subtypes/' + subtype.id + '/', {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': vm.token
-                }
-            }).then(function (res) {
+            Rehive.admin.subtypes.get({id: subtype.id}).then(function (res) {
                 $scope.editingSubtype = false;
-                if (res.status === 200) {
-                    $scope.editSubtype = res.data.data;
-                }
-            }).catch(function (error) {
+                $scope.editSubtype = res;
+                $scope.$apply();
+            }, function (error) {$scope.$apply();
                 $scope.editingSubtype = false;
-                errorHandler.evaluateErrors(error.data);
+                errorHandler.evaluateErrors(error);
                 errorHandler.handleErrors(error);
+                $scope.$apply();
             });
         };
         vm.getSubtype(subtype);
@@ -43,23 +39,19 @@
 
         $scope.updateSubtype = function () {
             $scope.editingSubtype = true;
-            $http.patch(environmentConfig.API + '/admin/subtypes/'+ $scope.editSubtype.id + '/', vm.updatedSubtype, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': vm.token
-                }
-            }).then(function (res) {
-                $scope.editingSubtype = false;
-                if (res.status === 200) {
-                    vm.updatedSubtype = {};
-                    toastr.success('You have successfully updated the subtype');
-                    $uibModalInstance.close(true);
-                }
-            }).catch(function (error) {
+            Rehive.admin.subtypes.update($scope.editSubtype.id, vm.updatedSubtype).then(function (res) {
                 $scope.editingSubtype = false;
                 vm.updatedSubtype = {};
-                errorHandler.evaluateErrors(error.data);
+                toastr.success('You have successfully updated the subtype');
+                $uibModalInstance.close(true);
+                $scope.$apply();
+            }, function (error) {
+                $scope.editingSubtype = false;
+                vm.updatedSubtype = {};
+                errorHandler.evaluateErrors(error);
                 errorHandler.handleErrors(error);
+                $scope.$apply();
+
             });
         };
 
