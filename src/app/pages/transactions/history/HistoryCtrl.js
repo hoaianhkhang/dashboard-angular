@@ -5,7 +5,7 @@
         .controller('HistoryCtrl', HistoryCtrl);
 
     /** @ngInject */
-    function HistoryCtrl($rootScope,$scope,environmentConfig,$http,localStorageManagement,$uibModal,sharedResources,
+    function HistoryCtrl($rootScope,Rehive,$scope,environmentConfig,$http,localStorageManagement,$uibModal,sharedResources,
                          toastr,currencyModifiers,errorHandler,$state,$window,typeaheadService,$filter,
                          serializeFiltersService,$location,_) {
 
@@ -157,7 +157,7 @@
         };
 
         sharedResources.getSubtypes().then(function (res) {
-            $scope.subtypeOptions = _.pluck(res.data.data,'name');
+            $scope.subtypeOptions = _.pluck(res,'name');
             $scope.subtypeOptions.unshift('');
         });
 
