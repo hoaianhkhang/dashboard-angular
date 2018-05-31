@@ -5,7 +5,7 @@
         .controller('MultiFactorAuthVerifyCtrl', MultiFactorAuthVerifyCtrl);
 
     /** @ngInject */
-    function MultiFactorAuthVerifyCtrl($scope,$http,Rehive,environmentConfig,localStorageManagement,errorHandler,toastr,$stateParams,$location) {
+    function MultiFactorAuthVerifyCtrl($scope,Rehive,localStorageManagement,errorHandler,toastr,$stateParams,$location) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
@@ -56,21 +56,16 @@
         $scope.deleteTokenAuth = function(){
             if(vm.token) {
                 $scope.loadingVerifyAuth = true;
-                $http.delete(environmentConfig.API + '/auth/mfa/token/', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
-                    if(res.status === 200) {
-                        toastr.success('Token authentication successfully disabled');
-                        $location.path('/authentication/multi-factor');
-                        $scope.loadingVerifyAuth = false;
-                    }
-                }).catch(function (error) {
+                Rehive.auth.mfa.token.disable().then(function (res) {
+                    toastr.success('Token authentication successfully disabled');
+                    $location.path('/authentication/multi-factor');
                     $scope.loadingVerifyAuth = false;
-                    errorHandler.evaluateErrors(error.data);
+                    $scope.$apply();
+                }, function (error) {
+                    $scope.loadingVerifyAuth = false;
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };

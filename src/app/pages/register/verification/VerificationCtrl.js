@@ -5,8 +5,8 @@
         .controller('VerificationCtrl', VerificationCtrl);
 
     /** @ngInject */
-    function VerificationCtrl($rootScope,$scope,$http,toastr,environmentConfig,
-                              localStorageManagement,$location,errorHandler,userVerification,_) {
+    function VerificationCtrl($rootScope,Rehive,$scope,toastr,localStorageManagement,
+                              $location,errorHandler,userVerification) {
 
         var vm = this;
         vm.user = {};
@@ -41,35 +41,28 @@
         };
 
         vm.getUserInfo = function(){
-            $http.get(environmentConfig.API + '/user/', {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': vm.token
-                }
-            }).then(function (res) {
-                if (res.status === 200) {
-                    vm.user = res.data.data;
-                }
-            }).catch(function (error) {
-                errorHandler.evaluateErrors(error.data);
+            Rehive.user.get().then(function(res){
+                vm.user = res;
+                $scope.$apply();
+            },function(error){
+                errorHandler.evaluateErrors(error);
                 errorHandler.handleErrors(error);
+                $scope.$apply();
             });
         };
         vm.getUserInfo();
 
         $scope.resendEmail = function(){
-            $http.post(environmentConfig.API + '/auth/email/verify/resend/',{email: vm.user.email,company: vm.user.company}, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': vm.token
-                }
-            }).then(function (res) {
-                if (res.status === 200) {
-                    toastr.success('Verification email has been re-sent');
-                }
-            }).catch(function (error) {
-                errorHandler.evaluateErrors(error.data);
+            Rehive.auth.email.resendEmailVerification({
+                email: vm.user.email,
+                company: vm.user.company
+            }).then(function(res){
+                toastr.success('Verification email has been re-sent');
+                $scope.$apply();
+            },function(error){
+                errorHandler.evaluateErrors(error);
                 errorHandler.handleErrors(error);
+                $scope.$apply();
             });
         };
 

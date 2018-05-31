@@ -5,7 +5,7 @@
         .controller('RegisterCtrl', RegisterCtrl);
 
     /** @ngInject */
-    function RegisterCtrl($rootScope,$scope,$http,environmentConfig,errorHandler,$location,localStorageManagement) {
+    function RegisterCtrl($rootScope,Rehive,$scope,errorHandler,$location,localStorageManagement) {
 
         //var vm = this;
         $scope.path = $location.path();
@@ -31,22 +31,19 @@
 
         $scope.registerUser = function() {
             $rootScope.$pageFinishedLoading = false;
-            $http.post(environmentConfig.API + '/auth/company/register/', $scope.registerData)
-                .then(function (res) {
-                    if (res.status === 201) {
-                        $rootScope.pageTopObj.userInfoObj = {};
-                        $rootScope.pageTopObj.userInfoObj = res.data.data.user;
-                        localStorageManagement.setValue('TOKEN','Token ' + res.data.data.token);
-                        $location.path('/verification');
-                        $rootScope.$pageFinishedLoading = true;
-                        $rootScope.userFullyVerified = false;
-                    } else {
-
-                    }
-            }).catch(function (error) {
+            Rehive.auth.registerCompany($scope.registerData).then(function (res) {
+                $rootScope.pageTopObj.userInfoObj = {};
+                $rootScope.pageTopObj.userInfoObj = res.user;
+                localStorageManagement.setValue('TOKEN','Token ' + res.token);
+                $location.path('/verification');
                 $rootScope.$pageFinishedLoading = true;
-                errorHandler.evaluateErrors(error.data);
+                $rootScope.userFullyVerified = false;
+                $scope.$apply();
+            }, function (error) {
+                $rootScope.$pageFinishedLoading = true;
+                errorHandler.evaluateErrors(error);
                 errorHandler.handleErrors(error);
+                $scope.$apply();
             });
         };
 

@@ -5,7 +5,7 @@
         .controller('InitialCurrenciesModalModalCtrl', InitialCurrenciesModalModalCtrl);
 
     /** @ngInject */
-    function InitialCurrenciesModalModalCtrl($scope,$http,environmentConfig,localStorageManagement,$uibModalInstance,
+    function InitialCurrenciesModalModalCtrl($scope,Rehive,localStorageManagement,$uibModalInstance,
                                              currenciesList,errorHandler,toastr,$location) {
 
         var vm = this;
@@ -20,99 +20,76 @@
                 $scope.loadingDefaultValues = true;
                 currencies.forEach(function(currency,index,array){
                     currency.enabled = true;
-                    $http.post(environmentConfig.API + '/admin/currencies/',currency, {
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': vm.token
+                    Rehive.admin.currencies.create(currency).then(function (res) {
+                        if (index == (array.length - 1)) {
+                            vm.addDefaultValues();
+                            $scope.$apply();
                         }
-                    }).then(function (res) {
-                        if (res.status === 201) {
-                            if (index == (array.length - 1)) {
-                                vm.addDefaultValues();
-                            }
-                        }
-                    }).catch(function (error) {
+                    }, function (error) {
                         $scope.loadingDefaultValues = false;
-                        errorHandler.evaluateErrors(error.data);
+                        errorHandler.evaluateErrors(error);
                         errorHandler.handleErrors(error);
+                        $scope.$apply();
                     });
                 });
-
             } else {
                 toastr.info('Please select atleast one currency');
             }
         };
 
         vm.addDefaultValues = function(){
-            $http.post(environmentConfig.API + '/admin/groups/',
-                {
-                    name: 'user',
-                    label: 'User',
-                    default: true,
-                    public: true
-                }, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': vm.token
-                }
+            Rehive.admin.groups.create({
+                name: 'users',
+                label: 'Users',
+                default: true,
+                public: true
             }).then(function (res) {
-                if (res.status === 201) {
-                    vm.addAccountConfiguration();
-                }
-            }).catch(function (error) {
+                vm.addAccountConfiguration();
+                $scope.$apply();
+            }, function (error) {
                 $scope.loadingDefaultValues = false;
-                errorHandler.evaluateErrors(error.data);
+                errorHandler.evaluateErrors(error);
                 errorHandler.handleErrors(error);
+                $scope.$apply();
             });
         };
 
         vm.addAccountConfiguration = function () {
-            $http.post(environmentConfig.API + '/admin/groups/user/account-configurations/',
-                {
-                    name: 'default',
-                    label: 'Default',
-                    primary: true,
-                    default: true
-                }, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': vm.token
-                }
+            Rehive.admin.groups.accountConfigurations.create('users',
+            {
+                name: 'default',
+                label: 'Default',
+                primary: true,
+                default: true
             }).then(function (res) {
-                if (res.status === 201) {
-                    vm.addCurrenciesAccount();
-                }
-            }).catch(function (error) {
+                vm.addCurrenciesAccount();
+                $scope.$apply();
+            }, function (error) {
                 $scope.loadingDefaultValues = false;
-                errorHandler.evaluateErrors(error.data);
+                errorHandler.evaluateErrors(error);
                 errorHandler.handleErrors(error);
+                $scope.$apply();
             });
         };
 
         vm.addCurrenciesAccount = function () {
             $scope.currenciesToAdd.forEach(function(element,i,array) {
-                $http.post(environmentConfig.API + '/admin/groups/user/account-configurations/default/currencies/',
-                    {
-                        "currency": element.code
-                    },
-                    {
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': vm.token
-                        }
-                    }).then(function (res) {
-                    if (res.status === 201) {
-                        if(i == (array.length - 1)){
-                            $scope.loadingDefaultValues = false;
-                            toastr.success('Company has been setup with default values');
-                            $uibModalInstance.close();
-                            $location.path('/currencies');
-                        }
+                Rehive.admin.groups.accountConfigurations.currencies.create('users','default',
+                {
+                    currency: element.code
+                }).then(function (res) {
+                    if(i == (array.length - 1)){
+                        $scope.loadingDefaultValues = false;
+                        toastr.success('Company has been setup with default values');
+                        $uibModalInstance.close();
+                        $location.path('/currencies');
+                        $scope.$apply();
                     }
-                }).catch(function (error) {
+                }, function (error) {
                     $scope.loadingDefaultValues = false;
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             });
         };

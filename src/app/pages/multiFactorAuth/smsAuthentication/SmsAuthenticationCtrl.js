@@ -5,7 +5,7 @@
         .controller('SmsAuthenticationCtrl', SmsAuthenticationCtrl);
 
     /** @ngInject */
-    function SmsAuthenticationCtrl($scope,Rehive,$http,environmentConfig,localStorageManagement,errorHandler,toastr,$location) {
+    function SmsAuthenticationCtrl($scope,Rehive,localStorageManagement,errorHandler,toastr,$location) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
@@ -38,22 +38,17 @@
         $scope.deleteSmsAuthNumber = function(){
             if(vm.token) {
                 $scope.loadingSmsAuth = true;
-                $http.delete(environmentConfig.API + '/auth/mfa/sms/', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
-                    if (res.status === 200) {
-                        toastr.success('Sms authentication disabled successfully');
-                        $scope.smsAuthObj = {mobile_number: ''};
-                        $scope.numberFromGetCall = false;
-                        $scope.loadingSmsAuth = false;
-                    }
-                }).catch(function (error) {
+                Rehive.auth.mfa.sms.disable().then(function (res) {
+                    toastr.success('Sms authentication disabled successfully');
+                    $scope.smsAuthObj = {mobile_number: ''};
+                    $scope.numberFromGetCall = false;
                     $scope.loadingSmsAuth = false;
-                    errorHandler.evaluateErrors(error.data);
+                    $scope.$apply();
+                }, function (error) {
+                    $scope.loadingSmsAuth = false;
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };

@@ -4,8 +4,8 @@
     angular.module('BlurAdmin.pages.initialSetupScreen')
         .controller("InitialSetupScreenCtrl", InitialSetupScreenCtrl);
 
-    function InitialSetupScreenCtrl($rootScope,$scope,$location,$uibModal,errorHandler,$http,
-                                    localStorageManagement,environmentConfig) {
+    function InitialSetupScreenCtrl($rootScope,Rehive,$scope,$location,$uibModal,
+                                    errorHandler,localStorageManagement) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
@@ -21,24 +21,22 @@
 
         vm.getCurrencies = function(){
             if(vm.token){
-                $http.get(environmentConfig.API + '/admin/currencies/?enabled=true&page_size=250', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
+                Rehive.admin.currencies.get({filters: {
+                    enabled: true,
+                    page_size: 250
+                }}).then(function (res) {
+                    if(res.results.length > 0){
+                        $scope.showDefaultSetup = false;
+                        $scope.companyCurrencies = res.results;
+                    } else {
+                        $scope.showDefaultSetup = true;
+                        $scope.companyCurrencies = [];
                     }
-                }).then(function (res) {
-                    if (res.status === 200) {
-                        if(res.data.data.results.length > 0){
-                            $scope.showDefaultSetup = false;
-                            $scope.companyCurrencies = res.data.data.results;
-                        } else {
-                            $scope.showDefaultSetup = true;
-                            $scope.companyCurrencies = [];
-                        }
-                    }
-                }).catch(function (error) {
-                    errorHandler.evaluateErrors(error.data);
+                    $scope.$apply();
+                }, function (error) {
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };
