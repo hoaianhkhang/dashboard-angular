@@ -82,7 +82,7 @@
                 address: $scope.filtersObj.addressFilter ? ($scope.applyFiltersObj.addressFilter.selectedAddress ?  $scope.applyFiltersObj.addressFilter.selectedAddress: null) : null
             };
 
-            return vm.serviceUrl + 'users/?' + serializeFiltersService.serializeFilters(searchObj);
+            return vm.serviceUrl + 'admin/users/?' + serializeFiltersService.serializeFilters(searchObj);
         };
 
         $scope.getAllUsers = function(applyFilter){
