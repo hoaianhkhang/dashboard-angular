@@ -4,8 +4,8 @@
     angular.module('BlurAdmin.pages.transactions.history')
         .controller('TransferCtrl', TransferCtrl);
 
-    function TransferCtrl($http,$scope,errorHandler,toastr,environmentConfig,_,metadataTextService,$window,
-                          $location,localStorageManagement,$state,typeaheadService,currencyModifiers) {
+    function TransferCtrl(Rehive,$scope,errorHandler,metadataTextService,$window,
+                          $location,localStorageManagement) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
@@ -39,18 +39,16 @@
 
         vm.getTransferCompanyCurrencies = function(){
             if(vm.token){
-                $http.get(environmentConfig.API + '/admin/currencies/?enabled=true&page_size=250', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
-                    if (res.status === 200) {
-                        $scope.transferCurrencyOptions = res.data.data.results;
-                    }
-                }).catch(function (error) {
-                    errorHandler.evaluateErrors(error.data);
+                Rehive.admin.currencies.get({filters: {
+                    enabled: true,
+                    page_size: 250
+                }}).then(function (res) {
+                    $scope.transferCurrencyOptions = res.results;
+                    $scope.$apply();
+                }, function (error) {
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };
@@ -109,40 +107,38 @@
                 user = transactionData.user;
             }
 
-            $http.get(environmentConfig.API + '/admin/users/?user=' + encodeURIComponent(user), {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': vm.token
-                }
-            }).then(function (res) {
-                if (res.status === 200) {
-                    if(res.data.data.results.length == 1){
-                        if(recipient){
-                            $scope.retrievedRecipientObj = res.data.data.results[0];
-                            $scope.retrievedRecipientObj.metadata = metadataTextService.convertToText($scope.retrievedRecipientObj.metadata);
-                            if($scope.transferCurrencyOptions.length === 1){
-                                $scope.transferTransactionData.currency = $scope.transferCurrencyOptions[0];
-                                $scope.currencySelected($scope.transferTransactionData,'recipient');
-                            }
-                        } else {
-                            $scope.retrievedSenderUserObj = res.data.data.results[0];
-                            $scope.retrievedSenderUserObj.metadata = metadataTextService.convertToText($scope.retrievedSenderUserObj.metadata);
+            Rehive.admin.users.get({filters: {user: user}}).then(function (res) {
+                if(res.results.length == 1){
+                    if(recipient){
+                        $scope.retrievedRecipientObj = res.results[0];
+                        $scope.retrievedRecipientObj.metadata = metadataTextService.convertToText($scope.retrievedRecipientObj.metadata);
+                        if($scope.transferCurrencyOptions.length === 1){
+                            $scope.transferTransactionData.currency = $scope.transferCurrencyOptions[0];
+                            $scope.currencySelected($scope.transferTransactionData,'recipient');
                         }
+                        $scope.$apply();
                     } else {
-                        if(recipient){
-                            $scope.retrievedRecipientAccountsArray = [];
-                            $scope.retrievedRecipientObj = {};
-                        } else {
-                            $scope.retrievedSenderUserObj = {};
-                            $scope.retrievedSenderUserAccountsArray = [];
-                        }
-
-                        transactionData.currency = {};
+                        $scope.retrievedSenderUserObj = res.results[0];
+                        $scope.retrievedSenderUserObj.metadata = metadataTextService.convertToText($scope.retrievedSenderUserObj.metadata);
+                        $scope.$apply();
                     }
+                } else {
+                    if(recipient){
+                        $scope.retrievedRecipientAccountsArray = [];
+                        $scope.retrievedRecipientObj = {};
+                        $scope.$apply();
+                    } else {
+                        $scope.retrievedSenderUserObj = {};
+                        $scope.retrievedSenderUserAccountsArray = [];
+                        $scope.$apply();
+                    }
+
+                    transactionData.currency = {};
                 }
-            }).catch(function (error) {
-                errorHandler.evaluateErrors(error.data);
+            }, function (error) {
+                errorHandler.evaluateErrors(error);
                 errorHandler.handleErrors(error);
+                $scope.$apply();
             });
         };
 
@@ -162,79 +158,77 @@
         };
 
         vm.getUserAccounts = function (user,transactionData,recipient) {
-
-            $http.get(environmentConfig.API + '/admin/accounts/?user='+ user.identifier, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': vm.token
-                }
-            }).then(function (res) {
-                if (res.status === 200) {
-                    if(res.data.data.results.length > 0 ){
-                        if(recipient){
-                            $scope.recipientUserAccountsAvailable = true;
-                            vm.getAccounts(user,transactionData,recipient);
-                        } else {
-                            $scope.senderUserAccountsAvailable = true;
-                            vm.getAccounts(user,transactionData);
-                        }
+            Rehive.admin.accounts.get({filters: {user: user.identifier}}).then(function (res) {
+                if(res.results.length > 0 ){
+                    if(recipient){
+                        $scope.recipientUserAccountsAvailable = true;
+                        vm.getAccounts(user,transactionData,recipient);
+                        $scope.$apply();
                     } else {
-                        if(recipient){
-                            $scope.recipientUserAccountsAvailable = false;
-                        } else {
-                            $scope.senderUserAccountsAvailable = false;
-                        }
+                        $scope.senderUserAccountsAvailable = true;
+                        vm.getAccounts(user,transactionData);
+                        $scope.$apply();
+                    }
+                } else {
+                    if(recipient){
+                        $scope.recipientUserAccountsAvailable = false;
+                        $scope.$apply();
+                    } else {
+                        $scope.senderUserAccountsAvailable = false;
+                        $scope.$apply();
                     }
                 }
-            }).catch(function (error) {
-                errorHandler.evaluateErrors(error.data);
+            }, function (error) {
+                $scope.loadingTransactionSettings = false;
+                errorHandler.evaluateErrors(error);
                 errorHandler.handleErrors(error);
+                $scope.$apply();
             });
         };
 
         vm.getAccounts = function (user,transactionData,recipient) {
-
-            $http.get(environmentConfig.API + '/admin/accounts/?user='+ user.identifier + '&currency=' + transactionData.currency.code, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': vm.token
-                }
-            }).then(function (res) {
-                if (res.status === 200) {
-                    if(res.data.data.results.length > 0 ){
-                        res.data.data.results.forEach(function (account) {
-                            if(account.primary){
-                                if(recipient){
-                                    account.name = account.name + ' - (primary)';
-                                    transactionData.credit_account = account;
-                                    $scope.accountSelected(transactionData,recipient);
-                                } else {
-                                    account.name = account.name + ' - (primary)';
-                                    transactionData.account = account;
-                                    $scope.accountSelected(transactionData);
-                                }
-
+            Rehive.admin.accounts.get({filters: {user: user.identifier,currency: transactionData.currency.code}}).then(function (res) {
+                if(res.results.length > 0 ){
+                    res.results.forEach(function (account) {
+                        if(account.primary){
+                            if(recipient){
+                                account.name = account.name + ' - (primary)';
+                                transactionData.credit_account = account;
+                                $scope.accountSelected(transactionData,recipient);
+                                $scope.$apply();
+                            } else {
+                                account.name = account.name + ' - (primary)';
+                                transactionData.account = account;
+                                $scope.accountSelected(transactionData);
+                                $scope.$apply();
                             }
-                        });
 
-                        if(recipient){
-                            $scope.recipientCurrencyAccountsAvailable = true;
-                            $scope.retrievedRecipientAccountsArray = res.data.data.results;
-                        } else {
-                            $scope.senderCurrencyAccountsAvailable = true;
-                            $scope.retrievedSenderUserAccountsArray = res.data.data.results;
                         }
+                    });
+
+                    if(recipient){
+                        $scope.recipientCurrencyAccountsAvailable = true;
+                        $scope.retrievedRecipientAccountsArray = res.results;
+                        $scope.$apply();
                     } else {
-                        if(recipient){
-                            $scope.recipientCurrencyAccountsAvailable = false;
-                        } else {
-                            $scope.senderCurrencyAccountsAvailable = false;
-                        }
+                        $scope.senderCurrencyAccountsAvailable = true;
+                        $scope.retrievedSenderUserAccountsArray = res.results;
+                        $scope.$apply();
+                    }
+                } else {
+                    if(recipient){
+                        $scope.recipientCurrencyAccountsAvailable = false;
+                        $scope.$apply();
+                    } else {
+                        $scope.senderCurrencyAccountsAvailable = false;
+                        $scope.$apply();
                     }
                 }
-            }).catch(function (error) {
-                errorHandler.evaluateErrors(error.data);
+            }, function (error) {
+                $scope.loadingTransactionSettings = false;
+                errorHandler.evaluateErrors(error);
                 errorHandler.handleErrors(error);
+                $scope.$apply();
             });
         };
 
@@ -251,22 +245,22 @@
                     accountRef = transactionData.account.reference;
                 }
 
-                $http.get(environmentConfig.API + '/admin/transactions/?page=1&page_size=5&orderby=-created&account=' + accountRef, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
+                Rehive.admin.transactions.get({filters: {
+                    page: 1,
+                    page_size: 5,
+                    orderby: '-created',
+                    account: accountRef
+                }}).then(function (res) {
+                    if(recipient){
+                        $scope.retrievedRecipientAccountTransactions = res.results;
+                    } else {
+                        $scope.retrievedSenderAccountTransactions = res.results;
                     }
-                }).then(function (res) {
-                    if (res.status === 200) {
-                        if(recipient){
-                            $scope.retrievedRecipientAccountTransactions = res.data.data.results;
-                        } else {
-                            $scope.retrievedSenderAccountTransactions = res.data.data.results;
-                        }
-                    }
-                }).catch(function (error) {
-                    errorHandler.evaluateErrors(error.data);
+                    $scope.$apply();
+                }, function (error) {
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };

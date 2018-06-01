@@ -4,7 +4,7 @@
     angular.module('BlurAdmin.pages.transactions.history')
         .controller('MakeTransactionModalCtrl', MakeTransactionModalCtrl);
 
-    function MakeTransactionModalCtrl($http,$scope,errorHandler,toastr,environmentConfig,$filter,$uibModalInstance,
+    function MakeTransactionModalCtrl(Rehive,$scope,errorHandler,toastr,$uibModalInstance,
                                       newTransactionParams,localStorageManagement,currencyModifiers,$location) {
 
         var vm = this;
@@ -35,10 +35,9 @@
 
         $scope.createTransaction = function () {
 
-            var api,sendTransactionData;
+            var sendTransactionData;
 
             if($scope.transactionType.tx_type == 'credit'){
-                api = environmentConfig.API + '/admin/transactions/credit/';
                 sendTransactionData = {
                     user: $scope.creditTransactionData.user,
                     amount: currencyModifiers.convertToCents($scope.creditTransactionData.amount,$scope.creditTransactionData.currency.divisibility),
@@ -57,8 +56,22 @@
                     return;
                 }
 
+                $scope.onGoingTransaction = true;
+                Rehive.admin.transactions.createCredit(sendTransactionData).then(function (res) {
+                    $scope.onGoingTransaction = false;
+                    vm.completedTransaction = res;
+                    $scope.completeTransaction = true;
+                    $scope.confirmTransaction = false;
+                    $scope.panelTitle = 'Credit successful';
+                    toastr.success('Your transaction has been completed successfully.');
+                    $scope.$apply();
+                }, function (error) {
+                    $scope.onGoingTransaction = false;
+                    errorHandler.evaluateErrors(error);
+                    errorHandler.handleErrors(error);
+                    $scope.$apply();
+                });
             } else if($scope.transactionType.tx_type == 'debit'){
-                api = environmentConfig.API + '/admin/transactions/debit/';
                 sendTransactionData = {
                     user: $scope.debitTransactionData.user,
                     amount: currencyModifiers.convertToCents($scope.debitTransactionData.amount,$scope.debitTransactionData.currency.divisibility),
@@ -77,8 +90,23 @@
                     return;
                 }
 
+                $scope.onGoingTransaction = true;
+                Rehive.admin.transactions.createDebit(sendTransactionData).then(function (res) {
+                    $scope.onGoingTransaction = false;
+                    vm.completedTransaction = res;
+                    $scope.completeTransaction = true;
+                    $scope.confirmTransaction = false;
+                    $scope.panelTitle = 'Debit successful';
+                    toastr.success('Your transaction has been completed successfully.');
+                    $scope.$apply();
+                }, function (error) {
+                    $scope.onGoingTransaction = false;
+                    errorHandler.evaluateErrors(error);
+                    errorHandler.handleErrors(error);
+                    $scope.$apply();
+                });
+
             } else if($scope.transactionType.tx_type == 'transfer'){
-                api = environmentConfig.API + '/admin/transactions/transfer/';
                 sendTransactionData = {
                     user: $scope.transferTransactionData.user,
                     recipient: $scope.transferTransactionData.recipient,
@@ -95,30 +123,23 @@
                     toastr.error('Please fill in the required fields');
                     return;
                 }
-            }
 
-            $scope.onGoingTransaction = true;
-            // $http.post takes the params as follow post(url, data, {config})
-            // https://docs.angularjs.org/api/ng/service/$http#post
-            $http.post(api, sendTransactionData, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': vm.token
-                }
-            }).then(function (res) {
-                $scope.onGoingTransaction = false;
-                if (res.status === 201) {
-                    vm.completedTransaction = res.data.data;
+                $scope.onGoingTransaction = true;
+                Rehive.admin.transactions.createTransfer(sendTransactionData).then(function (res) {
+                    $scope.onGoingTransaction = false;
+                    vm.completedTransaction = res;
                     $scope.completeTransaction = true;
                     $scope.confirmTransaction = false;
-                    $scope.panelTitle = $filter('capitalizeWord')($scope.transactionType.tx_type) + ' successful';
+                    $scope.panelTitle = 'Transfer successful';
                     toastr.success('Your transaction has been completed successfully.');
-                }
-            }).catch(function (error) {
-                $scope.onGoingTransaction = false;
-                errorHandler.evaluateErrors(error.data);
-                errorHandler.handleErrors(error);
-            });
+                    $scope.$apply();
+                }, function (error) {
+                    $scope.onGoingTransaction = false;
+                    errorHandler.evaluateErrors(error);
+                    errorHandler.handleErrors(error);
+                    $scope.$apply();
+                });
+            }
         };
 
         $scope.closeModal = function () {

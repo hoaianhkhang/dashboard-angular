@@ -107,7 +107,7 @@
                 <span ng-hide="transferTransactionData.currency.code">Please choose currency first.</span>
                 <span ng-show="transferTransactionData.currency.code && senderCurrencyAccountsAvailable
                 && senderUserAccountsAvailable && !transferTransactionData.account.name">(Please choose an account)</span>
-                <span class="no-accounts-available" ng-click="goToTransferUserAccountCreate(retrievedSenderUserObj.identifier)"
+                <span class="no-accounts-available pointer" ng-click="goToTransferUserAccountCreate(retrievedSenderUserObj.identifier)"
                       ng-hide="senderUserAccountsAvailable">Add an account here.
                 </span>
                 <span class="no-accounts-currency-available" ng-hide="senderCurrencyAccountsAvailable">
