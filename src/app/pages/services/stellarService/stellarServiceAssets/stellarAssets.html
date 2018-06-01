@@ -21,7 +21,7 @@
     </div>
 </div>
 
-<div ng-show="assetsObjLength > 0" class="panel" ng-repeat="asset in assetsObj">
+<div ng-show="assetsObjLength > 0 && !loadingAssets" class="panel" ng-repeat="asset in assetsObj">
     <div class="panel-body">
         <div class="row">
             <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">

@@ -17,7 +17,7 @@
         });
         $scope.assetsObjLength = 0;
 
-        vm.getAssets = function (applyFilter) {
+        vm.getAssets = function () {
             $scope.loadingAssets =  true;
             if(vm.token) {
                 $http.get(vm.serviceUrl + 'admin/asset/', {
@@ -51,7 +51,7 @@
 
             vm.theModal.result.then(function(assets){
                 if(assets){
-                    vm.getassetsActive();
+                    vm.getAssets();
                 }
             }, function(){
             });
