@@ -87,7 +87,7 @@
         $scope.updateTierFee = function(){
 
             if(!$scope.editTierFee.subtype){
-                vm.updatedTierFee.subtype = '';
+                vm.updatedTierFee.subtype = null;
             }
 
             if(vm.updatedTierFee.currency){
