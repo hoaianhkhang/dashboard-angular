@@ -26,13 +26,18 @@
                     }
                 }).then(function (res) {
                     if (res.status === 200) {
-                        res.data.data.forEach(function (asset,index,array) {
-                            if(index === array.length - 1){
-                                vm.getAssetsBalance(asset,'last');
-                            } else {
-                                vm.getAssetsBalance(asset);
-                            }
-                        });
+                        var assets = res.data.data;
+                        if(assets.length > 0){
+                            assets.forEach(function (asset,index,array) {
+                                if(index === array.length - 1){
+                                    vm.getAssetsBalance(asset,'last');
+                                } else {
+                                    vm.getAssetsBalance(asset);
+                                }
+                            });
+                        } else {
+                            $scope.loadingAssets =  false;
+                        }
                     }
                 }).catch(function (error) {
                     $scope.loadingAssets =  false;
