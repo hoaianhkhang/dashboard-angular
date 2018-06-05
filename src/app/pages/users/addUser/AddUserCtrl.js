@@ -5,11 +5,11 @@
         .controller('AddUserCtrl', AddUserCtrl);
 
     /** @ngInject */
-    function AddUserCtrl($scope,environmentConfig,$location,cleanObject,
-                         localStorageManagement,errorHandler,$http,Upload,toastr) {
+    function AddUserCtrl($scope,Rehive,environmentConfig,$location,cleanObject,
+                         localStorageManagement,errorHandler,Upload,toastr) {
 
         var vm = this;
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
         $scope.showingMoreDetails = false;
         $scope.newUserParams = {
             first_name: '',
@@ -26,19 +26,14 @@
 
         vm.getGroups = function () {
             if(vm.token){
-                $http.get(environmentConfig.API + '/admin/groups/?page_size=250', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
+                Rehive.admin.groups.get({filters: {page_size: 250}}).then(function (res) {
                     $scope.loadingUsers = false;
-                    if (res.status === 200) {
-                        $scope.groups = res.data.data.results;
-                    }
-                }).catch(function (error) {
-                    errorHandler.evaluateErrors(error.data);
+                    $scope.groups = res.results;
+                    $scope.$apply();
+                }, function (error) {
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };
@@ -78,7 +73,7 @@
                 data: cleanUserParams,
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': vm.token},
+                    'Authorization': 'Token ' + vm.token},
                 method: "POST"
             }).then(function (res) {
                 if (res.status === 201) {
