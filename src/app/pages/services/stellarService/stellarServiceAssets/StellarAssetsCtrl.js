@@ -19,6 +19,11 @@
         vm.getAssets = function () {
             $scope.loadingAssets =  true;
             if(vm.token) {
+
+                if($scope.assetsObj.length > 0){
+                    $scope.assetsObj.length = 0;
+                }
+
                 $http.get(vm.serviceUrl + 'admin/asset/', {
                     headers: {
                         'Content-Type': 'application/json',
