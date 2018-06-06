@@ -5,8 +5,8 @@
         .controller('PageTopCtrl', PageTopCtrl);
 
     /** @ngInject */
-    function PageTopCtrl($rootScope,$scope,$http,localStorageManagement,$state,
-                         environmentConfig,$location,errorHandler,$window,_,identifySearchInput) {
+    function PageTopCtrl($rootScope,$scope,$http,localStorageManagement,$state,$uibModal,
+                         environmentConfig,$location,errorHandler,$window,identifySearchInput) {
         var vm = this;
 
         vm.token = localStorageManagement.getValue('TOKEN');
@@ -231,6 +231,20 @@
             } else {
                 $state.go('transactions.history');
             }
+        };
+
+        $scope.goToDashboardTasks = function (page,size) {
+            vm.theDashboardTasksModal = $uibModal.open({
+                animation: true,
+                templateUrl: page,
+                size: size,
+                controller: 'DashboardTasksModalCtrl'
+            });
+
+            vm.theDashboardTasksModal.result.then(function(){
+
+            }, function(){
+            });
         };
 
         $scope.logout = function(){

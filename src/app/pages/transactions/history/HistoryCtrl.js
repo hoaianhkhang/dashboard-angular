@@ -220,8 +220,8 @@
         };
 
         $scope.pageSizeChanged =  function () {
-            if($scope.pagination.itemsPerPage > 250){
-                $scope.pagination.itemsPerPage = 250;
+            if($scope.pagination.itemsPerPage > 10000){
+                $scope.pagination.itemsPerPage = 10000;
             }
         };
 

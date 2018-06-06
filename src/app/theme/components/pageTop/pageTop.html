@@ -22,10 +22,6 @@
           </ul>
         </div>
       </div>
-      <div class="user-company-overview pull-right">
-        <span ng-class="{'long-text': (pageTopObj.userInfoObj.email.length > 22), 'very-long-text': (pageTopObj.userInfoObj.email.length > 35)}">{{pageTopObj.userInfoObj.email}}</span>
-        <p>{{pageTopObj.companyObj.identifier}}</p>
-      </div>
       <div ng-hide="inCompanySetupViews" class="search-bar-main" click-outside="hidingSearchBar()">
         <input type="text" class="page-top-search" placeholder="Search by email, mobile number or transaction id" ng-model="searchString"
                ng-keydown="($event.keyCode === 13)  && searchGlobal(searchString)"
@@ -34,6 +30,15 @@
         <div class="search-bar-div">
           <search-bar-results></search-bar-results>
         </div>
+        <span class="pointer" ng-click="goToDashboardTasks('app/theme/components/dashboardTasks/dashboardTasks.html','md')">
+          <i class="fa fa-tasks task-icon"></i>
+          <i class="fa fa-circle task-icon-circle-1"></i>
+          <i class="fa fa-circle task-icon-circle-2"></i>
+        </span>
+      </div>
+      <div class="user-company-overview pull-right">
+        <span ng-class="{'long-text': (pageTopObj.userInfoObj.email.length > 22), 'very-long-text': (pageTopObj.userInfoObj.email.length > 35)}">{{pageTopObj.userInfoObj.email}}</span>
+        <p>{{pageTopObj.companyObj.identifier}}</p>
       </div>
     </div>
   </div>
