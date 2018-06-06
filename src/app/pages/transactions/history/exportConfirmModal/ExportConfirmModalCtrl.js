@@ -12,17 +12,18 @@
         delete filtersObjForExport.page_size;
         $scope.filtersObjForExport = serializeFiltersService.objectFilters(filtersObjForExport);
         $scope.numberOfResults =  $scope.exportTransactionsList.length;
-        $scope.filtersTexts = '';
+        $scope.filtersTexts = 'for';
+        $scope.filtersTextsArray = [];
 
         vm.filtersObjToText = function () {
             for(var key in $scope.filtersObjForExport){
                 if($scope.filtersObjForExport.hasOwnProperty(key)) {
                     if(key == 'created__gt'){
                         $scope.filtersObjForExport[key] = $filter("date")($scope.filtersObjForExport[key],'mediumDate') + ' ' + $filter("date")($scope.filtersObjForExport[key],'shortTime');
-                        $scope.filtersTexts = $scope.filtersTexts + 'for dates between ' + $scope.filtersObjForExport[key];
+                        $scope.filtersTextsArray.push('date greater than ' + $scope.filtersObjForExport[key]);
                     } else if(key == 'created__lt'){
                         $scope.filtersObjForExport[key] = $filter("date")($scope.filtersObjForExport[key],'mediumDate') + ' ' + $filter("date")($scope.filtersObjForExport[key],'shortTime');
-                        $scope.filtersTexts = $scope.filtersTexts + ' and ' + $scope.filtersObjForExport[key];
+                        $scope.filtersTextsArray.push('date less than ' + $scope.filtersObjForExport[key]);
                     }
                 }
             }

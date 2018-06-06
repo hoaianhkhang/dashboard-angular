@@ -1,0 +1,28 @@
+<div ng-hide="updatingTransaction" class="modal-content">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="$dismiss()" aria-label="Close">
+            <em class="ion-ios-close-empty sn-link-close"></em>
+        </button>
+        <h4 class="modal-title" id="myModalLabel">Dashboard tasks</h4>
+    </div>
+    <div class="modal-body">
+        <div ng-repeat="task in dashboardTasksLists | orderBy: '-created'">
+            <div class="dashboard-task-bar">
+                <p><strong>Transactions export in progress</strong> <span class="pull-right">Created</span></p>
+                <a>{{task.progress}}% done</a><i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+                <span class="pull-right">{{task.created | date:'mediumDate'}} {{task.created | date:'shortTime'}}</span>
+            </div>
+        </div>
+        <div>
+            <p uib-pagination boundary-links="true" items-per-page="pagination.itemsPerPage"  total-items="notificationLogsData.count" ng-model="pagination.pageNo"
+               max-size="pagination.maxSize" class="pagination-sm pull-right transaction-history-pagination" force-ellipses="true" ng-change="getNotificationLogs()"
+               previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></p>
+        </div>
+    </div>
+    <div class="modal-footer row">
+
+    </div>
+</div>
+<div ba-panel ng-show="updatingTransaction">
+    <loading-image></loading-image>
+</div>
