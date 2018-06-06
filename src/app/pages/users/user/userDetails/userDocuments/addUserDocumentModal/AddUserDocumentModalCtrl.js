@@ -4,7 +4,8 @@
     angular.module('BlurAdmin.pages.users.user')
         .controller('AddUserDocumentModalCtrl', AddUserDocumentModalCtrl);
 
-    function AddUserDocumentModalCtrl($scope,uuid,$uibModalInstance,toastr,Upload,environmentConfig,localStorageManagement,errorHandler) {
+    function AddUserDocumentModalCtrl($scope,uuid,$uibModalInstance,toastr,Rehive,
+                                      localStorageManagement,errorHandler) {
 
         var vm = this;
 
@@ -44,23 +45,24 @@
             $scope.userDocumentParams.user = vm.uuid;
             $scope.userDocumentParams.status = $scope.userDocumentParams.status.toLowerCase();
             $scope.userDocumentParams['document_type'] = vm.documentTypeOptionsObj[$scope.userDocumentParams['document_type']];
-            Upload.upload({
-                url: environmentConfig.API + '/admin/users/documents/',
-                data: $scope.userDocumentParams,
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': vm.token},
-                method: "POST"
-            }).then(function (res) {
-                $scope.addingDocument = false;
-                if (res.status === 201) {
-                    toastr.success('Document successfully added');
-                    $uibModalInstance.close();
+
+            var formData = new FormData();
+
+            for (var key in $scope.userDocumentParams) {
+                if ($scope.userDocumentParams[key]) {
+                    formData.append(key, $scope.userDocumentParams[key]);
                 }
-            }).catch(function (error) {
+            }
+
+            Rehive.admin.users.documents.create(formData).then(function (res) {
+                toastr.success('Document successfully added');
+                $uibModalInstance.close();
+                $scope.$apply();
+            }, function (error) {
                 $scope.addingDocument = false;
-                errorHandler.evaluateErrors(error.data);
+                errorHandler.evaluateErrors(error);
                 errorHandler.handleErrors(error);
+                $scope.$apply();
             });
         };
 
