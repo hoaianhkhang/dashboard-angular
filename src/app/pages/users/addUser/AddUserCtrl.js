@@ -5,8 +5,8 @@
         .controller('AddUserCtrl', AddUserCtrl);
 
     /** @ngInject */
-    function AddUserCtrl($scope,Rehive,environmentConfig,$location,cleanObject,
-                         localStorageManagement,errorHandler,Upload,toastr) {
+    function AddUserCtrl($scope,Rehive,$location,cleanObject,
+                         localStorageManagement,errorHandler,toastr) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('token');
@@ -50,7 +50,7 @@
 
         $scope.addNewUser = function (newUserParams) {
             if(newUserParams.metadata == ''){
-                newUserParams.metadata = {};
+                newUserParams.metadata = '{}';
             } else {
                 if(vm.isJson(newUserParams.metadata)){
                     newUserParams.metadata = newUserParams.metadata;
@@ -68,28 +68,30 @@
 
             var cleanUserParams = cleanObject.cleanObj(newUserParams);
 
-            Upload.upload({
-                url: environmentConfig.API + '/admin/users/',
-                data: cleanUserParams,
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Token ' + vm.token},
-                method: "POST"
-            }).then(function (res) {
-                if (res.status === 201) {
-                    $scope.newUserParams = {
-                        nationality: "US",
-                        metadata: ''
-                    };
-                    $scope.backToUsers();
-                    toastr.success('User successfully added');
+            var formData = new FormData();
+
+            for(var key in cleanUserParams) {
+                if (cleanUserParams.hasOwnProperty(key)) {
+                    formData.append(key, cleanUserParams[key]);
                 }
-            }).catch(function (error) {
+            }
+
+            Rehive.admin.users.create(formData).then(function (res) {
+                $scope.newUserParams = {
+                    nationality: "US",
+                    metadata: ''
+                };
+                $scope.backToUsers();
+                toastr.success('User successfully added');
+                $scope.$apply();
+            }, function (error) {
                 $scope.loadingUsers = false;
                 newUserParams.metadata = JSON.stringify(newUserParams.metadata);
-                errorHandler.evaluateErrors(error.data);
+                errorHandler.evaluateErrors(error);
                 errorHandler.handleErrors(error);
+                $scope.$apply();
             });
+
         };
 
         $scope.toggleMoreDetails = function () {
