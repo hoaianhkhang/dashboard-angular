@@ -525,9 +525,6 @@
                 size: size,
                 controller: 'ExportConfirmModalCtrl',
                 resolve: {
-                    exportTransactionsList: function () {
-                        return $scope.transactions;
-                    },
                     filtersObjForExport: function () {
                         return $scope.filtersObjForExport;
                     }
