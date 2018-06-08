@@ -5,19 +5,38 @@
         .controller('StellarAssetsCtrl', StellarAssetsCtrl);
 
     /** @ngInject */
-    function StellarAssetsCtrl($scope,localStorageManagement,currenciesList,$http,errorHandler,toastr,sharedResources,
-                                  $uibModal,currencyModifiers,serializeFiltersService,environmentConfig) {
+    function StellarAssetsCtrl($scope,localStorageManagement,environmentConfig,$http,errorHandler,$uibModal) {
+
         $scope.stellarAccountSettingView = '';
 
         var vm = this;
         vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
         vm.token = localStorageManagement.getValue('TOKEN');
-        $scope.stellarCurrency = currenciesList.find(function (element) {
-            return element.code == 'XLM';
-        });
+        $scope.stellarCurrency = {};
         $scope.assetsObjLength = 0;
 
-        vm.getAssets = function (applyFilter) {
+        vm.getXLMCurrency = function () {
+            $scope.loadingAssets =  true;
+            if(vm.token) {
+                $http.get(environmentConfig.API + '/admin/currencies/XLM/', {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': vm.token
+                    }
+                }).then(function (res) {
+                    if (res.status === 200) {
+                        $scope.stellarCurrency = res.data.data;
+                        vm.getAssets();
+                    }
+                }).catch(function (error) {
+                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.handleErrors(error);
+                });
+            }
+        };
+        vm.getXLMCurrency();
+
+        vm.getAssets = function () {
             $scope.loadingAssets =  true;
             if(vm.token) {
                 $http.get(vm.serviceUrl + 'admin/asset/', {
@@ -29,7 +48,6 @@
                     $scope.loadingAssets =  false;
                     if (res.status === 200) {
                         $scope.assetsObj = res.data.data;
-                        console.log($scope.assetsObj)
                         $scope.assetsObjLength = Object.keys($scope.assetsObj).length;
                     }
                 }).catch(function (error) {
@@ -38,7 +56,6 @@
                 });
             }
         };
-        vm.getAssets();
 
         $scope.openAddAssetsModal = function (page, size) {
             vm.theModal = $uibModal.open({
@@ -51,7 +68,7 @@
 
             vm.theModal.result.then(function(assets){
                 if(assets){
-                    vm.getassetsActive();
+                    vm.getAssets();
                 }
             }, function(){
             });
