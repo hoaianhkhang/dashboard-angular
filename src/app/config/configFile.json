@@ -1,22 +1,26 @@
 {
   "staging": {
     "environmentConfig": {
-      "API": "https://api.staging.rehive.com/3"
+      "API": "https://api.staging.rehive.com/3",
+      "API2": "https://directory.s.services.rehive.io/api"
     }
   },
   "local": {
     "environmentConfig": {
-      "API": "https://api.rehive.com/3"
+      "API": "https://api.staging.rehive.com/3",
+      "API2": "https://directory.s.services.rehive.io/api"
     }
   },
   "production": {
     "environmentConfig": {
-      "API": "https://api.rehive.com/3"
+      "API": "https://api.staging.rehive.com/3",
+      "API2": "https://directory.s.services.rehive.io/api"
     }
   },
   "placeholder": {
     "environmentConfig": {
-      "API": "{{API_URL}}"
+      "API": "{{API_URL}}",
+      "API2": "{{API_URL_SERVICE}}"
     }
   }
 }

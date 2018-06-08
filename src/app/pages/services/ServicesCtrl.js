@@ -24,7 +24,7 @@
 
         $scope.getServices = function(){
           $scope.loadingServices = true;
-            $http.get(environmentConfig.API + '/admin/services/?active=true', {
+            $http.get(environmentConfig.API2 + '/admin/services/?active=true', {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': vm.token
@@ -72,7 +72,7 @@
 
         $scope.deactivateServices = function(service,password){
             $scope.loadingServices = true;
-            $http.put(environmentConfig.API + '/admin/services/' + service.id + '/',{password: password,active: false}, {
+            $http.patch(environmentConfig.API2 + '/admin/services/' + service.id + '/',{password: password,active: false}, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': vm.token

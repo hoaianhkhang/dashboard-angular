@@ -15,7 +15,7 @@
 
         $scope.getServices = function(){
             $scope.loadingServices = true;
-            $http.get(environmentConfig.API + '/admin/services/', {
+            $http.get(environmentConfig.API2 + '/admin/services/', {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': vm.token
@@ -64,7 +64,7 @@
 
         $scope.addServices = function(service,password){
             $scope.loadingServices = true;
-            $http.put(environmentConfig.API + '/admin/services/' + service.id + '/',{password: password, terms_and_conditions: true, active: true}, {
+            $http.patch(environmentConfig.API2 + '/admin/services/' + service.id + '/',{password: password, terms_and_conditions: true, active: true}, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': vm.token
