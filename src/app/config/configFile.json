@@ -7,14 +7,14 @@
   },
   "local": {
     "environmentConfig": {
-      "API": "https://api.staging.rehive.com/3",
-      "API2": "https://directory.s.services.rehive.io/api"
+      "API": "https://api.rehive.com/3",
+      "API2": "https://directory.services.rehive.io/api"
     }
   },
   "production": {
     "environmentConfig": {
-      "API": "https://api.staging.rehive.com/3",
-      "API2": "https://directory.s.services.rehive.io/api"
+      "API": "https://api.rehive.com/3",
+      "API2": "https://directory.services.rehive.io/api"
     }
   },
   "placeholder": {
