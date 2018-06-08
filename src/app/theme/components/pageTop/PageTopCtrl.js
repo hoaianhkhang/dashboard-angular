@@ -17,6 +17,7 @@
         $scope.searchedUsers = [];
         $scope.loadingResults = false;
         $scope.inCompanySetupViews = false;
+        $scope.transactionSetsExportingInProgress = false;
 
         vm.currentLocation = $location.path();
         $rootScope.$on('$locationChangeStart', function (event,newUrl,oldURl) {
@@ -246,6 +247,14 @@
             }, function(){
             });
         };
+
+        $rootScope.$on('exportingSetsStatus', function(event, obj){
+            if(obj.status == 'inProgress'){
+                $scope.transactionSetsExportingInProgress = true;
+            } else{
+                $scope.transactionSetsExportingInProgress = false;
+            }
+        });
 
         $scope.logout = function(){
             $rootScope.dashboardTitle = 'Rehive';
