@@ -213,49 +213,6 @@
             $scope.popup2.opened = true;
         };
 
-        // for CSV starts
-
-        $scope.getFileName = $filter('date')(Date.now(),'mediumDate') + ' ' + $filter('date')(Date.now(),'shortTime') + '-transactionsHistory.csv';
-
-        $scope.getHeader = function () {return ["Id", "User","Balance","Type","Currency", "Amount",
-            "Fee","Subtype","Account","Status","Date","Reference","Note","Metadata"];};
-
-        //To do: fix header names
-
-        $scope.getCSVArray = function () {
-            var array = [];
-            $scope.transactions.forEach(function (element) {
-                var metadata = '';
-                if(typeof element.metadata === 'object' && element.metadata && Object.keys(element.metadata).length > 0){
-                    metadata = JSON.stringify(element.metadata);
-                } else if (typeof element.metadata === 'string'){
-                    metadata = element.metadata;
-                } else {
-                    metadata = null;
-                }
-                array.push({
-                    Id: element.id,
-                    user: element.user,
-                    balance: element.balance.toString(),
-                    type: element.tx_type,
-                    currency: element.currencyCode,
-                    amount: element.amount,
-                    fee: element.fee.toString(),
-                    subtype: element.subtype,
-                    account: element.account,
-                    status: element.status,
-                    date: element.createdDate,
-                    reference: element.reference,
-                    note: element.note,
-                    metadata: metadata
-                });
-            });
-
-            return array;
-        };
-
-        // for CSV ends
-
         $scope.orderByFunction = function () {
             return ($scope.applyFiltersObj.orderByFilter.selectedOrderByOption == 'Latest' ? '-created' :
                 $scope.applyFiltersObj.orderByFilter.selectedOrderByOption == 'Largest' ? '-amount' :
@@ -263,8 +220,8 @@
         };
 
         $scope.pageSizeChanged =  function () {
-            if($scope.pagination.itemsPerPage > 250){
-                $scope.pagination.itemsPerPage = 250;
+            if($scope.pagination.itemsPerPage > 10000){
+                $scope.pagination.itemsPerPage = 10000;
             }
         };
 
@@ -411,6 +368,7 @@
 
         vm.getTransactionUrl = function(){
             $scope.filtersCount = 0;
+            $scope.filtersObjForExport = {};
 
             for(var x in $scope.filtersObj){
                 if($scope.filtersObj.hasOwnProperty(x)){
@@ -460,6 +418,8 @@
                 status: $scope.filtersObj.statusFilter ? $scope.applyFiltersObj.statusFilter.selectedStatusOption: null,
                 subtype: $scope.filtersObj.transactionTypeFilter ? ($scope.applyFiltersObj.transactionSubtypeFilter.selectedTransactionSubtypeOption ? $scope.applyFiltersObj.transactionSubtypeFilter.selectedTransactionSubtypeOption: null): null
             };
+
+            $scope.filtersObjForExport = searchObj;
 
             return environmentConfig.API + '/admin/transactions/?' + serializeFiltersService.serializeFilters(searchObj);
         };
@@ -554,6 +514,28 @@
                         return transaction;
                     }
                 }
+            });
+
+        };
+
+        $scope.openExportTransactionsModal = function (page, size) {
+            vm.theExportModal = $uibModal.open({
+                animation: true,
+                templateUrl: page,
+                size: size,
+                controller: 'ExportConfirmModalCtrl',
+                resolve: {
+                    filtersObjForExport: function () {
+                        return $scope.filtersObjForExport;
+                    }
+                }
+            });
+
+            vm.theExportModal.result.then(function(transaction){
+                if(transaction){
+                    //$scope.getLatestTransactions();
+                }
+            }, function(){
             });
 
         };
