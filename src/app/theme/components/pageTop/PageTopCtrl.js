@@ -372,6 +372,10 @@
             }
         });
 
+        $scope.closeDashboardTasksBox = function () {
+            $scope.showingDashboardTasks = false;
+        };
+
         // dashboardTasks end
 
         $scope.logout = function(){

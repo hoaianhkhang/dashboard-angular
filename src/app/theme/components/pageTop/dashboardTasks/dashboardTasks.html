@@ -3,7 +3,7 @@
         <span class="user-details-panel-title">Dashboard tasks</span>
     </div>
     <div class="panel-body">
-        <div ng-show="dashboardTasksLists.length > 0" class="row" ng-repeat="task in dashboardTasksLists | orderBy: '-created'">
+        <div ng-show="dashboardTasksLists.length > 0" class="row divider" ng-repeat="task in dashboardTasksLists | orderBy: '-created'">
             <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
                 <div class="dashboard-task-bar margin-bottom-10" ng-class="{'no-margin-bottom': $last}">
                     <p ng-hide="task.progress == 100">
@@ -16,14 +16,13 @@
                     <a class="pointer file-link" ng-show="task.progress == 100"
                        ng-click="downloadExportFile(page.file)"
                        ng-repeat="page in task.pages">
-                        {{page.file}}
+                        file {{$index + 1}}
                     </a>
                 </div>
             </div>
             <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
                 <div class="dashboard-task-bar">
-                    <p class="pull-right"><strong>Created</strong></p>
-                    <br>
+                    <p class="pull-right no-margin"><strong>Created</strong></p>
                     <br>
                     <span class="pull-right">{{task.created | date:'shortTime'}}</span>
                     <br>
