@@ -20,6 +20,7 @@
         $scope.showingColumnFilters = false;
         $scope.dateFilterOptions = ['Is in the last','In between','Is equal to','Is after','Is before'];
         $scope.amountFilterOptions = ['Is equal to','Is between','Is greater than','Is less than'];
+        $scope.referenceFilterOptions = ['Is equal to','Is between','Is greater than','Is less than'];
         $scope.dateFilterIntervalOptions = ['days','months'];
         $scope.groupFilterOptions = ['Group name','In a group'];
         $scope.filtersCount = 0;
@@ -72,6 +73,7 @@
             transactionIdFilter: false,
             destinationIdFilter: false,
             sourceIdFilter: false,
+            referenceFilter: false,
             userFilter: false,
             accountFilter: false,
             groupFilter: false,
@@ -105,6 +107,12 @@
             },
             transactionIdFilter: {
                 selectedTransactionIdOption: $state.params.transactionId || null
+            },
+            referenceFilter: {
+                selectedReferenceOption: 'Is equal to',
+                reference: null,
+                reference__lt: null,
+                reference__gt: null
             },
             userFilter: {
                 selectedUserOption: $state.params.identifier || null
@@ -366,6 +374,53 @@
             return amountObj;
         };
 
+        vm.getReferenceFilters = function () {
+            var referenceObj = {
+                reference: null,
+                reference__lt: null,
+                reference__gt: null
+            };
+
+            switch($scope.applyFiltersObj.referenceFilter.selectedReferenceOption) {
+                case 'Is equal to':
+                    referenceObj = {
+                        reference: $scope.applyFiltersObj.referenceFilter.reference,
+                        reference__lt: null,
+                        reference__gt: null
+                    };
+
+                    break;
+                case 'Is between':
+                    referenceObj = {
+                        reference: null,
+                        reference__lt: $scope.applyFiltersObj.referenceFilter.reference__lt,
+                        reference__gt: $scope.applyFiltersObj.referenceFilter.reference__gt
+                    };
+
+                    break;
+                case 'Is greater than':
+                    referenceObj = {
+                        reference: null,
+                        reference__lt: null,
+                        reference__gt: $scope.applyFiltersObj.referenceFilter.reference__gt
+                    };
+
+                    break;
+                case 'Is less than':
+                    referenceObj = {
+                        reference: null,
+                        reference__lt: $scope.applyFiltersObj.referenceFilter.reference__lt,
+                        reference__gt: null
+                    };
+
+                    break;
+                default:
+                    break;
+            }
+
+            return referenceObj;
+        };
+
         vm.getTransactionUrl = function(){
             $scope.filtersCount = 0;
             $scope.filtersObjForExport = {};
@@ -397,12 +452,25 @@
                 };
             }
 
+            if($scope.filtersObj.referenceFilter){
+                vm.referenceObj = vm.getReferenceFilters();
+            } else{
+                vm.referenceObj = {
+                    reference: null,
+                    reference__lt: null,
+                    reference__gt: null
+                };
+            }
+
             var searchObj = {
                 page: $scope.pagination.pageNo,
                 page_size: $scope.filtersObj.pageSizeFilter? $scope.pagination.itemsPerPage : 25,
                 amount: vm.amountObj.amount ? currencyModifiers.convertToCents(vm.amountObj.amount,$scope.applyFiltersObj.currencyFilter.selectedCurrencyOption.divisibility) : null,
                 amount__lt: vm.amountObj.amount__lt ? currencyModifiers.convertToCents(vm.amountObj.amount__lt,$scope.applyFiltersObj.currencyFilter.selectedCurrencyOption.divisibility) : null,
                 amount__gt: vm.amountObj.amount__gt ? currencyModifiers.convertToCents(vm.amountObj.amount__gt,$scope.applyFiltersObj.currencyFilter.selectedCurrencyOption.divisibility) : null,
+                reference: vm.referenceObj.reference ? vm.referenceObj.reference : null,
+                reference__lt: vm.referenceObj.reference__lt ? vm.referenceObj.reference__lt : null,
+                reference__gt: vm.referenceObj.reference__gt ? vm.referenceObj.reference__gt : null,
                 created__gt: vm.dateObj.created__gt ? Date.parse(vm.dateObj.created__gt +'T00:00:00') : null,
                 created__lt: vm.dateObj.created__lt ? Date.parse(vm.dateObj.created__lt +'T00:00:00') : null,
                 currency: $scope.filtersObj.currencyFilter || $scope.filtersObj.amountFilter ? $scope.applyFiltersObj.currencyFilter.selectedCurrencyOption.code: null,
