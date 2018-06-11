@@ -17,8 +17,8 @@
             </ul>
         </div>
         <div ng-show="transactionsExported">
-            <p>Your export will generate <strong>{{transactionSetResponse.pages.length}} number</strong>
-                of {{transactionSetResponse.pages.length == 1 ? 'file': 'files'}} for a total of number <strong>{{transactionSetResponse.count}} results</strong> for filters:
+            <p>Your export will generate <strong>{{transactionSetResponse.pages.length}}</strong> {{transactionSetResponse.pages.length == 1 ? 'file': 'files'}}
+                for a total of number <strong>{{transactionSetResponse.count}} results</strong> for filters:
                 <span ng-show="filtersTextsArray.length == 0">None selected</span>
             </p>
             <ul ng-show="filtersTextsArray.length > 0"
