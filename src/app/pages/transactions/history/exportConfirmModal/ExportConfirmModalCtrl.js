@@ -110,7 +110,7 @@
                     $scope.exportingTransactions = false;
                     $scope.transactionsExported = true;
                     $scope.transactionSetResponse = res.data.data;
-                    // $rootScope.$emit('exportSetCreate', {status: 'created'});
+                    $rootScope.$emit('exportSetCreate', {status: 'created'});
                     toastr.success('Successfully exporting transaction sets');
                 }
             }).catch(function (error) {

@@ -1,0 +1,43 @@
+<div  class="panel dashboard-tasks-box">
+    <div class="panel-heading">
+        <span class="user-details-panel-title">Dashboard tasks</span>
+    </div>
+    <div class="panel-body">
+        <div ng-show="dashboardTasksLists.length > 0" class="row" ng-repeat="task in dashboardTasksLists | orderBy: '-created'">
+            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                <div class="dashboard-task-bar margin-bottom-10" ng-class="{'no-margin-bottom': $last}">
+                    <p ng-hide="task.progress == 100">
+                        <strong>Transactions export in progress</strong>
+                    </p>
+                    <p ng-show="task.progress == 100">
+                        <strong>Transactions export complete</strong>
+                    </p>
+                    <a class="file-link" ng-hide="task.progress == 100">{{task.progress}}% done</a>
+                    <a class="pointer file-link" ng-show="task.progress == 100"
+                       ng-click="downloadExportFile(page.file)"
+                       ng-repeat="page in task.pages">
+                        {{page.file}}
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                <div class="dashboard-task-bar">
+                    <p class="pull-right"><strong>Created</strong></p>
+                    <br>
+                    <br>
+                    <span class="pull-right">{{task.created | date:'shortTime'}}</span>
+                    <br>
+                    <span class="pull-right">{{task.created | date:'mediumDate'}} </span>
+                </div>
+            </div>
+        </div>
+        <div ng-show="dashboardTasksLists.length > 0">
+            <p uib-pagination boundary-links="true" items-per-page="pagination.itemsPerPage"  total-items="dashboardTasksData.count" ng-model="pagination.pageNo"
+               max-size="pagination.maxSize" class="pagination-sm pull-right transaction-history-pagination" force-ellipses="true" ng-change="getTransactionSetsList()"
+               previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></p>
+        </div>
+        <div ng-show="dashboardTasksLists.length == 0">
+            <i>No dashboard tasks available</i>
+        </div>
+    </div>
+</div>

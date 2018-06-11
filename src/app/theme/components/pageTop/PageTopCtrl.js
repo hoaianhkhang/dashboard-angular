@@ -5,7 +5,7 @@
         .controller('PageTopCtrl', PageTopCtrl);
 
     /** @ngInject */
-    function PageTopCtrl($rootScope,$scope,$http,localStorageManagement,$state,$uibModal,
+    function PageTopCtrl($rootScope,$scope,$http,localStorageManagement,$state,$timeout,serializeFiltersService,
                          environmentConfig,$location,errorHandler,$window,identifySearchInput) {
         var vm = this;
 
@@ -18,6 +18,16 @@
         $scope.loadingResults = false;
         $scope.inCompanySetupViews = false;
         $scope.transactionSetsExportingInProgress = false;
+        $scope.loadingTransactionSets = false;
+        $scope.inProgressSets = false;
+        $scope.dashboardTasksLists = [];
+        $scope.showingDashboardTasks = false;
+
+        $scope.pagination = {
+            itemsPerPage: 10,
+            pageNo: 1,
+            maxSize: 5
+        };
 
         vm.currentLocation = $location.path();
         $rootScope.$on('$locationChangeStart', function (event,newUrl,oldURl) {
@@ -226,7 +236,7 @@
         $scope.goToTransactionsHistory = function (transaction) {
             $scope.hidingSearchBar();
             if(transaction && transaction.id){
-                $state.go('transactions.history',{transactionId: transaction.id})
+                $state.go('transactions.history',{transactionId: transaction.id});
             } else if($scope.searchedUsers.length > 0) {
                 $state.go('transactions.history',{identifier: $scope.searchedUsers[0].identifier});
             } else {
@@ -234,27 +244,135 @@
             }
         };
 
-        $scope.goToDashboardTasks = function (page,size) {
-            vm.theDashboardTasksModal = $uibModal.open({
-                animation: true,
-                templateUrl: page,
-                size: size,
-                controller: 'DashboardTasksModalCtrl'
-            });
+        // dashboardTasks start
 
-            vm.theDashboardTasksModal.result.then(function(){
+        $scope.getTransactionSetsUrl = function(){
 
-            }, function(){
+            var searchObj = {
+                page: $scope.pagination.pageNo,
+                page_size: $scope.pagination.itemsPerPage
+            };
+
+            return environmentConfig.API + '/admin/transactions/sets/?' + serializeFiltersService.serializeFilters(searchObj);
+        };
+
+        $scope.getTransactionSetsList = function(noLoadingImage){
+            if(vm.token) {
+
+                if(!noLoadingImage){
+                    $scope.loadingTransactionSets = true;
+                }
+
+                $scope.inProgressSets = false;
+
+                var transactionSetsUrl = $scope.getTransactionSetsUrl();
+
+                $http.get(transactionSetsUrl, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': vm.token
+                    }
+                }).then(function (res) {
+                    if (res.status === 200) {
+                        if(res.data.data.results.length > 0){
+                            $scope.dashboardTasksData = res.data.data;
+                            $scope.dashboardTasksLists = $scope.dashboardTasksData.results;
+                            vm.getFinishedTransactionSets($scope.dashboardTasksLists);
+                        } else {
+                            $scope.loadingTransactionSets = false;
+                        }
+                    }
+                }).catch(function (error) {
+                    $scope.loadingTransactionSets = false;
+                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.handleErrors(error);
+                });
+            }
+        };
+        $scope.getTransactionSetsList();
+
+        vm.getFinishedTransactionSets = function (setList) {
+            setList.forEach(function (set,index,array) {
+                if(index == (array.length - 1)){
+                    if(set.progress == 100){
+                        vm.getSingleTransactionSet(set,'last');
+                    } else {
+                        // scenario if array length is 1
+                        $scope.inProgressSets = true;
+                        vm.getSingleTransactionSet(null,'last');
+                    }
+                } else{
+                    if(set.progress == 100){
+                        vm.getSingleTransactionSet(set);
+                    } else {
+                        $scope.inProgressSets = true;
+                        $scope.loadingTransactionSets = false;
+                    }
+                }
             });
         };
 
-        $rootScope.$on('exportingSetsStatus', function(event, obj){
-            if(obj.status == 'inProgress'){
+        vm.getSingleTransactionSet = function (set,last) {
+            if(set){
+                $http.get(environmentConfig.API + '/admin/transactions/sets/' + set.id + '/', {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': vm.token
+                    }
+                }).then(function (res) {
+                    if (res.status === 200) {
+                        set.pages = res.data.data.pages;
+                        if(last){
+                            $scope.loadingTransactionSets = false;
+                            if($scope.inProgressSets){
+                                $scope.transactionSetsExportingInProgress = true;
+                                $timeout(function () {
+                                    $scope.getTransactionSetsList('noLoadingImage');
+                                },10000);
+                            } else {
+                                $scope.transactionSetsExportingInProgress = false;
+                            }
+                        }
+                    }
+                }).catch(function (error) {
+                    $scope.loadingTransactionSets = false;
+                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.handleErrors(error);
+                });
+            } else {
+                // scenario if array length is 1
+
+                $scope.loadingTransactionSets = false;
+                if($scope.inProgressSets){
+                    $scope.transactionSetsExportingInProgress = true;
+                    $timeout(function () {
+                        $scope.getTransactionSetsList('noLoadingImage');
+                    },2000);
+                } else {
+                    $scope.transactionSetsExportingInProgress = false;
+                }
+            }
+        };
+
+        $scope.downloadExportFile = function (file) {
+            $window.open(file,'_blank');
+        };
+
+        $scope.openDashboardTasks = function () {
+            $scope.showingDashboardTasks = !$scope.showingDashboardTasks;
+            if($scope.showingDashboardTasks){
+                $scope.getTransactionSetsList();
+            }
+        };
+
+        $rootScope.$on('exportSetCreate', function(event, obj){
+            if(obj.status == 'created'){
                 $scope.transactionSetsExportingInProgress = true;
-            } else{
-                $scope.transactionSetsExportingInProgress = false;
+                $scope.getTransactionSetsList();
             }
         });
+
+        // dashboardTasks end
 
         $scope.logout = function(){
             $rootScope.dashboardTitle = 'Rehive';

@@ -30,10 +30,13 @@
         <div class="search-bar-div">
           <search-bar-results></search-bar-results>
         </div>
-        <span class="pointer" ng-click="goToDashboardTasks('app/theme/components/dashboardTasksModal/dashboardTasksModal.html','md')">
+        <span class="pointer dashboard-tasks-icon" ng-click="openDashboardTasks()">
           <i class="fa fa-tasks task-icon"></i>
           <i ng-hide="transactionSetsExportingInProgress" class="fa fa-circle task-icon-circle-1"></i>
           <i ng-show="transactionSetsExportingInProgress" class="fa fa-circle task-icon-circle-2"></i>
+          <div ng-show="showingDashboardTasks" class="dashboard-tasks-div">
+            <dashboard-tasks></dashboard-tasks>
+          </div>
         </span>
       </div>
       <div class="user-company-overview pull-right">
