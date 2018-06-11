@@ -32,7 +32,7 @@
         </div>
         <span class="pointer dashboard-tasks-icon" click-outside="closeDashboardTasksBox()">
           <i class="fa fa-tasks task-icon"  ng-click="openDashboardTasks()"></i>
-          <i ng-hide="transactionSetsExportingInProgress" ng-click="openDashboardTasks()" class="fa fa-circle task-icon-circle-1"></i>
+          <i ng-hide="transactionSetsExportingInProgress || allTasksDone" ng-click="openDashboardTasks()" class="fa fa-circle task-icon-circle-1"></i>
           <i ng-show="transactionSetsExportingInProgress" ng-click="openDashboardTasks()" class="fa fa-circle task-icon-circle-2"></i>
           <div ng-show="showingDashboardTasks" class="dashboard-tasks-div">
             <dashboard-tasks></dashboard-tasks>

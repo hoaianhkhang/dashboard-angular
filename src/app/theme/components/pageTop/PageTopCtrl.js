@@ -22,6 +22,7 @@
         $scope.inProgressSets = false;
         $scope.dashboardTasksLists = [];
         $scope.showingDashboardTasks = false;
+        $scope.allTasksDone = true;
 
         $scope.pagination = {
             itemsPerPage: 10,
@@ -326,11 +327,15 @@
                             $scope.loadingTransactionSets = false;
                             if($scope.inProgressSets){
                                 $scope.transactionSetsExportingInProgress = true;
+                                $scope.allTasksDone = false;
                                 $timeout(function () {
                                     $scope.getTransactionSetsList('noLoadingImage');
                                 },10000);
                             } else {
                                 $scope.transactionSetsExportingInProgress = false;
+                                if($scope.showingDashboardTasks){
+                                    $scope.allTasksDone = true;
+                                }
                             }
                         }
                     }
@@ -345,11 +350,15 @@
                 $scope.loadingTransactionSets = false;
                 if($scope.inProgressSets){
                     $scope.transactionSetsExportingInProgress = true;
+                    $scope.allTasksDone = false;
                     $timeout(function () {
                         $scope.getTransactionSetsList('noLoadingImage');
                     },2000);
                 } else {
                     $scope.transactionSetsExportingInProgress = false;
+                    if($scope.showingDashboardTasks){
+                        $scope.allTasksDone = true;
+                    }
                 }
             }
         };
@@ -361,6 +370,7 @@
         $scope.openDashboardTasks = function () {
             $scope.showingDashboardTasks = !$scope.showingDashboardTasks;
             if($scope.showingDashboardTasks){
+                $scope.allTasksDone = true;
                 $scope.getTransactionSetsList();
             }
         };
