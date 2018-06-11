@@ -7,15 +7,22 @@
     </div>
     <div class="modal-body">
         <div ng-hide="transactionsExported">
-            <p>Your export will show results for: </p>
-            <ul class="export-filter-list" ng-repeat="text in filtersTextsArray">
+            <p>Your export will show results for filters:
+                <span ng-show="filtersTextsArray.length == 0">None selected</span>
+            </p>
+            <ul ng-show="filtersTextsArray.length > 0"
+                class="export-filter-list"
+                ng-repeat="text in filtersTextsArray">
                 <li>{{text}}</li>
             </ul>
         </div>
         <div ng-show="transactionsExported">
             <p>Your export will generate <strong>{{transactionSetResponse.pages.length}} number</strong>
-                of files for a total of number <strong>{{transactionSetResponse.count}} results</strong> for: </p>
-            <ul class="export-filter-list" ng-repeat="text in filtersTextsArray">
+                of files for a total of number <strong>{{transactionSetResponse.count}} results</strong> for filters:
+                <span ng-show="filtersTextsArray.length == 0">None selected</span>
+            </p>
+            <ul ng-show="filtersTextsArray.length > 0"
+                class="export-filter-list" ng-repeat="text in filtersTextsArray">
                 <li>{{text}}</li>
             </ul>
         </div>

@@ -4,8 +4,8 @@
     angular.module('BlurAdmin.pages.transactions.history')
         .controller('ExportConfirmModalCtrl', ExportConfirmModalCtrl);
 
-    function ExportConfirmModalCtrl($scope,environmentConfig,$filter,filtersObjForExport,localStorageManagement,
-                                    $http,currenciesList,serializeFiltersService,errorHandler,toastr) {
+    function ExportConfirmModalCtrl($rootScope,$scope,environmentConfig,$filter,filtersObjForExport,localStorageManagement,
+                                    $http,currenciesList,serializeFiltersService,errorHandler,toastr,$timeout) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
@@ -106,10 +106,11 @@
                     'Authorization': vm.token
                 }
             }).then(function (res) {
-                if (res.status === 201) {
+                if (res.status === 202) {
                     $scope.exportingTransactions = false;
                     $scope.transactionsExported = true;
                     $scope.transactionSetResponse = res.data.data;
+                    // $rootScope.$emit('exportSetCreate', {status: 'created'});
                     toastr.success('Successfully exporting transaction sets');
                 }
             }).catch(function (error) {
