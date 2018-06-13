@@ -4,8 +4,8 @@
     angular.module('BlurAdmin.pages.users.user.accountSettings.accountCurrencyLimits')
         .controller('AccountCurrencyLimitsModalCtrl', AccountCurrencyLimitsModalCtrl);
 
-    function AccountCurrencyLimitsModalCtrl($scope,$uibModalInstance,accountCurrencyLimit,currencyCode,reference,toastr,$http,
-                                            environmentConfig,localStorageManagement,errorHandler) {
+    function AccountCurrencyLimitsModalCtrl($scope,$uibModalInstance,accountCurrencyLimit,currencyCode,reference,toastr,
+                                            Rehive,localStorageManagement,errorHandler) {
 
         var vm = this;
         vm.currencyCode = currencyCode;
@@ -16,21 +16,16 @@
 
         $scope.deleteAccountCurrencyLimit = function () {
             $scope.deletingAccountCurrencyLimits = true;
-            $http.delete(environmentConfig.API + '/admin/accounts/' + vm.reference + '/currencies/' + vm.currencyCode + '/limits/' + $scope.accountCurrencyLimit.id +'/', {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': vm.token
-                }
-            }).then(function (res) {
+            Rehive.admin.accounts.currencies.limits.delete(vm.reference,vm.currencyCode,$scope.accountCurrencyLimit.id).then(function (res) {
                 $scope.deletingAccountCurrencyLimits = false;
-                if (res.status === 200) {
-                    toastr.success('Account currency limit successfully deleted');
-                    $uibModalInstance.close($scope.accountCurrencyLimit);
-                }
-            }).catch(function (error) {
+                toastr.success('Account currency limit successfully deleted');
+                $uibModalInstance.close(true);
+                $scope.$apply();
+            }, function (error) {
                 $scope.deletingAccountCurrencyLimits = false;
-                errorHandler.evaluateErrors(error.data);
+                errorHandler.evaluateErrors(error);
                 errorHandler.handleErrors(error);
+                $scope.$apply();
             });
         };
 

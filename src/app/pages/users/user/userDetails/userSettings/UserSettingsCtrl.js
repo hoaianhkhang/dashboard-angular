@@ -5,7 +5,7 @@
         .controller('UserSettingsCtrl', UserSettingsCtrl);
 
     /** @ngInject */
-    function UserSettingsCtrl($scope,environmentConfig,$stateParams,$http,localStorageManagement,errorHandler) {
+    function UserSettingsCtrl($scope,Rehive,$stateParams,localStorageManagement,errorHandler) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
@@ -16,20 +16,15 @@
         vm.getUserSettings = function () {
             if(vm.token) {
                 $scope.loadingUserSettings = true;
-                $http.get(environmentConfig.API + '/admin/users/' + vm.uuid + '/settings/', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
+                Rehive.admin.users.settings.get(vm.uuid).then(function (res) {
                     $scope.loadingUserSettings = false;
-                    if (res.status === 200) {
-                        $scope.userSettingsObj = res.data.data;
-                    }
-                }).catch(function (error) {
+                    $scope.userSettingsObj = res;
+                    $scope.$apply();
+                }, function (error) {
                     $scope.loadingUserSettings = false;
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };
@@ -41,19 +36,14 @@
             updatedSetting[type] = !groupSetting;
 
             if(vm.token) {
-                $http.patch(environmentConfig.API + '/admin/users/' + vm.uuid + '/settings/',updatedSetting, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
-                    if (res.status === 200) {
-                        $scope.userSettingsObj = {};
-                        $scope.userSettingsObj = res.data.data;
-                    }
-                }).catch(function (error) {
-                    errorHandler.evaluateErrors(error.data);
+                Rehive.admin.users.settings.update(vm.uuid,updatedSetting).then(function (res) {
+                    $scope.userSettingsObj = {};
+                    $scope.userSettingsObj = res;
+                    $scope.$apply();
+                }, function (error) {
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };

@@ -5,8 +5,8 @@
         .controller('UserAccountsOnlyCtrl', UserAccountsOnlyCtrl);
 
     /** @ngInject */
-    function UserAccountsOnlyCtrl($scope,environmentConfig,$stateParams,$rootScope,$uibModal,
-                              $http,localStorageManagement,errorHandler,$location,serializeFiltersService) {
+    function UserAccountsOnlyCtrl($scope,Rehive,$stateParams,$rootScope,$uibModal,
+                                  localStorageManagement,errorHandler,$location,serializeFiltersService) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
@@ -48,7 +48,7 @@
             $scope.optionsReference = reference;
         };
 
-        vm.getUsersAccountsUrl = function(){
+        vm.getUsersAccountsFiltersObj = function(){
             $scope.accountsFiltersCount = 0;
 
             for(var x in $scope.filtersObj){
@@ -66,7 +66,7 @@
                 name: $scope.filtersObj.accountNameFilter ?($scope.applyFiltersObj.accountNameFilter.selectedAccountName ?  $scope.applyFiltersObj.accountNameFilter.selectedAccountName : null): null
             };
 
-            return environmentConfig.API + '/admin/accounts/?' + serializeFiltersService.serializeFilters(searchObj);
+            return serializeFiltersService.objectFilters(searchObj);
         };
 
         $scope.getUserAccounts = function(){
@@ -78,27 +78,21 @@
                     $scope.accounts.length = 0;
                 }
 
-                var usersAccountsUrl = vm.getUsersAccountsUrl();
+                var usersAccountsFiltersObj = vm.getUsersAccountsFiltersObj();
 
-                $http.get(usersAccountsUrl, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
+                Rehive.admin.accounts.get({filters: usersAccountsFiltersObj}).then(function (res) {
                     $scope.loadingUserAccounts = false;
-                    if (res.status === 200) {
-                        if(res.data.data.results.length > 0 ){
-                            $scope.accounts = res.data.data.results;
-                        } else {
-                            $scope.accounts = [];
-                        }
-
+                    if(res.results.length > 0 ){
+                        $scope.accounts = res.results;
+                    } else {
+                        $scope.accounts = [];
                     }
-                }).catch(function (error) {
+                    $scope.$apply();
+                }, function (error) {
                     $scope.loadingUserAccounts = false;
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };

@@ -5,7 +5,7 @@
         .controller('UserTransactionsCtrl', UserTransactionsCtrl);
 
     /** @ngInject */
-    function UserTransactionsCtrl($scope,environmentConfig,$http,localStorageManagement,$uibModal,sharedResources,toastr,currencyModifiers,
+    function UserTransactionsCtrl($scope,Rehive,localStorageManagement,$uibModal,sharedResources,toastr,currencyModifiers,
                          errorHandler,$state,$location,$window,typeaheadService,$filter,serializeFiltersService,$rootScope,$stateParams) {
 
         var vm = this;
@@ -81,7 +81,7 @@
         $scope.orderByOptions = ['Latest','Largest','Smallest'];
 
         sharedResources.getSubtypes().then(function (res) {
-            $scope.subtypeOptions = _.pluck(res.data.data,'name');
+            $scope.subtypeOptions = _.pluck(res,'name');
             $scope.subtypeOptions.unshift('');
         });
 
@@ -288,7 +288,7 @@
             return amountObj;
         };
 
-        vm.getTransactionUrl = function(){
+        vm.getTransactionsFiltersObj = function(){
             $scope.filtersCount = 0;
 
             for(var x in $scope.filtersObj){
@@ -336,7 +336,7 @@
                 subtype: $scope.filtersObj.transactionTypeFilter ? ($scope.applyFiltersObj.transactionSubtypeFilter.selectedTransactionSubtypeOption ? $scope.applyFiltersObj.transactionSubtypeFilter.selectedTransactionSubtypeOption: null): null
             };
 
-            return environmentConfig.API + '/admin/transactions/?' + serializeFiltersService.serializeFilters(searchObj);
+            return serializeFiltersService.objectFilters(searchObj);
         };
 
         $scope.getLatestTransactions = function(applyFilter){
@@ -356,30 +356,24 @@
                     $scope.transactions.length = 0;
                 }
 
-                var transactionsUrl = vm.getTransactionUrl();
+                var transactionsFiltersObj = vm.getTransactionsFiltersObj();
 
-                $http.get(transactionsUrl, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
+                Rehive.admin.transactions.get({filters: transactionsFiltersObj}).then(function (res) {
                     $scope.loadingTransactions = false;
-                    if (res.status === 200) {
-                        $scope.transactionsData = res.data.data;
-                        $scope.transactions = $scope.transactionsData.results;
-                        if ($scope.transactions == 0) {
-                            $scope.transactionsStateMessage = 'No transactions have been found';
-                            return;
-                        }
-
-                        $scope.transactionsStateMessage = '';
+                    $scope.transactionsData = res;
+                    $scope.transactions = $scope.transactionsData.results;
+                    if($scope.transactions.length == 0) {
+                        $scope.transactionsStateMessage = 'No transactions have been found';
+                        return;
                     }
-                }).catch(function (error) {
+                    $scope.transactionsStateMessage = '';
+                    $scope.$apply();
+                }, function (error) {
                     $scope.loadingTransactions = false;
                     $scope.transactionsStateMessage = 'Failed to load data';
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };

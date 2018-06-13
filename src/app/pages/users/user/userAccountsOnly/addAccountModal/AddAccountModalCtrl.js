@@ -4,8 +4,8 @@
     angular.module('BlurAdmin.pages.users.user.accounts')
         .controller('AddAccountModalCtrl', AddAccountModalCtrl);
 
-    function AddAccountModalCtrl($scope,$uibModalInstance,toastr,
-                                 $stateParams,$http,environmentConfig,localStorageManagement,errorHandler) {
+    function AddAccountModalCtrl($scope,$uibModalInstance,toastr,Rehive,
+                                 $stateParams,localStorageManagement,errorHandler) {
 
         var vm = this;
 
@@ -25,20 +25,18 @@
         vm.getCompanyCurrencies = function(){
             $scope.addingUserAccount = true;
             if(vm.token){
-                $http.get(environmentConfig.API + '/admin/currencies/?enabled=true&page_size=250', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
-                    if (res.status === 200) {
-                        $scope.addingUserAccount = false;
-                        $scope.currenciesList = res.data.data.results;
-                    }
-                }).catch(function (error) {
+                Rehive.admin.currencies.get({filters: {
+                    enabled: true,
+                    page_size: 250
+                }}).then(function (res) {
                     $scope.addingUserAccount = false;
-                    errorHandler.evaluateErrors(error.data);
+                    $scope.currenciesList = res.results;
+                    $scope.$apply();
+                }, function (error) {
+                    $scope.addingUserAccount = false;
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };
@@ -48,26 +46,22 @@
             if(vm.token) {
                 newUserAccountParams.user = vm.uuid;
                 $scope.addingUserAccount = true;
-                $http.post(environmentConfig.API + '/admin/accounts/', newUserAccountParams, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
+                Rehive.admin.accounts.create(newUserAccountParams).then(function (res) {
+                    if($scope.currenciesForNewAccount.list.length > 0){
+                        vm.addNewAccountCurrencies($scope.currenciesForNewAccount.list,res.reference);
+                        $scope.$apply();
+                    } else{
+                        $scope.addingUserAccount = false;
+                        $scope.newUserAccountParams = {};
+                        toastr.success('Account successfully added');
+                        $uibModalInstance.close(res);
+                        $scope.$apply();
                     }
-                }).then(function (res) {
-                    if (res.status === 201) {
-                        if($scope.currenciesForNewAccount.list.length > 0){
-                            vm.addNewAccountCurrencies($scope.currenciesForNewAccount.list,res.data.data.reference);
-                        } else{
-                            $scope.addingUserAccount = false;
-                            $scope.newUserAccountParams = {};
-                            toastr.success('Account successfully added');
-                            $uibModalInstance.close(res.data);
-                        }
-                    }
-                }).catch(function (error) {
+                }, function (error) {
                     $scope.addingUserAccount = false;
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };
@@ -76,26 +70,21 @@
 
             listOfCurrencies.forEach(function (element,index,array) {
                 if(vm.token) {
-                    $http.post(environmentConfig.API + '/admin/accounts/' + reference + '/currencies/',{currency: element.code}, {
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': vm.token
+                    Rehive.admin.accounts.currencies.create(reference,{currency: element.code}).then(function (res) {
+                        if(index == (array.length - 1)) {
+                            $scope.addingUserAccount = false;
+                            $scope.newUserAccountParams = {};
+                            $scope.currenciesForNewAccount = {list: []};
+                            toastr.success('Account successfully added');
+                            $uibModalInstance.close(res);
+                            $scope.$apply();
                         }
-                    }).then(function (res) {
-                        if (res.status === 201) {
-                            if(index == (array.length - 1)) {
-                                $scope.addingUserAccount = false;
-                                $scope.newUserAccountParams = {};
-                                $scope.currenciesForNewAccount = {list: []};
-                                toastr.success('Account successfully added');
-                                $uibModalInstance.close(res.data);
-                            }
-                        }
-                    }).catch(function (error) {
+                    }, function (error) {
                         $scope.currenciesForNewAccount = {list: []};
                         $scope.addingUserAccount = false;
-                        errorHandler.evaluateErrors(error.data);
+                        errorHandler.evaluateErrors(error);
                         errorHandler.handleErrors(error);
+                        $scope.$apply();
                     });
                 }
             });

@@ -5,8 +5,8 @@
         .controller('AccountCurrencyFeesCtrl', AccountCurrencyFeesCtrl);
 
     /** @ngInject */
-    function AccountCurrencyFeesCtrl($scope,$window,$stateParams,$http,$uibModal,environmentConfig,_,$rootScope,
-                                     localStorageManagement,errorHandler) {
+    function AccountCurrencyFeesCtrl($scope,$window,$stateParams,$uibModal,$rootScope,
+                                     Rehive,localStorageManagement,errorHandler) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
@@ -28,20 +28,15 @@
         $scope.getAccountCurrencyFees = function(){
             if(vm.token) {
                 $scope.loadingAccountCurrencyFees = true;
-                $http.get(environmentConfig.API + '/admin/accounts/' + vm.reference + '/currencies/' + vm.currencyCode + '/fees/',{
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
+                Rehive.admin.accounts.currencies.fees.get(vm.reference,vm.currencyCode).then(function (res) {
                     $scope.loadingAccountCurrencyFees = false;
-                    if (res.status === 200) {
-                        $scope.accountCurrencyFeesList = res.data.data;
-                    }
-                }).catch(function (error) {
+                    $scope.accountCurrencyFeesList = res;
+                    $scope.$apply();
+                }, function (error) {
                     $scope.loadingAccountCurrencyFees = false;
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };
