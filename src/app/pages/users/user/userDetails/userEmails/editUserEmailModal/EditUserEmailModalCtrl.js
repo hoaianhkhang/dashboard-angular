@@ -4,7 +4,7 @@
     angular.module('BlurAdmin.pages.users.user')
         .controller('EditUserEmailModalCtrl', EditUserEmailModalCtrl);
 
-    function EditUserEmailModalCtrl($rootScope,$scope,$stateParams,$uibModalInstance,email,toastr,$http,environmentConfig,localStorageManagement,errorHandler) {
+    function EditUserEmailModalCtrl($scope,Rehive,$stateParams,$uibModalInstance,email,toastr,localStorageManagement,errorHandler) {
 
         var vm = this;
         $scope.email = email;
@@ -18,20 +18,15 @@
         vm.getUserEmail =  function () {
             if(vm.token) {
                 $scope.loadingUserEmails = true;
-                $http.get(environmentConfig.API + '/admin/users/emails/' + $scope.email.id + '/', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
+                Rehive.admin.users.emails.get({id: $scope.email.id}).then(function (res) {
                     $scope.loadingUserEmails = false;
-                    if (res.status === 200) {
-                        $scope.editUserEmailObj = res.data.data;
-                    }
-                }).catch(function (error) {
+                    $scope.editUserEmailObj = res;
+                    $scope.$apply();
+                }, function (error) {
                     $scope.loadingUserEmails = false;
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };
@@ -40,21 +35,16 @@
         $scope.editUserEmail =  function (editUserEmailObj) {
             if(vm.token) {
                 $scope.loadingUserEmails = true;
-                $http.patch(environmentConfig.API + '/admin/users/emails/' + $scope.email.id + '/',editUserEmailObj, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
+                Rehive.admin.users.emails.update($scope.email.id,editUserEmailObj).then(function (res) {
                     $scope.loadingUserEmails = false;
-                    if (res.status === 200) {
-                        toastr.success('Email successfully updated');
-                        $uibModalInstance.close(res.data);
-                    }
-                }).catch(function (error) {
+                    toastr.success('Email successfully updated');
+                    $uibModalInstance.close(res);
+                    $scope.$apply();
+                }, function (error) {
                     $scope.loadingUserEmails = false;
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };

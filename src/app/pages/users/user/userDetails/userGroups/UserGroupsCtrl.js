@@ -5,8 +5,8 @@
         .controller('UserGroupsCtrl', UserGroupsCtrl);
 
     /** @ngInject */
-    function UserGroupsCtrl($scope,environmentConfig,$stateParams,$http,$window,
-                            localStorageManagement,errorHandler,toastr,$uibModal) {
+    function UserGroupsCtrl($scope,$stateParams,Rehive,
+                            localStorageManagement,errorHandler,$uibModal) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
@@ -16,20 +16,15 @@
         vm.getUserGroups = function () {
             if(vm.token) {
                 $scope.loadingUserGroup = true;
-                $http.get(environmentConfig.API + '/admin/users/' + vm.uuid + '/groups/', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
+                Rehive.admin.users.groups.get(vm.uuid, {filters: {page_size: 250}}).then(function (res) {
                     $scope.loadingUserGroup = false;
-                    if (res.status === 200) {
-                        $scope.userGroups = res.data.data.results[0];
-                    }
-                }).catch(function (error) {
+                    $scope.userGroups = res.results[0];
+                    $scope.$apply();
+                }, function (error) {
                     $scope.loadingUserGroup = false;
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };

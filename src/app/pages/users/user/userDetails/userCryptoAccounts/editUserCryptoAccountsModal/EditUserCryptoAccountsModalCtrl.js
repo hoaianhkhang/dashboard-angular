@@ -5,7 +5,7 @@
         .controller('EditUserCryptoAccountsModalCtrl', EditUserCryptoAccountsModalCtrl);
 
     function EditUserCryptoAccountsModalCtrl($scope,$uibModalInstance,userCryptoAccount,toastr,$stateParams,$filter,
-                                      $http,environmentConfig,localStorageManagement,errorHandler) {
+                                             Rehive,localStorageManagement,errorHandler) {
 
         var vm = this;
         vm.uuid = $stateParams.uuid;
@@ -19,29 +19,24 @@
         vm.getUserCryptoAccount =  function () {
             if(vm.token) {
                 $scope.loadingUserCryptoAccounts = true;
-                $http.get(environmentConfig.API + '/admin/users/crypto-accounts/' + $scope.cryptoAccount.id + '/', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
+                Rehive.admin.users.cryptoAccounts.get({id: $scope.cryptoAccount.id}).then(function (res) {
                     $scope.loadingUserCryptoAccounts = false;
-                    if (res.status === 200) {
-                        $scope.editUserCryptoAccountParams = res.data.data;
-                        if(typeof $scope.editUserCryptoAccountParams.metadata == 'object'){
-                            if(Object.keys($scope.editUserCryptoAccountParams.metadata).length == 0){
-                                $scope.editUserCryptoAccountParams.metadata = '';
-                            } else {
-                                $scope.editUserCryptoAccountParams.metadata = JSON.stringify($scope.editUserCryptoAccountParams.metadata);
-                            }
+                    $scope.editUserCryptoAccountParams = res;
+                    if(typeof $scope.editUserCryptoAccountParams.metadata == 'object'){
+                        if(Object.keys($scope.editUserCryptoAccountParams.metadata).length == 0){
+                            $scope.editUserCryptoAccountParams.metadata = '';
+                        } else {
+                            $scope.editUserCryptoAccountParams.metadata = JSON.stringify($scope.editUserCryptoAccountParams.metadata);
                         }
-                        $scope.editUserCryptoAccountParams.status = $filter('capitalizeWord')($scope.editUserCryptoAccountParams.status);
-                        $scope.editUserCryptoAccountParams.crypto_type = $filter('capitalizeWord')($scope.editUserCryptoAccountParams.crypto_type);
                     }
-                }).catch(function (error) {
+                    $scope.editUserCryptoAccountParams.status = $filter('capitalizeWord')($scope.editUserCryptoAccountParams.status);
+                    $scope.editUserCryptoAccountParams.crypto_type = $filter('capitalizeWord')($scope.editUserCryptoAccountParams.crypto_type);
+                    $scope.$apply();
+                }, function (error) {
                     $scope.loadingUserCryptoAccounts = false;
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };
@@ -83,23 +78,18 @@
 
             if(vm.token) {
                 $scope.loadingUserCryptoAccounts = true;
-                $http.patch(environmentConfig.API + '/admin/users/crypto-accounts/' + $scope.editUserCryptoAccountParams.id + '/',vm.updatedUserCryptoAccount, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
+                Rehive.admin.users.cryptoAccounts.update($scope.editUserCryptoAccountParams.id,vm.updatedUserCryptoAccount).then(function (res) {
                     $scope.loadingUserCryptoAccounts = false;
-                    if (res.status === 200) {
-                        toastr.success('Crypto account successfully updated');
-                        $scope.editingUserCryptoAccounts = !$scope.editingUserCryptoAccounts;
-                        $uibModalInstance.close(res.data);
-                    }
-                }).catch(function (error) {
+                    toastr.success('Crypto account successfully updated');
+                    $scope.editingUserCryptoAccounts = !$scope.editingUserCryptoAccounts;
+                    $uibModalInstance.close(res);
+                    $scope.$apply();
+                }, function (error) {
                     vm.getUserCryptoAccount($scope.editUserCryptoAccountParams);
                     $scope.loadingUserCryptoAccounts = false;
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };

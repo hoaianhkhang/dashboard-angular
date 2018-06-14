@@ -4,7 +4,7 @@
     angular.module('BlurAdmin.pages.users.user')
         .controller('UserVerifyEmailModalCtrl', UserVerifyEmailModalCtrl);
 
-    function UserVerifyEmailModalCtrl($scope,$uibModalInstance,email,user,toastr,$http,environmentConfig,localStorageManagement,errorHandler) {
+    function UserVerifyEmailModalCtrl($scope,Rehive,$uibModalInstance,email,user,toastr,localStorageManagement,errorHandler) {
 
         var vm = this;
 
@@ -15,58 +15,46 @@
         vm.company = {};
 
         vm.getCompanyDetails = function () {
-            $http.get(environmentConfig.API + '/company/', {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': vm.token
-                }
-            }).then(function (res) {
-                if (res.status === 200) {
-                    vm.company =  res.data.data;
-                }
-            }).catch(function (error) {
-                errorHandler.evaluateErrors(error.data);
+            Rehive.company.get().then(function(res){
+                vm.company =  res;
+                $scope.$apply();
+            },function(error){
+                errorHandler.evaluateErrors(error);
                 errorHandler.handleErrors(error);
+                $scope.$apply();
             });
         };
         vm.getCompanyDetails();
 
         $scope.verifyEmail = function () {
             $scope.verifyingEmail = true;
-            $http.patch(environmentConfig.API + '/admin/users/emails/' + email.id + '/', {verified: true}, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': vm.token
-                }
-            }).then(function (res) {
+            Rehive.admin.users.emails.update(email.id,{verified: true}).then(function (res) {
                 $scope.verifyingEmail = false;
-                if (res.status === 200) {
-                    toastr.success('Email successfully verified');
-                    $uibModalInstance.close($scope.email);
-                }
-            }).catch(function (error) {
+                toastr.success('Email successfully verified');
+                $uibModalInstance.close($scope.email);
+                $scope.$apply();
+            }, function (error) {
                 $scope.verifyingEmail = false;
-                errorHandler.evaluateErrors(error.data);
+                errorHandler.evaluateErrors(error);
                 errorHandler.handleErrors(error);
+                $scope.$apply();
             });
         };
 
         $scope.resendEmailVerification = function () {
             $scope.verifyingEmail = true;
-            $http.post(environmentConfig.API + '/auth/email/verify/resend/', {email: email.email,company: vm.company.identifier}, {
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            }).then(function (res) {
+            Rehive.auth.email.resendEmailVerification({
+                email: email.email,
+                company: vm.company.identifier
+            }).then(function(res){
+                toastr.success('Email verification resent successfully');
+                $uibModalInstance.close();
+                $scope.$apply();
+            },function(error){
                 $scope.verifyingEmail = false;
-                if (res.status === 200) {
-                    toastr.success('Email verification resent successfully');
-                    $uibModalInstance.close();
-                }
-            }).catch(function (error) {
-                $scope.verifyingEmail = false;
-                errorHandler.evaluateErrors(error.data);
+                errorHandler.evaluateErrors(error);
                 errorHandler.handleErrors(error);
+                $scope.$apply();
             });
         };
 

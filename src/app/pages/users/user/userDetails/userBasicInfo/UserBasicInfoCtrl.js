@@ -5,7 +5,7 @@
         .controller('UserBasicInfoCtrl', UserBasicInfoCtrl);
 
     /** @ngInject */
-    function UserBasicInfoCtrl($scope,environmentConfig,$stateParams,$http,localStorageManagement,$uibModal,errorHandler) {
+    function UserBasicInfoCtrl($scope,Rehive,$stateParams,localStorageManagement,$uibModal,errorHandler) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
@@ -21,28 +21,23 @@
         vm.getUser = function(){
             if(vm.token) {
                 $scope.loadingUserBasicInfo = true;
-                $http.get(environmentConfig.API + '/admin/users/' + vm.uuid + '/', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
+                Rehive.admin.users.get({identifier: vm.uuid}).then(function (res) {
                     $scope.loadingUserBasicInfo = false;
-                    if (res.status === 200) {
-                        if(res.data.data.birth_date){
-                            var birthdayStringArray = res.data.data.birth_date.split('-');
-                            $scope.birthDate = {
-                                year: birthdayStringArray[0],
-                                month: birthdayStringArray[1],
-                                day: birthdayStringArray[2]
-                            };
-                        }
-                        $scope.user = res.data.data;
+                    if(res.birth_date){
+                        var birthdayStringArray = res.birth_date.split('-');
+                        $scope.birthDate = {
+                            year: birthdayStringArray[0],
+                            month: birthdayStringArray[1],
+                            day: birthdayStringArray[2]
+                        };
                     }
-                }).catch(function (error) {
+                    $scope.user = res;
+                    $scope.$apply();
+                }, function (error) {
                     $scope.loadingUserBasicInfo = false;
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };

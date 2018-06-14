@@ -4,7 +4,7 @@
     angular.module('BlurAdmin.pages.users.user')
         .controller('AddUserNumberModalCtrl', AddUserNumberModalCtrl);
 
-    function AddUserNumberModalCtrl($scope,$stateParams,$uibModalInstance,user,toastr,$http,environmentConfig,localStorageManagement,errorHandler) {
+    function AddUserNumberModalCtrl($scope,$stateParams,Rehive,$uibModalInstance,user,toastr,localStorageManagement,errorHandler) {
 
         var vm = this;
         $scope.user = user;
@@ -17,23 +17,18 @@
         $scope.createUserNumber = function (newUserNumber) {
             $scope.loadingUserNumbers = true;
             newUserNumber.user = vm.uuid;
-            $http.post(environmentConfig.API + '/admin/users/mobiles/',newUserNumber, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': vm.token
-                }
-            }).then(function (res) {
-                if (res.status === 201) {
-                    $scope.loadingUserNumbers = true;
-                    $scope.newUserNumber = {primary: false, verified: false};
-                    toastr.success('Number successfully created');
-                    $uibModalInstance.close(res.data);
-                }
-            }).catch(function (error) {
+            Rehive.admin.users.mobiles.create(newUserNumber).then(function (res) {
+                $scope.loadingUserNumbers = true;
+                $scope.newUserNumber = {primary: false, verified: false};
+                toastr.success('Number successfully created');
+                $uibModalInstance.close(res);
+                $scope.$apply();
+            }, function (error) {
                 $scope.newUserNumber = {primary: false, verified: false};
                 $scope.loadingUserNumbers = false;
-                errorHandler.evaluateErrors(error.data);
+                errorHandler.evaluateErrors(error);
                 errorHandler.handleErrors(error);
+                $scope.$apply();
             });
         };
 
