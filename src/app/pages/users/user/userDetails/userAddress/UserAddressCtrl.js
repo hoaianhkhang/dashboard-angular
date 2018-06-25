@@ -5,7 +5,7 @@
         .controller('UserAddressCtrl', UserAddressCtrl);
 
     /** @ngInject */
-    function UserAddressCtrl($scope,environmentConfig,$stateParams,$http,localStorageManagement,
+    function UserAddressCtrl($scope,Rehive,$stateParams,localStorageManagement,
                              $window,errorHandler,$uibModal,toastr,$ngConfirm) {
 
         var vm = this;
@@ -32,21 +32,16 @@
         vm.getUserAddress = function(){
             if(vm.token) {
                 $scope.loadingUserAddress = true;
-                $http.get(environmentConfig.API + '/admin/users/addresses/?user=' + vm.uuid, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
+                Rehive.admin.users.addresses.get({filters: {user: vm.uuid}}).then(function (res) {
                     $scope.loadingUserAddress = false;
-                    if (res.status === 200) {
-                        $window.sessionStorage.userAddresses = JSON.stringify(res.data.data.results);
-                        $scope.userAddresses = res.data.data.results;
-                    }
-                }).catch(function (error) {
+                    $window.sessionStorage.userAddresses = JSON.stringify(res.results);
+                    $scope.userAddresses = res.results;
+                    $scope.$apply();
+                }, function (error) {
                     $scope.loadingUserAddress = false;
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };
@@ -79,22 +74,19 @@
         $scope.verifyUserAddress = function(id,status){
             if(vm.token) {
                 $scope.loadingUserAddress = true;
-                $http.patch(environmentConfig.API + '/admin/users/addresses/' + id + '/',{status: status},{
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
+                Rehive.admin.users.addresses.update(id,{
+                    status: status
                 }).then(function (res) {
                     $scope.loadingUserAddress = false;
-                    if (res.status === 200) {
-                        $scope.optionsId = '';
-                        toastr.success('Successfully verified user address');
-                        vm.getUserAddress();
-                    }
-                }).catch(function (error) {
+                    $scope.optionsId = '';
+                    toastr.success('Successfully verified user address');
+                    vm.getUserAddress();
+                    $scope.$apply();
+                }, function (error) {
                     $scope.loadingUserAddress = false;
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };

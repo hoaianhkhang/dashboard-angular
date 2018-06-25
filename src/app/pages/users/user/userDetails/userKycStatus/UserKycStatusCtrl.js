@@ -5,7 +5,7 @@
         .controller('UserKycStatusCtrl', UserKycStatusCtrl);
 
     /** @ngInject */
-    function UserKycStatusCtrl($scope,environmentConfig,$stateParams,$http,localStorageManagement,$uibModal,errorHandler,$filter) {
+    function UserKycStatusCtrl($scope,Rehive,$stateParams,localStorageManagement,$uibModal,errorHandler,$filter) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
@@ -15,20 +15,15 @@
         vm.getUserStatus = function(){
             if(vm.token) {
                 $scope.loadingUserKycStatus = true;
-                $http.get(environmentConfig.API + '/admin/users/' + vm.uuid + '/kyc/', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
+                Rehive.admin.users.kyc.get(vm.uuid).then(function (res) {
                     $scope.loadingUserKycStatus = false;
-                    if (res.status === 200) {
-                        $scope.userStatus = res.data.data;
-                    }
-                }).catch(function (error) {
+                    $scope.userStatus = res;
+                    $scope.$apply();
+                }, function (error) {
                     $scope.loadingUserKycStatus = false;
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };
@@ -37,20 +32,15 @@
         vm.getUser = function(){
             $scope.loadingUserKycStatus = true;
             if(vm.token) {
-                $http.get(environmentConfig.API + '/admin/users/' + vm.uuid + '/', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
-                    if (res.status === 200) {
-                        $scope.user = res.data.data;
-                        vm.getUserStatus();
-                    }
-                }).catch(function (error) {
+                Rehive.admin.users.get({identifier: vm.uuid}).then(function (res) {
+                    $scope.user = res;
+                    vm.getUserStatus();
+                    $scope.$apply();
+                }, function (error) {
                     $scope.loadingUserKycStatus = false;
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };

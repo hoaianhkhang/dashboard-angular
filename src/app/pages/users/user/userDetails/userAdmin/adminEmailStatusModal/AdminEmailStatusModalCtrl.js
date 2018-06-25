@@ -4,8 +4,8 @@
     angular.module('BlurAdmin.pages.users.user')
         .controller('AdminEmailStatusModalCtrl', AdminEmailStatusModalCtrl);
 
-    function AdminEmailStatusModalCtrl($scope,$uibModalInstance,nonPrimaryEmail,emailSituation,$stateParams,$http,environmentConfig,
-                                $rootScope,localStorageManagement,errorHandler,$uibModal,$window) {
+    function AdminEmailStatusModalCtrl($scope,$uibModalInstance,nonPrimaryEmail,emailSituation,$stateParams,
+                                       Rehive,$rootScope,localStorageManagement,errorHandler,$uibModal,$window) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
@@ -20,22 +20,17 @@
         vm.getUserEmails = function(){
             $scope.loadingUserEmailsList = true;
             if(vm.token) {
-                $http.get(environmentConfig.API + '/admin/users/emails/?user=' + vm.uuid, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
-                    if (res.status === 200) {
-                        $scope.loadingUserEmailsList = false;
-                        if(res.data.data.results.length > 0){
-                            $scope.userEmailsList = res.data.data.results;
-                        }
-                    }
-                }).catch(function (error) {
+                Rehive.admin.users.emails.get({filters: {user: vm.uuid}}).then(function (res) {
                     $scope.loadingUserEmailsList = false;
-                    errorHandler.evaluateErrors(error.data);
+                    if(res.results.length > 0){
+                        $scope.userEmailsList = res.results;
+                    }
+                    $scope.$apply();
+                }, function (error) {
+                    $scope.loadingUserEmailsList = false;
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };

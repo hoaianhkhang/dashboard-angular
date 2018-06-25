@@ -5,10 +5,10 @@
         .controller('UserAdminCtrl', UserAdminCtrl);
 
     /** @ngInject */
-    function UserAdminCtrl($rootScope,$scope,environmentConfig,toastr,$stateParams,$http,localStorageManagement,$uibModal,errorHandler) {
+    function UserAdminCtrl($scope,Rehive,toastr,$stateParams,localStorageManagement,$uibModal,errorHandler) {
 
         var vm = this;
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
         vm.uuid = $stateParams.uuid;
         vm.companyIdentifier = localStorageManagement.getValue('companyIdentifier');
         $scope.loadingUserAdmin = false;
@@ -18,25 +18,20 @@
         $scope.getUserEmailsFromResendPasswordLink = function(){
             $scope.loadingUserAdmin = true;
             if(vm.token) {
-                $http.get(environmentConfig.API + '/admin/users/emails/?user=' + vm.uuid, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
-                    if (res.status === 200) {
-                        $scope.loadingUserAdmin = false;
-                        if(res.data.data.results.length > 0){
-                            $scope.listOfEmails = res.data.data.results;
-                        } else {
-                            $scope.listOfEmails = [];
-                        }
-                        vm.checkEmailSituation();
-                    }
-                }).catch(function (error) {
+                Rehive.admin.users.emails.get({filters: {user: vm.uuid}}).then(function (res) {
                     $scope.loadingUserAdmin = false;
-                    errorHandler.evaluateErrors(error.data);
+                    if(res.results.length > 0){
+                        $scope.listOfEmails = res.results;
+                    } else {
+                        $scope.listOfEmails = [];
+                    }
+                    vm.checkEmailSituation();
+                    $scope.$apply();
+                }, function (error) {
+                    $scope.loadingUserAdmin = false;
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };
@@ -63,17 +58,16 @@
         };
 
         vm.resendPasswordResetLink = function () {
-            $http.post(environmentConfig.API + '/auth/password/reset/', {user: vm.uuid,company: vm.companyIdentifier}, {
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            }).then(function (res) {
-                if (res.status === 200) {
-                    toastr.success('Password reset email sent successfully');
-                }
-            }).catch(function (error) {
-                errorHandler.evaluateErrors(error.data);
+            Rehive.auth.password.reset({
+                user: vm.uuid,
+                company: vm.companyIdentifier
+            }).then(function(res){
+                toastr.success('Password reset email sent successfully');
+                $scope.$apply();
+            }, function (error) {
+                errorHandler.evaluateErrors(error);
                 errorHandler.handleErrors(error);
+                $scope.$apply();
             });
         };
 

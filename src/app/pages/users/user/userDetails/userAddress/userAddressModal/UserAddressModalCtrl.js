@@ -4,7 +4,7 @@
     angular.module('BlurAdmin.pages.users.user')
         .controller('UserAddressModalCtrl', UserAddressModalCtrl);
 
-    function UserAddressModalCtrl($scope,$uibModalInstance,address,toastr,$http,environmentConfig,localStorageManagement,errorHandler) {
+    function UserAddressModalCtrl($scope,Rehive,$uibModalInstance,address,toastr,localStorageManagement,errorHandler) {
 
         var vm = this;
 
@@ -14,21 +14,16 @@
 
         $scope.deleteUserAddress = function () {
             $scope.deletingUserAddress = true;
-            $http.delete(environmentConfig.API + '/admin/users/addresses/' + $scope.userAddress.id + '/', {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': vm.token
-                }
-            }).then(function (res) {
+            Rehive.admin.users.addresses.delete($scope.userAddress.id).then(function (res) {
                 $scope.deletingUserAddress = false;
-                if (res.status === 200) {
-                    toastr.success('Address successfully deleted');
-                    $uibModalInstance.close($scope.userAddress);
-                }
-            }).catch(function (error) {
+                toastr.success('Address successfully deleted');
+                $uibModalInstance.close($scope.userAddress);
+                $scope.$apply();
+            }, function (error) {
                 $scope.deletingUserAddress = false;
-                errorHandler.evaluateErrors(error.data);
+                errorHandler.evaluateErrors(error);
                 errorHandler.handleErrors(error);
+                $scope.$apply();
             });
         };
 

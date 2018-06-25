@@ -4,8 +4,8 @@
     angular.module('BlurAdmin.pages.users.user')
         .controller('EditUserAddressModalCtrl', EditUserAddressModalCtrl);
 
-    function EditUserAddressModalCtrl($scope,$uibModalInstance,address,toastr,$stateParams,$filter,
-                                      $http,environmentConfig,localStorageManagement,errorHandler) {
+    function EditUserAddressModalCtrl($scope,Rehive,$uibModalInstance,address,toastr,$stateParams,$filter,
+                                      localStorageManagement,errorHandler) {
 
         var vm = this;
         vm.uuid = $stateParams.uuid;
@@ -18,21 +18,16 @@
 
         vm.getAddress = function () {
             $scope.editingUserAddress = true;
-            $http.get(environmentConfig.API + '/admin/users/addresses/' + $scope.userAddress.id + '/', {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': vm.token
-                }
-            }).then(function (res) {
+            Rehive.admin.users.addresses.get({id: $scope.userAddress.id}).then(function (res) {
                 $scope.editingUserAddress = false;
-                if (res.status === 200) {
-                    $scope.editUserAddress = res.data.data;
-                    $scope.editUserAddress.status = $filter('capitalizeWord')(res.data.data.status);
-                }
-            }).catch(function (error) {
+                $scope.editUserAddress = res;
+                $scope.editUserAddress.status = $filter('capitalizeWord')(res.status);
+                $scope.$apply();
+            }, function (error) {
                 $scope.editingUserAddress = false;
-                errorHandler.evaluateErrors(error.data);
+                errorHandler.evaluateErrors(error);
                 errorHandler.handleErrors(error);
+                $scope.$apply();
             });
         };
         vm.getAddress();
@@ -45,23 +40,18 @@
             $scope.editingUserAddress = true;
             if(vm.token) {
                 vm.updatedUserAddress.status ? vm.updatedUserAddress.status = vm.updatedUserAddress.status.toLowerCase() : '';
-                $http.patch(environmentConfig.API + '/admin/users/addresses/' + $scope.editUserAddress.id + '/',vm.updatedUserAddress,{
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
-                    if (res.status === 200) {
-                        $scope.editingUserAddress = false;
-                        vm.updatedUserAddress = {};
-                        $scope.editUserAddress = {};
-                        toastr.success('Successfully updated user address');
-                        $uibModalInstance.close(res.data);
-                    }
-                }).catch(function (error) {
+                Rehive.admin.users.addresses.update($scope.editUserAddress.id,vm.updatedUserAddress).then(function (res) {
                     $scope.editingUserAddress = false;
-                    errorHandler.evaluateErrors(error.data);
+                    vm.updatedUserAddress = {};
+                    $scope.editUserAddress = {};
+                    toastr.success('Successfully updated user address');
+                    $uibModalInstance.close(res);
+                    $scope.$apply();
+                }, function (error) {
+                    $scope.editingUserAddress = false;
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };
