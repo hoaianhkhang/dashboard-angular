@@ -10,7 +10,7 @@
         $scope.user = user;
         vm.uuid = $stateParams.uuid;
         $scope.newUserNumber = {primary: false, verified: false};
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
         $scope.loadingUserNumbers = false;
 
 

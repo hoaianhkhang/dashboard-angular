@@ -8,7 +8,7 @@
     function OverviewCtrl($scope,$location,$stateParams,localStorageManagement,$window,Rehive,errorHandler) {
 
         var vm = this;
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
         $scope.currencyCode = $stateParams.currencyCode;
         vm.currenciesList = JSON.parse($window.sessionStorage.currenciesList || '[]');
         $scope.loadingCurrencies = true;
@@ -16,7 +16,7 @@
         vm.locationArray = vm.location.split('/');
         $scope.locationIndicator = vm.locationArray[vm.locationArray.length - 1];
         vm.currenciesList.forEach(function (element) {
-            if(element.code ==  $scope.currencyCode){
+            if(element.code == $scope.currencyCode){
                 $scope.currencyObj = element;
             }
         });

@@ -11,7 +11,7 @@
 
         $scope.newUserAccountParams = {};
         vm.uuid = $stateParams.uuid;
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
         $scope.addingUserAccount = true;
         $scope.advancedOption = false;
         $scope.currenciesForNewAccount = {

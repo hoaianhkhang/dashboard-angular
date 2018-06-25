@@ -7,7 +7,7 @@
     /** @ngInject */
     function RequestLogCtrl($scope,Rehive,$state,localStorageManagement,errorHandler,metadataTextService) {
         var vm = this;
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
         vm.requestLogId = $state.params.logId;
         $scope.loadingRequestLog = true;
 

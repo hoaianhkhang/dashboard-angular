@@ -9,7 +9,7 @@
         var vm = this;
 
         $scope.bankAccount = bankAccount;
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
         $scope.deletingBankAccount = false;
 
 

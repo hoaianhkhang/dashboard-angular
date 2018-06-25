@@ -9,7 +9,7 @@
                             Rehive,localStorageManagement,errorHandler,toastr,$uibModal) {
 
         var vm = this;
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
         $scope.emailsList = [];
         vm.uuid = $stateParams.uuid;
         $scope.optionsId = '';

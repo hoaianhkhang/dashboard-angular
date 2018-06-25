@@ -10,7 +10,7 @@
         var vm= this;
         $scope.mobile = number;
         $scope.user = user;
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
         $scope.verifyingMobile = false;
         vm.company = {};
 

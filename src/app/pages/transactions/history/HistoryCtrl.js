@@ -10,7 +10,7 @@
                          serializeFiltersService,$location,_) {
 
         var vm = this;
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
         vm.companyIdentifier = localStorageManagement.getValue('companyIdentifier');
         vm.savedTransactionTableColumns = vm.companyIdentifier + 'transactionsTable';
         vm.newTransactionParams = $location.search();

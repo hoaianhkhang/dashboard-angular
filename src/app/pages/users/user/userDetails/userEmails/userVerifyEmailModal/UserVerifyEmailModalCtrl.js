@@ -10,7 +10,7 @@
 
         $scope.email = email;
         $scope.user = user;
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
         $scope.verifyingEmail = false;
         vm.company = {};
 

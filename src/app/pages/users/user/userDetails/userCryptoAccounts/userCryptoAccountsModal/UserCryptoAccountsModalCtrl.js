@@ -12,7 +12,7 @@
         $scope.userCryptoAccount = userCryptoAccount;
         vm.uuid = uuid;
         $scope.deletingUserCryptoAccount = false;
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
 
         $scope.deleteUserCryptoAccount = function () {
             $scope.deletingUserCryptoAccount = true;

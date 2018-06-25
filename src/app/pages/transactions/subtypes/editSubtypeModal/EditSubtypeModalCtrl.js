@@ -8,7 +8,7 @@
                                   localStorageManagement,errorHandler) {
 
         var vm = this;
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
         $scope.editingSubtype = false;
         $scope.editSubtype = {};
         vm.updatedSubtype = {};

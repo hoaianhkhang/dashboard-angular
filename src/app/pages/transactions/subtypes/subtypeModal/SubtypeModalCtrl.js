@@ -9,7 +9,7 @@
         var vm = this;
 
         $scope.subtype = subtype;
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
         $scope.deletingSubtype = false;
 
         $scope.deleteSubtype = function () {

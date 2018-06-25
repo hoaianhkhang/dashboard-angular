@@ -11,7 +11,7 @@
         vm.uuid = $stateParams.uuid;
         $scope.editUserEmailObj = {};
         vm.updatedUserEmail = {};
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
         $scope.loadingUserEmails = false;
 
 

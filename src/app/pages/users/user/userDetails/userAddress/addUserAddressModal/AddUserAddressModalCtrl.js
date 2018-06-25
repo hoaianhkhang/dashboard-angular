@@ -11,7 +11,7 @@
         $scope.userAddressParams = {country: 'US', status: 'Pending'};
         vm.uuid = $stateParams.uuid;
         $scope.kycStatusOptions = ['Pending', 'Incomplete', 'Declined', 'Obsolete', 'Verified'];
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
 
         $scope.addUserAddress = function(userAddressParams){
             if(vm.token) {

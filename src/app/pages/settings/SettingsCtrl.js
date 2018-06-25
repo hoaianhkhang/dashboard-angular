@@ -9,7 +9,7 @@
                           localStorageManagement,errorHandler,$window,$timeout,$location) {
 
         var vm = this;
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
         $scope.settingView = 'accountInfo';
         $rootScope.dashboardTitle = 'Settings | Rehive';
         $scope.companyImageUrl = null;

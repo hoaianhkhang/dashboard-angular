@@ -11,7 +11,7 @@
         vm.uuid = uuid;
         vm.updatedDocument = {};
         vm.addressTracking = {};
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
         $scope.document = document;
         $scope.updatingDocument = false;
         $scope.showingDocumentFile = true;

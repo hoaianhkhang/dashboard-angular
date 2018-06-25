@@ -8,7 +8,7 @@
                        sharedResources,localStorageManagement,typeaheadService) {
 
         var vm = this;
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
         $scope.debitSubtypeOptions = [];
         $scope.debitCurrencyOptions = [];
         $scope.debitTransactionData = {

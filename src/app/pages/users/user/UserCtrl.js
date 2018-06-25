@@ -9,7 +9,7 @@
                       $rootScope,errorHandler,$stateParams,$location,$window,$filter) {
 
         var vm = this;
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
         $rootScope.dashboardTitle = 'User | Rehive';
         $rootScope.shouldBeBlue = 'Users';
         vm.uuid = $stateParams.uuid;

@@ -9,7 +9,7 @@
                                  $rootScope,localStorageManagement,errorHandler,toastr) {
 
         var vm = this;
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
         vm.uuid = $stateParams.uuid;
         $rootScope.shouldBeBlue = 'Users';
         $scope.userData = JSON.parse($window.sessionStorage.userData);

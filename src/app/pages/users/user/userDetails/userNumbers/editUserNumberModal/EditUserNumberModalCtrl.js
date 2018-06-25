@@ -12,7 +12,7 @@
         vm.uuid = $stateParams.uuid;
         $scope.editUserNumberObj = {};
         vm.updatedUserNumber = {};
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
         $scope.loadingUserNumbers = false;
 
 

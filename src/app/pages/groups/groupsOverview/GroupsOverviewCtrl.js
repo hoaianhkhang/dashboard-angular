@@ -9,7 +9,7 @@
                                 errorHandler,$ngConfirm,toastr,$location,Rehive) {
 
         var vm = this;
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
         $rootScope.dashboardTitle = 'Groups | Rehive';
         $scope.groups = [];
 

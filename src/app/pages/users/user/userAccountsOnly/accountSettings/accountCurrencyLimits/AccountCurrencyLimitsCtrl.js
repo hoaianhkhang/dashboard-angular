@@ -9,7 +9,7 @@
                                        Rehive,localStorageManagement,errorHandler) {
 
         var vm = this;
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
         $rootScope.shouldBeBlue = 'Users';
         vm.currencyCode = $stateParams.currencyCode;
         vm.reference = $stateParams.reference;

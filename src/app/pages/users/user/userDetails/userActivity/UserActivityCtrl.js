@@ -8,7 +8,7 @@
     function UserActivityCtrl($scope,Rehive,$stateParams,localStorageManagement,errorHandler,$state) {
 
         var vm = this;
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
         vm.uuid = $stateParams.uuid;
         $scope.loadingUserActivity = true;
 

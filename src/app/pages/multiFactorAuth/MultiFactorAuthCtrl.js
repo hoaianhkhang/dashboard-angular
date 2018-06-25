@@ -8,7 +8,7 @@
     function MultiFactorAuthCtrl($scope,Rehive,localStorageManagement,errorHandler,$location) {
 
         var vm = this;
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
 
         $scope.getMfa = function(){
             if(vm.token) {

@@ -10,7 +10,7 @@
 
         var vm = this;
         vm.user = {};
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
         $scope.verifyingEmail = false;
         $rootScope.$pageFinishedLoading = false;
 

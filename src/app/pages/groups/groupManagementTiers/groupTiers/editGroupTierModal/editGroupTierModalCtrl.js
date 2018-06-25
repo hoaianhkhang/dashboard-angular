@@ -10,7 +10,7 @@
         var vm = this;
 
         $scope.editTier = tier;
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
         vm.updatedTier = {};
         $scope.tierLevels = [1,2,3,4,5,6,7];
         $scope.editingTiers = false;

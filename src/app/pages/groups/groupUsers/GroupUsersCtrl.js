@@ -10,7 +10,7 @@
 
         var vm = this;
         vm.groupName = $stateParams.groupName;
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
         vm.companyIdentifier = localStorageManagement.getValue('companyIdentifier');
         vm.savedGroupUsersTableColumns = vm.companyIdentifier + vm.groupName + 'usersTable';
         $rootScope.dashboardTitle = 'Groups | Rehive';

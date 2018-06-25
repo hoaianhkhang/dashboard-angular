@@ -12,7 +12,7 @@
         vm.reference = reference;
         $scope.accountCurrencyFee = accountCurrencyFee;
         $scope.deletingAccountCurrencyFees = false;
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
 
         $scope.deleteAccountCurrencyFee = function () {
             $scope.deletingAccountCurrencyFees = true;

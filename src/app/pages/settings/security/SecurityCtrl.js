@@ -8,7 +8,7 @@
     function SecurityCtrl($scope,Rehive,$uibModal,$location,localStorageManagement,errorHandler) {
 
         var vm = this;
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
         $scope.loadingAPITokens = true;
         $scope.addingToken = false;
         $scope.createTokenData = {};

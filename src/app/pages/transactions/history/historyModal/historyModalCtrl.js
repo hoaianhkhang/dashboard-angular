@@ -8,7 +8,7 @@
                               transaction,metadataTextService,$location,localStorageManagement,$window) {
 
         var vm = this;
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
         $scope.updateTransactionObj = {};
         $scope.formatted = {};
         $scope.formatted.metadata = {};

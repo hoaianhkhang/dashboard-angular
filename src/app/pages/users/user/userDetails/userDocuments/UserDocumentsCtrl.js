@@ -8,7 +8,7 @@
     function UserDocumentsCtrl($scope,Rehive,$uibModal,$stateParams,localStorageManagement,errorHandler,$window) {
 
         var vm = this;
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
         vm.uuid = $stateParams.uuid;
         $scope.loadingUserDocuments = true;
 

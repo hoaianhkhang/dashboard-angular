@@ -13,7 +13,7 @@
         $scope.updatingUserBasicInfo = false;
         vm.updatedUserBasicInfo = {};
         $scope.editUserBasicInfo = {};
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
 
         vm.getUserBasicInfo = function(){
             if(vm.token) {

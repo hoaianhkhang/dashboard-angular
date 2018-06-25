@@ -16,7 +16,7 @@
             status: 'Pending'
         };
         $scope.cryptoStatusOptions = ['Pending', 'Incomplete', 'Declined', 'Obsolete', 'Verified'];
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
 
         vm.isJson = function (str) {
             try {

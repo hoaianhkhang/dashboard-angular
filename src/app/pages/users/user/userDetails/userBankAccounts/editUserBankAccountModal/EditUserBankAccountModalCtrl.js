@@ -14,7 +14,7 @@
         $scope.editUserBankAccount = {};
         $scope.editingUserBankAccount = true;
         $scope.bankStatusOptions = ['Pending', 'Incomplete', 'Declined', 'Obsolete', 'Verified'];
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
 
         vm.getUserBankAccount = function () {
             $scope.editingUserBankAccount = true;

@@ -8,7 +8,7 @@
                                          Rehive,toastr,localStorageManagement,currencyModifiers,errorHandler) {
 
         var vm = this;
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
         vm.currencyCode = currencyCode;
         vm.reference = reference;
         vm.currenciesList = JSON.parse($window.sessionStorage.currenciesList);

@@ -8,7 +8,7 @@
                                Rehive,$location,errorHandler,$filter) {
 
         var vm = this;
-        vm.token = localStorageManagement.getValue("TOKEN");
+        vm.token = localStorageManagement.getValue("token");
         $scope.groups = [];
         $scope.currencies = [];        
         $rootScope.$pageFinishedLoading=true;

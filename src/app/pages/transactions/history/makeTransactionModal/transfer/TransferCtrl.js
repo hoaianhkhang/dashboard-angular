@@ -8,7 +8,7 @@
                           $location,localStorageManagement) {
 
         var vm = this;
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
         $scope.transferCurrencyOptions = [];
         $scope.retrievedSenderUserObj = {};
         $scope.retrievedSenderUserAccountsArray = [];

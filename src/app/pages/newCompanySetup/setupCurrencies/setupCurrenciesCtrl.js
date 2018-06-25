@@ -8,7 +8,7 @@
                                  Rehive,$location,errorHandler,$uibModal,localStorageManagement,$window,$timeout) {
 
         var vm = this;
-        vm.token = localStorageManagement.getValue("TOKEN");
+        vm.token = localStorageManagement.getValue("token");
         $scope.currenciesToAdd = [];
         $rootScope.activeSetupRoute = 1;
         localStorageManagement.setValue('activeSetupRoute',1);

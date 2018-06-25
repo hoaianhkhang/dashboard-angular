@@ -14,7 +14,7 @@
         $scope.editUserAddress = {};
         $scope.editingUserAddress = true;
         $scope.kycStatusOptions = ['Pending', 'Incomplete', 'Declined', 'Obsolete', 'Verified'];
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
 
         vm.getAddress = function () {
             $scope.editingUserAddress = true;

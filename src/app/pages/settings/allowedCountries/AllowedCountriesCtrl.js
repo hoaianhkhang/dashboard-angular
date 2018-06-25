@@ -7,7 +7,7 @@
     /** @ngInject */
     function AllowedCountriesCtrl($scope,Rehive,localStorageManagement,errorHandler,toastr,$window) {
         var vm = this;
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
         $scope.loadingAllowedCountries = false;
         $scope.trackedCountries = [];
 

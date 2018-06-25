@@ -5,11 +5,10 @@
         .controller('InitialCurrenciesModalModalCtrl', InitialCurrenciesModalModalCtrl);
 
     /** @ngInject */
-    function InitialCurrenciesModalModalCtrl($scope,Rehive,localStorageManagement,$uibModalInstance,
+    function InitialCurrenciesModalModalCtrl($scope,Rehive,$uibModalInstance,
                                              currenciesList,errorHandler,toastr,$location) {
 
         var vm = this;
-        vm.token = localStorageManagement.getValue('TOKEN');
 
         $scope.currenciesToAdd = [];
         $scope.initialCurrencies = currenciesList.slice();

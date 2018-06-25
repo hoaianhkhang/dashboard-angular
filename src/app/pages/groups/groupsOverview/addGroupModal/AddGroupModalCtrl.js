@@ -7,7 +7,7 @@
     function AddGroupsModalCtrl($scope,$uibModalInstance,localStorageManagement,Rehive,$filter,errorHandler) {
 
         var vm = this;
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
         $scope.addingGroups = false;
         $scope.groupsParams = {};
 

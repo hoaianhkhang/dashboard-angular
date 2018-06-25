@@ -9,7 +9,7 @@
                          errorHandler,$state,$location,$window,typeaheadService,$filter,serializeFiltersService,$rootScope,$stateParams) {
 
         var vm = this;
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
         $rootScope.shouldBeBlue = 'Users';
         vm.currenciesList = JSON.parse($window.sessionStorage.currenciesList || '[]');
         vm.uuid = $stateParams.uuid;

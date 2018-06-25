@@ -8,7 +8,7 @@
                                     Rehive,localStorageManagement,errorHandler) {
 
         var vm = this;
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
         vm.uuid = uuid;
         vm.user = {};
         $scope.groupForReassigning = {};

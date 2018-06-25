@@ -8,7 +8,7 @@
     function NotificationsCtrl($scope,Rehive,toastr,localStorageManagement,errorHandler) {
 
         var vm = this;
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
         $scope.loadingCompanyNotifications = true;
 
         vm.getCompanyNotifications = function () {

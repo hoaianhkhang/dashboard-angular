@@ -7,7 +7,7 @@
     function SetupUsersGroupsCtrl($rootScope,$scope,toastr,$ngConfirm,$filter,Rehive,
                                     $location,errorHandler,localStorageManagement) {
         var vm = this;
-        vm.token = localStorageManagement.getValue("TOKEN");
+        vm.token = localStorageManagement.getValue("token");
         $scope.addedGroups = [];
         $scope.user = {};
         $rootScope.$pageFinishedLoading=true;

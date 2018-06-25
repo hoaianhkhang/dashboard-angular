@@ -11,7 +11,7 @@
 
         $scope.addingDocument = false;
         vm.uuid = uuid;
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
         $scope.userDocumentParams = {
             file: {},
             document_type: 'Utility Bill',

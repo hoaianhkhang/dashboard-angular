@@ -9,7 +9,7 @@
                                   localStorageManagement,errorHandler,toastr,$ngConfirm) {
 
         var vm = this;
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
         vm.uuid = $stateParams.uuid;
         $scope.isBankDetailsCollapsed = true;
         $scope.uncollapsedBank = {};

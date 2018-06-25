@@ -8,7 +8,7 @@
     function UserSettingsCtrl($scope,Rehive,$stateParams,localStorageManagement,errorHandler) {
 
         var vm = this;
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
         vm.uuid = $stateParams.uuid;
         $scope.userSettingsObj = {};
         $scope.loadingUserSettings = true;

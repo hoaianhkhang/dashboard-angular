@@ -16,7 +16,7 @@
         $scope.editingUserAddress = true;
         $scope.statusOptions = ['Pending', 'Incomplete', 'Declined', 'Verified'];
         $scope.newAccountCurrencies = {list: []};
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
 
         vm.getCompanyCurrencies = function(){
             if(vm.token){

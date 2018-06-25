@@ -9,7 +9,7 @@
         var vm = this;
 
         $scope.token = token;
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
         $scope.deletingToken = false;
 
         $scope.deleteToken = function (tokenKey) {

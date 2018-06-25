@@ -12,7 +12,7 @@
         vm.reference = reference;
         $scope.accountCurrencyLimit = accountCurrencyLimit;
         $scope.deletingAccountCurrencyLimits = false;
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
 
         $scope.deleteAccountCurrencyLimit = function () {
             $scope.deletingAccountCurrencyLimits = true;

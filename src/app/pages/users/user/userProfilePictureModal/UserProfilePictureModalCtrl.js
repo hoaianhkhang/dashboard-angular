@@ -11,7 +11,7 @@
         $scope.user = user;
         $scope.profilePictureFile.file = $scope.user.profile;
         vm.uuid = $stateParams.uuid;
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
 
         $scope.uploadProfilePicture = function () {
             $scope.loadingProfilePic = true;

@@ -12,7 +12,7 @@
         $scope.addingTierFees = false;
         $scope.loadingSubtypes = false;
         vm.groupName = $stateParams.groupName;
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
         $scope.tierFeesParams = {
             tx_type: 'Credit',
             subtype: ''

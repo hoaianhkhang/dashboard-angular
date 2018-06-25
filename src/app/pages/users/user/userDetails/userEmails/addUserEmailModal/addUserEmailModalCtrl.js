@@ -11,7 +11,7 @@
         vm.uuid = $stateParams.uuid;
         vm.emailsCount = emailsCount;
         $scope.newUserEmail = {primary: false, verified: false};
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
         $scope.loadingUserEmails = false;
 
         if(vm.emailsCount === 0){

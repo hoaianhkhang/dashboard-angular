@@ -8,7 +8,7 @@
                                    toastr,localStorageManagement,errorHandler) {
 
         var vm = this;
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
         vm.groupName = $stateParams.groupName;
         $scope.addingTiers = false;
         $scope.tierLevels = [1,2,3,4,5,6,7];

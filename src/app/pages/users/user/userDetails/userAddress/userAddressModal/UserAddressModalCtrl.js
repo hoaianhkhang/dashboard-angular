@@ -10,7 +10,7 @@
 
         $scope.userAddress = address;
         $scope.deletingUserAddress = false;
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
 
         $scope.deleteUserAddress = function () {
             $scope.deletingUserAddress = true;

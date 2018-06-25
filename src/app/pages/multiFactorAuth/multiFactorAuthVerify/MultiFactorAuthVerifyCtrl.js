@@ -8,7 +8,7 @@
     function MultiFactorAuthVerifyCtrl($scope,Rehive,localStorageManagement,errorHandler,toastr,$stateParams,$location) {
 
         var vm = this;
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
         $scope.authType = $stateParams.authType;
         $scope.verifyTokenObj = {token: ''};
         $scope.tokenAuthenticationEnabled = false;

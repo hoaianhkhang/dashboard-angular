@@ -9,7 +9,7 @@
                             $window,$stateParams,serializeFiltersService) {
 
         var vm = this;
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
         vm.logId = $stateParams.id;
         $scope.loadingWebhooks = true;
         $scope.loadingRequests = false;

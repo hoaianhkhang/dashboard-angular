@@ -8,7 +8,7 @@
     function CompanySettingsCtrl($scope,Rehive,toastr,localStorageManagement,errorHandler) {
 
         var vm = this;
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
         $scope.companyImageUrl = "/assets/img/app/placeholders/hex_grey.svg";
         $scope.loadingCompanySettings = true;
         $scope.company = {

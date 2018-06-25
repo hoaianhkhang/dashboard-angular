@@ -11,7 +11,7 @@
         $scope.selectedTier = selectedTier;
         $scope.tierFee = tierFee;
         vm.groupName = $stateParams.groupName;
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
         $scope.editingTierFees = false;
         $scope.loadingSubtypes = false;
         $scope.editTierFee = {};

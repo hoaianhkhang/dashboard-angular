@@ -7,7 +7,7 @@
     function AddSubtypeModalCtrl($scope,Rehive,$uibModalInstance,toastr,$filter,localStorageManagement,errorHandler) {
 
         var vm = this;
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
         $scope.addingSubtype = false;
         $scope.newSubtype = {tx_type: 'credit'};
 

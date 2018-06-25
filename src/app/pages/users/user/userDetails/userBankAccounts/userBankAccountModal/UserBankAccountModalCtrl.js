@@ -10,7 +10,7 @@
 
         $scope.userBankAccount = bankAccount;
         $scope.deletingUserBankAccount = false;
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
 
         $scope.deleteUserBankAccount = function () {
             $scope.deletingUserBankAccount = true;

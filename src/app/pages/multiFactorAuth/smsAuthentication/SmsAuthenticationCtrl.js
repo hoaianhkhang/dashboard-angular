@@ -8,7 +8,7 @@
     function SmsAuthenticationCtrl($scope,Rehive,localStorageManagement,errorHandler,toastr,$location) {
 
         var vm = this;
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
         $scope.smsAuthObj = {mobile_number: ''};
         $scope.numberFromGetCall = false;
 

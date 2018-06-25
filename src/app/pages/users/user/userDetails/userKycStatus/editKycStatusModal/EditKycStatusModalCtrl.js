@@ -15,7 +15,7 @@
             status: userStatus
         };
         $scope.kycStatusOptions = ['Pending', 'Incomplete', 'Declined', 'Obsolete', 'Verified'];
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
 
         $scope.updateUserKycStatus = function(){
             if(vm.token) {

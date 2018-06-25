@@ -9,7 +9,7 @@
                              typeaheadService,serializeFiltersService,$location,$filter) {
 
         var vm = this;
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
         vm.companyIdentifier = localStorageManagement.getValue('companyIdentifier');
         vm.savedRequestTableColumns = vm.companyIdentifier + 'requestTable';
         $scope.requestLogs = [];

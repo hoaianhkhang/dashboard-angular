@@ -11,7 +11,7 @@
         $scope.userBankAccountParams = {status: 'Pending'};
         vm.uuid = $stateParams.uuid;
         $scope.bankStatusOptions = ['Pending', 'Incomplete', 'Declined', 'Obsolete', 'Verified'];
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
 
         $scope.addUserBankAccount = function(userBankAccountParams){
             if(vm.token) {

@@ -9,7 +9,7 @@
                                     $location,errorHandler,userVerification) {
 
         var vm = this;
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
         $rootScope.$pageFinishedLoading = false;
         $scope.company = {
             name: ''

@@ -9,7 +9,7 @@
                                     localStorageManagement,errorHandler,$uibModal) {
 
         var vm = this;
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
         vm.uuid = $stateParams.uuid;
         $scope.userCryptoAccountsList = [];
         $scope.loadingUserCryptoAccounts = true;

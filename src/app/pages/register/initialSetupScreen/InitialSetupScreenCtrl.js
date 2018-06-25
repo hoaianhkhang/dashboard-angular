@@ -8,7 +8,7 @@
                                     errorHandler,localStorageManagement) {
 
         var vm = this;
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
         $rootScope.dashboardTitle = 'Setup | Rehive';
         $rootScope.$pageFinishedLoading=true;
         $scope.companyCurrencies = [];

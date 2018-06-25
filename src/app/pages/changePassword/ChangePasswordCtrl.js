@@ -5,10 +5,8 @@
         .controller('ChangePasswordCtrl', ChangePasswordCtrl);
 
     /** @ngInject */
-    function ChangePasswordCtrl($rootScope,$scope,Rehive,localStorageManagement,errorHandler,$location,toastr) {
+    function ChangePasswordCtrl($rootScope,$scope,Rehive,errorHandler,$location,toastr) {
 
-        var vm = this;
-        vm.token = localStorageManagement.getValue('TOKEN');
         $scope.passwordChanged = false;
 
         $scope.goToDashboard = function(){

@@ -9,7 +9,7 @@
                                           Rehive,$stateParams,$location,errorHandler) {
 
         var vm = this;
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
         vm.groupName = $stateParams.groupName;
         vm.updatedGroup = {};
         $scope.loadingGroup = true;

@@ -9,7 +9,7 @@
                                   localStorageManagement,errorHandler,$location,serializeFiltersService) {
 
         var vm = this;
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
         $rootScope.shouldBeBlue = 'Users';
         vm.uuid = $stateParams.uuid;
         vm.reference = '';

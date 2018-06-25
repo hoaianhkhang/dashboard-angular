@@ -8,7 +8,7 @@
                                         errorHandler,$uibModalInstance) {
 
         var vm = this;
-        vm.token = localStorageManagement.getValue("TOKEN");
+        vm.token = localStorageManagement.getValue("token");
         $scope.newCurrencyParams = {};
         $scope.loadingCustomCurrencies = false;
 

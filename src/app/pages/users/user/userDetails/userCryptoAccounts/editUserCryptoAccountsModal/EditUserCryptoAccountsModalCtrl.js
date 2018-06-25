@@ -14,7 +14,7 @@
         vm.updatedUserCryptoAccount = {};
         $scope.loadingUserCryptoAccounts = true;
         $scope.cryptoStatusOptions = ['Pending', 'Incomplete', 'Declined', 'Obsolete', 'Verified'];
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
 
         vm.getUserCryptoAccount =  function () {
             if(vm.token) {
