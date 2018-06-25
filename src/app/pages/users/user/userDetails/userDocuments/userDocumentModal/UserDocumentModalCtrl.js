@@ -4,8 +4,8 @@
     angular.module('BlurAdmin.pages.users.user')
         .controller('UserDocumentModalCtrl', UserDocumentModalCtrl);
 
-    function UserDocumentModalCtrl($scope,$uibModalInstance,document,Upload,toastr,$http,$filter,uuid,
-                                   $ngConfirm,environmentConfig,localStorageManagement,errorHandler) {
+    function UserDocumentModalCtrl($scope,Rehive,$uibModalInstance,document,toastr,$filter,uuid,
+                                   $ngConfirm,localStorageManagement,errorHandler) {
 
         var vm = this;
         vm.uuid = uuid;
@@ -79,30 +79,41 @@
         $scope.updateDocument = function () {
             $scope.updatingDocument = true;
             vm.updatedDocument.status ? vm.updatedDocument.status = vm.updatedDocument.status.toLowerCase() : '';
-            vm.updatedDocument['document_type'] = vm.documentTypeOptionsObj[vm.updatedDocument['document_type']];
-            Upload.upload({
-                url: environmentConfig.API + '/admin/users/documents/' + $scope.document.id + '/',
-                data: vm.updatedDocument,
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': vm.token},
-                method: "PATCH"
-            }).then(function (res) {
-                $scope.updatingDocument = false;
-                if (res.status === 200) {
-                    toastr.success('Document successfully updated');
-                    if($scope.document.document_category == 'Proof Of Address'){
-                        $scope.executeUpdateUserAddressFromDocumentModal();
-                    } else if((document.document_category == 'Proof Of Identity')
-                        || (document.document_category == 'Advanced Proof Of Identity')) {
-                        $scope.updateUserBasicInfoFromDocumentModal();
-                    } else {
-                        $uibModalInstance.close($scope.document);
-                    }
+            if(vm.updatedDocument['document_type']){
+                vm.updatedDocument['document_type'] = vm.documentTypeOptionsObj[vm.updatedDocument['document_type']];
+            }
+
+            var fileSelected = vm.updatedDocument.file,
+                formData = new FormData();
+
+            if(fileSelected) {
+                formData.append('file', fileSelected);
+                delete vm.updatedDocument.file;
+            }
+
+            for (var key in vm.updatedDocument) {
+                if (vm.updatedDocument[key]) {
+                    formData.append(key, vm.updatedDocument[key]);
                 }
-            }).catch(function (error) {
+            }
+
+            Rehive.admin.users.documents.update($scope.document.id, formData).then(function (res) {
                 $scope.updatingDocument = false;
-                errorHandler.evaluateErrors(error.data);
+                toastr.success('Document successfully updated');
+                if($scope.document.document_category == 'Proof Of Address'){
+                    $scope.executeUpdateUserAddressFromDocumentModal();
+                    $scope.$apply();
+                } else if((document.document_category == 'Proof Of Identity')
+                    || (document.document_category == 'Advanced Proof Of Identity')) {
+                    $scope.updateUserBasicInfoFromDocumentModal();
+                    $scope.$apply();
+                } else {
+                    $uibModalInstance.close($scope.document);
+                    $scope.$apply();
+                }
+            }, function (error) {
+                $scope.updatingDocument = false;
+                errorHandler.evaluateErrors(error);
                 errorHandler.handleErrors(error);
             });
         };
@@ -133,38 +144,32 @@
 
         $scope.deleteDocument = function () {
             $scope.updatingDocument = true;
-            $http.delete(environmentConfig.API + '/admin/users/documents/' + $scope.document.id + '/', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
+            Rehive.admin.users.documents.delete($scope.document.id).then(function (res) {
                 $scope.updatingDocument = false;
-                if (res.status === 200) {
-                    toastr.success('Document successfully deleted');
-                    $uibModalInstance.close($scope.document);
-                }
-            }).catch(function (error) {
+                toastr.success('Document successfully deleted');
+                $uibModalInstance.close($scope.document);
+                $scope.$apply();
+            }, function (error) {
                 $scope.updatingDocument = false;
-                errorHandler.evaluateErrors(error.data);
+                errorHandler.evaluateErrors(error);
                 errorHandler.handleErrors(error);
+                $scope.$apply();
             });
         };
 
         $scope.updateUserBasicInfoFromDocumentModal = function(){
             if(vm.token) {
-                $http.patch(environmentConfig.API + '/admin/users/' + vm.uuid + '/',{status: $scope.userInfo.status.toLowerCase()}, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
-                    if (res.status === 200) {
-                        $uibModalInstance.close($scope.document);
-                    }
-                }).catch(function (error) {
-                    errorHandler.evaluateErrors(error.data);
+                var formData = new FormData();
+
+                formData.append('status', $scope.userInfo.status.toLowerCase());
+
+                Rehive.admin.users.update(vm.uuid, formData).then(function (res) {
+                    $uibModalInstance.close($scope.document);
+                    $scope.$apply();
+                }, function (error) {
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };
@@ -193,20 +198,17 @@
 
         $scope.updateUserAddressFromDocumentModal = function(id,status,last){
             if(vm.token) {
-                $http.patch(environmentConfig.API + '/admin/users/addresses/' + id + '/',{status: status.toLowerCase()},{
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
+                Rehive.admin.users.addresses.update(id,{
+                    status: status.toLowerCase()
                 }).then(function (res) {
-                    if (res.status === 200) {
-                        if(last){
-                            $uibModalInstance.close($scope.document);
-                        }
+                    if(last){
+                        $uibModalInstance.close($scope.document);
+                        $scope.$apply();
                     }
-                }).catch(function (error) {
-                    errorHandler.evaluateErrors(error.data);
+                }, function (error) {
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };

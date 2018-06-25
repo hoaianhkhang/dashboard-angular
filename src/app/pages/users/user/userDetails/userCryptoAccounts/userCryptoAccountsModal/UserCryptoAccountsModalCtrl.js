@@ -4,8 +4,8 @@
     angular.module('BlurAdmin.pages.users.user')
         .controller('UserCryptoAccountsModalCtrl', UserCryptoAccountsModalCtrl);
 
-    function UserCryptoAccountsModalCtrl($scope,$uibModalInstance,userCryptoAccount,uuid,
-                                         toastr,$http,environmentConfig,localStorageManagement,errorHandler) {
+    function UserCryptoAccountsModalCtrl($scope,Rehive,$uibModalInstance,userCryptoAccount,uuid,
+                                         toastr,localStorageManagement,errorHandler) {
 
         var vm = this;
 
@@ -16,21 +16,16 @@
 
         $scope.deleteUserCryptoAccount = function () {
             $scope.deletingUserCryptoAccount = true;
-            $http.delete(environmentConfig.API + '/admin/users/crypto-accounts/' + userCryptoAccount.id + '/', {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': vm.token
-                }
-            }).then(function (res) {
+            Rehive.admin.users.cryptoAccounts.delete(userCryptoAccount.id).then(function (res) {
                 $scope.deletingUserCryptoAccount = false;
-                if (res.status === 200) {
-                    toastr.success('Crypto account successfully deleted');
-                    $uibModalInstance.close($scope.userCryptoAccount);
-                }
-            }).catch(function (error) {
+                toastr.success('Crypto account successfully deleted');
+                $uibModalInstance.close($scope.userCryptoAccount);
+                $scope.$apply();
+            }, function (error) {
                 $scope.deletingUserCryptoAccount = false;
-                errorHandler.evaluateErrors(error.data);
+                errorHandler.evaluateErrors(error);
                 errorHandler.handleErrors(error);
+                $scope.$apply();
             });
         };
 

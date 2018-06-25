@@ -5,7 +5,7 @@
         .controller('UserCryptoAccountsCtrl', UserCryptoAccountsCtrl);
 
     /** @ngInject */
-    function UserCryptoAccountsCtrl($scope,environmentConfig,$stateParams,$http,
+    function UserCryptoAccountsCtrl($scope,Rehive,$stateParams,
                                     localStorageManagement,errorHandler,$uibModal) {
 
         var vm = this;
@@ -18,20 +18,15 @@
         vm.getUserCryptoAccounts = function(){
             if(vm.token) {
                 $scope.loadingUserCryptoAccounts = true;
-                $http.get(environmentConfig.API + '/admin/users/crypto-accounts/?user=' + vm.uuid, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
+                Rehive.admin.users.cryptoAccounts.get({filters: {user: vm.uuid}}).then(function (res) {
                     $scope.loadingUserCryptoAccounts = false;
-                    if (res.status === 200) {
-                        $scope.userCryptoAccountsList = res.data.data.results;
-                    }
-                }).catch(function (error) {
+                    $scope.userCryptoAccountsList = res.results;
+                    $scope.$apply();
+                }, function (error) {
                     $scope.loadingUserCryptoAccounts = false;
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };

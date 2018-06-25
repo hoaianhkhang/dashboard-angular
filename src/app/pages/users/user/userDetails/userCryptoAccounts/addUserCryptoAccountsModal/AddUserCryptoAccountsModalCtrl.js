@@ -4,7 +4,7 @@
     angular.module('BlurAdmin.pages.users.user')
         .controller('AddUserCryptoAccountsModalCtrl', AddUserCryptoAccountsModalCtrl);
 
-    function AddUserCryptoAccountsModalCtrl($scope,$uibModalInstance,toastr,$stateParams,$http,environmentConfig,localStorageManagement,errorHandler) {
+    function AddUserCryptoAccountsModalCtrl($scope,Rehive,$uibModalInstance,toastr,$stateParams,localStorageManagement,errorHandler) {
 
         var vm = this;
         vm.uuid = $stateParams.uuid;
@@ -53,27 +53,22 @@
                     status: userCryptoAccountParams.status
                 };
 
-                $http.post(environmentConfig.API + '/admin/users/crypto-accounts/',newCryptoAccount, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
-                    if (res.status === 201) {
-                        toastr.success('Crypto account successfully added');
-                        $scope.userCryptoAccountParams = {
-                            crypto_type: 'Bitcoin',
-                            user: vm.uuid,
-                            address: '',
-                            metadata: '',
-                            status: 'Pending'
-                        };
-                        $uibModalInstance.close(res.data);
-                    }
-                }).catch(function (error) {
+                Rehive.admin.users.cryptoAccounts.create(newCryptoAccount).then(function (res) {
+                    toastr.success('Crypto account successfully added');
+                    $scope.userCryptoAccountParams = {
+                        crypto_type: 'Bitcoin',
+                        user: vm.uuid,
+                        address: '',
+                        metadata: '',
+                        status: 'Pending'
+                    };
+                    $uibModalInstance.close(res);
+                    $scope.$apply();
+                }, function (error) {
                     $scope.loadingUserCryptoAccounts = false;
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };

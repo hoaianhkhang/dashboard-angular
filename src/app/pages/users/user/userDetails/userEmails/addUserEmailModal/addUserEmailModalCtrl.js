@@ -5,7 +5,7 @@
         .controller('AddUserEmailModalCtrl', AddUserEmailModalCtrl);
 
     function AddUserEmailModalCtrl($scope,$stateParams,$uibModalInstance,emailsCount,
-                                   toastr,$http,environmentConfig,localStorageManagement,errorHandler) {
+                                   Rehive,toastr,localStorageManagement,errorHandler) {
 
         var vm = this;
         vm.uuid = $stateParams.uuid;
@@ -28,23 +28,18 @@
         $scope.createUserEmail = function (newUserEmail) {
             $scope.loadingUserEmails = true;
             newUserEmail.user = vm.uuid;
-            $http.post(environmentConfig.API + '/admin/users/emails/',newUserEmail, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': vm.token
-                }
-            }).then(function (res) {
-                if (res.status === 201) {
-                    $scope.loadingUserEmails = true;
-                    $scope.newUserEmail = {primary: false, verified: false};
-                    toastr.success('Email successfully created');
-                    $uibModalInstance.close(res.data);
-                }
-            }).catch(function (error) {
+            Rehive.admin.users.emails.create(newUserEmail).then(function (res) {
+                $scope.loadingUserEmails = true;
+                $scope.newUserEmail = {primary: false, verified: false};
+                toastr.success('Email successfully created');
+                $uibModalInstance.close(res);
+                $scope.$apply();
+            }, function (error) {
                 $scope.newUserEmail = {primary: false, verified: false};
                 $scope.loadingUserEmails = false;
-                errorHandler.evaluateErrors(error.data);
+                errorHandler.evaluateErrors(error);
                 errorHandler.handleErrors(error);
+                $scope.$apply();
             });
         };
 
