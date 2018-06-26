@@ -10,6 +10,7 @@
         var vm = this;
 
         vm.token = localStorageManagement.getValue('TOKEN');
+        vm.unfinishedDashboardTasks = [];
         $scope.currencies = [];
         $scope.hideSearchBar = true;
         $scope.searchString = '';
@@ -299,6 +300,7 @@
                         vm.getSingleTransactionSet(set,'last');
                     } else {
                         // scenario if array length is 1
+                        vm.unfinishedDashboardTasks.push(set);
                         $scope.inProgressSets = true;
                         vm.getSingleTransactionSet(null,'last');
                     }
@@ -306,6 +308,7 @@
                     if(set.progress == 100){
                         vm.getSingleTransactionSet(set);
                     } else {
+                        vm.unfinishedDashboardTasks.push(set);
                         $scope.inProgressSets = true;
                         $scope.loadingTransactionSets = false;
                     }
@@ -329,7 +332,7 @@
                                 $scope.transactionSetsExportingInProgress = true;
                                 $scope.allTasksDone = false;
                                 $timeout(function () {
-                                    $scope.getTransactionSetsList('noLoadingImage');
+                                    $scope.checkWhetherTaskCompleteOrNot();
                                 },10000);
                             } else {
                                 $scope.transactionSetsExportingInProgress = false;
@@ -352,13 +355,52 @@
                     $scope.transactionSetsExportingInProgress = true;
                     $scope.allTasksDone = false;
                     $timeout(function () {
-                        $scope.getTransactionSetsList('noLoadingImage');
-                    },2000);
+                        $scope.checkWhetherTaskCompleteOrNot();
+                    },10000);
                 } else {
                     $scope.transactionSetsExportingInProgress = false;
                     if($scope.showingDashboardTasks){
                         $scope.allTasksDone = true;
                     }
+                }
+            }
+        };
+
+        $scope.checkWhetherTaskCompleteOrNot = function(){
+            if(vm.unfinishedDashboardTasks.length > 0){
+                vm.unfinishedDashboardTasks.forEach(function (set,index,array) {
+                    $http.get(environmentConfig.API + '/admin/transactions/sets/' + set.id + '/', {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': vm.token
+                        }
+                    }).then(function (res) {
+                        if(res.status === 200) {
+                            console.log(res.data.data)
+                            if(res.data.data.progress == 100){
+                                vm.unfinishedDashboardTasks.splice(index,1);
+                                $scope.dashboardTasksLists.forEach(function (element) {
+                                    if(element.id == res.data.data.id){
+                                        element.pages = res.data.data.pages;
+                                    }
+                                });
+                                if(vm.unfinishedDashboardTasks.length == 0){
+                                    $scope.allTasksDone = true;
+                                }
+                            } else {
+                                $timeout(function () {
+                                    $scope.checkWhetherTaskCompleteOrNot();
+                                },10000);
+                            }
+                        }
+                    }).catch(function (error) {
+                        errorHandler.evaluateErrors(error.data);
+                        errorHandler.handleErrors(error);
+                    });
+                });
+            } else {
+                if($scope.showingDashboardTasks){
+                    $scope.allTasksDone = true;
                 }
             }
         };
@@ -371,7 +413,6 @@
             $scope.showingDashboardTasks = !$scope.showingDashboardTasks;
             if($scope.showingDashboardTasks){
                 $scope.allTasksDone = true;
-                $scope.getTransactionSetsList();
             }
         };
 
