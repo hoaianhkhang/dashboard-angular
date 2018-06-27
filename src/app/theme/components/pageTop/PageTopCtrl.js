@@ -277,6 +277,7 @@
                 }).then(function (res) {
                     if (res.status === 200) {
                         if(res.data.data.results.length > 0){
+                            vm.unfinishedDashboardTasks.length = 0;
                             $scope.dashboardTasksData = res.data.data;
                             $scope.dashboardTasksLists = $scope.dashboardTasksData.results;
                             vm.getFinishedTransactionSets($scope.dashboardTasksLists);
@@ -369,34 +370,43 @@
         $scope.checkWhetherTaskCompleteOrNot = function(){
             if(vm.unfinishedDashboardTasks.length > 0){
                 vm.unfinishedDashboardTasks.forEach(function (set,index,array) {
-                    $http.get(environmentConfig.API + '/admin/transactions/sets/' + set.id + '/', {
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': vm.token
-                        }
-                    }).then(function (res) {
-                        if(res.status === 200) {
-                            console.log(res.data.data)
-                            if(res.data.data.progress == 100){
-                                vm.unfinishedDashboardTasks.splice(index,1);
-                                $scope.dashboardTasksLists.forEach(function (element) {
-                                    if(element.id == res.data.data.id){
-                                        element.pages = res.data.data.pages;
-                                    }
-                                });
-                                if(vm.unfinishedDashboardTasks.length == 0){
-                                    $scope.allTasksDone = true;
-                                }
-                            } else {
-                                $timeout(function () {
-                                    $scope.checkWhetherTaskCompleteOrNot();
-                                },10000);
+                    if(index == (array.length -1)){
+                        $http.get(environmentConfig.API + '/admin/transactions/sets/' + set.id + '/', {
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': vm.token
                             }
-                        }
-                    }).catch(function (error) {
-                        errorHandler.evaluateErrors(error.data);
-                        errorHandler.handleErrors(error);
-                    });
+                        }).then(function (res) {
+                            if(res.status === 200) {
+                                if(res.data.data.progress == 100){
+                                    vm.unfinishedDashboardTasks.splice(index,1);
+                                    $scope.dashboardTasksLists.forEach(function (element,ind,arr) {
+                                        if(element.id == res.data.data.id){
+                                            $scope.dashboardTasksLists.splice(ind,1,res.data.data);
+                                        }
+                                    });
+                                    if(vm.unfinishedDashboardTasks.length == 0){
+                                        $scope.transactionSetsExportingInProgress = false;
+                                        if($scope.showingDashboardTasks){
+                                            $scope.allTasksDone = true;
+                                        }
+                                    }
+                                } else if((res.data.data.progress >= 0) && (res.data.data.progress < 100)){
+                                    $scope.dashboardTasksLists.forEach(function (element,ind,arr) {
+                                        if(element.id == res.data.data.id){
+                                            $scope.dashboardTasksLists.splice(ind,1,res.data.data);
+                                        }
+                                    });
+                                    $timeout(function () {
+                                        $scope.checkWhetherTaskCompleteOrNot();
+                                    },10000);
+                                }
+                            }
+                        }).catch(function (error) {
+                            errorHandler.evaluateErrors(error.data);
+                            errorHandler.handleErrors(error);
+                        });
+                    }
                 });
             } else {
                 if($scope.showingDashboardTasks){
