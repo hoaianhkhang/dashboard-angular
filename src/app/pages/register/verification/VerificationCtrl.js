@@ -9,8 +9,8 @@
                               localStorageManagement,$location,errorHandler,userVerification,_) {
 
         var vm = this;
-        vm.user = {};
         vm.token = localStorageManagement.getValue('TOKEN');
+        $scope.user = {};
         $scope.verifyingEmail = false;
         $rootScope.$pageFinishedLoading = false;
 
@@ -48,7 +48,7 @@
                 }
             }).then(function (res) {
                 if (res.status === 200) {
-                    vm.user = res.data.data;
+                    $scope.user = res.data.data;
                 }
             }).catch(function (error) {
                 errorHandler.evaluateErrors(error.data);
@@ -58,7 +58,7 @@
         vm.getUserInfo();
 
         $scope.resendEmail = function(){
-            $http.post(environmentConfig.API + '/auth/email/verify/resend/',{email: vm.user.email,company: vm.user.company}, {
+            $http.post(environmentConfig.API + '/auth/email/verify/resend/',{email: $scope.user.email,company: $scope.user.company}, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': vm.token
