@@ -6,35 +6,35 @@
     <img ng-hide="companyImageUrl == null" ng-click="goToCompanyLogo('companyLogo')" ng-src="{{companyImageUrl}}"
          class="image-center pointer" width="90" height="90" alt="token Image">
     <hr class="no-margin">
-    <div ng-click="goToSetting('/settings/account-info')" class="pointer menu-box-options">
+    <div ng-class="{'selected-settings-menu': settingsLocation == 'account-info' }" ng-click="goToSetting('/settings/account-info')" class="pointer menu-box-options">
         <h5>Account info<i class="pull-right ion-chevron-right"></i></h5>
     </div>
     <hr class="no-margin">
-    <div ng-click="goToSetting('/settings/company-info')" class="pointer menu-box-options">
+    <div ng-class="{'selected-settings-menu': settingsLocation == 'company-info' }" ng-click="goToSetting('/settings/company-info')" class="pointer menu-box-options">
         <h5>Company info <i class="pull-right ion-chevron-right"></i></h5>
     </div>
     <hr class="no-margin">
-    <div ng-click="goToSetting('/settings/company-settings')" class="pointer menu-box-options">
+    <div ng-class="{'selected-settings-menu': settingsLocation == 'company-settings' }" ng-click="goToSetting('/settings/company-settings')" class="pointer menu-box-options">
         <h5>Company settings <i class="pull-right ion-chevron-right"></i></h5>
     </div>
     <hr class="no-margin">
-    <div ng-click="goToSetting('/settings/bank-accounts')" class="pointer menu-box-options">
+    <div ng-class="{'selected-settings-menu': settingsLocation == 'bank-accounts' }" ng-click="goToSetting('/settings/bank-accounts')" class="pointer menu-box-options">
         <h5>Bank accounts <i class="pull-right ion-chevron-right"></i></h5>
     </div>
     <hr class="no-margin">
-    <div ng-click="goToSetting('/settings/notifications')" class="pointer menu-box-options">
+    <div ng-class="{'selected-settings-menu': settingsLocation == 'notifications' }" ng-click="goToSetting('/settings/notifications')" class="pointer menu-box-options">
         <h5>Notifications <i class="pull-right ion-chevron-right"></i></h5>
     </div>
     <hr class="no-margin">
-    <div ng-click="goToSetting('/settings/allowed-countries')" class="pointer menu-box-options">
+    <div ng-class="{'selected-settings-menu': settingsLocation == 'allowed-countries' }" ng-click="goToSetting('/settings/allowed-countries')" class="pointer menu-box-options">
         <h5>Allowed countries <i class="pull-right ion-chevron-right"></i></h5>
     </div>
     <hr class="no-margin">
-    <div ng-click="goToSetting('/settings/request-logs')" class="pointer menu-box-options">
+    <div ng-class="{'selected-settings-menu': settingsLocation == 'request-logs' }" ng-click="goToSetting('/settings/request-logs')" class="pointer menu-box-options">
         <h5>Request Logs <i class="pull-right ion-chevron-right"></i></h5>
     </div>
     <hr class="no-margin">
-    <div ng-click="goToSetting('/settings/security')" class="pointer menu-box-options">
+    <div ng-class="{'selected-settings-menu': settingsLocation == 'security' }" ng-click="goToSetting('/settings/security')" class="pointer menu-box-options">
         <h5>Security <i class="pull-right ion-chevron-right"></i></h5>
     </div>
     <hr class="no-margin">
