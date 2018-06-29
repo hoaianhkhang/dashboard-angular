@@ -109,8 +109,8 @@
                 vm.getCompanyCurrencies();
                 $scope.loadingCurrencies = false;
                 toastr.success('Custom currency have been added successfully');
-                $scope.$apply();
                 $uibModalInstance.close(true);
+                $scope.$apply();
             }, function (error) {
                 $scope.loadingCurrencies = false;
                 errorHandler.evaluateErrors(error);

@@ -199,6 +199,7 @@
 
             vm.theModal.result.then(function(currency){
                 if(currency){
+                    vm.getAllCompanyCurrencies();
                     $scope.getCompanyCurrencies();
                 }
             }, function(){
