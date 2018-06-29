@@ -13,7 +13,7 @@
             tx_type: 'credit'
         };
         $scope.newTransactionParams = newTransactionParams || {};
-        $scope.panelTitle = 'Create transaction';
+        $scope.panelTitle = 'New transaction';
         vm.completedTransaction = {};
         $scope.confirmTransaction = false;
         $scope.completeTransaction = false;
@@ -26,7 +26,7 @@
         $scope.toggleConfirmTransaction = function () {
             if($scope.confirmTransaction){
                 $scope.confirmTransaction = false;
-                $scope.panelTitle = 'Create transaction';
+                $scope.panelTitle = 'New transaction';
             } else {
                 $scope.confirmTransaction = true;
                 $scope.panelTitle = 'Confirm ' + $scope.transactionType.tx_type;

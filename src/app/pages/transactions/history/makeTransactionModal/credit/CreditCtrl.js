@@ -40,6 +40,7 @@
                 }).then(function (res) {
                     if (res.status === 200) {
                         $scope.creditCurrencyOptions = res.data.data.results;
+                        console.log($scope.creditCurrencyOptions)
                         if($scope.newTransactionParams.currencyCode) {
                             $scope.creditTransactionData.currency = $scope.creditCurrencyOptions.find(function (element) {
                                 return element.code == $scope.newTransactionParams.currencyCode;
@@ -215,6 +216,10 @@
 
         $scope.goToCreditUserAccountCreate = function () {
             $window.open('/#/user/' + $scope.retrievedCreditUserObj.identifier + '/accounts?accountAction=newAccount','_blank');
+        };
+
+        $scope.goToAddCurrencyModal = function () {
+            $window.open('/#/currencies?currencyAction=newCurrency','_blank');
         };
 
         if($scope.newTransactionParams.userEmail){

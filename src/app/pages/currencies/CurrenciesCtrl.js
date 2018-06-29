@@ -11,6 +11,7 @@
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
         $rootScope.dashboardTitle = 'Currencies | Rehive';
+        vm.createNewCurrencyRequest = $location.search();
         $scope.showingFilters = false;
         $scope.loadingCurrencies = true;
         $scope.optionsCode = '';
@@ -193,6 +194,12 @@
             }, function(){
             });
         };
+
+        if(vm.createNewCurrencyRequest.currencyAction == 'newCurrency'){
+            $scope.openAddCurrenciesModal('app/pages/currencies/addCurrencyModal/addCurrencyModal.html','md');
+            $location.search('currencyAction',null);
+        }
+
 
     }
 })();
