@@ -1,21 +1,21 @@
 (function () {
     'use strict';
 
-    angular.module('BlurAdmin.pages.settings.requestLog')
-        .controller('RequestLogCtrl', RequestLogCtrl);
+    angular.module('BlurAdmin.pages.settings.requestLogs')
+        .controller('RequestLogModalCtrl', RequestLogModalCtrl);
 
     /** @ngInject */
-    function RequestLogCtrl($scope,environmentConfig,$http,$state,localStorageManagement,errorHandler,metadataTextService) {
+    function RequestLogModalCtrl($scope,environmentConfig,log,$http,$state,localStorageManagement,errorHandler,metadataTextService) {
         var vm = this;
+        vm.log = log;
         vm.token = localStorageManagement.getValue('TOKEN');
-        vm.requestLogId = $state.params.logId;
         $scope.loadingRequestLog = true;
 
         $scope.getRequestLog = function () {
             $scope.loadingRequestLog = true;
 
             if(vm.token) {
-                $http.get(environmentConfig.API + '/admin/requests/' + vm.requestLogId + '/', {
+                $http.get(environmentConfig.API + '/admin/requests/' + vm.log.id + '/', {
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': vm.token

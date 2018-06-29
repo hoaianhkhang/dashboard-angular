@@ -10,7 +10,6 @@
         'BlurAdmin.pages.settings.bankAccounts',
         'BlurAdmin.pages.settings.notifications',
         'BlurAdmin.pages.settings.requestLogs',
-        'BlurAdmin.pages.settings.requestLog',
         'BlurAdmin.pages.settings.security'
     ])
         .config(routeConfig);
