@@ -170,6 +170,10 @@
             $uibModalInstance.close();
             $window.open('/#/user/' + $scope.transaction.user.identifier + '/details','_blank');
         };
+        
+        $scope.goToUserAccount = function (transaction) {
+            $window.open('/#/user/' + $scope.transaction.user.identifier + '/accounts?searchAccount=' + transaction.account,'_blank');
+        }
 
 
     }
