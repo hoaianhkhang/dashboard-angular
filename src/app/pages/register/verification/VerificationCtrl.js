@@ -20,24 +20,14 @@
                     $rootScope.userFullyVerified = true;
                     $location.path('/welcome_to_rehive');
                 } else {
-                    $rootScope.$pageFinishedLoading = true;
+                    vm.getUserInfo();
                 }
             });
         };
         vm.checkIfUserVerified();
 
         $scope.verifyUser = function(){
-            $scope.verifyingEmail = true;
-            userVerification.verify(function(err,verified){
-                if(verified){
-                    $scope.verifyingEmail = false;
-                    $rootScope.userFullyVerified = true;
-                    $location.path('/welcome_to_rehive');
-                } else {
-                    $scope.verifyingEmail = false;
-                    toastr.error('Please verify your account');
-                }
-            });
+            $location.path('/welcome_to_rehive');
         };
 
         vm.getUserInfo = function(){
@@ -49,13 +39,13 @@
             }).then(function (res) {
                 if (res.status === 200) {
                     $scope.user = res.data.data;
+                    $rootScope.$pageFinishedLoading = true;
                 }
             }).catch(function (error) {
                 errorHandler.evaluateErrors(error.data);
                 errorHandler.handleErrors(error);
             });
         };
-        vm.getUserInfo();
 
         $scope.resendEmail = function(){
             $http.post(environmentConfig.API + '/auth/email/verify/resend/',{email: $scope.user.email,company: $scope.user.company}, {

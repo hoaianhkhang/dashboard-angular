@@ -9,21 +9,17 @@
             <p>Please check your inbox for an email from Rehive. A verification email was sent to <strong>{{user.email}}</strong>.</p>
         </div>
         <div class="verification-text divider">
-            <p style="margin-top: 0px;">Haven't received an email ? <a ng-click="resendEmail()"
+            <p style="margin-top: 0px;">Haven't received an email? <a ng-click="resendEmail()"
                 class="verification-link">Click here to resend email.</a></p>
         </div>
         <div class="verification-text divider" style="padding-bottom: 2px;">
-            <p style="margin-top: 0px;">Still haven’t received an email ?
+            <p style="margin-top: 0px;">Still haven’t received an email?
                 <a href="https://rehive.com/contact-us/" target="_blank" class="verification-link">Click here to contact us.</a></p>
-        </div>
-        <div class="verification-text divider" style="padding-bottom: 2px;">
-            <p style="margin-top: 0px;">Verify later ?
-                <a href="/#/welcome_to_rehive" class="verification-link">Click here to continue.</a></p>
         </div>
         <div class="row form-group verification-btn-box">
             <div class="col-sm-12">
-                <button ng-disabled="verifyingEmail" ng-click="verifyUser()"
-                        class="btn btn-primary btn-auth verification-button">Continue
+                <button ng-click="verifyUser()"
+                        class="btn btn-primary btn-auth verification-button">Continue without verifying
                 </button>
             </div>
         </div>
