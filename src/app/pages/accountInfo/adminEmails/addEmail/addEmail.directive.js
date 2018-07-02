@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    angular.module('BlurAdmin.pages.settings.adminEmails')
+    angular.module('BlurAdmin.pages.adminEmails')
         .directive('addEmail', addEmail);
 
     /** @ngInject */
@@ -9,7 +9,7 @@
         return {
             restrict: 'E',
             controller: 'AdminEmailsCtrl',
-            templateUrl: 'app/pages/settings/accountInfo/adminEmails/addEmail/addEmail.html'
+            templateUrl: 'app/pages/accountInfo/adminEmails/addEmail/addEmail.html'
         };
     }
 })();

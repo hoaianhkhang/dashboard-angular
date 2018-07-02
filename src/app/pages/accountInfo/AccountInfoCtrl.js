@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    angular.module('BlurAdmin.pages.settings.accountInfo')
+    angular.module('BlurAdmin.pages.accountInfo')
         .controller('AccountInfoCtrl', AccountInfoCtrl);
 
     /** @ngInject */
@@ -60,7 +60,11 @@
         };
 
         $scope.viewAllEmails = function (){
-            $location.path('/settings/admin/emails');
+            $location.path('/admin/emails');
+        };
+
+        $scope.changePassword = function(){
+            $location.path('/password/change');
         };
 
     }

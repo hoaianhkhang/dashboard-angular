@@ -29,7 +29,9 @@
       'BlurAdmin.pages.welcomeToRehive',
       'BlurAdmin.pages.newCompanySetup',
       'BlurAdmin.pages.buildAFintechApp',
-      'BlurAdmin.pages.initialSetupScreen'
+      'BlurAdmin.pages.initialSetupScreen',
+      'BlurAdmin.pages.accountInfo',
+      'BlurAdmin.pages.adminEmails'
   ])
       .config(routeConfig);
 

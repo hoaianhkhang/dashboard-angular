@@ -110,9 +110,7 @@
         };
 
         $scope.viewProfile = function () {
-            if($rootScope.pageTopObj.userInfoObj.identifier){
-                $location.path('/user/' + $rootScope.pageTopObj.userInfoObj.identifier + '/details');
-            }
+            $location.path('/account-info');
         };
 
         vm.getCompanyCurrencies = function(){

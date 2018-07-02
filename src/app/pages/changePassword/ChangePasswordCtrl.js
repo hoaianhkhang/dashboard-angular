@@ -13,7 +13,7 @@
 
         $scope.goToDashboard = function(){
             $rootScope.securityConfigured = true;
-            $location.path('/settings/security');
+            $location.path('/account-info');
         };
 
         $scope.changePassword = function (passwordChangeParams) {
