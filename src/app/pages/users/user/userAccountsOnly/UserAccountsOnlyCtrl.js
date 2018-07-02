@@ -102,7 +102,9 @@
                 });
             }
         };
-        $scope.getUserAccounts();
+        if(Object.keys(vm.accountUrlParams).length == 0){
+            $scope.getUserAccounts();
+        }
 
         $scope.goToView = function(txType,currency,email,account){
             $location.path('/transactions/history').search({txType: txType,currencyCode: currency.code,emailUser: email,accountUser: account});
