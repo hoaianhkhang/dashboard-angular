@@ -17,7 +17,6 @@
         vm.checkIfUserVerified = function(){
             userVerification.verify(function(err,verified){
                 if(verified){
-                    $rootScope.userFullyVerified = true;
                     $location.path('/welcome_to_rehive');
                 } else {
                     vm.getUserInfo();
@@ -68,7 +67,6 @@
             $rootScope.gotToken = false;
             $rootScope.securityConfigured = true;
             $rootScope.pageTopObj = {};
-            $rootScope.userFullyVerified = false;
             localStorageManagement.deleteValue('TOKEN');
             $location.path('/login');
         };
