@@ -14,10 +14,9 @@
                 </select>
             </div>
             <div ng-show="changeUserGroupDecision" class="change-group-confirm">
-                <p>You are moving <strong>{{userEmail}}</strong> from <strong>{{oldGroup.name}}</strong>
-                to <strong>{{groupForReassigning.name}}</strong>. Configurations of the
-                destination group such as account configurations, limits, fees etc will not be
-                automatically applied to <strong>{{userEmail}}</strong>.</p>
+                <p>You are moving <strong>{{userEmail}}</strong> from <strong>{{oldGroup.name}}</strong> to <strong>{{groupForReassigning.name}}</strong>.
+                    Configurations of the destination group such as account configurations, limits,
+                    fees etc will not be applied automatically to <strong>{{userEmail}}</strong>.</p>
             </div>
             <div class="form-group">
                 <div ng-hide="changeUserGroupDecision">
