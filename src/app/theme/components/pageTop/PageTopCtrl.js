@@ -421,7 +421,7 @@
 
         $scope.openDashboardTasks = function () {
             $scope.showingDashboardTasks = !$scope.showingDashboardTasks;
-            if($scope.showingDashboardTasks){
+            if($scope.showingDashboardTasks && !$scope.transactionSetsExportingInProgress){
                 $scope.allTasksDone = true;
             }
         };
