@@ -479,7 +479,7 @@
 
         vm.deletePermission = function (permission,last) {
             if(vm.token) {
-                $scope.deletingPermission = true;
+                $scope.loadingPermissions = true;
                 $http.delete(environmentConfig.API + '/admin/groups/' + vm.groupName + '/permissions/' + permission.id + '/', {
                     headers: {
                         'Content-Type': 'application/json',
@@ -492,7 +492,7 @@
                         }
                     }
                 }).catch(function (error) {
-                    $scope.deletingPermission = false;
+                    $scope.loadingPermissions = false;
                     errorHandler.evaluateErrors(error.data);
                     errorHandler.handleErrors(error);
                 });
