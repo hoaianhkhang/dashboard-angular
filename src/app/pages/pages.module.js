@@ -7,7 +7,6 @@
 
   angular.module('BlurAdmin.pages', [
       'ui.router',
-      'BlurAdmin.pages.changePassword',
       'BlurAdmin.pages.multiFactorAuth',
       'BlurAdmin.pages.smsAuth',
       'BlurAdmin.pages.multiFactorAuthVerify',
@@ -30,8 +29,7 @@
       'BlurAdmin.pages.newCompanySetup',
       'BlurAdmin.pages.buildAFintechApp',
       'BlurAdmin.pages.initialSetupScreen',
-      'BlurAdmin.pages.accountInfo',
-      'BlurAdmin.pages.adminEmails'
+      'BlurAdmin.pages.accountInfo'
   ])
       .config(routeConfig);
 
