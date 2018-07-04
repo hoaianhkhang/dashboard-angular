@@ -179,7 +179,7 @@
                 orderby: '-created'
             };
 
-            return vm.serviceUrl + 'transactions/?' + serializeFiltersService.serializeFilters(searchObj);
+            return vm.serviceUrl + 'admin/transactions/?' + serializeFiltersService.serializeFilters(searchObj);
         };
 
         $scope.getLatestTransactions = function(applyFilter){

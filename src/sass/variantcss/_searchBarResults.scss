@@ -9,12 +9,38 @@
 }
 
 .search-bar-main{
-  width: 50vw;
+  width: 54vw;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  display: inline-block;
+  & .task-icon{
+    position: absolute;
+    top: 10px;
+    display: inline-block;
+    font-size: 22px;
+    color: white;
+    margin-left: 20px
+  }
+  & .task-icon-circle-1{
+    position: absolute;
+    font-size: 10px;
+    display: inline-block;
+    color: #03DBBB;
+    top: 23px;
+    margin-left: 37px;
+  }
+  & .task-icon-circle-2{
+    color: #ed675A;
+    position: absolute;
+    font-size: 10px;
+    display: inline-block;
+    top: 23px;
+    margin-left: 37px;
+  }
 }
+
 
 .search-bar-div{
   position: absolute;

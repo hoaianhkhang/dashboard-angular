@@ -125,15 +125,14 @@
                 } else {
                     if(recipient){
                         $scope.retrievedRecipientAccountsArray = [];
-                        $scope.retrievedRecipientObj = {};
-                        $scope.$apply();
+                        $scope.retrievedRecipientObj = {email: user + ' ( new user )'};
                     } else {
                         $scope.retrievedSenderUserObj = {};
                         $scope.retrievedSenderUserAccountsArray = [];
-                        $scope.$apply();
                     }
 
                     transactionData.currency = {};
+                    $scope.$apply();
                 }
             }, function (error) {
                 errorHandler.evaluateErrors(error);

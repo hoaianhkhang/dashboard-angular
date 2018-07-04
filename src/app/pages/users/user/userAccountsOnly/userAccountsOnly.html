@@ -47,7 +47,7 @@
                         <th>Balance</th>
                         <th></th>
                     </tr>
-                    <tr  ng-repeat="acc in account.currencies">
+                    <tr  ng-repeat="acc in account.currencies | orderBy: 'currency.code'">
                         <td class="no-left-padding" width="15%" ng-bind="acc.currency.code"></td>
                         <td width="20%" title="{{acc.available_balance  | currencyModifiersFilter: acc.currency.divisibility}}">
                             {{acc.currency.symbol}} {{acc.available_balance  | currencyModifiersFilter: acc.currency.divisibility}}
