@@ -4,7 +4,7 @@
     angular.module('BlurAdmin.pages.transactions.history')
         .controller('DebitCtrl', DebitCtrl);
 
-    function DebitCtrl($http,$scope,errorHandler,toastr,environmentConfig,_,metadataTextService,$filter,
+    function DebitCtrl($http,$scope,errorHandler,toastr,environmentConfig,_,metadataTextService,$window,
                         sharedResources,localStorageManagement,$state,typeaheadService,currencyModifiers) {
 
         var vm = this;
@@ -28,6 +28,8 @@
         $scope.retrievedDebitUserAccountsArray = [];
         $scope.retrievedDebitAccountTransactions = [];
         $scope.debitTransactionStatus = ['Complete','Pending','Failed','Deleted'];
+        $scope.debitUserAccountsAvailable = true;
+        $scope.debitCurrencyAccountsAvailable = true;
 
         vm.getDebitCompanyCurrencies = function(){
             if(vm.token){
@@ -39,11 +41,11 @@
                 }).then(function (res) {
                     if (res.status === 200) {
                         $scope.debitCurrencyOptions = res.data.data.results;
-                        if ($scope.newTransactionParams.currencyCode) {
+                        if($scope.newTransactionParams.currencyCode) {
                             $scope.debitTransactionData.currency = $scope.debitCurrencyOptions.find(function (element) {
                                 return element.code == $scope.newTransactionParams.currencyCode;
                             });
-                            vm.getDebitAccounts($scope.retrievedDebitUserObj,$scope.debitTransactionData);
+                            vm.getDebitUserAccounts($scope.retrievedDebitUserObj,$scope.debitTransactionData);
                         }
                     }
                 }).catch(function (error) {
@@ -52,15 +54,7 @@
                 });
             }
         };
-        vm.getDebitCompanyCurrencies();
-
-        if($scope.newTransactionParams.userEmail){
-            $scope.debitTransactionData.user = $scope.newTransactionParams.userEmail;
-        }
-
-        if($scope.newTransactionParams.txType){
-            $scope.loadingTransactionSettings = true;
-            $scope.debitTransactionData.user = $scope.newTransactionParams.emailUser;
+        if(!$scope.newTransactionParams.txType){
             vm.getDebitCompanyCurrencies();
         }
 
@@ -93,6 +87,12 @@
                     if(res.data.data.results.length == 1){
                         $scope.retrievedDebitUserObj = res.data.data.results[0];
                         $scope.retrievedDebitUserObj.metadata = metadataTextService.convertToText($scope.retrievedDebitUserObj.metadata);
+                        if($scope.debitCurrencyOptions.length === 1){
+                            $scope.debitTransactionData.currency = $scope.debitCurrencyOptions[0];
+                            vm.getDebitUserAccounts($scope.retrievedDebitUserObj,$scope.debitTransactionData);
+                        } else if($scope.newTransactionParams.txType){
+                            vm.getDebitCompanyCurrencies();
+                        }
                     } else {
                         $scope.retrievedDebitUserObj = {};
                         $scope.retrievedUserAccountsArray = [];
@@ -107,29 +107,51 @@
 
         $scope.$watch('debitTransactionData.user',function () {
             if($scope.debitTransactionData.user){
-
-                $scope.retrievedDebitUserObj = {};
-                $scope.retrievedDebitUserAccountsArray = [];
-                $scope.retrievedDebitAccountTransactions = [];
-                $scope.debitTransactionData.currency = {};
-                $scope.debitTransactionData.account = {};
-                vm.getDebitUserObj($scope.debitTransactionData);
-
+                vm.resetDebitData();
+                if(!$scope.newTransactionParams.txType){
+                    vm.getDebitUserObj($scope.debitTransactionData);
+                }
             } else {
-
-                $scope.retrievedDebitUserObj = {};
-                $scope.retrievedDebitUserAccountsArray = [];
-                $scope.retrievedDebitAccountTransactions = [];
-                $scope.debitTransactionData.currency = {};
-                $scope.debitTransactionData.account = {};
-
+                vm.resetDebitData();
             }
         });
+
+        vm.resetDebitData = function () {
+            $scope.retrievedDebitUserObj = {};
+            $scope.retrievedDebitUserAccountsArray = [];
+            $scope.retrievedDebitAccountTransactions = [];
+            $scope.debitTransactionData.currency = {};
+            $scope.debitTransactionData.account = {};
+            $scope.debitUserAccountsAvailable = true;
+            $scope.debitCurrencyAccountsAvailable = true;
+        };
 
         $scope.debitCurrencySelected = function (debitTransactionData) {
             $scope.retrievedDebitUserAccountsArray = [];
             debitTransactionData.account = {};
-            vm.getDebitAccounts($scope.retrievedDebitUserObj,debitTransactionData);
+            vm.getDebitUserAccounts($scope.retrievedDebitUserObj,debitTransactionData);
+        };
+
+        vm.getDebitUserAccounts = function (user,debitTransactionData) {
+            $http.get(environmentConfig.API + '/admin/accounts/?user='+ user.identifier, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': vm.token
+                }
+            }).then(function (res) {
+                if (res.status === 200) {
+                    if(res.data.data.results.length > 0){
+                        $scope.debitUserAccountsAvailable = true;
+                        vm.getDebitAccounts(user,debitTransactionData);
+                    } else {
+                        $scope.debitUserAccountsAvailable = false;
+                    }
+                }
+            }).catch(function (error) {
+                $scope.loadingTransactionSettings = false;
+                errorHandler.evaluateErrors(error.data);
+                errorHandler.handleErrors(error);
+            });
         };
 
         vm.getDebitAccounts = function (user,debitTransactionData) {
@@ -141,18 +163,25 @@
                 }
             }).then(function (res) {
                 if (res.status === 200) {
-                    res.data.data.results.forEach(function (account) {
-                        if(account.primary){
-                            account.name = account.name + ' - (primary)';
-                            debitTransactionData.account = account;
-                            $scope.debitAccountSelected(debitTransactionData);
-
-                        } else if(account.id && $scope.newTransactionParams.accountUser){
-                            debitTransactionData.account = account;
-                            $scope.debitAccountSelected(debitTransactionData);
-                        }
-                    });
-                    $scope.retrievedDebitUserAccountsArray = res.data.data.results;
+                    if(res.data.data.results.length > 0){
+                        $scope.debitCurrencyAccountsAvailable = true;
+                        res.data.data.results.find(function (account) {
+                            if(account.reference == $scope.newTransactionParams.accountUser){
+                                debitTransactionData.account = account;
+                                $scope.debitAccountSelected(debitTransactionData);
+                                return true;
+                            } else if(account.primary){
+                                account.name = account.name + ' - (primary)';
+                                debitTransactionData.account = account;
+                                $scope.debitAccountSelected(debitTransactionData);
+                                return true;
+                            }
+                        });
+                        $scope.retrievedDebitUserAccountsArray = res.data.data.results;
+                    } else {
+                        $scope.debitCurrencyAccountsAvailable = false;
+                        $scope.retrievedDebitUserAccountsArray = res.data.data.results;
+                    }
                 }
             }).catch(function (error) {
                 $scope.loadingTransactionSettings = false;
@@ -185,6 +214,20 @@
                 });
             }
         };
+
+        $scope.goToDebitUserAccountCreate = function () {
+            $window.open('/#/user/' + $scope.retrievedDebitUserObj.identifier + '/accounts?accountAction=newAccount','_blank');
+        };
+
+        if($scope.newTransactionParams.userEmail){
+            $scope.debitTransactionData.user = $scope.newTransactionParams.userEmail;
+        }
+
+        if($scope.newTransactionParams.txType){
+            $scope.loadingTransactionSettings = true;
+            $scope.debitTransactionData.user = $scope.newTransactionParams.emailUser;
+            vm.getDebitUserObj($scope.debitTransactionData);
+        }
 
     }
 })();

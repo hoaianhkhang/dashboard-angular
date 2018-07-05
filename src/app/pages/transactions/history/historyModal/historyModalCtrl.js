@@ -17,6 +17,7 @@
         $scope.untouchedTransaction = false;
         $scope.transactionHasBeenUpdated = false;
         $scope.editTransactionStatusOptions = ['Pending','Complete','Failed'];
+        $scope.retrievedUserObj = {};
 
         $scope.$on("modal.closing",function(){
             $rootScope.$broadcast("modalClosing",$scope.transactionHasBeenUpdated);
@@ -43,8 +44,9 @@
                         $scope.transaction = res.data.data;
                         $scope.formatted.metadata = metadataTextService.convertToText($scope.transaction.metadata);
                         $scope.updateTransactionObj.status = $scope.transaction.status;
+                        $scope.transaction.recipient = $scope.transaction.destination_transaction ? $scope.transaction.destination_transaction.id ? $scope.transaction.destination_transaction.user.email : $scope.transaction.destination_transaction.user.email + ' (new user)' : "";
                         $scope.updatingTransaction = false;
-
+                        vm.getUserDetails($scope.transaction.user);
                     }
                 }).catch(function (error) {
                     $scope.updatingTransaction = false;
@@ -54,6 +56,27 @@
             }
         };
         $scope.getTransaction();
+
+        vm.getUserDetails = function (user) {
+            if(user){
+                $http.get(environmentConfig.API + '/admin/users/?user=' + encodeURIComponent(user.identifier), {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': vm.token
+                    }
+                }).then(function (res) {
+                    if (res.status === 200) {
+                        if(res.data.data.results.length == 1){
+                            $scope.retrievedUserObj = res.data.data.results[0];
+                            $scope.retrievedUserObj.metadata = metadataTextService.convertToText($scope.retrievedUserObj.metadata);
+                        }
+                    }
+                }).catch(function (error) {
+                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.handleErrors(error);
+                });
+            }
+        };
 
         $scope.toggleEditingTransaction = function () {
             if(!$scope.editingTransaction){

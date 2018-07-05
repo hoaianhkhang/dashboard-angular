@@ -18,8 +18,19 @@
                     }
                 }
                 return str.join("&");
+            },
+            objectFilters: function (obj) {
+                var serializedObj = {};
+                for(var p in obj){
+                    if (obj.hasOwnProperty(p)) {
+                        if(obj[p]){
+                            serializedObj[p] = obj[p];
+                        }
+                    }
+                }
+                return serializedObj;
             }
-        }
+        };
     }
 
 })();
