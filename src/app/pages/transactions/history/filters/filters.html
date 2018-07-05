@@ -166,8 +166,19 @@
                     <select class="form-control pointer" ng-model="applyFiltersObj.transactionTypeFilter.selectedTransactionTypeOption"
                             ng-options="option for option in typeOptions">
                     </select>
-                    <span class="filter-text margin-left-12">subtype </span>
-                    <select class="form-control pointer margin-left-12" ng-model="applyFiltersObj.transactionSubtypeFilter.selectedTransactionSubtypeOption"
+                </div>
+            </div>
+        </div>
+        <div id="filterTransactionSubtype">
+            <div>
+                <label class="checkbox-inline custom-checkbox nowrap">
+                    <input type="checkbox" ng-model="filtersObj.transactionSubtypeFilter">
+                    <span>Subtype</span>
+                </label>
+            </div>
+            <div ng-if="filtersObj.transactionSubtypeFilter" class="row divider-top-6">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 date-filter-view">
+                    <select class="form-control pointer" ng-model="applyFiltersObj.transactionSubtypeFilter.selectedTransactionSubtypeOption"
                             ng-options="subtypeOption for subtypeOption in subtypeOptions">
                     </select>
                 </div>
