@@ -10,85 +10,6 @@
         </div>
     </div>
     <div class="panel-body table-filters-body">
-        <div id="identifierFilter">
-            <div>
-                <label class="checkbox-inline custom-checkbox nowrap">
-                    <input type="checkbox" ng-model="filtersObj.identifierFilter">
-                    <span>Identifier</span>
-                </label>
-            </div>
-            <div ng-if="filtersObj.identifierFilter" class="row divider-top-6">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 date-filter-view">
-                    <input type="text" ng-model="applyFiltersObj.identifierFilter.selectedIdentifier"
-                           auto-focus="filtersObj.identifierFilter"
-                           placeholder="Enter identifier" class="transaction-id-input">
-                </div>
-            </div>
-        </div>
-        <div id="emailFilter">
-            <div>
-                <label class="checkbox-inline custom-checkbox nowrap">
-                    <input type="checkbox" ng-model="filtersObj.emailFilter">
-                    <span>Email</span>
-                </label>
-            </div>
-            <div ng-if="filtersObj.emailFilter" class="row divider-top-6">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 date-filter-view">
-                    <input type="text" ng-model="applyFiltersObj.emailFilter.selectedEmail" ng-model-options='{ debounce: 800 }'
-                        placeholder="Enter email address" auto-focus="filtersObj.emailFilter"
-                        uib-typeahead="email for email in getUsersEmailTypeahead($viewValue)"
-                        class="transaction-id-input" size="12">
-                </div>
-            </div>
-        </div>
-        <div id="mobileFilter">
-            <div>
-                <label class="checkbox-inline custom-checkbox nowrap">
-                    <input type="checkbox" ng-model="filtersObj.mobileFilter">
-                    <span>Mobile number</span>
-                </label>
-            </div>
-            <div ng-if="filtersObj.mobileFilter" class="row divider-top-6">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 date-filter-view">
-                    <input type="text" ng-model="applyFiltersObj.mobileFilter.selectedMobile" ng-model-options='{ debounce: 800 }'
-                        placeholder="Enter mobile number" auto-focus="filtersObj.mobileFilter"
-                        uib-typeahead="mobile for mobile in getUsersMobileTypeahead($viewValue)"
-                        class="transaction-id-input" size="12">
-                </div>
-            </div>
-        </div>
-        <div id="firstNameFilter">
-            <div>
-                <label class="checkbox-inline custom-checkbox nowrap">
-                    <input type="checkbox" ng-model="filtersObj.firstNameFilter">
-                    <span>First name</span>
-                </label>
-            </div>
-            <div ng-if="filtersObj.firstNameFilter" class="row divider-top-6">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 date-filter-view">
-                    <input type="text" ng-model="applyFiltersObj.firstNameFilter.selectedFirstName"
-                           auto-focus="filtersObj.firstNameFilter"
-                           placeholder="Enter first name"
-                           class="transaction-id-input" size="12">
-                </div>
-            </div>
-        </div>
-        <div id="lastNameFilter">
-            <div>
-                <label class="checkbox-inline custom-checkbox nowrap">
-                    <input type="checkbox" ng-model="filtersObj.lastNameFilter">
-                    <span>Last name</span>
-                </label>
-            </div>
-            <div ng-if="filtersObj.lastNameFilter" class="row divider-top-6">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 date-filter-view">
-                    <input type="text" ng-model="applyFiltersObj.lastNameFilter.selectedLastName"
-                           auto-focus="filtersObj.lastNameFilter"
-                           placeholder="Enter last name"
-                           class="transaction-id-input" size="12">
-                </div>
-            </div>
-        </div>
         <div id="accountReferenceFilter">
             <div>
                 <label class="checkbox-inline custom-checkbox nowrap">
@@ -102,46 +23,6 @@
                            auto-focus="filtersObj.accountReferenceFilter"
                            placeholder="Enter account reference"
                            class="transaction-id-input" size="12">
-                </div>
-            </div>
-        </div>
-        <div id="filterGroup">
-            <div>
-                <label class="checkbox-inline custom-checkbox nowrap">
-                    <input type="checkbox" ng-model="filtersObj.groupFilter">
-                    <span>Group</span>
-                </label>
-            </div>
-            <div ng-if="filtersObj.groupFilter" class="row divider-top-6">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 date-filter-view">
-                    <select class="form-control pointer" ng-model="applyFiltersObj.groupFilter.selectedGroupOption"
-                            ng-options="option for option in groupFilterOptions">
-                    </select>
-                    <div ng-show="applyFiltersObj.groupFilter.selectedGroupOption == 'Group name'" class="date-filter-view">
-                        <select class="form-control pointer margin-left-12" ng-model="applyFiltersObj.groupFilter.selectedGroup"
-                                ng-options="group.name for group in groupOptions">
-                        </select>
-                    </div>
-                    <div ng-show="applyFiltersObj.groupFilter.selectedGroupOption == 'In a group'" class="date-filter-view">
-                        <div class="form-group filter-group-checkbox">
-                            <input class="custom-rehive-checkbox" ng-model="applyFiltersObj.groupFilter.existsInGroup" type="checkbox">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div id="currencyFilter">
-            <div>
-                <label class="checkbox-inline custom-checkbox nowrap">
-                    <input type="checkbox" ng-model="filtersObj.currencyFilter">
-                    <span>Currency</span>
-                </label>
-            </div>
-            <div ng-if="filtersObj.currencyFilter" class="row divider-top-6">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 date-filter-view">
-                    <select class="form-control pointer" ng-model="applyFiltersObj.currencyFilter.selectedCurrency"
-                        ng-options="currency.code for currency in currencyOptions | orderBy: 'code' track by currency.code">
-                    </select>
                 </div>
             </div>
         </div>
@@ -229,87 +110,104 @@
                 </div>
             </div>
         </div>
-        <div id="updatedFilter">
+        <div id="currencyFilter">
             <div>
                 <label class="checkbox-inline custom-checkbox nowrap">
-                    <input type="checkbox" ng-model="filtersObj.updatedFilter">
-                    <span>Updated</span>
+                    <input type="checkbox" ng-model="filtersObj.currencyFilter">
+                    <span>Currency</span>
                 </label>
             </div>
-            <div ng-if="filtersObj.updatedFilter" class="row divider-top-6">
+            <div ng-if="filtersObj.currencyFilter" class="row divider-top-6">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 date-filter-view">
-                    <select class="form-control pointer" ng-model="applyFiltersObj.updatedFilter.selectedDateOption"
-                            ng-options="option for option in dateFilterOptions">
+                    <select class="form-control pointer" ng-model="applyFiltersObj.currencyFilter.selectedCurrency"
+                            ng-options="currency.code for currency in currencyOptions | orderBy: 'code' track by currency.code">
                     </select>
-                    <div ng-show="applyFiltersObj.updatedFilter.selectedDateOption == 'Is in the last'" class="date-filter-view">
-                        <input type="text" ng-model="applyFiltersObj.updatedFilter.dayInterval" ng-change="updatedIntervalChanged()"
-                               auto-focus="applyFiltersObj.updatedFilter.selectedDateOption == 'Is in the last'"
-                               class="transaction-date-interval-input">
-                        <select class="form-control pointer margin-left-12" ng-model="applyFiltersObj.updatedFilter.selectedDayIntervalOption"
-                                ng-options="option for option in dateFilterIntervalOptions">
+                </div>
+            </div>
+        </div>
+        <div id="emailFilter">
+            <div>
+                <label class="checkbox-inline custom-checkbox nowrap">
+                    <input type="checkbox" ng-model="filtersObj.emailFilter">
+                    <span>Email</span>
+                </label>
+            </div>
+            <div ng-if="filtersObj.emailFilter" class="row divider-top-6">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 date-filter-view">
+                    <input type="text" ng-model="applyFiltersObj.emailFilter.selectedEmail" ng-model-options='{ debounce: 800 }'
+                           placeholder="Enter email address" auto-focus="filtersObj.emailFilter"
+                           uib-typeahead="email for email in getUsersEmailTypeahead($viewValue)"
+                           class="transaction-id-input" size="12">
+                </div>
+            </div>
+        </div>
+        <div id="firstNameFilter">
+            <div>
+                <label class="checkbox-inline custom-checkbox nowrap">
+                    <input type="checkbox" ng-model="filtersObj.firstNameFilter">
+                    <span>First name</span>
+                </label>
+            </div>
+            <div ng-if="filtersObj.firstNameFilter" class="row divider-top-6">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 date-filter-view">
+                    <input type="text" ng-model="applyFiltersObj.firstNameFilter.selectedFirstName"
+                           auto-focus="filtersObj.firstNameFilter"
+                           placeholder="Enter first name"
+                           class="transaction-id-input" size="12">
+                </div>
+            </div>
+        </div>
+        <div id="filterGroup">
+            <div>
+                <label class="checkbox-inline custom-checkbox nowrap">
+                    <input type="checkbox" ng-model="filtersObj.groupFilter">
+                    <span>Group</span>
+                </label>
+            </div>
+            <div ng-if="filtersObj.groupFilter" class="row divider-top-6">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 date-filter-view">
+                    <select class="form-control pointer" ng-model="applyFiltersObj.groupFilter.selectedGroupOption"
+                            ng-options="option for option in groupFilterOptions">
+                    </select>
+                    <div ng-show="applyFiltersObj.groupFilter.selectedGroupOption == 'Group name'" class="date-filter-view">
+                        <select class="form-control pointer margin-left-12" ng-model="applyFiltersObj.groupFilter.selectedGroup"
+                                ng-options="group.name for group in groupOptions">
                         </select>
                     </div>
-                    <div ng-show="applyFiltersObj.updatedFilter.selectedDateOption == 'In between'" class="date-filter-view">
-                        <div class="date-filter-in-between-view">
-                            <input type="text" class="form-control transaction-date-filter-input custom-datepicker"
-                                   uib-datepicker-popup="{{dateObj.format}}" popup-placement="bottom-left"
-                                   ng-model="applyFiltersObj.updatedFilter.dateFrom"
-                                   show-button-bar="false" datepicker-options="{showWeeks: false}"
-                                   placeholder="mm/dd/yyyy" is-open="popup5.opened" close-text="Close" />
-                            <span class="input-group-btn">
-                                <button type="button" class="btn btn-default calender-button" ng-click="open5()">
-                                    <i class="glyphicon glyphicon-calendar"></i></button>
-                            </span>
-                        </div>
-                        <span class="filter-text margin-left-12">and</span>
-                        <div class="date-filter-in-between-view">
-                            <input type="text" class="form-control transaction-date-filter-input custom-datepicker"
-                                   uib-datepicker-popup="{{dateObj.format}}" popup-placement="bottom-left"
-                                   ng-model="applyFiltersObj.updatedFilter.dateTo"
-                                   show-button-bar="false" datepicker-options="{showWeeks: false}"
-                                   placeholder="mm/dd/yyyy" is-open="popup6.opened" close-text="Close" />
-                            <span class="input-group-btn">
-                                <button type="button" class="btn btn-default calender-button" ng-click="open6()">
-                                    <i class="glyphicon glyphicon-calendar"></i></button>
-                            </span>
+                    <div ng-show="applyFiltersObj.groupFilter.selectedGroupOption == 'In a group'" class="date-filter-view">
+                        <div class="form-group filter-group-checkbox">
+                            <input class="custom-rehive-checkbox" ng-model="applyFiltersObj.groupFilter.existsInGroup" type="checkbox">
                         </div>
                     </div>
-                    <div ng-show="applyFiltersObj.updatedFilter.selectedDateOption == 'Is equal to'" class="date-filter-view">
-                        <div class="date-filter-in-between-view">
-                            <input type="text" class="form-control transaction-date-filter-input custom-datepicker"
-                                   uib-datepicker-popup="{{dateObj.format}}" popup-placement="bottom-left"
-                                   ng-model="applyFiltersObj.updatedFilter.dateEqualTo" show-button-bar="false" datepicker-options="{showWeeks: false}"
-                                   placeholder="mm/dd/yyyy" is-open="popup5.opened" close-text="Close" />
-                            <span class="input-group-btn">
-                                <button type="button" class="btn btn-default calender-button" ng-click="open5()">
-                                    <i class="glyphicon glyphicon-calendar"></i></button>
-                            </span>
-                        </div>
-                    </div>
-                    <div ng-show="applyFiltersObj.updatedFilter.selectedDateOption == 'Is after'" class="date-filter-view">
-                        <div class="date-filter-in-between-view">
-                            <input type="text" class="form-control transaction-date-filter-input custom-datepicker"
-                                   uib-datepicker-popup="{{dateObj.format}}" popup-placement="bottom-left"
-                                   ng-model="applyFiltersObj.updatedFilter.dateFrom" show-button-bar="false" datepicker-options="{showWeeks: false}"
-                                   placeholder="mm/dd/yyyy" is-open="popup5.opened" close-text="Close" />
-                            <span class="input-group-btn">
-                                <button type="button" class="btn btn-default calender-button" ng-click="open5()">
-                                    <i class="glyphicon glyphicon-calendar"></i></button>
-                            </span>
-                        </div>
-                    </div>
-                    <div ng-show="applyFiltersObj.updatedFilter.selectedDateOption == 'Is before'" class="date-filter-view">
-                        <div class="date-filter-in-between-view">
-                            <input type="text" class="form-control transaction-date-filter-input custom-datepicker"
-                                   uib-datepicker-popup="{{dateObj.format}}" popup-placement="bottom-left"
-                                   ng-model="applyFiltersObj.updatedFilter.dateTo" show-button-bar="false" datepicker-options="{showWeeks: false}"
-                                   placeholder="mm/dd/yyyy" is-open="popup6.opened" close-text="Close" />
-                            <span class="input-group-btn">
-                                <button type="button" class="btn btn-default calender-button" ng-click="open6()">
-                                    <i class="glyphicon glyphicon-calendar"></i></button>
-                            </span>
-                        </div>
-                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="identifierFilter">
+            <div>
+                <label class="checkbox-inline custom-checkbox nowrap">
+                    <input type="checkbox" ng-model="filtersObj.identifierFilter">
+                    <span>Identifier</span>
+                </label>
+            </div>
+            <div ng-if="filtersObj.identifierFilter" class="row divider-top-6">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 date-filter-view">
+                    <input type="text" ng-model="applyFiltersObj.identifierFilter.selectedIdentifier"
+                           auto-focus="filtersObj.identifierFilter"
+                           placeholder="Enter identifier" class="transaction-id-input">
+                </div>
+            </div>
+        </div>
+        <div id="kycFilter">
+            <div>
+                <label class="checkbox-inline custom-checkbox nowrap">
+                    <input type="checkbox" ng-model="filtersObj.kycFilter">
+                    <span>Kyc status</span>
+                </label>
+            </div>
+            <div ng-if="filtersObj.kycFilter" class="row divider-top-6">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 date-filter-view">
+                    <select class="form-control pointer" ng-model="applyFiltersObj.kycFilter.selectedKycFilter" ng-options="status for status in statusOptions">
+                    </select>
                 </div>
             </div>
         </div>
@@ -397,16 +295,49 @@
                 </div>
             </div>
         </div>
-        <div id="kycFilter">
+        <div id="lastNameFilter">
             <div>
                 <label class="checkbox-inline custom-checkbox nowrap">
-                    <input type="checkbox" ng-model="filtersObj.kycFilter">
-                    <span>Kyc status</span>
+                    <input type="checkbox" ng-model="filtersObj.lastNameFilter">
+                    <span>Last name</span>
                 </label>
             </div>
-            <div ng-if="filtersObj.kycFilter" class="row divider-top-6">
+            <div ng-if="filtersObj.lastNameFilter" class="row divider-top-6">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 date-filter-view">
-                    <select class="form-control pointer" ng-model="applyFiltersObj.kycFilter.selectedKycFilter" ng-options="status for status in statusOptions">
+                    <input type="text" ng-model="applyFiltersObj.lastNameFilter.selectedLastName"
+                           auto-focus="filtersObj.lastNameFilter"
+                           placeholder="Enter last name"
+                           class="transaction-id-input" size="12">
+                </div>
+            </div>
+        </div>
+        <div id="mobileFilter">
+            <div>
+                <label class="checkbox-inline custom-checkbox nowrap">
+                    <input type="checkbox" ng-model="filtersObj.mobileFilter">
+                    <span>Mobile number</span>
+                </label>
+            </div>
+            <div ng-if="filtersObj.mobileFilter" class="row divider-top-6">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 date-filter-view">
+                    <input type="text" ng-model="applyFiltersObj.mobileFilter.selectedMobile" ng-model-options='{ debounce: 800 }'
+                        placeholder="Enter mobile number" auto-focus="filtersObj.mobileFilter"
+                        uib-typeahead="mobile for mobile in getUsersMobileTypeahead($viewValue)"
+                        class="transaction-id-input" size="12">
+                </div>
+            </div>
+        </div>
+        <div id="filterOrderBy">
+            <div>
+                <label class="checkbox-inline custom-checkbox nowrap">
+                    <input type="checkbox" ng-model="filtersObj.orderByFilter">
+                    <span>Order by</span>
+                </label>
+            </div>
+            <div ng-if="filtersObj.orderByFilter" class="row divider-top-6">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 date-filter-view">
+                    <select class="form-control pointer" ng-model="applyFiltersObj.orderByFilter.selectedOrderByOption"
+                            ng-options="orderBy for orderBy in orderByOptions">
                     </select>
                 </div>
             </div>
@@ -426,18 +357,87 @@
                 </div>
             </div>
         </div>
-        <div id="filterOrderBy">
+        <div id="updatedFilter">
             <div>
                 <label class="checkbox-inline custom-checkbox nowrap">
-                    <input type="checkbox" ng-model="filtersObj.orderByFilter">
-                    <span>Order by</span>
+                    <input type="checkbox" ng-model="filtersObj.updatedFilter">
+                    <span>Updated</span>
                 </label>
             </div>
-            <div ng-if="filtersObj.orderByFilter" class="row divider-top-6">
+            <div ng-if="filtersObj.updatedFilter" class="row divider-top-6">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 date-filter-view">
-                    <select class="form-control pointer" ng-model="applyFiltersObj.orderByFilter.selectedOrderByOption"
-                            ng-options="orderBy for orderBy in orderByOptions">
+                    <select class="form-control pointer" ng-model="applyFiltersObj.updatedFilter.selectedDateOption"
+                            ng-options="option for option in dateFilterOptions">
                     </select>
+                    <div ng-show="applyFiltersObj.updatedFilter.selectedDateOption == 'Is in the last'" class="date-filter-view">
+                        <input type="text" ng-model="applyFiltersObj.updatedFilter.dayInterval" ng-change="updatedIntervalChanged()"
+                               auto-focus="applyFiltersObj.updatedFilter.selectedDateOption == 'Is in the last'"
+                               class="transaction-date-interval-input">
+                        <select class="form-control pointer margin-left-12" ng-model="applyFiltersObj.updatedFilter.selectedDayIntervalOption"
+                                ng-options="option for option in dateFilterIntervalOptions">
+                        </select>
+                    </div>
+                    <div ng-show="applyFiltersObj.updatedFilter.selectedDateOption == 'In between'" class="date-filter-view">
+                        <div class="date-filter-in-between-view">
+                            <input type="text" class="form-control transaction-date-filter-input custom-datepicker"
+                                   uib-datepicker-popup="{{dateObj.format}}" popup-placement="bottom-left"
+                                   ng-model="applyFiltersObj.updatedFilter.dateFrom"
+                                   show-button-bar="false" datepicker-options="{showWeeks: false}"
+                                   placeholder="mm/dd/yyyy" is-open="popup5.opened" close-text="Close" />
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-default calender-button" ng-click="open5()">
+                                    <i class="glyphicon glyphicon-calendar"></i></button>
+                            </span>
+                        </div>
+                        <span class="filter-text margin-left-12">and</span>
+                        <div class="date-filter-in-between-view">
+                            <input type="text" class="form-control transaction-date-filter-input custom-datepicker"
+                                   uib-datepicker-popup="{{dateObj.format}}" popup-placement="bottom-left"
+                                   ng-model="applyFiltersObj.updatedFilter.dateTo"
+                                   show-button-bar="false" datepicker-options="{showWeeks: false}"
+                                   placeholder="mm/dd/yyyy" is-open="popup6.opened" close-text="Close" />
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-default calender-button" ng-click="open6()">
+                                    <i class="glyphicon glyphicon-calendar"></i></button>
+                            </span>
+                        </div>
+                    </div>
+                    <div ng-show="applyFiltersObj.updatedFilter.selectedDateOption == 'Is equal to'" class="date-filter-view">
+                        <div class="date-filter-in-between-view">
+                            <input type="text" class="form-control transaction-date-filter-input custom-datepicker"
+                                   uib-datepicker-popup="{{dateObj.format}}" popup-placement="bottom-left"
+                                   ng-model="applyFiltersObj.updatedFilter.dateEqualTo" show-button-bar="false" datepicker-options="{showWeeks: false}"
+                                   placeholder="mm/dd/yyyy" is-open="popup5.opened" close-text="Close" />
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-default calender-button" ng-click="open5()">
+                                    <i class="glyphicon glyphicon-calendar"></i></button>
+                            </span>
+                        </div>
+                    </div>
+                    <div ng-show="applyFiltersObj.updatedFilter.selectedDateOption == 'Is after'" class="date-filter-view">
+                        <div class="date-filter-in-between-view">
+                            <input type="text" class="form-control transaction-date-filter-input custom-datepicker"
+                                   uib-datepicker-popup="{{dateObj.format}}" popup-placement="bottom-left"
+                                   ng-model="applyFiltersObj.updatedFilter.dateFrom" show-button-bar="false" datepicker-options="{showWeeks: false}"
+                                   placeholder="mm/dd/yyyy" is-open="popup5.opened" close-text="Close" />
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-default calender-button" ng-click="open5()">
+                                    <i class="glyphicon glyphicon-calendar"></i></button>
+                            </span>
+                        </div>
+                    </div>
+                    <div ng-show="applyFiltersObj.updatedFilter.selectedDateOption == 'Is before'" class="date-filter-view">
+                        <div class="date-filter-in-between-view">
+                            <input type="text" class="form-control transaction-date-filter-input custom-datepicker"
+                                   uib-datepicker-popup="{{dateObj.format}}" popup-placement="bottom-left"
+                                   ng-model="applyFiltersObj.updatedFilter.dateTo" show-button-bar="false" datepicker-options="{showWeeks: false}"
+                                   placeholder="mm/dd/yyyy" is-open="popup6.opened" close-text="Close" />
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-default calender-button" ng-click="open6()">
+                                    <i class="glyphicon glyphicon-calendar"></i></button>
+                            </span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
