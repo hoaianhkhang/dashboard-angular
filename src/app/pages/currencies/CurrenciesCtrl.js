@@ -84,6 +84,14 @@
                 }
 
                 $scope.currencyOptions = res.results.slice();
+                $scope.currencyOptions.sort(function(a, b){
+                    return a.code.localeCompare(b.code);
+                });
+                $scope.applyFiltersObj.currencyFilter.selectedCurrencyOption = $scope.currencyOptions[0];
+                $scope.currencyOptions.sort(function(a, b){
+                    return a.unit.localeCompare(b.unit);
+                });
+                $scope.applyFiltersObj.unitFilter.selectedCurrencyOption = $scope.currencyOptions[0];
                 $scope.$apply();
             }, function (error) {
                 errorHandler.evaluateErrors(error);
@@ -125,8 +133,6 @@
                     if(res.results.length > 0){
                         $scope.currenciesData = res;
                         $scope.currencies = res.results;
-                        $scope.applyFiltersObj.currencyFilter.selectedCurrencyOption = $scope.currencies[0];
-                        $scope.applyFiltersObj.unitFilter.selectedCurrencyOption = $scope.currencies[0];
 
                         $scope.currencies.forEach(function(element,idx,array){
                             if(idx === array.length - 1){

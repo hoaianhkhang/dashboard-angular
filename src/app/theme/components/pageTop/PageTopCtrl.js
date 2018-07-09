@@ -10,7 +10,7 @@
                          environmentConfig,$location,errorHandler,$window,identifySearchInput) {
         var vm = this;
 
-        vm.token = localStorageManagement.getValue('Token');
+        vm.token = localStorageManagement.getValue('TOKEN');
         $scope.currencies = [];
         $scope.hideSearchBar = true;
         $scope.searchString = '';
@@ -52,29 +52,25 @@
         //when page refreshed
         if(!$rootScope.pageTopObj.companyObj){
             vm.getCompanyInfo = function () {
-                if(vm.token) {
-                    Rehive.admin.company.get().then(function (res) {
-                        $rootScope.pageTopObj.companyObj = {};
-                        $rootScope.pageTopObj.companyObj = res;
-                        localStorageManagement.setValue('companyIdentifier',$rootScope.pageTopObj.companyObj.identifier);
-                        $rootScope.$apply();
-                    }, function (err) {
-                    });
-                }
+                Rehive.admin.company.get().then(function (res) {
+                    $rootScope.pageTopObj.companyObj = {};
+                    $rootScope.pageTopObj.companyObj = res;
+                    localStorageManagement.setValue('companyIdentifier',$rootScope.pageTopObj.companyObj.identifier);
+                    $rootScope.$apply();
+                }, function (err) {
+                });
             };
             vm.getCompanyInfo();
         }
 
         if(!$rootScope.pageTopObj.userInfoObj){
             vm.getUserInfo = function () {
-                if(vm.token) {
-                    Rehive.user.get().then(function(user){
-                        $rootScope.pageTopObj.userInfoObj = {};
-                        $rootScope.pageTopObj.userInfoObj = user;
-                        $rootScope.$apply();
-                    },function(err){
-                    });
-                }
+                Rehive.user.get().then(function(user){
+                    $rootScope.pageTopObj.userInfoObj = {};
+                    $rootScope.pageTopObj.userInfoObj = user;
+                    $rootScope.$apply();
+                },function(err){
+                });
             };
             vm.getUserInfo();
         }
@@ -160,11 +156,12 @@
 
                 Rehive.admin.users.get({filters: userFilter}).then(function (res) {
                     $scope.searchedUsers = res.results;
-                    $scope.$apply();
                     if(res.count == 1){
                         vm.findTransactions(res.results[0].email,'user');
+                        $scope.$apply();
                     } else {
                         vm.findTransactions(searchString,'id');
+                        $scope.$apply();
                     }
                 }, function (error) {
                     $scope.loadingResults = false;

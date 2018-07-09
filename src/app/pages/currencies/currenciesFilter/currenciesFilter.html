@@ -31,7 +31,7 @@
             </div>
             <div ng-if="filtersObj.unitFilter" class="row divider-top-6">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 date-filter-view">
-                    <select class="form-control pointer" ng-model="applyFiltersObj.unitFilter.selectedCurrencyOption"
+                    <select class="form-control pointer currencies-unit-filter" ng-model="applyFiltersObj.unitFilter.selectedCurrencyOption"
                             ng-options="currency.unit  + ' - ' + currency.description for currency in currencyOptions | orderBy: 'unit' track by currency.unit">
                     </select>
                 </div>
