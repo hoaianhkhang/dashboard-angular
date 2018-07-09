@@ -188,7 +188,7 @@
             <div ng-if="filtersObj.accountFilter" class="row divider-top-6">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 date-filter-view">
                     <select class="form-control user-transactions-accounts-select pointer" ng-model="applyFiltersObj.accountFilter.selectedAccount"
-                            ng-options="accountOption.name + '-' + accountOption.reference for accountOption in accountFilterOptions">
+                            ng-options="accountOption.name + ' - ' + accountOption.reference for accountOption in accountFilterOptions">
                     </select>
                 </div>
             </div>
