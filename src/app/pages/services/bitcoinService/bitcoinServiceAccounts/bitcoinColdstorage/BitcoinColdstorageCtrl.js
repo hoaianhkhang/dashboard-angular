@@ -366,7 +366,7 @@
 
         $scope.getLatestColdstorageTransactions = function(applyFilter){
             if(vm.token) {
-
+                $scope.loadingColdstorage = true;
                 $scope.showingColdstorageFilters = false;
 
                 $scope.transactionsColdstorageStateMessage = '';
@@ -388,7 +388,7 @@
                         'Authorization': vm.token
                     }
                 }).then(function (res) {
-                    $scope.loadingColdstorage =  false;
+                    $scope.loadingColdstorage = false;
                     if (res.status === 200) {
                         $scope.transactionsColdstorageData = res.data.data;
                         $scope.transactionsColdstorage = $scope.transactionsColdstorageData.results;

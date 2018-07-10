@@ -116,7 +116,7 @@
         };
 
         vm.getCompanyCurrencies = function(){
-            if($rootScope.userFullyVerified && vm.token){
+            if(vm.token){
                 $http.get(environmentConfig.API + '/admin/currencies/?enabled=true&page_size=250', {
                     headers: {
                         'Content-Type': 'application/json',
@@ -394,7 +394,6 @@
             $rootScope.securityConfigured = true;
             $window.sessionStorage.currenciesList = '';
             $rootScope.pageTopObj = {};
-            $rootScope.userFullyVerified = false;
             localStorageManagement.deleteValue('TOKEN');
             $location.path('/login');
         };

@@ -10,7 +10,8 @@
                     <stellar-coldstorage-transactions-filters></stellar-coldstorage-transactions-filters>
                 </div>
             </div>
-            <button ng-click="refreshColdstoragePage('applyFilter')" class="btn btn-default transactions-btn panel-header-button">Refresh</button>
+            <button ng-click="refreshColdstoragePage('applyFilter')" ng-disabled="loadingColdstorage"
+                    class="btn btn-default transactions-btn panel-header-button">Refresh</button>
         </div>
     </div>
     <div class="panel-body">
