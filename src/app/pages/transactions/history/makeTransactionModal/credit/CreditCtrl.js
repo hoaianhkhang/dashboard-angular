@@ -53,15 +53,7 @@
                 });
             }
         };
-        vm.getCreditCompanyCurrencies();
-
-        if($scope.newTransactionParams.userEmail){
-            $scope.creditTransactionData.user = $scope.newTransactionParams.userEmail;
-        }
-
-        if($scope.newTransactionParams.txType){
-            $scope.loadingTransactionSettings = true;
-            $scope.creditTransactionData.user = $scope.newTransactionParams.emailUser;
+        if(!$scope.newTransactionParams.txType){
             vm.getCreditCompanyCurrencies();
         }
 
@@ -97,6 +89,8 @@
                         if($scope.creditCurrencyOptions.length === 1){
                             $scope.creditTransactionData.currency = $scope.creditCurrencyOptions[0];
                             vm.getCreditUserAccounts($scope.retrievedCreditUserObj,$scope.creditTransactionData);
+                        } else if($scope.newTransactionParams.txType){
+                            vm.getCreditCompanyCurrencies();
                         }
                     } else {
                         $scope.retrievedCreditUserObj = {};
@@ -113,8 +107,9 @@
         $scope.$watch('creditTransactionData.user',function () {
             if($scope.creditTransactionData.user){
                 vm.resetCreditData();
-                vm.getCreditUserObj($scope.creditTransactionData);
-
+                if(!$scope.newTransactionParams.txType){
+                    vm.getCreditUserObj($scope.creditTransactionData);
+                }
             } else {
                 vm.resetCreditData();
             }
@@ -221,6 +216,16 @@
         $scope.goToCreditUserAccountCreate = function () {
             $window.open('/#/user/' + $scope.retrievedCreditUserObj.identifier + '/accounts?accountAction=newAccount','_blank');
         };
+
+        if($scope.newTransactionParams.userEmail){
+            $scope.creditTransactionData.user = $scope.newTransactionParams.userEmail;
+        }
+
+        if($scope.newTransactionParams.txType){
+            $scope.loadingTransactionSettings = true;
+            $scope.creditTransactionData.user = $scope.newTransactionParams.emailUser;
+            vm.getCreditUserObj($scope.creditTransactionData);
+        }
 
     }
 })();
