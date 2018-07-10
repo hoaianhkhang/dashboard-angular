@@ -576,7 +576,7 @@
                 }).then(function (res) {
                     if (res.status === 200) {
                         $scope.totalUsersCount = res.data.data.total;
-                        $scope.activeUsersCount = res.data.data.active;
+                        $scope.deactiveUsersCount = res.data.data.archived;
                         $scope.loadingGroup = false;
                     }
                 }).catch(function (error) {
