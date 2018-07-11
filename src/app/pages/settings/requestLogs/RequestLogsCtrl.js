@@ -6,7 +6,7 @@
 
     /** @ngInject */
     function RequestLogsCtrl($scope,environmentConfig,$http,localStorageManagement,errorHandler,
-                             typeaheadService,serializeFiltersService,$location,$filter) {
+                             typeaheadService,serializeFiltersService,$uibModal,$filter) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
@@ -200,8 +200,19 @@
             };
         };
 
-        $scope.goToRequestLog = function (log) {
-            $location.path('/settings/request-log/' + log.id + '/');
+        $scope.goToRequestLog = function (page,size,log) {
+            vm.theModal = $uibModal.open({
+                animation: true,
+                templateUrl: page,
+                size: size,
+                controller: 'RequestLogModalCtrl',
+                scope: $scope,
+                resolve: {
+                    log: function () {
+                        return log;
+                    }
+                }
+            });
         };
 
         $scope.closeColumnFiltersBox = function () {

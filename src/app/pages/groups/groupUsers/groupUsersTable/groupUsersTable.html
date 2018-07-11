@@ -15,7 +15,8 @@
                 </div>
             </div>
             <button ng-click="openAddUserToGroupModal('app/pages/groups/groupUsers/groupUsersAddModal/groupUsersAddModal.html','md')" class="btn btn-default transactions-btn panel-header-user-icon">Add</button>
-            <button ng-click="getAllUsers('applyFilter')" class="btn btn-default transactions-btn panel-header-button">Refresh</button>
+            <button ng-click="getAllUsers('applyFilter')" ng-disabled="loadingGroup"
+                    class="btn btn-default transactions-btn panel-header-button">Refresh</button>
         </div>
     </div>
     <div class="panel-body">
