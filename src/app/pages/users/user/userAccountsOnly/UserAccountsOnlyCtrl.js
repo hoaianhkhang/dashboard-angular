@@ -167,5 +167,9 @@
             });
         };
 
+        $scope.goToUserTransactions = function (account) {
+            $location.path('user/' + vm.uuid + '/transactions').search({filterByAccount: account.reference});
+        };
+
     }
 })();
