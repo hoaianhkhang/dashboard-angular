@@ -9,35 +9,24 @@
                               localStorageManagement,$location,errorHandler,userVerification,_) {
 
         var vm = this;
-        vm.user = {};
         vm.token = localStorageManagement.getValue('TOKEN');
+        $scope.user = {};
         $scope.verifyingEmail = false;
         $rootScope.$pageFinishedLoading = false;
 
         vm.checkIfUserVerified = function(){
             userVerification.verify(function(err,verified){
                 if(verified){
-                    $rootScope.userFullyVerified = true;
                     $location.path('/welcome_to_rehive');
                 } else {
-                    $rootScope.$pageFinishedLoading = true;
+                    vm.getUserInfo();
                 }
             });
         };
         vm.checkIfUserVerified();
 
         $scope.verifyUser = function(){
-            $scope.verifyingEmail = true;
-            userVerification.verify(function(err,verified){
-                if(verified){
-                    $scope.verifyingEmail = false;
-                    $rootScope.userFullyVerified = true;
-                    $location.path('/welcome_to_rehive');
-                } else {
-                    $scope.verifyingEmail = false;
-                    toastr.error('Please verify your account');
-                }
-            });
+            $location.path('/welcome_to_rehive');
         };
 
         vm.getUserInfo = function(){
@@ -48,17 +37,17 @@
                 }
             }).then(function (res) {
                 if (res.status === 200) {
-                    vm.user = res.data.data;
+                    $scope.user = res.data.data;
+                    $rootScope.$pageFinishedLoading = true;
                 }
             }).catch(function (error) {
                 errorHandler.evaluateErrors(error.data);
                 errorHandler.handleErrors(error);
             });
         };
-        vm.getUserInfo();
 
         $scope.resendEmail = function(){
-            $http.post(environmentConfig.API + '/auth/email/verify/resend/',{email: vm.user.email,company: vm.user.company}, {
+            $http.post(environmentConfig.API + '/auth/email/verify/resend/',{email: $scope.user.email,company: $scope.user.company}, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': vm.token
@@ -78,7 +67,6 @@
             $rootScope.gotToken = false;
             $rootScope.securityConfigured = true;
             $rootScope.pageTopObj = {};
-            $rootScope.userFullyVerified = false;
             localStorageManagement.deleteValue('TOKEN');
             $location.path('/login');
         };

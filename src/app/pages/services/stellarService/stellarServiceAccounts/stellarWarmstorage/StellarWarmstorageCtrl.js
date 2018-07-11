@@ -366,7 +366,7 @@
 
         $scope.getLatestWarmstorageTransactions = function(applyFilter){
             if(vm.token) {
-
+                $scope.loadingWarmstorage =  true;
                 $scope.showingWarmstorageFilters = false;
 
                 $scope.transactionsWarmstorageStateMessage = '';

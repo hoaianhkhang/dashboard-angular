@@ -11,7 +11,8 @@
           <exchange-filters></exchange-filters>
         </div>
       </div>
-      <button ng-click="getQuotesList('applyFilter')" class="btn btn-default transactions-btn panel-header-button">Refresh</button>
+      <button ng-click="getQuotesList('applyFilter')" ng-disabled="loadingQuotes"
+              class="btn btn-default transactions-btn panel-header-button">Refresh</button>
     </div>
   </div>
   <div class="panel-body">
