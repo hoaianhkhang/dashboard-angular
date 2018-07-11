@@ -39,6 +39,10 @@
         <div class="form-group">
             <label>Currency <span class="required-icon">*</span>
                 <span ng-hide="retrievedCreditUserObj.identifier">Please choose user first.</span>
+                <span class="no-accounts-available"
+                      ng-show="retrievedCreditUserObj.identifier && (creditCurrencyOptions.length == 0)">No currencies found.
+                    <span ng-click="goToAddCurrencyModal()"> Please add a currency.</span>
+                </span>
             </label>
             <br>
             <select class="form-control pointer" ng-model="creditTransactionData.currency" ng-change="creditCurrencySelected(creditTransactionData)" ng-disabled="!retrievedCreditUserObj.identifier"

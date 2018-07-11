@@ -14,7 +14,6 @@
         $scope.editingTierLimits = false;
         vm.groupName = $stateParams.groupName;
         $scope.editTierLimit = {};
-        $scope.txTypeOptions = ['Credit','Debit'];
         $scope.typeOptions = ['Maximum','Maximum per day','Maximum per month','Minimum','Overdraft'];
         $scope.loadingSubtypes = false;
         vm.updatedTierLimit = {};
@@ -77,7 +76,6 @@
                     res.data.data.currency = vm.returnCurrencyObj(res.data.data.currency);
                     $scope.editTierLimit = res.data.data;
                     $scope.editTierLimit.value = currencyModifiers.convertFromCents($scope.editTierLimit.value,$scope.editTierLimit.currency.divisibility);
-                    $scope.editTierLimit.tx_type == 'credit' ? $scope.editTierLimit.tx_type = 'Credit' : $scope.editTierLimit.tx_type = 'Debit';
                     $scope.getSubtypesArray($scope.editTierLimit,'editing');
                 }
             }).catch(function (error) {
