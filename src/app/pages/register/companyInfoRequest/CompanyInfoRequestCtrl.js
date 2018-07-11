@@ -5,7 +5,7 @@
         .controller('CompanyInfoRequestCtrl', CompanyInfoRequestCtrl);
 
     /** @ngInject */
-    function CompanyInfoRequestCtrl($rootScope,$scope,$http,toastr,localStorageManagement,environmentConfig,$location,errorHandler,userVerification) {
+    function CompanyInfoRequestCtrl($rootScope,$scope,$http,toastr,localStorageManagement,environmentConfig,$location,errorHandler) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
@@ -15,7 +15,6 @@
         };
 
         $scope.goToNextView = function(){
-            $rootScope.userFullyVerified = true;
             $location.path('company/setup/initial');
         };
 
@@ -31,16 +30,7 @@
                         if(res.data.data && res.data.data.name){
                             $rootScope.pageTopObj.companyObj = {};
                             $rootScope.pageTopObj.companyObj = res.data.data;
-                            userVerification.verify(function(err,verified){
-                                if(verified){
-                                    $rootScope.userFullyVerified = true;
-                                    $location.path('company/setup/initial');
-                                } else {
-                                    $location.path('/verification');
-                                    toastr.error('Please verify your account');
-                                    $rootScope.$pageFinishedLoading = true;
-                                }
-                            });
+                            $location.path('company/setup/initial');
                         } else {
                             $rootScope.$pageFinishedLoading = true;
                         }
@@ -68,17 +58,8 @@
                 if (res.status === 200) {
                     $rootScope.pageTopObj.companyObj = {};
                     $rootScope.pageTopObj.companyObj = res.data.data;
-                    userVerification.verify(function(err,verified){
-                        if(verified){
-                            $rootScope.userFullyVerified = true;
-                            toastr.success('You have successfully updated the company info');
-                            $location.path('company/setup/initial');
-                        } else {
-                            $location.path('/verification');
-                            toastr.error('Please verify your account');
-                            $rootScope.$pageFinishedLoading = true;
-                        }
-                    });
+                    toastr.success('You have successfully updated the company info');
+                    $location.path('company/setup/initial');
                 }
             }).catch(function (error) {
                 $rootScope.$pageFinishedLoading = true;

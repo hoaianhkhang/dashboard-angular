@@ -10,7 +10,8 @@
                     <stellar-hotwallet-transactions-filters></stellar-hotwallet-transactions-filters>
                 </div>
             </div>
-            <button ng-click="refreshHotwalletPage()" class="btn btn-default transactions-btn panel-header-button">Refresh</button>
+            <button ng-click="refreshHotwalletPage()" ng-disabled="loadingHotwalletTransactions"
+                    class="btn btn-default transactions-btn panel-header-button">Refresh</button>
         </div>
     </div>
     <div class="panel-body">

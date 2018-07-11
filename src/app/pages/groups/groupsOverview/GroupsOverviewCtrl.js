@@ -74,7 +74,7 @@
                         $scope.groups.forEach(function (element,index) {
                             if(element.name == group.name){
                                 element.totalUsers = res.data.data.total;
-                                element.activeUsers = res.data.data.active;
+                                element.deactiveUsers = res.data.data.archived;
                             }
                         });
                         if(last){

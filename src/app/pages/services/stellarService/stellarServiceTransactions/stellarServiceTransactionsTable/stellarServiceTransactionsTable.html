@@ -10,7 +10,8 @@
                     <stellar-service-transactions-filter></stellar-service-transactions-filter>
                 </div>
             </div>
-            <button ng-click="getLatestTransactions('applyFilter')" class="btn btn-default transactions-btn panel-header-button">Refresh</button>
+            <button ng-click="getLatestTransactions('applyFilter')" ng-disabled="loadingTransactions"
+                    class="btn btn-default transactions-btn panel-header-button">Refresh</button>
         </div>
     </div>
     <div class="panel-body">
