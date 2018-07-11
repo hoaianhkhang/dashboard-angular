@@ -33,18 +33,40 @@
             }
         };
 
+        vm.isJson = function (str) {
+            try {
+                JSON.parse(str);
+            } catch (e) {
+                return false;
+            }
+            return true;
+        };
+
         $scope.createTransaction = function () {
 
-            var api,sendTransactionData;
+            var api,sendTransactionData,creditMetadata,debitMetadata,transferCreditMetadata,transferDebitMetadata;
 
             if($scope.transactionType.tx_type == 'credit'){
+
+                if($scope.creditTransactionData.metadata){
+                    if(vm.isJson($scope.creditTransactionData.metadata)){
+                        creditMetadata =  JSON.parse($scope.creditTransactionData.metadata);
+                    } else {
+                        toastr.error('Incorrect metadata format');
+                        $scope.toggleConfirmTransaction();
+                        return false;
+                    }
+                } else {
+                    creditMetadata = {};
+                }
+
                 api = environmentConfig.API + '/admin/transactions/credit/';
                 sendTransactionData = {
                     user: $scope.creditTransactionData.user,
                     amount: currencyModifiers.convertToCents($scope.creditTransactionData.amount,$scope.creditTransactionData.currency.divisibility),
                     reference: $scope.creditTransactionData.reference,
                     status: $scope.creditTransactionData.status,
-                    metadata: $scope.creditTransactionData.metadata ? JSON.parse($scope.creditTransactionData.metadata) : {},
+                    metadata: creditMetadata,
                     currency: $scope.creditTransactionData.currency.code,
                     subtype: $scope.creditTransactionData.subtype ? $scope.creditTransactionData.subtype.name ? $scope.creditTransactionData.subtype.name : null : null,
                     note: $scope.creditTransactionData.note,
@@ -58,13 +80,26 @@
                 }
 
             } else if($scope.transactionType.tx_type == 'debit'){
+
+                if($scope.debitTransactionData.metadata){
+                    if(vm.isJson($scope.debitTransactionData.metadata)){
+                        debitMetadata =  JSON.parse($scope.debitTransactionData.metadata);
+                    } else {
+                        toastr.error('Incorrect metadata format');
+                        $scope.toggleConfirmTransaction();
+                        return false;
+                    }
+                } else {
+                    debitMetadata = {};
+                }
+
                 api = environmentConfig.API + '/admin/transactions/debit/';
                 sendTransactionData = {
                     user: $scope.debitTransactionData.user,
                     amount: currencyModifiers.convertToCents($scope.debitTransactionData.amount,$scope.debitTransactionData.currency.divisibility),
                     reference: $scope.debitTransactionData.reference,
                     status: $scope.debitTransactionData.status,
-                    metadata: $scope.debitTransactionData.metadata ? JSON.parse($scope.debitTransactionData.metadata) : {},
+                    metadata: debitMetadata,
                     currency: $scope.debitTransactionData.currency.code,
                     subtype: $scope.debitTransactionData.subtype ? $scope.debitTransactionData.subtype.name ? $scope.debitTransactionData.subtype.name : null : null,
                     note: $scope.debitTransactionData.note,
@@ -78,6 +113,31 @@
                 }
 
             } else if($scope.transactionType.tx_type == 'transfer'){
+
+                if($scope.transferTransactionData.credit_metadata){
+                    if(vm.isJson($scope.transferTransactionData.credit_metadata)){
+                        transferCreditMetadata =  JSON.parse($scope.transferTransactionData.credit_metadata);
+                    } else {
+                        toastr.error('Incorrect sender metadata format');
+                        $scope.toggleConfirmTransaction();
+                        return false;
+                    }
+                } else {
+                    transferCreditMetadata = {};
+                }
+
+                if($scope.transferTransactionData.debit_metadata){
+                    if(vm.isJson($scope.transferTransactionData.debit_metadata)){
+                        transferDebitMetadata =  JSON.parse($scope.transferTransactionData.debit_metadata);
+                    } else {
+                        toastr.error('Incorrect recipient metadata format');
+                        $scope.toggleConfirmTransaction();
+                        return false;
+                    }
+                } else {
+                    transferDebitMetadata = {};
+                }
+
                 api = environmentConfig.API + '/admin/transactions/transfer/';
                 sendTransactionData = {
                     user: $scope.transferTransactionData.user,
@@ -87,7 +147,9 @@
                     debit_account: $scope.transferTransactionData.account.reference,
                     credit_account: $scope.transferTransactionData.credit_account.reference,
                     debit_reference: $scope.transferTransactionData.debit_reference,
-                    credit_reference: $scope.transferTransactionData.credit_reference
+                    credit_reference: $scope.transferTransactionData.credit_reference,
+                    debit_metadata: transferDebitMetadata,
+                    credit_metadata: transferCreditMetadata
 
                 };
 
