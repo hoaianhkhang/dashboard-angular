@@ -11,7 +11,23 @@
         vm.user = user;
         vm.token = localStorageManagement.getValue('TOKEN');
         $scope.groupForReassigning = {};
+        $scope.decisionMadeToChangeGroup = false;
+        $scope.oldGroup = {};
+        $scope.userEmail = '';
+        $scope.sameGroup = true;
         $scope.groups = [];
+
+        $scope.checkIfNewGroup = function () {
+            if($scope.oldGroup.name == $scope.groupForReassigning.name){
+                $scope.sameGroup = true;
+            } else {
+                $scope.sameGroup = false;
+            }
+        };
+
+        $scope.decisionMadeToChangeGroupFunction = function () {
+            $scope.decisionMadeToChangeGroup = !$scope.decisionMadeToChangeGroup;
+        };
 
         vm.getUser = function(){
             if(vm.token) {
@@ -23,6 +39,8 @@
                 }).then(function (res) {
                     if (res.status === 200) {
                         vm.user = res.data.data.results[0];
+                        $scope.userEmail = vm.user.email;
+                        $scope.oldGroup = vm.user.groups[0];
                     }
                 }).catch(function (error) {
                     errorHandler.evaluateErrors(error.data);
