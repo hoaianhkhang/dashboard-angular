@@ -122,7 +122,7 @@
                 <p class="text-subtle">Account: </p>
             </div>
             <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 no-right-padding">
-                <p ng-bind="transaction.account"></p>
+                <a class="pointer" ng-click="goToUserAccount(transaction)" ng-bind="transaction.account"></a>
             </div>
         </div>
         <div class="row">
