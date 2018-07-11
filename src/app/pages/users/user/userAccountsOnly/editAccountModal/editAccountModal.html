@@ -26,12 +26,12 @@
                 </select>
                 <p>Currencies selected:
                     <span ng-repeat="currency in newAccountCurrencies.list | orderBy: 'code'">
-                    {{$last ? ' ' + currency.code : currency.code + ',' }}
+                    {{$last ? '' + currency.code : currency.code + ',&nbsp;' }}
                 </span>
                 </p>
                 <p>Currencies already selected:
                     <span ng-repeat="currencyObj in currenciesList | orderBy: 'currency.code'">
-                    {{$last ? ' ' + currencyObj.currency.code : currencyObj.currency.code + ','}}
+                    {{$last ? '' + currencyObj.currency.code : currencyObj.currency.code + ',&nbsp;'}}
                 </span>
                 </p>
             </div>

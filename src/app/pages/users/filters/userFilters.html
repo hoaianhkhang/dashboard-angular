@@ -26,6 +26,21 @@
                 </div>
             </div>
         </div>
+        <div id="archivedFilter">
+            <div>
+                <label class="checkbox-inline custom-checkbox nowrap">
+                    <input type="checkbox" ng-model="filtersObj.archivedFilter">
+                    <span>Archived</span>
+                </label>
+            </div>
+            <div ng-if="filtersObj.archivedFilter" class="row divider-top-6">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 date-filter-view">
+                    <select class="form-control pointer" ng-model="applyFiltersObj.archivedFilter.selectedArchivedFilter"
+                            ng-options="archivedStatus for archivedStatus in archivedOptions">
+                    </select>
+                </div>
+            </div>
+        </div>
         <div id="createdFilter">
             <div>
                 <label class="checkbox-inline custom-checkbox nowrap">

@@ -32,7 +32,7 @@
                         </div>
                         <p class="new-company-setup-selected-currencies" ng-show="currenciesToAdd.length > 0">Currencies selected:
                             <span ng-repeat="currency in currenciesToAdd | orderBy: 'code'">
-                                {{$last ? '&nbsp;' + currency.code : currency.code + ',&nbsp;' }}
+                                {{$last ? '' + currency.code : currency.code + ',&nbsp;' }}
                             </span>
                         </p>
                         <button ng-show="currenciesToAdd.length > 0" ng-click="addCurrencies(currenciesToAdd)" ng-disabled="currenciesToAdd.length == 0"

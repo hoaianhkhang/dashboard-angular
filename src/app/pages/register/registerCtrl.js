@@ -39,7 +39,6 @@
                         localStorageManagement.setValue('TOKEN','Token ' + res.data.data.token);
                         $location.path('/verification');
                         $rootScope.$pageFinishedLoading = true;
-                        $rootScope.userFullyVerified = false;
                     } else {
 
                     }
