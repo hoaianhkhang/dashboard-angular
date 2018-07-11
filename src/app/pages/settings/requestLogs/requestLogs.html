@@ -16,7 +16,8 @@
                     <request-logs-filters></request-logs-filters>
                 </div>
             </div>
-            <button ng-click="getRequestLogs('applyFilter')" class="btn btn-default transactions-btn panel-header-button">Refresh</button>
+            <button ng-click="getRequestLogs('applyFilter')" ng-disabled="loadingRequestLogs"
+                    class="btn btn-default transactions-btn panel-header-button">Refresh</button>
         </div>
     </div>
     <div class="panel-body">
