@@ -13,6 +13,7 @@
         $rootScope.shouldBeBlue = 'Users';
         vm.currenciesList = JSON.parse($window.sessionStorage.currenciesList || '[]');
         vm.uuid = $stateParams.uuid;
+        vm.userTransactionsFilterParams = $location.search();
         $scope.showingFilters = false;
         $scope.accountFilterOptions = [];
         $scope.dateFilterOptions = ['Is in the last','In between','Is equal to','Is after','Is before'];
@@ -409,7 +410,17 @@
                 });
             }
         };
-        $scope.getLatestTransactions();
+        if(Object.keys(vm.userTransactionsFilterParams).length == 0){
+            $scope.getLatestTransactions();
+        }
+
+        if(vm.userTransactionsFilterParams.filterByAccount){
+            $scope.filtersObj.accountFilter = true;
+            $scope.applyFiltersObj.accountFilter.selectedAccount = vm.userTransactionsFilterParams.filterByAccount;
+            $scope.getLatestTransactions();
+            $location.search('filterByAccount',null);
+            $location.replace();
+        }
 
         $scope.getUsersEmailTypeahead = typeaheadService.getUsersEmailTypeahead();
 
@@ -436,7 +447,7 @@
         });
 
         $scope.goToNewTransactionModal = function () {
-            $location.path('/transactions/history').search({userEmail:  ($scope.user.email).toString()});
+            $location.path('/transactions/history').search({userEmail: ($scope.user.email).toString()});
         };
 
     }

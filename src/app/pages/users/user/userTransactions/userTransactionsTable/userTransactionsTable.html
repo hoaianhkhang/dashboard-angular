@@ -9,7 +9,8 @@
             </div>
             <button ng-csv="getCSVArray" csv-header="getHeader()" filename="{{getFileName}}"
                     class="btn btn-default transactions-btn panel-header-transaction-export">Export</button>
-            <button ng-click="getLatestTransactions('applyFilter')" class="btn btn-default transactions-btn panel-header-user-icon">Refresh</button>
+            <button ng-click="getLatestTransactions('applyFilter')" ng-disabled="loadingTransactions"
+                    class="btn btn-default transactions-btn panel-header-user-icon">Refresh</button>
             <button ng-click="goToNewTransactionModal()"
                     class="btn btn-success transactions-btn panel-transaction-newTx-button">New</button>
         </div>
