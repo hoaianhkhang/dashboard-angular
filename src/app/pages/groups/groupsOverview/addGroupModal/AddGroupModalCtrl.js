@@ -4,7 +4,7 @@
     angular.module('BlurAdmin.pages.groups.overview')
         .controller('AddGroupsModalCtrl', AddGroupsModalCtrl);
 
-    function AddGroupsModalCtrl($scope,$uibModalInstance,localStorageManagement,environmentConfig,errorHandler,$http) {
+    function AddGroupsModalCtrl($scope,$uibModalInstance,$filter,localStorageManagement,environmentConfig,errorHandler,$http) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
@@ -14,6 +14,9 @@
         $scope.groupNameToLowercase = function () {
             if($scope.groupsParams.name){
                 $scope.groupsParams.name = $scope.groupsParams.name.toLowerCase();
+                $scope.groupsParams.label = $filter('capitalizeWord')($scope.groupsParams.name);
+            } else {
+                $scope.groupsParams.label = '';
             }
         };
 

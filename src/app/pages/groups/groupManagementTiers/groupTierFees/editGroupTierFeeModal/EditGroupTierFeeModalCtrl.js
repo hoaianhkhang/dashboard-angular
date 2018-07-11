@@ -15,7 +15,6 @@
         $scope.editingTierFees = false;
         $scope.loadingSubtypes = false;
         $scope.editTierFee = {};
-        $scope.txTypeOptions = ['Credit','Debit'];
         vm.updatedTierFee = {};
 
         vm.getCompanyCurrencies = function(){
@@ -76,7 +75,6 @@
                     res.data.data.currency = vm.returnCurrencyObj(res.data.data.currency);
                     $scope.editTierFee = res.data.data;
                     $scope.editTierFee.value = currencyModifiers.convertFromCents($scope.editTierFee.value,$scope.editTierFee.currency.divisibility);
-                    $scope.editTierFee.tx_type == 'credit' ? $scope.editTierFee.tx_type = 'Credit' : $scope.editTierFee.tx_type = 'Debit';
                     $scope.getSubtypesArray($scope.editTierFee,'editing');
                 }
             }).catch(function (error) {
@@ -96,8 +94,8 @@
                 vm.updatedTierFee.subtype = '';
             }
 
-            if(vm.updatedTierFee.currency){
-                vm.updatedTierFee.currency = vm.updatedTierFee.currency.code;
+            if($scope.editTierFee.currency){
+                vm.updatedTierFee.currency = $scope.editTierFee.currency.code;
             }
 
             if($scope.editTierFee.value){

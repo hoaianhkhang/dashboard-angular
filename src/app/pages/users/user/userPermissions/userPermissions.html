@@ -1,32 +1,40 @@
-<div ng-hide="loadingPermissions">
-    <div class="setting-bank-accounts panel">
-        <div class="panel-heading">
-            <span class="user-details-panel-title">User permissions for {{userData.email}}</span>
-        </div>
-        <div class="panel-body">
-            <div class="permissions-table divider-20" ng-repeat="typeOption in typeOptions">
-                <table class="table">
-                    <tr>
-                        <th>{{typeOption.type}}</th>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="row">
-                                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6" ng-repeat="level in typeOption.levels">
+<div class="user-details-view" ng-hide="loadingPermissions">
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="panel" ng-repeat="(key,value) in totalPermissionsObj">
+                <div>
+                    <div class="group-permissions-table">
+                        <table class="table">
+                            <tr>
+                                <th width="50%">
+                                    {{totalPermissionsObj[key].permissionsName}}
+                                    <input type="checkbox" class="custom-rehive-checkbox" ng-model="totalPermissionsObj[key].enableAll" ng-click="toggleAllPermissions(key,totalPermissionsObj[key].enableAll)">
+                                </th>
+                                <th width="10%" class="text-center">View</th>
+                                <th width="10%" class="text-center">Add</th>
+                                <th width="10%" class="text-center">Change</th>
+                                <th width="10%" class="text-center">Delete</th>
+                                <th width="10%" class="text-center">All</th>
+                            </tr>
+                            <tr ng-repeat="permission in totalPermissionsObj[key].permissions">
+                                <td>
+                                    <p class="no-margin" ng-bind="permission.type"></p>
+                                </td>
+                                <td class="text-center" ng-repeat="level in permission.levels">
                                     <label  class="checkbox-inline custom-checkbox nowrap">
-                                        <input type="checkbox" ng-change="trackPermissions(typeOption,level)" ng-model="level.enabled"
+                                        <input type="checkbox" ng-change="trackPermissions(permission,level,key)" ng-model="level.enabled"
                                                ng-checked="level.enabled">
-                                        <span class="account-settings-span">{{level.name}}</span>
+                                        <span class="account-settings-span"></span>
                                     </label>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
             </div>
-            <button ng-click="savePermissionsProcess()" class="pull-right dashboard-btn btn btn-primary">Save</button>
         </div>
     </div>
+    <button ng-click="savePermissionsProcess()" class="pull-right btn dashboard-btn btn-primary">Save</button>
 </div>
 <div ba-panel ng-show="loadingPermissions">
     <loading-image></loading-image>

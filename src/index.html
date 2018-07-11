@@ -30,7 +30,7 @@
 <div class="body-bg"></div>
 <main ng-if="$pageFinishedLoading" ng-class="{ 'menu-collapsed': $baSidebarService.isMenuCollapsed() }">
 
-  <div ng-show="gotToken && securityConfigured && userFullyVerified">
+  <div ng-show="gotToken && securityConfigured">
   <ba-sidebar></ba-sidebar>
   <page-top></page-top>
 
