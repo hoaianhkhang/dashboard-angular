@@ -5,12 +5,13 @@
     <div class="panel-body">
         <table class="table">
             <tr>
-                <td width="25%" class="rehive-table-row-first-child" title="{{userGroups.name}}">
-                    {{userGroups.name}}
+                <td width="75%" class="rehive-table-row-first-child" title="{{userGroups.name}}">
+                    <span ng-show="userGroups.name">{{userGroups.name}}</span>
+                    <i ng-hide="userGroups.name">No user group selected</i>
                 </td>
                 <td class="rehive-table-row-last-child pull-right">
                     <a ng-click="openEditUserGroupModal('app/pages/users/user/userDetails/userGroups/editUserGroupModal/editUserGroupModal.html','md',userGroups)"
-                       class="pull-right pointer user-address-edit">Change</a>
+                       class="pull-right pointer user-address-edit">Update</a>
                 </td>
             </tr>
         </table>

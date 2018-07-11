@@ -2,15 +2,12 @@
     'use strict';
 
     angular.module('BlurAdmin.pages.settings', [
-        'BlurAdmin.pages.settings.accountInfo',
         'BlurAdmin.pages.settings.allowedCountries',
-        'BlurAdmin.pages.settings.adminEmails',
         'BlurAdmin.pages.settings.companyInfo',
         'BlurAdmin.pages.settings.companySettings',
         'BlurAdmin.pages.settings.bankAccounts',
         'BlurAdmin.pages.settings.notifications',
         'BlurAdmin.pages.settings.requestLogs',
-        'BlurAdmin.pages.settings.requestLog',
         'BlurAdmin.pages.settings.security'
     ])
         .config(routeConfig);

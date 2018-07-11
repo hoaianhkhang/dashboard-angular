@@ -330,7 +330,7 @@
 
         $scope.getLatestHotwalletTransactions = function(applyFilter){
             if(vm.token) {
-
+                $scope.loadingHotwalletTransactions =  true;
                 $scope.showingHotwalletFilters = false;
 
                 $scope.transactionsHotwalletStateMessage = '';
