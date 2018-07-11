@@ -51,18 +51,8 @@
                             $rootScope.$pageFinishedLoading = true;
                             $location.path('/authentication/multi-factor/verify/' + enabledObj.key).search({prevUrl: 'login'});
                         } else {
-                            $rootScope.$pageFinishedLoading = false;
-                            userVerification.verify(function(err,verified){
-                                if(verified){
-                                    $rootScope.userFullyVerified = true;
-                                    $rootScope.$pageFinishedLoading = true;
-                                    $location.path('/currencies');
-                                } else {
-                                    $rootScope.userFullyVerified = false;
-                                    $rootScope.$pageFinishedLoading = false;
-                                    $location.path('/verification');
-                                }
-                            });
+                            $rootScope.$pageFinishedLoading = true;
+                            $location.path('/currencies');
                         }
 
                     }

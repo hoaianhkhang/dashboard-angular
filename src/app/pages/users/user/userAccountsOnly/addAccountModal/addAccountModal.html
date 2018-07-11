@@ -28,7 +28,7 @@
                     Add one by going to the <a href="/#/currencies" target="_blank">currencies page</a>.</p>
                 <p ng-show="currenciesList.length > 0 || addingUserAccount">Currencies selected:
                     <span ng-repeat="currency in currenciesForNewAccount.list | orderBy: 'code'">
-                    {{$last ? ' ' + currency.code : currency.code + ',' }}
+                    {{$last ? '' + currency.code : currency.code + ',&nbsp;' }}
                 </span>
                 </p>
             </div>
