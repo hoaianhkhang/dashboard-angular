@@ -281,9 +281,13 @@ input.custom-rehive-checkbox:disabled{
 }
 
 .user-account-panel-heading{
+  & > .user-account-view-transactions{
+    font-size: 14px;
+    margin: 18px 25px 0 0;
+  }
   & > .user-account-edit-link{
     font-size: 14px;
-    margin-top: 20px;
+    margin-top: 18px;
   }
   & > .user-account-panel-title{
     display: inline-block;
