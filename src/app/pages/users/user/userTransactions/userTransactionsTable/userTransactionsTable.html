@@ -9,7 +9,8 @@
             </div>
             <button ng-csv="getCSVArray" csv-header="getHeader()" filename="{{getFileName}}"
                     class="btn btn-default transactions-btn panel-header-transaction-export">Export</button>
-            <button ng-click="getLatestTransactions('applyFilter')" class="btn btn-default transactions-btn panel-header-user-icon">Refresh</button>
+            <button ng-click="getLatestTransactions('applyFilter')" ng-disabled="loadingTransactions"
+                    class="btn btn-default transactions-btn panel-header-user-icon">Refresh</button>
             <button ng-click="goToNewTransactionModal()"
                     class="btn btn-success transactions-btn panel-transaction-newTx-button">New</button>
         </div>
@@ -25,6 +26,7 @@
                     <th>Amount</th>
                     <th>Fee</th>
                     <th>Status</th>
+                    <th>Accounts</th>
                     <th class="align-right">Date</th>
                 </tr>
                 <tr ng-repeat="transaction in transactions | orderBy: orderByFunction" data-toggle="modal"
@@ -38,6 +40,7 @@
                     <td><div title="{{transaction.fee | currencyModifiersFilter: transaction.currency.divisibility}}"
                              class="transactions-list-element" ng-bind="transaction.fee | currencyModifiersFilter: transaction.currency.divisibility"></div></td>
                     <td><div title="{{transaction.status | capitalizeWord}}" class="transactions-list-element" ng-bind="transaction.status | capitalizeWord"></div></td>
+                    <td><div title="{{transaction.account}}" class="transactions-list-element" ng-bind="transaction.account || 'None'"></div></td>
                     <td class="align-right"><div title="{{transaction.created | date:'mediumDate'}} {{transaction.created | date:'shortTime'}}">
                         {{transaction.created | date:'mediumDate'}} {{transaction.created | date:'shortTime'}}</div></td>
                 </tr>
