@@ -11,6 +11,7 @@
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
         vm.uuid = $stateParams.uuid;
+        $scope.userGroups = {};
         $scope.loadingUserGroup = true;
 
         vm.getUserGroups = function () {
@@ -24,7 +25,9 @@
                 }).then(function (res) {
                     $scope.loadingUserGroup = false;
                     if (res.status === 200) {
-                        $scope.userGroups = res.data.data.results[0];
+                        if(res.data.data.results.length > 0){
+                            $scope.userGroups = res.data.data.results[0];
+                        }
                     }
                 }).catch(function (error) {
                     $scope.loadingUserGroup = false;
