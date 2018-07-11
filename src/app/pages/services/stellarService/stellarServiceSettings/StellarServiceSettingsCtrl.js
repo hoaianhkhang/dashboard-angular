@@ -40,15 +40,6 @@
         };
         vm.getCompanyDetails();
 
-        $scope.goToTransactionsWebhooks = function(secret){
-            $state.go('webhooks.list',{"secret": secret,"webhookUrl": vm.webhookUrl});
-        };
-
-
-        $scope.goToGeneralWebhooks = function(secret){
-            $state.go('webhooks.list',{"secret": secret});
-        };
-
     }
 
 })();
