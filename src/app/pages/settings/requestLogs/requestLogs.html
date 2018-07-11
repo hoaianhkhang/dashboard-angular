@@ -16,7 +16,8 @@
                     <request-logs-filters></request-logs-filters>
                 </div>
             </div>
-            <button ng-click="getRequestLogs('applyFilter')" class="btn btn-default transactions-btn panel-header-button">Refresh</button>
+            <button ng-click="getRequestLogs('applyFilter')" ng-disabled="loadingRequestLogs"
+                    class="btn btn-default transactions-btn panel-header-button">Refresh</button>
         </div>
     </div>
     <div class="panel-body">
@@ -31,7 +32,7 @@
                     </thead>
                     <tbody>
                     <tr ng-repeat="requestLog in requestLogs | orderBy:'-created'" data-toggle="modal"
-                        class="editable-row center pointer user-details-table-hover" ng-click="goToRequestLog(requestLog)">
+                        class="editable-row center pointer user-details-table-hover" ng-click="goToRequestLog('app/pages/settings/requestLogs/requestLogModal/requestLogModal.html','md',requestLog)">
                         <td class="transactions-list-element" ng-repeat="header in requestHeaderColumns"
                             ng-if="header.visible" ng-bind="requestLog[header.fieldName]"></td>
                     </tr>

@@ -139,6 +139,7 @@
                         delete $scope.formatted.metadata;
                         delete $scope.transaction.metadata;
                     } else {
+                        $scope.transaction = res.data.data;
                         $scope.transaction.metadata = metaData;
                         $scope.formatted.metadata = metadataTextService.convertToText(metaData);
                     }
@@ -170,6 +171,10 @@
             $uibModalInstance.close();
             $window.open('/#/user/' + $scope.transaction.user.identifier + '/details','_blank');
         };
+        
+        $scope.goToUserAccount = function (transaction) {
+            $window.open('/#/user/' + $scope.transaction.user.identifier + '/accounts?searchAccount=' + transaction.account,'_blank');
+        }
 
 
     }
