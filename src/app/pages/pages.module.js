@@ -27,7 +27,6 @@
       'BlurAdmin.pages.companyInfoRequest',
       'BlurAdmin.pages.welcomeToRehive',
       'BlurAdmin.pages.newCompanySetup',
-      'BlurAdmin.pages.buildAFintechApp',
       'BlurAdmin.pages.initialSetupScreen',
       'BlurAdmin.pages.accountInfo'
   ])
