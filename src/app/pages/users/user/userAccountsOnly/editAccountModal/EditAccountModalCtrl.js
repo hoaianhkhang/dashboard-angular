@@ -10,7 +10,7 @@
         var vm = this;
         vm.uuid = $stateParams.uuid;
         $scope.userAccount = account;
-        $scope.currenciesList = currenciesList;
+        $scope.currenciesList = currenciesList.slice();
         vm.updatedUserAddress = {};
         $scope.editUserAddress = {};
         $scope.editingUserAddress = true;
@@ -24,8 +24,21 @@
                     enabled: true,
                     page_size: 250
                 }}).then(function (res) {
-                    $scope.currencyOptions = res.results;
-                    $scope.$apply();
+                    if($scope.currenciesList.length == 0){
+                        $scope.currencyOptions = res.results;
+                        $scope.$apply();
+                    } else {
+                        $scope.currenciesList.forEach(function (currencyObj) {
+                            var index = res.results.findIndex(function (element) {
+                                return element.code == currencyObj.currency.code;
+                            });
+                            if(index >=0){
+                                res.results.splice(index,1);
+                            }
+                        });
+                        $scope.currencyOptions = res.results;
+                        $scope.$apply();
+                    }
                 }, function (error) {
                     errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);

@@ -558,7 +558,7 @@
                     group: group.name
                 }}).then(function (res) {
                     $scope.totalUsersCount = res.total;
-                    $scope.activeUsersCount = res.active;
+                    $scope.deactiveUsersCount = res.archived;
                     $scope.loadingGroup = false;
                     $scope.$apply();
                 }, function (error) {

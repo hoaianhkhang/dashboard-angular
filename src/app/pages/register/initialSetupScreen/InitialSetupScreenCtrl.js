@@ -15,7 +15,6 @@
         $scope.showDefaultSetup = false;
 
         $scope.goToNextView=function () {
-            $rootScope.userFullyVerified = true;
             $location.path('company/setup/groups');
         };
 

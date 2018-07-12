@@ -5,6 +5,7 @@
         .controller('CompanyInfoRequestCtrl', CompanyInfoRequestCtrl);
 
     /** @ngInject */
+
     function CompanyInfoRequestCtrl($rootScope,Rehive,$scope,toastr,localStorageManagement,
                                     $location,errorHandler,userVerification) {
 
@@ -16,7 +17,6 @@
         };
 
         $scope.goToNextView = function(){
-            $rootScope.userFullyVerified = true;
             $location.path('company/setup/initial');
         };
 
@@ -26,18 +26,8 @@
                     if(res && res.name){
                         $rootScope.pageTopObj.companyObj = {};
                         $rootScope.pageTopObj.companyObj = res;
-                        userVerification.verify(function(err,verified){
-                            if(verified){
-                                $rootScope.userFullyVerified = true;
-                                $location.path('company/setup/initial');
-                                $scope.$apply();
-                            } else {
-                                $location.path('/verification');
-                                toastr.error('Please verify your account');
-                                $rootScope.$pageFinishedLoading = true;
-                                $scope.$apply();
-                            }
-                        });
+                        $location.path('company/setup/initial');
+                        $scope.$apply();
                     } else {
                         $rootScope.$pageFinishedLoading = true;
                         $scope.$apply();
@@ -60,19 +50,9 @@
             Rehive.admin.company.update(company).then(function (res) {
                 $rootScope.pageTopObj.companyObj = {};
                 $rootScope.pageTopObj.companyObj = res;
-                userVerification.verify(function(err,verified){
-                    if(verified){
-                        $rootScope.userFullyVerified = true;
-                        toastr.success('You have successfully updated the company info');
-                        $location.path('company/setup/initial');
-                        $scope.$apply();
-                    } else {
-                        $location.path('/verification');
-                        toastr.error('Please verify your account');
-                        $rootScope.$pageFinishedLoading = true;
-                        $scope.$apply();
-                    }
-                });
+                toastr.success('You have successfully updated the company info');
+                $location.path('company/setup/initial');
+                $scope.$apply();
             }, function (error) {
                 $rootScope.$pageFinishedLoading = true;
                 errorHandler.evaluateErrors(error);

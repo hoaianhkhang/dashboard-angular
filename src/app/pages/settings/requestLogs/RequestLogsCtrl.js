@@ -6,7 +6,7 @@
 
     /** @ngInject */
     function RequestLogsCtrl($scope,Rehive,localStorageManagement,errorHandler,
-                             typeaheadService,serializeFiltersService,$location,$filter) {
+                             typeaheadService,serializeFiltersService,$uibModal,$filter) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('token');
@@ -43,8 +43,7 @@
         };
 
         $scope.restoreColDefaults = function () {
-            var defaultVisibleHeader = ['Id','Path','Status code','Method',
-                'Created'];
+            var defaultVisibleHeader = ['Id','Path','Status code','Method','Created'];
 
             $scope.requestHeaderColumns.forEach(function (headerObj) {
                 if(defaultVisibleHeader.indexOf(headerObj.colName) > -1){
@@ -195,8 +194,19 @@
             };
         };
 
-        $scope.goToRequestLog = function (log) {
-            $location.path('/settings/request-log/' + log.id + '/');
+        $scope.goToRequestLog = function (page,size,log) {
+            vm.theModal = $uibModal.open({
+                animation: true,
+                templateUrl: page,
+                size: size,
+                controller: 'RequestLogModalCtrl',
+                scope: $scope,
+                resolve: {
+                    log: function () {
+                        return log;
+                    }
+                }
+            });
         };
 
         $scope.closeColumnFiltersBox = function () {

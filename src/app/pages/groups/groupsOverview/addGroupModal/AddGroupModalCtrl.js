@@ -4,7 +4,8 @@
     angular.module('BlurAdmin.pages.groups.overview')
         .controller('AddGroupsModalCtrl', AddGroupsModalCtrl);
 
-    function AddGroupsModalCtrl($scope,$uibModalInstance,localStorageManagement,Rehive,$filter,errorHandler) {
+
+    function AddGroupsModalCtrl($scope,Rehive,$uibModalInstance,$filter,localStorageManagement,errorHandler) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('token');

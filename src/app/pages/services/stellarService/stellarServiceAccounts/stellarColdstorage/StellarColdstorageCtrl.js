@@ -367,7 +367,7 @@
 
         $scope.getLatestColdstorageTransactions = function(applyFilter){
             if(vm.token) {
-
+                $scope.loadingColdstorage =  true;
                 $scope.showingColdstorageFilters = false;
 
                 $scope.transactionsColdstorageStateMessage = '';

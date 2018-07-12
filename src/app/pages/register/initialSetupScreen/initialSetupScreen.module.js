@@ -15,8 +15,12 @@
                         templateUrl: 'app/pages/register/initialSetupScreen/initialSetupScreen.html',
                         controller:'InitialSetupScreenCtrl'
                     }
+                },
+                title: 'Build a fintech app',
+                sidebarMeta: {
+                    order: 700
                 }
-            })
+            });
     }
 
 })();

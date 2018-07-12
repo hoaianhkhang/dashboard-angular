@@ -9,40 +9,30 @@
                               $location,errorHandler,userVerification) {
 
         var vm = this;
-        vm.user = {};
-        vm.token = localStorageManagement.getValue('token');
+        vm.token = localStorageManagement.getValue('TOKEN');
+        $scope.user = {};
         $scope.verifyingEmail = false;
         $rootScope.$pageFinishedLoading = false;
 
         vm.checkIfUserVerified = function(){
             userVerification.verify(function(err,verified){
                 if(verified){
-                    $rootScope.userFullyVerified = true;
                     $location.path('/welcome_to_rehive');
                 } else {
-                    $rootScope.$pageFinishedLoading = true;
+                    vm.getUserInfo();
                 }
             });
         };
         vm.checkIfUserVerified();
 
         $scope.verifyUser = function(){
-            $scope.verifyingEmail = true;
-            userVerification.verify(function(err,verified){
-                if(verified){
-                    $scope.verifyingEmail = false;
-                    $rootScope.userFullyVerified = true;
-                    $location.path('/welcome_to_rehive');
-                } else {
-                    $scope.verifyingEmail = false;
-                    toastr.error('Please verify your account');
-                }
-            });
+            $location.path('/welcome_to_rehive');
         };
 
         vm.getUserInfo = function(){
             Rehive.user.get().then(function(res){
-                vm.user = res;
+                $scope.user = res;
+                $rootScope.$pageFinishedLoading = true;
                 $scope.$apply();
             },function(error){
                 errorHandler.evaluateErrors(error);
@@ -50,12 +40,11 @@
                 $scope.$apply();
             });
         };
-        vm.getUserInfo();
 
         $scope.resendEmail = function(){
             Rehive.auth.email.resendEmailVerification({
-                email: vm.user.email,
-                company: vm.user.company
+                email: $scope.user.email,
+                company: $scope.user.company
             }).then(function(res){
                 toastr.success('Verification email has been re-sent');
                 $scope.$apply();
@@ -71,7 +60,6 @@
             $rootScope.gotToken = false;
             $rootScope.securityConfigured = true;
             $rootScope.pageTopObj = {};
-            $rootScope.userFullyVerified = false;
             localStorageManagement.deleteValue('TOKEN');
             localStorageManagement.deleteValue('token');
             $location.path('/login');

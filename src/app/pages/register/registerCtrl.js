@@ -36,8 +36,6 @@
                 $rootScope.pageTopObj.userInfoObj = res.user;
                 localStorageManagement.setValue('TOKEN','Token ' + res.token);
                 $location.path('/verification');
-                $rootScope.$pageFinishedLoading = true;
-                $rootScope.userFullyVerified = false;
                 $scope.$apply();
             }, function (error) {
                 $rootScope.$pageFinishedLoading = true;

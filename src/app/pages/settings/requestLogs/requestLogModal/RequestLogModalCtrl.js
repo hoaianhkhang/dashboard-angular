@@ -1,21 +1,21 @@
 (function () {
     'use strict';
 
-    angular.module('BlurAdmin.pages.settings.requestLog')
-        .controller('RequestLogCtrl', RequestLogCtrl);
+    angular.module('BlurAdmin.pages.settings.requestLogs')
+        .controller('RequestLogModalCtrl', RequestLogModalCtrl);
 
     /** @ngInject */
-    function RequestLogCtrl($scope,Rehive,$state,localStorageManagement,errorHandler,metadataTextService) {
+    function RequestLogModalCtrl($scope,Rehive,log,localStorageManagement,errorHandler,metadataTextService) {
         var vm = this;
-        vm.token = localStorageManagement.getValue('token');
-        vm.requestLogId = $state.params.logId;
+        vm.log = log;
+        vm.token = localStorageManagement.getValue('TOKEN');
         $scope.loadingRequestLog = true;
 
         $scope.getRequestLog = function () {
             $scope.loadingRequestLog = true;
 
             if(vm.token) {
-                Rehive.admin.requests.get({id: vm.requestLogId}).then(function (res) {
+                Rehive.admin.requests.get({id: vm.log.id}).then(function (res) {
                     $scope.loadingRequestLog = false;
                     $scope.requestLog = res;
                     $scope.params = metadataTextService.convertToText(res.params);

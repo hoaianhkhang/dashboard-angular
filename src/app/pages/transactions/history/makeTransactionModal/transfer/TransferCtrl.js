@@ -20,6 +20,7 @@
         $scope.senderCurrencyAccountsAvailable = true;
         $scope.recipientUserAccountsAvailable = true;
         $scope.recipientCurrencyAccountsAvailable = true;
+        $scope.showAdvancedTransferOption = false;
 
         $scope.transferTransactionData = {
             user: null,
@@ -29,7 +30,9 @@
             account: {},
             credit_account: {},
             debit_reference: null,
-            credit_reference: null
+            credit_reference: null,
+            debit_metadata: null,
+            credit_metadata: null
         };
 
         if($scope.newTransactionParams.userEmail){
@@ -262,6 +265,10 @@
                     $scope.$apply();
                 });
             }
+        };
+
+        $scope.displayAdvancedTransferOption = function () {
+            $scope.showAdvancedTransferOption = !$scope.showAdvancedTransferOption;
         };
 
         $scope.goToTransferUserAccountCreate = function (identifier) {

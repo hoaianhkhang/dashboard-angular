@@ -14,10 +14,9 @@
         vm.groupName = $stateParams.groupName;
         vm.token = localStorageManagement.getValue('token');
         $scope.tierFeesParams = {
-            tx_type: 'Credit',
+            tx_type: 'credit',
             subtype: ''
         };
-        $scope.txTypeOptions = ['Credit','Debit'];
 
         vm.getCompanyCurrencies = function(){
             if(vm.token){

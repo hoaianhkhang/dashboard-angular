@@ -6,7 +6,7 @@ var conf = require('./conf');
 var gulpNgConfig = require('gulp-ng-config');
 
 var $ = require('gulp-load-plugins')({
-  pattern: ['gulp-*','gulp-rev','gulp-rev-replace','main-bower-files', 'uglify-save-license', 'del']
+  pattern: ['gulp-*','gulp-rev','gulp-rev-rewrite','main-bower-files', 'uglify-save-license', 'del']
 });
 
 gulp.task('partials', function () {
@@ -57,7 +57,7 @@ gulp.task('html', ['inject', 'partials'], function () {
     .pipe(cssFilter.restore)
     .pipe(assets.restore())
     .pipe($.useref())
-    .pipe($.revReplace())
+    .pipe($.revRewrite())
     .pipe(htmlFilter)
     .pipe($.minifyHtml({
       empty: true,

@@ -11,6 +11,7 @@
         var vm = this;
         vm.token = localStorageManagement.getValue('token');
         vm.uuid = $stateParams.uuid;
+        $scope.userGroups = {};
         $scope.loadingUserGroup = true;
 
         vm.getUserGroups = function () {
@@ -18,7 +19,9 @@
                 $scope.loadingUserGroup = true;
                 Rehive.admin.users.groups.get(vm.uuid, {filters: {page_size: 250}}).then(function (res) {
                     $scope.loadingUserGroup = false;
-                    $scope.userGroups = res.results[0];
+                    if(res.results.length > 0){
+                        $scope.userGroups = res.results[0];
+                    }
                     $scope.$apply();
                 }, function (error) {
                     $scope.loadingUserGroup = false;

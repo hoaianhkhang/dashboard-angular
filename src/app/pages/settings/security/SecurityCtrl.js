@@ -119,10 +119,6 @@
             $scope.addingToken = false;
         };
 
-        $scope.changePassword = function(){
-            $location.path('/password/change');
-        };
-
         $scope.enableMultiFactorAuth = function(){
             $location.path('/authentication/multi-factor');
         };

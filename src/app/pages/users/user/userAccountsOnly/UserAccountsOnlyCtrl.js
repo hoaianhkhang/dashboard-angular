@@ -14,7 +14,7 @@
         vm.uuid = $stateParams.uuid;
         vm.reference = '';
         $scope.newAccountCurrencies = {list: []};
-        vm.createNewAccountRequest = $location.search();
+        vm.accountUrlParams = $location.search();
         $scope.loadingUserAccounts = true;
         $scope.optionsCode = '';
         $scope.optionsReference = '';
@@ -96,7 +96,9 @@
                 });
             }
         };
-        $scope.getUserAccounts();
+        if(Object.keys(vm.accountUrlParams).length == 0){
+            $scope.getUserAccounts();
+        }
 
         $scope.goToView = function(txType,currency,email,account){
             $location.path('/transactions/history').search({txType: txType,currencyCode: currency.code,emailUser: email,accountUser: account});
@@ -131,9 +133,16 @@
             });
         };
 
-        if(vm.createNewAccountRequest.accountAction == 'newAccount'){
+        if(vm.accountUrlParams.accountAction == 'newAccount'){
             $scope.openAddAccountModal('app/pages/users/user/userAccountsOnly/addAccountModal/addAccountModal.html','md');
             $location.search('accountAction',null);
+        }
+
+        if(vm.accountUrlParams.searchAccount){
+            $scope.filtersObj.accountReferenceFilter = true;
+            $scope.applyFiltersObj.accountReferenceFilter.selectedAccountReference = vm.accountUrlParams.searchAccount;
+            $scope.getUserAccounts();
+            $location.search('searchAccount',null);
         }
 
         $scope.openEditAccountModal = function (page, size,account,currencies) {
@@ -159,6 +168,10 @@
                 }
             }, function(){
             });
+        };
+
+        $scope.goToUserTransactions = function (account) {
+            $location.path('user/' + vm.uuid + '/transactions').search({filterByAccount: account.reference});
         };
 
     }

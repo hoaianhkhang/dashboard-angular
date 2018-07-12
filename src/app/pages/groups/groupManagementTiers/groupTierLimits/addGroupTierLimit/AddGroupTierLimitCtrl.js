@@ -14,11 +14,10 @@
         $scope.addingTierLimit = false;
         $scope.loadingSubtypes = false;
         $scope.tierLimitsParams = {
-            tx_type: 'Credit',
+            tx_type: 'credit',
             type: 'Maximum',
             subtype: ''
         };
-        $scope.txTypeOptions = ['Credit','Debit'];
         $scope.typeOptions = ['Maximum','Maximum per day','Maximum per month','Minimum','Overdraft'];
 
         vm.getCompanyCurrencies = function(){

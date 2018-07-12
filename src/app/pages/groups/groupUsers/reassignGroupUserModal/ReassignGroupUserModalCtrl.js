@@ -10,12 +10,30 @@
         vm.user = user;
         vm.token = localStorageManagement.getValue('token');
         $scope.groupForReassigning = {};
+        $scope.decisionMadeToChangeGroup = false;
+        $scope.oldGroup = {};
+        $scope.userEmail = '';
+        $scope.sameGroup = true;
         $scope.groups = [];
+
+        $scope.checkIfNewGroup = function () {
+            if($scope.oldGroup.name == $scope.groupForReassigning.name){
+                $scope.sameGroup = true;
+            } else {
+                $scope.sameGroup = false;
+            }
+        };
+
+        $scope.decisionMadeToChangeGroupFunction = function () {
+            $scope.decisionMadeToChangeGroup = !$scope.decisionMadeToChangeGroup;
+        };
 
         vm.getUser = function(){
             if(vm.token) {
                 Rehive.admin.users.get({filters: {email__contains: vm.user.email}}).then(function (res) {
                     vm.user = res.results[0];
+                    $scope.userEmail = vm.user.email;
+                    $scope.oldGroup = vm.user.groups[0];
                     $scope.$apply();
                 }, function (error) {
                     errorHandler.evaluateErrors(error);

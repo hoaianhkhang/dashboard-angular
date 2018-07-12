@@ -5,8 +5,8 @@
         .controller('SettingsCtrl', SettingsCtrl);
 
     /** @ngInject */
-    function SettingsCtrl($rootScope,Rehive,$scope,environmentConfig,Upload,
-                          localStorageManagement,errorHandler,$window,$timeout,$location) {
+    function SettingsCtrl($rootScope,Rehive,$scope,environmentConfig,Upload,localStorageManagement,
+                          errorHandler,$window,$timeout,$location) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('token');
@@ -18,6 +18,19 @@
         $scope.imageFile = {
           file: {}
         };
+        vm.location = $location.path();
+        vm.locationArray = vm.location.split('/');
+        $scope.locationIndicator = vm.locationArray[vm.locationArray.length - 1];
+        $scope.settingsLocation = $scope.locationIndicator;
+
+        $scope.$on('$locationChangeStart', function (event,newUrl) {
+            vm.location = $location.path();
+            vm.locationArray = vm.location.split('/');
+            $scope.locationIndicator = vm.locationArray[vm.locationArray.length - 1];
+            $scope.settingsLocation = $scope.locationIndicator;
+        });
+
+
 
         vm.getCompanyDetails = function(){
             if(vm.token) {

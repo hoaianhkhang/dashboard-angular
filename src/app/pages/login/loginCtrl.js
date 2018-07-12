@@ -48,22 +48,11 @@
                     if(enabledObj.enabled){
                         $rootScope.$pageFinishedLoading = true;
                         $location.path('/authentication/multi-factor/verify/' + enabledObj.key).search({prevUrl: 'login'});
-                        $scope.$apply();
+                        $rootScope.$apply();
                     } else {
-                        $rootScope.$pageFinishedLoading = false;
-                        userVerification.verify(function(err,verified){
-                            if(verified){
-                                $rootScope.userFullyVerified = true;
-                                $rootScope.$pageFinishedLoading = true;
-                                $location.path('/currencies');
-                                $scope.$apply();
-                            } else {
-                                $rootScope.userFullyVerified = false;
-                                $rootScope.$pageFinishedLoading = false;
-                                $location.path('/verification');
-                                $scope.$apply();
-                            }
-                        });
+                        $rootScope.$pageFinishedLoading = true;
+                        $location.path('/currencies');
+                        $rootScope.$apply();
                     }
                 }, function (error) {
                     $rootScope.$pageFinishedLoading = true;

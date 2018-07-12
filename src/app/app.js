@@ -35,37 +35,12 @@ angular.module('BlurAdmin', [
         //using to check if user is in changing password or setting up 2 factor authentication
         $rootScope.securityConfigured = true;
 
-        //using to check if user is in changing password or setting up 2 factor authentication
-        $rootScope.userFullyVerified = false;
-
-
         var locationChangeStart = $rootScope.$on('$locationChangeStart', function (event,newUrl) {
 
             $rootScope.shouldBeBlue = '';
 
             var newUrlArray = newUrl.split('/'),
                 newUrlLastElement = _.last(newUrlArray);
-
-            if(!$rootScope.userFullyVerified){
-                //using to check if user has a verified email address
-                var verifyUser = function (){
-                    userVerification.verify(function(err,verified){
-                        if(verified){
-                            $rootScope.userFullyVerified = true;
-                        } else {
-                            $rootScope.userFullyVerified = false;
-                            $location.path('/verification');
-                        }
-                    });
-                };
-                if(newUrlLastElement != 'change' && newUrlLastElement != 'multi-factor'
-                    && newUrl.indexOf('/multi-factor/sms') < 0 && newUrl.indexOf('/multi-factor/verify') < 0
-                    && newUrl.indexOf('password/reset/confirm') < 0 && newUrl.indexOf('email/verify') < 0
-                    && newUrl.indexOf('register') < 0 && newUrl.indexOf('password/reset') < 0 && newUrl.indexOf('company/setup/') < 0){
-                    verifyUser();
-                }
-
-            }
 
             routeManagement(event,newUrl);
         });
@@ -75,7 +50,7 @@ angular.module('BlurAdmin', [
                 newUrlArray = newUrl.split('/'),
                 newUrlLastElement = _.last(newUrlArray);
 
-            if($rootScope.userFullyVerified && !$rootScope.pageTopObj.companyObj){
+            if(!$rootScope.pageTopObj.companyObj){
                 var getCompanyInfo = function () {
                     if(token) {
                         Rehive.admin.company.get().then(function (res) {
@@ -93,7 +68,7 @@ angular.module('BlurAdmin', [
                 getCompanyInfo();
             }
 
-            if($rootScope.userFullyVerified && !$rootScope.pageTopObj.userInfoObj){
+            if(!$rootScope.pageTopObj.userInfoObj){
                 var getUserInfo = function () {
                     if(token) {
                         Rehive.user.get().then(function(user){
@@ -117,7 +92,6 @@ angular.module('BlurAdmin', [
                 $rootScope.gotToken = false;
                 $rootScope.securityConfigured = true;
                 $rootScope.pageTopObj = {};
-                $rootScope.userFullyVerified = false;
                 $window.sessionStorage.currenciesList = '';
                 $location.path('/login');
             } else{
@@ -147,7 +121,6 @@ angular.module('BlurAdmin', [
                     $rootScope.gotToken = false;
                     $rootScope.securityConfigured = true;
                     $rootScope.pageTopObj = {};
-                    $rootScope.userFullyVerified = false;
                     $location.path('/login');
                     $location.replace();
                 }

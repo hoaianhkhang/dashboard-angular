@@ -18,7 +18,6 @@
         $scope.rehiveSystemGroups = [{name: 'admin'},{name: 'service'}];
 
         $scope.goToNextView = function () {
-            $rootScope.userFullyVerified = true;
             $location.path('company/setup/currency-setup');
         };
 
@@ -62,7 +61,6 @@
                 $rootScope.gotToken = false;
                 $rootScope.securityConfigured = true;
                 $rootScope.pageTopObj = {};
-                $rootScope.userFullyVerified = false;
                 localStorageManagement.deleteValue('TOKEN');
                 localStorageManagement.deleteValue('token');
                 toastr.error('Your session has expired, please log in again');

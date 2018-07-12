@@ -24,6 +24,7 @@
         $scope.showingColumnFilters = false;
         $scope.dateFilterOptions = ['Is in the last','In between','Is equal to','Is after','Is before'];
         $scope.dateFilterIntervalOptions = ['days','months'];
+        $scope.archivedOptions = ['True','False'];
         $scope.statusOptions = ['Status','Pending', 'Obsolete', 'Declined', 'Verified', 'Incomplete'];
         $scope.orderByOptions = ['Created','Last login date'];
         $scope.groupFilterOptions = ['Group name','In a group'];
@@ -37,16 +38,33 @@
         };
 
         if(localStorageManagement.getValue(vm.savedUserTableColumns)){
-             var headerColumns = JSON.parse(localStorageManagement.getValue(vm.savedUserTableColumns));
-             headerColumns.forEach(function (col) {
-                 if(col.colName == 'Date joined' || col.fieldName == 'date_joined'){
-                     col.colName = 'Created';
-                     col.fieldName = 'created';
-                 }
-             });
+            var headerColumns = JSON.parse(localStorageManagement.getValue(vm.savedUserTableColumns));
+            var recipientFieldExists = false;
+            headerColumns.forEach(function (col) {
+                if(col.colName == 'Archived' || col.fieldName == 'archived'){
+                    recipientFieldExists = true;
+                }
+            });
+
+            if(!recipientFieldExists){
+                headerColumns.splice(8,0,{colName: 'Archived',fieldName: 'archived',visible: false});
+            }
 
             localStorageManagement.setValue(vm.savedUserTableColumns,JSON.stringify(headerColumns));
         }
+
+        // renaming col field
+        // if(localStorageManagement.getValue(vm.savedUserTableColumns)){
+        //      var headerColumns = JSON.parse(localStorageManagement.getValue(vm.savedUserTableColumns));
+        //      headerColumns.forEach(function (col) {
+        //          if(col.colName == 'Date joined' || col.fieldName == 'date_joined'){
+        //              col.colName = 'Created';
+        //              col.fieldName = 'created';
+        //          }
+        //      });
+        //
+        //     localStorageManagement.setValue(vm.savedUserTableColumns,JSON.stringify(headerColumns));
+        // }
 
         $scope.headerColumns = localStorageManagement.getValue(vm.savedUserTableColumns) ? JSON.parse(localStorageManagement.getValue(vm.savedUserTableColumns)) : [
             {colName: 'Identifier',fieldName: 'identifier',visible: true},
@@ -57,6 +75,7 @@
             {colName: 'Group name',fieldName: 'groupName',visible: true},
             {colName: 'Created',fieldName: 'created',visible: true},
             {colName: 'Updated',fieldName: 'updated',visible: false},
+            {colName: 'Archived',fieldName: 'archived',visible: false},
             {colName: 'Status',fieldName: 'status',visible: false},
             {colName: 'KYC status',fieldName: 'kycStatus',visible: false},
             {colName: 'Active',fieldName: 'active',visible: false},
@@ -70,6 +89,7 @@
             {colName: 'Username',fieldName: 'username',visible: false}
         ];
         $scope.filtersObj = {
+            archivedFilter: false,
             identifierFilter: false,
             emailFilter: false,
             mobileFilter: false,
@@ -85,6 +105,9 @@
             pageSizeFilter: false
         };
         $scope.applyFiltersObj = {
+            archivedFilter: {
+                selectedArchivedFilter: 'True'
+            },
             identifierFilter: {
                 selectedIdentifier: ''
             },
@@ -260,6 +283,7 @@
 
         $scope.clearFilters = function () {
             $scope.filtersObj = {
+                archivedFilter: false,
                 identifierFilter: false,
                 emailFilter: false,
                 mobileFilter: false,
@@ -487,7 +511,8 @@
                 last_login__gt: vm.lastLogindateObj.last_login__gt ? Date.parse(vm.lastLogindateObj.last_login__gt +'T00:00:00') : null,
                 last_login__lt: vm.lastLogindateObj.last_login__lt ? Date.parse(vm.lastLogindateObj.last_login__lt +'T00:00:00') : null,
                 kyc__status: $scope.filtersObj.kycFilter ? ($scope.applyFiltersObj.kycFilter.selectedKycFilter == 'Status' ? null : $scope.applyFiltersObj.kycFilter.selectedKycFilter.toLowerCase()): null,
-                currency__code: $scope.filtersObj.currencyFilter ? ($scope.applyFiltersObj.currencyFilter.selectedCurrency.code ? ($scope.applyFiltersObj.currencyFilter.selectedCurrency.code == 'Currency' ? null : $scope.applyFiltersObj.currencyFilter.selectedCurrency.code) : null): null
+                currency__code: $scope.filtersObj.currencyFilter ? ($scope.applyFiltersObj.currencyFilter.selectedCurrency.code ? ($scope.applyFiltersObj.currencyFilter.selectedCurrency.code == 'Currency' ? null : $scope.applyFiltersObj.currencyFilter.selectedCurrency.code) : null): null,
+                archived: $scope.filtersObj.archivedFilter ? ($scope.applyFiltersObj.archivedFilter.selectedArchivedFilter == 'True' ?  true : false) : null
             };
 
             return serializeFiltersService.objectFilters(searchObj);
@@ -538,6 +563,7 @@
                     groupName: userObj.groups.length > 0 ? userObj.groups[0].name: null,
                     created: userObj.created ? $filter("date")(userObj.created,'mediumDate') + ' ' + $filter("date")(userObj.created,'shortTime'): null,
                     updated: userObj.updated ? $filter("date")(userObj.updated,'mediumDate') + ' ' + $filter("date")(userObj.updated,'shortTime'): null,
+                    archived: $filter("capitalizeWord")(userObj.archived),
                     status: $filter("capitalizeWord")(userObj.status),
                     kycStatus: $filter("capitalizeWord")(userObj.kyc.status),
                     active: userObj.active ? 'Yes' : 'No',

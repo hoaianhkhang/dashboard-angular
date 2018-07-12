@@ -204,6 +204,10 @@
             $window.open('/#/user/' + $scope.retrievedCreditUserObj.identifier + '/accounts?accountAction=newAccount','_blank');
         };
 
+        $scope.goToAddCurrencyModal = function () {
+            $window.open('/#/currencies?currencyAction=newCurrency','_blank');
+        };
+
         if($scope.newTransactionParams.userEmail){
             $scope.creditTransactionData.user = $scope.newTransactionParams.userEmail;
         }

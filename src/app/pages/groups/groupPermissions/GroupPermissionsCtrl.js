@@ -82,7 +82,7 @@
                     group: group.name
                 }}).then(function (res) {
                     $scope.totalUsersCount = res.total;
-                    $scope.activeUsersCount = res.active;
+                    $scope.deactiveUsersCount = res.archived;
                     $scope.loadingGroup = false;
                     $scope.$apply();
                 }, function (error) {
@@ -444,7 +444,7 @@
                     if(last){
                         vm.finishSavingPermissionsProcess();
                     }
-                }, function (err) {
+                }, function (error) {
                     vm.checkedLevels = [];
                     $scope.permissionParams = {
                         type: 'Account'
@@ -459,13 +459,13 @@
 
         vm.deletePermission = function (permission,last) {
             if(vm.token) {
-                $scope.deletingPermission = true;
+                $scope.loadingPermissions = true;
                 Rehive.admin.groups.permissions.delete(vm.groupName,permission.id).then(function (res) {
                     if(last){
                         vm.finishSavingPermissionsProcess();
                     }
                 }, function (error) {
-                    $scope.deletingPermission = false;
+                    $scope.loadingPermissions = false;
                     errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
                     $scope.$apply();

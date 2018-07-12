@@ -5,7 +5,7 @@
         .controller('UserTransactionsCtrl', UserTransactionsCtrl);
 
     /** @ngInject */
-    function UserTransactionsCtrl($scope,Rehive,localStorageManagement,$uibModal,sharedResources,toastr,currencyModifiers,
+    function UserTransactionsCtrl($scope,Rehive,localStorageManagement,$uibModal,sharedResources,toastr,currencyModifiers,_,
                          errorHandler,$state,$location,$window,typeaheadService,$filter,serializeFiltersService,$rootScope,$stateParams) {
 
         var vm = this;
@@ -13,7 +13,9 @@
         $rootScope.shouldBeBlue = 'Users';
         vm.currenciesList = JSON.parse($window.sessionStorage.currenciesList || '[]');
         vm.uuid = $stateParams.uuid;
+        vm.userTransactionsFilterParams = $location.search();
         $scope.showingFilters = false;
+        $scope.accountFilterOptions = [];
         $scope.dateFilterOptions = ['Is in the last','In between','Is equal to','Is after','Is before'];
         $scope.amountFilterOptions = ['Is equal to','Is between','Is greater than','Is less than'];
         $scope.dateFilterIntervalOptions = ['days','months'];
@@ -79,6 +81,26 @@
         $scope.statusOptions = ['Pending','Complete','Failed','Deleted'];
         $scope.currencyOptions = [];
         $scope.orderByOptions = ['Latest','Largest','Smallest'];
+
+        vm.getUserAccounts = function(){
+            if(vm.token) {
+                Rehive.admin.accounts.get({filters: {user: vm.uuid}}).then(function (res) {
+                    if(res.results.length > 0 ){
+                        $scope.accountFilterOptions = res.results;
+                        $scope.applyFiltersObj.accountFilter.selectedAccount = res.results[0];
+                        $scope.$apply();
+                    } else {
+                        $scope.accountFilterOptions = [];
+                        $scope.$apply();
+                    }
+                }, function (error) {
+                    errorHandler.evaluateErrors(error);
+                    errorHandler.handleErrors(error);
+                    $scope.$apply();
+                });
+            }
+        };
+        vm.getUserAccounts();
 
         sharedResources.getSubtypes().then(function (res) {
             $scope.subtypeOptions = _.pluck(res,'name');
@@ -328,7 +350,7 @@
                 created__lt: vm.dateObj.created__lt ? Date.parse(vm.dateObj.created__lt +'T00:00:00') : null,
                 currency: $scope.filtersObj.currencyFilter || $scope.filtersObj.amountFilter ? $scope.applyFiltersObj.currencyFilter.selectedCurrencyOption.code: null,
                 user: vm.uuid,
-                account: $scope.filtersObj.accountFilter ? $scope.applyFiltersObj.accountFilter.selectedAccount: null,
+                account: $scope.filtersObj.accountFilter ? $scope.applyFiltersObj.accountFilter.selectedAccount.reference: null,
                 orderby: $scope.filtersObj.orderByFilter ? ($scope.applyFiltersObj.orderByFilter.selectedOrderByOption == 'Latest' ? '-created' : $scope.applyFiltersObj.orderByFilter.selectedOrderByOption == 'Largest' ? '-amount' : $scope.applyFiltersObj.orderByFilter.selectedOrderByOption == 'Smallest' ? 'amount' : null): null,
                 id: $scope.filtersObj.transactionIdFilter ? ($scope.applyFiltersObj.transactionIdFilter.selectedTransactionIdOption ? encodeURIComponent($scope.applyFiltersObj.transactionIdFilter.selectedTransactionIdOption) : null): null,
                 tx_type: $scope.filtersObj.transactionTypeFilter ? $scope.applyFiltersObj.transactionTypeFilter.selectedTransactionTypeOption.toLowerCase() : null,
@@ -377,7 +399,17 @@
                 });
             }
         };
-        $scope.getLatestTransactions();
+        if(Object.keys(vm.userTransactionsFilterParams).length == 0){
+            $scope.getLatestTransactions();
+        }
+
+        if(vm.userTransactionsFilterParams.filterByAccount){
+            $scope.filtersObj.accountFilter = true;
+            $scope.applyFiltersObj.accountFilter.selectedAccount = vm.userTransactionsFilterParams.filterByAccount;
+            $scope.getLatestTransactions();
+            $location.search('filterByAccount',null);
+            $location.replace();
+        }
 
         $scope.getUsersEmailTypeahead = typeaheadService.getUsersEmailTypeahead();
 
@@ -404,7 +436,7 @@
         });
 
         $scope.goToNewTransactionModal = function () {
-            $location.path('/transactions/history').search({userEmail:  ($scope.user.email).toString()});
+            $location.path('/transactions/history').search({userEmail: ($scope.user.email).toString()});
         };
 
     }

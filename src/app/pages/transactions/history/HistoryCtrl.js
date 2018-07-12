@@ -70,6 +70,7 @@
             amountFilter: false,
             statusFilter: false,
             transactionTypeFilter: false,
+            transactionSubtypeFilter: false,
             transactionIdFilter: false,
             destinationIdFilter: false,
             sourceIdFilter: false,
@@ -263,6 +264,7 @@
                 amountFilter: false,
                 statusFilter: false,
                 transactionTypeFilter: false,
+                transactionSubtypeFilter: false,
                 transactionIdFilter: false,
                 destinationIdFilter: false,
                 sourceIdFilter: false,
@@ -479,7 +481,7 @@
                 source_transaction : $scope.filtersObj.sourceIdFilter ? 'true' : null,
                 tx_type: $scope.filtersObj.transactionTypeFilter ? $scope.applyFiltersObj.transactionTypeFilter.selectedTransactionTypeOption.toLowerCase() : null,
                 status: $scope.filtersObj.statusFilter ? $scope.applyFiltersObj.statusFilter.selectedStatusOption: null,
-                subtype: $scope.filtersObj.transactionTypeFilter ? ($scope.applyFiltersObj.transactionSubtypeFilter.selectedTransactionSubtypeOption ? $scope.applyFiltersObj.transactionSubtypeFilter.selectedTransactionSubtypeOption: null): null
+                subtype: $scope.filtersObj.transactionSubtypeFilter ? ($scope.applyFiltersObj.transactionSubtypeFilter.selectedTransactionSubtypeOption ? $scope.applyFiltersObj.transactionSubtypeFilter.selectedTransactionSubtypeOption: null): null
             };
 
             $scope.filtersObjForExport = searchObj;

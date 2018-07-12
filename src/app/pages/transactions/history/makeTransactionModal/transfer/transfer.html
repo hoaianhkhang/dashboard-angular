@@ -104,15 +104,6 @@
                      class="row transaction-sender-account-details">
                     <i>No transactions exist for this account.</i>
                 </div>
-                <span ng-hide="transferTransactionData.currency.code">Please choose currency first.</span>
-                <span ng-show="transferTransactionData.currency.code && senderCurrencyAccountsAvailable
-                && senderUserAccountsAvailable && !transferTransactionData.account.name">(Please choose an account)</span>
-                <span class="no-accounts-available pointer" ng-click="goToTransferUserAccountCreate(retrievedSenderUserObj.identifier)"
-                      ng-hide="senderUserAccountsAvailable">Add an account here.
-                </span>
-                <span class="no-accounts-currency-available" ng-hide="senderCurrencyAccountsAvailable">
-                    User has no accounts with selected currency.
-                </span>
             </label>
             <select class="form-control pointer" ng-model="transferTransactionData.account" ng-change="accountSelected(transferTransactionData)" ng-disabled="(!transferTransactionData.currency.code || !retrievedSenderUserObj.identifier)"
                     ng-options="account.name + ' - ' + account.reference disable when account.disable for account in retrievedSenderUserAccountsArray | orderBy: 'name' track by account.name">
@@ -145,15 +136,6 @@
                      class="row transaction-recipient-account-details">
                     <i>No transactions exist for this account.</i>
                 </div>
-                <span ng-hide="transferTransactionData.currency.code">Please choose currency first.</span>
-                <span ng-show="transferTransactionData.currency.code && recipientCurrencyAccountsAvailable
-                 && recipientUserAccountsAvailable && !transferTransactionData.credit_account.name">(Please choose an account)</span>
-                <span class="no-accounts-available" ng-click="goToTransferUserAccountCreate(retrievedRecipientObj.identifier)"
-                      ng-hide="recipientUserAccountsAvailable">Add an account here.
-                </span>
-                <span class="no-accounts-currency-available" ng-hide="recipientCurrencyAccountsAvailable">
-                    User has no accounts with selected currency.
-                </span>
             </label>
             <select class="form-control pointer" ng-model="transferTransactionData.credit_account" ng-change="accountSelected(transferTransactionData,'recipient')" ng-disabled="!transferTransactionData.currency.code || !retrievedRecipientObj.identifier"
                     ng-options="account.name + ' - ' + account.reference disable when account.disable for account in retrievedRecipientAccountsArray | orderBy: 'name' track by account.name">
@@ -166,6 +148,21 @@
         <div class="form-group">
             <label>Recipient reference</label>
             <input type="text" ng-model="transferTransactionData.credit_reference" class="form-control"  placeholder="e.g. # 1234">
+        </div>
+        <div class="form-group">
+            <div ng-hide="showAdvancedTransferOption">
+                <a class="pointer" ng-click="displayAdvancedTransferOption()">Advanced options</a>
+            </div>
+            <div ng-show="showAdvancedTransferOption">
+                <div class="form-group">
+                    <label>Sender metadata <i uib-tooltip-html="'<strong>Metadata should be entered in JSON format. e.g. {&#34;Hello&#34;: &#34;World&#34;}</strong>'" class="ion-information-circled"></i></label>
+                    <textarea rows="4" type="text" ng-model="transferTransactionData.credit_metadata" class="form-control"  placeholder='e.g. {"Hello" : "World"}'></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Recipient metadata <i uib-tooltip-html="'<strong>Metadata should be entered in JSON format. e.g. {&#34;Hello&#34;: &#34;World&#34;}</strong>'" class="ion-information-circled"></i></label>
+                    <textarea rows="4" type="text" ng-model="transferTransactionData.debit_metadata" class="form-control"  placeholder='e.g. {"Hello" : "World"}'></textarea>
+                </div>
+            </div>
         </div>
     </div>
     <div class="form-group">
