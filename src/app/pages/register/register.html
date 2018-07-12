@@ -29,7 +29,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <div class="col-sm-12">
+                    <div style="height: 46px;" class="col-sm-12">
                         <input ng-attr-type="{{ showPassword1 ? 'text' : 'password' }}" ng-model="registerData.password1"
                                class="form-control" id="inputPassword1" placeholder="Password*" required>
                         <i ng-click="togglePasswordVisibility1()" ng-show="showPassword1" class="fa fa-eye-slash pull-right register-password-icon pointer"></i>
@@ -37,7 +37,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <div class="col-sm-12">
+                    <div style="height: 46px;" class="col-sm-12">
                         <input ng-attr-type="{{ showPassword2 ? 'text' : 'password' }}" ng-model="registerData.password2"
                                class="form-control" id="inputPassword2" placeholder="Retype password*" required>
                         <i ng-click="togglePasswordVisibility2()" ng-show="showPassword2" class="fa fa-eye-slash pull-right register-password-icon pointer"></i>
