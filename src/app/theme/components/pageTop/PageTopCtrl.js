@@ -391,13 +391,15 @@
                                         if($scope.showingDashboardTasks){
                                             $scope.allTasksDone = true;
                                         }
+                                    } else {
+                                        $timeout(function () {
+                                            $scope.checkWhetherTaskCompleteOrNot();
+                                        },10000);
                                     }
                                 } else if((res.data.data.progress >= 0) && (res.data.data.progress < 100)){
                                     $scope.dashboardTasksLists.forEach(function (element,ind,arr) {
                                         if(element.id == res.data.data.id){
-                                            if(element.untouched){
-                                                res.data.data.untouched = true;
-                                            }
+                                            res.data.data.untouched = true;
                                             $scope.dashboardTasksLists.splice(ind,1,res.data.data);
                                         }
                                     });
