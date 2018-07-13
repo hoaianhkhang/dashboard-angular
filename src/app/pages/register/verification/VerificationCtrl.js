@@ -33,11 +33,11 @@
             Rehive.user.get().then(function(res){
                 $scope.user = res;
                 $rootScope.$pageFinishedLoading = true;
-                $scope.$apply();
+                $rootScope.$apply();
             },function(error){
                 errorHandler.evaluateErrors(error);
                 errorHandler.handleErrors(error);
-                $scope.$apply();
+                $rootScope.$apply();
             });
         };
 

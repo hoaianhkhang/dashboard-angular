@@ -59,8 +59,14 @@ angular.module('BlurAdmin', [
                             localStorageManagement.setValue('companyIdentifier',$rootScope.pageTopObj.companyObj.identifier);
                             $rootScope.$apply();
                         }, function (error) {
-                            errorHandler.evaluateErrors(error);
-                            errorHandler.handleErrors(error);
+                            if(error.status == 401){
+                                $rootScope.gotToken = false;
+                                $rootScope.securityConfigured = true;
+                                $rootScope.pageTopObj = {};
+                                localStorageManagement.deleteValue('TOKEN');
+                                localStorageManagement.deleteValue('token');
+                                $location.path('/login');
+                            }
                             $rootScope.$apply();
                         });
                     }
@@ -76,8 +82,14 @@ angular.module('BlurAdmin', [
                             $rootScope.pageTopObj.userInfoObj = user;
                             $rootScope.$apply();
                         },function(error){
-                            errorHandler.evaluateErrors(error);
-                            errorHandler.handleErrors(error);
+                            if(error.status == 401){
+                                $rootScope.gotToken = false;
+                                $rootScope.securityConfigured = true;
+                                $rootScope.pageTopObj = {};
+                                localStorageManagement.deleteValue('TOKEN');
+                                localStorageManagement.deleteValue('token');
+                                $location.path('/login');
+                            }
                             $rootScope.$apply();
                         });
                     }
