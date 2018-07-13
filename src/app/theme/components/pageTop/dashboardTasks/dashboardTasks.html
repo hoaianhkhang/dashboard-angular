@@ -4,7 +4,8 @@
     </div>
     <div class="panel-body">
         <div ng-show="dashboardTasksLists.length > 0" class="row dashboard-task-row margin-bottom-10"
-             ng-class="{'untouched-task': task.untouched == true,'incomplete-touched-task': (task.untouched == false && task.progress < 100)}"
+             ng-class="{'untouched-task': task.untouched == true,'incomplete-touched-task': (task.untouched == false && task.progress < 100),
+             'complete-touched-task': (task.untouched == false && task.progress == 100)}"
              ng-mouseover="task.untouched = false"
              ng-repeat="task in dashboardTasksLists | orderBy: '-created'">
             <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
