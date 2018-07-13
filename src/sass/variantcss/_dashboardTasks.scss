@@ -11,7 +11,7 @@
 .complete-touched-task{
   background-color: transparent;
   padding: 10px 0 10px 0!important;
-  transition: background-color 1s linear;
+  transition: background-color 0.5s linear;
   &:active{
     background-color: #dcfffa;
   }
