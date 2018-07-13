@@ -280,21 +280,25 @@
                 if(index == (array.length - 1)){
                     if(set.progress == 100){
                         vm.getSingleTransactionSet(set,'last');
+                        $scope.$apply();
                     } else {
                         // scenario if array length is 1
                         set.untouched = true;
                         vm.unfinishedDashboardTasks.push(set);
                         $scope.inProgressSets = true;
                         vm.getSingleTransactionSet(null,'last');
+                        $scope.$apply();
                     }
                 } else{
                     if(set.progress == 100){
                         vm.getSingleTransactionSet(set);
+                        $scope.$apply();
                     } else {
                         set.untouched = true;
                         vm.unfinishedDashboardTasks.push(set);
                         $scope.inProgressSets = true;
                         $scope.loadingTransactionSets = false;
+                        $scope.$apply();
                     }
                 }
             });
@@ -302,7 +306,7 @@
 
         vm.getSingleTransactionSet = function (set,last) {
             if(set){
-                Rehive.admin.transactions.sets.get({filters: {id: set.id}}).then(function (res) {
+                Rehive.admin.transactions.sets.get({id: set.id}).then(function (res) {
                     set.pages = res.pages;
                     if(last){
                         $scope.loadingTransactionSets = false;
@@ -350,13 +354,14 @@
             if(vm.unfinishedDashboardTasks.length > 0){
                 vm.unfinishedDashboardTasks.forEach(function (set,index,array) {
                     if(index == (array.length -1)){
-                        Rehive.admin.transactions.sets.get({filters: {id: set.id}}).then(function (res) {
+                        Rehive.admin.transactions.sets.get({id: set.id}).then(function (res) {
                             if(res.progress == 100){
                                 vm.unfinishedDashboardTasks.splice(index,1);
                                 $scope.dashboardTasksLists.forEach(function (element,ind,arr) {
                                     if(element.id == res.id){
                                         res.untouched = true;
                                         $scope.dashboardTasksLists.splice(ind,1,res);
+                                        $scope.$apply();
                                     }
                                 });
                                 if(vm.unfinishedDashboardTasks.length == 0){
@@ -364,10 +369,12 @@
                                     if($scope.showingDashboardTasks){
                                         $scope.allTasksDone = true;
                                     }
+                                    $scope.$apply();
                                 } else {
                                     $timeout(function () {
                                         $scope.checkWhetherTaskCompleteOrNot();
                                     },10000);
+                                    $scope.$apply();
                                 }
                             } else if((res.progress >= 0) && (res.progress < 100)){
                                 $scope.dashboardTasksLists.forEach(function (element,ind,arr) {
@@ -379,6 +386,7 @@
                                 $timeout(function () {
                                     $scope.checkWhetherTaskCompleteOrNot();
                                 },10000);
+                                $scope.$apply();
                             }
                         }, function (error) {
                             errorHandler.evaluateErrors(error);
