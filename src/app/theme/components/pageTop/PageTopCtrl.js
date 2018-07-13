@@ -128,8 +128,14 @@
                         }
                     }
                 }).catch(function (error) {
-                    errorHandler.evaluateErrors(error.data);
-                    errorHandler.handleErrors(error);
+                    if(error.status == 401){
+                        $rootScope.gotToken = false;
+                        $rootScope.securityConfigured = true;
+                        $rootScope.pageTopObj = {};
+                        localStorageManagement.deleteValue('TOKEN');
+                        localStorageManagement.deleteValue('token');
+                        $location.path('/login');
+                    }
                 });
             }
         };
@@ -285,8 +291,14 @@
                     }
                 }).catch(function (error) {
                     $scope.loadingTransactionSets = false;
-                    errorHandler.evaluateErrors(error.data);
-                    errorHandler.handleErrors(error);
+                    if(error.status == 401){
+                        $rootScope.gotToken = false;
+                        $rootScope.securityConfigured = true;
+                        $rootScope.pageTopObj = {};
+                        localStorageManagement.deleteValue('TOKEN');
+                        localStorageManagement.deleteValue('token');
+                        $location.path('/login');
+                    }
                 });
             }
         };

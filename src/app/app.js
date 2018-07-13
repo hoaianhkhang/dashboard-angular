@@ -65,8 +65,13 @@ angular.module('BlurAdmin', [
                                 localStorageManagement.setValue('companyIdentifier',$rootScope.pageTopObj.companyObj.identifier);
                             }
                         }).catch(function (error) {
-                            errorHandler.evaluateErrors(error.data);
-                            errorHandler.handleErrors(error);
+                            if(error.status == 401){
+                                $rootScope.gotToken = false;
+                                $rootScope.securityConfigured = true;
+                                $rootScope.pageTopObj = {};
+                                localStorageManagement.deleteValue('TOKEN');
+                                $location.path('/login');
+                            }
                         });
                     }
                 };
@@ -87,8 +92,13 @@ angular.module('BlurAdmin', [
                                 $rootScope.pageTopObj.userInfoObj = res.data.data;
                             }
                         }).catch(function (error) {
-                            errorHandler.evaluateErrors(error.data);
-                            errorHandler.handleErrors(error);
+                            if(error.status == 401){
+                                $rootScope.gotToken = false;
+                                $rootScope.securityConfigured = true;
+                                $rootScope.pageTopObj = {};
+                                localStorageManagement.deleteValue('TOKEN');
+                                $location.path('/login');
+                            }
                         });
                     }
                 };
