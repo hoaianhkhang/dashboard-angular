@@ -13,7 +13,7 @@
         };
         $timeout(function () {
             $scope.goToStellarAccountSetting('hotwallet');
-        },0);
+        },100);
     }
 
 })();
