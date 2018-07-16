@@ -22,7 +22,7 @@ angular.module('BlurAdmin', [
     ngIntlTelInputProvider.set({initialCountry: 'us',utilsScript: 'https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/12.0.1/js/utils.js'});
 })
     .run(function($rootScope,errorHandler,localStorageManagement,toastr,Rehive,
-                  userVerification,environmentConfig,$window,$location,_){
+                  environmentConfig,$window,$location,_){
 
         $window.onload = function(){
             $rootScope.$pageFinishedLoading = true;

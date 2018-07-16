@@ -7,7 +7,7 @@
     /** @ngInject */
 
     function CompanyInfoRequestCtrl($rootScope,Rehive,$scope,toastr,localStorageManagement,
-                                    $location,errorHandler,userVerification) {
+                                    $location,errorHandler) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('token');
