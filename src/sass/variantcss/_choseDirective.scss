@@ -1,0 +1,32 @@
+.reward-type-radio-groups{
+  position: relative;
+  & .reward-radio-type1 {
+    position: absolute;
+    top: 2px;
+    left: 21px;
+  }
+  & .reward-radio-type2 {
+    position: absolute;
+    top: 2px;
+    left: 87px;
+  }
+  & .reward-radio-type3 {
+    position: absolute;
+    top: 2px;
+    left: 163px;
+  }
+}
+
+.rewards-date{
+  width: 250px;
+  display: inline-flex;
+}
+
+.reward-multi-select{
+  & .chosen-container{
+    width: 100%!important;
+  }
+  & .chosen-container-multi .chosen-choices{
+    padding: 2.5px 12px!important;
+  }
+}
