@@ -5,13 +5,16 @@
         .controller('RewardsServiceCampaignsCtrl', RewardsServiceCampaignsCtrl);
 
     /** @ngInject */
-    function RewardsServiceCampaignsCtrl($scope,$http,localStorageManagement,$uibModal,errorHandler) {
+    function RewardsServiceCampaignsCtrl($scope,$rootScope,$http,localStorageManagement,$location,$uibModal,errorHandler) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
         vm.baseUrl = localStorageManagement.getValue('SERVICEURL');
         $scope.loadingCampaigns =  false;
 
+        $scope.goToCreateCampaignView = function () {
+            $location.path('/services/rewards/campaigns/create');
+        };
 
     }
 })();

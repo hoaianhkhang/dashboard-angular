@@ -3,6 +3,7 @@
 
     angular.module('BlurAdmin.pages.services.rewardsService', [
         'BlurAdmin.pages.services.rewardsService.rewardsServiceCampaigns',
+        'BlurAdmin.pages.services.rewardsService.createRewardsServiceCampaign',
         'BlurAdmin.pages.services.rewardsService.rewardsServiceLogs',
         'BlurAdmin.pages.services.rewardsService.rewardsServiceRequests'
     ])
@@ -14,7 +15,8 @@
             .state('rewardsService', {
                 url: '/services/rewards',
                 abstract: true,
-                template:'<div ui-view="rewardsServiceViews"></div>'
+                templateUrl:'app/pages/services/rewardsService/rewardsService.html',
+                controller: "RewardsServiceCtrl"
             });
         $urlRouterProvider.when("/services/rewards", "/services/rewards/campaigns");
     }
