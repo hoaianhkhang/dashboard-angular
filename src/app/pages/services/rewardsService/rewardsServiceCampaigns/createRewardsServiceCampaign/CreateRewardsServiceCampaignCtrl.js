@@ -12,16 +12,12 @@
         vm.token = localStorageManagement.getValue('TOKEN');
         vm.baseUrl = localStorageManagement.getValue('SERVICEURL');
         $scope.currencyOptions = [];
-        $scope.userOptions = [];
         $scope.addingCampaign =  false;
         $scope.newCampaignParams = {
             currencies: [],
-            users: []
-        };
-
-        $scope.pushUser = function () {
-            $scope.newCampaignParams.users.push('sadsad');
-            console.log($scope.newCampaignParams)
+            users: [],
+            groups: [],
+            tags: []
         };
 
         //for angular datepicker
@@ -38,6 +34,7 @@
         };
 
         $scope.getUsersEmailTypeahead = typeaheadService.getUsersEmailTypeahead();
+        $scope.getGroupsTypeahead = typeaheadService.getGroupsTypeahead();
 
         vm.getCompanyCurrencies = function(){
             if(vm.token){
