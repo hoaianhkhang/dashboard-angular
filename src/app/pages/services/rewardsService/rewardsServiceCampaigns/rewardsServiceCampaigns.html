@@ -8,27 +8,33 @@
             <table class="table">
                 <tbody>
                 <tr>
-                    <th class="rehive-table-row-first-child">Token</th>
-                    <th>Expires</th>
-                    <th>Service</th>
+                    <th class="rehive-table-row-first-child">Name</th>
+                    <th>Description</th>
+                    <th>Type</th>
+                    <th>Start date</th>
+                    <th>End date</th>
+                    <th>Status</th>
                     <th></th>
                 </tr>
-                <tr ng-repeat="token in tokensList" class="editable-row">
-                    <td class="rehive-table-row-first-child"><div title="{{token.token_key}}" class="transactions-list-element" ng-bind="token.token_key"></div></td>
-                    <td><div title="{{token.expires | date:'mediumDate'}} {{token.expires | date:'shortTime'}}"
-                             class="transactions-list-element">
-                        <div ng-show="token.expires">
-                            {{token.expires | date:'mediumDate'}} {{token.expires | date:'shortTime'}}
-                        </div>
-                        <div ng-show="!token.expires">
-                            Permanent Key
-                        </div>
-                    </div>
-                    </td>
-                    <td><div title="{{token.service}}" class="transactions-list-element" ng-bind="token.service"></div></td>
+                <tr ng-repeat="campaign in campaignList" class="editable-row">
+                    <td class="rehive-table-row-first-child"><div title="{{campaign.name}}" class="transactions-list-element" ng-bind="campaign.name"></div></td>
+                    <td><div title="{{campaign.description}}" class="transactions-list-element" ng-bind="campaign.description"></div></td>
+                    <td><div title="{{campaign.reward_type | capitalizeWord}}" class="transactions-list-element" ng-bind="campaign.reward_type | capitalizeWord"></div></td>
+                    <td><div title="{{campaign.start_date}}" class="transactions-list-element" ng-bind="campaign.start_date"></div></td>
+                    <td><div title="{{campaign.end_date}}" class="transactions-list-element" ng-bind="campaign.end_date"></div></td>
+                    <td><div title="{{campaign.status | capitalizeWord}}" class="transactions-list-element" ng-bind="campaign.status | capitalizeWord"></div></td>
                     <td class="rehive-table-row-last-child">
-                        <a ng-click="openDeleteTokenModal('app/pages/settings/security/tokens/deleteTokenModal/deleteTokenModal.html','md',token)"
-                           class="pull-right pointer">Delete</a>
+                        <span class="user-details-currencies-options-container pull-right" ng-click="showCampaignOptionsBox(campaign); $event.stopPropagation()" click-outside="closeCampaignOptionsBox()">
+                        <span class="fa fa-ellipsis-h pull-right pointer user-details-address-options no-margin"></span>
+                            <ul ng-show="campaign.identifier == campaignsId" class="user-details-address-options-box">
+                                <li ng-click="showCampaignOptionsBox(campaign)"><i class="dropdown-arr"></i></li>
+                                <li ng-click="openEditUserAddressModal('app/pages/users/user/userDetails/userAddress/editUserAddressModal/editUserAddressModal.html','md',address)">View</li>
+                                <li ng-click="openEditCampaignView(campaign)">Edit</li>
+                                <li ng-click="openUserAddressModal('app/pages/users/user/userDetails/userAddress/userAddressModal/userAddressModal.html','md',address)">Delete</li>
+                                <li ng-show="campaign.reward_type == 'manual'"
+                                    ng-click="openUserAddressModal('app/pages/users/user/userDetails/userAddress/userAddressModal/userAddressModal.html','md',address)">Reward user</li>
+                            </ul>
+                    </span>
                     </td>
                 </tr>
                 </tbody>

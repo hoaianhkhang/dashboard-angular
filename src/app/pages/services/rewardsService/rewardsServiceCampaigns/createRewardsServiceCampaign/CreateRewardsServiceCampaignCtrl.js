@@ -5,7 +5,7 @@
         .controller('CreateRewardsServiceCampaignsCtrl', CreateRewardsServiceCampaignsCtrl);
 
     /** @ngInject */
-    function CreateRewardsServiceCampaignsCtrl($scope,environmentConfig,typeaheadService,
+    function CreateRewardsServiceCampaignsCtrl($scope,$rootScope,environmentConfig,typeaheadService,toastr,_,
                                                $http,localStorageManagement,$location,errorHandler) {
 
         var vm = this;
@@ -14,9 +14,22 @@
         $scope.currencyOptions = [];
         $scope.addingCampaign =  false;
         $scope.newCampaignParams = {
-            currencies: [],
+            name: '',
+            description: '',
+            currency: {},
+            startDate: null,
+            endDate: null,
+            rewardType: 'basic',
+            rewardTotal: null,
+            rewardPercentage: null,
+            status: 'active',
+            userVolumeLimit: null,
+            userLimit: null,
+            userTransactionLimit: null,
             users: [],
             groups: [],
+            visible: true,
+            request: true,
             tags: []
         };
 
@@ -56,6 +69,64 @@
             }
         };
         vm.getCompanyCurrencies();
+
+        $scope.addCampaign = function (newCampaignParams) {
+            var newCampaign = {
+                name: newCampaignParams.name,
+                description: newCampaignParams.description,
+                currency: newCampaignParams.currency.code,
+                company: $rootScope.pageTopObj.companyObj.identifier,
+                start_date: null,
+                end_date: null,
+                reward_type: newCampaignParams.rewardType,
+                reward_total: newCampaignParams.rewardTotal,
+                reward_percentage: newCampaignParams.rewardPercentage,
+                status: newCampaignParams.status,
+                user_volume_limit: newCampaignParams.userVolumeLimit,
+                user_limit: newCampaignParams.userLimit,
+                user_transaction_limit: newCampaignParams.userTransactionLimit,
+                users: [],
+                groups: [],
+                visible: newCampaignParams.visible,
+                request: newCampaignParams.request,
+                tags: []
+            };
+
+            newCampaign.start_date = moment(new Date(newCampaignParams.startDate)).format('YYYY-MM-DD');
+            newCampaign.end_date = moment(new Date(newCampaignParams.endDate)).format('YYYY-MM-DD');
+            if(newCampaignParams.users.length > 0){
+                newCampaign.users = _.pluck(newCampaignParams.users,'text');
+            }
+            if(newCampaignParams.groups.length > 0){
+                newCampaign.groups = _.pluck(newCampaignParams.groups,'text');
+            }
+            if(newCampaignParams.tags.length > 0){
+                newCampaign.tags = _.pluck(newCampaignParams.tags,'text');
+            }
+
+            $scope.addingCampaign =  true;
+            if(vm.token) {
+                $http.post(vm.baseUrl + 'admin/campaigns/',newCampaign, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': vm.token
+                    }
+                }).then(function (res) {
+                    if (res.status === 201) {
+                        toastr.success('Campaign added successfully');
+                        $location.path('/services/rewards/campaigns');
+                    }
+                }).catch(function (error) {
+                    $scope.addingCampaign =  false;
+                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.handleErrors(error);
+                });
+            }
+        };
+
+        $scope.goToCampaignListView = function () {
+            $location.path('/services/rewards/campaigns');
+        };
 
 
     }
