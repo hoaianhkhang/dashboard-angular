@@ -7,6 +7,11 @@
                       'pointer':(trackedLocation == 'campaigns' && secondaryTrackedLocation != '')}">
                     Campaigns
                 </span>
+                <span ng-show="(trackedLocation == 'requests')" ng-click="goToRewardsBreadCrumbsView('/services/rewards/requests')"
+                      ng-class="{'text-bold':(trackedLocation == 'requests' && secondaryTrackedLocation == ''),
+                      'pointer':(trackedLocation == 'requests' && secondaryTrackedLocation != '')}">
+                    Requests
+                </span>
                 <!--<span ng-show="(trackedLocation == 'requests')" ng-class="{'text-bold': trackedLocation == 'requests','pointer': trackedLocation == 'account'}"-->
                       <!--ng-click="goToRewardsBreadCrumbsView('/services/rewards/requests')">&nbsp;/&nbsp; Requests</span>-->
                 <!--<span ng-show="(trackedLocation == 'permissions')" ng-class="{'text-bold': trackedLocation == 'permissions'}"-->

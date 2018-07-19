@@ -40,6 +40,9 @@
                 } else {
                     $scope.secondaryTrackedLocation = '';
                 }
+            } else if (remainingLocationArray[0] == 'requests'){
+                $scope.trackedLocation = 'requests';
+                $scope.secondaryTrackedLocation = '';
             }
 
             // else if (remainingLocationArray[1] == 'accounts'){
