@@ -29,10 +29,10 @@
                             <ul ng-show="campaign.identifier == campaignsId" class="user-details-address-options-box">
                                 <li ng-click="showCampaignOptionsBox(campaign)"><i class="dropdown-arr"></i></li>
                                 <li ng-show="campaign.reward_type == 'manual'"
-                                    ng-click="openUserAddressModal('app/pages/users/user/userDetails/userAddress/userAddressModal/userAddressModal.html','md',address)">Reward user</li>
-                                <li ng-click="openEditUserAddressModal('app/pages/users/user/userDetails/userAddress/editUserAddressModal/editUserAddressModal.html','md',address)">View</li>
+                                    ng-click="openRewardUserModal('app/pages/services/rewardsService/rewardsServiceCampaigns/rewardUserModal/rewardUserModal.html','md',campaign)">Reward user</li>
+                                <li ng-click="">View</li>
                                 <li ng-click="openEditCampaignView(campaign)">Edit</li>
-                                <li ng-click="openUserAddressModal('app/pages/users/user/userDetails/userAddress/userAddressModal/userAddressModal.html','md',address)">Delete</li>
+                                <li ng-click="deleteCampaignPrompt(campaign)">Delete</li>
                             </ul>
                     </span>
                     </td>

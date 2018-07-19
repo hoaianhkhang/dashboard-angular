@@ -22,8 +22,6 @@
                 $scope.locationIndicator = 'campaigns';
             } else if(vm.location.indexOf('requests') > 0){
                 $scope.locationIndicator = 'requests';
-            } else if(vm.location.indexOf('logs') > 0){
-                $scope.locationIndicator = 'logs';
             }
             vm.locationTracker(vm.location);
         });
