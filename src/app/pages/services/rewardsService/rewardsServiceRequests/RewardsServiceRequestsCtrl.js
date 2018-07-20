@@ -5,8 +5,8 @@
         .controller('RewardsServiceRequestsCtrl', RewardsServiceRequestsCtrl);
 
     /** @ngInject */
-    function RewardsServiceRequestsCtrl($scope,$http,localStorageManagement,
-                                        $uibModal,environmentConfig,serializeFiltersService,errorHandler) {
+    function RewardsServiceRequestsCtrl(environmentConfig,$scope,$http,localStorageManagement,
+                                        $uibModal,serializeFiltersService,errorHandler) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
@@ -14,6 +14,7 @@
         $scope.loadingRewardsRequests =  false;
         $scope.showingRewardsRequestsFilters = false;
         $scope.rewardsRequestsList = [];
+        $scope.statusOptions = ['Pending','Accept','Reject'];
 
         $scope.filtersObj = {
             campaignFilter: false,
@@ -24,12 +25,30 @@
                 selectedCampaign: null
             },
             statusFilter: {
-                selectedStatus: null
+                selectedStatus: 'Pending'
             }
         };
 
         $scope.showRewardsRequestsFilters = function () {
             $scope.showingRewardsRequestsFilters = !$scope.showingRewardsRequestsFilters;
+        };
+
+        $scope.getUserObjEmail = function (identifier) {
+            $http.get(environmentConfig.API + '/admin/users/?user=' + identifier, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': vm.token
+                }
+            }).then(function (res) {
+                if (res.status === 200) {
+                    if(res.data.data.results.length == 1){
+                        $scope.userEmailObj = res.data.data.results[0];
+                    }
+                }
+            }).catch(function (error) {
+                errorHandler.evaluateErrors(error.data);
+                errorHandler.handleErrors(error);
+            });
         };
 
         $scope.pagination = {
@@ -51,9 +70,9 @@
 
             var searchObj = {
                 page: $scope.pagination.pageNo,
-                page_size: $scope.pagination.itemsPerPage || 1
-                // user: $scope.filtersObj.userFilter ? ($scope.applyFiltersObj.userFilter.selectedUserOption ? encodeURIComponent($scope.applyFiltersObj.userFilter.selectedUserOption) : null): null,
-                // key: $scope.filtersObj.keyFilter ? ($scope.applyFiltersObj.keyFilter.selectedKey ? $scope.applyFiltersObj.keyFilter.selectedKey : null): null
+                page_size: $scope.pagination.itemsPerPage || 25,
+                campaign: $scope.filtersObj.campaignFilter ? ($scope.applyFiltersObj.campaignFilter.selectedCampaign ? $scope.applyFiltersObj.campaignFilter.selectedCampaign : null): null,
+                status: $scope.filtersObj.statusFilter ? ($scope.applyFiltersObj.statusFilter.selectedStatus ? $scope.applyFiltersObj.statusFilter.selectedStatus.toLowerCase() : null): null
             };
 
             return vm.baseUrl + 'admin/campaigns/requests/?' + serializeFiltersService.serializeFilters(searchObj);
@@ -98,6 +117,13 @@
         };
         $scope.getRewardsRequests();
 
+        $scope.clearFilters = function () {
+            $scope.filtersObj = {
+                campaignFilter: false,
+                statusFilter: false
+            };
+        };
+
         $scope.openRewardRequestModal = function (page, size,request) {
             vm.theModal = $uibModal.open({
                 animation: true,
@@ -111,8 +137,10 @@
                 }
             });
 
-            vm.theModal.result.then(function(){
-
+            vm.theModal.result.then(function(request){
+                if(request){
+                    $scope.getRewardsRequests();
+                }
             }, function(){
             });
         };

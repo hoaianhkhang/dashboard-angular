@@ -6,7 +6,7 @@
 
     /** @ngInject */
     function RewardsServiceCampaignsCtrl($scope,$http,localStorageManagement,$location,
-                                         $uibModal,$ngConfirm,toastr,errorHandler) {
+                                         serializeFiltersService,$uibModal,$ngConfirm,toastr,errorHandler) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
@@ -28,10 +28,33 @@
             $location.path('/services/rewards/campaigns/create');
         };
 
+        $scope.campaignPagination = {
+            itemsPerPage: 25,
+            pageNo: 1,
+            maxSize: 5
+        };
+
+        vm.getRewardsCampaignsListsUrl = function(){
+
+            var searchObj = {
+                page: $scope.campaignPagination.pageNo,
+                page_size: $scope.campaignPagination.itemsPerPage || 25
+            };
+
+            return vm.baseUrl + 'admin/campaigns/?' + serializeFiltersService.serializeFilters(searchObj);
+        };
+
         $scope.getCampaignList = function () {
-            $scope.loadingCampaigns =  true;
             if(vm.token) {
-                $http.get(vm.baseUrl + 'admin/campaigns/', {
+                $scope.loadingCampaigns =  true;
+
+                if ($scope.campaignList.length > 0) {
+                    $scope.campaignList.length = 0;
+                }
+
+                var rewardsCampaignsListsUrl = vm.getRewardsCampaignsListsUrl();
+
+                $http.get(rewardsCampaignsListsUrl, {
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': vm.token

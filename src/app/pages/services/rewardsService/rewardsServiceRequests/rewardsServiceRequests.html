@@ -7,7 +7,7 @@
                     <span ng-show="filtersCount > 0">|</span> <span ng-show="filtersCount > 0" class="filter-count">{{filtersCount}}</span>
                 </button>
                 <div ng-show="showingRewardsRequestsFilters">
-                    <!--<request-logs-filters></request-logs-filters>-->
+                    <rewards-service-requests-filters></rewards-service-requests-filters>
                 </div>
             </div>
             <button ng-click="getRewardsRequests('applyFilter')" ng-disabled="loadingRewardsRequests"
@@ -32,8 +32,8 @@
                 <tbody>
                     <tr ng-repeat="request in rewardsRequestsList" class="editable-row user-details-table-hover pointer"
                         ng-click="openRewardRequestModal('app/pages/services/rewardsService/rewardsServiceRequests/rewardsServiceRequestsModal/rewardsServiceRequestsModal.html','md',request)">
-                        <td class="transactions-list-element" title="{{request.user}}" ng-bind="request.user"></td>
-                        <td class="transactions-list-element" title="{{request.campaign}}" ng-bind="request.campaign"></td>
+                        <td class="transactions-list-element" title="{{userEmailObj.email}}" ng-bind="request.user" ng-mouseover="getUserObjEmail(request.user)"></td>
+                        <td class="transactions-list-element" title="{{request.campaign_name || 'Unnamed'}}" ng-bind="request.campaign_name || 'Unnamed'"></td>
                         <td class="transactions-list-element" title="{{request.status | capitalizeWord}}" ng-bind="request.status | capitalizeWord"></td>
                     </tr>
                 </tbody>

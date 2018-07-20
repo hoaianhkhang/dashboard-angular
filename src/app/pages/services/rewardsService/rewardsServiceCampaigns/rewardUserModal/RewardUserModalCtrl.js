@@ -17,6 +17,7 @@
         $scope.getUsersEmailTypeahead = typeaheadService.getUsersEmailTypeahead();
 
         $scope.findUserObj = function (user) {
+            $scope.rewardingUser = true;
             $http.get(environmentConfig.API + '/admin/users/?user=' + encodeURIComponent(user), {
                 headers: {
                     'Content-Type': 'application/json',
@@ -29,14 +30,17 @@
                     }
                 }
             }).catch(function (error) {
+                $scope.rewardingUser = false;
                 errorHandler.evaluateErrors(error.data);
                 errorHandler.handleErrors(error);
             });
         };
 
         vm.rewardUserFunc = function (user) {
-            $scope.rewardingUser = true;
-            $http.post(vm.serviceUrl + 'admin/rewards/' + vm.campaign.identifier + '/', {user: user.identifier}, {
+            $http.post(vm.serviceUrl + 'admin/campaigns/rewards/' + vm.campaign.identifier + '/',
+                {
+                    user: user.identifier
+                }, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': vm.token
