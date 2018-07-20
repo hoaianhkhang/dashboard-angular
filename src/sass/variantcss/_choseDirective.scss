@@ -23,6 +23,25 @@
   }
 }
 
+.reward-type-radio-groups-status{
+  position: relative;
+  & .reward-radio-type1 {
+    position: absolute;
+    top: 2px;
+    left: 21px;
+  }
+  & .reward-radio-type2 {
+    position: absolute;
+    top: 2px;
+    left: 87px;
+  }
+  & .reward-radio-type3 {
+    position: absolute;
+    top: 2px;
+    left: 168px;
+  }
+}
+
 .rewards-date{
   width: 250px;
   display: inline-flex;

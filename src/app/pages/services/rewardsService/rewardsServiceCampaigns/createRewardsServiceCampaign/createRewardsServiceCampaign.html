@@ -78,12 +78,12 @@
             </div>
             <div class="form-group">
                 <label>Campaign status</label>
-                <div class="reward-type-radio-groups">
+                <div class="reward-type-radio-groups-status">
                     <input class="margin-right-10 pointer" type="radio" ng-model="newCampaignParams.status" value="active">
                     <span class="reward-radio-type1">Active</span>
                     <input class="horizontal-divider-40 margin-right-10 pointer" type="radio" ng-model="newCampaignParams.status"
                            value="disabled"> <span class="reward-radio-type2">Disabled</span>
-                    <input class="horizontal-divider-50 margin-right-10 pointer" type="radio" ng-model="newCampaignParams.status"
+                    <input class="horizontal-divider-55 margin-right-10 pointer" type="radio" ng-model="newCampaignParams.status"
                            value="expired"> <span class="reward-radio-type3">Expired</span>
                 </div>
             </div>
@@ -141,7 +141,7 @@
             <div class="form-group">
                 <label>Tags</label>
                 <div class="reward-multi-select">
-                    <tags-input ng-model="newCampaignParams.tags" placeholder="Enter one or more tags">
+                    <tags-input ng-model="newCampaignParams.tags" placeholder="Enter tags separated by a comma">
                     </tags-input>
                 </div>
             </div>

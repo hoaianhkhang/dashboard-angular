@@ -71,6 +71,16 @@
         vm.getCompanyCurrencies();
 
         $scope.addCampaign = function (newCampaignParams) {
+
+            if(moment(newCampaignParams.endDate).isBefore(moment(newCampaignParams.startDate))){
+                toastr.error('End date cannot be in the past or before start date.');
+                return;
+            } else if(moment(newCampaignParams.startDate).isBefore(moment().subtract(1,'days'))){
+                toastr.error('Start date cannot be in the past.');
+                return;
+            }
+
+
             var newCampaign = {
                 name: newCampaignParams.name,
                 description: newCampaignParams.description,
@@ -94,6 +104,7 @@
 
             newCampaign.start_date = moment(new Date(newCampaignParams.startDate)).format('YYYY-MM-DD');
             newCampaign.end_date = moment(new Date(newCampaignParams.endDate)).format('YYYY-MM-DD');
+
             if(newCampaignParams.users.length > 0){
                 newCampaign.users = _.pluck(newCampaignParams.users,'text');
             }

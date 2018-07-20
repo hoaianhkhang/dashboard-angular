@@ -64,15 +64,17 @@
                     }
                 }).then(function (res) {
                     if (res.status === 200) {
-                        $scope.editCampaignParams = res.data.data;
+                        var editObj = {};
+                        editObj = res.data.data;
                         $scope.currencyOptions.forEach(function (element) {
-                            if(element.code == $scope.editCampaignParams.currency){
-                                $scope.editCampaignParams.currency = element;
+                            if(element.code == editObj.currency){
+                                editObj.currency = element;
                             }
                         });
 
-                        $scope.editCampaignParams.start_date = moment($scope.editCampaignParams.start_date).toDate();
-                        $scope.editCampaignParams.end_date = moment($scope.editCampaignParams.end_date).toDate();
+                        editObj.start_date = moment(editObj.start_date).toDate();
+                        editObj.end_date = moment(editObj.end_date).toDate();
+                        $scope.editCampaignParams = editObj;
                         $scope.updatingCampaign =  false;
                     }
                 }).catch(function (error) {
@@ -89,6 +91,15 @@
         };
 
         $scope.updateCampaign = function () {
+
+            if(moment(vm.updatedCampaignObj.end_date).isBefore(moment(vm.updatedCampaignObj.start_date))){
+                toastr.error('End date cannot be in the past or before start date.');
+                return;
+            } else if(moment(vm.updatedCampaignObj.start_date).isBefore(moment().subtract(1,'days'))){
+                toastr.error('Start date cannot be in the past.');
+                return;
+            }
+
             if(vm.updatedCampaignObj.start_date){
                 vm.updatedCampaignObj.start_date = moment(new Date(vm.updatedCampaignObj.start_date)).format('YYYY-MM-DD');
             }
