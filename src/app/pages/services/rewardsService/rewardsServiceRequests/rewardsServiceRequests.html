@@ -26,9 +26,8 @@
                     <tr>
                         <th class="rehive-table-row-first-child">User</th>
                         <th>Campaign</th>
-                        <th class="text-center">Pending</th>
-                        <th class="text-center">Reject</th>
-                        <th class="text-center">Accept</th>
+                        <th>Status</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -36,26 +35,17 @@
                         ng-click="openRewardRequestModal('app/pages/services/rewardsService/rewardsServiceRequests/rewardsServiceRequestsModal/rewardsServiceRequestsModal.html','md',request)">
                         <td class="transactions-list-element" title="{{userEmailObj.email}}" ng-bind="request.user" ng-mouseover="getUserObjEmail(request.user)"></td>
                         <td class="transactions-list-element" title="{{request.campaign_name || 'Unnamed'}}" ng-bind="request.campaign_name || 'Unnamed'"></td>
-                        <td ng-click="$event.stopPropagation()" class="transactions-list-element text-center" title="{{request.status | capitalizeWord}}">
-                            <label  class="checkbox-inline custom-checkbox nowrap">
-                                <input type="checkbox" ng-change="requestStatusChange(request,'pending')" ng-model="request.status"
-                                       value="pending" ng-checked="request.status == 'pending'">
-                                <span class="account-settings-span"></span>
-                            </label>
-                        </td>
-                        <td ng-click="$event.stopPropagation()" class="transactions-list-element text-center" title="{{request.status | capitalizeWord}}">
-                            <label  class="checkbox-inline custom-checkbox nowrap">
-                                <input type="checkbox" ng-change="requestStatusChange(request,'reject')" ng-model="request.status"
-                                       ng-checked="request.status == 'reject'">
-                                <span class="account-settings-span"></span>
-                            </label>
-                        </td>
-                        <td ng-click="$event.stopPropagation()" class="transactions-list-element text-center" title="{{request.status | capitalizeWord}}">
-                            <label  class="checkbox-inline custom-checkbox nowrap">
-                                <input type="checkbox" ng-change="requestStatusChange(request,'accept')" ng-model="request.status"
-                                       ng-checked="request.status == 'accept'">
-                                <span class="account-settings-span"></span>
-                            </label>
+                        <td class="transactions-list-element" title="{{request.status | capitalizeWord}}" ng-bind="request.status | capitalizeWord"></td>
+                        <td ng-click="$event.stopPropagation()">
+                            <div class="reward-list-radio-groups">
+                                <input class="margin-right-10 pointer" type="radio" ng-change="requestStatusChange(request)"
+                                       ng-model="request.status" value="reject">
+                                <span class="reward-radio-type1">Reject</span>
+                                <input class="horizontal-divider-40 margin-right-10 pointer"
+                                       ng-change="requestStatusChange(request)"
+                                       type="radio" ng-model="request.status"
+                                       value="accept"> <span class="reward-radio-type2">Accept</span>
+                            </div>
                         </td>
                     </tr>
                 </tbody>

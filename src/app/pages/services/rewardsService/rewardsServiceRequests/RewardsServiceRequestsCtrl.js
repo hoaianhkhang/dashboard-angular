@@ -124,12 +124,11 @@
             };
         };
 
-        $scope.requestStatusChange = function (request,status) {
-            request.status = status;
+        $scope.requestStatusChange = function (request) {
             if(vm.token) {
                 $http.patch(vm.serviceUrl + 'admin/campaigns/requests/' + request.identifier + '/',
                     {
-                        status: status.toLowerCase()
+                        status: request.status.toLowerCase()
                     }, {
                         headers: {
                             'Content-Type': 'application/json',
