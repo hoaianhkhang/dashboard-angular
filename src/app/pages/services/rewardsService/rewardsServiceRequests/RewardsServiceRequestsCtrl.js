@@ -6,11 +6,11 @@
 
     /** @ngInject */
     function RewardsServiceRequestsCtrl(environmentConfig,$scope,$http,localStorageManagement,
-                                        $uibModal,serializeFiltersService,errorHandler) {
+                                        $uibModal,serializeFiltersService,errorHandler,toastr) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
-        vm.baseUrl = localStorageManagement.getValue('SERVICEURL');
+        vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
         $scope.loadingRewardsRequests =  false;
         $scope.showingRewardsRequestsFilters = false;
         $scope.rewardsRequestsList = [];
@@ -75,7 +75,7 @@
                 status: $scope.filtersObj.statusFilter ? ($scope.applyFiltersObj.statusFilter.selectedStatus ? $scope.applyFiltersObj.statusFilter.selectedStatus.toLowerCase() : null): null
             };
 
-            return vm.baseUrl + 'admin/campaigns/requests/?' + serializeFiltersService.serializeFilters(searchObj);
+            return vm.serviceUrl + 'admin/campaigns/requests/?' + serializeFiltersService.serializeFilters(searchObj);
         };
 
         $scope.getRewardsRequests = function (applyFilter) {
@@ -122,6 +122,29 @@
                 campaignFilter: false,
                 statusFilter: false
             };
+        };
+
+        $scope.requestStatusChange = function (request,status) {
+            request.status = status;
+            if(vm.token) {
+                $http.patch(vm.serviceUrl + 'admin/campaigns/requests/' + request.identifier + '/',
+                    {
+                        status: status.toLowerCase()
+                    }, {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': vm.token
+                        }
+                    }).then(function (res) {
+                    if (res.status === 200) {
+                        $scope.loadingRequest = false;
+                        toastr.success('Request has been updated successfully');
+                    }
+                }).catch(function (error) {
+                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.handleErrors(error);
+                });
+            }
         };
 
         $scope.openRewardRequestModal = function (page, size,request) {

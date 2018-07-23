@@ -16,7 +16,7 @@
     </div>
     <div class="panel-body">
         <div>
-            <div class="upper-pagination">
+            <div ng-show="rewardsRequestsList.length > 0" class="upper-pagination">
                 <p uib-pagination boundary-links="true" items-per-page="pagination.itemsPerPage"  total-items="rewardsRequestData.count" ng-model="pagination.pageNo"
                    max-size="pagination.maxSize" class="pagination-sm pull-right no-margin" force-ellipses="true" ng-change="getRewardsRequests()"
                    previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></p>
@@ -26,7 +26,9 @@
                     <tr>
                         <th class="rehive-table-row-first-child">User</th>
                         <th>Campaign</th>
-                        <th>Status</th>
+                        <th class="text-center">Pending</th>
+                        <th class="text-center">Reject</th>
+                        <th class="text-center">Accept</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -34,11 +36,31 @@
                         ng-click="openRewardRequestModal('app/pages/services/rewardsService/rewardsServiceRequests/rewardsServiceRequestsModal/rewardsServiceRequestsModal.html','md',request)">
                         <td class="transactions-list-element" title="{{userEmailObj.email}}" ng-bind="request.user" ng-mouseover="getUserObjEmail(request.user)"></td>
                         <td class="transactions-list-element" title="{{request.campaign_name || 'Unnamed'}}" ng-bind="request.campaign_name || 'Unnamed'"></td>
-                        <td class="transactions-list-element" title="{{request.status | capitalizeWord}}" ng-bind="request.status | capitalizeWord"></td>
+                        <td ng-click="$event.stopPropagation()" class="transactions-list-element text-center" title="{{request.status | capitalizeWord}}">
+                            <label  class="checkbox-inline custom-checkbox nowrap">
+                                <input type="checkbox" ng-change="requestStatusChange(request,'pending')" ng-model="request.status"
+                                       value="pending" ng-checked="request.status == 'pending'">
+                                <span class="account-settings-span"></span>
+                            </label>
+                        </td>
+                        <td ng-click="$event.stopPropagation()" class="transactions-list-element text-center" title="{{request.status | capitalizeWord}}">
+                            <label  class="checkbox-inline custom-checkbox nowrap">
+                                <input type="checkbox" ng-change="requestStatusChange(request,'reject')" ng-model="request.status"
+                                       ng-checked="request.status == 'reject'">
+                                <span class="account-settings-span"></span>
+                            </label>
+                        </td>
+                        <td ng-click="$event.stopPropagation()" class="transactions-list-element text-center" title="{{request.status | capitalizeWord}}">
+                            <label  class="checkbox-inline custom-checkbox nowrap">
+                                <input type="checkbox" ng-change="requestStatusChange(request,'accept')" ng-model="request.status"
+                                       ng-checked="request.status == 'accept'">
+                                <span class="account-settings-span"></span>
+                            </label>
+                        </td>
                     </tr>
                 </tbody>
             </table>
-            <div>
+            <div ng-show="rewardsRequestsList.length > 0">
                 <p uib-pagination boundary-links="true" items-per-page="pagination.itemsPerPage"  total-items="rewardsRequestData.count" ng-model="pagination.pageNo"
                    max-size="pagination.maxSize" class="pagination-sm pull-right transaction-history-pagination" force-ellipses="true" ng-change="getRewardsRequests()"
                    previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></p>
