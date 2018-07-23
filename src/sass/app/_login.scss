@@ -1,5 +1,9 @@
 $text-color: #494242;
 
+.login-labels{
+  line-height: 14px!important;
+}
+
 .auth-main  .form-control,.auth-main .form-control:focus {
   @include placeholderStyle($text-color, 0.7);
   height: auto;
