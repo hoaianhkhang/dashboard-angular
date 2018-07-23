@@ -2,10 +2,11 @@ $text-color: #494242;
 
 .login-labels{
   line-height: 14px!important;
+  color: #7f7b7a;
 }
 
 .auth-main  .form-control,.auth-main .form-control:focus {
-  @include placeholderStyle($text-color, 0.7);
+  @include placeholderStyle($text-color, 0.5);
   height: auto;
   padding: 12px 10px;
   border-radius: 2px;
