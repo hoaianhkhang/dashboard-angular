@@ -1,0 +1,41 @@
+<div class="panel table-filters">
+    <div class="panel-heading">
+        <div class="table-filter-heading">
+            <span class="user-details-panel-title pull-left">Create filter</span>
+            <button ng-click="getRewardsRequests('applyFilter')" class="btn btn-primary pull-right">Done</button>
+            <button ng-click="clearFilters()" class="btn btn-default pull-right clear-filter-btn">Clear</button>
+        </div>
+    </div>
+    <div class="panel-body">
+        <div id="filterCampaign">
+            <div>
+                <label class="checkbox-inline custom-checkbox nowrap">
+                    <input type="checkbox" ng-model="filtersObj.campaignFilter">
+                    <span>Campaign</span>
+                </label>
+            </div>
+            <div ng-if="filtersObj.campaignFilter" class="row divider-top-6">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 date-filter-view">
+                    <input type="text" ng-model="applyFiltersObj.campaignFilter.selectedCampaign" placeholder="Enter campaign name"
+                           auto-focus="filtersObj.campaignFilter"
+                           class="transaction-id-input">
+                </div>
+            </div>
+        </div>
+        <div id="filterStatus">
+            <div>
+                <label class="checkbox-inline custom-checkbox nowrap">
+                    <input type="checkbox" ng-model="filtersObj.statusFilter">
+                    <span>Status</span>
+                </label>
+            </div>
+            <div ng-if="filtersObj.statusFilter" class="row divider-top-6">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 date-filter-view">
+                    <select class="form-control pointer" ng-model="applyFiltersObj.statusFilter.selectedStatus"
+                            ng-options="option for option in statusOptions">
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -217,6 +217,8 @@
             $scope.popup2.opened = true;
         };
 
+        //end angular datepicker
+
         $scope.orderByFunction = function () {
             return ($scope.applyFiltersObj.orderByFilter.selectedOrderByOption == 'Latest' ? '-created' :
                 $scope.applyFiltersObj.orderByFilter.selectedOrderByOption == 'Largest' ? '-amount' :

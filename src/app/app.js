@@ -15,6 +15,8 @@ angular.module('BlurAdmin', [
     'iso-3166-country-codes',
     'ngclipboard',
     'ngIntlTelInput',
+    'localytics.directives',
+    'ngTagsInput',
     'BlurAdmin.theme',
     'BlurAdmin.pages'
 ])

@@ -63,7 +63,7 @@
                                 toastr.error('Please enter your password');
                                 return;
                             }
-                            scope.deactivateServices(selectedService,scope.password)
+                            scope.deactivateServices(selectedService,scope.password);
                         }
                     }
                 }

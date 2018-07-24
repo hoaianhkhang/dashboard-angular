@@ -5,7 +5,9 @@
         .controller('WebhooksListCtrl', WebhooksListCtrl);
 
     /** @ngInject */
-    function WebhooksListCtrl($scope,Rehive,$uibModal,$location,localStorageManagement,errorHandler,$window,$state) {
+
+    function WebhooksListCtrl($scope,Rehive,$uibModal,toastr,serializeFiltersService,
+                              $http,$location,localStorageManagement,errorHandler,$window,$state) {
 
         var vm = this;
         vm.updatedWebhook = {};
@@ -16,10 +18,28 @@
         var locationArray = location.split('/');
         $scope.locationIndicator = locationArray[(locationArray.length -1)];
 
-        vm.getWebhooks = function () {
+        $scope.pagination = {
+            itemsPerPage: 25,
+            pageNo: 1,
+            maxSize: 5
+        };
+
+        vm.getWebhooksFiltersObj = function(){
+            var searchObj = {
+                page: $scope.pagination.pageNo,
+                page_size: $scope.pagination.itemsPerPage || 25
+            };
+
+            return serializeFiltersService.objectFilters(searchObj);
+        };
+
+        $scope.getWebhooks = function () {
             if(vm.token) {
                 $scope.loadingWebhooks = true;
-                Rehive.admin.webhooks.get().then(function (res) {
+
+                var webhooksFiltersObj = vm.getWebhooksFiltersObj();
+
+                Rehive.admin.webhooks.get({filters: webhooksFiltersObj}).then(function (res) {
                     $scope.loadingWebhooks = false;
                     $scope.webhookList = res.results;
                     $window.scrollTo(0, 0);
@@ -32,7 +52,7 @@
                 });
             }
         };
-        vm.getWebhooks();
+        $scope.getWebhooks();
 
         $scope.openCreateWebhookModal = function (page, size) {
             vm.theModal = $uibModal.open({
@@ -53,7 +73,7 @@
 
             vm.theModal.result.then(function(webhook){
                 if(webhook){
-                    vm.getWebhooks();
+                    $scope.getWebhooks();
                 }
             }, function(){
             });
@@ -75,7 +95,7 @@
 
             vm.theModal.result.then(function(webhook){
                 if(webhook){
-                    vm.getWebhooks();
+                    $scope.getWebhooks();
                 }
             }, function(){
             });
@@ -97,7 +117,7 @@
 
             vm.theModal.result.then(function(webhook){
                 if(webhook){
-                    vm.getWebhooks();
+                    $scope.getWebhooks();
                 }
             }, function(){
             });

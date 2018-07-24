@@ -1,0 +1,33 @@
+<div ng-hide="loadingWarmstorage" class="panel">
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                <div class="dashboard-currencies-code">
+                    XBT
+                </div>
+            </div>
+            <div class="currencies-page-row">
+                <div>
+                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                        <div>
+                            <span><strong>{{warmstorageObj.rehive_account_reference}}</strong></span>
+                            <br>
+                            <span class="currencies-details-heading">Account reference</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                        <div>
+                            <span><strong>{{ethereumCurrency.symbol}} {{warmstorageObj.balance | currencyModifiersFilter: ethereumCurrency.divisibility}}</strong></span>
+                            <br>
+                            <span class="currencies-details-heading">Total</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<warmstorage-transactions-table ng-hide="loadingWarmstorage"></warmstorage-transactions-table>
+<div ba-panel ng-show="loadingWarmstorage">
+    <loading-image></loading-image>
+</div>

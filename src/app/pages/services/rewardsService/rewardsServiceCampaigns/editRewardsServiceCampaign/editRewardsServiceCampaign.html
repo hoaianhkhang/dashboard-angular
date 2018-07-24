@@ -1,0 +1,173 @@
+<div ng-hide="updatingCampaign" class="panel">
+    <div class="panel-heading">
+        <span class="user-details-panel-title">Edit campaign</span>
+    </div>
+    <div class="panel-body">
+        <form name="campaignForm" class="custom-form" novalidate>
+            <div class="form-group">
+                <label>Campaign name <span class="required-icon">*</span></label>
+                <input type="text" ng-model="editCampaignParams.name" ng-change="campaignChanged('name')"
+                       class="form-control" placeholder="Enter campaign name" required>
+            </div>
+            <div class="form-group">
+                <label>Campaign description</label>
+                <textarea rows="4" type="text" ng-model="editCampaignParams.description" ng-change="campaignChanged('description')"
+                          class="form-control"  placeholder='Enter campaign description'></textarea>
+            </div>
+            <div class="form-group">
+                <label>Currency <span class="required-icon">*</span></label>
+                <div class="reward-multi-select">
+                    <select chosen
+                            data-placeholder-text-single="'Choose a currency'"
+                            width="100"
+                            ng-model="editCampaignParams.currency"
+                            ng-change="campaignChanged('currency')"
+                            ng-options="currency.code + ' - ' + currency.description for currency in currencyOptions | orderBy: 'code'">
+                        <option value=""></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Start date <span class="required-icon">*</span></label>
+                <div class="rewards-date">
+                    <input type="text" class="form-control rewards-date-input custom-datepicker"
+                           uib-datepicker-popup="{{dateObj.format}}" popup-placement="bottom-left"
+                           ng-model="editCampaignParams.start_date"
+                           ng-change="campaignChanged('start_date')"
+                           show-button-bar="false" datepicker-options="{showWeeks: false}"
+                           placeholder="mm/dd/yyyy" is-open="popup1.opened" close-text="Close" required/>
+                    <span class="input-group-btn">
+                                <button type="button" class="btn btn-default calender-button" ng-click="open1()">
+                                    <i class="glyphicon glyphicon-calendar"></i></button>
+                            </span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>End date <span class="required-icon">*</span></label>
+                <div class="rewards-date">
+                    <input type="text" class="form-control transaction-date-filter-input custom-datepicker"
+                           uib-datepicker-popup="{{dateObj.format}}" popup-placement="bottom-left"
+                           ng-model="editCampaignParams.end_date"
+                           ng-change="campaignChanged('end_date')"
+                           show-button-bar="false" datepicker-options="{showWeeks: false}"
+                           placeholder="mm/dd/yyyy" is-open="popup2.opened" close-text="Close" required/>
+                    <span class="input-group-btn">
+                                <button type="button" class="btn btn-default calender-button" ng-click="open2()">
+                                    <i class="glyphicon glyphicon-calendar"></i></button>
+                            </span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Reward type</label>
+                <div class="reward-type-radio-groups">
+                    <input class="margin-right-10 pointer" type="radio" ng-change="campaignChanged('reward_type')"
+                           ng-model="editCampaignParams.reward_type" value="basic">
+                    <span class="reward-radio-type1">Basic</span>
+                    <input class="horizontal-divider-40 margin-right-10 pointer"
+                           ng-change="campaignChanged('reward_type')"
+                           type="radio" ng-model="editCampaignParams.reward_type"
+                           value="manual"> <span class="reward-radio-type2">Manual</span>
+                    <input class="horizontal-divider-50 margin-right-10 pointer"
+                           ng-change="campaignChanged('reward_type')"
+                           type="radio" ng-model="editCampaignParams.reward_type"
+                           value="automatic"> <span class="reward-radio-type3">Automatic</span>
+                </div>
+            </div>
+            <div class="form-group setup-groups-tooltip-div">
+                <label>Reward total &nbsp;<i uib-tooltip-html="'Total number of tokens available during the campaign.'"
+                                             class="ion-information-circled setup-groups-tooltip"></i></label>
+                <br>
+                <input class="form-control" ng-change="campaignChanged('reward_total')" ng-model="editCampaignParams.reward_total" type="number">
+            </div>
+            <div class="form-group setup-groups-tooltip-div">
+                <label>Reward percentage &nbsp;<i uib-tooltip-html="'Reward percentage.'"
+                                                  class="ion-information-circled setup-groups-tooltip"></i></label>
+                <br>
+                <input class="form-control" ng-change="campaignChanged('reward_percentage')" ng-model="editCampaignParams.reward_percentage" type="number">
+            </div>
+            <div class="form-group">
+                <label>Campaign status</label>
+                <div class="reward-type-radio-groups-status">
+                    <input class="margin-right-10 pointer" type="radio"
+                           ng-change="campaignChanged('status')"
+                           ng-model="editCampaignParams.status" value="active">
+                    <span class="reward-radio-type1">Active</span>
+                    <input class="horizontal-divider-40 margin-right-10 pointer" type="radio"
+                           ng-change="campaignChanged('status')"
+                           ng-model="editCampaignParams.status"
+                           value="disabled"> <span class="reward-radio-type2">Disabled</span>
+                    <input class="horizontal-divider-55 margin-right-10 pointer" type="radio"
+                           ng-change="campaignChanged('status')"
+                           ng-model="editCampaignParams.status"
+                           value="expired"> <span class="reward-radio-type3">Expired</span>
+                </div>
+            </div>
+            <div class="form-group setup-groups-tooltip-div">
+                <label>User volume limit &nbsp;<i uib-tooltip-html="'User volume limit.'"
+                                                  class="ion-information-circled setup-groups-tooltip"></i></label>
+                <br>
+                <input class="form-control" ng-change="campaignChanged('user_volume_limit')" ng-model="editCampaignParams.user_volume_limit" type="number">
+            </div>
+            <div class="form-group setup-groups-tooltip-div">
+                <label>User limit &nbsp;<i uib-tooltip-html="'User limit.'"
+                                           class="ion-information-circled setup-groups-tooltip"></i></label>
+                <br>
+                <input class="form-control" ng-change="campaignChanged('user_limit')" ng-model="editCampaignParams.user_limit" type="number">
+            </div>
+            <div class="form-group setup-groups-tooltip-div">
+                <label>User transaction limit &nbsp;<i uib-tooltip-html="'User transaction limit.'"
+                                                       class="ion-information-circled setup-groups-tooltip"></i></label>
+                <br>
+                <input class="form-control" ng-change="campaignChanged('user_transaction_limit')" ng-model="editCampaignParams.user_transaction_limit" type="number">
+            </div>
+            <div class="form-group">
+                <label>Users</label>
+                <div class="reward-multi-select">
+                    <tags-input on-tag-added="campaignChanged('users')" on-tag-removed="campaignChanged('users')"
+                            ng-model="editCampaignParams.users" placeholder="Enter one or more user email">
+                        <auto-complete class="reward-tag-users-input" source="getUsersEmailTypeahead($query)"></auto-complete>
+                    </tags-input>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Groups</label>
+                <div class="reward-multi-select">
+                    <tags-input on-tag-added="campaignChanged('groups')" on-tag-removed="campaignChanged('groups')"
+                            ng-model="editCampaignParams.groups" placeholder="Enter one or more group name">
+                        <auto-complete class="reward-tag-users-input" source="getGroupsTypeahead($query)"></auto-complete>
+                    </tags-input>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="checkbox-inline custom-checkbox nowrap">
+                    <input type="checkbox" ng-change="campaignChanged('visible')" ng-model="editCampaignParams.visible">
+                    <span>Visible</span>
+                </label>
+            </div>
+            <div class="form-group setup-groups-tooltip-div">
+                <label>Request &nbsp;<i uib-tooltip-html="'Request.'"
+                                        class="ion-information-circled setup-groups-tooltip"></i></label>
+                <br>
+                <label class="checkbox-inline custom-checkbox nowrap">
+                    <input type="checkbox" ng-change="campaignChanged('request')" ng-model="editCampaignParams.request">
+                    <span></span>
+                </label>
+            </div>
+            <div class="form-group">
+                <label>Tags</label>
+                <div class="reward-multi-select">
+                    <tags-input on-tag-added="campaignChanged('tags')" on-tag-removed="campaignChanged('tags')"
+                                ng-model="editCampaignParams.tags" placeholder="Enter one or more tags">
+                    </tags-input>
+                </div>
+            </div>
+            <div class="form-group">
+                <button ng-disabled="(!campaignForm.$valid || !editCampaignParams.currency.code)" ng-click="updateCampaign(editCampaignParams)" class="btn btn-primary dashboard-btn pull-right">Save</button>
+                <button ng-click="goToCampaignListView()" class="btn btn-default dashboard-btn pull-right margin-right-10">Back</button>
+            </div>
+        </form>
+    </div>
+</div>
+<div ng-show="updatingCampaign" class="service-header" ba-panel>
+    <loading-image></loading-image>
+</div>
