@@ -5,6 +5,10 @@ $text-color: #494242;
   color: #7f7b7a;
 }
 
+.required-symbol{
+  color: #ed675A !important;
+}
+
 .auth-main  .form-control,.auth-main .form-control:focus {
   @include placeholderStyle($text-color, 0.5);
   height: auto;

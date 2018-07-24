@@ -23,21 +23,21 @@
             <div>
                 <div class="form-group">
                     <div class="col-sm-12">
-                        <label><span class="pull-left login-labels">Email *</span></label>
+                        <label><span class="pull-left login-labels">Email<span class="required-symbol">*</span></span></label>
                         <input type="email" ng-model="registerData.email" class="form-control"
                                id="inputEmail1" placeholder="e.g. jane@rehive.com" auto-focus="havePersonalDetails" required>
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="col-sm-12">
-                        <label><span class="pull-left login-labels">Company *</span></label>
+                        <label><span class="pull-left login-labels">Company<span class="required-symbol">*</span></span></label>
                         <input type="text" ng-change="fixformat(company)" ng-model="registerData.company"
                                class="form-control" id="inputName1" placeholder="Choose a unique ID for your company" required>
                     </div>
                 </div>
                 <div class="form-group">
                     <div style="height: 68px;" class="col-sm-12">
-                        <label><span class="pull-left login-labels">Password *</span></label>
+                        <label><span class="pull-left login-labels">Password<span class="required-symbol">*</span></span></label>
                         <input ng-attr-type="{{ showPassword1 ? 'text' : 'password' }}"
                                style="height: 46px;"
                                ng-model="registerData.password1"
@@ -48,7 +48,7 @@
                 </div>
                 <div class="form-group">
                     <div style="height: 68px;" class="col-sm-12">
-                        <label><span class="pull-left login-labels">Retype password *</span></label>
+                        <label><span class="pull-left login-labels">Retype password<span class="required-symbol">*</span></span></label>
                         <input ng-attr-type="{{ showPassword2 ? 'text' : 'password' }}"
                                style="height: 46px;"
                                ng-model="registerData.password2"
