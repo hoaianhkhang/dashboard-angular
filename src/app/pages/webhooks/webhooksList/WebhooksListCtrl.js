@@ -41,6 +41,7 @@
 
                 Rehive.admin.webhooks.get({filters: webhooksFiltersObj}).then(function (res) {
                     $scope.loadingWebhooks = false;
+                    $scope.webhooksData = res;
                     $scope.webhookList = res.results;
                     $window.scrollTo(0, 0);
                     $scope.$apply();
