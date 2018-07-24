@@ -3,6 +3,20 @@
   padding: 10px 0 10px 0!important;
 }
 
+.incomplete-touched-task{
+  background-color: #edfffc;
+  padding: 10px 0 10px 0!important;
+}
+
+.complete-touched-task{
+  background-color: transparent;
+  padding: 10px 0 10px 0!important;
+  transition: background-color 0.5s linear;
+  &:active{
+    background-color: #dcfffa;
+  }
+}
+
 .dashboard-task-row{
   padding: 0 0 10px 0;
 }

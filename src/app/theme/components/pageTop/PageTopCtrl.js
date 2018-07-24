@@ -128,8 +128,14 @@
                         }
                     }
                 }).catch(function (error) {
-                    errorHandler.evaluateErrors(error.data);
-                    errorHandler.handleErrors(error);
+                    if(error.status == 401){
+                        $rootScope.gotToken = false;
+                        $rootScope.securityConfigured = true;
+                        $rootScope.pageTopObj = {};
+                        localStorageManagement.deleteValue('TOKEN');
+                        localStorageManagement.deleteValue('token');
+                        $location.path('/login');
+                    }
                 });
             }
         };
@@ -285,8 +291,14 @@
                     }
                 }).catch(function (error) {
                     $scope.loadingTransactionSets = false;
-                    errorHandler.evaluateErrors(error.data);
-                    errorHandler.handleErrors(error);
+                    if(error.status == 401){
+                        $rootScope.gotToken = false;
+                        $rootScope.securityConfigured = true;
+                        $rootScope.pageTopObj = {};
+                        localStorageManagement.deleteValue('TOKEN');
+                        localStorageManagement.deleteValue('token');
+                        $location.path('/login');
+                    }
                 });
             }
         };
@@ -391,13 +403,15 @@
                                         if($scope.showingDashboardTasks){
                                             $scope.allTasksDone = true;
                                         }
+                                    } else {
+                                        $timeout(function () {
+                                            $scope.checkWhetherTaskCompleteOrNot();
+                                        },10000);
                                     }
                                 } else if((res.data.data.progress >= 0) && (res.data.data.progress < 100)){
                                     $scope.dashboardTasksLists.forEach(function (element,ind,arr) {
                                         if(element.id == res.data.data.id){
-                                            if(element.untouched){
-                                                res.data.data.untouched = true;
-                                            }
+                                            res.data.data.untouched = true;
                                             $scope.dashboardTasksLists.splice(ind,1,res.data.data);
                                         }
                                     });
