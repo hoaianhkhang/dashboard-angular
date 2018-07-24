@@ -5,7 +5,7 @@
                 <span class="user-details-panel-title">Users available balances</span>
             </div>
             <div class="panel-body">
-                <span>{{currencyObj.symbol}} {{currencyOverviewData.available_balance_total | currencyModifiersFilter: currencyObj.divisibility}}</span>
+                <span class="currency-value-size">{{currencyObj.symbol}} {{currencyOverviewData.available_balance_total | currencyModifiersFilter: currencyObj.divisibility}}</span>
             </div>
         </div>
     </div>
@@ -15,7 +15,7 @@
                 <span class="user-details-panel-title">24h volume</span>
             </div>
             <div class="panel-body">
-                <span>{{currencyObj.symbol}} {{currencyOverviewData.balance_24h | currencyModifiersFilter: currencyObj.divisibility}}</span>
+                <span class="currency-value-size">{{currencyObj.symbol}} {{currencyOverviewData.balance_24h | currencyModifiersFilter: currencyObj.divisibility}}</span>
             </div>
         </div>
     </div>
