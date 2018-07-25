@@ -21,7 +21,7 @@
                    max-size="pagination.maxSize" class="pagination-sm pull-right no-margin" force-ellipses="true" ng-change="getRewardsRequests()"
                    previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></p>
             </div>
-            <table class="table custom-table table-striped">
+            <table ng-show="rewardsRequestsList.length > 0" class="table custom-table table-striped">
                 <thead>
                     <tr>
                         <th class="rehive-table-row-first-child">User</th>
@@ -55,6 +55,7 @@
                    max-size="pagination.maxSize" class="pagination-sm pull-right transaction-history-pagination" force-ellipses="true" ng-change="getRewardsRequests()"
                    previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></p>
             </div>
+            <i ng-hide="rewardsRequestsList.length > 0">No requests are available.</i>
         </div>
     </div>
 </div>

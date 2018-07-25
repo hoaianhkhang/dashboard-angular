@@ -10,7 +10,7 @@
                    max-size="campaignPagination.maxSize" class="pagination-sm pull-right no-margin" force-ellipses="true" ng-change="getCampaignList()"
                    previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></p>
             </div>
-            <table class="table">
+            <table ng-show="campaignList.length > 0" class="table">
                 <tbody>
                 <tr>
                     <th class="rehive-table-row-first-child">Name</th>
@@ -49,6 +49,7 @@
                    max-size="campaignPagination.maxSize" class="pagination-sm pull-right transaction-history-pagination" force-ellipses="true" ng-change="getCampaignList()"
                    previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></p>
             </div>
+            <i ng-hide="campaignList.length > 0">No campaigns are available.</i>
         </div>
     </div>
 </div>
