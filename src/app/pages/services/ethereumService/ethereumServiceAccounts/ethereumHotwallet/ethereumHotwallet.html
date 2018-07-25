@@ -1,0 +1,46 @@
+<div ng-show="hotwalletObjLength > 0" class="panel">
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                <div class="dashboard-currencies-code">
+                    XLM
+                </div>
+            </div>
+            <div class="currencies-page-row">
+                <div>
+                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                        <div>
+                            <span><strong>{{hotwalletObj.rehive_account_reference}}</strong></span>
+                            <br>
+                            <span class="currencies-details-heading">Account reference</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                        <div>
+                            <span><strong>{{ethereumCurrency.symbol}} {{hotwalletObj.balance | currencyModifiersFilter: ethereumCurrency.divisibility}}</strong></span>
+                            <br>
+                            <span class="currencies-details-heading">Total</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                        <div>
+                            <span><strong>{{hotwalletObj.low_balance_percentage + '%'}}</strong></span>
+                            <br>
+                            <span class="currencies-details-heading">Low balance percentage</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                        <button class="btn btn-primary dashboard-btn pull-right"
+                          ng-click="openFundHotwalletModal('app/pages/services/ethereumService/ethereumServiceAccounts/ethereumHotwallet/fundEthereumHotwalletModal/fundEthereumHotwalletModal.html','md')">
+                            Fund
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<hotwallet-transactions-table ng-hide="loadingHotwalletTransactions"></hotwallet-transactions-table>
+<div ba-panel ng-show="loadingHotwalletTransactions">
+    <loading-image></loading-image>
+</div>
