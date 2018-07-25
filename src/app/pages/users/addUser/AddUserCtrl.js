@@ -14,6 +14,7 @@
         $scope.newUserParams = {
             first_name: '',
             last_name: '',
+            username: '',
             email: '',
             mobile_number: '',
             id_number: '',
@@ -22,6 +23,11 @@
             timezone: '',
             groups: '',
             nationality: "US"
+        };
+
+        $scope.fixformat = function(){
+            $scope.newUserParams.username = $scope.newUserParams.username.toLowerCase();
+            $scope.newUserParams.username = $scope.newUserParams.username.replace(/ /g, '_');
         };
 
         vm.getGroups = function () {
