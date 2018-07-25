@@ -5,7 +5,7 @@
         .controller('LoginCtrl', LoginCtrl);
 
     /** @ngInject */
-    function LoginCtrl($rootScope,$scope,$http,localStorageManagement,environmentConfig,$location,errorHandler,userVerification,$timeout) {
+    function LoginCtrl($rootScope,$scope,$http,localStorageManagement,environmentConfig,$location,errorHandler) {
 
         var vm = this;
         localStorageManagement.deleteValue('TOKEN');
@@ -28,7 +28,6 @@
                 if (res.status === 200) {
                     localStorageManagement.setValue('TOKEN','Token ' + res.data.data.token);
                     vm.checkMultiFactorAuthEnabled(res.data.data.token);
-
                 }
             }).catch(function (error) {
                 $rootScope.$pageFinishedLoading = true;

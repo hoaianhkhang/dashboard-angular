@@ -80,7 +80,7 @@
                 <input class="form-control" ng-change="campaignChanged('reward_total')" ng-model="editCampaignParams.reward_total" type="number">
             </div>
             <div class="form-group setup-groups-tooltip-div">
-                <label>Reward percentage &nbsp;<i uib-tooltip-html="'Reward percentage.'"
+                <label>Reward percentage &nbsp;<i uib-tooltip-html="'Add a percentage value if you want reward tokens to be issued based on the percentage of the award amount instead of by the reward amount.'"
                                                   class="ion-information-circled setup-groups-tooltip"></i></label>
                 <br>
                 <input class="form-control" ng-change="campaignChanged('reward_percentage')" ng-model="editCampaignParams.reward_percentage" type="number">
@@ -103,19 +103,19 @@
                 </div>
             </div>
             <div class="form-group setup-groups-tooltip-div">
-                <label>User volume limit &nbsp;<i uib-tooltip-html="'User volume limit.'"
+                <label>User volume limit &nbsp;<i ng-hide="true" uib-tooltip-html="'User volume limit.'"
                                                   class="ion-information-circled setup-groups-tooltip"></i></label>
                 <br>
                 <input class="form-control" ng-change="campaignChanged('user_volume_limit')" ng-model="editCampaignParams.user_volume_limit" type="number">
             </div>
             <div class="form-group setup-groups-tooltip-div">
-                <label>User limit &nbsp;<i uib-tooltip-html="'User limit.'"
+                <label>User limit &nbsp;<i ng-hide="true" uib-tooltip-html="'User limit.'"
                                            class="ion-information-circled setup-groups-tooltip"></i></label>
                 <br>
                 <input class="form-control" ng-change="campaignChanged('user_limit')" ng-model="editCampaignParams.user_limit" type="number">
             </div>
             <div class="form-group setup-groups-tooltip-div">
-                <label>User transaction limit &nbsp;<i uib-tooltip-html="'User transaction limit.'"
+                <label>User transaction limit &nbsp;<i ng-hide="true" uib-tooltip-html="'User transaction limit.'"
                                                        class="ion-information-circled setup-groups-tooltip"></i></label>
                 <br>
                 <input class="form-control" ng-change="campaignChanged('user_transaction_limit')" ng-model="editCampaignParams.user_transaction_limit" type="number">
@@ -137,21 +137,6 @@
                         <auto-complete class="reward-tag-users-input" source="getGroupsTypeahead($query)"></auto-complete>
                     </tags-input>
                 </div>
-            </div>
-            <div class="form-group">
-                <label class="checkbox-inline custom-checkbox nowrap">
-                    <input type="checkbox" ng-change="campaignChanged('visible')" ng-model="editCampaignParams.visible">
-                    <span>Visible</span>
-                </label>
-            </div>
-            <div class="form-group setup-groups-tooltip-div">
-                <label>Request &nbsp;<i uib-tooltip-html="'Request.'"
-                                        class="ion-information-circled setup-groups-tooltip"></i></label>
-                <br>
-                <label class="checkbox-inline custom-checkbox nowrap">
-                    <input type="checkbox" ng-change="campaignChanged('request')" ng-model="editCampaignParams.request">
-                    <span></span>
-                </label>
             </div>
             <div class="form-group">
                 <label>Tags</label>

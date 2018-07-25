@@ -4,6 +4,20 @@
   }
 }
 
+.reward-list-radio-groups{
+  position: relative;
+  & .reward-radio-type1 {
+    position: absolute;
+    top: -3px;
+    left: 21px;
+  }
+  & .reward-radio-type2 {
+    position: absolute;
+    top: -3px;
+    left: 87px;
+  }
+}
+
 .reward-type-radio-groups{
   position: relative;
   & .reward-radio-type1 {
@@ -65,9 +79,10 @@
   }
   & tags-input .tags{
     box-shadow: none!important;
+    font: 14px "Source Sans Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
   }
   & tags-input input::placeholder{
-    font-size: 13px!important;
+    font: 14px "Source Sans Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
     color: $default-text;
     opacity: 0.4;
   }
