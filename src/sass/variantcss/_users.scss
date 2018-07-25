@@ -1,5 +1,8 @@
-.user-details-metadata{
-  max-width: 360px;
+.user-metadata-tile {
+  width: 100%;
+  & .user-details-metadata{
+    width: inherit;
+  }
 }
 
 .move-icon{

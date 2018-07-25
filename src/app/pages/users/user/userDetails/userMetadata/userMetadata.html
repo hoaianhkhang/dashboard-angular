@@ -3,17 +3,9 @@
         <span class="user-details-panel-title">Metadata</span>
         <a ng-click="openUserMetadataModal('app/pages/users/user/userDetails/userMetadata/userMetadataModal/userMetadataModal.html','md',user)" class="user-details-panel-link pull-right pointer">Edit</a>
     </div>
-    <div class="panel-body">
-        <table class="table user-basic-info-table">
-            <tr>
-                <th width="45%">Metadata</th>
-                <td class="no-padding">
-                    <div ng-show="formatted.metadata">
-                        <pre class="no-margin user-details-metadata" ng-hide="editingTransaction">{{formatted.metadata}}</pre>
-                    </div>
-                </td>
-            </tr>
-        </table>
+    <div class="panel-body user-metadata-tile">
+        <pre ng-show="formatted.metadata" class="no-margin user-details-metadata" ng-hide="editingTransaction">{{formatted.metadata}}</pre>
+        <i ng-hide="formatted.metadata">No metadata available</i>
     </div>
 </div>
 <div ba-panel ng-show="loadingUserMetadata">
