@@ -20,7 +20,7 @@
                 // controller: "StellarServiceCtrl",
                 title: 'Stellar service'
             });
-            $urlRouterProvider.when("/services/stellar", "/services/stellar/accounts");
+            $urlRouterProvider.when("/services/stellar", "/services/stellar/setup");
             //"/services/stellar/setup"
     }
 
