@@ -11,6 +11,9 @@
         vm.user = user;
         $scope.formatted = {};
         $scope.formatted.metadata = JSON.stringify(vm.user.metadata);
+        if($scope.formatted.metadata == '{}'){
+            $scope.formatted.metadata = '';
+        }
         $scope.updatingUserMetadata = false;
         vm.token = localStorageManagement.getValue('TOKEN');
 
