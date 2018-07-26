@@ -1,21 +1,28 @@
+<h1 class="currencies-title">Stellar Service</h1>
 <div class="row">
     <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
         <div ng-hide="loadingStellarService" class="panel">
             <div class="panel-heading">
-                <span class="user-details-panel-title">Stellar service setup</span>
+                <span class="user-details-panel-title">Configuring Stellar Service</span>
             </div>
             <div class="panel-body">
-                <div>
+                <div ng-hide="stellarConfigComplete">
                     <div class="divider-20">
-                        <p>The Stellar service will create these if they do not exist already: </p>
+                        <p>The Stellar Service will create these if they do not exist already: </p>
                         <ul class="stellar-setup-ul no-margin">
                             <li>XLM currency</li>
                             <li><strong>user</strong> default & public group</li>
                             <li><strong>default</strong> default & primary account configuration</li>
                         </ul>
                     </div>
-                    <button ng-click="" class="btn btn-primary dashboard-btn pull-right">Add</button>
+                    <button ng-click="checkXLMCurrency()" class="btn btn-primary dashboard-btn pull-right">Add</button>
                     <button ng-click="goToServices()" class="btn btn-default dashboard-btn pull-right margin-right-10">Cancel</button>
+                </div>
+                <div ng-show="stellarConfigComplete">
+                    <div class="divider-20">
+                        <p>You have successfully added the Stellar Service! This setup will take you through configuring the service.</p>
+                    </div>
+                    <button ng-click="goToStellarServiceConfig()" class="btn btn-primary dashboard-btn pull-right">Start</button>
                 </div>
             </div>
         </div>
