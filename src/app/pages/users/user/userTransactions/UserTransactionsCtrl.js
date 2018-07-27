@@ -65,7 +65,7 @@
                 selectedTransactionSubtypeOption: ''
             },
             transactionIdFilter: {
-                selectedTransactionIdOption: $state.params.transactionId || null
+                selectedTransactionIdOption: null
             },
             referenceFilter: {
                 selectedReferenceOption: 'Is equal to',
@@ -74,7 +74,9 @@
                 reference__gt: null
             },
             accountFilter: {
-                selectedAccount: $state.params.account || null
+                selectedAccount: {
+                    reference: null
+                }
             },
             currencyFilter:{
                 selectedCurrencyOption: {}
@@ -159,7 +161,7 @@
                     if (res.status === 200) {
                         if(res.data.data.results.length > 0 ){
                             $scope.accountFilterOptions = res.data.data.results;
-                            $scope.applyFiltersObj.accountFilter.selectedAccount = res.data.data.results[0];
+                            vm.checkWhetherAccountsFilterIsApplied($scope.accountFilterOptions);
                         } else {
                             $scope.accountFilterOptions = [];
                         }
@@ -172,6 +174,22 @@
             }
         };
         vm.getUserAccounts();
+
+        vm.checkWhetherAccountsFilterIsApplied = function (accountsListsOptions) {
+            if(vm.userTransactionsFilterParams.filterByAccount){
+                $scope.filtersObj.accountFilter = true;
+                accountsListsOptions.forEach(function (account) {
+                    if(account.reference == vm.userTransactionsFilterParams.filterByAccount){
+                        $scope.applyFiltersObj.accountFilter.selectedAccount = account;
+                    }
+                });
+                $scope.getLatestTransactions();
+                $location.search('filterByAccount',null);
+                $location.replace();
+            } else {
+                $scope.applyFiltersObj.accountFilter.selectedAccount = accountsListsOptions[0];
+            }
+        };
 
         sharedResources.getSubtypes().then(function (res) {
             $scope.subtypeOptions = _.pluck(res.data.data,'name');
@@ -545,14 +563,6 @@
             $scope.loadingTransactions = false;
         };
 
-        if(vm.userTransactionsFilterParams.filterByAccount){
-            $scope.filtersObj.accountFilter = true;
-            $scope.applyFiltersObj.accountFilter.selectedAccount = vm.userTransactionsFilterParams.filterByAccount;
-            $scope.getLatestTransactions();
-            $location.search('filterByAccount',null);
-            $location.replace();
-        }
-
         $scope.getUsersEmailTypeahead = typeaheadService.getUsersEmailTypeahead();
 
         $scope.openModal = function (page, size,transaction) {
@@ -566,6 +576,27 @@
                         return transaction;
                     }
                 }
+            });
+        };
+
+        $scope.openExportUserTransactionsModal = function (page, size) {
+            vm.theExportModal = $uibModal.open({
+                animation: true,
+                templateUrl: page,
+                size: size,
+                controller: 'UserTransactionsExportModalCtrl',
+                resolve: {
+                    filtersObjForExport: function () {
+                        return $scope.filtersObjForExport;
+                    }
+                }
+            });
+
+            vm.theExportModal.result.then(function(transaction){
+                if(transaction){
+                    //$scope.getLatestTransactions();
+                }
+            }, function(){
             });
 
         };
