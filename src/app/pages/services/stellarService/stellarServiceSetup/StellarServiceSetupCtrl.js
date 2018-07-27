@@ -14,6 +14,39 @@
         $scope.loadingStellarService = false;
         $scope.stellarConfigComplete = false;
 
+        $scope.checkStellarServiceInitialState = function () {
+            $scope.loadingStellarService = true;
+            $http.get(vm.serviceUrl + 'admin/company/activation-status/', {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': vm.token
+                }
+            }).then(function (res) {
+                $scope.loadingStellarService = false;
+                if (res.status === 200) {
+                    var stellarFullySetup = true;
+                    for(var state in res.data.data){
+                        if(res.data.data.hasOwnProperty(state)){
+                            if(!res.data.data[state]){
+                                stellarFullySetup = false;
+                            }
+                        }
+                    }
+
+                    if(stellarFullySetup){
+                        $location.path('/services/stellar/accounts');
+                    } else {
+                        $scope.loadingStellarService = false;
+                    }
+                }
+            }).catch(function (error) {
+                $scope.loadingStellarService = false;
+                errorHandler.evaluateErrors(error.data);
+                errorHandler.handleErrors(error);
+            });
+        };
+        $scope.checkStellarServiceInitialState();
+
         $scope.goToServices = function(){
             $location.path('/services');
         };
@@ -133,17 +166,17 @@
                 }).then(function (res) {
                     if (res.status === 200) {
                         var defaultAccConfigExists = false;
-                        res.data.data.results.forEach(function (account) {
-                            if(account.name == 'default'){
-                                defaultAccConfigExists = true;
-                            }
-                        });
-
+                        if(res.data.data.results.length > 0){
+                            res.data.data.results.forEach(function (account) {
+                                if(account.name == 'default'){
+                                    defaultAccConfigExists = true;
+                                }
+                            });
+                        }
 
                         if(defaultAccConfigExists){
-                            $scope.loadingStellarService = false;
-                            $scope.stellarConfigComplete = true;
-                        } else if(defaultAccConfigExists){
+                            vm.addXLMToDefaultAccConfig();
+                        } else{
                             vm.createDefaultAccConfig();
                         }
                     }
