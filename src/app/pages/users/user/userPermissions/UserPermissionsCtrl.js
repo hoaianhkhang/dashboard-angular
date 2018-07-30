@@ -399,7 +399,7 @@
                 $scope.loadingPermissions = true;
                 Rehive.admin.users.permissions.create(vm.uuid, newPermissionObj).then(function (res) {
                     if(last){
-                        vm.resetTypeOptions();
+                        vm.finishSavingPermissionsProcess();
                         $scope.$apply();
                     }
                 }).then(function (res) {
