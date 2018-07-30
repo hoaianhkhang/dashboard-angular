@@ -30,10 +30,11 @@
 
         vm.getUser = function(){
             if(vm.token) {
-                Rehive.admin.users.get({filters: {email__contains: vm.user.email}}).then(function (res) {
+                Rehive.admin.users.get({filters: {identifier: vm.user.identifier}}).then(function (res) {
                     vm.user = res.results[0];
-                    $scope.userEmail = vm.user.email;
+                    $scope.userEmail = vm.user ? vm.user.email : '';
                     $scope.oldGroup = vm.user.groups[0];
+                    $scope.checkIfNewGroup();
                     $scope.$apply();
                 }, function (error) {
                     errorHandler.evaluateErrors(error);
