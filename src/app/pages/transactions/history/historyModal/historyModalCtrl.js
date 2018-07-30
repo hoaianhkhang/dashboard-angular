@@ -121,7 +121,7 @@
                     delete $scope.formatted.metadata;
                     delete $scope.transaction.metadata;
                 } else {
-                    $scope.transaction = res.data.data;
+                    $scope.transaction = res;
                     $scope.transaction.metadata = metaData;
                     $scope.formatted.metadata = metadataTextService.convertToText(metaData);
                 }
