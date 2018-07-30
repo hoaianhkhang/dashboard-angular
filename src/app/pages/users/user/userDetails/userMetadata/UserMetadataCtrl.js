@@ -5,7 +5,7 @@
         .controller('UserMetadataCtrl', UserMetadataCtrl);
 
     /** @ngInject */
-    function UserMetadataCtrl($scope,environmentConfig,$stateParams,$http,metadataTextService,
+    function UserMetadataCtrl($scope,Rehive,$stateParams,metadataTextService,
                               localStorageManagement,$uibModal,errorHandler) {
 
         var vm = this;
@@ -18,21 +18,18 @@
         vm.getUser = function(){
             if(vm.token) {
                 $scope.loadingUserMetadata = true;
-                $http.get(environmentConfig.API + '/admin/users/' + vm.uuid + '/', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
+                Rehive.admin.users.get({identifier: vm.uuid}).then(function (res) {
+                    $scope.formatted = {};
+                    $scope.formatted.metadata = {};
+                    $scope.user = res;
+                    $scope.formatted.metadata = metadataTextService.convertToText($scope.user.metadata);
                     $scope.loadingUserMetadata = false;
-                    if (res.status === 200) {
-                        $scope.user = res.data.data;
-                        $scope.formatted.metadata = metadataTextService.convertToText($scope.user.metadata);
-                    }
-                }).catch(function (error) {
+                    $scope.$apply();
+                }, function (error) {
                     $scope.loadingUserMetadata = false;
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };
