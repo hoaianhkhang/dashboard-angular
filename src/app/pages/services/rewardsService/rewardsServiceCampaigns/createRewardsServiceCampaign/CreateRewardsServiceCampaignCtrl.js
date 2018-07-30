@@ -28,8 +28,6 @@
             userTransactionLimit: null,
             users: [],
             groups: [],
-            visible: true,
-            request: true,
             tags: []
         };
 
@@ -97,8 +95,6 @@
                 user_transaction_limit: newCampaignParams.userTransactionLimit,
                 users: [],
                 groups: [],
-                visible: newCampaignParams.visible,
-                request: newCampaignParams.request,
                 tags: []
             };
 
