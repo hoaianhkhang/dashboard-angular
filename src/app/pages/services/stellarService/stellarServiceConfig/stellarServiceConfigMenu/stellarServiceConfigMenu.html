@@ -5,7 +5,7 @@
     <div class="panel-body">
         <div class="pointer divider-20" >
             <div class="company-setup-menu-navigation-div" ng-click="goToConfigView('hot wallet')">
-                <div ng-show="currentConfigView == 'warm storage'" class="menu-number">
+                <div ng-hide="currentConfigView == 'hot wallet'" class="menu-number">
                 <span class="menu-number-text">1</span>
                 </div>
                 <div ng-show="currentConfigView == 'hot wallet'" class="menu-number setup-menu-active">
@@ -17,13 +17,25 @@
 
         <div class="pointer divider-20" >
             <div class="company-setup-menu-navigation-div" ng-click="goToConfigView('warm storage')">
-                <div ng-show="currentConfigView == 'hot wallet'" class="menu-number">
+                <div ng-hide="currentConfigView == 'warm storage'" class="menu-number">
                 <span class="menu-number-text">2</span>
                 </div>
                 <div ng-show="currentConfigView == 'warm storage'" class="menu-number setup-menu-active">
                     <span class="menu-number-text">2</span>
                 </div>
                 <span class="company-setup-menu-navigation-title">Warm storage</span>
+            </div>
+        </div>
+
+        <div class="pointer divider-20" >
+            <div class="company-setup-menu-navigation-div" ng-click="goToConfigView('finish')">
+                <div ng-hide="currentConfigView == 'finish'" class="menu-number">
+                    <span class="menu-number-text">3</span>
+                </div>
+                <div ng-show="currentConfigView == 'finish'" class="menu-number setup-menu-active">
+                    <span class="menu-number-text">3</span>
+                </div>
+                <span class="company-setup-menu-navigation-title">Finish</span>
             </div>
         </div>
     </div>

@@ -13,6 +13,7 @@
         $scope.currentConfigView = 'hot wallet';
         $scope.hotwalletHasBeenFunded = false;
         $scope.warmStorageHasBeenFunded = false;
+        $scope.hotwalletHasBeenFunded = false;
         $scope.warmStorage = {
             publicKey: ''
         };
@@ -58,7 +59,7 @@
             }).then(function (res) {
                 $scope.addingPublicKey = false;
                 if (res.status === 201) {
-                    $scope.goToAccountsView();
+                    $scope.goToConfigView('finish');
                 }
             }).catch(function (error) {
                 $scope.addingPublicKey = false;
