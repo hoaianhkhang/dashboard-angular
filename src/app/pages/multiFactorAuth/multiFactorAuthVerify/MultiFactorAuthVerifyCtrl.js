@@ -25,8 +25,8 @@
                 }).then(function (res) {
                     if(res.status === 201) {
                         $scope.tokenAuthenticationDetails = res.data.data;
-                        $scope.qrCodeUrl = 'https://chart.googleapis.com/chart?cht=qr&chl='+ res.data.data.otpauth_url
-                            + '&chs=200x200&chld=L|0';
+                        $scope.qrCodeUrl = 'https://chart.googleapis.com/chart?cht=qr&chl='+
+                            encodeURIComponent(res.data.data.otpauth_url) + '&chs=200x200&chld=L|0';
                         delete $scope.tokenAuthenticationDetails['otpauth_url'];
                         $scope.loadingVerifyAuth = false;
                     }
