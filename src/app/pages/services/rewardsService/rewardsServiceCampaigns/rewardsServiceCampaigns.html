@@ -21,7 +21,7 @@
                     <th>Status</th>
                     <th></th>
                 </tr>
-                <tr ng-repeat="campaign in campaignList" class="editable-row">
+                <tr ng-repeat="campaign in campaignList | orderBy: '-created'" class="editable-row">
                     <td class="rehive-table-row-first-child"><div title="{{campaign.name}}" class="transactions-list-element" ng-bind="campaign.name"></div></td>
                     <td><div title="{{campaign.description}}" class="transactions-list-element" ng-bind="campaign.description"></div></td>
                     <td><div title="{{campaign.reward_type | capitalizeWord}}" class="transactions-list-element" ng-bind="campaign.reward_type | capitalizeWord"></div></td>

@@ -31,20 +31,15 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="request in rewardsRequestsList" class="editable-row user-details-table-hover pointer"
+                    <tr ng-repeat="request in rewardsRequestsList | orderBy: '-created'" class="editable-row user-details-table-hover pointer"
                         ng-click="openRewardRequestModal('app/pages/services/rewardsService/rewardsServiceRequests/rewardsServiceRequestsModal/rewardsServiceRequestsModal.html','md',request)">
                         <td class="transactions-list-element" title="{{userEmailObj.email}}" ng-bind="request.user" ng-mouseover="getUserObjEmail(request.user)"></td>
                         <td class="transactions-list-element" title="{{request.campaign_name || 'Unnamed'}}" ng-bind="request.campaign_name || 'Unnamed'"></td>
                         <td class="transactions-list-element" title="{{request.status | capitalizeWord}}" ng-bind="request.status | capitalizeWord"></td>
                         <td ng-click="$event.stopPropagation()">
-                            <div class="reward-list-radio-groups">
-                                <input class="margin-right-10 pointer" type="radio" ng-change="requestStatusChange(request)"
-                                       ng-model="request.status" value="reject">
-                                <span class="reward-radio-type1">Reject</span>
-                                <input class="horizontal-divider-40 margin-right-10 pointer"
-                                       ng-change="requestStatusChange(request)"
-                                       type="radio" ng-model="request.status"
-                                       value="accept"> <span class="reward-radio-type2">Accept</span>
+                            <div>
+                                <a class="margin-right-10 pointer" ng-click="requestStatusChange(request)">Reject</a>
+                                <a ng-hide="request.status == accept" class="pointer" ng-click="requestStatusChange(request)">Accept</a>
                             </div>
                         </td>
                     </tr>
