@@ -79,6 +79,7 @@
                 if(res.results.length == 1){
                     $scope.retrievedDebitUserObj = res.results[0];
                     $scope.retrievedDebitUserObj.metadata = metadataTextService.convertToText($scope.retrievedDebitUserObj.metadata);
+                    $scope.$apply();
                     if($scope.debitCurrencyOptions.length === 1){
                         $scope.debitTransactionData.currency = $scope.debitCurrencyOptions[0];
                         vm.getDebitUserAccounts($scope.retrievedDebitUserObj,$scope.debitTransactionData);

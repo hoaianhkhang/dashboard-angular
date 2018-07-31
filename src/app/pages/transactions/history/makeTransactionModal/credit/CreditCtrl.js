@@ -78,6 +78,7 @@
                 if(res.results.length == 1){
                     $scope.retrievedCreditUserObj = res.results[0];
                     $scope.retrievedCreditUserObj.metadata = metadataTextService.convertToText($scope.retrievedCreditUserObj.metadata);
+                    $scope.$apply();
                     if($scope.creditCurrencyOptions.length === 1){
                         $scope.creditTransactionData.currency = $scope.creditCurrencyOptions[0];
                         vm.getCreditUserAccounts($scope.retrievedCreditUserObj,$scope.creditTransactionData);
