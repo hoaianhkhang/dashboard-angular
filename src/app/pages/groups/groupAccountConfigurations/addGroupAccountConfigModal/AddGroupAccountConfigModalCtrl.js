@@ -4,7 +4,7 @@
     angular.module('BlurAdmin.pages.groups.groupAccountConfigurations')
         .controller('AddGroupAccountConfigModalCtrl', AddGroupAccountConfigModalCtrl);
 
-    function AddGroupAccountConfigModalCtrl($scope,$uibModalInstance,toastr,$stateParams,
+    function AddGroupAccountConfigModalCtrl($scope,$uibModalInstance,toastr,$stateParams,$filter,
                                             Rehive,localStorageManagement,errorHandler,$timeout) {
 
         var vm = this;
@@ -37,6 +37,7 @@
         $scope.groupAccountConfigurationNameToLowercase = function () {
             if($scope.groupAccountConfigurationParams.name){
                 $scope.groupAccountConfigurationParams.name = $scope.groupAccountConfigurationParams.name.toLowerCase();
+                $scope.groupAccountConfigurationParams.label = $filter('capitalizeWord')($scope.groupAccountConfigurationParams.name);
             }
         };
 

@@ -56,6 +56,7 @@
 
             Rehive.admin.users.documents.create(formData).then(function (res) {
                 toastr.success('Document successfully added');
+                $scope.addingDocument = false;
                 $uibModalInstance.close();
                 $scope.$apply();
             }, function (error) {

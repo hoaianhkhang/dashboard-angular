@@ -1,4 +1,4 @@
-<div class="panel">
+<div ng-hide="addingUserAddress" class="panel">
     <div class="panel-heading">
         <span class="user-details-panel-title">Add user address</span>
         <a ng-click="$dismiss()" class="panel-modal-close-icon pull-right pointer">
@@ -42,4 +42,7 @@
             </div>
         </form>
     </div>
+</div>
+<div ng-show="addingUserAddress" ba-panel>
+    <loading-image></loading-image>
 </div>
