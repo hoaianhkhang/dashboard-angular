@@ -104,10 +104,6 @@
             $location.path('/services/notifications/create');
         };
 
-        $scope.goToNotificationEditView = function (notification) {
-            $location.path('/services/notifications/' + notification.id + '/edit');
-        };
-
         vm.findIndexOfNotification = function(element){
             return this.id == element.id;
         };
