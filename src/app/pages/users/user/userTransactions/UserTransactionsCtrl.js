@@ -14,19 +14,28 @@
         vm.currenciesList = JSON.parse($window.sessionStorage.currenciesList || '[]');
         vm.uuid = $stateParams.uuid;
         vm.userTransactionsFilterParams = $location.search();
+        vm.companyIdentifier = localStorageManagement.getValue('companyIdentifier');
+        vm.savedUserTransactionTableColumns = vm.companyIdentifier + 'userTransactionsTable';
         $scope.showingFilters = false;
+        $scope.showingColumnFilters = false;
         $scope.accountFilterOptions = [];
         $scope.dateFilterOptions = ['Is in the last','In between','Is equal to','Is after','Is before'];
         $scope.amountFilterOptions = ['Is equal to','Is between','Is greater than','Is less than'];
+        $scope.referenceFilterOptions = ['Is equal to','Is between','Is greater than','Is less than'];
         $scope.dateFilterIntervalOptions = ['days','months'];
+        $scope.groupFilterOptions = ['Group name','In a group'];
         $scope.filtersCount = 0;
         $scope.filtersObj = {
             dateFilter: false,
             amountFilter: false,
             statusFilter: false,
             transactionTypeFilter: false,
+            transactionSubtypeFilter: false,
             transactionIdFilter: false,
-            accountFilter:false,
+            destinationIdFilter: false,
+            sourceIdFilter: false,
+            referenceFilter: false,
+            accountFilter: false,
             currencyFilter: false,
             pageSizeFilter: false,
             orderByFilter: false
@@ -56,10 +65,18 @@
                 selectedTransactionSubtypeOption: ''
             },
             transactionIdFilter: {
-                selectedTransactionIdOption: $state.params.transactionId || null
+                selectedTransactionIdOption: null
+            },
+            referenceFilter: {
+                selectedReferenceOption: 'Is equal to',
+                reference: null,
+                reference__lt: null,
+                reference__gt: null
             },
             accountFilter: {
-                selectedAccount: null
+                selectedAccount: {
+                    reference: null
+                }
             },
             currencyFilter:{
                 selectedCurrencyOption: {}
@@ -82,12 +99,63 @@
         $scope.currencyOptions = [];
         $scope.orderByOptions = ['Latest','Largest','Smallest'];
 
+        $scope.headerColumns = localStorageManagement.getValue(vm.savedUserTransactionTableColumns) ? JSON.parse(localStorageManagement.getValue(vm.savedUserTransactionTableColumns)) : [
+            {colName: 'User',fieldName: 'user',visible: true},
+            {colName: 'Recipient',fieldName: 'recipient',visible: true},
+            {colName: 'Type',fieldName: 'tx_type',visible: true},
+            {colName: 'Subtype',fieldName: 'subtype',visible: true},
+            {colName: 'Currency',fieldName: 'currencyCode',visible: true},
+            {colName: 'Amount',fieldName: 'amount',visible: true},
+            {colName: 'Fee',fieldName: 'fee',visible: true},
+            {colName: 'Status',fieldName: 'status',visible: true},
+            {colName: 'Account',fieldName: 'account',visible: true},
+            {colName: 'Id',fieldName: 'id',visible: true},
+            {colName: 'Date',fieldName: 'createdDate',visible: true},
+            {colName: 'Total amount',fieldName: 'totalAmount',visible: false},
+            {colName: 'Balance',fieldName: 'balance',visible: false},
+            {colName: 'Username',fieldName: 'username',visible: false},
+            {colName: 'Identifier',fieldName: 'identifier',visible: false},
+            {colName: 'Updated',fieldName: 'updatedDate',visible: false},
+            {colName: 'Mobile',fieldName: 'mobile_number',visible: false},
+            {colName: 'Destination tx id',fieldName: 'destination_tx_id',visible: false},
+            {colName: 'Source tx id',fieldName: 'source_tx_id',visible: false},
+            {colName: 'Label',fieldName: 'label',visible: false},
+            {colName: 'Reference',fieldName: 'reference',visible: false},
+            {colName: 'Note',fieldName: 'note',visible: false}
+        ];
+
+        $scope.selectAllColumns = function () {
+            $scope.headerColumns.forEach(function (headerObj) {
+                headerObj.visible = true;
+            });
+            localStorageManagement.setValue(vm.savedUserTransactionTableColumns,JSON.stringify($scope.headerColumns));
+        };
+
+        $scope.toggleColumnVisibility = function () {
+            localStorageManagement.setValue(vm.savedUserTransactionTableColumns,JSON.stringify($scope.headerColumns));
+        };
+
+        $scope.restoreColDefaults = function () {
+            var defaultVisibleHeader = ['User','Type','Subtype','Currency',
+                'Amount','Fee','Account','Status','Date','Id'];
+
+            $scope.headerColumns.forEach(function (headerObj) {
+                if(defaultVisibleHeader.indexOf(headerObj.colName) > -1){
+                    headerObj.visible = true;
+                } else {
+                    headerObj.visible = false;
+                }
+            });
+
+            localStorageManagement.setValue(vm.savedUserTransactionTableColumns,JSON.stringify($scope.headerColumns));
+        };
+
         vm.getUserAccounts = function(){
             if(vm.token) {
                 Rehive.admin.accounts.get({filters: {user: vm.uuid}}).then(function (res) {
                     if(res.results.length > 0 ){
-                        $scope.accountFilterOptions = res.results;
-                        $scope.applyFiltersObj.accountFilter.selectedAccount = res.results[0];
+                        $scope.accountFilterOptions = res.data.data.results;
+                        vm.checkWhetherAccountsFilterIsApplied($scope.accountFilterOptions);
                         $scope.$apply();
                     } else {
                         $scope.accountFilterOptions = [];
@@ -101,6 +169,22 @@
             }
         };
         vm.getUserAccounts();
+
+        vm.checkWhetherAccountsFilterIsApplied = function (accountsListsOptions) {
+            if(vm.userTransactionsFilterParams.filterByAccount){
+                $scope.filtersObj.accountFilter = true;
+                accountsListsOptions.forEach(function (account) {
+                    if(account.reference == vm.userTransactionsFilterParams.filterByAccount){
+                        $scope.applyFiltersObj.accountFilter.selectedAccount = account;
+                    }
+                });
+                $scope.getLatestTransactions();
+                $location.search('filterByAccount',null);
+                $location.replace();
+            } else {
+                $scope.applyFiltersObj.accountFilter.selectedAccount = accountsListsOptions[0];
+            }
+        };
 
         sharedResources.getSubtypes().then(function (res) {
             $scope.subtypeOptions = _.pluck(res,'name');
@@ -119,47 +203,6 @@
         $scope.open2 = function() {
             $scope.popup2.opened = true;
         };
-
-        // for CSV starts
-
-        $scope.getFileName = $filter('date')(Date.now(),'mediumDate') + ' ' + $filter('date')(Date.now(),'shortTime') + '-transactionsHistory.csv';
-
-        $scope.getHeader = function () {return ["Id", "User","Balance","Type","Currency", "Amount",
-            "Fee","Subtype","Account","Status","Date","Reference","Note","Metadata"]};
-
-        $scope.getCSVArray = function () {
-            var array = [];
-            $scope.transactions.forEach(function (element) {
-                var metadata = '';
-                if(typeof element.metadata === 'object' && element.metadata && Object.keys(element.metadata).length > 0){
-                    metadata = JSON.stringify(element.metadata);
-                } else if (typeof element.metadata === 'string'){
-                    metadata = element.metadata;
-                } else {
-                    metadata = null;
-                }
-                array.push({
-                    Id: element.id,
-                    user: element.user.email,
-                    balance: $filter('currencyModifiersFilter')(element.balance,element.currency.divisibility).toString(),
-                    type: $filter('capitalizeWord')(element.tx_type),
-                    currency: element.currency.code,
-                    amount: $filter('currencyModifiersFilter')(element.amount,element.currency.divisibility).toString(),
-                    fee: $filter('currencyModifiersFilter')(element.fee,element.currency.divisibility).toString(),
-                    subtype: element.subtype,
-                    account: element.account,
-                    status: element.status,
-                    date: $filter('date')(element.created,'mediumDate') + ' ' +$filter('date')(element.created,'shortTime'),
-                    reference: element.reference,
-                    note: element.note,
-                    metadata: metadata
-                });
-            });
-
-            return array;
-        };
-
-        // for CSV ends
 
         $scope.orderByFunction = function () {
             return ($scope.applyFiltersObj.orderByFilter.selectedOrderByOption == 'Latest' ? '-created' :
@@ -197,8 +240,14 @@
             $scope.filtersObj.userFilter = true;
         }
 
+        $scope.showColumnFilters = function () {
+            $scope.showingFilters = false;
+            $scope.showingColumnFilters = !$scope.showingColumnFilters;
+        };
+
         $scope.showFilters = function () {
             $scope.showingFilters = !$scope.showingFilters;
+            $scope.showingColumnFilters = false;
         };
 
         $scope.clearFilters = function () {
@@ -207,8 +256,10 @@
                 amountFilter: false,
                 statusFilter: false,
                 transactionTypeFilter: false,
+                transactionSubtypeFilter: false,
                 transactionIdFilter: false,
-                userFilter: false,
+                destinationIdFilter: false,
+                sourceIdFilter: false,
                 currencyFilter: false,
                 pageSizeFilter: false,
                 orderByFilter: false
@@ -310,6 +361,53 @@
             return amountObj;
         };
 
+        vm.getReferenceFilters = function () {
+            var referenceObj = {
+                reference: null,
+                reference__lt: null,
+                reference__gt: null
+            };
+
+            switch($scope.applyFiltersObj.referenceFilter.selectedReferenceOption) {
+                case 'Is equal to':
+                    referenceObj = {
+                        reference: $scope.applyFiltersObj.referenceFilter.reference,
+                        reference__lt: null,
+                        reference__gt: null
+                    };
+
+                    break;
+                case 'Is between':
+                    referenceObj = {
+                        reference: null,
+                        reference__lt: $scope.applyFiltersObj.referenceFilter.reference__lt,
+                        reference__gt: $scope.applyFiltersObj.referenceFilter.reference__gt
+                    };
+
+                    break;
+                case 'Is greater than':
+                    referenceObj = {
+                        reference: null,
+                        reference__lt: null,
+                        reference__gt: $scope.applyFiltersObj.referenceFilter.reference__gt
+                    };
+
+                    break;
+                case 'Is less than':
+                    referenceObj = {
+                        reference: null,
+                        reference__lt: $scope.applyFiltersObj.referenceFilter.reference__lt,
+                        reference__gt: null
+                    };
+
+                    break;
+                default:
+                    break;
+            }
+
+            return referenceObj;
+        };
+
         vm.getTransactionsFiltersObj = function(){
             $scope.filtersCount = 0;
 
@@ -340,23 +438,42 @@
                 };
             }
 
+            if($scope.filtersObj.referenceFilter){
+                vm.referenceObj = vm.getReferenceFilters();
+            } else{
+                vm.referenceObj = {
+                    reference: null,
+                    reference__lt: null,
+                    reference__gt: null
+                };
+            }
+
             var searchObj = {
                 page: $scope.pagination.pageNo,
-                page_size: $scope.filtersObj.pageSizeFilter? $scope.pagination.itemsPerPage : 26,
+                page_size: $scope.filtersObj.pageSizeFilter? $scope.pagination.itemsPerPage : 25,
                 amount: vm.amountObj.amount ? currencyModifiers.convertToCents(vm.amountObj.amount,$scope.applyFiltersObj.currencyFilter.selectedCurrencyOption.divisibility) : null,
                 amount__lt: vm.amountObj.amount__lt ? currencyModifiers.convertToCents(vm.amountObj.amount__lt,$scope.applyFiltersObj.currencyFilter.selectedCurrencyOption.divisibility) : null,
                 amount__gt: vm.amountObj.amount__gt ? currencyModifiers.convertToCents(vm.amountObj.amount__gt,$scope.applyFiltersObj.currencyFilter.selectedCurrencyOption.divisibility) : null,
+                reference: vm.referenceObj.reference ? vm.referenceObj.reference : null,
+                reference__lt: vm.referenceObj.reference__lt ? vm.referenceObj.reference__lt : null,
+                reference__gt: vm.referenceObj.reference__gt ? vm.referenceObj.reference__gt : null,
                 created__gt: vm.dateObj.created__gt ? Date.parse(vm.dateObj.created__gt +'T00:00:00') : null,
                 created__lt: vm.dateObj.created__lt ? Date.parse(vm.dateObj.created__lt +'T00:00:00') : null,
                 currency: $scope.filtersObj.currencyFilter || $scope.filtersObj.amountFilter ? $scope.applyFiltersObj.currencyFilter.selectedCurrencyOption.code: null,
                 user: vm.uuid,
                 account: $scope.filtersObj.accountFilter ? $scope.applyFiltersObj.accountFilter.selectedAccount.reference: null,
+                group: $scope.filtersObj.groupFilter ? $scope.applyFiltersObj.groupFilter.selectedGroupOption == 'Group name'? $scope.applyFiltersObj.groupFilter.selectedGroup.name: null : null,
+                group__isnull: $scope.filtersObj.groupFilter ? $scope.applyFiltersObj.groupFilter.selectedGroupOption == 'In a group'? (!$scope.applyFiltersObj.groupFilter.existsInGroup).toString(): null : null,
                 orderby: $scope.filtersObj.orderByFilter ? ($scope.applyFiltersObj.orderByFilter.selectedOrderByOption == 'Latest' ? '-created' : $scope.applyFiltersObj.orderByFilter.selectedOrderByOption == 'Largest' ? '-amount' : $scope.applyFiltersObj.orderByFilter.selectedOrderByOption == 'Smallest' ? 'amount' : null): null,
                 id: $scope.filtersObj.transactionIdFilter ? ($scope.applyFiltersObj.transactionIdFilter.selectedTransactionIdOption ? encodeURIComponent($scope.applyFiltersObj.transactionIdFilter.selectedTransactionIdOption) : null): null,
+                destination_transaction : $scope.filtersObj.destinationIdFilter ? 'true' : null,
+                source_transaction : $scope.filtersObj.sourceIdFilter ? 'true' : null,
                 tx_type: $scope.filtersObj.transactionTypeFilter ? $scope.applyFiltersObj.transactionTypeFilter.selectedTransactionTypeOption.toLowerCase() : null,
                 status: $scope.filtersObj.statusFilter ? $scope.applyFiltersObj.statusFilter.selectedStatusOption: null,
-                subtype: $scope.filtersObj.transactionTypeFilter ? ($scope.applyFiltersObj.transactionSubtypeFilter.selectedTransactionSubtypeOption ? $scope.applyFiltersObj.transactionSubtypeFilter.selectedTransactionSubtypeOption: null): null
+                subtype: $scope.filtersObj.transactionSubtypeFilter ? ($scope.applyFiltersObj.transactionSubtypeFilter.selectedTransactionSubtypeOption ? $scope.applyFiltersObj.transactionSubtypeFilter.selectedTransactionSubtypeOption: null): null
             };
+
+            $scope.filtersObjForExport = searchObj;
 
             return serializeFiltersService.objectFilters(searchObj);
         };
@@ -383,7 +500,7 @@
                 Rehive.admin.transactions.get({filters: transactionsFiltersObj}).then(function (res) {
                     $scope.loadingTransactions = false;
                     $scope.transactionsData = res;
-                    $scope.transactions = $scope.transactionsData.results;
+                    vm.formatTransactionsArray($scope.transactionsData.results);
                     if($scope.transactions.length == 0) {
                         $scope.transactionsStateMessage = 'No transactions have been found';
                         return;
@@ -403,13 +520,37 @@
             $scope.getLatestTransactions();
         }
 
-        if(vm.userTransactionsFilterParams.filterByAccount){
-            $scope.filtersObj.accountFilter = true;
-            $scope.applyFiltersObj.accountFilter.selectedAccount = vm.userTransactionsFilterParams.filterByAccount;
-            $scope.getLatestTransactions();
-            $location.search('filterByAccount',null);
-            $location.replace();
-        }
+        vm.formatTransactionsArray = function (transactionsArray) {
+            transactionsArray.forEach(function (transactionObj) {
+                $scope.transactions.push({
+                    user: transactionObj.user.email || transactionObj.user.mobile_number,
+                    recipient: transactionObj.destination_transaction ? transactionObj.destination_transaction.id ? transactionObj.destination_transaction.user.email : transactionObj.destination_transaction.user.email + ' (new user)' : "",
+                    tx_type: $filter("capitalizeWord")(transactionObj.tx_type),
+                    subtype: transactionObj.subtype,
+                    currencyCode: transactionObj.currency.code,
+                    amount: $filter("currencyModifiersFilter")(transactionObj.amount,transactionObj.currency.divisibility),
+                    fee: $filter("currencyModifiersFilter")(transactionObj.fee,transactionObj.currency.divisibility),
+                    status: transactionObj.status,
+                    id: transactionObj.id,
+                    createdDate: $filter("date")(transactionObj.created,'mediumDate') + ' ' + $filter("date")(transactionObj.created,'shortTime'),
+                    totalAmount: $filter("currencyModifiersFilter")(transactionObj.total_amount,transactionObj.currency.divisibility),
+                    balance: $filter("currencyModifiersFilter")(transactionObj.balance,transactionObj.currency.divisibility),
+                    account: transactionObj.account,
+                    username: transactionObj.user.username,
+                    identifier: transactionObj.user.identifier,
+                    updatedDate: transactionObj.updated ? $filter("date")(transactionObj.updated,'mediumDate') + ' ' + $filter("date")(transactionObj.updated,'shortTime'): null,
+                    mobile_number: transactionObj.user.mobile_number,
+                    destination_tx_id: transactionObj.destination_transaction ? transactionObj.destination_transaction.id ? transactionObj.destination_transaction.id : 'ID pending creation' : "",
+                    source_tx_id: transactionObj.source_transaction ? transactionObj.source_transaction.id : "",
+                    label: transactionObj.label,
+                    reference: transactionObj.reference,
+                    note: transactionObj.note,
+                    metadata: transactionObj.metadata
+                });
+            });
+
+            $scope.loadingTransactions = false;
+        };
 
         $scope.getUsersEmailTypeahead = typeaheadService.getUsersEmailTypeahead();
 
@@ -424,6 +565,27 @@
                         return transaction;
                     }
                 }
+            });
+        };
+
+        $scope.openExportUserTransactionsModal = function (page, size) {
+            vm.theExportModal = $uibModal.open({
+                animation: true,
+                templateUrl: page,
+                size: size,
+                controller: 'UserTransactionsExportModalCtrl',
+                resolve: {
+                    filtersObjForExport: function () {
+                        return $scope.filtersObjForExport;
+                    }
+                }
+            });
+
+            vm.theExportModal.result.then(function(transaction){
+                if(transaction){
+                    //$scope.getLatestTransactions();
+                }
+            }, function(){
             });
 
         };
