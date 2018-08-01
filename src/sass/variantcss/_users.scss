@@ -1,3 +1,10 @@
+.user-metadata-tile {
+  width: 100%;
+  & .user-details-metadata{
+    width: inherit;
+  }
+}
+
 .move-icon{
   font-size: 12px;
   cursor: pointer !important;

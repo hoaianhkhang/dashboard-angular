@@ -33,7 +33,7 @@
                     <td class="rehive-table-row-last-child">
                         <a ng-click="openNotificationModal('app/pages/services/notificationService/notificationServiceNotifications/notificationServiceNotificationModal/notificationServiceNotificationModal.html','md',notification)"
                            class="pull-right pointer ">Delete</a>
-                        <a ng-click="goToNotificationEditView(notification)"
+                        <a ng-href="/#/services/notifications/{{notification.id}}/edit"
                            class="pull-right pointer user-address-edit margin-right-30">Edit</a>
                     </td>
                 </tr>

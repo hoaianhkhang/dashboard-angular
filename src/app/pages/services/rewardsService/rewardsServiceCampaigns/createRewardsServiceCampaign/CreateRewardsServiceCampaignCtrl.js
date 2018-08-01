@@ -28,8 +28,6 @@
             userTransactionLimit: null,
             users: [],
             groups: [],
-            visible: true,
-            request: true,
             tags: []
         };
 
@@ -97,8 +95,6 @@
                 user_transaction_limit: newCampaignParams.userTransactionLimit,
                 users: [],
                 groups: [],
-                visible: newCampaignParams.visible,
-                request: newCampaignParams.request,
                 tags: []
             };
 
@@ -123,7 +119,7 @@
                         'Authorization': vm.token
                     }
                 }).then(function (res) {
-                    if (res.status === 201) {
+                    if (res.status === 201 || res.status === 200) {
                         toastr.success('Campaign added successfully');
                         $location.path('/services/rewards/campaigns');
                     }
