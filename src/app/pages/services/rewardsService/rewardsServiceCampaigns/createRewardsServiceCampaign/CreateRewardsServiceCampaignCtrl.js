@@ -119,7 +119,7 @@
                         'Authorization': vm.token
                     }
                 }).then(function (res) {
-                    if (res.status === 201) {
+                    if (res.status === 201 || res.status === 200) {
                         toastr.success('Campaign added successfully');
                         $location.path('/services/rewards/campaigns');
                     }
