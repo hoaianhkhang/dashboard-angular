@@ -35,14 +35,8 @@
             getGroupsTypeahead : function () {
                 return function (groupName) {
                     if(groupName.length > 0){
-                        var token = localStorageManagement.getValue('TOKEN');
-                        return $http.get(environmentConfig.API + '/admin/groups/?page_size=10&name=' + groupName, {
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'Authorization': token
-                            }
-                        }).then(function (res) {
-                            return _.pluck(res.data.data.results,'name');
+                        return Rehive.admin.groups.get({filters: {name: groupName,page_size: 10}}).then(function (res) {
+                            return _.pluck(res.results,'name');
                         });
                     }
                 };

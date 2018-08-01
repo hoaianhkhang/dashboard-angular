@@ -6,7 +6,7 @@
 
     /** @ngInject */
 
-    function UserPermissionsCtrl($scope,Rehive,$stateParams,$window,environmentConfig,$http,$timeout,
+    function UserPermissionsCtrl($scope,Rehive,$stateParams,$window,$timeout,
                                  $rootScope,localStorageManagement,errorHandler,toastr) {
 
         var vm = this;

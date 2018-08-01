@@ -4,8 +4,8 @@
     angular.module('BlurAdmin.pages.transactions.history')
         .controller('ExportConfirmModalCtrl', ExportConfirmModalCtrl);
 
-    function ExportConfirmModalCtrl($rootScope,$scope,environmentConfig,$filter,filtersObjForExport,localStorageManagement,
-                                    $http,currenciesList,serializeFiltersService,errorHandler,toastr,$timeout) {
+    function ExportConfirmModalCtrl($rootScope,$scope,$filter,filtersObjForExport,localStorageManagement,
+                                    Rehive,currenciesList,serializeFiltersService,errorHandler,toastr) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
@@ -24,29 +24,29 @@
         vm.getCompanyCurrencies = function(){
             if(vm.token){
                 $scope.exportingTransactions = true;
-                $http.get(environmentConfig.API + '/admin/currencies/?enabled=true&page_size=250', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
-                    if (res.status === 200) {
-                        if(res.data.data.results.length > 0){
-                            $scope.currenciesList = res.data.data.results;
-                            if($scope.filtersObjForExport.currency){
-                                $scope.filterCurrencyObj = $scope.currenciesList.find(function (element) {
-                                    return (element.code == $scope.filtersObjForExport.currency);
-                                });
-                            }
-                            vm.filtersObjToText();
-                        } else {
-                            vm.filtersObjToText();
+                Rehive.admin.currencies.get({filters: {
+                    enabled: true,
+                    page_size: 250
+                }}).then(function (res) {
+                    if(res.results.length > 0){
+                        $scope.currenciesList = res.results;
+                        if($scope.filtersObjForExport.currency){
+                            $scope.filterCurrencyObj = $scope.currenciesList.find(function (element) {
+                                return (element.code == $scope.filtersObjForExport.currency);
+                            });
                         }
+                        vm.filtersObjToText();
+                        $scope.$apply();
+                    } else {
+                        vm.filtersObjToText();
+                        $scope.exportingTransactions = false;
+                        $scope.$apply();
                     }
-                }).catch(function (error) {
+                }, function (error) {
                     $scope.exportingTransactions = false;
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };
@@ -97,26 +97,21 @@
 
         $scope.exportTransansactionsSet = function() {
             $scope.exportingTransactions = true;
-            $http.post(environmentConfig.API + '/admin/transactions/sets/',{
+            Rehive.admin.transactions.sets.create({
                 page_size: 10000,
                 query: $scope.filtersObjForExportDeepCopy
-            }, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': vm.token
-                }
             }).then(function (res) {
-                if (res.status === 202) {
-                    $scope.exportingTransactions = false;
-                    $scope.transactionsExported = true;
-                    $scope.transactionSetResponse = res.data.data;
-                    $rootScope.$emit('exportSetCreate', {status: 'created'});
-                    toastr.success('Successfully exporting transaction sets');
-                }
-            }).catch(function (error) {
                 $scope.exportingTransactions = false;
-                errorHandler.evaluateErrors(error.data);
+                $scope.transactionsExported = true;
+                $scope.transactionSetResponse = res;
+                $rootScope.$emit('exportSetCreate', {status: 'created'});
+                toastr.success('Successfully exporting transaction sets');
+                $scope.$apply();
+            }, function (error) {
+                $scope.exportingTransactions = false;
+                errorHandler.evaluateErrors(error);
                 errorHandler.handleErrors(error);
+                $scope.$apply();
             });
         };
     }

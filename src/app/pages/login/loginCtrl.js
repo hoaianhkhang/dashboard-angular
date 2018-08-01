@@ -5,7 +5,7 @@
         .controller('LoginCtrl', LoginCtrl);
 
     /** @ngInject */
-    function LoginCtrl($rootScope,Rehive,$scope,$http,localStorageManagement,environmentConfig,$location,errorHandler) {
+    function LoginCtrl($rootScope,Rehive,$scope,localStorageManagement,$location,errorHandler) {
 
         var vm = this;
         localStorageManagement.deleteValue('TOKEN');

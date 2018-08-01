@@ -5,7 +5,7 @@
         .controller('AccountInfoCtrl', AccountInfoCtrl);
 
     /** @ngInject */
-    function AccountInfoCtrl($scope,Rehive,environmentConfig,$http,localStorageManagement,errorHandler,toastr,$location) {
+    function AccountInfoCtrl($scope,Rehive,localStorageManagement,errorHandler,toastr,$location) {
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
         $scope.loadingAccountInfo = true;
@@ -21,20 +21,16 @@
 
         vm.getAdminAccountInfo = function () {
             if(vm.token) {
-                $http.get(environmentConfig.API + '/user/', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
+                $scope.loadingAccountInfo = true;
+                Rehive.user.get().then(function(res){
                     $scope.loadingAccountInfo = false;
-                    if (res.status === 200) {
-                        $scope.administrator = res.data.data;
-                    }
-                }).catch(function (error) {
+                    $scope.administrator = res;
+                    $scope.$apply();
+                },function(error){
                     $scope.loadingAccountInfo = false;
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };
@@ -42,23 +38,18 @@
 
         $scope.updateAdministratorAccount = function(){
             $scope.loadingAccountInfo = true;
-            $http.patch(environmentConfig.API + '/user/', vm.updatedAdministrator ,{
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': vm.token
-                }
-            }).then(function (res) {
+            Rehive.user.update(vm.updatedAdministrator).then(function (res) {
                 $scope.loadingAccountInfo = false;
-                if (res.status === 200) {
-                    $scope.administrator = res.data.data;
-                    toastr.success('You have successfully updated the administrator info');
-                }
+                $scope.administrator = res;
                 vm.updatedAdministrator = {};
-            }).catch(function (error) {
+                toastr.success('You have successfully updated the administrator info');
+                $scope.$apply();
+            }, function (error) {
                 vm.updatedAdministrator = {};
                 $scope.loadingAccountInfo = false;
-                errorHandler.evaluateErrors(error.data);
+                errorHandler.evaluateErrors(error);
                 errorHandler.handleErrors(error);
+                $scope.$apply();
             });
         };
 
@@ -139,21 +130,16 @@
 
         $scope.changePassword = function (passwordChangeParams) {
             $scope.changingPassword = true;
-            $http.post(environmentConfig.API + '/auth/password/change/', passwordChangeParams, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': vm.token
-                }
-            }).then(function (res) {
+            Rehive.auth.password.change(passwordChangeParams).then(function(res){
                 $scope.changingPassword = false;
-                if (res.status === 200) {
-                    toastr.success('New password has been saved');
-                    $scope.passwordChangeParams = {};
-                }
-            }).catch(function (error) {
+                toastr.success('New password has been saved');
+                $scope.passwordChangeParams = {};
+                $scope.$apply();
+            },function(error){
                 $scope.changingPassword = false;
-                errorHandler.evaluateErrors(error.data);
+                errorHandler.evaluateErrors(error);
                 errorHandler.handleErrors(error);
+                $scope.$apply();
             });
         };
 

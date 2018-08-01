@@ -154,7 +154,7 @@
             if(vm.token) {
                 Rehive.admin.accounts.get({filters: {user: vm.uuid}}).then(function (res) {
                     if(res.results.length > 0 ){
-                        $scope.accountFilterOptions = res.data.data.results;
+                        $scope.accountFilterOptions = res.results;
                         vm.checkWhetherAccountsFilterIsApplied($scope.accountFilterOptions);
                         $scope.$apply();
                     } else {

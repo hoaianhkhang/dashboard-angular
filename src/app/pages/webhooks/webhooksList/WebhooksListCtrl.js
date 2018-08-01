@@ -6,8 +6,8 @@
 
     /** @ngInject */
 
-    function WebhooksListCtrl($scope,Rehive,$uibModal,toastr,serializeFiltersService,
-                              $http,$location,localStorageManagement,errorHandler,$window,$state) {
+    function WebhooksListCtrl($scope,Rehive,$uibModal,serializeFiltersService,
+                              $location,localStorageManagement,errorHandler,$window,$state) {
 
         var vm = this;
         vm.updatedWebhook = {};
