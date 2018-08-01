@@ -111,7 +111,7 @@
 
         $scope.goToServices = function(){
             $location.path('/services');
-        }
+        };
 
     }
 })();
