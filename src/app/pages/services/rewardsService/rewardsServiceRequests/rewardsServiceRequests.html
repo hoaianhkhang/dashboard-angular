@@ -38,8 +38,8 @@
                         <td class="transactions-list-element" title="{{request.status | capitalizeWord}}" ng-bind="request.status | capitalizeWord"></td>
                         <td ng-click="$event.stopPropagation()">
                             <div>
-                                <a class="margin-right-10 pointer" ng-click="requestStatusChange(request)">Reject</a>
-                                <a ng-hide="request.status == accept" class="pointer" ng-click="requestStatusChange(request)">Accept</a>
+                                <a class="margin-right-10 pointer" ng-click="requestStatusChange(request,'reject')">Reject</a>
+                                <a ng-hide="request.status == 'accept'" class="pointer" ng-click="requestStatusChange(request,'accept')">Accept</a>
                             </div>
                         </td>
                     </tr>

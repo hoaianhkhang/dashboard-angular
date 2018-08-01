@@ -78,8 +78,10 @@
             return vm.serviceUrl + 'admin/campaigns/requests/?' + serializeFiltersService.serializeFilters(searchObj);
         };
 
-        $scope.getRewardsRequests = function (applyFilter) {
-            $scope.loadingRewardsRequests = true;
+        $scope.getRewardsRequests = function (applyFilter,fromRequestStatusChange) {
+            if(!fromRequestStatusChange){
+                $scope.loadingRewardsRequests = true;
+            }
 
             $scope.showingRewardsRequestsFilters = false;
 
@@ -88,7 +90,7 @@
                 $scope.pagination.pageNo = 1;
             }
 
-            if ($scope.rewardsRequestsList.length > 0) {
+            if ($scope.rewardsRequestsList.length > 0 && !fromRequestStatusChange) {
                 $scope.rewardsRequestsList.length = 0;
             }
 
@@ -124,11 +126,11 @@
             };
         };
 
-        $scope.requestStatusChange = function (request) {
+        $scope.requestStatusChange = function (request,status) {
             if(vm.token) {
                 $http.patch(vm.serviceUrl + 'admin/campaigns/requests/' + request.identifier + '/',
                     {
-                        status: request.status.toLowerCase()
+                        status: status.toLowerCase()
                     }, {
                         headers: {
                             'Content-Type': 'application/json',
@@ -136,7 +138,7 @@
                         }
                     }).then(function (res) {
                     if (res.status === 200) {
-                        $scope.loadingRequest = false;
+                        $scope.getRewardsRequests(null,'fromRequestStatusChange');
                         toastr.success('Request has been updated successfully');
                     }
                 }).catch(function (error) {
