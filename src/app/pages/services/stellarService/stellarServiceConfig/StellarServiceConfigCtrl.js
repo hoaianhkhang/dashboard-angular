@@ -36,10 +36,10 @@
                     'Authorization': vm.token
                 }
             }).then(function (res) {
-                $scope.fundingHotwallet = false;
                 if (res.status === 200) {
                     $scope.hotWalletFundObj = res.data.data;
                     $scope.hotWalletFundObj.qr_code = 'https://chart.googleapis.com/chart?chs=300x300&cht=qr&chl=' + $scope.hotWalletFundObj.account_address + '&choe=UTF-8';
+                    $scope.fundingHotwallet = false;
                 }
             }).catch(function (error) {
                 $scope.fundingHotwallet = false;
