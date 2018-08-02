@@ -10,8 +10,9 @@
                        class="form-control" placeholder="Enter campaign name" required>
             </div>
             <div class="form-group">
-                <label>Campaign description</label>
-                <textarea rows="4" type="text" ng-model="newCampaignParams.description" class="form-control"  placeholder='Enter campaign description'></textarea>
+                <label>Campaign description  <span class="required-icon">*</span></label>
+                <textarea rows="4" type="text" ng-model="newCampaignParams.description"
+                          class="form-control"  placeholder='Enter campaign description' required></textarea>
             </div>
             <div class="form-group">
                 <label>Currency <span class="required-icon">*</span></label>
@@ -65,9 +66,9 @@
                 </div>
             </div>
             <div class="form-group">
-                <label>Reward amount</label>
+                <label>Reward amount <span class="required-icon">*</span></label>
                 <br>
-                <input class="form-control" ng-model="newCampaignParams.rewardAmount" type="number">
+                <input class="form-control" ng-model="newCampaignParams.rewardAmount" type="number" required>
             </div>
             <div class="form-group setup-groups-tooltip-div">
                 <label>Reward percentage &nbsp;<i uib-tooltip-html="'Add a percentage value if you want reward tokens to be issued based on the percentage of the award amount instead of by the reward amount.'"

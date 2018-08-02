@@ -47,7 +47,7 @@
                 }
             }).then(function (res) {
                 $scope.rewardingUser = false;
-                if (res.status === 201) {
+                if (res.status === 201 || res.status === 200) {
                     toastr.success('User has been rewarded successfully');
                     $uibModalInstance.close(true);
                 }

@@ -6,7 +6,7 @@
 
     /** @ngInject */
     function CreateRewardsServiceCampaignsCtrl($scope,$rootScope,environmentConfig,typeaheadService,toastr,_,
-                                               $http,localStorageManagement,$location,errorHandler) {
+                                               $http,localStorageManagement,$location,errorHandler,serializeFiltersService) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
@@ -112,6 +112,8 @@
             if(newCampaignParams.tags.length > 0){
                 newCampaign.tags = _.pluck(newCampaignParams.tags,'text');
             }
+
+            newCampaign = serializeFiltersService.objectFilters(newCampaign);
 
             $scope.addingCampaign =  true;
             if(vm.token) {

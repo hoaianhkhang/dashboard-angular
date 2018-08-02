@@ -34,6 +34,7 @@
         $scope.getGroupsTypeahead = typeaheadService.getGroupsTypeahead();
 
         vm.getCompanyCurrencies = function(){
+            $scope.updatingCampaign = true;
             if(vm.token){
                 $http.get(environmentConfig.API + '/admin/currencies/?enabled=true&page_size=250', {
                     headers: {
@@ -44,9 +45,13 @@
                     if (res.status === 200) {
                         if(res.data.data.results.length > 0){
                             $scope.currencyOptions = res.data.data.results;
+                            $scope.getCampaign();
+                        } else {
+                            $scope.getCampaign();
                         }
                     }
                 }).catch(function (error) {
+                    $scope.updatingCampaign = false;
                     errorHandler.evaluateErrors(error.data);
                     errorHandler.handleErrors(error);
                 });
@@ -55,7 +60,6 @@
         vm.getCompanyCurrencies();
 
         $scope.getCampaign = function () {
-            $scope.updatingCampaign =  true;
             if(vm.token) {
                 $http.get(vm.baseUrl + 'admin/campaigns/' + vm.campaignId + '/', {
                     headers: {
@@ -84,7 +88,6 @@
                 });
             }
         };
-        $scope.getCampaign();
 
         $scope.campaignChanged = function(field){
             vm.updatedCampaignObj[field] = $scope.editCampaignParams[field];
