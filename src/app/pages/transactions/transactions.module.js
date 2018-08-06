@@ -32,7 +32,7 @@
                 },
                 title: 'Transactions',
                 sidebarMeta: {
-                    order: 100
+                    order: 200
                 }
             });
         $urlRouterProvider.when("/transactions", "/transactions/setup");

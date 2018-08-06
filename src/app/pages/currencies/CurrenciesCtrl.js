@@ -9,7 +9,7 @@
                             errorHandler,$state,_,serializeFiltersService,$uibModal,Rehive) {
 
         var vm = this;
-        vm.token = localStorageManagement.getValue('token');
+        vm.token = localStorageManagement.getValue('TOKEN');
         $rootScope.dashboardTitle = 'Currencies | Rehive';
         vm.createNewCurrencyRequest = $location.search();
         $scope.showingFilters = false;
