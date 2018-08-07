@@ -10,11 +10,11 @@
                 <span click-outside="closeColumnFiltersBox()">
                     <button ng-click="showColumnFilters()" class="btn dynamic-columns btn-default">Columns</button>
                     <div ng-show="showingColumnFilters">
-
+                        <columns-filters></columns-filters>
                     </div>
                 </span>
                 <div ng-show="showingFilters">
-
+                    <accounts-filters></accounts-filters>
                 </div>
             </div>
             <button ng-click="getAllAccounts('applyFilter')" ng-disabled="loadingAccounts"
@@ -41,8 +41,8 @@
                     <tbody>
                     <tr ng-repeat="account in accountsList | orderBy: '-created'" data-toggle="modal"
                         class="editable-row center pointer user-details-table-hover" ng-click="displayAccount(account)">
-                        <td class="transactions-list-element" ng-repeat="header in headerColumns"
-                            ng-if="header.visible" ng-bind="user[header.fieldName]"></td>
+                        <td class="transactions-list-element" title="{{account[header.fieldName]}}" ng-repeat="header in headerColumns"
+                            ng-if="header.visible" ng-bind="account[header.fieldName]"></td>
                     </tr>
                     </tbody>
                 </table>

@@ -1,0 +1,75 @@
+<div class="panel table-filters">
+    <div class="panel-heading">
+        <div class="table-filter-heading">
+            <span class="user-details-panel-title pull-left">Create filter</span>
+            <button ng-click="getAllAccounts('applyFilter')" class="btn btn-primary pull-right">Done</button>
+            <button ng-click="clearFilters()" class="btn btn-default pull-right clear-filter-btn">Clear</button>
+        </div>
+    </div>
+    <div class="panel-body table-filters-body">
+        <div id="nameFilter">
+            <div>
+                <label class="checkbox-inline custom-checkbox nowrap">
+                    <input type="checkbox" ng-model="filtersObj.nameFilter">
+                    <span>Account name</span>
+                </label>
+            </div>
+            <div ng-if="filtersObj.nameFilter" class="row divider-top-6">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 date-filter-view">
+                    <input type="text" ng-model="applyFiltersObj.nameFilter.selectedNameFilter"
+                           auto-focus="filtersObj.nameFilter"
+                           placeholder="Enter account name"
+                           class="transaction-id-input" size="12">
+                </div>
+            </div>
+        </div>
+        <div id="filterPrimary">
+            <div>
+                <label class="checkbox-inline custom-checkbox nowrap">
+                    <input type="checkbox" ng-model="filtersObj.primaryFilter">
+                    <span>Primary</span>
+                </label>
+                <!--<span ng-if="filtersObj.primaryFilter">-->
+                    <!--<input class="account-primary-checkbox custom-rehive-checkbox"-->
+                           <!--ng-model="applyFiltersObj.primaryFilter.selectedPrimaryFilter" type="checkbox">-->
+                <!--</span>-->
+            </div>
+        </div>
+        <div id="accountReferenceFilter">
+            <div>
+                <label class="checkbox-inline custom-checkbox nowrap">
+                    <input type="checkbox" ng-model="filtersObj.referenceFilter">
+                    <span>Reference</span>
+                </label>
+            </div>
+            <div ng-if="filtersObj.referenceFilter" class="row divider-top-6">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 date-filter-view">
+                    <input type="text" ng-model="applyFiltersObj.referenceFilter.selectedReferenceFilter"
+                           auto-focus="filtersObj.referenceFilter"
+                           placeholder="Enter account reference"
+                           class="transaction-id-input" size="12">
+                </div>
+            </div>
+        </div>
+        <div id="filterUser">
+            <div>
+                <label class="checkbox-inline custom-checkbox nowrap">
+                    <input type="checkbox" ng-model="filtersObj.userFilter">
+                    <span>User</span>
+                </label>
+            </div>
+            <div ng-if="filtersObj.userFilter" class="row divider-top-6">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 date-filter-view">
+                    <input type="text" ng-model="applyFiltersObj.userFilter.selectedUserFilter" placeholder="Enter email"
+                           uib-typeahead="email for email in getUsersEmailTypeahead($viewValue)" ng-model-options='{ debounce: 800 }'
+                           auto-focus="filtersObj.userFilter"
+                           class="transaction-id-input">
+                </div>
+            </div>
+        </div>
+
+
+
+
+    </div>
+</div>
