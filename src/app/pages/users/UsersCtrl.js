@@ -9,7 +9,7 @@
                        localStorageManagement,errorHandler,$window,toastr,serializeFiltersService,$filter) {
 
         var vm = this;
-        vm.token = localStorageManagement.getValue('token');
+        vm.token = localStorageManagement.getValue('TOKEN');
         vm.companyIdentifier = localStorageManagement.getValue('companyIdentifier');
         vm.savedUserTableColumns = vm.companyIdentifier + 'usersTable';
         $rootScope.dashboardTitle = 'Users | Rehive';
