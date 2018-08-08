@@ -1,10 +1,10 @@
 (function () {
     'use strict';
 
-    angular.module('BlurAdmin.pages.services.rewardsService.rewardsServiceRequests')
-        .controller('RewardsServiceRequestsModalCtrl', RewardsServiceRequestsModalCtrl);
+    angular.module('BlurAdmin.pages.services.rewardsService.rewardsServiceRewards')
+        .controller('RewardsServiceRewardsModalCtrl', RewardsServiceRewardsModalCtrl);
 
-    function RewardsServiceRequestsModalCtrl($scope,request,environmentConfig,$uibModalInstance,$ngConfirm,
+    function RewardsServiceRewardsModalCtrl($scope,request,environmentConfig,$uibModalInstance,$ngConfirm,
                                              toastr,$http,localStorageManagement,errorHandler,$filter) {
 
         var vm = this;

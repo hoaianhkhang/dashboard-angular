@@ -1,0 +1,60 @@
+<div ng-hide="loadingRewardsRequests" class="panel">
+    <div class="panel-heading">
+        <div class="table-filter-heading">
+            <div>
+                <button ng-click="showRewardsRequestsFilters()" ng-class="{'transactions-filter-btn': (filtersCount > 0), 'transactions-btn': (filtersCount == 0)}"
+                        class="btn btn-default">Filters
+                    <span ng-show="filtersCount > 0">|</span> <span ng-show="filtersCount > 0" class="filter-count">{{filtersCount}}</span>
+                </button>
+                <div ng-show="showingRewardsRequestsFilters">
+                    <rewards-service-rewards-filters></rewards-service-rewards-filters>
+                </div>
+            </div>
+            <button ng-click="getRewardsLists('applyFilter')" ng-disabled="loadingRewardsRequests"
+                    class="btn btn-default transactions-btn panel-header-user-icon">Refresh</button>
+            <button ng-click="openRewardUserModal('app/pages/services/rewardsService/rewardsServiceRewards/rewardUserModal/rewardUserModal.html','md')" class="btn btn-success transactions-btn panel-header-button">New</button>
+        </div>
+    </div>
+    <div class="panel-body">
+        <div>
+            <div ng-show="rewardsList.length > 0" class="upper-pagination">
+                <p uib-pagination boundary-links="true" items-per-page="pagination.itemsPerPage"  total-items="rewardsData.count" ng-model="pagination.pageNo"
+                   max-size="pagination.maxSize" class="pagination-sm pull-right no-margin" force-ellipses="true" ng-change="getRewardsLists()"
+                   previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></p>
+            </div>
+            <table ng-show="rewardsList.length > 0" class="table custom-table table-striped">
+                <thead>
+                    <tr>
+                        <th class="rehive-table-row-first-child">User</th>
+                        <th>Campaign</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="reward in rewardsList | orderBy: '-created'" class="editable-row user-details-table-hover pointer"
+                        ng-click="openRewardRequestModal('app/pages/services/rewardsService/rewardsServiceRequests/rewardsServiceRequestsModal/rewardsServiceRequestsModal.html','md',reward)">
+                        <td class="transactions-list-element" title="{{userEmailObj.email}}" ng-bind="reward.user" ng-mouseover="getUserObjEmail(reward.user)"></td>
+                        <td class="transactions-list-element" title="{{reward.campaign_name || 'Unnamed'}}" ng-bind="reward.campaign_name || 'Unnamed'"></td>
+                        <td class="transactions-list-element" title="{{reward.status | capitalizeWord}}" ng-bind="reward.status | capitalizeWord"></td>
+                        <td ng-click="$event.stopPropagation()">
+                            <div>
+                                <a class="margin-right-10 pointer" ng-click="rewardStatusChange(reward,'reject')">Reject</a>
+                                <a ng-hide="reward.status == 'accept'" class="pointer" ng-click="rewardStatusChange(reward,'accept')">Accept</a>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div ng-show="rewardsList.length > 0">
+                <p uib-pagination boundary-links="true" items-per-page="pagination.itemsPerPage"  total-items="rewardsData.count" ng-model="pagination.pageNo"
+                   max-size="pagination.maxSize" class="pagination-sm pull-right transaction-history-pagination" force-ellipses="true" ng-change="getRewardsLists()"
+                   previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></p>
+            </div>
+            <i ng-hide="rewardsList.length > 0">No rewards are available.</i>
+        </div>
+    </div>
+</div>
+<div ba-panel ng-show="loadingRewardsRequests">
+    <loading-image></loading-image>
+</div>

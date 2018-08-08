@@ -78,7 +78,7 @@
                                 $scope.editCampaignParams = editObj;
                             }
                         });
-                        
+
                         $scope.updatingCampaign =  false;
                     }
                 }).catch(function (error) {

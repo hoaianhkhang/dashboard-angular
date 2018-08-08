@@ -1,11 +1,11 @@
 (function () {
     'use strict';
 
-    angular.module('BlurAdmin.pages.services.rewardsService.rewardsServiceRequests')
-        .controller('RewardsServiceRequestsCtrl', RewardsServiceRequestsCtrl);
+    angular.module('BlurAdmin.pages.services.rewardsService.rewardsServiceRewards')
+        .controller('RewardsServiceRewardsCtrl', RewardsServiceRewardsCtrl);
 
     /** @ngInject */
-    function RewardsServiceRequestsCtrl(environmentConfig,$scope,$http,localStorageManagement,
+    function RewardsServiceRewardsCtrl(environmentConfig,$scope,$http,localStorageManagement,
                                         $uibModal,serializeFiltersService,errorHandler,toastr) {
 
         var vm = this;
@@ -13,7 +13,7 @@
         vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
         $scope.loadingRewardsRequests =  false;
         $scope.showingRewardsRequestsFilters = false;
-        $scope.rewardsRequestsList = [];
+        $scope.rewardsList = [];
         $scope.statusOptions = ['Pending','Accept','Reject'];
 
         $scope.filtersObj = {
@@ -57,7 +57,7 @@
             maxSize: 5
         };
 
-        vm.getRewardsRequestsUrl = function(){
+        vm.getRewardsUrl = function(){
             $scope.filtersCount = 0;
 
             for(var x in $scope.filtersObj){
@@ -75,10 +75,10 @@
                 status: $scope.filtersObj.statusFilter ? ($scope.applyFiltersObj.statusFilter.selectedStatus ? $scope.applyFiltersObj.statusFilter.selectedStatus.toLowerCase() : null): null
             };
 
-            return vm.serviceUrl + 'admin/campaigns/requests/?' + serializeFiltersService.serializeFilters(searchObj);
+            return vm.serviceUrl + 'admin/rewards/?' + serializeFiltersService.serializeFilters(searchObj);
         };
 
-        $scope.getRewardsRequests = function (applyFilter,fromRequestStatusChange) {
+        $scope.getRewardsLists = function (applyFilter,fromRequestStatusChange) {
             if(!fromRequestStatusChange){
                 $scope.loadingRewardsRequests = true;
             }
@@ -90,14 +90,14 @@
                 $scope.pagination.pageNo = 1;
             }
 
-            if ($scope.rewardsRequestsList.length > 0 && !fromRequestStatusChange) {
-                $scope.rewardsRequestsList.length = 0;
+            if ($scope.rewardsList.length > 0 && !fromRequestStatusChange) {
+                $scope.rewardsList.length = 0;
             }
 
-            var rewardsRequestsUrl = vm.getRewardsRequestsUrl();
+            var rewardsUrl = vm.getRewardsUrl();
 
             if(vm.token) {
-                $http.get(rewardsRequestsUrl, {
+                $http.get(rewardsUrl, {
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': vm.token
@@ -106,8 +106,8 @@
                     if (res.status === 200) {
                         $scope.loadingRewardsRequests = false;
                         if(res.data.data.results.length > 0){
-                            $scope.rewardsRequestData = res.data.data;
-                            $scope.rewardsRequestsList = $scope.rewardsRequestData.results;
+                            $scope.rewardsData = res.data.data;
+                            $scope.rewardsList = $scope.rewardsData.results;
                         }
                     }
                 }).catch(function (error) {
@@ -117,7 +117,7 @@
                 });
             }
         };
-        $scope.getRewardsRequests();
+        $scope.getRewardsLists();
 
         $scope.clearFilters = function () {
             $scope.filtersObj = {
@@ -128,7 +128,7 @@
 
         $scope.requestStatusChange = function (request,status) {
             if(vm.token) {
-                $http.patch(vm.serviceUrl + 'admin/campaigns/requests/' + request.identifier + '/',
+                $http.patch(vm.serviceUrl + 'admin/rewards/' + request.identifier + '/',
                     {
                         status: status.toLowerCase()
                     }, {
@@ -138,8 +138,8 @@
                         }
                     }).then(function (res) {
                     if (res.status === 200) {
-                        $scope.getRewardsRequests(null,'fromRequestStatusChange');
-                        toastr.success('Request has been updated successfully');
+                        $scope.getRewardsLists(null,'fromRequestStatusChange');
+                        toastr.success('Reward has been updated successfully');
                     }
                 }).catch(function (error) {
                     errorHandler.evaluateErrors(error.data);
@@ -163,7 +163,28 @@
 
             vm.theModal.result.then(function(request){
                 if(request){
-                    $scope.getRewardsRequests();
+                    $scope.getRewardsLists();
+                }
+            }, function(){
+            });
+        };
+
+        $scope.openRewardUserModal = function (page, size) {
+            vm.theRewardModal = $uibModal.open({
+                animation: true,
+                templateUrl: page,
+                size: size,
+                controller: 'RewardUserModalCtrl'
+                // resolve: {
+                //     campaign: function () {
+                //         return campaign;
+                //     }
+                // }
+            });
+
+            vm.theRewardModal.result.then(function(request){
+                if(request){
+                    $scope.getRewardsLists();
                 }
             }, function(){
             });
