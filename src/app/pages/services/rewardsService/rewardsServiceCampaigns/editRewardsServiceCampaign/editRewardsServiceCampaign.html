@@ -57,32 +57,16 @@
                             </span>
                 </div>
             </div>
-            <div class="form-group">
-                <label>Reward type</label>
-                <div class="reward-type-radio-groups">
-                    <input class="margin-right-10 pointer" type="radio" ng-change="campaignChanged('reward_type')"
-                           ng-model="editCampaignParams.reward_type" value="basic">
-                    <span class="reward-radio-type1">Basic</span>
-                    <input class="horizontal-divider-40 margin-right-10 pointer"
-                           ng-change="campaignChanged('reward_type')"
-                           type="radio" ng-model="editCampaignParams.reward_type"
-                           value="manual"> <span class="reward-radio-type2">Manual</span>
-                    <input class="horizontal-divider-50 margin-right-10 pointer"
-                           ng-change="campaignChanged('reward_type')"
-                           type="radio" ng-model="editCampaignParams.reward_type"
-                           value="automatic"> <span class="reward-radio-type3">Automatic</span>
-                </div>
+            <div class="form-group setup-groups-tooltip-div">
+                <label>Reward total &nbsp;<i uib-tooltip-html="'Total number of tokens available during the campaign.'"
+                                             class="ion-information-circled setup-groups-tooltip"></i></label>
+                <br>
+                <input class="form-control" ng-change="campaignChanged('reward_total')" ng-model="editCampaignParams.reward_total" type="number">
             </div>
             <div class="form-group setup-groups-tooltip-div">
                 <label>Reward amount <span class="required-icon">*</span></label>
                 <br>
                 <input class="form-control" ng-change="campaignChanged('reward_amount')" ng-model="editCampaignParams.reward_amount" type="number" required>
-            </div>
-            <div class="form-group setup-groups-tooltip-div">
-                <label>Reward percentage &nbsp;<i uib-tooltip-html="'Add a percentage value if you want reward tokens to be issued based on the percentage of the award amount instead of by the reward amount.'"
-                                                  class="ion-information-circled setup-groups-tooltip"></i></label>
-                <br>
-                <input class="form-control" ng-change="campaignChanged('reward_percentage')" ng-model="editCampaignParams.reward_percentage" type="number">
             </div>
             <div class="form-group">
                 <label>Campaign status</label>
@@ -102,54 +86,20 @@
                 </div>
             </div>
             <div class="form-group setup-groups-tooltip-div">
-                <label>Reward total &nbsp;<i uib-tooltip-html="'Total number of tokens available during the campaign.'"
+                <label>Max per user &nbsp;<i ng-hide="true" uib-tooltip-html="'Max per user.'"
                                              class="ion-information-circled setup-groups-tooltip"></i></label>
                 <br>
-                <input class="form-control" ng-change="campaignChanged('reward_total')" ng-model="editCampaignParams.reward_total" type="number">
+                <input class="form-control" ng-change="campaignChanged('max_per_user')" ng-model="editCampaignParams.max_per_user" type="number">
             </div>
-            <div class="form-group setup-groups-tooltip-div">
-                <label>User volume limit &nbsp;<i ng-hide="true" uib-tooltip-html="'User volume limit.'"
-                                                  class="ion-information-circled setup-groups-tooltip"></i></label>
+            <div class="form-group divider-20">
+                <label>Visible</label>
                 <br>
-                <input class="form-control" ng-change="campaignChanged('user_volume_limit')" ng-model="editCampaignParams.user_volume_limit" type="number">
+                <input class="custom-rehive-checkbox" ng-change="campaignChanged('visible')" ng-model="editCampaignParams.visible" type="checkbox">
             </div>
-            <div class="form-group setup-groups-tooltip-div">
-                <label>User limit &nbsp;<i ng-hide="true" uib-tooltip-html="'User limit.'"
-                                           class="ion-information-circled setup-groups-tooltip"></i></label>
+            <div class="form-group divider-20">
+                <label>Request</label>
                 <br>
-                <input class="form-control" ng-change="campaignChanged('user_limit')" ng-model="editCampaignParams.user_limit" type="number">
-            </div>
-            <div class="form-group setup-groups-tooltip-div">
-                <label>User transaction limit &nbsp;<i ng-hide="true" uib-tooltip-html="'User transaction limit.'"
-                                                       class="ion-information-circled setup-groups-tooltip"></i></label>
-                <br>
-                <input class="form-control" ng-change="campaignChanged('user_transaction_limit')" ng-model="editCampaignParams.user_transaction_limit" type="number">
-            </div>
-            <div class="form-group">
-                <label>Users</label>
-                <div class="reward-multi-select">
-                    <tags-input on-tag-added="campaignChanged('users')" on-tag-removed="campaignChanged('users')"
-                            ng-model="editCampaignParams.users" placeholder="Enter one or more user email">
-                        <auto-complete class="reward-tag-users-input" source="getUsersEmailTypeahead($query)"></auto-complete>
-                    </tags-input>
-                </div>
-            </div>
-            <div class="form-group">
-                <label>Groups</label>
-                <div class="reward-multi-select">
-                    <tags-input on-tag-added="campaignChanged('groups')" on-tag-removed="campaignChanged('groups')"
-                            ng-model="editCampaignParams.groups" placeholder="Enter one or more group name">
-                        <auto-complete class="reward-tag-users-input" source="getGroupsTypeahead($query)"></auto-complete>
-                    </tags-input>
-                </div>
-            </div>
-            <div class="form-group">
-                <label>Tags</label>
-                <div class="reward-multi-select">
-                    <tags-input on-tag-added="campaignChanged('tags')" on-tag-removed="campaignChanged('tags')"
-                                ng-model="editCampaignParams.tags" placeholder="Enter one or more tags">
-                    </tags-input>
-                </div>
+                <input class="custom-rehive-checkbox" ng-change="campaignChanged('request')" ng-model="editCampaignParams.request" type="checkbox">
             </div>
             <div class="form-group">
                 <button ng-disabled="(!campaignForm.$valid || !editCampaignParams.currency.code)" ng-click="updateCampaign(editCampaignParams)" class="btn btn-primary dashboard-btn pull-right">Save</button>

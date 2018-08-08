@@ -15,7 +15,6 @@
                 <tr>
                     <th class="rehive-table-row-first-child">Name</th>
                     <th>Description</th>
-                    <th>Type</th>
                     <th>Start date</th>
                     <th>End date</th>
                     <th>Status</th>
@@ -24,7 +23,6 @@
                 <tr ng-repeat="campaign in campaignList | orderBy: '-created'" class="editable-row">
                     <td class="rehive-table-row-first-child"><div title="{{campaign.name}}" class="transactions-list-element" ng-bind="campaign.name"></div></td>
                     <td><div title="{{campaign.description}}" class="transactions-list-element" ng-bind="campaign.description"></div></td>
-                    <td><div title="{{campaign.reward_type | capitalizeWord}}" class="transactions-list-element" ng-bind="campaign.reward_type | capitalizeWord"></div></td>
                     <td><div title="{{campaign.start_date}}" class="transactions-list-element" ng-bind="campaign.start_date"></div></td>
                     <td><div title="{{campaign.end_date}}" class="transactions-list-element" ng-bind="campaign.end_date"></div></td>
                     <td><div title="{{campaign.status | capitalizeWord}}" class="transactions-list-element" ng-bind="campaign.status | capitalizeWord"></div></td>
@@ -33,9 +31,6 @@
                         <span class="fa fa-ellipsis-h pull-right pointer user-details-address-options no-margin"></span>
                             <ul ng-show="campaign.identifier == campaignsId" class="user-details-address-options-box">
                                 <li ng-click="showCampaignOptionsBox(campaign)"><i class="dropdown-arr"></i></li>
-                                <li ng-show="campaign.reward_type == 'manual'"
-                                    ng-click="openRewardUserModal('app/pages/services/rewardsService/rewardsServiceCampaigns/rewardUserModal/rewardUserModal.html','md',campaign)">Reward user</li>
-                                <!--<li ng-click="">View</li>-->
                                 <li ng-click="openEditCampaignView(campaign)">Edit</li>
                                 <li ng-click="deleteCampaignPrompt(campaign)">Delete</li>
                             </ul>

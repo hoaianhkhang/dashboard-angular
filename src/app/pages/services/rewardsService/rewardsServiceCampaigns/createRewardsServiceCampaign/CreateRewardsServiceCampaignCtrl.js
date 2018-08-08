@@ -19,17 +19,12 @@
             currency: {},
             startDate: null,
             endDate: null,
-            rewardType: 'basic',
-            rewardAmount: null,
-            rewardPercentage: null,
-            status: 'active',
             rewardTotal: null,
-            userVolumeLimit: null,
-            userLimit: null,
-            userTransactionLimit: null,
-            users: [],
-            groups: [],
-            tags: []
+            rewardAmount: null,
+            status: 'active',
+            max_per_user: null,
+            visible: false,
+            request: false
         };
 
         //for angular datepicker
@@ -87,31 +82,26 @@
                 company: $rootScope.pageTopObj.companyObj.identifier,
                 start_date: null,
                 end_date: null,
-                reward_type: newCampaignParams.rewardType,
-                reward_amount: newCampaignParams.rewardAmount,
-                reward_percentage: newCampaignParams.rewardPercentage,
-                status: newCampaignParams.status,
                 reward_total: newCampaignParams.rewardTotal,
-                user_volume_limit: newCampaignParams.userVolumeLimit,
-                user_limit: newCampaignParams.userLimit,
-                user_transaction_limit: newCampaignParams.userTransactionLimit,
-                users: [],
-                groups: [],
-                tags: []
+                reward_amount: newCampaignParams.rewardAmount,
+                status: newCampaignParams.status,
+                max_per_user: newCampaignParams.max_per_user,
+                visible: newCampaignParams.visible,
+                request: newCampaignParams.request
             };
 
             newCampaign.start_date = moment(new Date(newCampaignParams.startDate)).format('YYYY-MM-DD');
             newCampaign.end_date = moment(new Date(newCampaignParams.endDate)).format('YYYY-MM-DD');
 
-            if(newCampaignParams.users.length > 0){
-                newCampaign.users = _.pluck(newCampaignParams.users,'text');
-            }
-            if(newCampaignParams.groups.length > 0){
-                newCampaign.groups = _.pluck(newCampaignParams.groups,'text');
-            }
-            if(newCampaignParams.tags.length > 0){
-                newCampaign.tags = _.pluck(newCampaignParams.tags,'text');
-            }
+            // if(newCampaignParams.users.length > 0){
+            //     newCampaign.users = _.pluck(newCampaignParams.users,'text');
+            // }
+            // if(newCampaignParams.groups.length > 0){
+            //     newCampaign.groups = _.pluck(newCampaignParams.groups,'text');
+            // }
+            // if(newCampaignParams.tags.length > 0){
+            //     newCampaign.tags = _.pluck(newCampaignParams.tags,'text');
+            // }
 
             newCampaign = serializeFiltersService.objectFilters(newCampaign);
 

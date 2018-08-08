@@ -5,7 +5,7 @@
         .controller('EditRewardsServiceCampaignsCtrl', EditRewardsServiceCampaignsCtrl);
 
     /** @ngInject */
-    function EditRewardsServiceCampaignsCtrl($scope,$rootScope,$stateParams,environmentConfig,typeaheadService,toastr,_,
+    function EditRewardsServiceCampaignsCtrl($scope,$stateParams,environmentConfig,typeaheadService,toastr,_,
                                              $http,localStorageManagement,$location,errorHandler) {
 
         var vm = this;
@@ -71,14 +71,14 @@
                         var editObj = {};
                         editObj = res.data.data;
                         $scope.currencyOptions.forEach(function (element) {
-                            if(element.code == editObj.currency){
+                            if(element.code == editObj.currency.code){
                                 editObj.currency = element;
+                                editObj.start_date = moment(editObj.start_date).toDate();
+                                editObj.end_date = moment(editObj.end_date).toDate();
+                                $scope.editCampaignParams = editObj;
                             }
                         });
-
-                        editObj.start_date = moment(editObj.start_date).toDate();
-                        editObj.end_date = moment(editObj.end_date).toDate();
-                        $scope.editCampaignParams = editObj;
+                        
                         $scope.updatingCampaign =  false;
                     }
                 }).catch(function (error) {
@@ -108,15 +108,6 @@
             }
             if(vm.updatedCampaignObj.end_date){
                 vm.updatedCampaignObj.end_date = moment(new Date(vm.updatedCampaignObj.end_date)).format('YYYY-MM-DD');
-            }
-            if(vm.updatedCampaignObj.users && vm.updatedCampaignObj.users.length > 0){
-                vm.updatedCampaignObj.users = _.pluck(vm.updatedCampaignObj.users,'text');
-            }
-            if(vm.updatedCampaignObj.groups && vm.updatedCampaignObj.groups.length > 0){
-                vm.updatedCampaignObj.groups = _.pluck(vm.updatedCampaignObj.groups,'text');
-            }
-            if(vm.updatedCampaignObj.tags && vm.updatedCampaignObj.tags.length > 0){
-                vm.updatedCampaignObj.tags = _.pluck(vm.updatedCampaignObj.tags,'text');
             }
             if(vm.updatedCampaignObj.currency && vm.updatedCampaignObj.currency.code){
                 vm.updatedCampaignObj.currency = vm.updatedCampaignObj.currency.code;
