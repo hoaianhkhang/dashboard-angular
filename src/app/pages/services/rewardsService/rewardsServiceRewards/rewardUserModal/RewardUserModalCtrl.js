@@ -22,15 +22,6 @@
         $scope.statusOptions = ['Accept','Reject','Pending'];
         $scope.typeOptions = ['Request', 'Manual' , 'External'];
 
-        $scope.campaignSelectionChanged = function () {
-            $scope.rewardUserObj.currency = {};
-            $scope.rewardUserObj.amount = '';
-        };
-
-        $scope.currencySelectionChanged = function () {
-            $scope.rewardUserObj.campaign = {};
-        };
-
         $scope.getUsersEmailTypeahead = typeaheadService.getUsersEmailTypeahead();
 
         $scope.getCampaignList = function () {
@@ -45,6 +36,8 @@
                 }).then(function (res) {
                     if (res.status === 200) {
                         if(res.data.data.results.length > 0){
+                            res.data.data.results.unshift({name: 'No campaign selected'});
+                            $scope.rewardUserObj.campaign = res.data.data.results[0];
                             $scope.campaignsListOptions = res.data.data.results;
                         }
 
@@ -106,11 +99,17 @@
             var rewardObj = {
                 campaign: $scope.rewardUserObj.campaign ? ($scope.rewardUserObj.campaign.identifier ? $scope.rewardUserObj.campaign.identifier : null) : null,
                 user: user.id,
-                amount: $scope.rewardUserObj.amount ? currencyModifiers.convertToCents($scope.rewardUserObj.amount,$scope.rewardUserObj.currency.divisibility) : null,
+                amount: $scope.rewardUserObj.amount || null,
                 currency: $scope.rewardUserObj.currency ? ($scope.rewardUserObj.currency.code ? $scope.rewardUserObj.currency.code : null) : null,
                 status: $scope.rewardUserObj.status ? $scope.rewardUserObj.status.toLowerCase() : null,
                 reward_type: $scope.rewardUserObj.type ? $scope.rewardUserObj.type.toLowerCase() : null
             };
+
+            if($scope.rewardUserObj.campaign && $scope.rewardUserObj.campaign.identifier){
+                rewardObj.amount = currencyModifiers.convertToCents($scope.rewardUserObj.amount,$scope.rewardUserObj.campaign.currency.divisibility);
+            } else {
+                rewardObj.amount = currencyModifiers.convertToCents($scope.rewardUserObj.amount,$scope.rewardUserObj.currency.divisibility);
+            }
 
             rewardObj = serializeFiltersService.objectFilters(rewardObj);
 
