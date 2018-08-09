@@ -5,12 +5,12 @@
         .controller('HistoryCtrl', HistoryCtrl);
 
     /** @ngInject */
-    function HistoryCtrl($rootScope,$scope,environmentConfig,$http,localStorageManagement,$uibModal,sharedResources,
+    function HistoryCtrl($rootScope,Rehive,$scope,localStorageManagement,$uibModal,sharedResources,
                          toastr,currencyModifiers,errorHandler,$state,$window,typeaheadService,$filter,
                          serializeFiltersService,$location,_) {
 
         var vm = this;
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
         vm.companyIdentifier = localStorageManagement.getValue('companyIdentifier');
         vm.savedTransactionTableColumns = vm.companyIdentifier + 'transactionsTable';
         vm.newTransactionParams = $location.search();
@@ -183,27 +183,22 @@
         };
 
         sharedResources.getSubtypes().then(function (res) {
-            $scope.subtypeOptions = _.pluck(res.data.data,'name');
+            $scope.subtypeOptions = _.pluck(res,'name');
             $scope.subtypeOptions.unshift('');
         });
 
         $scope.getGroups = function () {
             if(vm.token) {
-                $http.get(environmentConfig.API + '/admin/groups/?page_size=250', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
+                Rehive.admin.groups.get({filters: {page_size: 250}}).then(function (res) {
+                    if(res.results.length > 0){
+                        $scope.groupOptions = res.results;
+                        $scope.applyFiltersObj.groupFilter.selectedGroup = $scope.groupOptions[0];
                     }
-                }).then(function (res) {
-                    if (res.status === 200) {
-                        if(res.data.data.results.length > 0){
-                            $scope.groupOptions = res.data.data.results;
-                            $scope.applyFiltersObj.groupFilter.selectedGroup = $scope.groupOptions[0];
-                        }
-                    }
-                }).catch(function (error) {
-                    errorHandler.evaluateErrors(error.data);
+                    $scope.$apply();
+                }, function (error) {
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };
@@ -425,7 +420,7 @@
             return referenceObj;
         };
 
-        vm.getTransactionUrl = function(){
+        vm.getTransactionsFiltersObj = function(){
             $scope.filtersCount = 0;
             $scope.filtersObjForExport = {};
 
@@ -478,12 +473,12 @@
                 created__gt: vm.dateObj.created__gt ? Date.parse(vm.dateObj.created__gt +'T00:00:00') : null,
                 created__lt: vm.dateObj.created__lt ? Date.parse(vm.dateObj.created__lt +'T00:00:00') : null,
                 currency: $scope.filtersObj.currencyFilter || $scope.filtersObj.amountFilter ? $scope.applyFiltersObj.currencyFilter.selectedCurrencyOption.code: null,
-                user: $scope.filtersObj.userFilter ? ($scope.applyFiltersObj.userFilter.selectedUserOption ? encodeURIComponent($scope.applyFiltersObj.userFilter.selectedUserOption) : null): null,
+                user: $scope.filtersObj.userFilter ? ($scope.applyFiltersObj.userFilter.selectedUserOption ? $scope.applyFiltersObj.userFilter.selectedUserOption : null): null,
                 account: $scope.filtersObj.accountFilter ? $scope.applyFiltersObj.accountFilter.selectedAccount: null,
                 group: $scope.filtersObj.groupFilter ? $scope.applyFiltersObj.groupFilter.selectedGroupOption == 'Group name'? $scope.applyFiltersObj.groupFilter.selectedGroup.name: null : null,
                 group__isnull: $scope.filtersObj.groupFilter ? $scope.applyFiltersObj.groupFilter.selectedGroupOption == 'In a group'? (!$scope.applyFiltersObj.groupFilter.existsInGroup).toString(): null : null,
                 orderby: $scope.filtersObj.orderByFilter ? ($scope.applyFiltersObj.orderByFilter.selectedOrderByOption == 'Latest' ? '-created' : $scope.applyFiltersObj.orderByFilter.selectedOrderByOption == 'Largest' ? '-amount' : $scope.applyFiltersObj.orderByFilter.selectedOrderByOption == 'Smallest' ? 'amount' : null): null,
-                id: $scope.filtersObj.transactionIdFilter ? ($scope.applyFiltersObj.transactionIdFilter.selectedTransactionIdOption ? encodeURIComponent($scope.applyFiltersObj.transactionIdFilter.selectedTransactionIdOption) : null): null,
+                id: $scope.filtersObj.transactionIdFilter ? ($scope.applyFiltersObj.transactionIdFilter.selectedTransactionIdOption ? $scope.applyFiltersObj.transactionIdFilter.selectedTransactionIdOption : null): null,
                 destination_transaction : $scope.filtersObj.destinationIdFilter ? 'true' : null,
                 source_transaction : $scope.filtersObj.sourceIdFilter ? 'true' : null,
                 tx_type: $scope.filtersObj.transactionTypeFilter ? $scope.applyFiltersObj.transactionTypeFilter.selectedTransactionTypeOption.toLowerCase() : null,
@@ -493,7 +488,7 @@
 
             $scope.filtersObjForExport = searchObj;
 
-            return environmentConfig.API + '/admin/transactions/?' + serializeFiltersService.serializeFilters(searchObj);
+            return serializeFiltersService.objectFilters(searchObj);
         };
 
         $scope.getLatestTransactions = function(applyFilter){
@@ -513,29 +508,24 @@
                     $scope.transactions.length = 0;
                 }
 
-                var transactionsUrl = vm.getTransactionUrl();
+                var transactionsFiltersObj = vm.getTransactionsFiltersObj();
 
-                $http.get(transactionsUrl, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
+                Rehive.admin.transactions.get({filters: transactionsFiltersObj}).then(function (res) {
+                    $scope.transactionsData = res;
+                    vm.formatTransactionsArray($scope.transactionsData.results);
+                    if ($scope.transactions.length == 0) {
+                        $scope.transactionsStateMessage = 'No transactions have been found';
+                        return;
                     }
-                }).then(function (res) {
-                    if (res.status === 200) {
-                        $scope.transactionsData = res.data.data;
-                        vm.formatTransactionsArray($scope.transactionsData.results);
-                        if ($scope.transactions.length == 0) {
-                            $scope.transactionsStateMessage = 'No transactions have been found';
-                            return;
-                        }
 
-                        $scope.transactionsStateMessage = '';
-                    }
-                }).catch(function (error) {
+                    $scope.transactionsStateMessage = '';
+                    $scope.$apply();
+                }, function (error) {
                     $scope.loadingTransactions = false;
                     $scope.transactionsStateMessage = 'Failed to load data';
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };

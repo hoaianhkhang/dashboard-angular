@@ -5,11 +5,11 @@
         .controller('UserEmailsCtrl', UserEmailsCtrl);
 
     /** @ngInject */
-    function UserEmailsCtrl($rootScope,$scope,environmentConfig,$stateParams,$http,$window,$ngConfirm,
-                            localStorageManagement,errorHandler,toastr,$uibModal) {
+    function UserEmailsCtrl($rootScope,$scope,$stateParams,$window,$ngConfirm,
+                            Rehive,localStorageManagement,errorHandler,toastr,$uibModal) {
 
         var vm = this;
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
         $scope.emailsList = [];
         vm.uuid = $stateParams.uuid;
         $scope.optionsId = '';
@@ -25,20 +25,15 @@
         vm.getUser = function(){
             if(vm.token) {
                 $scope.loadingUserEmails = true;
-                $http.get(environmentConfig.API + '/admin/users/' + vm.uuid + '/', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
-                    if (res.status === 200) {
-                        $scope.user = res.data.data;
-                        vm.getUserEmails();
-                    }
-                }).catch(function (error) {
+                Rehive.admin.users.get({identifier: vm.uuid}).then(function (res) {
+                    $scope.user = res;
+                    vm.getUserEmails();
+                    $scope.$apply();
+                }, function (error) {
                     $scope.loadingUserEmails = false;
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };
@@ -47,42 +42,32 @@
         vm.getUserEmails = function(){
             $scope.loadingUserEmails = true;
             if(vm.token) {
-                $http.get(environmentConfig.API + '/admin/users/emails/?user=' + vm.uuid, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
-                    if (res.status === 200) {
-                        $scope.loadingUserEmails = false;
-                        $scope.emailsList = res.data.data.results;
-                        $window.sessionStorage.userEmails = JSON.stringify(res.data.data.results);
-                    }
-                }).catch(function (error) {
+                Rehive.admin.users.emails.get({filters: {user: vm.uuid}}).then(function (res) {
                     $scope.loadingUserEmails = false;
-                    errorHandler.evaluateErrors(error.data);
+                    $scope.emailsList = res.results;
+                    $window.sessionStorage.userEmails = JSON.stringify(res.results);
+                    $scope.$apply();
+                }, function (error) {
+                    $scope.loadingUserEmails = false;
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };
 
         $scope.updateUserEmail = function (email) {
             $scope.loadingUserEmails = true;
-            $http.patch(environmentConfig.API + '/admin/users/emails/' + email.id + '/', {primary: true}, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': vm.token
-                }
-            }).then(function (res) {
-                if (res.status === 200) {
-                    $scope.optionsId = '';
-                    toastr.success('Primary email successfully changed');
-                    vm.getUserEmails();
-                }
-            }).catch(function (error) {
+            Rehive.admin.users.emails.update(email.id,{primary: true}).then(function (res) {
+                $scope.optionsId = '';
+                toastr.success('Primary email successfully changed');
+                vm.getUserEmails();
+                $scope.$apply();
+            }, function (error) {
                 $scope.loadingUserEmails = false;
-                errorHandler.evaluateErrors(error.data);
+                errorHandler.evaluateErrors(error);
                 errorHandler.handleErrors(error);
+                $scope.$apply();
             });
         };
 
@@ -112,20 +97,15 @@
 
         $scope.deleteUserEmail = function (email) {
             $scope.loadingUserEmails = true;
-            $http.delete(environmentConfig.API + '/admin/users/emails/' + email.id + '/', {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': vm.token
-                }
-            }).then(function (res) {
-                if (res.status === 200) {
-                    toastr.success('Email successfully deleted');
-                    vm.getUserEmails();
-                }
-            }).catch(function (error) {
+            Rehive.admin.users.emails.delete(email.id).then(function (res) {
+                toastr.success('Email successfully deleted');
+                vm.getUserEmails();
+                $scope.$apply();
+            }, function (error) {
                 $scope.loadingUserEmails = false;
-                errorHandler.evaluateErrors(error.data);
+                errorHandler.evaluateErrors(error);
                 errorHandler.handleErrors(error);
+                $scope.$apply();
             });
         };
 

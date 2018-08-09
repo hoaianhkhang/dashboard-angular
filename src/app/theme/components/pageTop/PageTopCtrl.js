@@ -5,8 +5,9 @@
         .controller('PageTopCtrl', PageTopCtrl);
 
     /** @ngInject */
-    function PageTopCtrl($rootScope,$scope,$http,localStorageManagement,$state,$timeout,serializeFiltersService,
-                         environmentConfig,$location,errorHandler,$window,identifySearchInput) {
+
+    function PageTopCtrl($rootScope,$scope,Rehive,localStorageManagement,$state,$timeout,serializeFiltersService,
+                         $location,errorHandler,$window,identifySearchInput) {
         var vm = this;
 
         vm.token = localStorageManagement.getValue('TOKEN');
@@ -52,41 +53,25 @@
         //when page refreshed
         if(!$rootScope.pageTopObj.companyObj){
             vm.getCompanyInfo = function () {
-                if(vm.token) {
-                    $http.get(environmentConfig.API + '/admin/company/', {
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': vm.token
-                        }
-                    }).then(function (res) {
-                        if (res.status === 200) {
-                            $rootScope.pageTopObj.companyObj = {};
-                            $rootScope.pageTopObj.companyObj = res.data.data;
-                            localStorageManagement.setValue('companyIdentifier',$rootScope.pageTopObj.companyObj.identifier);
-                        }
-                    }).catch(function (error) {
-                    });
-                }
+                Rehive.admin.company.get().then(function (res) {
+                    $rootScope.pageTopObj.companyObj = {};
+                    $rootScope.pageTopObj.companyObj = res;
+                    localStorageManagement.setValue('companyIdentifier',$rootScope.pageTopObj.companyObj.identifier);
+                    $rootScope.$apply();
+                }, function (err) {
+                });
             };
             vm.getCompanyInfo();
         }
 
         if(!$rootScope.pageTopObj.userInfoObj){
             vm.getUserInfo = function () {
-                if(vm.token) {
-                    $http.get(environmentConfig.API + '/user/', {
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': vm.token
-                        }
-                    }).then(function (res) {
-                        if (res.status === 200) {
-                            $rootScope.pageTopObj.userInfoObj = {};
-                            $rootScope.pageTopObj.userInfoObj = res.data.data;
-                        }
-                    }).catch(function (error) {
-                    });
-                }
+                Rehive.user.get().then(function(user){
+                    $rootScope.pageTopObj.userInfoObj = {};
+                    $rootScope.pageTopObj.userInfoObj = user;
+                    $rootScope.$apply();
+                },function(err){
+                });
             };
             vm.getUserInfo();
         }
@@ -116,18 +101,14 @@
 
         vm.getCompanyCurrencies = function(){
             if(vm.token){
-                $http.get(environmentConfig.API + '/admin/currencies/?enabled=true&page_size=250', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
+                Rehive.admin.currencies.get({filters: {
+                    enabled: true,
+                    page_size: 250
+                }}).then(function (res) {
+                    if(res.results.length > 0){
+                        $window.sessionStorage.currenciesList = JSON.stringify(res.results);
                     }
-                }).then(function (res) {
-                    if (res.status === 200) {
-                        if(res.data.data.results.length > 0){
-                            $window.sessionStorage.currenciesList = JSON.stringify(res.data.data.results);
-                        }
-                    }
-                }).catch(function (error) {
+                }, function (error) {
                     if(error.status == 401){
                         $rootScope.gotToken = false;
                         $rootScope.securityConfigured = true;
@@ -170,28 +151,26 @@
             var filter;
             if(vm.token){
                 if(typeOfInput == 'mobile'){
-                    filter = 'mobile_number__contains=';
+                    filter = 'mobile_number__contains';
                 } else {
-                    filter = 'email__contains=';
+                    filter = 'email__contains';
                 }
 
-                $http.get(environmentConfig.API + '/admin/users/?page_size=2&' + filter + encodeURIComponent(searchString), {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
+                var userFilter = { page_size: 2 };
+                userFilter[filter] = searchString;
+
+                Rehive.admin.users.get({filters: userFilter}).then(function (res) {
+                    $scope.searchedUsers = res.results;
+                    if(res.count == 1){
+                        vm.findTransactions(res.results[0].email,'user');
+                        $scope.$apply();
+                    } else {
+                        vm.findTransactions(searchString,'id');
+                        $scope.$apply();
                     }
-                }).then(function (res) {
-                    if (res.status === 200) {
-                        $scope.searchedUsers = res.data.data.results;
-                        if(res.data.data.count == 1){
-                            vm.findTransactions(res.data.data.results[0].email,'user');
-                        } else {
-                            vm.findTransactions(searchString,'id');
-                        }
-                    }
-                }).catch(function (error) {
+                }, function (error) {
                     $scope.loadingResults = false;
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
                 });
             }
@@ -201,24 +180,21 @@
             var filter;
             if(vm.token){
                 if(typeOfInput == 'user'){
-                    filter = 'user=';
+                    filter = 'user';
                 } else {
-                    filter = 'id=';
+                    filter = 'id';
                 }
 
-                $http.get(environmentConfig.API + '/admin/transactions/?page_size=2&' + filter + encodeURIComponent(searchString), {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
-                    if (res.status === 200) {
-                        $scope.loadingResults = false;
-                        $scope.searchedTransactions = res.data.data.results;
-                    }
-                }).catch(function (error) {
+                var transactionsFilter = { page_size: 2 };
+                transactionsFilter[filter] = searchString;
+
+                Rehive.admin.transactions.get({filters: transactionsFilter}).then(function (res) {
                     $scope.loadingResults = false;
-                    errorHandler.evaluateErrors(error.data);
+                    $scope.searchedTransactions = res.results;
+                    $scope.$apply();
+                }, function (error) {
+                    $scope.loadingResults = false;
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
                 });
             }
@@ -252,44 +228,38 @@
 
         // dashboardTasks start
 
-        $scope.getTransactionSetsUrl = function(){
+        $scope.getTransactionSetsFiltersObj = function(){
 
             var searchObj = {
                 page: $scope.pagination.pageNo,
                 page_size: $scope.pagination.itemsPerPage
             };
 
-            return environmentConfig.API + '/admin/transactions/sets/?' + serializeFiltersService.serializeFilters(searchObj);
+            return serializeFiltersService.objectFilters(searchObj);
         };
 
         $scope.getTransactionSetsList = function(noLoadingImage){
             if(vm.token) {
-
                 if(!noLoadingImage){
                     $scope.loadingTransactionSets = true;
                 }
 
                 $scope.inProgressSets = false;
 
-                var transactionSetsUrl = $scope.getTransactionSetsUrl();
+                var transactionSetsFiltersObj = $scope.getTransactionSetsFiltersObj();
 
-                $http.get(transactionSetsUrl, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
+                Rehive.admin.transactions.sets.get({filters: transactionSetsFiltersObj}).then(function (res) {
+                    if(res.results.length > 0){
+                        vm.unfinishedDashboardTasks.length = 0;
+                        $scope.dashboardTasksData = res;
+                        $scope.dashboardTasksLists = $scope.dashboardTasksData.results;
+                        vm.getFinishedTransactionSets($scope.dashboardTasksLists);
+                        $scope.$apply();
+                    } else {
+                        $scope.loadingTransactionSets = false;
+                        $scope.$apply();
                     }
-                }).then(function (res) {
-                    if (res.status === 200) {
-                        if(res.data.data.results.length > 0){
-                            vm.unfinishedDashboardTasks.length = 0;
-                            $scope.dashboardTasksData = res.data.data;
-                            $scope.dashboardTasksLists = $scope.dashboardTasksData.results;
-                            vm.getFinishedTransactionSets($scope.dashboardTasksLists);
-                        } else {
-                            $scope.loadingTransactionSets = false;
-                        }
-                    }
-                }).catch(function (error) {
+                }, function (error) {
                     $scope.loadingTransactionSets = false;
                     if(error.status == 401){
                         $rootScope.gotToken = false;
@@ -299,6 +269,7 @@
                         localStorageManagement.deleteValue('token');
                         $location.path('/login');
                     }
+                    $scope.$apply();
                 });
             }
         };
@@ -309,21 +280,25 @@
                 if(index == (array.length - 1)){
                     if(set.progress == 100){
                         vm.getSingleTransactionSet(set,'last');
+                        $scope.$apply();
                     } else {
                         // scenario if array length is 1
                         set.untouched = true;
                         vm.unfinishedDashboardTasks.push(set);
                         $scope.inProgressSets = true;
                         vm.getSingleTransactionSet(null,'last');
+                        $scope.$apply();
                     }
                 } else{
                     if(set.progress == 100){
                         vm.getSingleTransactionSet(set);
+                        $scope.$apply();
                     } else {
                         set.untouched = true;
                         vm.unfinishedDashboardTasks.push(set);
                         $scope.inProgressSets = true;
                         $scope.loadingTransactionSets = false;
+                        $scope.$apply();
                     }
                 }
             });
@@ -331,34 +306,30 @@
 
         vm.getSingleTransactionSet = function (set,last) {
             if(set){
-                $http.get(environmentConfig.API + '/admin/transactions/sets/' + set.id + '/', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
-                    if (res.status === 200) {
-                        set.pages = res.data.data.pages;
-                        if(last){
-                            $scope.loadingTransactionSets = false;
-                            if($scope.inProgressSets){
-                                $scope.transactionSetsExportingInProgress = true;
-                                $scope.allTasksDone = false;
-                                $timeout(function () {
-                                    $scope.checkWhetherTaskCompleteOrNot();
-                                },10000);
-                            } else {
-                                $scope.transactionSetsExportingInProgress = false;
-                                if($scope.showingDashboardTasks){
-                                    $scope.allTasksDone = true;
-                                }
+                Rehive.admin.transactions.sets.get({id: set.id}).then(function (res) {
+                    set.pages = res.pages;
+                    if(last){
+                        $scope.loadingTransactionSets = false;
+                        if($scope.inProgressSets){
+                            $scope.transactionSetsExportingInProgress = true;
+                            $scope.allTasksDone = false;
+                            $timeout(function () {
+                                $scope.checkWhetherTaskCompleteOrNot();
+                            },10000);
+                            $scope.$apply();
+                        } else {
+                            $scope.transactionSetsExportingInProgress = false;
+                            if($scope.showingDashboardTasks){
+                                $scope.allTasksDone = true;
                             }
+                            $scope.$apply();
                         }
                     }
-                }).catch(function (error) {
+                }, function (error) {
                     $scope.loadingTransactionSets = false;
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             } else {
                 // scenario if array length is 1
@@ -383,46 +354,44 @@
             if(vm.unfinishedDashboardTasks.length > 0){
                 vm.unfinishedDashboardTasks.forEach(function (set,index,array) {
                     if(index == (array.length -1)){
-                        $http.get(environmentConfig.API + '/admin/transactions/sets/' + set.id + '/', {
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'Authorization': vm.token
-                            }
-                        }).then(function (res) {
-                            if(res.status === 200) {
-                                if(res.data.data.progress == 100){
-                                    vm.unfinishedDashboardTasks.splice(index,1);
-                                    $scope.dashboardTasksLists.forEach(function (element,ind,arr) {
-                                        if(element.id == res.data.data.id){
-                                            res.data.data.untouched = true;
-                                            $scope.dashboardTasksLists.splice(ind,1,res.data.data);
-                                        }
-                                    });
-                                    if(vm.unfinishedDashboardTasks.length == 0){
-                                        $scope.transactionSetsExportingInProgress = false;
-                                        if($scope.showingDashboardTasks){
-                                            $scope.allTasksDone = true;
-                                        }
-                                    } else {
-                                        $timeout(function () {
-                                            $scope.checkWhetherTaskCompleteOrNot();
-                                        },10000);
+                        Rehive.admin.transactions.sets.get({id: set.id}).then(function (res) {
+                            if(res.progress == 100){
+                                vm.unfinishedDashboardTasks.splice(index,1);
+                                $scope.dashboardTasksLists.forEach(function (element,ind,arr) {
+                                    if(element.id == res.id){
+                                        res.untouched = true;
+                                        $scope.dashboardTasksLists.splice(ind,1,res);
+                                        $scope.$apply();
                                     }
-                                } else if((res.data.data.progress >= 0) && (res.data.data.progress < 100)){
-                                    $scope.dashboardTasksLists.forEach(function (element,ind,arr) {
-                                        if(element.id == res.data.data.id){
-                                            res.data.data.untouched = true;
-                                            $scope.dashboardTasksLists.splice(ind,1,res.data.data);
-                                        }
-                                    });
+                                });
+                                if(vm.unfinishedDashboardTasks.length == 0){
+                                    $scope.transactionSetsExportingInProgress = false;
+                                    if($scope.showingDashboardTasks){
+                                        $scope.allTasksDone = true;
+                                    }
+                                    $scope.$apply();
+                                } else {
                                     $timeout(function () {
                                         $scope.checkWhetherTaskCompleteOrNot();
                                     },10000);
+                                    $scope.$apply();
                                 }
+                            } else if((res.progress >= 0) && (res.progress < 100)){
+                                $scope.dashboardTasksLists.forEach(function (element,ind,arr) {
+                                    if(element.id == res.id){
+                                        res.untouched = true;
+                                        $scope.dashboardTasksLists.splice(ind,1,res);
+                                    }
+                                });
+                                $timeout(function () {
+                                    $scope.checkWhetherTaskCompleteOrNot();
+                                },10000);
+                                $scope.$apply();
                             }
-                        }).catch(function (error) {
-                            errorHandler.evaluateErrors(error.data);
+                        }, function (error) {
+                            errorHandler.evaluateErrors(error);
                             errorHandler.handleErrors(error);
+                            $scope.$apply();
                         });
                     }
                 });
@@ -464,6 +433,7 @@
             $window.sessionStorage.currenciesList = '';
             $rootScope.pageTopObj = {};
             localStorageManagement.deleteValue('TOKEN');
+            localStorageManagement.deleteValue('token');
             $location.path('/login');
         };
     }

@@ -5,11 +5,11 @@
         .controller('UsersCtrl', UsersCtrl);
 
     /** @ngInject */
-    function UsersCtrl($rootScope,$state,$scope,environmentConfig,$http,typeaheadService,$location,
+    function UsersCtrl($rootScope,$state,Rehive,$scope,typeaheadService,$location,
                        localStorageManagement,errorHandler,$window,toastr,serializeFiltersService,$filter) {
 
         var vm = this;
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
         vm.companyIdentifier = localStorageManagement.getValue('companyIdentifier');
         vm.savedUserTableColumns = vm.companyIdentifier + 'usersTable';
         $rootScope.dashboardTitle = 'Users | Rehive';
@@ -199,21 +199,16 @@
 
         $scope.getGroups = function () {
             if(vm.token) {
-                $http.get(environmentConfig.API + '/admin/groups/?page_size=250', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
+                Rehive.admin.groups.get({filters: {page_size: 250}}).then(function (res) {
+                    if(res.results.length > 0){
+                        $scope.groupOptions = res.results;
+                        $scope.applyFiltersObj.groupFilter.selectedGroup = $scope.groupOptions[0];
                     }
-                }).then(function (res) {
-                    if (res.status === 200) {
-                        if(res.data.data.results.length > 0){
-                            $scope.groupOptions = res.data.data.results;
-                            $scope.applyFiltersObj.groupFilter.selectedGroup = $scope.groupOptions[0];
-                        }
-                    }
-                }).catch(function (error) {
-                    errorHandler.evaluateErrors(error.data);
+                    $scope.$apply();
+                }, function (error) {
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };
@@ -459,7 +454,7 @@
             return dateObj;
         };
 
-        vm.getUsersUrl = function(){
+        vm.getUsersFiltersObj = function(){
             $scope.filtersCount = 0;
 
             for(var x in $scope.filtersObj){
@@ -502,8 +497,8 @@
                 page: $scope.usersPagination.pageNo,
                 page_size: $scope.filtersObj.pageSizeFilter? $scope.usersPagination.itemsPerPage : 25,
                 identifier__contains: $scope.filtersObj.identifierFilter ? ($scope.applyFiltersObj.identifierFilter.selectedIdentifier ?  $scope.applyFiltersObj.identifierFilter.selectedIdentifier : null): null,
-                email__contains: $scope.filtersObj.emailFilter ?($scope.applyFiltersObj.emailFilter.selectedEmail ?  encodeURIComponent($scope.applyFiltersObj.emailFilter.selectedEmail) : null): null,
-                mobile_number__contains: $scope.filtersObj.mobileFilter ? ($scope.applyFiltersObj.mobileFilter.selectedMobile ?  encodeURIComponent($scope.applyFiltersObj.mobileFilter.selectedMobile) : null): null,
+                email__contains: $scope.filtersObj.emailFilter ?($scope.applyFiltersObj.emailFilter.selectedEmail ? $scope.applyFiltersObj.emailFilter.selectedEmail : null): null,
+                mobile_number__contains: $scope.filtersObj.mobileFilter ? ($scope.applyFiltersObj.mobileFilter.selectedMobile ? $scope.applyFiltersObj.mobileFilter.selectedMobile : null): null,
                 first_name__contains: $scope.filtersObj.firstNameFilter ? ($scope.applyFiltersObj.firstNameFilter.selectedFirstName ?  $scope.applyFiltersObj.firstNameFilter.selectedFirstName : null): null,
                 last_name__contains: $scope.filtersObj.lastNameFilter ? ($scope.applyFiltersObj.lastNameFilter.selectedLastName ?  $scope.applyFiltersObj.lastNameFilter.selectedLastName : null): null,
                 account: $scope.filtersObj.accountReferenceFilter ? ($scope.applyFiltersObj.accountReferenceFilter.selectedAccountReference ?  $scope.applyFiltersObj.accountReferenceFilter.selectedAccountReference : null): null,
@@ -520,7 +515,7 @@
                 archived: $scope.filtersObj.archivedFilter ? ($scope.applyFiltersObj.archivedFilter.selectedArchivedFilter == 'True' ?  true : false) : null
             };
 
-            return environmentConfig.API + '/admin/users/?' + serializeFiltersService.serializeFilters(searchObj);
+            return serializeFiltersService.objectFilters(searchObj);
         };
 
         $scope.getAllUsers = function(applyFilter){
@@ -536,28 +531,23 @@
                 $scope.users.length = 0;
             }
 
-            var usersUrl = vm.getUsersUrl();
+            var usersFiltersObj = vm.getUsersFiltersObj();
 
-            $http.get(usersUrl, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': vm.token
+            Rehive.admin.users.get({filters: usersFiltersObj}).then(function (res) {
+                $scope.usersData = res;
+                vm.formatUsersArray(res.results);
+                if($scope.users.length == 0){
+                    $scope.usersStateMessage = 'No users have been found';
+                    return;
                 }
-            }).then(function (res) {
-                if (res.status === 200) {
-                    $scope.usersData = res.data.data;
-                    vm.formatUsersArray(res.data.data.results);
-                    if($scope.users.length == 0){
-                        $scope.usersStateMessage = 'No users have been found';
-                        return;
-                    }
-                    $scope.usersStateMessage = '';
-                }
-            }).catch(function (error) {
+                $scope.usersStateMessage = '';
+                $scope.$apply();
+            }, function (error) {
                 $scope.loadingUsers = false;
                 $scope.usersStateMessage = 'Failed to load data';
-                errorHandler.evaluateErrors(error.data);
+                errorHandler.evaluateErrors(error);
                 errorHandler.handleErrors(error);
+                $scope.$apply();
             });
         };
         $scope.getAllUsers();

@@ -5,11 +5,11 @@
         .controller('RequestLogsCtrl', RequestLogsCtrl);
 
     /** @ngInject */
-    function RequestLogsCtrl($scope,environmentConfig,$http,localStorageManagement,errorHandler,
+    function RequestLogsCtrl($scope,Rehive,localStorageManagement,errorHandler,
                              typeaheadService,serializeFiltersService,$uibModal,$filter) {
 
         var vm = this;
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
         vm.companyIdentifier = localStorageManagement.getValue('companyIdentifier');
         vm.savedRequestTableColumns = vm.companyIdentifier + 'requestTable';
         $scope.requestLogs = [];
@@ -43,8 +43,7 @@
         };
 
         $scope.restoreColDefaults = function () {
-            var defaultVisibleHeader = ['Id','Path','Status code','Method',
-                'Created'];
+            var defaultVisibleHeader = ['Id','Path','Status code','Method','Created'];
 
             $scope.requestHeaderColumns.forEach(function (headerObj) {
                 if(defaultVisibleHeader.indexOf(headerObj.colName) > -1){
@@ -107,7 +106,7 @@
             maxSize: 5
         };
 
-        vm.getRequestLogsUrl = function(){
+        vm.getRequestLogsFiltersObj = function(){
             $scope.filtersCount = 0;
 
             for(var x in $scope.filtersObj){
@@ -121,7 +120,7 @@
             var searchObj = {
                 page: $scope.pagination.pageNo,
                 page_size: $scope.pagination.itemsPerPage || 1,
-                user: $scope.filtersObj.userFilter ? ($scope.applyFiltersObj.userFilter.selectedUserOption ? encodeURIComponent($scope.applyFiltersObj.userFilter.selectedUserOption) : null): null,
+                user: $scope.filtersObj.userFilter ? ($scope.applyFiltersObj.userFilter.selectedUserOption ? $scope.applyFiltersObj.userFilter.selectedUserOption : null): null,
                 key: $scope.filtersObj.keyFilter ? ($scope.applyFiltersObj.keyFilter.selectedKey ? $scope.applyFiltersObj.keyFilter.selectedKey : null): null,
                 path: $scope.filtersObj.pathFilter ? ($scope.applyFiltersObj.pathFilter.selectedPath ? $scope.applyFiltersObj.pathFilter.selectedPath : null): null,
                 method: $scope.filtersObj.methodFilter ? ($scope.applyFiltersObj.methodFilter.selectedMethod ? $scope.applyFiltersObj.methodFilter.selectedMethod : null): null,
@@ -130,40 +129,35 @@
                 orderby: '-created'
             };
 
-            return environmentConfig.API + '/admin/requests/?' + serializeFiltersService.serializeFilters(searchObj);
+            return serializeFiltersService.objectFilters(searchObj);
         };
 
         $scope.getRequestLogs = function (applyFilter) {
-            $scope.loadingRequestLogs = true;
-
-            $scope.showingFilters = false;
-
-            if (applyFilter) {
-                // if function is called from history-filters directive, then pageNo set to 1
-                $scope.pagination.pageNo = 1;
-            }
-
-            if ($scope.requestLogs.length > 0) {
-                $scope.requestLogs.length = 0;
-            }
-
-            var requestLogsUrl = vm.getRequestLogsUrl();
-
             if(vm.token) {
-                $http.get(requestLogsUrl, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
-                    if (res.status === 200) {
-                        $scope.requestLogsData = res.data.data;
-                        vm.formatRequestLogsArray($scope.requestLogsData.results);
-                    }
-                }).catch(function (error) {
+                $scope.loadingRequestLogs = true;
+
+                $scope.showingFilters = false;
+
+                if (applyFilter) {
+                    // if function is called from history-filters directive, then pageNo set to 1
+                    $scope.pagination.pageNo = 1;
+                }
+
+                if ($scope.requestLogs.length > 0) {
+                    $scope.requestLogs.length = 0;
+                }
+
+                var requestLogsFiltersObj = vm.getRequestLogsFiltersObj();
+
+                Rehive.admin.requests.get({filters: requestLogsFiltersObj}).then(function (res) {
+                    $scope.requestLogsData = res;
+                    vm.formatRequestLogsArray($scope.requestLogsData.results);
+                    $scope.$apply();
+                }, function (error) {
                     $scope.loadingRequestLogs = false;
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };

@@ -5,11 +5,10 @@
         .controller('AccountCurrencySettingsCtrl', AccountCurrencySettingsCtrl);
 
     /** @ngInject */
-    function AccountCurrencySettingsCtrl($scope,$stateParams,$http,environmentConfig,
-                                         localStorageManagement,errorHandler,$rootScope) {
+    function AccountCurrencySettingsCtrl($scope,$stateParams,Rehive,localStorageManagement,errorHandler,$rootScope) {
 
         var vm = this;
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
         $rootScope.shouldBeBlue = 'Users';
         vm.currencyCode = $stateParams.currencyCode;
         vm.reference = $stateParams.reference;
@@ -20,20 +19,15 @@
         vm.getGroupSettings = function () {
             if(vm.token) {
                 $scope.loadingAccountCurrencySettings = true;
-                $http.get(environmentConfig.API + '/admin/accounts/' + vm.reference + '/currencies/' + vm.currencyCode + '/settings/', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
+                Rehive.admin.accounts.currencies.settings.get(vm.reference,vm.currencyCode).then(function (res) {
                     $scope.loadingAccountCurrencySettings = false;
-                    if (res.status === 200) {
-                        $scope.accountCurrencySettingsObj = res.data.data;
-                    }
-                }).catch(function (error) {
+                    $scope.accountCurrencySettingsObj = res;
+                    $scope.$apply();
+                }, function (error) {
                     $scope.loadingAccountCurrencySettings = false;
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };
@@ -45,19 +39,14 @@
             updatedSetting[type] = !groupSetting;
 
             if(vm.token) {
-                $http.patch(environmentConfig.API + '/admin/accounts/' + vm.reference + '/currencies/' + vm.currencyCode + '/settings/',updatedSetting, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
-                    if (res.status === 200) {
-                        $scope.accountCurrencySettingsObj = {};
-                        $scope.accountCurrencySettingsObj = res.data.data;
-                    }
-                }).catch(function (error) {
-                    errorHandler.evaluateErrors(error.data);
+                Rehive.admin.accounts.currencies.settings.update(vm.reference,vm.currencyCode,updatedSetting).then(function (res) {
+                    $scope.accountCurrencySettingsObj = {};
+                    $scope.accountCurrencySettingsObj = res;
+                    $scope.$apply();
+                }, function (error) {
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };

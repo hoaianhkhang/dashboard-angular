@@ -347,6 +347,13 @@
         padding: 0 4px !important;
       }
     }
+    & select.currencies-unit-filter{
+      height: 22px;
+      width: 350px;
+      &.form-control{
+        padding: 0 4px !important;
+      }
+    }
     & select.user-transactions-accounts-select{
       height: 22px;
       width: 250px;

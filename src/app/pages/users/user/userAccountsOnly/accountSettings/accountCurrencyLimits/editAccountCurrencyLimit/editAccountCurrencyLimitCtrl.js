@@ -4,11 +4,12 @@
     angular.module('BlurAdmin.pages.users.user.accountSettings.accountCurrencyLimits')
         .controller('EditAccountCurrencyLimitCtrl', EditAccountCurrencyLimitCtrl);
 
-    function EditAccountCurrencyLimitCtrl($scope,$uibModalInstance,currencyCode,reference,accountCurrencyLimit,sharedResources,$window,
-                                         toastr,$http,environmentConfig,localStorageManagement,currencyModifiers,errorHandler) {
+    function EditAccountCurrencyLimitCtrl($scope,$uibModalInstance,currencyCode,reference,accountCurrencyLimit,
+                                          Rehive,_,sharedResources,$window,toastr,localStorageManagement,currencyModifiers,
+                                          errorHandler) {
 
         var vm = this;
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
         vm.currencyCode = currencyCode;
         vm.reference = reference;
         $scope.editingAccountCurrencyLimits = false;
@@ -35,34 +36,30 @@
                 params.subtype = '';
             }
             sharedResources.getSubtypes().then(function (res) {
-                res.data.data = res.data.data.filter(function (element) {
+                res = res.filter(function (element) {
                     return element.tx_type == (params.tx_type).toLowerCase();
                 });
-                $scope.subtypeOptions = _.pluck(res.data.data,'name');
+                $scope.subtypeOptions = _.pluck(res,'name');
                 $scope.subtypeOptions.unshift('');
                 $scope.loadingSubtypes = false;
+                $scope.$apply();
             });
         };
 
         vm.getAccountCurrencyLimit = function (accountCurrencyLimit) {
             $scope.editingAccountCurrencyLimits = true;
-            $http.get(environmentConfig.API + '/admin/accounts/' + vm.reference + '/currencies/' + vm.currencyCode + '/limits/' + accountCurrencyLimit.id +'/', {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': vm.token
-                }
-            }).then(function (res) {
+            Rehive.admin.accounts.currencies.limits.get(vm.reference,vm.currencyCode,{id: accountCurrencyLimit.id}).then(function (res) {
                 $scope.editingAccountCurrencyLimits = false;
-                if (res.status === 200) {
-                    $scope.editAccountCurrencyLimit = res.data.data;
-                    $scope.editAccountCurrencyLimit.value = currencyModifiers.convertFromCents($scope.editAccountCurrencyLimit.value,$scope.currencyObj.divisibility);
-                    $scope.editAccountCurrencyLimit.tx_type == 'credit' ? $scope.editAccountCurrencyLimit.tx_type = 'Credit' : $scope.editAccountCurrencyLimit.tx_type = 'Debit';
-                    $scope.getSubtypesArray($scope.editAccountCurrencyLimit,'editing');
-                }
-            }).catch(function (error) {
+                $scope.editAccountCurrencyLimit = res;
+                $scope.editAccountCurrencyLimit.value = currencyModifiers.convertFromCents($scope.editAccountCurrencyLimit.value,$scope.currencyObj.divisibility);
+                $scope.editAccountCurrencyLimit.tx_type == 'credit' ? $scope.editAccountCurrencyLimit.tx_type = 'Credit' : $scope.editAccountCurrencyLimit.tx_type = 'Debit';
+                $scope.getSubtypesArray($scope.editAccountCurrencyLimit,'editing');
+                $scope.$apply();
+            }, function (error) {
                 $scope.editingAccountCurrencyLimits = false;
-                errorHandler.evaluateErrors(error.data);
+                errorHandler.evaluateErrors(error);
                 errorHandler.handleErrors(error);
+                $scope.$apply();
             });
         };
         vm.getAccountCurrencyLimit(vm.accountCurrencyLimit);
@@ -94,26 +91,18 @@
                 vm.updatedAccountCurrencyLimit.type ? vm.updatedAccountCurrencyLimit.type = vm.updatedAccountCurrencyLimit.type == 'Maximum' ? 'max': vm.updatedAccountCurrencyLimit.type == 'Maximum per day' ? 'day_max':
                     vm.updatedAccountCurrencyLimit.type == 'Maximum per month' ? 'month_max': vm.updatedAccountCurrencyLimit.type == 'Minimum' ? 'min': 'overdraft' : '';
 
-                $http.patch(environmentConfig.API + '/admin/accounts/' + vm.reference + '/currencies/' + vm.currencyCode + '/limits/' + $scope.editAccountCurrencyLimit.id +'/',vm.updatedAccountCurrencyLimit,{
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
+                Rehive.admin.accounts.currencies.limits.update(vm.reference,vm.currencyCode,$scope.editAccountCurrencyLimit.id,vm.updatedAccountCurrencyLimit).then(function (res) {
                     $scope.editingAccountCurrencyLimits = false;
-                    if (res.status === 200) {
-                        toastr.success('Limit updated successfully');
-                        $uibModalInstance.close(true);
-                    }
-                }).catch(function (error) {
+                    toastr.success('Limit updated successfully');
+                    $uibModalInstance.close(true);
+                    $scope.$apply();
+                }, function (error) {
                     $scope.editingAccountCurrencyLimits = false;
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };
-
-
-
     }
 })();

@@ -5,7 +5,7 @@
         .controller('EditUserBankAccountModalCtrl', EditUserBankAccountModalCtrl);
 
     function EditUserBankAccountModalCtrl($scope,$uibModalInstance,bankAccount,toastr,$stateParams,$filter,
-                                      $http,environmentConfig,localStorageManagement,errorHandler) {
+                                          Rehive,localStorageManagement,errorHandler) {
 
         var vm = this;
         vm.uuid = $stateParams.uuid;
@@ -14,25 +14,20 @@
         $scope.editUserBankAccount = {};
         $scope.editingUserBankAccount = true;
         $scope.bankStatusOptions = ['Pending', 'Incomplete', 'Declined', 'Obsolete', 'Verified'];
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
 
         vm.getUserBankAccount = function () {
             $scope.editingUserBankAccount = true;
-            $http.get(environmentConfig.API + '/admin/users/bank-accounts/' + $scope.userbankAccount.id + '/', {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': vm.token
-                }
-            }).then(function (res) {
+            Rehive.admin.users.bankAccounts.get({id: $scope.userbankAccount.id}).then(function (res) {
                 $scope.editingUserBankAccount = false;
-                if (res.status === 200) {
-                    $scope.editUserBankAccount = res.data.data;
-                    $scope.editUserBankAccount.status = $filter('capitalizeWord')(res.data.data.status);
-                }
-            }).catch(function (error) {
+                $scope.editUserBankAccount = res;
+                $scope.editUserBankAccount.status = $filter('capitalizeWord')(res.status);
+                $scope.$apply();
+            }, function (error) {
                 $scope.editingUserBankAccount = false;
-                errorHandler.evaluateErrors(error.data);
+                errorHandler.evaluateErrors(error);
                 errorHandler.handleErrors(error);
+                $scope.$apply();
             });
         };
         vm.getUserBankAccount();
@@ -45,23 +40,18 @@
             if(vm.token) {
                 $scope.editingUserBankAccount = true;
                 vm.updatedUserBankAccount.status ? vm.updatedUserBankAccount.status = vm.updatedUserBankAccount.status.toLowerCase() : '';
-                $http.patch(environmentConfig.API + '/admin/users/bank-accounts/' + $scope.editUserBankAccount.id + '/',vm.updatedUserBankAccount,{
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
+                Rehive.admin.users.bankAccounts.update($scope.editUserBankAccount.id,vm.updatedUserBankAccount).then(function (res) {
                     $scope.editingUserBankAccount = false;
-                    if (res.status === 200) {
-                        vm.updatedUserBankAccount = {};
-                        $scope.editUserBankAccount = {};
-                        toastr.success('Successfully updated user bank account');
-                        $uibModalInstance.close(res.data);
-                    }
-                }).catch(function (error) {
+                    vm.updatedUserBankAccount = {};
+                    $scope.editUserBankAccount = {};
+                    toastr.success('Successfully updated user bank account');
+                    $uibModalInstance.close(res);
+                    $scope.$apply();
+                }, function (error) {
                     $scope.editingUserBankAccount = false;
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };

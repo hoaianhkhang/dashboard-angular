@@ -5,30 +5,25 @@
         .controller('UserDocumentsCtrl', UserDocumentsCtrl);
 
     /** @ngInject */
-    function UserDocumentsCtrl($scope,environmentConfig,$uibModal,$stateParams,$http,localStorageManagement,errorHandler,$window) {
+    function UserDocumentsCtrl($scope,Rehive,$uibModal,$stateParams,localStorageManagement,errorHandler,$window) {
 
         var vm = this;
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
         vm.uuid = $stateParams.uuid;
         $scope.loadingUserDocuments = true;
 
         vm.getUserDocuments = function(){
             if(vm.token) {
                 $scope.loadingUserDocuments = true;
-                $http.get(environmentConfig.API + '/admin/users/documents/?user=' + vm.uuid, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
+                Rehive.admin.users.documents.get({filters: {user: vm.uuid}}).then(function (res) {
                     $scope.loadingUserDocuments = false;
-                    if (res.status === 200) {
-                      $scope.userDocuments = res.data.data.results;
-                    }
-                }).catch(function (error) {
+                    $scope.userDocuments = res.results;
+                    $scope.$apply();
+                }, function (error) {
                     $scope.loadingUserDocuments = false;
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };

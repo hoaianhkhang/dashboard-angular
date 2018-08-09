@@ -4,30 +4,26 @@
     angular.module('BlurAdmin.pages.groups.groupManagementTiers.list')
         .controller('GroupTiersCtrl', GroupTiersCtrl);
 
-    function GroupTiersCtrl($scope,$stateParams,$uibModal,$http,localStorageManagement,environmentConfig,toastr,errorHandler,$ngConfirm) {
+    function GroupTiersCtrl($scope,$stateParams,$uibModal,localStorageManagement,
+                            Rehive,toastr,errorHandler,$ngConfirm) {
 
     var vm = this;
-    vm.token = localStorageManagement.getValue('TOKEN');
+    vm.token = localStorageManagement.getValue('token');
     vm.groupName = $stateParams.groupName;
     $scope.loadingTiers = true;
 
       vm.getTiers = function(){
           if(vm.token) {
               $scope.loadingTiers = true;
-              $http.get(environmentConfig.API + '/admin/groups/' + vm.groupName + '/tiers/', {
-                  headers: {
-                      'Content-Type': 'application/json',
-                      'Authorization': vm.token
-                  }
-              }).then(function (res) {
-                $scope.loadingTiers = false;
-                  if (res.status === 200) {
-                    $scope.tiersList = res.data.data;
-                  }
-              }).catch(function (error) {
+              Rehive.admin.groups.tiers.get(vm.groupName).then(function (res) {
                   $scope.loadingTiers = false;
-                  errorHandler.evaluateErrors(error.data);
+                  $scope.tiersList = res;
+                  $scope.$apply();
+              }, function (error) {
+                  $scope.loadingTiers = false;
+                  errorHandler.evaluateErrors(error);
                   errorHandler.handleErrors(error);
+                  $scope.$apply();
               });
           }
       };
@@ -59,20 +55,14 @@
 
         $scope.deleteGroupTier = function (tier) {
             $scope.loadingTiers = true;
-            $http.delete(environmentConfig.API + '/admin/groups/' + vm.groupName + '/tiers/' + tier.id + '/', {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': vm.token
-                }
-            }).then(function (res) {
-                if (res.status === 200) {
-                    toastr.success('Tier successfully deleted');
-                    vm.getTiers();
-                }
-            }).catch(function (error) {
+            Rehive.admin.groups.tiers.delete(vm.groupName,tier.id).then(function (res) {
+                toastr.success('Tier successfully deleted');
+                vm.getTiers();
+            }, function (error) {
                 $scope.loadingTiers = false;
-                errorHandler.evaluateErrors(error.data);
+                errorHandler.evaluateErrors(error);
                 errorHandler.handleErrors(error);
+                $scope.$apply();
             });
         };
 

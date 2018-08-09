@@ -6,7 +6,7 @@
 
     function NewCompanySetupCtrl($rootScope, $scope, $location,localStorageManagement) {
         var vm=this;
-        vm.token = localStorageManagement.getValue("TOKEN");
+        vm.token = localStorageManagement.getValue("token");
         $scope.companySetupView = 'initialSetupScreen';
         $rootScope.setupUsers = localStorageManagement.getValue('setupUsers') || 0;
         $rootScope.setupCurrencies = localStorageManagement.getValue('setupCurrencies') || 0;

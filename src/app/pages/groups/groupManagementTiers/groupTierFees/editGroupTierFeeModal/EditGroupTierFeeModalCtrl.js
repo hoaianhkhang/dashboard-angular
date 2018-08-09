@@ -4,14 +4,14 @@
     angular.module('BlurAdmin.pages.groups.groupManagementTiers.groupTierFees')
         .controller('EditGroupTierFeeModalCtrl', EditGroupTierFeeModalCtrl);
 
-    function EditGroupTierFeeModalCtrl($scope,$uibModalInstance,tierFee,currencyModifiers,selectedTier,toastr,$http,_,
-                                      environmentConfig,localStorageManagement,errorHandler,$stateParams,sharedResources) {
+    function EditGroupTierFeeModalCtrl($scope,$uibModalInstance,tierFee,currencyModifiers,selectedTier,toastr,_,
+                                       Rehive,localStorageManagement,errorHandler,$stateParams,sharedResources) {
 
         var vm = this;
         $scope.selectedTier = selectedTier;
         $scope.tierFee = tierFee;
         vm.groupName = $stateParams.groupName;
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
         $scope.editingTierFees = false;
         $scope.loadingSubtypes = false;
         $scope.editTierFee = {};
@@ -20,19 +20,17 @@
         vm.getCompanyCurrencies = function(){
             if(vm.token){
                 $scope.editingTierFees = true;
-                $http.get(environmentConfig.API + '/admin/currencies/?enabled=true&page_size=250', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
-                    if (res.status === 200) {
-                        $scope.currenciesOptions = res.data.data.results;
-                        vm.getTierFee();
-                    }
-                }).catch(function (error) {
-                    errorHandler.evaluateErrors(error.data);
+                Rehive.admin.currencies.get({filters: {
+                    enabled: true,
+                    page_size: 250
+                }}).then(function (res) {
+                    $scope.currenciesOptions = res.results;
+                    vm.getTierFee();
+                    $scope.$apply();
+                }, function (error) {
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };
@@ -53,34 +51,30 @@
             }
 
             sharedResources.getSubtypes().then(function (res) {
-                res.data.data = res.data.data.filter(function (element) {
+                res = res.filter(function (element) {
                     return element.tx_type == (params.tx_type).toLowerCase();
                 });
-                $scope.subtypeOptions = _.pluck(res.data.data,'name');
+                $scope.subtypeOptions = _.pluck(res,'name');
                 $scope.subtypeOptions.unshift('');
                 $scope.loadingSubtypes = false;
+                $scope.$apply();
             });
         };
 
         vm.getTierFee = function () {
             $scope.editingTierFees = true;
-            $http.get(environmentConfig.API + '/admin/groups/' + vm.groupName + '/tiers/' + $scope.selectedTier.id + '/fees/' + $scope.tierFee.id + '/', {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': vm.token
-                }
-            }).then(function (res) {
+            Rehive.admin.groups.tiers.fees.get(vm.groupName,$scope.selectedTier.id, {id: $scope.tierFee.id}).then(function (res) {
                 $scope.editingTierFees = false;
-                if (res.status === 200) {
-                    res.data.data.currency = vm.returnCurrencyObj(res.data.data.currency);
-                    $scope.editTierFee = res.data.data;
-                    $scope.editTierFee.value = currencyModifiers.convertFromCents($scope.editTierFee.value,$scope.editTierFee.currency.divisibility);
-                    $scope.getSubtypesArray($scope.editTierFee,'editing');
-                }
-            }).catch(function (error) {
+                res.currency = vm.returnCurrencyObj(res.currency);
+                $scope.editTierFee = res;
+                $scope.editTierFee.value = currencyModifiers.convertFromCents($scope.editTierFee.value,$scope.editTierFee.currency.divisibility);
+                $scope.getSubtypesArray($scope.editTierFee,'editing');
+                $scope.$apply();
+            }, function (error) {
                 $scope.editingTierFees = false;
                 errorHandler.evaluateErrors(error.data);
                 errorHandler.handleErrors(error);
+                $scope.$apply();
             });
         };
 
@@ -91,7 +85,7 @@
         $scope.updateTierFee = function(){
 
             if(!$scope.editTierFee.subtype){
-                vm.updatedTierFee.subtype = '';
+                vm.updatedTierFee.subtype = null;
             }
 
             if($scope.editTierFee.currency){
@@ -101,6 +95,7 @@
             if($scope.editTierFee.value){
                 if(currencyModifiers.validateCurrency($scope.editTierFee.value,$scope.editTierFee.currency.divisibility)){
                     vm.updatedTierFee.value = currencyModifiers.convertToCents($scope.editTierFee.value,$scope.editTierFee.currency.divisibility);
+                    vm.updatedTierFee.currency = $scope.editTierFee.currency.code;
                 } else {
                     toastr.error('Please input amount to ' + $scope.editTierFee.currency.divisibility + ' decimal places');
                     return;
@@ -117,22 +112,17 @@
                 $scope.editingTierFees = true;
                 vm.updatedTierFee.tx_type ? vm.updatedTierFee.tx_type = vm.updatedTierFee.tx_type.toLowerCase() : '';
 
-                $http.patch(environmentConfig.API + '/admin/groups/' + vm.groupName + '/tiers/' + $scope.selectedTier.id + '/fees/' + $scope.editTierFee.id + '/',vm.updatedTierFee,{
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
+                Rehive.admin.groups.tiers.fees.update(vm.groupName,$scope.selectedTier.id, $scope.editTierFee.id,vm.updatedTierFee).then(function (res) {
                     $scope.editingTierFees = false;
-                    if (res.status === 200) {
-                        toastr.success('Fee updated successfully');
-                        vm.updatedTierFee = {};
-                        $uibModalInstance.close($scope.selectedTier.level);
-                    }
-                }).catch(function (error) {
+                    toastr.success('Fee updated successfully');
+                    vm.updatedTierFee = {};
+                    $uibModalInstance.close($scope.selectedTier.level);
+                    $scope.$apply();
+                }, function (error) {
                     $scope.editingTierFees = false;
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };

@@ -5,12 +5,13 @@
         .controller('WebhooksListCtrl', WebhooksListCtrl);
 
     /** @ngInject */
-    function WebhooksListCtrl($scope,environmentConfig,$uibModal,toastr,serializeFiltersService,
-                              $http,$location,localStorageManagement,errorHandler,$window,$state) {
+
+    function WebhooksListCtrl($scope,Rehive,$uibModal,serializeFiltersService,
+                              $location,localStorageManagement,errorHandler,$window,$state) {
 
         var vm = this;
         vm.updatedWebhook = {};
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
         $scope.loadingWebhooks = true;
 
         var location = $location.path();
@@ -23,37 +24,32 @@
             maxSize: 5
         };
 
-        vm.getWebhooksUrl = function(){
+        vm.getWebhooksFiltersObj = function(){
             var searchObj = {
                 page: $scope.pagination.pageNo,
                 page_size: $scope.pagination.itemsPerPage || 25
             };
 
-            return environmentConfig.API + '/admin/webhooks/?' + serializeFiltersService.serializeFilters(searchObj);
+            return serializeFiltersService.objectFilters(searchObj);
         };
 
         $scope.getWebhooks = function () {
             if(vm.token) {
                 $scope.loadingWebhooks = true;
 
-                var webhooksUrl = vm.getWebhooksUrl();
+                var webhooksFiltersObj = vm.getWebhooksFiltersObj();
 
-                $http.get(webhooksUrl, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
+                Rehive.admin.webhooks.get({filters: webhooksFiltersObj}).then(function (res) {
                     $scope.loadingWebhooks = false;
-                    if (res.status === 200) {
-                        $scope.webhooksData = res.data.data;
-                        $scope.webhookList = res.data.data.results;
-                        $window.scrollTo(0, 0);
-                    }
-                }).catch(function (error) {
+                    $scope.webhooksData = res;
+                    $scope.webhookList = res.results;
+                    $window.scrollTo(0, 0);
+                    $scope.$apply();
+                }, function (error) {
                     $scope.loadingWebhooks = false;
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };

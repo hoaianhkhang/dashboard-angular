@@ -43,6 +43,7 @@
                         $rootScope.securityConfigured = true;
                         $rootScope.pageTopObj = {};
                         localStorageManagement.deleteValue('TOKEN');
+                        localStorageManagement.deleteValue('token');
                         $location.path('/login');
                     }
                 }

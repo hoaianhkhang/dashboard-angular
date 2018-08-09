@@ -5,9 +5,9 @@
         .controller('AllowedCountriesCtrl', AllowedCountriesCtrl);
 
     /** @ngInject */
-    function AllowedCountriesCtrl($scope,environmentConfig,$http,localStorageManagement,errorHandler,toastr,$window) {
+    function AllowedCountriesCtrl($scope,Rehive,localStorageManagement,errorHandler,toastr,$window) {
         var vm = this;
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
         $scope.loadingAllowedCountries = false;
         $scope.trackedCountries = [];
 
@@ -260,19 +260,14 @@
         $scope.getAllowedCountries = function () {
             if(vm.token) {
                 $scope.loadingAllowedCountries = true;
-                $http.get(environmentConfig.API + '/admin/company/settings/', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
-                    if (res.status === 200) {
-                        vm.checkForAllowedCountries(res.data.data.nationalities);
-                    }
-                }).catch(function (error) {
+                Rehive.admin.company.settings.get().then(function (res) {
+                    vm.checkForAllowedCountries(res.nationalities);
+                    $scope.$apply();
+                }, function (error) {
                     $scope.loadingAllowedCountries = false;
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };
@@ -285,7 +280,7 @@
                         $scope.countries[index].enabled = true;
                         $scope.trackedCountries.push($scope.countries[index].code);
                     }
-                })
+                });
             });
             $scope.loadingAllowedCountries = false;
         };
@@ -302,22 +297,17 @@
         $scope.saveAllowedCountries = function () {
             if(vm.token) {
                 $scope.loadingAllowedCountries = true;
-                $http.patch(environmentConfig.API + '/admin/company/settings/',{nationalities: $scope.trackedCountries}, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
-                    if (res.status === 200) {
-                        $scope.trackedCountries = [];
-                        toastr.success('List of allowed countries have been saved');
-                        $window.scroll(0,0);
-                        $scope.getAllowedCountries();
-                    }
-                }).catch(function (error) {
+                Rehive.admin.company.settings.update({nationalities: $scope.trackedCountries}).then(function (res) {
+                    $scope.trackedCountries = [];
+                    toastr.success('List of allowed countries have been saved');
+                    $window.scroll(0,0);
+                    $scope.getAllowedCountries();
+                    $scope.$apply();
+                }, function (error) {
                     $scope.loadingAllowedCountries = false;
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };

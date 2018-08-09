@@ -23,8 +23,8 @@ angular.module('BlurAdmin', [
     .config(function (ngIntlTelInputProvider) {
     ngIntlTelInputProvider.set({initialCountry: 'us',utilsScript: 'https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/12.0.1/js/utils.js'});
 })
-    .run(function($rootScope,errorHandler,localStorageManagement,toastr,
-                  userVerification,$http,environmentConfig,$window,$location,_){
+    .run(function($rootScope,errorHandler,localStorageManagement,toastr,Rehive,
+                  environmentConfig,$window,$location,_){
 
         $window.onload = function(){
             $rootScope.$pageFinishedLoading = true;
@@ -48,32 +48,28 @@ angular.module('BlurAdmin', [
         });
 
         function routeManagement(event,newUrl){
-            var token = localStorageManagement.getValue('TOKEN'),
+            var token = localStorageManagement.getValue('token'),
                 newUrlArray = newUrl.split('/'),
                 newUrlLastElement = _.last(newUrlArray);
 
             if(!$rootScope.pageTopObj.companyObj){
                 var getCompanyInfo = function () {
                     if(token) {
-                        $http.get(environmentConfig.API + '/admin/company/', {
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'Authorization': token
-                            }
-                        }).then(function (res) {
-                            if (res.status === 200) {
-                                $rootScope.pageTopObj.companyObj = {};
-                                $rootScope.pageTopObj.companyObj = res.data.data;
-                                localStorageManagement.setValue('companyIdentifier',$rootScope.pageTopObj.companyObj.identifier);
-                            }
-                        }).catch(function (error) {
+                        Rehive.admin.company.get().then(function (res) {
+                            $rootScope.pageTopObj.companyObj = {};
+                            $rootScope.pageTopObj.companyObj = res;
+                            localStorageManagement.setValue('companyIdentifier',$rootScope.pageTopObj.companyObj.identifier);
+                            $rootScope.$apply();
+                        }, function (error) {
                             if(error.status == 401){
                                 $rootScope.gotToken = false;
                                 $rootScope.securityConfigured = true;
                                 $rootScope.pageTopObj = {};
                                 localStorageManagement.deleteValue('TOKEN');
+                                localStorageManagement.deleteValue('token');
                                 $location.path('/login');
                             }
+                            $rootScope.$apply();
                         });
                     }
                 };
@@ -83,24 +79,20 @@ angular.module('BlurAdmin', [
             if(!$rootScope.pageTopObj.userInfoObj){
                 var getUserInfo = function () {
                     if(token) {
-                        $http.get(environmentConfig.API + '/user/', {
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'Authorization': token
-                            }
-                        }).then(function (res) {
-                            if (res.status === 200) {
-                                $rootScope.pageTopObj.userInfoObj = {};
-                                $rootScope.pageTopObj.userInfoObj = res.data.data;
-                            }
-                        }).catch(function (error) {
+                        Rehive.user.get().then(function(user){
+                            $rootScope.pageTopObj.userInfoObj = {};
+                            $rootScope.pageTopObj.userInfoObj = user;
+                            $rootScope.$apply();
+                        },function(error){
                             if(error.status == 401){
                                 $rootScope.gotToken = false;
                                 $rootScope.securityConfigured = true;
                                 $rootScope.pageTopObj = {};
                                 localStorageManagement.deleteValue('TOKEN');
+                                localStorageManagement.deleteValue('token');
                                 $location.path('/login');
                             }
+                            $rootScope.$apply();
                         });
                     }
                 };
@@ -109,6 +101,7 @@ angular.module('BlurAdmin', [
 
             if(newUrlLastElement == 'login'){
                 localStorageManagement.deleteValue('TOKEN');
+                localStorageManagement.deleteValue('token');
                 $rootScope.dashboardTitle = 'Rehive';
                 $rootScope.gotToken = false;
                 $rootScope.securityConfigured = true;

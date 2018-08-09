@@ -50,12 +50,12 @@
                         <th></th>
                     </tr>
                     <tr  ng-repeat="acc in account.currencies | orderBy: 'currency.code'">
-                        <td width="15%" ng-bind="acc.currency.code"></td>
+                        <td class="no-left-padding" width="15%" ng-bind="acc.currency.code"></td>
                         <td width="20%" title="{{acc.available_balance  | currencyModifiersFilter: acc.currency.divisibility}}">
-                            {{acc.currency.symbol}} {{acc.available_balance  | currencyModifiersFilter: acc.currency.divisibility}}
+                            {{acc.currency.symbol}}{{acc.available_balance  | currencyModifiersFilter: acc.currency.divisibility}}
                         </td>
                         <td width="30%" title="{{acc.balance  | currencyModifiersFilter: acc.currency.divisibility}}">
-                            {{acc.currency.symbol}} {{acc.balance  | currencyModifiersFilter: acc.currency.divisibility}}
+                            {{acc.currency.symbol}}{{acc.balance  | currencyModifiersFilter: acc.currency.divisibility}}
                         </td>
                         <td class="rehive-table-row-last-child account-options-row" width="55%">
                             <div class="pull-right" ng-click="showCurrenciesOptions(acc.currency.code,account.reference); $event.stopPropagation()" click-outside="closeOptionsBox()">

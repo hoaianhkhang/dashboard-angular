@@ -5,10 +5,10 @@
         .controller('GroupTierSettingsCtrl', GroupTierSettingsCtrl);
 
     /** @ngInject */
-    function GroupTierSettingsCtrl($scope,environmentConfig,$http,$stateParams,localStorageManagement,errorHandler,$timeout) {
+    function GroupTierSettingsCtrl($scope,$stateParams,Rehive,_,localStorageManagement,errorHandler,$timeout) {
 
         var vm = this;
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
         vm.groupName = $stateParams.groupName;
         $scope.activeTabIndex = 0;
         $scope.tierLevelsForSettings = [];
@@ -18,35 +18,30 @@
         $scope.getAllTiers = function(tierLevel){
             if(vm.token) {
                 $scope.loadingTierSettings = true;
-                $http.get(environmentConfig.API + '/admin/groups/' + vm.groupName + '/tiers/', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
+                Rehive.admin.groups.tiers.get(vm.groupName).then(function (res) {
                     $scope.loadingTierSettings = false;
-                    if (res.status === 200) {
-                        vm.unsortedTierLevelsArray = _.pluck(res.data.data ,'level');
-                        vm.sortedTierLevelsArray = vm.unsortedTierLevelsArray.sort(function(a, b) {
-                            return a - b;
+                    vm.unsortedTierLevelsArray = _.pluck(res ,'level');
+                    vm.sortedTierLevelsArray = vm.unsortedTierLevelsArray.sort(function(a, b) {
+                        return a - b;
+                    });
+                    $scope.tierLevelsForSettings = vm.sortedTierLevelsArray;
+                    $scope.allTiers = res.sort(function(a, b) {
+                        return parseFloat(a.level) - parseFloat(b.level);
+                    });
+                    if(tierLevel){
+                        $scope.selectTier(tierLevel);
+                    } else {
+                        $timeout(function(){
+                            $scope.activeTabIndex = 0;
                         });
-                        $scope.tierLevelsForSettings = vm.sortedTierLevelsArray;
-                        $scope.allTiers = res.data.data.sort(function(a, b) {
-                            return parseFloat(a.level) - parseFloat(b.level);
-                        });
-                        if(tierLevel){
-                            $scope.selectTier(tierLevel);
-                        } else {
-                            $timeout(function(){
-                                $scope.activeTabIndex = 0;
-                            });
-                            $scope.selectTier($scope.tierLevelsForSettings[0]);
-                        }
+                        $scope.selectTier($scope.tierLevelsForSettings[0]);
                     }
-                }).catch(function (error) {
+                    $scope.$apply();
+                }, function (error) {
                     $scope.loadingTierSettings = false;
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };
@@ -67,20 +62,15 @@
         vm.getTierSettings = function () {
             if(vm.token) {
                 $scope.loadingTierSettings = true;
-                $http.get(environmentConfig.API + '/admin/groups/' + vm.groupName + '/tiers/' + $scope.selectedTier.id + '/settings/', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
+                Rehive.admin.groups.tiers.settings.get(vm.groupName,$scope.selectedTier.id).then(function (res) {
                     $scope.loadingTierSettings = false;
-                    if (res.status === 200) {
-                        $scope.tierSettingsObj = res.data.data;
-                    }
-                }).catch(function (error) {
+                    $scope.tierSettingsObj = res;
+                    $scope.$apply();
+                }, function (error) {
                     $scope.loadingTierSettings = false;
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };
@@ -91,19 +81,14 @@
             updatedSetting[type] = !tierSetting;
 
             if(vm.token) {
-                $http.patch(environmentConfig.API + '/admin/groups/' + vm.groupName + '/tiers/' + $scope.selectedTier.id + '/settings/',updatedSetting, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
-                    if (res.status === 200) {
-                        $scope.tierSettingsObj = {};
-                        $scope.tierSettingsObj = res.data.data;
-                    }
-                }).catch(function (error) {
-                    errorHandler.evaluateErrors(error.data);
+                Rehive.admin.groups.tiers.settings.update(vm.groupName,$scope.selectedTier.id,updatedSetting).then(function (res) {
+                    $scope.tierSettingsObj = {};
+                    $scope.tierSettingsObj = res;
+                    $scope.$apply();
+                }, function (error) {
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };

@@ -5,12 +5,12 @@
         .controller('GroupUsersCtrl', GroupUsersCtrl);
 
     /** @ngInject */
-    function GroupUsersCtrl($rootScope,$state,$scope,environmentConfig,localStorageManagement,$http,typeaheadService,$location,$stateParams,
-                       errorHandler,$window,toastr,serializeFiltersService,$filter,$uibModal,$ngConfirm) {
+    function GroupUsersCtrl($rootScope,$state,$scope,localStorageManagement,typeaheadService,Rehive,
+                            $location,$stateParams,errorHandler,$window,toastr,serializeFiltersService,$filter,$uibModal,$ngConfirm) {
 
         var vm = this;
         vm.groupName = $stateParams.groupName;
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
         vm.companyIdentifier = localStorageManagement.getValue('companyIdentifier');
         vm.savedGroupUsersTableColumns = vm.companyIdentifier + vm.groupName + 'usersTable';
         $rootScope.dashboardTitle = 'Groups | Rehive';
@@ -163,20 +163,17 @@
 
         $scope.getGroups = function () {
             if(vm.token) {
-                $http.get(environmentConfig.API + '/admin/groups/?page_size=250', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
+                Rehive.admin.groups.get({filters: {
+                    page_size: 250
+                }}).then(function (res) {
+                    if(res.results.length > 0){
+                        $scope.groupOptions = res.results;
+                        $scope.$apply();
                     }
-                }).then(function (res) {
-                    if (res.status === 200) {
-                        if(res.data.data.results.length > 0){
-                            $scope.groupOptions = res.data.data.results;
-                        }
-                    }
-                }).catch(function (error) {
-                    errorHandler.evaluateErrors(error.data);
+                }, function (error) {
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };
@@ -414,7 +411,7 @@
             return dateObj;
         };
 
-        vm.getUsersUrl = function(){
+        vm.getUsersFiltersObj = function(){
             $scope.filtersCount = 0;
 
             for(var x in $scope.filtersObj){
@@ -456,8 +453,8 @@
                 page: $scope.usersPagination.pageNo,
                 page_size: $scope.filtersObj.pageSizeFilter? $scope.usersPagination.itemsPerPage : 25,
                 identifier__contains: $scope.filtersObj.identifierFilter ? ($scope.applyFiltersObj.identifierFilter.selectedIdentifier ?  $scope.applyFiltersObj.identifierFilter.selectedIdentifier : null): null,
-                email__contains: $scope.filtersObj.emailFilter ?($scope.applyFiltersObj.emailFilter.selectedEmail ?  encodeURIComponent($scope.applyFiltersObj.emailFilter.selectedEmail) : null): null,
-                mobile_number__contains: $scope.filtersObj.mobileFilter ? ($scope.applyFiltersObj.mobileFilter.selectedMobile ?  encodeURIComponent($scope.applyFiltersObj.mobileFilter.selectedMobile) : null): null,
+                email__contains: $scope.filtersObj.emailFilter ?($scope.applyFiltersObj.emailFilter.selectedEmail ?  $scope.applyFiltersObj.emailFilter.selectedEmail : null): null,
+                mobile_number__contains: $scope.filtersObj.mobileFilter ? ($scope.applyFiltersObj.mobileFilter.selectedMobile ?  $scope.applyFiltersObj.mobileFilter.selectedMobile : null): null,
                 first_name__contains: $scope.filtersObj.firstNameFilter ? ($scope.applyFiltersObj.firstNameFilter.selectedFirstName ?  $scope.applyFiltersObj.firstNameFilter.selectedFirstName : null): null,
                 last_name__contains: $scope.filtersObj.lastNameFilter ? ($scope.applyFiltersObj.lastNameFilter.selectedLastName ?  $scope.applyFiltersObj.lastNameFilter.selectedLastName : null): null,
                 account: $scope.filtersObj.accountReferenceFilter ? ($scope.applyFiltersObj.accountReferenceFilter.selectedAccountReference ?  $scope.applyFiltersObj.accountReferenceFilter.selectedAccountReference : null): null,
@@ -472,7 +469,7 @@
                 currency__code: $scope.filtersObj.currencyFilter ? ($scope.applyFiltersObj.currencyFilter.selectedCurrency.code ? ($scope.applyFiltersObj.currencyFilter.selectedCurrency.code == 'Currency' ? null : $scope.applyFiltersObj.currencyFilter.selectedCurrency.code) : null): null
             };
 
-            return environmentConfig.API + '/admin/users/?' + serializeFiltersService.serializeFilters(searchObj);
+            return serializeFiltersService.objectFilters(searchObj);
         };
 
         $scope.getAllUsers = function(applyFilter){
@@ -488,28 +485,23 @@
                 $scope.users.length = 0;
             }
 
-            var usersUrl = vm.getUsersUrl();
+            var usersFiltersObj = vm.getUsersFiltersObj();
 
-            $http.get(usersUrl, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': vm.token
+            Rehive.admin.users.get({filters: usersFiltersObj}).then(function (res) {
+                $scope.usersData = res;
+                vm.formatUsersArray(res.results);
+                if($scope.users.length == 0){
+                    $scope.usersStateMessage = 'No users have been found';
+                    return;
                 }
-            }).then(function (res) {
-                if (res.status === 200) {
-                    $scope.usersData = res.data.data;
-                    vm.formatUsersArray(res.data.data.results);
-                    if($scope.users.length == 0){
-                        $scope.usersStateMessage = 'No users have been found';
-                        return;
-                    }
-                    $scope.usersStateMessage = '';
-                }
-            }).catch(function (error) {
+                $scope.usersStateMessage = '';
+                $scope.$apply();
+            }, function (error) {
                 $scope.loadingGroup = false;
                 $scope.usersStateMessage = 'Failed to load data';
-                errorHandler.evaluateErrors(error.data);
+                errorHandler.evaluateErrors(error);
                 errorHandler.handleErrors(error);
+                $scope.$apply();
             });
         };
         $scope.getAllUsers();
@@ -546,21 +538,15 @@
         $scope.getGroup = function () {
             if(vm.token) {
                 $scope.loadingGroup = true;
-
-                $http.get(environmentConfig.API + '/admin/groups/' + vm.groupName + '/', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
-                    if (res.status === 200) {
-                        $scope.editGroupObj = res.data.data;
-                        vm.getGroupUsers($scope.editGroupObj);
-                    }
-                }).catch(function (error) {
+                Rehive.admin.groups.get({name: vm.groupName}).then(function (res) {
+                    $scope.editGroupObj = res;
+                    vm.getGroupUsers($scope.editGroupObj);
+                    $scope.$apply();
+                }, function (error) {
                     $scope.loadingGroup = false;
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };
@@ -568,21 +554,18 @@
         vm.getGroupUsers = function (group) {
             if(vm.token) {
                 $scope.loadingGroup = true;
-                $http.get(environmentConfig.API + '/admin/users/overview/?group=' + group.name, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
-                    if (res.status === 200) {
-                        $scope.totalUsersCount = res.data.data.total;
-                        $scope.deactiveUsersCount = res.data.data.archived;
-                        $scope.loadingGroup = false;
-                    }
-                }).catch(function (error) {
+                Rehive.admin.users.overview.get({filters: {
+                    group: group.name
+                }}).then(function (res) {
+                    $scope.totalUsersCount = res.total;
+                    $scope.deactiveUsersCount = res.archived;
                     $scope.loadingGroup = false;
-                    errorHandler.evaluateErrors(error.data);
+                    $scope.$apply();
+                }, function (error) {
+                    $scope.loadingGroup = false;
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };
@@ -659,19 +642,14 @@
 
         $scope.deleteUserFromGroup = function (user) {
             $scope.loadingGroup = true;
-            $http.delete(environmentConfig.API + '/admin/users/' + user.identifier + '/groups/' + vm.groupName + '/', {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': vm.token
-                }
-            }).then(function (res) {
-                if (res.status === 200) {
-                    $scope.getAllUsers();
-                }
-            }).catch(function (error) {
+            Rehive.admin.users.groups.delete(user.identifier,vm.groupName).then(function (res) {
+                $scope.getAllUsers();
+                $scope.$apply();
+            }, function (error) {
                 $scope.loadingGroup = false;
-                errorHandler.evaluateErrors(error.data);
+                errorHandler.evaluateErrors(error);
                 errorHandler.handleErrors(error);
+                $scope.$apply();
             });
         };
 

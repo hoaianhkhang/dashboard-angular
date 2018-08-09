@@ -4,11 +4,11 @@
     angular.module('BlurAdmin.pages.users.user.transactions')
         .controller('UserTransactionsModalCtrl', UserTransactionsModalCtrl);
 
-    function UserTransactionsModalCtrl($rootScope,$uibModalInstance,$http,$scope,errorHandler,toastr,$timeout,$anchorScroll,$state,
-                                       transaction,metadataTextService,$location,environmentConfig,localStorageManagement) {
+    function UserTransactionsModalCtrl($rootScope,$uibModalInstance,$scope,errorHandler,toastr,$timeout,$anchorScroll,$state,
+                                       Rehive,transaction,metadataTextService,$location,localStorageManagement) {
 
         var vm = this;
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
         $scope.updateTransactionObj = {};
         $scope.formatted = {};
         $scope.formatted.metadata = {};
@@ -33,23 +33,17 @@
         $scope.getTransaction = function(){
             if(vm.token) {
                 $scope.updatingTransaction = true;
-                $http.get(environmentConfig.API + '/admin/transactions/' + transaction.id + '/', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
-                    if (res.status === 200) {
-                        $scope.transaction = res.data.data;
-                        $scope.formatted.metadata = metadataTextService.convertToText($scope.transaction.metadata);
-                        $scope.updateTransactionObj.status = $scope.transaction.status;
-                        $scope.updatingTransaction = false;
-
-                    }
-                }).catch(function (error) {
+                Rehive.admin.transactions.get({id: transaction.id}).then(function (res) {
+                    $scope.transaction = res;
+                    $scope.formatted.metadata = metadataTextService.convertToText($scope.transaction.metadata);
+                    $scope.updateTransactionObj.status = $scope.transaction.status;
                     $scope.updatingTransaction = false;
-                    errorHandler.evaluateErrors(error.data);
+                    $scope.$apply();
+                }, function (error) {
+                    $scope.updatingTransaction = false;
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };
@@ -100,37 +94,30 @@
                 metaData = {};
             }
 
-            $http.patch(environmentConfig.API + '/admin/transactions/' + $scope.transaction.id + '/',
-                {
-                    status: $scope.updateTransactionObj.status,
-                    metadata: metaData
-                },
-                {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
-                if (res.status === 200) {
-                    if(metaData == {}){
-                        delete $scope.formatted.metadata;
-                        delete $scope.transaction.metadata;
-                    } else {
-                        $scope.transaction.metadata = metaData;
-                        $scope.formatted.metadata = metadataTextService.convertToText(metaData);
-                    }
-
-                    $timeout(function () {
-                        $scope.transactionHasBeenUpdated = true;
-                        $scope.toggleEditingTransaction();
-                        $scope.updatingTransaction = false;
-                        toastr.success('Transaction successfully updated');
-                    },800);
+            Rehive.admin.transactions.update($scope.transaction.id, {
+                status: $scope.updateTransactionObj.status,
+                metadata: metaData
+            }).then(function (res) {
+                if(Object.keys(metaData).length === 0){
+                    delete $scope.formatted.metadata;
+                    delete $scope.transaction.metadata;
+                } else {
+                    $scope.transaction.metadata = metaData;
+                    $scope.formatted.metadata = metadataTextService.convertToText(metaData);
                 }
-            }).catch(function (error) {
+
+                $timeout(function () {
+                    $scope.transactionHasBeenUpdated = true;
+                    $scope.toggleEditingTransaction();
+                    $scope.updatingTransaction = false;
+                    toastr.success('Transaction successfully updated');
+                },800);
+                $scope.$apply();
+            }, function (error) {
                 $scope.updatingTransaction = false;
-                errorHandler.evaluateErrors(error.data);
+                errorHandler.evaluateErrors(error);
                 errorHandler.handleErrors(error);
+                $scope.$apply();
             });
         };
 

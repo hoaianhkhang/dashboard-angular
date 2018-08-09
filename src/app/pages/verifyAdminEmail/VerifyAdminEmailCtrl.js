@@ -5,20 +5,20 @@
         .controller('VerifyAdminEmailCtrl', VerifyAdminEmailCtrl);
 
     /** @ngInject */
-    function VerifyAdminEmailCtrl($scope,$stateParams,$http,toastr,$location,environmentConfig,errorHandler) {
+    function VerifyAdminEmailCtrl($scope,Rehive,$stateParams,toastr,$location,errorHandler) {
 
         $scope.verifyAdminEmail = function(){
-            $http.post(environmentConfig.API + '/auth/email/verify/', {
+            Rehive.auth.email.verify({
                 key: $stateParams.key
             }).then(function (res) {
-                if (res.status === 200) {
-                    toastr.success("Email has been verified successfully");
-                    $location.path('/verification');
-                }
-            }).catch(function (error) {
-                errorHandler.evaluateErrors(error.data);
+                toastr.success("Email has been verified successfully");
+                $location.path('/verification');
+                $scope.$apply();
+            }, function (error) {
+                errorHandler.evaluateErrors(error);
                 errorHandler.handleErrors(error);
                 $location.path('/currencies');
+                $scope.$apply();
             });
         };
         $scope.verifyAdminEmail();

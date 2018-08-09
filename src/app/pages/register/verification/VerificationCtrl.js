@@ -5,8 +5,8 @@
         .controller('VerificationCtrl', VerificationCtrl);
 
     /** @ngInject */
-    function VerificationCtrl($rootScope,$scope,$http,toastr,environmentConfig,
-                              localStorageManagement,$location,errorHandler,userVerification,_) {
+    function VerificationCtrl($rootScope,Rehive,$scope,toastr,localStorageManagement,
+                              $location,errorHandler,userVerification) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
@@ -30,35 +30,28 @@
         };
 
         vm.getUserInfo = function(){
-            $http.get(environmentConfig.API + '/user/', {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': vm.token
-                }
-            }).then(function (res) {
-                if (res.status === 200) {
-                    $scope.user = res.data.data;
-                    $rootScope.$pageFinishedLoading = true;
-                }
-            }).catch(function (error) {
-                errorHandler.evaluateErrors(error.data);
+            Rehive.user.get().then(function(res){
+                $scope.user = res;
+                $rootScope.$pageFinishedLoading = true;
+                $rootScope.$apply();
+            },function(error){
+                errorHandler.evaluateErrors(error);
                 errorHandler.handleErrors(error);
+                $rootScope.$apply();
             });
         };
 
         $scope.resendEmail = function(){
-            $http.post(environmentConfig.API + '/auth/email/verify/resend/',{email: $scope.user.email,company: $scope.user.company}, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': vm.token
-                }
-            }).then(function (res) {
-                if (res.status === 200) {
-                    toastr.success('Verification email has been re-sent');
-                }
-            }).catch(function (error) {
-                errorHandler.evaluateErrors(error.data);
+            Rehive.auth.email.resendEmailVerification({
+                email: $scope.user.email,
+                company: $scope.user.company
+            }).then(function(res){
+                toastr.success('Verification email has been re-sent');
+                $scope.$apply();
+            },function(error){
+                errorHandler.evaluateErrors(error);
                 errorHandler.handleErrors(error);
+                $scope.$apply();
             });
         };
 
@@ -68,6 +61,7 @@
             $rootScope.securityConfigured = true;
             $rootScope.pageTopObj = {};
             localStorageManagement.deleteValue('TOKEN');
+            localStorageManagement.deleteValue('token');
             $location.path('/login');
         };
 

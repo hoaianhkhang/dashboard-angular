@@ -5,11 +5,12 @@
         .controller('UserPermissionsCtrl', UserPermissionsCtrl);
 
     /** @ngInject */
-    function UserPermissionsCtrl($scope,environmentConfig,$stateParams,$http,$window,$timeout,
+
+    function UserPermissionsCtrl($scope,Rehive,$stateParams,$window,$timeout,
                                  $rootScope,localStorageManagement,errorHandler,toastr) {
 
         var vm = this;
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
         vm.uuid = $stateParams.uuid;
         $rootScope.shouldBeBlue = 'Users';
         $scope.userData = JSON.parse($window.sessionStorage.userData);
@@ -149,20 +150,15 @@
         vm.getPermissions = function () {
             if(vm.token) {
                 $scope.loadingPermissions = true;
-                $http.get(environmentConfig.API + '/admin/users/' + vm.uuid + '/permissions/?page_size=200', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
+                Rehive.admin.users.permissions.get(vm.uuid,{filters: {page_size: 250}}).then(function (res) {
                     $scope.loadingPermissions = false;
-                    if (res.status === 200) {
-                        vm.checkforAllowedPermissions(res.data.data.results);
-                    }
-                }).catch(function (error) {
+                    vm.checkforAllowedPermissions(res.results);
+                    $scope.$apply();
+                }, function (error) {
                     $scope.loadingPermissions = false;
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };
@@ -401,25 +397,25 @@
         vm.addPermissions = function (newPermissionObj,last) {
             if(vm.token) {
                 $scope.loadingPermissions = true;
-                $http.post(environmentConfig.API + '/admin/users/' + vm.uuid + '/permissions/', newPermissionObj, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
+                Rehive.admin.users.permissions.create(vm.uuid, newPermissionObj).then(function (res) {
+                    if(last){
+                        vm.finishSavingPermissionsProcess();
+                        $scope.$apply();
                     }
                 }).then(function (res) {
-                    if (res.status === 201) {
-                        if(last){
-                            vm.finishSavingPermissionsProcess();
-                        }
+                    if(last){
+                        vm.finishSavingPermissionsProcess();
+                        $scope.$apply();
                     }
-                }).catch(function (error) {
+                }, function (error) {
                     vm.checkedLevels = [];
                     $scope.permissionParams = {
                         type: 'Account'
                     };
                     $scope.loadingPermissions = false;
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };
@@ -427,21 +423,16 @@
         vm.deletePermission = function (permission,last) {
             if(vm.token) {
                 $scope.loadingPermissions = true;
-                $http.delete(environmentConfig.API + '/admin/users/' + vm.uuid + '/permissions/' + permission.id + '/', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
+                Rehive.admin.users.permissions.delete(vm.uuid,permission.id).then(function (res) {
+                    if(last){
+                        vm.finishSavingPermissionsProcess();
+                        $scope.$apply();
                     }
-                }).then(function (res) {
-                    if (res.status === 200) {
-                        if(last){
-                            vm.finishSavingPermissionsProcess();
-                        }
-                    }
-                }).catch(function (error) {
+                }, function (error) {
                     $scope.loadingPermissions = false;
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };

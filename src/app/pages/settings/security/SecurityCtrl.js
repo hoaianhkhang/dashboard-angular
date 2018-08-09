@@ -5,10 +5,10 @@
         .controller('SecurityCtrl', SecurityCtrl);
 
     /** @ngInject */
-    function SecurityCtrl($scope,$uibModal,$location,environmentConfig,$http,localStorageManagement,errorHandler) {
+    function SecurityCtrl($scope,Rehive,$uibModal,$location,localStorageManagement,errorHandler) {
 
         var vm = this;
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
         $scope.loadingAPITokens = true;
         $scope.addingToken = false;
         $scope.createTokenData = {};
@@ -18,24 +18,19 @@
 
         vm.checkMultiFactorAuthEnabled = function () {
             if(vm.token) {
-                $http.get(environmentConfig.API + '/auth/mfa/', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
-                    if (res.status === 200) {
-                        for(var key in res.data.data){
-                            if (res.data.data.hasOwnProperty(key)) {
-                                if(res.data.data[key]){
-                                    $scope.activatedMfa = key;
-                                }
+                Rehive.auth.mfa.status.get().then(function (res) {
+                    for(var key in res){
+                        if (res.hasOwnProperty(key)) {
+                            if(res[key]){
+                                $scope.activatedMfa = key;
+                                $scope.$apply();
                             }
                         }
                     }
-                }).catch(function (error) {
-                    errorHandler.evaluateErrors(error.data);
+                }, function (error) {
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };
@@ -44,20 +39,15 @@
         vm.getTokensList = function () {
             if(vm.token) {
                 $scope.loadingAPITokens = true;
-                $http.get(environmentConfig.API + '/auth/tokens/', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
+                Rehive.auth.tokens.get().then(function(res){
                     $scope.loadingAPITokens = false;
-                    if (res.status === 200) {
-                        $scope.tokensList = res.data.data;
-                    }
-                }).catch(function (error) {
+                    $scope.tokensList = res;
+                    $scope.$apply();
+                },function(error){
                     $scope.loadingAPITokens = false;
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };
@@ -66,29 +56,26 @@
         $scope.addToken = function(){
             if(vm.token) {
               $scope.loadingAPITokens = true;
-                $http.post(environmentConfig.API + '/auth/tokens/',{password: $scope.createTokenData.tokenPassword,duration: $scope.createTokenData.tokenDuration ? $scope.createTokenData.tokenDuration: 0}, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
-                    if (res.status === 201) {
-                        $scope.createTokenData.tokenDuration = '';
-                        $scope.createTokenData.tokenPassword = '';
-                        $scope.addingToken = false;
-                        vm.getTokensList();
-                        vm.openShowTokenModal('app/pages/settings/security/tokens/showTokenModal/showTokenModal.html','md',res.data.data.token);
-                    }
-                }).catch(function (error) {
+                Rehive.auth.tokens.create({
+                    password: $scope.createTokenData.tokenPassword,
+                    duration: $scope.createTokenData.tokenDuration ? $scope.createTokenData.tokenDuration: 0}).then(function(res)
+                {
+                    $scope.createTokenData.tokenDuration = '';
+                    $scope.createTokenData.tokenPassword = '';
+                    $scope.addingToken = false;
+                    vm.getTokensList();
+                    vm.openShowTokenModal('app/pages/settings/security/tokens/showTokenModal/showTokenModal.html','md',res.token);
+                    $scope.$apply();
+                },function(error){
                     $scope.loadingAPITokens = false;
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
                 });
             }
         };
 
         $scope.openDeleteTokenModal = function (page, size,token) {
-            $uibModal.open({
+            vm.theModal = $uibModal.open({
                 animation: true,
                 templateUrl: page,
                 size: size,
@@ -99,6 +86,13 @@
                         return token;
                     }
                 }
+            });
+
+            vm.theModal.result.then(function(token){
+                if(token){
+                    vm.getTokensList();
+                }
+            }, function(){
             });
         };
 

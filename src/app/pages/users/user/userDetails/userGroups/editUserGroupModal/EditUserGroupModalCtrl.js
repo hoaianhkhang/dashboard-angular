@@ -5,10 +5,10 @@
         .controller('EditUserGroupModalCtrl', EditUserGroupModalCtrl);
 
     function EditUserGroupModalCtrl($rootScope,$scope,$uibModalInstance,toastr,userGroup,uuid,
-                                    $http,environmentConfig,localStorageManagement,errorHandler) {
+                                    Rehive,localStorageManagement,errorHandler) {
 
         var vm = this;
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
         vm.uuid = uuid;
         vm.user = {};
         $scope.groupForReassigning = {};
@@ -31,19 +31,14 @@
 
         vm.getUser = function(){
             if(vm.token) {
-                $http.get(environmentConfig.API + '/admin/users/' + vm.uuid + '/', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
-                    if (res.status === 200) {
-                        vm.user = res.data.data;
-                        $scope.userEmail = res.data.data.email;
-                    }
-                }).catch(function (error) {
-                    errorHandler.evaluateErrors(error.data);
+                Rehive.admin.users.get({identifier: vm.uuid}).then(function (res) {
+                    vm.user = res;
+                    $scope.userEmail = res.email;
+                    $scope.$apply();
+                }, function (error) {
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };
@@ -52,26 +47,21 @@
         vm.getGroups = function () {
             if(vm.token) {
                 $scope.loadingGroups = true;
-                $http.get(environmentConfig.API + '/admin/groups/', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
+                Rehive.admin.groups.get({filters: {page_size: 250}}).then(function (res) {
                     $scope.loadingGroups = false;
-                    if (res.status === 200) {
-                        res.data.data.results.forEach(function (group) {
-                            if(group.name == userGroup.name){
-                                $scope.groupForReassigning = group;
-                                $scope.oldGroup = group;
-                            }
-                        });
-                        $scope.groups = res.data.data.results;
-                    }
-                }).catch(function (error) {
+                    res.results.forEach(function (group) {
+                        if(group.name == userGroup.name){
+                            $scope.groupForReassigning = group;
+                            $scope.oldGroup = group;
+                        }
+                    });
+                    $scope.groups = res.results;
+                    $scope.$apply();
+                }, function (error) {
                     $scope.loadingGroups = false;
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };
@@ -80,19 +70,14 @@
         $scope.deleteUserGroup = function () {
             $scope.loadingGroups = true;
             if(vm.user.groups[0] && vm.user.groups[0].name){
-                $http.delete(environmentConfig.API + '/admin/users/' + vm.user.identifier + '/groups/' + vm.user.groups[0].name + '/', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
-                    if (res.status === 200) {
-                        vm.reassignUser();
-                    }
-                }).catch(function (error) {
+                Rehive.admin.users.groups.delete(vm.user.identifier,vm.user.groups[0].name).then(function (res) {
+                    vm.reassignUser();
+                    $scope.$apply();
+                }, function (error) {
                     $scope.loadingGroups = false;
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             } else {
                 vm.reassignUser();
@@ -101,22 +86,19 @@
 
         vm.reassignUser = function () {
             if(vm.token) {
-                $http.post(environmentConfig.API + '/admin/users/' + vm.user.identifier + '/groups/', {group: $scope.groupForReassigning.name}, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
+                Rehive.admin.users.groups.create(vm.user.identifier, {
+                    group: $scope.groupForReassigning.name
                 }).then(function (res) {
                     $scope.loadingGroups = false;
-                    if (res.status === 201) {
-                        $rootScope.$broadcast('userGroupChanged','group changed');
-                        toastr.success('User successfully reassigned');
-                        $uibModalInstance.close(res.data);
-                    }
-                }).catch(function (error) {
+                    $rootScope.$broadcast('userGroupChanged','group changed');
+                    toastr.success('User successfully reassigned');
+                    $uibModalInstance.close(res);
+                    $scope.$apply();
+                }, function (error) {
                     $scope.loadingGroups = false;
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };

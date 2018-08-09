@@ -5,11 +5,11 @@
         .controller('GroupTransactionSettingsCtrl', GroupTransactionSettingsCtrl);
 
     /** @ngInject */
-    function GroupTransactionSettingsCtrl($scope,$http,environmentConfig,localStorageManagement,
-                                          $stateParams,$location,errorHandler) {
+    function GroupTransactionSettingsCtrl($scope,toastr,localStorageManagement,
+                                          Rehive,$stateParams,$location,errorHandler) {
 
         var vm = this;
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
         vm.groupName = $stateParams.groupName;
         vm.updatedGroup = {};
         $scope.loadingGroup = true;
@@ -24,22 +24,16 @@
         $scope.getGroup = function () {
             if(vm.token) {
                 $scope.loadingGroup = true;
-
-                $http.get(environmentConfig.API + '/admin/groups/' + vm.groupName + '/', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
-                    if (res.status === 200) {
-                        $scope.editGroupObj = res.data.data;
-                        $scope.editGroupObj.prevName = res.data.data.name;
-                        vm.getGroupUsers($scope.editGroupObj);
-                    }
-                }).catch(function (error) {
-
-                    errorHandler.evaluateErrors(error.data);
+                Rehive.admin.groups.get({name: vm.groupName}).then(function (res) {
+                    $scope.editGroupObj = res;
+                    $scope.editGroupObj.prevName = res.name;
+                    vm.getGroupUsers($scope.editGroupObj);
+                    $scope.$apply();
+                }, function (error) {
+                    $scope.loadingGroup = false;
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };
@@ -48,21 +42,18 @@
         vm.getGroupUsers = function (group) {
             if(vm.token) {
                 $scope.loadingGroup = true;
-                $http.get(environmentConfig.API + '/admin/users/overview/?group=' + group.name, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
-                    if (res.status === 200) {
-                        $scope.totalUsersCount = res.data.data.total;
-                        $scope.deactiveUsersCount = res.data.data.archived;
-                        $scope.loadingGroup = false;
-                    }
-                }).catch(function (error) {
+                Rehive.admin.users.overview.get({filters: {
+                    group: group.name
+                }}).then(function (res) {
+                    $scope.totalUsersCount = res.total;
+                    $scope.deactiveUsersCount = res.archived;
                     $scope.loadingGroup = false;
-                    errorHandler.evaluateErrors(error.data);
+                    $scope.$apply();
+                }, function (error) {
+                    $scope.loadingGroup = false;
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };
@@ -70,20 +61,15 @@
         vm.getGroupSettings = function () {
             if(vm.token) {
                 $scope.loadingGroupSettings = true;
-                $http.get(environmentConfig.API + '/admin/groups/' + vm.groupName + '/settings/', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
+                Rehive.admin.groups.settings.get(vm.groupName).then(function (res) {
                     $scope.loadingGroupSettings = false;
-                    if (res.status === 200) {
-                        $scope.groupSettingsObj = res.data.data;
-                    }
-                }).catch(function (error) {
+                    $scope.groupSettingsObj = res;
+                    $scope.$apply();
+                }, function (error) {
                     $scope.loadingGroupSettings = false;
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };
@@ -95,19 +81,15 @@
             updatedSetting[type] = !groupSetting;
 
             if(vm.token) {
-                $http.patch(environmentConfig.API + '/admin/groups/' + vm.groupName + '/settings/',updatedSetting, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
-                    if (res.status === 200) {
-                        $scope.groupSettingsObj = {};
-                        $scope.groupSettingsObj = res.data.data;
-                    }
-                }).catch(function (error) {
-                    errorHandler.evaluateErrors(error.data);
+                Rehive.admin.groups.settings.update(vm.groupName,updatedSetting).then(function (res) {
+                    $scope.groupSettingsObj = {};
+                    $scope.groupSettingsObj = res;
+                    toastr.success('Group setting updated successfully');
+                    $scope.$apply();
+                }, function (error) {
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };

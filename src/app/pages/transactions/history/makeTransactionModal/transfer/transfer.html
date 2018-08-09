@@ -136,6 +136,13 @@
                      class="row transaction-recipient-account-details">
                     <i>No transactions exist for this account.</i>
                 </div>
+                <span class="no-accounts-available margin-left-10"
+                      ng-show="retrievedRecipientAccountsArray.length == 0 &&
+                      retrievedRecipientObj.identifier  && transferTransactionData.currency &&
+                       transferTransactionData.currency.code">
+                    No accounts found for this user.
+                    <span ng-click="goToTransferUserAccountCreate(retrievedRecipientObj.identifier)"> Add an account here.</span>
+                </span>
             </label>
             <select class="form-control pointer" ng-model="transferTransactionData.credit_account" ng-change="accountSelected(transferTransactionData,'recipient')" ng-disabled="!transferTransactionData.currency.code || !retrievedRecipientObj.identifier"
                     ng-options="account.name + ' - ' + account.reference disable when account.disable for account in retrievedRecipientAccountsArray | orderBy: 'name' track by account.name">

@@ -5,7 +5,7 @@
         .controller('RequestLogModalCtrl', RequestLogModalCtrl);
 
     /** @ngInject */
-    function RequestLogModalCtrl($scope,environmentConfig,log,$http,$state,localStorageManagement,errorHandler,metadataTextService) {
+    function RequestLogModalCtrl($scope,Rehive,log,localStorageManagement,errorHandler,metadataTextService) {
         var vm = this;
         vm.log = log;
         vm.token = localStorageManagement.getValue('TOKEN');
@@ -15,22 +15,17 @@
             $scope.loadingRequestLog = true;
 
             if(vm.token) {
-                $http.get(environmentConfig.API + '/admin/requests/' + vm.log.id + '/', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
+                Rehive.admin.requests.get({id: vm.log.id}).then(function (res) {
                     $scope.loadingRequestLog = false;
-                    if (res.status === 200) {
-                        $scope.requestLog = res.data.data;
-                        $scope.params = metadataTextService.convertToText(res.data.data.params);
-                        $scope.headers = metadataTextService.convertToText(res.data.data.headers);
-                    }
-                }).catch(function (error) {
+                    $scope.requestLog = res;
+                    $scope.params = metadataTextService.convertToText(res.params);
+                    $scope.headers = metadataTextService.convertToText(res.headers);
+                    $scope.$apply();
+                }, function (error) {
                     $scope.loadingRequestLog = false;
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };

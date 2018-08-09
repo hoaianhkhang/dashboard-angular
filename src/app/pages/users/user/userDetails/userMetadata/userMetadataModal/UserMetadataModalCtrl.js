@@ -4,7 +4,7 @@
     angular.module('BlurAdmin.pages.users.user')
         .controller('UserMetadataModalCtrl', UserMetadataModalCtrl);
 
-    function UserMetadataModalCtrl($scope,$uibModalInstance,user,toastr,$http,environmentConfig,
+    function UserMetadataModalCtrl($scope,Rehive,$uibModalInstance,user,toastr,
                                    localStorageManagement,errorHandler) {
 
         var vm = this;
@@ -33,32 +33,30 @@
                 var metaData;
                 if($scope.formatted.metadata){
                     if(vm.isJson($scope.formatted.metadata)){
-                        metaData =  JSON.parse($scope.formatted.metadata);
+                        metaData =  $scope.formatted.metadata;
                     } else {
                         toastr.error('Incorrect metadata format');
                         $scope.updatingUserMetadata = false;
                         return false;
                     }
                 } else {
-                    metaData = {};
+                    metaData = '{}';
                 }
 
-                $http.patch(environmentConfig.API + '/admin/users/' + vm.user.identifier + '/',{metadata: metaData}, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
+                var formData = new FormData();
+
+                formData.append('metadata', metaData);
+
+                Rehive.admin.users.update(vm.user.identifier, formData).then(function (res) {
+                    toastr.success('Metadata updated successfully');
+                    $scope.formatted = {};
                     $scope.updatingUserMetadata = false;
-                    if (res.status === 200) {
-                        toastr.success('Metadata updated successfully');
-                        $scope.formatted = {};
-                        $uibModalInstance.close(true);
-                    }
-                }).catch(function (error) {
+                    $uibModalInstance.close(true);
+                }, function (error) {
                     $scope.updatingUserMetadata = false;
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };

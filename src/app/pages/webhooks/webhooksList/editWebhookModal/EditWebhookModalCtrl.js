@@ -5,11 +5,11 @@
         .controller('EditWebhookModalCtrl', EditWebhookModalCtrl);
 
     /** @ngInject */
-    function EditWebhookModalCtrl($scope,environmentConfig,$uibModalInstance,toastr,$filter,webhook,
-                                 $http,localStorageManagement,errorHandler) {
+    function EditWebhookModalCtrl($scope,$uibModalInstance,toastr,$filter,webhook,
+                                  Rehive,localStorageManagement,errorHandler) {
 
         var vm = this;
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
         $scope.editWebhook = {};
         vm.updatedWebhook = {};
         $scope.editingWebhook = false;
@@ -43,22 +43,17 @@
 
         vm.getWebhook = function () {
             $scope.editingWebhook = true;
-            $http.get(environmentConfig.API + '/admin/webhooks/' + webhook.id + '/', {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': vm.token
-                }
-            }).then(function (res) {
-                if (res.status === 200) {
-                    $scope.editWebhook = res.data.data;
-                    $scope.editWebhook.event = $filter('capitalizeDottedSentence')(res.data.data.event);
-                    $scope.editWebhook.event = $filter('capitalizeUnderscoredSentence')($scope.editWebhook.event);
-                    $scope.editingWebhook = false;
-                }
-            }).catch(function (error) {
+            Rehive.admin.webhooks.get({id: webhook.id}).then(function (res) {
+                $scope.editWebhook = res;
+                $scope.editWebhook.event = $filter('capitalizeDottedSentence')(res.event);
+                $scope.editWebhook.event = $filter('capitalizeUnderscoredSentence')($scope.editWebhook.event);
                 $scope.editingWebhook = false;
-                errorHandler.evaluateErrors(error.data);
+                $scope.$apply();
+            }, function (error) {
+                $scope.editingWebhook = false;
+                errorHandler.evaluateErrors(error);
                 errorHandler.handleErrors(error);
+
             });
         };
         vm.getWebhook();
@@ -74,23 +69,19 @@
                 event = event.replace(/ /g, '_');
                 vm.updatedWebhook.event = vm.eventOptionsObj[event];
             }
-            $http.patch(environmentConfig.API + '/admin/webhooks/' + $scope.editWebhook.id + '/', vm.updatedWebhook, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': vm.token
-                }
-            }).then(function (res) {
-                $scope.editingWebhook = false;
-                if (res.status === 200) {
-                    vm.updatedWebhook = {};
-                    toastr.success('You have successfully updated the webhook');
-                    $uibModalInstance.close(true);
-                }
-            }).catch(function (error) {
+
+            Rehive.admin.webhooks.update($scope.editWebhook.id, vm.updatedWebhook).then(function (res) {
                 $scope.editingWebhook = false;
                 vm.updatedWebhook = {};
-                errorHandler.evaluateErrors(error.data);
+                toastr.success('You have successfully updated the webhook');
+                $uibModalInstance.close(true);
+                $scope.$apply();
+            }, function (error) {
+                $scope.editingWebhook = false;
+                vm.updatedWebhook = {};
+                errorHandler.evaluateErrors(error);
                 errorHandler.handleErrors(error);
+                $scope.$apply();
             });
         };
 

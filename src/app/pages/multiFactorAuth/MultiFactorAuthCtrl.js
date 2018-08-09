@@ -5,28 +5,23 @@
         .controller('MultiFactorAuthCtrl', MultiFactorAuthCtrl);
 
     /** @ngInject */
-    function MultiFactorAuthCtrl($scope,$http,environmentConfig,localStorageManagement,errorHandler,$location) {
+    function MultiFactorAuthCtrl($scope,Rehive,localStorageManagement,errorHandler,$location) {
 
         var vm = this;
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
 
         $scope.getMfa = function(){
             if(vm.token) {
                 $scope.loadingMfa = true;
-                $http.get(environmentConfig.API + '/auth/mfa/', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
-                    if (res.status === 200) {
-                        $scope.multiFactorAuthOptions = res.data.data;
-                        $scope.loadingMfa = false;
-                    }
-                }).catch(function (error) {
+                Rehive.auth.mfa.status.get().then(function (res) {
+                    $scope.multiFactorAuthOptions = res;
                     $scope.loadingMfa = false;
-                    errorHandler.evaluateErrors(error.data);
+                    $scope.$apply();
+                }, function (error) {
+                    $scope.loadingMfa = false;
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };

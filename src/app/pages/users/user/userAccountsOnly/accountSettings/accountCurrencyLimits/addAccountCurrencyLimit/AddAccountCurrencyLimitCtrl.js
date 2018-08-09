@@ -4,11 +4,11 @@
     angular.module('BlurAdmin.pages.users.user.accountSettings.accountCurrencyLimits')
         .controller('AddAccountCurrencyLimitCtrl', AddAccountCurrencyLimitCtrl);
 
-    function AddAccountCurrencyLimitCtrl($scope,$uibModalInstance,currencyCode,reference,sharedResources,$window,
-                                         toastr,$http,environmentConfig,localStorageManagement,currencyModifiers,errorHandler) {
+    function AddAccountCurrencyLimitCtrl($scope,$uibModalInstance,currencyCode,_,reference,sharedResources,$window,
+                                         Rehive,toastr,localStorageManagement,currencyModifiers,errorHandler) {
 
         var vm = this;
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
         vm.currencyCode = currencyCode;
         vm.reference = reference;
         vm.currenciesList = JSON.parse($window.sessionStorage.currenciesList);
@@ -37,12 +37,13 @@
                 params.subtype = '';
             }
             sharedResources.getSubtypes().then(function (res) {
-                res.data.data = res.data.data.filter(function (element) {
+                res = res.filter(function (element) {
                     return element.tx_type == (params.tx_type).toLowerCase();
                 });
-                $scope.subtypeOptions = _.pluck(res.data.data,'name');
+                $scope.subtypeOptions = _.pluck(res,'name');
                 $scope.subtypeOptions.unshift('');
                 $scope.loadingSubtypes = false;
+                $scope.$apply();
             });
         };
         $scope.getSubtypesArray($scope.accountCurrencyLimitsParams);
@@ -64,24 +65,18 @@
                 accountCurrencyLimitsParams.type = accountCurrencyLimitsParams.type == 'Maximum' ? 'max': accountCurrencyLimitsParams.type == 'Maximum per day' ? 'day_max':
                     accountCurrencyLimitsParams.type == 'Maximum per month' ? 'month_max': accountCurrencyLimitsParams.type == 'Minimum' ? 'min': 'overdraft';
 
-                $http.post(environmentConfig.API + '/admin/accounts/' + vm.reference + '/currencies/' + vm.currencyCode + '/limits/',accountCurrencyLimitsParams,{
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
+                Rehive.admin.accounts.currencies.limits.create(vm.reference, vm.currencyCode, accountCurrencyLimitsParams).then(function (res) {
                     $scope.addingAccountCurrencyLimits = false;
-                    if (res.status === 201) {
-                        toastr.success('Limit added successfully.');
-                        $scope.accountCurrencyLimitsParams = {
-                            tx_type: 'Credit',
-                            type: 'Maximum',
-                            subtype: ''
-                        };
-                        $scope.getSubtypesArray($scope.accountCurrencyLimitsParams);
-                        $uibModalInstance.close(true);
-                    }
-                }).catch(function (error) {
+                    toastr.success('Limit added successfully.');
+                    $scope.accountCurrencyLimitsParams = {
+                        tx_type: 'Credit',
+                        type: 'Maximum',
+                        subtype: ''
+                    };
+                    $scope.getSubtypesArray($scope.accountCurrencyLimitsParams);
+                    $uibModalInstance.close(true);
+                    $scope.$apply();
+                }, function (error) {
                     $scope.accountCurrencyLimitsParams = {
                         tx_type: 'Credit',
                         type: 'Maximum',
@@ -89,8 +84,9 @@
                     };
                     $scope.getSubtypesArray($scope.accountCurrencyLimitsParams);
                     $scope.addingAccountCurrencyLimits = false;
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };

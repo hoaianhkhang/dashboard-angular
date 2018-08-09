@@ -5,11 +5,11 @@
         .controller('UserBankAccountsCtrl', UserBankAccountsCtrl);
 
     /** @ngInject */
-    function UserBankAccountsCtrl($scope,environmentConfig,$stateParams,$uibModal,$http,$window,
+    function UserBankAccountsCtrl($scope,Rehive,$stateParams,$uibModal,$window,
                                   localStorageManagement,errorHandler,toastr,$ngConfirm) {
 
         var vm = this;
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
         vm.uuid = $stateParams.uuid;
         $scope.isBankDetailsCollapsed = true;
         $scope.uncollapsedBank = {};
@@ -28,21 +28,16 @@
         vm.getUserBankAccounts = function(){
             if(vm.token) {
                 $scope.loadingUserBankAccount = true;
-                $http.get(environmentConfig.API + '/admin/users/bank-accounts/?user=' + vm.uuid, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
+                Rehive.admin.users.bankAccounts.get({filters: {user: vm.uuid}}).then(function (res) {
                     $scope.loadingUserBankAccount = false;
-                    if (res.status === 200) {
-                        $scope.userBanks = res.data.data.results;
-                        $window.sessionStorage.userBanks = JSON.stringify(res.data.data.results);
-                    }
-                }).catch(function (error) {
+                    $scope.userBanks = res.results;
+                    $window.sessionStorage.userBanks = JSON.stringify(res.results);
+                    $scope.$apply();
+                }, function (error) {
                     $scope.loadingUserBankAccount = false;
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };
@@ -75,22 +70,19 @@
         $scope.verifyBankAccount = function(bank){
             if(vm.token) {
                 $scope.loadingUserBankAccount = true;
-                $http.patch(environmentConfig.API + '/admin/users/bank-accounts/' + bank.id + '/',{status: 'verified'},{
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
+                Rehive.admin.users.bankAccounts.update(bank.id,{
+                    status: 'verified'
                 }).then(function (res) {
                     $scope.loadingUserBankAccount = false;
-                    if (res.status === 200) {
-                        $scope.optionsId = '';
-                        toastr.success('Bank account verified');
-                        vm.getUserBankAccounts();
-                    }
-                }).catch(function (error) {
+                    $scope.optionsId = '';
+                    toastr.success('Bank account verified');
+                    vm.getUserBankAccounts();
+                    $scope.$apply();
+                }, function (error) {
                     $scope.loadingUserBankAccount = false;
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };

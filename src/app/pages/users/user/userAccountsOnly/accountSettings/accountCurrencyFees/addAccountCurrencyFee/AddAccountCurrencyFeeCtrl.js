@@ -5,10 +5,10 @@
         .controller('AddAccountCurrencyFeeCtrl', AddAccountCurrencyFeeCtrl);
 
     function AddAccountCurrencyFeeCtrl($scope,$uibModalInstance,currencyCode,reference,sharedResources,$window,
-                                         toastr,$http,environmentConfig,localStorageManagement,currencyModifiers,errorHandler) {
+                                       Rehive,_,toastr,localStorageManagement,currencyModifiers,errorHandler) {
 
         var vm = this;
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
         vm.currencyCode = currencyCode;
         vm.currenciesList = JSON.parse($window.sessionStorage.currenciesList);
         vm.reference = reference;
@@ -35,12 +35,13 @@
                 params.subtype = '';
             }
             sharedResources.getSubtypes().then(function (res) {
-                res.data.data = res.data.data.filter(function (element) {
+                res = res.filter(function (element) {
                     return element.tx_type == (params.tx_type).toLowerCase();
                 });
-                $scope.subtypeOptions = _.pluck(res.data.data,'name');
+                $scope.subtypeOptions = _.pluck(res,'name');
                 $scope.subtypeOptions.unshift('');
                 $scope.loadingSubtypes = false;
+                $scope.$apply();
             });
         };
         $scope.getSubtypesArray($scope.accountCurrencyFeesParams);
@@ -67,25 +68,20 @@
             if(vm.token) {
                 $scope.addingAccountCurrencyLimits = true;
                 accountCurrencyFeesParams.tx_type = accountCurrencyFeesParams.tx_type.toLowerCase();
-                $http.post(environmentConfig.API + '/admin/accounts/' + vm.reference + '/currencies/' + vm.currencyCode + '/fees/',accountCurrencyFeesParams,{
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
+                Rehive.admin.accounts.currencies.fees.create(vm.reference,vm.currencyCode,accountCurrencyFeesParams).then(function (res) {
                     $scope.addingAccountCurrencyLimits = false;
-                    if (res.status === 201) {
-                        toastr.success('Fee added successfully');
-                        $uibModalInstance.close(true);
-                    }
-                }).catch(function (error) {
+                    toastr.success('Fee added successfully');
+                    $uibModalInstance.close(true);
+                    $scope.$apply();
+                }, function (error) {
                     $scope.addingAccountCurrencyLimits = false;
                     $scope.accountCurrencyFeesParams = {
                         tx_type: 'Credit',
                         subtype: ''
                     };
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };

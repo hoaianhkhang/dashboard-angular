@@ -5,11 +5,11 @@
         .controller('GroupAccountConfigurationsCtrl', GroupAccountConfigurationsCtrl);
 
     /** @ngInject */
-    function GroupAccountConfigurationsCtrl($scope,$http,environmentConfig,localStorageManagement,serializeFiltersService,
-                                          $stateParams,$location,errorHandler,toastr,$uibModal,$ngConfirm) {
+    function GroupAccountConfigurationsCtrl($scope,localStorageManagement,serializeFiltersService,
+                                            Rehive,$stateParams,$location,errorHandler,toastr,$uibModal,$ngConfirm) {
 
         var vm = this;
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
         vm.groupName = $stateParams.groupName;
         vm.updatedGroup = {};
         $scope.loadingGroup = true;
@@ -25,22 +25,16 @@
         $scope.getGroup = function () {
             if(vm.token) {
                 $scope.loadingGroup = true;
-
-                $http.get(environmentConfig.API + '/admin/groups/' + vm.groupName + '/', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
-                    if (res.status === 200) {
-                        $scope.editGroupObj = res.data.data;
-                        $scope.editGroupObj.prevName = res.data.data.name;
-                        vm.getGroupUsers($scope.editGroupObj);
-                    }
-                }).catch(function (error) {
-
-                    errorHandler.evaluateErrors(error.data);
+                Rehive.admin.groups.get({name: vm.groupName}).then(function (res) {
+                    $scope.editGroupObj = res;
+                    $scope.editGroupObj.prevName = res.name;
+                    vm.getGroupUsers($scope.editGroupObj);
+                    $scope.$apply();
+                }, function (error) {
+                    $scope.loadingGroup = false;
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };
@@ -49,21 +43,18 @@
         vm.getGroupUsers = function (group) {
             if(vm.token) {
                 $scope.loadingGroup = true;
-                $http.get(environmentConfig.API + '/admin/users/overview/?group=' + group.name, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
-                    if (res.status === 200) {
-                        $scope.totalUsersCount = res.data.data.total;
-                        $scope.deactiveUsersCount = res.data.data.archived;
-                        $scope.loadingGroup = false;
-                    }
-                }).catch(function (error) {
+                Rehive.admin.users.overview.get({filters: {
+                    group: group.name
+                }}).then(function (res) {
+                    $scope.totalUsersCount = res.total;
+                    $scope.deactiveUsersCount = res.archived;
                     $scope.loadingGroup = false;
-                    errorHandler.evaluateErrors(error.data);
+                    $scope.$apply();
+                }, function (error) {
+                    $scope.loadingGroup = false;
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };
@@ -80,14 +71,14 @@
             }
         };
 
-        vm.getGroupAccountConfigurationsUrl = function(){
+        vm.getGroupAccountConfigurationsFilterObj = function(){
 
             var searchObj = {
                 page: $scope.pagination.pageNo,
                 page_size: $scope.pagination.itemsPerPage
             };
 
-            return environmentConfig.API + '/admin/groups/' + vm.groupName + '/account-configurations/?' + serializeFiltersService.serializeFilters(searchObj);
+            return serializeFiltersService.objectFilters(searchObj);
         };
 
         $scope.getGroupAccountConfigurations = function(fromModalDelete){
@@ -102,23 +93,19 @@
                     $scope.pagination.pageNo = 1;
                 }
 
-                var groupAccountConfigurationsUrl = vm.getGroupAccountConfigurationsUrl();
+                var groupAccountConfigurationsFilterObj = vm.getGroupAccountConfigurationsFilterObj();
 
-                $http.get(groupAccountConfigurationsUrl,{
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
+                Rehive.admin.groups.accountConfigurations.get(vm.groupName,{filters: groupAccountConfigurationsFilterObj}).then(function (res)
+                {
                     $scope.loadingGroupAccountConfigurations = false;
-                    if (res.status === 200) {
-                        $scope.groupAccountConfigurationsData = res.data.data;
-                        $scope.groupAccountConfigurationsList = res.data.data.results;
-                    }
-                }).catch(function (error) {
+                    $scope.groupAccountConfigurationsData = res;
+                    $scope.groupAccountConfigurationsList = res.results;
+                    $scope.$apply();
+                }, function (error) {
                     $scope.loadingGroupAccountConfigurations = false;
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };
@@ -137,22 +124,17 @@
 
             }
 
-            $http.patch(environmentConfig.API + '/admin/groups/' + vm.groupName + '/account-configurations/' + accountConfig.name + '/',updateObj,{
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': vm.token
+            Rehive.admin.groups.accountConfigurations.update(vm.groupName,accountConfig.name,updateObj).then(function (res) {
+                toastr.success('Account configuration updated successfully');
+                if(type == 'primary'){
+                    $scope.getGroupAccountConfigurations();
                 }
-            }).then(function (res) {
-                if (res.status === 200) {
-                    toastr.success('Account configuration updated successfully');
-                    if(type == 'primary'){
-                        $scope.getGroupAccountConfigurations();
-                    }
-                }
-            }).catch(function (error) {
+                $scope.$apply();
+            }, function (error) {
                 $scope.loadingGroupAccountConfigurations = false;
-                errorHandler.evaluateErrors(error.data);
+                errorHandler.evaluateErrors(error);
                 errorHandler.handleErrors(error);
+                $scope.$apply();
             });
         };
 
@@ -219,20 +201,15 @@
 
         $scope.deleteAccountConfig = function (accountConfiguration) {
             $scope.loadingGroupAccountConfigurations = true;
-            $http.delete(environmentConfig.API + '/admin/groups/' + vm.groupName + '/account-configurations/' + accountConfiguration.name + '/', {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': vm.token
-                }
-            }).then(function (res) {
-                if (res.status === 200) {
-                    toastr.success('Account configuration successfully deleted');
-                    $scope.getGroupAccountConfigurations();
-                }
-            }).catch(function (error) {
+            Rehive.admin.groups.accountConfigurations.delete(vm.groupName,accountConfiguration.name).then(function (res) {
+                toastr.success('Account configuration successfully deleted');
+                $scope.getGroupAccountConfigurations();
+                $scope.$apply();
+            }, function (error) {
                 $scope.loadingGroupAccountConfigurations = false;
-                errorHandler.evaluateErrors(error.data);
+                errorHandler.evaluateErrors(error);
                 errorHandler.handleErrors(error);
+                $scope.$apply();
             });
         };
 

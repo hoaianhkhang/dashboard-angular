@@ -5,10 +5,10 @@
         .controller('EditGroupTierLimitsCtrl', EditGroupTierLimitsCtrl);
 
     function EditGroupTierLimitsCtrl($scope,$uibModalInstance,tierLimit,selectedTier,toastr,$stateParams,sharedResources,
-                                     $http,environmentConfig,localStorageManagement,errorHandler,currencyModifiers,_) {
+                                     Rehive,localStorageManagement,errorHandler,currencyModifiers,_) {
 
         var vm = this;
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
         $scope.tierLimit = tierLimit;
         $scope.selectedTier = selectedTier;
         $scope.editingTierLimits = false;
@@ -21,19 +21,17 @@
         vm.getCompanyCurrencies = function(){
             if(vm.token){
                 $scope.editingTierLimits = true;
-                $http.get(environmentConfig.API + '/admin/currencies/?enabled=true&page_size=250', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
-                    if (res.status === 200) {
-                        $scope.currenciesOptions = res.data.data.results;
-                        vm.getTierLimit();
-                    }
-                }).catch(function (error) {
-                    errorHandler.evaluateErrors(error.data);
+                Rehive.admin.currencies.get({filters: {
+                    enabled: true,
+                    page_size: 250
+                }}).then(function (res) {
+                    $scope.currenciesOptions = res.results;
+                    vm.getTierLimit();
+                    $scope.$apply();
+                }, function (error) {
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };
@@ -54,34 +52,30 @@
             }
 
             sharedResources.getSubtypes().then(function (res) {
-                res.data.data = res.data.data.filter(function (element) {
+                res = res.filter(function (element) {
                     return element.tx_type == (params.tx_type).toLowerCase();
                 });
-                $scope.subtypeOptions = _.pluck(res.data.data,'name');
+                $scope.subtypeOptions = _.pluck(res,'name');
                 $scope.subtypeOptions.unshift('');
                 $scope.loadingSubtypes = false;
+                $scope.$apply();
             });
         };
 
         vm.getTierLimit = function () {
             $scope.editingTierLimits = true;
-            $http.get(environmentConfig.API + '/admin/groups/' + vm.groupName + '/tiers/' + $scope.selectedTier.id + '/limits/' + $scope.tierLimit.id + '/', {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': vm.token
-                }
-            }).then(function (res) {
+            Rehive.admin.groups.tiers.limits.get(vm.groupName,$scope.selectedTier.id, {id: $scope.tierLimit.id}).then(function (res) {
                 $scope.editingTierLimits = false;
-                if (res.status === 200) {
-                    res.data.data.currency = vm.returnCurrencyObj(res.data.data.currency);
-                    $scope.editTierLimit = res.data.data;
-                    $scope.editTierLimit.value = currencyModifiers.convertFromCents($scope.editTierLimit.value,$scope.editTierLimit.currency.divisibility);
-                    $scope.getSubtypesArray($scope.editTierLimit,'editing');
-                }
-            }).catch(function (error) {
+                res.currency = vm.returnCurrencyObj(res.currency);
+                $scope.editTierLimit = res;
+                $scope.editTierLimit.value = currencyModifiers.convertFromCents($scope.editTierLimit.value,$scope.editTierLimit.currency.divisibility);
+                $scope.getSubtypesArray($scope.editTierLimit,'editing');
+                $scope.$apply();
+            }, function (error) {
                 $scope.editingTierLimits = false;
-                errorHandler.evaluateErrors(error.data);
+                errorHandler.evaluateErrors(error);
                 errorHandler.handleErrors(error);
+                $scope.$apply();
             });
         };
 
@@ -117,23 +111,17 @@
                 vm.updatedTierLimit.type ? vm.updatedTierLimit.type = vm.updatedTierLimit.type == 'Maximum' ? 'max': vm.updatedTierLimit.type == 'Maximum per day' ? 'day_max':
                     vm.updatedTierLimit.type == 'Maximum per month' ? 'month_max': vm.updatedTierLimit.type == 'Minimum' ? 'min': 'overdraft' : '';
 
-                $http.patch(environmentConfig.API + '/admin/groups/' + vm.groupName + '/tiers/' + $scope.selectedTier.id + '/limits/' + $scope.editTierLimit.id + '/',vm.updatedTierLimit,{
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
+                Rehive.admin.groups.tiers.limits.update(vm.groupName,$scope.selectedTier.id, $scope.editTierLimit.id,vm.updatedTierLimit).then(function (res) {
                     $scope.editingTierLimits = false;
-                    if (res.status === 200) {
-                        toastr.success('Limit updated successfully');
-                        $uibModalInstance.close($scope.selectedTier.level);
-
-                    }
-                }).catch(function (error) {
+                    toastr.success('Limit updated successfully');
+                    $uibModalInstance.close($scope.selectedTier.level);
+                    $scope.$apply();
+                }, function (error) {
                     $scope.editingTierLimits = false;
                     vm.updatedTierLimit = {};
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };

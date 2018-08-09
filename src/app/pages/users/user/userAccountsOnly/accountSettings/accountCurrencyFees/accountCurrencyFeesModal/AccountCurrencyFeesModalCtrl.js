@@ -5,36 +5,29 @@
         .controller('AccountCurrencyFeesModalCtrl', AccountCurrencyFeesModalCtrl);
 
     function AccountCurrencyFeesModalCtrl($scope,$uibModalInstance,accountCurrencyFee,currencyCode,reference,
-                                          toastr,$http,environmentConfig,localStorageManagement,errorHandler) {
+                                          Rehive,toastr,localStorageManagement,errorHandler) {
 
         var vm = this;
         vm.currencyCode = currencyCode;
         vm.reference = reference;
         $scope.accountCurrencyFee = accountCurrencyFee;
         $scope.deletingAccountCurrencyFees = false;
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
 
         $scope.deleteAccountCurrencyFee = function () {
             $scope.deletingAccountCurrencyFees = true;
-            $http.delete(environmentConfig.API + '/admin/accounts/' + vm.reference + '/currencies/' + vm.currencyCode + '/fees/' + $scope.accountCurrencyFee.id +'/', {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': vm.token
-                }
-            }).then(function (res) {
+            Rehive.admin.accounts.currencies.fees.delete(vm.reference,vm.currencyCode,$scope.accountCurrencyFee.id).then(function (res) {
                 $scope.deletingAccountCurrencyFees = false;
-                if (res.status === 200) {
-                    toastr.success('Account currency fee successfully deleted');
-                    $uibModalInstance.close($scope.accountCurrencyFee);
-                }
-            }).catch(function (error) {
+                toastr.success('Account currency fee successfully deleted');
+                $uibModalInstance.close(true);
+                $scope.$apply();
+            }, function (error) {
                 $scope.deletingAccountCurrencyFees = false;
-                errorHandler.evaluateErrors(error.data);
+                errorHandler.evaluateErrors(error);
                 errorHandler.handleErrors(error);
+                $scope.$apply();
             });
         };
-
-
 
     }
 })();

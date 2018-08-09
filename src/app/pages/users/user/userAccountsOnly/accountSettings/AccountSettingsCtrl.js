@@ -5,10 +5,10 @@
         .controller('AccountSettingsCtrl', AccountSettingsCtrl);
 
     /** @ngInject */
-    function AccountSettingsCtrl($scope,environmentConfig,localStorageManagement,$http,$stateParams,$location,$rootScope,errorHandler) {
+    function AccountSettingsCtrl($scope,Rehive,localStorageManagement,$stateParams,$location,$rootScope,errorHandler) {
 
         var vm = this;
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
         $rootScope.shouldBeBlue = 'Users';
         $rootScope.accountBreadCrumbTitle = '';
         $scope.reference = $stateParams.reference;
@@ -24,21 +24,16 @@
         vm.getUserAccount = function(){
             if(vm.token) {
                 $scope.loadingAccount = true;
-                $http.get(environmentConfig.API + '/admin/accounts/' + $scope.reference + '/', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
-                    if (res.status === 200) {
-                        $scope.loadingAccount = false;
-                        $scope.accountName = res.data.data.name;
-                        $rootScope.accountBreadCrumbTitle = $scope.accountName + ' - ' + $scope.currencyCode;
-                    }
-                }).catch(function (error) {
+                Rehive.admin.accounts.get({reference: $scope.reference}).then(function (res) {
                     $scope.loadingAccount = false;
-                    errorHandler.evaluateErrors(error.data);
+                    $scope.accountName = res.name;
+                    $rootScope.accountBreadCrumbTitle = $scope.accountName + ' - ' + $scope.currencyCode;
+                    $scope.$apply();
+                }, function (error) {
+                    $scope.loadingAccount = false;
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };
