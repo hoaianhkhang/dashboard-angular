@@ -6,7 +6,7 @@
 
     /** @ngInject */
     function EditRewardsServiceCampaignsCtrl($scope,$stateParams,environmentConfig,typeaheadService,toastr,_,
-                                             $http,localStorageManagement,$location,errorHandler) {
+                                             $http,localStorageManagement,$location,errorHandler,currencyModifiers) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
@@ -75,6 +75,8 @@
                                 editObj.currency = element;
                                 editObj.start_date = moment(editObj.start_date).toDate();
                                 editObj.end_date = moment(editObj.end_date).toDate();
+                                editObj.reward_total = currencyModifiers.convertFromCents(editObj.reward_total,editObj.currency.divisibility);
+                                editObj.reward_amount = currencyModifiers.convertFromCents(editObj.reward_amount,editObj.currency.divisibility);
                                 $scope.editCampaignParams = editObj;
                             }
                         });
@@ -111,6 +113,14 @@
             }
             if(vm.updatedCampaignObj.currency && vm.updatedCampaignObj.currency.code){
                 vm.updatedCampaignObj.currency = vm.updatedCampaignObj.currency.code;
+            }
+            if(vm.updatedCampaignObj.reward_total){
+                vm.updatedCampaignObj.reward_total = currencyModifiers.convertToCents(vm.updatedCampaignObj.reward_total,$scope.editCampaignParams.currency.divisibility);
+                vm.updatedCampaignObj.currency = $scope.editCampaignParams.currency.code;
+            }
+            if(vm.updatedCampaignObj.reward_amount){
+                vm.updatedCampaignObj.reward_amount = currencyModifiers.convertToCents(vm.updatedCampaignObj.reward_amount,$scope.editCampaignParams.currency.divisibility);
+                vm.updatedCampaignObj.currency = $scope.editCampaignParams.currency.code;
             }
 
             $scope.updatingCampaign =  true;

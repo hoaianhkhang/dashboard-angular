@@ -126,7 +126,7 @@
             };
         };
 
-        $scope.requestStatusChange = function (request,status) {
+        $scope.rewardStatusChange = function (request,status) {
             if(vm.token) {
                 $http.patch(vm.serviceUrl + 'admin/rewards/' + request.identifier + '/',
                     {

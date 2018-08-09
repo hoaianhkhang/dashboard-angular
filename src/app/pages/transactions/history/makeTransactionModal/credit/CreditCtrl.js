@@ -40,7 +40,6 @@
                 }).then(function (res) {
                     if (res.status === 200) {
                         $scope.creditCurrencyOptions = res.data.data.results;
-                        console.log($scope.creditCurrencyOptions)
                         if($scope.newTransactionParams.currencyCode) {
                             $scope.creditTransactionData.currency = $scope.creditCurrencyOptions.find(function (element) {
                                 return element.code == $scope.newTransactionParams.currencyCode;

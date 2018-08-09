@@ -4,7 +4,7 @@
     angular.module('BlurAdmin.pages.services.rewardsService.rewardsServiceRewards')
         .controller('RewardUserModalCtrl', RewardUserModalCtrl);
 
-    function RewardUserModalCtrl($scope,environmentConfig,$uibModalInstance,typeaheadService,
+    function RewardUserModalCtrl($scope,environmentConfig,$uibModalInstance,typeaheadService,currencyModifiers,
                                  toastr,$http,localStorageManagement,serializeFiltersService,errorHandler) {
 
         var vm = this;
@@ -106,7 +106,7 @@
             var rewardObj = {
                 campaign: $scope.rewardUserObj.campaign ? ($scope.rewardUserObj.campaign.identifier ? $scope.rewardUserObj.campaign.identifier : null) : null,
                 user: user.id,
-                amount: $scope.rewardUserObj.amount || null,
+                amount: $scope.rewardUserObj.amount ? currencyModifiers.convertToCents($scope.rewardUserObj.amount,$scope.rewardUserObj.currency.divisibility) : null,
                 currency: $scope.rewardUserObj.currency ? ($scope.rewardUserObj.currency.code ? $scope.rewardUserObj.currency.code : null) : null,
                 status: $scope.rewardUserObj.status ? $scope.rewardUserObj.status.toLowerCase() : null,
                 reward_type: $scope.rewardUserObj.type ? $scope.rewardUserObj.type.toLowerCase() : null

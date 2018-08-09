@@ -27,7 +27,10 @@
                     <tr>
                         <th class="rehive-table-row-first-child">User</th>
                         <th>Campaign</th>
+                        <th>Currency</th>
+                        <th>Amount</th>
                         <th>Status</th>
+                        <th>Reward type</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -35,10 +38,14 @@
                     <tr ng-repeat="reward in rewardsList | orderBy: '-created'" class="editable-row user-details-table-hover pointer"
                         ng-click="openRewardRequestModal('app/pages/services/rewardsService/rewardsServiceRequests/rewardsServiceRequestsModal/rewardsServiceRequestsModal.html','md',reward)">
                         <td class="transactions-list-element" title="{{userEmailObj.email}}" ng-bind="reward.user" ng-mouseover="getUserObjEmail(reward.user)"></td>
-                        <td class="transactions-list-element" title="{{reward.campaign_name || 'Unnamed'}}" ng-bind="reward.campaign_name || 'Unnamed'"></td>
+                        <td class="transactions-list-element" title="{{reward.campaign_name || 'None'}}" ng-bind="reward.campaign_name || 'None'"></td>
+                        <td class="transactions-list-element" title="{{reward.currency.code || 'None'}}" ng-bind="reward.currency.code || 'None'"></td>
+                        <td class="transactions-list-element" title="{{reward.amount | currencyModifiersFilter: reward.currency.divisibility}}"
+                            ng-bind="reward.amount | currencyModifiersFilter: reward.currency.divisibility"></td>
                         <td class="transactions-list-element" title="{{reward.status | capitalizeWord}}" ng-bind="reward.status | capitalizeWord"></td>
+                        <td class="transactions-list-element" title="{{reward.reward_type}}" ng-bind="reward.reward_type"></td>
                         <td ng-click="$event.stopPropagation()">
-                            <div>
+                            <div ng-show="reward.reward_type == 'Request'">
                                 <a class="margin-right-10 pointer" ng-click="rewardStatusChange(reward,'reject')">Reject</a>
                                 <a ng-hide="reward.status == 'accept'" class="pointer" ng-click="rewardStatusChange(reward,'accept')">Accept</a>
                             </div>

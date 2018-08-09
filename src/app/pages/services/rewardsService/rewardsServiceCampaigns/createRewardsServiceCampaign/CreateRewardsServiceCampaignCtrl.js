@@ -5,12 +5,12 @@
         .controller('CreateRewardsServiceCampaignsCtrl', CreateRewardsServiceCampaignsCtrl);
 
     /** @ngInject */
-    function CreateRewardsServiceCampaignsCtrl($scope,$rootScope,environmentConfig,typeaheadService,toastr,_,
+    function CreateRewardsServiceCampaignsCtrl($scope,$rootScope,environmentConfig,typeaheadService,toastr,_,currencyModifiers,
                                                $http,localStorageManagement,$location,errorHandler,serializeFiltersService) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
-        vm.baseUrl = localStorageManagement.getValue('SERVICEURL');
+        vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
         $scope.currencyOptions = [];
         $scope.addingCampaign =  false;
         $scope.newCampaignParams = {
@@ -82,8 +82,8 @@
                 company: $rootScope.pageTopObj.companyObj.identifier,
                 start_date: null,
                 end_date: null,
-                reward_total: newCampaignParams.rewardTotal,
-                reward_amount: newCampaignParams.rewardAmount,
+                reward_total: newCampaignParams.rewardTotal ? currencyModifiers.convertToCents(newCampaignParams.rewardTotal,newCampaignParams.currency.divisibility) : null,
+                reward_amount: newCampaignParams.rewardAmount ? currencyModifiers.convertToCents(newCampaignParams.rewardAmount,newCampaignParams.currency.divisibility) : null,
                 status: newCampaignParams.status,
                 max_per_user: newCampaignParams.max_per_user,
                 visible: newCampaignParams.visible,
@@ -107,7 +107,7 @@
 
             $scope.addingCampaign =  true;
             if(vm.token) {
-                $http.post(vm.baseUrl + 'admin/campaigns/',newCampaign, {
+                $http.post(vm.serviceUrl + 'admin/campaigns/',newCampaign, {
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': vm.token
