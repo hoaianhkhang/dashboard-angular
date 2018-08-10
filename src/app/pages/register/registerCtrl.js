@@ -33,8 +33,9 @@
             $rootScope.$pageFinishedLoading = false;
             Rehive.auth.registerCompany($scope.registerData).then(function (res) {
                 $rootScope.pageTopObj.userInfoObj = {};
-                $rootScope.pageTopObj.userInfoObj = res.user;
-                localStorageManagement.setValue('TOKEN','Token ' + res.token);
+                $rootScope.pageTopObj.userInfoObj = res;
+                var token = localStorageManagement.getValue('token');
+                localStorageManagement.setValue('TOKEN','Token ' + token);
                 $location.path('/verification');
                 $scope.$apply();
             }, function (error) {

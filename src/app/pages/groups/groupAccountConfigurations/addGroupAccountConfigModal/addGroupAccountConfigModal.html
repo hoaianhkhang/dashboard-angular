@@ -30,11 +30,18 @@
                        ng-model="groupAccountConfigurationParams.primary" type="checkbox">
             </div>
             <div class="form-group">
-                <label>Currency <span class="required-icon">*</span> <small class="text-muted">(Hold CTRL to select multiple currencies)</small></label>
-                <br>
-                <select class="form-control pointer divider" ng-model="newAccountConfigurationCurrencies.list" multiple
-                        ng-options="currency.code for currency in currenciesList track by currency.code" required>
-                </select>
+                <label>Currencies <span class="required-icon">*</span></label>
+                <div class="reward-multi-select divider">
+                    <select chosen
+                            multiple
+                            data-placeholder-text-multiple="'Choose one or more currencies'"
+                            width="100"
+                            ng-model="newAccountConfigurationCurrencies.list"
+                            ng-options="currency.code for currency in currenciesList track by currency.code"
+                            required>
+                        <option value=""></option>
+                    </select>
+                </div>
                 <p>Currencies selected:
                     <span ng-repeat="currency in newAccountConfigurationCurrencies.list">
                     {{$last ? ' ' + currency.code : currency.code + ',' }}

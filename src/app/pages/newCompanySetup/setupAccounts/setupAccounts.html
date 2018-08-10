@@ -55,9 +55,16 @@
                     </div>
                     <div class="form-group">
                         <label>3 - Select currencies</label>
-                        <select multiple class="form-control divider" ng-model="account.currencies"
-                                ng-options="currency.code for currency in currencies | orderBy: 'code'">
-                        </select>
+                        <div class="reward-multi-select divider">
+                            <select chosen
+                                    multiple
+                                    data-placeholder-text-multiple="'Choose one or more currencies'"
+                                    width="100"
+                                    ng-model="account.currencies"
+                                    ng-options="currency.code for currency in currencies | orderBy: 'code'">
+                                <option value=""></option>
+                            </select>
+                        </div>
                         <p>Currencies selected:
                             <span ng-repeat="currency in account.currencies | orderBy: 'code'">
                                 {{$last ? ' ' + currency.code : currency.code + ',' }}

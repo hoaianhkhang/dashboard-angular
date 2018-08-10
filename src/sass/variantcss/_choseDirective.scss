@@ -72,10 +72,17 @@
     height: 34px;
     padding: 5px 12px 6px 12px;
     border-radius: 0;
+    border: 1px solid #e7e7e7;
     background: none;
     & div b{
       background-position: 0 7px;
     }
+    & abbr{
+      top: 11px!important;
+    }
+  }
+  & .chosen-disabled .chosen-single{
+    cursor: not-allowed!important;
   }
   & tags-input .tags{
     box-shadow: none!important;

@@ -40,8 +40,8 @@
                 } else {
                     $scope.secondaryTrackedLocation = '';
                 }
-            } else if (remainingLocationArray[0] == 'requests'){
-                $scope.trackedLocation = 'requests';
+            } else if (remainingLocationArray[0] == 'list'){
+                $scope.trackedLocation = 'list';
                 $scope.secondaryTrackedLocation = '';
             }
 
