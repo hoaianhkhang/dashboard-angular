@@ -29,8 +29,9 @@
                         <th>Campaign</th>
                         <th>Currency</th>
                         <th>Amount</th>
-                        <th>Status</th>
                         <th>Reward type</th>
+                        <th>Status</th>
+                        <th>Created</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -42,8 +43,11 @@
                         <td class="transactions-list-element" title="{{reward.currency.code || 'None'}}" ng-bind="reward.currency.code || 'None'"></td>
                         <td class="transactions-list-element" title="{{reward.amount | currencyModifiersFilter: reward.currency.divisibility}}"
                             ng-bind="reward.amount | currencyModifiersFilter: reward.currency.divisibility"></td>
-                        <td class="transactions-list-element" title="{{reward.status | capitalizeWord}}" ng-bind="reward.status | capitalizeWord"></td>
                         <td class="transactions-list-element" title="{{reward.reward_type}}" ng-bind="reward.reward_type"></td>
+                        <td class="transactions-list-element" title="{{reward.status | capitalizeWord}}" ng-bind="reward.status | capitalizeWord"></td>
+                        <td class="transactions-list-element" title="{{reward.created | date:'mediumDate'}} {{reward.created | date:'shortTime'}}">
+                            {{reward.created | date:'mediumDate'}} {{reward.created | date:'shortTime'}}
+                        </td>
                         <td ng-click="$event.stopPropagation()">
                             <div ng-show="reward.reward_type == 'Request'">
                                 <a ng-hide="reward.status == 'reject'" class="margin-right-10 pointer" ng-click="rewardStatusChange(reward,'reject')">Reject</a>
