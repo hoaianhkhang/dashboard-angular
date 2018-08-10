@@ -148,15 +148,15 @@
             }
         };
 
-        $scope.openRewardRequestModal = function (page, size,request) {
+        $scope.openRewardRequestModal = function (page, size,reward) {
             vm.theModal = $uibModal.open({
                 animation: true,
                 templateUrl: page,
                 size: size,
-                controller: 'RewardsServiceRequestsModalCtrl',
+                controller: 'RewardsServiceRewardsModalCtrl',
                 resolve: {
-                    request: function () {
-                        return request;
+                    reward: function () {
+                        return reward;
                     }
                 }
             });

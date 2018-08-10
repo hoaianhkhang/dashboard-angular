@@ -1,23 +1,23 @@
-<div ng-hide="loadingRequest" class="modal-content">
+<div ng-hide="loadingReward" class="modal-content">
     <div class="modal-header">
         <button type="button" class="close" ng-click="$dismiss()" aria-label="Close">
             <em class="ion-ios-close-empty sn-link-close"></em>
         </button>
-        <h4 class="modal-title" id="myModalLabel">Request details</h4>
+        <h4 class="modal-title" id="myModalLabel">Reward details</h4>
     </div>
     <div class="modal-body">
         <div class="row">
             <a ng-hide="editingRequest" class="pull-right divider pointer"
-               ng-click="toggleEditingRequest()"><i class="fa fa-pencil"></i> Edit request</a>
+               ng-click="toggleEditingRequest()"><i class="fa fa-pencil"></i> Edit reward</a>
             <a ng-show="editingRequest" class="pull-right divider pointer"
                ng-click="toggleEditingRequest()"><i class="fa fa-times"></i> Cancel edit</a>
         </div>
         <div class="row">
             <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-left-padding divider">
-                <p class="text-subtle">Request identifier: </p>
+                <p class="text-subtle">Reward identifier: </p>
             </div>
             <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 no-right-padding">
-                <p ng-bind="request.identifier"></p>
+                <p ng-bind="reward.identifier"></p>
             </div>
         </div>
         <div class="row">
@@ -25,7 +25,7 @@
                 <p class="text-subtle">Campaign id: </p>
             </div>
             <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 no-right-padding">
-                <p ng-bind="request.campaign"></p>
+                <p ng-bind="reward.campaign.identifier || 'None'"></p>
             </div>
         </div>
         <div class="row">
@@ -33,7 +33,7 @@
                 <p class="text-subtle">Campaign name: </p>
             </div>
             <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 no-right-padding">
-                <p ng-bind="request.campaign_name || 'Unnamed'"></p>
+                <p ng-bind="reward.campaign.name || 'None'"></p>
             </div>
         </div>
         <div class="row">
@@ -46,13 +46,37 @@
         </div>
         <div class="row">
             <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-left-padding divider">
+                <p class="text-subtle">Amount: </p>
+            </div>
+            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 no-right-padding">
+                <p ng-bind="reward.amount | currencyModifiersFilter: reward.currency.divisibility || 'None'"></p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-left-padding divider">
+                <p class="text-subtle">Currency: </p>
+            </div>
+            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 no-right-padding">
+                <p ng-bind="reward.currency.code || 'None'"></p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-left-padding divider">
+                <p class="text-subtle">Reward type: </p>
+            </div>
+            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 no-right-padding">
+                <p ng-bind="reward.reward_type || 'None'"></p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-left-padding divider">
                 <p class="text-subtle">Status: </p>
             </div>
             <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 no-right-padding">
-                <p ng-hide="editingRequest" ng-bind="request.status| capitalizeWord"></p>
+                <p ng-hide="editingRequest" ng-bind="reward.status| capitalizeWord"></p>
                 <select ng-show="editingRequest" class="form-control divider pointer"
                         ng-model="updateRequestObj.status"
-                        ng-options="option for option in requestStatusOptions">
+                        ng-options="option for option in rewardStatusOptions">
                 </select>
             </div>
         </div>
@@ -67,6 +91,6 @@
         </div>
     </div>
 </div>
-<div ba-panel ng-show="loadingRequest">
+<div ba-panel ng-show="loadingReward">
     <loading-image></loading-image>
 </div>
