@@ -5,7 +5,7 @@
         .controller('RewardsServiceRewardsModalCtrl', RewardsServiceRewardsModalCtrl);
 
     function RewardsServiceRewardsModalCtrl($scope,reward,environmentConfig,$uibModalInstance,$ngConfirm,
-                                             toastr,$http,localStorageManagement,errorHandler,$filter) {
+                                            $state,toastr,$http,localStorageManagement,errorHandler,$filter) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
@@ -19,6 +19,11 @@
 
         $scope.toggleEditingRequest = function () {
             $scope.editingRequest = !$scope.editingRequest;
+        };
+
+        $scope.goToTransactions = function (transactionId) {
+            $state.go('transactions.history',{transactionId: transactionId});
+            $uibModalInstance.close();
         };
 
         $scope.findUserObj = function () {

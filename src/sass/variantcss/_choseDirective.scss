@@ -81,6 +81,9 @@
       top: 11px!important;
     }
   }
+  & .chosen-disabled .chosen-single{
+    cursor: not-allowed!important;
+  }
   & tags-input .tags{
     box-shadow: none!important;
     font: 14px "Source Sans Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;

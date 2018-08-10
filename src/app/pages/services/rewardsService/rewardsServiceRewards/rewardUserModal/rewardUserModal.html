@@ -8,9 +8,7 @@
     <div class="modal-body">
         <form class="custom-form" name="rewardUserForm" novalidate>
             <div class="form-group divider-20">
-                <label>Campaign name &nbsp;<i ng-show="rewardUserObj.currency.code"
-                                              title="Please deselect the currency to reward a user using a campaign"
-                                              class="ion-information-circled setup-groups-tooltip"></i></label><br>
+                <label>Campaign name</label><br>
                 <select class="form-control pointer" ng-disabled="rewardUserObj.currency.code" ng-model="rewardUserObj.campaign"
                         ng-options="campaign.name for campaign in campaignsListOptions">
                 </select>
@@ -28,8 +26,8 @@
             <div class="form-group divider-20 setup-groups-tooltip-div">
                 <label>Currency <span ng-hide="rewardUserObj.campaign.name != 'No campaign selected'" class="required-icon">*</span>
                     &nbsp;<i ng-show="rewardUserObj.campaign.name != 'No campaign selected'"
-                                         title="Please deselect the campaign to reward a user using a currency"
-                                          class="ion-information-circled setup-groups-tooltip"></i></label>
+                             uib-tooltip-html="'Cannot change reward currency when a campaign is selected. Deselect a campaign to reward users with a different currency.'"
+                             class="ion-information-circled setup-groups-tooltip"></i></label>
                 <div class="reward-multi-select">
                     <select chosen
                             data-placeholder-text-single="'Choose a currency'"
