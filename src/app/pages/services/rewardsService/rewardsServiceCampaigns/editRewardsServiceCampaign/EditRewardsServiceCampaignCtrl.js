@@ -5,8 +5,8 @@
         .controller('EditRewardsServiceCampaignsCtrl', EditRewardsServiceCampaignsCtrl);
 
     /** @ngInject */
-    function EditRewardsServiceCampaignsCtrl($scope,$rootScope,$stateParams,environmentConfig,typeaheadService,toastr,_,
-                                             $http,localStorageManagement,$location,errorHandler) {
+    function EditRewardsServiceCampaignsCtrl($scope,$stateParams,environmentConfig,typeaheadService,toastr,_,
+                                             $http,localStorageManagement,$location,errorHandler,currencyModifiers) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
@@ -34,6 +34,7 @@
         $scope.getGroupsTypeahead = typeaheadService.getGroupsTypeahead();
 
         vm.getCompanyCurrencies = function(){
+            $scope.updatingCampaign = true;
             if(vm.token){
                 $http.get(environmentConfig.API + '/admin/currencies/?enabled=true&page_size=250', {
                     headers: {
@@ -44,9 +45,13 @@
                     if (res.status === 200) {
                         if(res.data.data.results.length > 0){
                             $scope.currencyOptions = res.data.data.results;
+                            $scope.getCampaign();
+                        } else {
+                            $scope.getCampaign();
                         }
                     }
                 }).catch(function (error) {
+                    $scope.updatingCampaign = false;
                     errorHandler.evaluateErrors(error.data);
                     errorHandler.handleErrors(error);
                 });
@@ -55,7 +60,6 @@
         vm.getCompanyCurrencies();
 
         $scope.getCampaign = function () {
-            $scope.updatingCampaign =  true;
             if(vm.token) {
                 $http.get(vm.baseUrl + 'admin/campaigns/' + vm.campaignId + '/', {
                     headers: {
@@ -67,14 +71,16 @@
                         var editObj = {};
                         editObj = res.data.data;
                         $scope.currencyOptions.forEach(function (element) {
-                            if(element.code == editObj.currency){
+                            if(element.code == editObj.currency.code){
                                 editObj.currency = element;
+                                editObj.start_date = moment(editObj.start_date).toDate();
+                                editObj.end_date = moment(editObj.end_date).toDate();
+                                editObj.reward_total = currencyModifiers.convertFromCents(editObj.reward_total,editObj.currency.divisibility);
+                                editObj.reward_amount = currencyModifiers.convertFromCents(editObj.reward_amount,editObj.currency.divisibility);
+                                $scope.editCampaignParams = editObj;
                             }
                         });
 
-                        editObj.start_date = moment(editObj.start_date).toDate();
-                        editObj.end_date = moment(editObj.end_date).toDate();
-                        $scope.editCampaignParams = editObj;
                         $scope.updatingCampaign =  false;
                     }
                 }).catch(function (error) {
@@ -84,7 +90,6 @@
                 });
             }
         };
-        $scope.getCampaign();
 
         $scope.campaignChanged = function(field){
             vm.updatedCampaignObj[field] = $scope.editCampaignParams[field];
@@ -106,17 +111,16 @@
             if(vm.updatedCampaignObj.end_date){
                 vm.updatedCampaignObj.end_date = moment(new Date(vm.updatedCampaignObj.end_date)).format('YYYY-MM-DD');
             }
-            if(vm.updatedCampaignObj.users && vm.updatedCampaignObj.users.length > 0){
-                vm.updatedCampaignObj.users = _.pluck(vm.updatedCampaignObj.users,'text');
-            }
-            if(vm.updatedCampaignObj.groups && vm.updatedCampaignObj.groups.length > 0){
-                vm.updatedCampaignObj.groups = _.pluck(vm.updatedCampaignObj.groups,'text');
-            }
-            if(vm.updatedCampaignObj.tags && vm.updatedCampaignObj.tags.length > 0){
-                vm.updatedCampaignObj.tags = _.pluck(vm.updatedCampaignObj.tags,'text');
-            }
             if(vm.updatedCampaignObj.currency && vm.updatedCampaignObj.currency.code){
                 vm.updatedCampaignObj.currency = vm.updatedCampaignObj.currency.code;
+            }
+            if(vm.updatedCampaignObj.reward_total){
+                vm.updatedCampaignObj.reward_total = currencyModifiers.convertToCents(vm.updatedCampaignObj.reward_total,$scope.editCampaignParams.currency.divisibility);
+                vm.updatedCampaignObj.currency = $scope.editCampaignParams.currency.code;
+            }
+            if(vm.updatedCampaignObj.reward_amount){
+                vm.updatedCampaignObj.reward_amount = currencyModifiers.convertToCents(vm.updatedCampaignObj.reward_amount,$scope.editCampaignParams.currency.divisibility);
+                vm.updatedCampaignObj.currency = $scope.editCampaignParams.currency.code;
             }
 
             $scope.updatingCampaign =  true;

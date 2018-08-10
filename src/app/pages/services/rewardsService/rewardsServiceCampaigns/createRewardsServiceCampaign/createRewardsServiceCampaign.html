@@ -10,11 +10,14 @@
                        class="form-control" placeholder="Enter campaign name" required>
             </div>
             <div class="form-group">
-                <label>Campaign description</label>
-                <textarea rows="4" type="text" ng-model="newCampaignParams.description" class="form-control"  placeholder='Enter campaign description'></textarea>
+                <label>Campaign description  <span class="required-icon">*</span></label>
+                <textarea rows="4" type="text" ng-model="newCampaignParams.description"
+                          class="form-control"  placeholder='Enter campaign description' required></textarea>
             </div>
-            <div class="form-group">
-                <label>Currency <span class="required-icon">*</span></label>
+            <div class="form-group setup-groups-tooltip-div">
+                <label>Currency <span class="required-icon">*</span>
+                    &nbsp;<i uib-tooltip-html="'Reward currency that will be credited to the user account.'"
+                             class="ion-information-circled setup-groups-tooltip"></i></label>
                 <div class="reward-multi-select">
                     <select chosen
                             data-placeholder-text-single="'Choose a currency'"
@@ -25,8 +28,10 @@
                     </select>
                 </div>
             </div>
-            <div class="form-group">
-                <label>Start date <span class="required-icon">*</span></label>
+            <div class="form-group setup-groups-tooltip-div">
+                <label>Start date <span class="required-icon">*</span>
+                    &nbsp;<i uib-tooltip-html="'The starting date of the campaign.'"
+                             class="ion-information-circled setup-groups-tooltip"></i></label>
                 <div class="rewards-date">
                     <input type="text" class="form-control rewards-date-input custom-datepicker"
                            uib-datepicker-popup="{{dateObj.format}}" popup-placement="bottom-left"
@@ -39,8 +44,10 @@
                             </span>
                 </div>
             </div>
-            <div class="form-group">
-                <label>End date <span class="required-icon">*</span></label>
+            <div class="form-group setup-groups-tooltip-div">
+                <label>End date <span class="required-icon">*</span>
+                    &nbsp;<i uib-tooltip-html="'The ending date of the campaign.'"
+                             class="ion-information-circled setup-groups-tooltip"></i></label>
                 <div class="rewards-date">
                     <input type="text" class="form-control transaction-date-filter-input custom-datepicker"
                            uib-datepicker-popup="{{dateObj.format}}" popup-placement="bottom-left"
@@ -53,31 +60,22 @@
                             </span>
                 </div>
             </div>
-            <div class="form-group">
-                <label>Reward type</label>
-                <div class="reward-type-radio-groups">
-                    <input class="margin-right-10 pointer" type="radio" ng-model="newCampaignParams.rewardType" value="basic">
-                    <span class="reward-radio-type1">Basic</span>
-                    <input class="horizontal-divider-40 margin-right-10 pointer" type="radio" ng-model="newCampaignParams.rewardType"
-                           value="manual"> <span class="reward-radio-type2">Manual</span>
-                    <input class="horizontal-divider-50 margin-right-10 pointer" type="radio" ng-model="newCampaignParams.rewardType"
-                           value="automatic"> <span class="reward-radio-type3">Automatic</span>
-                </div>
-            </div>
             <div class="form-group setup-groups-tooltip-div">
-                <label>Reward total &nbsp;<i uib-tooltip-html="'Total number of tokens available during the campaign.'"
-                                            class="ion-information-circled setup-groups-tooltip"></i></label>
-                <br>
-                <input class="form-control" ng-model="newCampaignParams.rewardTotal" type="number">
-            </div>
-            <div class="form-group setup-groups-tooltip-div">
-                <label>Reward percentage &nbsp;<i uib-tooltip-html="'Add a percentage value if you want reward tokens to be issued based on the percentage of the award amount instead of by the reward amount.'"
+                <label>Reward total &nbsp;<i uib-tooltip-html="'The total amount of funds available in the campaign that can be issued to users.'"
                                              class="ion-information-circled setup-groups-tooltip"></i></label>
                 <br>
-                <input class="form-control" ng-model="newCampaignParams.rewardPercentage" type="number">
+                <input class="form-control" ng-model="newCampaignParams.rewardTotal" type="text">
             </div>
-            <div class="form-group">
-                <label>Campaign status</label>
+            <div class="form-group setup-groups-tooltip-div">
+                <label>Reward amount <span class="required-icon">*</span>
+                    &nbsp;<i uib-tooltip-html="'The amount of funds each user will receive for a reward in this campaign.'"
+                             class="ion-information-circled setup-groups-tooltip"></i></label>
+                <br>
+                <input class="form-control" ng-model="newCampaignParams.rewardAmount" type="text" required>
+            </div>
+            <div class="form-group setup-groups-tooltip-div">
+                <label>Campaign status &nbsp;<i uib-tooltip-html="'The status of a campaign. This will automatically change to expired after the end date or when the reward total balance has been depleted.'"
+                                                class="ion-information-circled setup-groups-tooltip"></i></label>
                 <div class="reward-type-radio-groups-status">
                     <input class="margin-right-10 pointer" type="radio" ng-model="newCampaignParams.status" value="active">
                     <span class="reward-radio-type1">Active</span>
@@ -88,45 +86,22 @@
                 </div>
             </div>
             <div class="form-group setup-groups-tooltip-div">
-                <label>User volume limit &nbsp;<i ng-hide="true" uib-tooltip-html="'User volume limit.'"
+                <label>Max per user &nbsp;<i uib-tooltip-html="'The maximum reward amount a user can receive in a campaign.'"
                                                   class="ion-information-circled setup-groups-tooltip"></i></label>
                 <br>
-                <input class="form-control" ng-model="newCampaignParams.userVolumeLimit" type="number">
+                <input class="form-control" ng-model="newCampaignParams.max_per_user" type="number">
             </div>
-            <div class="form-group setup-groups-tooltip-div">
-                <label>User limit &nbsp;<i ng-hide="true" uib-tooltip-html="'User limit.'"
-                                                  class="ion-information-circled setup-groups-tooltip"></i></label>
+            <div class="form-group divider-20 setup-groups-tooltip-div">
+                <label>Visible &nbsp;<i uib-tooltip-html="'This will make the campaign visible to users.'"
+                                        class="ion-information-circled setup-groups-tooltip"></i></label>
                 <br>
-                <input class="form-control" ng-model="newCampaignParams.userLimit" type="number">
+                <input class="custom-rehive-checkbox" ng-model="newCampaignParams.visible" type="checkbox">
             </div>
-            <div class="form-group setup-groups-tooltip-div">
-                <label>User transaction limit &nbsp;<i ng-hide="true" uib-tooltip-html="'User transaction limit.'"
-                                           class="ion-information-circled setup-groups-tooltip"></i></label>
+            <div class="form-group divider-20 setup-groups-tooltip-div">
+                <label>Request &nbsp;<i uib-tooltip-html="'This will make the campaign available for users to request a reward from.'"
+                                        class="ion-information-circled setup-groups-tooltip"></i></label>
                 <br>
-                <input class="form-control" ng-model="newCampaignParams.userTransactionLimit" type="number">
-            </div>
-            <div class="form-group">
-                <label>Users</label>
-                <div class="reward-multi-select">
-                    <tags-input ng-model="newCampaignParams.users" placeholder="Enter one or more user email">
-                        <auto-complete class="reward-tag-users-input" source="getUsersEmailTypeahead($query)"></auto-complete>
-                    </tags-input>
-                </div>
-            </div>
-            <div class="form-group">
-                <label>Groups</label>
-                <div class="reward-multi-select">
-                    <tags-input ng-model="newCampaignParams.groups" placeholder="Enter one or more group name">
-                        <auto-complete class="reward-tag-users-input" source="getGroupsTypeahead($query)"></auto-complete>
-                    </tags-input>
-                </div>
-            </div>
-            <div class="form-group">
-                <label>Tags</label>
-                <div class="reward-multi-select">
-                    <tags-input ng-model="newCampaignParams.tags" placeholder="Enter tags separated by a comma">
-                    </tags-input>
-                </div>
+                <input class="custom-rehive-checkbox" ng-model="newCampaignParams.request" type="checkbox">
             </div>
             <div class="form-group">
                 <button ng-disabled="(!campaignForm.$valid || !newCampaignParams.currency.code)" ng-click="addCampaign(newCampaignParams)" class="btn btn-primary dashboard-btn pull-right">Add</button>
@@ -138,3 +113,57 @@
 <div ng-show="addingCampaign" class="service-header" ba-panel>
     <loading-image></loading-image>
 </div>
+
+
+<!--<div class="form-group">-->
+    <!--<label>Reward type</label>-->
+    <!--<div class="reward-type-radio-groups">-->
+        <!--<input class="margin-right-10 pointer" type="radio" ng-model="newCampaignParams.rewardType" value="basic">-->
+        <!--<span class="reward-radio-type1">Basic</span>-->
+        <!--<input class="horizontal-divider-40 margin-right-10 pointer" type="radio" ng-model="newCampaignParams.rewardType"-->
+               <!--value="manual"> <span class="reward-radio-type2">Manual</span>-->
+        <!--<input class="horizontal-divider-50 margin-right-10 pointer" type="radio" ng-model="newCampaignParams.rewardType"-->
+               <!--value="automatic"> <span class="reward-radio-type3">Automatic</span>-->
+    <!--</div>-->
+<!--</div>-->
+<!--<div class="form-group">-->
+    <!--<label>Reward amount <span class="required-icon">*</span></label>-->
+    <!--<br>-->
+    <!--<input class="form-control" ng-model="newCampaignParams.rewardAmount" type="number" required>-->
+<!--</div>-->
+<!--<div class="form-group setup-groups-tooltip-div">-->
+    <!--<label>Reward percentage &nbsp;<i uib-tooltip-html="'Add a percentage value if you want reward tokens to be issued based on the percentage of the award amount instead of by the reward amount.'"-->
+                                      <!--class="ion-information-circled setup-groups-tooltip"></i></label>-->
+    <!--<br>-->
+    <!--<input class="form-control" ng-model="newCampaignParams.rewardPercentage" type="number">-->
+<!--</div>-->
+
+<!--<div class="form-group setup-groups-tooltip-div">-->
+    <!--<label>Reward total &nbsp;<i uib-tooltip-html="'Total number of tokens available during the campaign.'"-->
+                                 <!--class="ion-information-circled setup-groups-tooltip"></i></label>-->
+    <!--<br>-->
+    <!--<input class="form-control" ng-model="newCampaignParams.rewardTotal" type="number">-->
+<!--</div>-->
+<!--<div class="form-group">-->
+    <!--<label>Users</label>-->
+    <!--<div class="reward-multi-select">-->
+        <!--<tags-input ng-model="newCampaignParams.users" placeholder="Enter one or more user email">-->
+            <!--<auto-complete class="reward-tag-users-input" source="getUsersEmailTypeahead($query)"></auto-complete>-->
+        <!--</tags-input>-->
+    <!--</div>-->
+<!--</div>-->
+<!--<div class="form-group">-->
+    <!--<label>Groups</label>-->
+    <!--<div class="reward-multi-select">-->
+        <!--<tags-input ng-model="newCampaignParams.groups" placeholder="Enter one or more group name">-->
+            <!--<auto-complete class="reward-tag-users-input" source="getGroupsTypeahead($query)"></auto-complete>-->
+        <!--</tags-input>-->
+    <!--</div>-->
+<!--</div>-->
+<!--<div class="form-group">-->
+    <!--<label>Tags</label>-->
+    <!--<div class="reward-multi-select">-->
+        <!--<tags-input ng-model="newCampaignParams.tags" placeholder="Enter tags separated by a comma">-->
+        <!--</tags-input>-->
+    <!--</div>-->
+<!--</div>-->
