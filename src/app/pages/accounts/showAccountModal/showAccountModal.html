@@ -1,0 +1,69 @@
+<div ng-hide="loadingAccount" class="modal-content">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="$dismiss()" aria-label="Close">
+            <em class="ion-ios-close-empty sn-link-close"></em>
+        </button>
+        <h4 class="modal-title" id="myModalLabel">Account details</h4>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-left-padding divider-20">
+                <p class="text-subtle">Name: </p>
+            </div>
+            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 no-right-padding">
+                <p ng-bind="accountObj.name"></p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-left-padding divider-20">
+                <p class="text-subtle">User: </p>
+            </div>
+            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 no-right-padding">
+                <p ng-bind="accountObj.user.email"></p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-left-padding divider-20">
+                <p class="text-subtle">Reference: </p>
+            </div>
+            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 no-right-padding">
+                <p ng-bind="accountObj.reference"></p>
+            </div>
+        </div>
+        <div class="row">
+            <div ng-class="{'divider-20': accountObj.currencies.length > 0}" class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-left-padding">
+                <p class="text-subtle">Type: </p>
+            </div>
+            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 no-right-padding">
+                <p>{{accountObj.primary ? 'primary' : ''}}</p>
+            </div>
+        </div>
+        <table ng-show="accountObj.currencies.length > 0" class="table">
+            <tr class="user-switches-table-header">
+                <th class="no-left-padding">Currency</th>
+                <th>Available balance</th>
+                <th>Balance</th>
+            </tr>
+            <tr  ng-repeat="acc in accountObj.currencies | orderBy: 'currency.code'">
+                <td class="no-left-padding" width="15%" ng-bind="acc.currency.code"></td>
+                <td width="20%" title="{{acc.available_balance  | currencyModifiersFilter: acc.currency.divisibility}}">
+                    {{acc.currency.symbol}}{{acc.available_balance  | currencyModifiersFilter: acc.currency.divisibility}}
+                </td>
+                <td width="30%" title="{{acc.balance  | currencyModifiersFilter: acc.currency.divisibility}}">
+                    {{acc.currency.symbol}}{{acc.balance  | currencyModifiersFilter: acc.currency.divisibility}}
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="modal-footer">
+        <button ng-click="goToUserAccount()"
+                class="btn btn-primary no-margin dashboard-btn pull-right">Edit
+        </button>
+        <button class="btn btn-primary pull-left no-margin margin-right-10"
+                ng-click="goToAccountTransactions()">View Transactions
+        </button>
+    </div>
+</div>
+<div ba-panel ng-show="loadingAccount">
+    <loading-image></loading-image>
+</div>

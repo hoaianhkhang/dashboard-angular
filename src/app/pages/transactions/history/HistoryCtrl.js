@@ -107,7 +107,7 @@
                 selectedTransactionSubtypeOption: ''
             },
             transactionIdFilter: {
-                selectedTransactionIdOption: $state.params.transactionId || null
+                selectedTransactionIdOption: null
             },
             referenceFilter: {
                 selectedReferenceOption: 'Is equal to',
@@ -116,10 +116,10 @@
                 reference__gt: null
             },
             userFilter: {
-                selectedUserOption: $state.params.identifier || null
+                selectedUserOption: null
             },
             accountFilter: {
-                selectedAccount: $state.params.account || null
+                selectedAccount: null
             },
             groupFilter: {
                 selectedGroupOption: 'Group name',
@@ -529,7 +529,25 @@
                 });
             }
         };
-        $scope.getLatestTransactions();
+        if($state.params.accountRef){
+            $scope.filtersObj.accountFilter = true;
+            $scope.applyFiltersObj.accountFilter.selectedAccount = $state.params.accountRef;
+            $scope.getLatestTransactions();
+        } else if($state.params.identifier) {
+            $scope.filtersObj.userFilter = true;
+            $scope.applyFiltersObj.userFilter.selectedUserOption = $state.params.identifier;
+            $scope.getLatestTransactions();
+        } else if($state.params.transactionId) {
+            $scope.filtersObj.transactionIdFilter = true;
+            $scope.applyFiltersObj.transactionIdFilter.selectedTransactionIdOption = $state.params.transactionId;
+            $scope.getLatestTransactions();
+        } else if($state.params.currencyCode) {
+            $scope.filtersObj.currencyFilter = true;
+            $scope.applyFiltersObj.currencyFilter.selectedCurrencyOption.code = $state.params.currencyCode;
+            $scope.getLatestTransactions();
+        } else {
+            $scope.getLatestTransactions();
+        }
 
         vm.formatTransactionsArray = function (transactionsArray) {
             transactionsArray.forEach(function (transactionObj) {

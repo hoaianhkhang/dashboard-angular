@@ -204,8 +204,24 @@
             $scope.loadingAccounts = false;
         };
 
-        $scope.displayAccount = function (user) {
-            //$location.path('/user/' + user.identifier + '/details');
+        $scope.displayAccount = function (page,size,account) {
+            vm.theAccountModal = $uibModal.open({
+                animation: true,
+                templateUrl: page,
+                size: size,
+                controller: 'ShowAccountModalCtrl',
+                scope: $scope,
+                resolve: {
+                    account: function () {
+                        return account;
+                    }
+                }
+            });
+
+            vm.theAccountModal.result.then(function(){
+
+            }, function(){
+            });
         };
 
         $scope.goToAddAccount = function (page,size) {

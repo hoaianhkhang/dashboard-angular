@@ -156,7 +156,7 @@
         
         $scope.goToUserAccount = function (transaction) {
             $window.open('/#/user/' + $scope.transaction.user.identifier + '/accounts?searchAccount=' + transaction.account,'_blank');
-        }
+        };
 
 
     }
