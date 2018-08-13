@@ -6,7 +6,7 @@
 
     /** @ngInject */
     function AccountsCtrl($rootScope,$scope,localStorageManagement,typeaheadService,
-                            errorHandler,serializeFiltersService,$location,$uibModal,Rehive) {
+                            errorHandler,serializeFiltersService,$uibModal,Rehive) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
@@ -144,10 +144,16 @@
                 $scope.accountsListData = res;
                 if(res.results.length > 0){
                     vm.formatAccountsArray(res.results);
+                } else {
+                    $scope.accountsList = [];
+                    $scope.loadingAccounts = false;
+                    $scope.$apply();
                 }
 
                 if($scope.accountsList.length == 0){
                     $scope.accountsStateMessage = 'No accounts have been found';
+                    $scope.loadingAccounts = false;
+                    $scope.$apply();
                     return;
                 }
                 $scope.accountsStateMessage = '';
@@ -164,23 +170,24 @@
 
         vm.formatAccountsArray = function (accountsArray) {
             accountsArray.forEach(function (accountObj) {
-                var currencyText = '';
+                var currencyText = [];
 
                 if(accountObj.currencies.length > 0){
                     accountObj.currencies.forEach(function (currencyObj,index,array) {
                         if(index == (array.length - 1)){
-                            currencyText = currencyText + currencyObj.currency.code;
+                            currencyText.push(currencyObj.currency.code);
 
                             $scope.accountsList.push({
                                 user: accountObj.user.email,
                                 name: accountObj.name,
                                 reference: accountObj.reference,
                                 primary: accountObj.primary ? 'primary': '',
-                                currencies: currencyText
+                                currencies: currencyText.sort().join(', ')
                             });
+                            $scope.$apply();
                         }
 
-                        currencyText = currencyText + currencyObj.currency.code + ', ';
+                        currencyText.push(currencyObj.currency.code);
                     });
                 } else {
                     $scope.accountsList.push({
@@ -190,6 +197,7 @@
                         primary: accountObj.primary ? 'primary': '',
                         currencies: ''
                     });
+                    $scope.$apply();
                 }
             });
 
@@ -197,11 +205,24 @@
         };
 
         $scope.displayAccount = function (user) {
-            $location.path('/user/' + user.identifier + '/details');
+            //$location.path('/user/' + user.identifier + '/details');
         };
 
-        $scope.goToAddAccount = function () {
-            $location.path('/users/add');
+        $scope.goToAddAccount = function (page,size) {
+            vm.theModal = $uibModal.open({
+                animation: true,
+                templateUrl: page,
+                size: size,
+                controller: 'NewAccountModalCtrl',
+                scope: $scope
+            });
+
+            vm.theModal.result.then(function(account){
+                if(account){
+                    $scope.getAllAccounts('applyFilter');
+                }
+            }, function(){
+            });
         };
 
         $scope.closeColumnFiltersBox = function () {
