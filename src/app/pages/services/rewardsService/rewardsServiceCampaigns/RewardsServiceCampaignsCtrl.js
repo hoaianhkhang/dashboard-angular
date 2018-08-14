@@ -6,11 +6,11 @@
 
     /** @ngInject */
     function RewardsServiceCampaignsCtrl($scope,$http,localStorageManagement,$location,
-                                         serializeFiltersService,$uibModal,$ngConfirm,toastr,errorHandler) {
+                                         serializeFiltersService,$ngConfirm,toastr,errorHandler) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
-        vm.baseUrl = localStorageManagement.getValue('SERVICEURL');
+        vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
         $scope.loadingCampaigns =  false;
         $scope.campaignList = [];
 
@@ -41,7 +41,7 @@
                 page_size: $scope.campaignPagination.itemsPerPage || 25
             };
 
-            return vm.baseUrl + 'admin/campaigns/?' + serializeFiltersService.serializeFilters(searchObj);
+            return vm.serviceUrl + 'admin/campaigns/?' + serializeFiltersService.serializeFilters(searchObj);
         };
 
         $scope.getCampaignList = function () {
@@ -111,7 +111,7 @@
         $scope.deleteCampaign = function (campaignIdentifier) {
             if(vm.token) {
                 $scope.loadingCampaigns = true;
-                $http.delete(vm.baseUrl + 'admin/campaigns/' + campaignIdentifier + '/', {
+                $http.delete(vm.serviceUrl + 'admin/campaigns/' + campaignIdentifier + '/', {
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': vm.token
@@ -127,25 +127,6 @@
                     errorHandler.handleErrors(error);
                 });
             }
-        };
-
-        $scope.openRewardUserModal = function (page, size,campaign) {
-            vm.theModal = $uibModal.open({
-                animation: true,
-                templateUrl: page,
-                size: size,
-                controller: 'RewardUserModalCtrl',
-                resolve: {
-                    campaign: function () {
-                        return campaign;
-                    }
-                }
-            });
-
-            vm.theModal.result.then(function(){
-
-            }, function(){
-            });
         };
 
         $scope.openEditCampaignView = function (campaign) {

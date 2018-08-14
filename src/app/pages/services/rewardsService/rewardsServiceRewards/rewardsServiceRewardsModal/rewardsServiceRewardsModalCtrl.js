@@ -1,42 +1,47 @@
 (function () {
     'use strict';
 
-    angular.module('BlurAdmin.pages.services.rewardsService.rewardsServiceRequests')
-        .controller('RewardsServiceRequestsModalCtrl', RewardsServiceRequestsModalCtrl);
+    angular.module('BlurAdmin.pages.services.rewardsService.rewardsServiceRewards')
+        .controller('RewardsServiceRewardsModalCtrl', RewardsServiceRewardsModalCtrl);
 
-    function RewardsServiceRequestsModalCtrl($scope,request,environmentConfig,$uibModalInstance,$ngConfirm,
-                                             toastr,$http,localStorageManagement,errorHandler,$filter) {
+    function RewardsServiceRewardsModalCtrl($scope,reward,environmentConfig,$uibModalInstance,$ngConfirm,
+                                            $state,toastr,$http,localStorageManagement,errorHandler,$filter) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
         vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
-        $scope.request = request;
-        $scope.loadingRequest = false;
+        $scope.reward = reward;
+        $scope.loadingReward = false;
         $scope.editingRequest = false;
         $scope.userObj = {};
-        $scope.updateRequestObj = {status: $filter('capitalizeWord')(request.status)};
-        $scope.requestStatusOptions = ['Pending','Accept','Reject'];
+        $scope.updateRequestObj = {status: $filter('capitalizeWord')(reward.status)};
+        $scope.rewardStatusOptions = ['Pending','Accept','Reject'];
 
         $scope.toggleEditingRequest = function () {
             $scope.editingRequest = !$scope.editingRequest;
         };
 
+        $scope.goToTransactions = function (transactionId) {
+            $state.go('transactions.history',{transactionId: transactionId});
+            $uibModalInstance.close();
+        };
+
         $scope.findUserObj = function () {
-            $scope.loadingRequest = true;
-            $http.get(environmentConfig.API + '/admin/users/?user=' + $scope.request.user, {
+            $scope.loadingReward = true;
+            $http.get(environmentConfig.API + '/admin/users/?user=' + $scope.reward.user, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': vm.token
                 }
             }).then(function (res) {
                 if (res.status === 200) {
-                    $scope.loadingRequest = false;
+                    $scope.loadingReward = false;
                     if(res.data.data.results.length == 1){
                         $scope.userObj = res.data.data.results[0];
                     }
                 }
             }).catch(function (error) {
-                $scope.loadingRequest = false;
+                $scope.loadingReward = false;
                 errorHandler.evaluateErrors(error.data);
                 errorHandler.handleErrors(error);
             });
@@ -45,8 +50,8 @@
 
         $scope.updateRequestPrompt = function (status) {
             $ngConfirm({
-                title: 'Update request',
-                content: 'Are you sure you want to update this request?',
+                title: 'Update reward',
+                content: 'Are you sure you want to update this reward?',
                 animationBounce: 1,
                 animationSpeed: 100,
                 scope: $scope,
@@ -69,8 +74,8 @@
 
         vm.updateRequest = function () {
             if(vm.token) {
-                $scope.loadingRequest = true;
-                $http.patch(vm.serviceUrl + 'admin/campaigns/requests/' + request.identifier + '/',
+                $scope.loadingReward = true;
+                $http.patch(vm.serviceUrl + 'admin/rewards/' + reward.identifier + '/',
                     {
                         status: $scope.updateRequestObj.status.toLowerCase()
                     }, {
@@ -80,35 +85,35 @@
                     }
                 }).then(function (res) {
                     if (res.status === 200) {
-                        $scope.loadingRequest = false;
+                        $scope.loadingReward = false;
                         toastr.success('Request has been updated successfully');
                         $uibModalInstance.close(true);
                     }
                 }).catch(function (error) {
-                    $scope.loadingRequest = false;
+                    $scope.loadingReward = false;
                     errorHandler.evaluateErrors(error.data);
                     errorHandler.handleErrors(error);
                 });
             }
         };
 
-        //single reward request does not send campaign name but list api does
+        //single reward reward does not send campaign name but list api does
         // $scope.getRewardsRequests = function () {
         //     if(vm.token) {
-        //         $scope.loadingRequest = true;
-        //         $http.get(vm.serviceUrl + 'admin/campaigns/requests/' + request.identifier + '/', {
+        //         $scope.loadingReward = true;
+        //         $http.get(vm.serviceUrl + 'admin/rewards/' + reward.identifier + '/', {
         //             headers: {
         //                 'Content-Type': 'application/json',
         //                 'Authorization': vm.token
         //             }
         //         }).then(function (res) {
         //             if (res.status === 200) {
-        //                 $scope.loadingRequest = false;
-        //                 vm.request = res.data.data;
+        //                 $scope.loadingReward = false;
+        //                 vm.reward = res.data.data;
         //                 console.log(res.data.data)
         //             }
         //         }).catch(function (error) {
-        //             $scope.loadingRequest = false;
+        //             $scope.loadingReward = false;
         //             errorHandler.evaluateErrors(error.data);
         //             errorHandler.handleErrors(error);
         //         });

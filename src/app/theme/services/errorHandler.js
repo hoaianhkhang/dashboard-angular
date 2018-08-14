@@ -12,12 +12,16 @@
               if(errors && errors.data){
                 for(var key in errors.data){
                     if (errors.data.hasOwnProperty(key)) {
-                        errors.data[key].forEach(function(error){
-                            if(key == 'non_field_errors'){
-                                key = 'error';
-                            }
-                            toastr.error(error, (key.charAt(0).toUpperCase() + key.slice(1)));
-                        });
+                        if(Array.isArray(errors.data[key])){
+                            errors.data[key].forEach(function(error){
+                                if(key == 'non_field_errors'){
+                                    key = 'error';
+                                }
+                                toastr.error(error, (key.charAt(0).toUpperCase() + key.slice(1)));
+                            });
+                        } else {
+                            toastr.error(errors.message);
+                        }
                     }
                 }
               } else{
