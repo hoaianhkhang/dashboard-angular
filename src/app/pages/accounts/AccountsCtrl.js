@@ -29,6 +29,7 @@
 
         $scope.headerColumns = localStorageManagement.getValue(vm.savedAccountsTableColumns) ? JSON.parse(localStorageManagement.getValue(vm.savedAccountsTableColumns)) : [
             {colName: 'User',fieldName: 'user',visible: true},
+            {colName: 'User group',fieldName: 'group',visible: true},
             {colName: 'Account name',fieldName: 'name',visible: true},
             {colName: 'Reference',fieldName: 'reference',visible: true},
             {colName: 'Type',fieldName: 'primary',visible: true},
@@ -77,7 +78,7 @@
         };
 
         $scope.restoreColDefaults = function () {
-            var defaultVisibleHeader = ['User','Account name','Reference','Type',
+            var defaultVisibleHeader = ['User','User group','Account name','Reference','Type',
                 'Currencies'];
 
             $scope.headerColumns.forEach(function (headerObj) {
@@ -179,6 +180,7 @@
 
                             $scope.accountsList.push({
                                 user: accountObj.user.email,
+                                group: accountObj.user.group || '',
                                 name: accountObj.name,
                                 reference: accountObj.reference,
                                 primary: accountObj.primary ? 'primary': '',
@@ -192,6 +194,7 @@
                 } else {
                     $scope.accountsList.push({
                         user: accountObj.user.email,
+                        group: accountObj.user.group || '',
                         name: accountObj.name,
                         reference: accountObj.reference,
                         primary: accountObj.primary ? 'primary': '',

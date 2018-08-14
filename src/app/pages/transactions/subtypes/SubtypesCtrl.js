@@ -10,9 +10,6 @@
         var vm = this;
         vm.token = localStorageManagement.getValue('token');
         $scope.loadingSubtypes = true;
-        vm.location = $location.path();
-        vm.locationArray = vm.location.split('/');
-        $scope.locationIndicator = vm.locationArray[vm.locationArray.length - 1];
 
         vm.getSubtypes = function () {
             if(vm.token) {
