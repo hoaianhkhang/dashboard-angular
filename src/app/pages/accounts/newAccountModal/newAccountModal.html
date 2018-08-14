@@ -26,11 +26,18 @@
                 <input class="custom-rehive-checkbox" ng-model="addAccountParams.primary" type="checkbox">
             </div>
             <div class="form-group divider-20">
-                <label>Currency <small class="text-muted">(Hold CTRL to select multiple currencies)</small></label>
-                <br>
-                <select class="form-control pointer divider" ng-model="currenciesForNewAccount.list" multiple
-                        ng-options="currency.code for currency in currenciesList | orderBy: 'code' track by currency.code">
-                </select>
+                <label>Currency</label>
+                <div class="reward-multi-select divider">
+                    <select chosen
+                            multiple
+                            data-placeholder-text-multiple="'Choose one or more currencies'"
+                            width="100"
+                            ng-model="currenciesForNewAccount.list"
+                            ng-options="currency.code for currency in currenciesList | orderBy: 'code' track by currency.code"
+                            required>
+                        <option value=""></option>
+                    </select>
+                </div>
                 <p ng-hide="currenciesList.length > 0 || addingUserAccount">Looks like you haven't added any currencies to your company yet.
                     Add one by going to the <a href="/#/currencies" target="_blank">currencies page</a>.</p>
                 <p ng-show="currenciesList.length > 0 || addingUserAccount">Currencies selected:
