@@ -1,3 +1,37 @@
+.transaction-stat-icon{
+  width: 58px;
+  border-radius: 30px;
+  padding: 20px 0;
+  text-align: center;
+  font-size: 18px;
+  font-weight: bold;
+  border: 1px solid;
+}
+
+.stat-icon-1{
+  border-color: #B5EDF7;
+  color: #21D2EA;
+  background-color: #D6F6FB;
+}
+
+.stat-icon-2{
+  border-color: #C4C0E0;
+  color: #7063BA;
+  background-color: #E3E1F3;
+}
+
+.stat-icon-3{
+  border-color: #FCC0D2;
+  color: #FC7CA7;
+  background-color: #FEE2EC;
+}
+
+.stat-icon-4{
+  border-color: #CEE8C6;
+  color: #7FC866;
+  background-color: #E7F5E2;
+}
+
 .transaction-stat-panel{
   width: fit-content;
   & .transaction-stat-contents{

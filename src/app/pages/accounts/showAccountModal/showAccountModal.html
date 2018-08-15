@@ -7,42 +7,42 @@
     </div>
     <div class="modal-body">
         <div class="row">
-            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-left-padding divider-20">
+            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 no-left-padding divider-20">
                 <p class="text-subtle">Name: </p>
             </div>
-            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 no-right-padding">
+            <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9 no-right-padding">
                 <p ng-bind="accountObj.name"></p>
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-left-padding divider-20">
+            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 no-left-padding divider-20">
                 <p class="text-subtle">User: </p>
             </div>
-            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 no-right-padding">
+            <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9 no-right-padding">
                 <p ng-bind="accountObj.user.email"></p>
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-left-padding divider-20">
+            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 no-left-padding divider-20">
                 <p class="text-subtle">User group: </p>
             </div>
-            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 no-right-padding">
+            <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9 no-right-padding">
                 <p ng-bind="accountObj.user.group || ''"></p>
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-left-padding divider-20">
+            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 no-left-padding divider-20">
                 <p class="text-subtle">Reference: </p>
             </div>
-            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 no-right-padding">
+            <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9 no-right-padding">
                 <p ng-bind="accountObj.reference"></p>
             </div>
         </div>
         <div class="row">
-            <div ng-class="{'divider-20': accountObj.currencies.length > 0}" class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-left-padding">
+            <div ng-class="{'divider-20': accountObj.currencies.length > 0}" class="col-lg-3 col-md-3 col-sm-3 col-xs-3 no-left-padding">
                 <p class="text-subtle">Type: </p>
             </div>
-            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 no-right-padding">
+            <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9 no-right-padding">
                 <p>{{accountObj.primary ? 'primary' : ''}}</p>
             </div>
         </div>

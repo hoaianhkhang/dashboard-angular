@@ -98,7 +98,6 @@
                 enabled: true
             }}).then(function (res) {
                 if(res.results.length > 0){
-                    $scope.loadingStats = false;
                     $scope.currencyOptions = res.results;
                     $scope.$apply();
                 }
