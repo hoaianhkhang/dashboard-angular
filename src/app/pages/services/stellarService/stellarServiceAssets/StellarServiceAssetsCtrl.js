@@ -2,10 +2,10 @@
     'use strict';
 
     angular.module('BlurAdmin.pages.services.stellarService.stellarServiceAssets')
-        .controller('StellarAssetsCtrl', StellarAssetsCtrl);
+        .controller('StellarServiceAssetsCtrl', StellarServiceAssetsCtrl);
 
     /** @ngInject */
-    function StellarAssetsCtrl($scope,localStorageManagement,environmentConfig,$filter,$http,errorHandler,$uibModal) {
+    function StellarServiceAssetsCtrl($scope,localStorageManagement,environmentConfig,$filter,$http,errorHandler,$uibModal) {
 
         $scope.stellarAccountSettingView = '';
 
