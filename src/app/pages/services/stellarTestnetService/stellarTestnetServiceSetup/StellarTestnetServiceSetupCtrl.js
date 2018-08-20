@@ -34,7 +34,7 @@
                     }
 
                     if(stellarTestnetFullySetup){
-                        $location.path('/services/stellar/accounts');
+                        $location.path('/services/stellar-testnet/accounts');
                     } else {
                         $scope.loadingStellarTestnetService = false;
                     }

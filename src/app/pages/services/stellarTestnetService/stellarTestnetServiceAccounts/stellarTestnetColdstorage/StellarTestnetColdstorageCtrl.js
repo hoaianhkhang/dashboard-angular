@@ -1,19 +1,25 @@
 (function () {
     'use strict';
 
-    angular.module('BlurAdmin.pages.services.ethereumService.ethereumServiceAccounts')
-        .controller('EthereumColdstorageCtrl', EthereumColdstorageCtrl);
+    angular.module('BlurAdmin.pages.services.stellarTestnetService.stellarTestnetServiceAccounts')
+        .controller('StellarTestnetColdstorageCtrl', StellarTestnetColdstorageCtrl);
 
     /** @ngInject */
-    function EthereumColdstorageCtrl($scope,localStorageManagement,errorHandler,currenciesList,$http,$uibModal,$location,
-                                    cleanObject,sharedResources,_,environmentConfig,currencyModifiers,toastr,serializeFiltersService) {
+    function StellarTestnetColdstorageCtrl($scope,localStorageManagement,errorHandler,$http,$uibModal,$state,cleanObject,
+                                    sharedResources,_,environmentConfig,currencyModifiers,toastr,serializeFiltersService) {
 
         var vm = this;
         vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
         vm.token = localStorageManagement.getValue('TOKEN');
-        $scope.ethereumCurrency = currenciesList.find(function (element) {
-            return element.code == 'XBT';
-        });
+        $scope.publicAddressesList = [];
+        $scope.stellarCurrency = {
+            code: "TXLM",
+            description: "Stellar Lumen",
+            symbol: "*",
+            unit: "lumen",
+            divisibility: 7,
+            enabled: true
+        };
         $scope.showOptionsAccountRef = false;
         $scope.loadingColdstorage = true;
 
@@ -44,6 +50,7 @@
                     }
                 }).catch(function (error) {
                     $scope.loadingColdstorage =  false;
+                    $scope.transactionsColdstorageStateMessage = 'Failed to load data';
                     errorHandler.evaluateErrors(error.data);
                     errorHandler.handleErrors(error);
                 });
@@ -66,7 +73,7 @@
                 page_size: $scope.publicAddressPagination.itemsPerPage
             };
 
-            return vm.serviceUrl + 'admin/coldstorage/public-addresses/?' +
+            return vm.serviceUrl + 'admin/coldstorage/accounts/?' +
                 serializeFiltersService.serializeFilters(cleanObject.cleanObj(searchObj));
         };
 
@@ -100,7 +107,7 @@
                 animation: true,
                 templateUrl: page,
                 size: size,
-                controller: 'AddPublicAddressModalCtrl'
+                controller: 'AddStellarPublicAddressModalCtrl'
             });
 
             vm.thePublicAddressModal.result.then(function(address){
@@ -366,7 +373,7 @@
 
         $scope.getLatestColdstorageTransactions = function(applyFilter){
             if(vm.token) {
-                $scope.loadingColdstorage = true;
+                $scope.loadingColdstorage =  true;
                 $scope.showingColdstorageFilters = false;
 
                 $scope.transactionsColdstorageStateMessage = '';
@@ -388,7 +395,7 @@
                         'Authorization': vm.token
                     }
                 }).then(function (res) {
-                    $scope.loadingColdstorage = false;
+                    $scope.loadingColdstorage =  false;
                     if (res.status === 200) {
                         $scope.transactionsColdstorageData = res.data.data;
                         $scope.transactionsColdstorage = $scope.transactionsColdstorageData.results;
@@ -413,21 +420,15 @@
         };
 
         $scope.goToCredit = function () {
-            $location.path('/transactions/history').search({
-                txType: 'credit',
-                currencyCode: 'XBT',
-                emailUser: $scope.coldstorageObj.user_account_identifier,
-                accountUser: $scope.coldstorageObj.rehive_account_reference
-            });
+            $state.go('transactions.credit',{"email": $scope.coldstorageObj.user_account_identifier,
+                "account": $scope.coldstorageObj.rehive_account_reference,
+                "currencyCode": 'TXLM'});
         };
 
         $scope.goToDebit = function () {
-            $location.path('/transactions/history').search({
-                txType: 'debit',
-                currencyCode: 'XBT',
-                emailUser: $scope.coldstorageObj.user_account_identifier,
-                accountUser: $scope.coldstorageObj.rehive_account_reference
-            });
+            $state.go('transactions.debit',{"email": $scope.coldstorageObj.user_account_identifier,
+                "account": $scope.coldstorageObj.rehive_account_reference,
+                "currencyCode": 'TXLM'});
         };
 
         $scope.openColdstorageModal = function (page, size,transaction) {
@@ -435,7 +436,7 @@
                 animation: true,
                 templateUrl: page,
                 size: size,
-                controller: 'ColdstorageTransactionModalCtrl',
+                controller: 'StellarTestnetColdstorageTransactionModalCtrl',
                 resolve: {
                     transaction: function () {
                         return transaction;

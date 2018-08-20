@@ -1,26 +1,33 @@
 (function () {
     'use strict';
 
-    angular.module('BlurAdmin.pages.services.ethereumService.ethereumServiceAccounts')
-        .controller('EthereumHotwalletCtrl', EthereumHotwalletCtrl);
+    angular.module('BlurAdmin.pages.services.stellarTestnetService.stellarTestnetServiceAccounts')
+        .controller('StellarTestnetHotwalletCtrl', StellarTestnetHotwalletCtrl);
 
     /** @ngInject */
-    function EthereumHotwalletCtrl($scope,localStorageManagement,currenciesList,_,$http,errorHandler,toastr,sharedResources,
+    function StellarTestnetHotwalletCtrl($scope,localStorageManagement,$http,errorHandler,_,toastr,sharedResources,
                                   $uibModal,currencyModifiers,serializeFiltersService,environmentConfig) {
+        $scope.stellarAccountSettingView = '';
 
         var vm = this;
         vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
         vm.token = localStorageManagement.getValue('TOKEN');
-        $scope.ethereumCurrency = currenciesList.find(function (element) {
-            return element.code == 'XLM';
-        });
+        $scope.stellarCurrency = {
+            code: "TXLM",
+            description: "Stellar Lumen",
+            symbol: "*",
+            unit: "lumen",
+            divisibility: 7,
+            enabled: true
+        };
         $scope.loadingHotwalletTransactions = true;
+        $scope.transactionsHotwalletStateMessage = '';
         $scope.hotwalletObjLength = 0;
 
         vm.getHotwalletActive = function (applyFilter) {
             $scope.loadingHotwalletTransactions =  true;
             if(vm.token) {
-                $http.get(vm.serviceUrl + 'admin/hotwallet/', {
+                $http.get(vm.serviceUrl + 'admin/hotwallet/active/', {
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': vm.token
@@ -38,6 +45,7 @@
                     }
                 }).catch(function (error) {
                     $scope.loadingHotwalletTransactions =  false;
+                    $scope.transactionsHotwalletStateMessage = 'Failed to load data';
                     if(error.status == 404){
                         $scope.transactionsHotwalletStateMessage = 'No active hotwallet created.';
                     } else {
@@ -54,7 +62,7 @@
                 animation: true,
                 templateUrl: page,
                 size: size,
-                controller: 'AddEthereumHotwalletModalCtrl',
+                controller: 'AddStellarTestnetHotwalletModalCtrl',
                 scope: $scope
             });
 
@@ -71,7 +79,7 @@
                 animation: true,
                 templateUrl: page,
                 size: size,
-                controller: 'FundEthereumHotwalletModalCtrl',
+                controller: 'FundStellarTestnetHotwalletModalCtrl',
                 scope: $scope
             });
         };
@@ -329,7 +337,7 @@
 
         $scope.getLatestHotwalletTransactions = function(applyFilter){
             if(vm.token) {
-                $scope.loadingHotwalletTransactions =  true;
+
                 $scope.showingHotwalletFilters = false;
 
                 $scope.transactionsHotwalletStateMessage = '';
@@ -380,7 +388,7 @@
                 animation: true,
                 templateUrl: page,
                 size: size,
-                controller: 'HotwalletTransactionsModalCtrl',
+                controller: 'StellarTestnetHotwalletTransactionsModalCtrl',
                 resolve: {
                     transaction: function () {
                         return transaction;

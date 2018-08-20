@@ -174,7 +174,7 @@
         $scope.orderByOptionsColdstorage = ['Latest','Largest','Smallest'];
 
         sharedResources.getSubtypes().then(function (res) {
-            $scope.subtypeOptionsColdstorage = _.pluck(res.data.data,'name');
+            $scope.subtypeOptionsColdstorage = _.pluck(res,'name');
             $scope.subtypeOptionsColdstorage.unshift('');
         });
 

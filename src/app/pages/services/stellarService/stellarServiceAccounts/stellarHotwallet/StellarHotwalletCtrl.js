@@ -6,7 +6,7 @@
 
     /** @ngInject */
     function StellarHotwalletCtrl($scope,localStorageManagement,currenciesList,$http,errorHandler,toastr,sharedResources,
-                                  $uibModal,currencyModifiers,serializeFiltersService,environmentConfig) {
+                                  $uibModal,_,currencyModifiers,serializeFiltersService,environmentConfig) {
         $scope.stellarAccountSettingView = '';
 
         var vm = this;
@@ -137,7 +137,7 @@
         $scope.orderByOptionsHotwallet = ['Latest','Largest','Smallest'];
 
         sharedResources.getSubtypes().then(function (res) {
-            $scope.subtypeOptionsHotwallet = _.pluck(res.data.data,'name');
+            $scope.subtypeOptionsHotwallet = _.pluck(res,'name');
             $scope.subtypeOptionsHotwallet.unshift('');
         });
 

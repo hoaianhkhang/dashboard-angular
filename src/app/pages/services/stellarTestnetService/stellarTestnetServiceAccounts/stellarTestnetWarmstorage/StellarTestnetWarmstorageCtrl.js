@@ -1,19 +1,24 @@
 (function () {
     'use strict';
 
-    angular.module('BlurAdmin.pages.services.bitcoinService.bitcoinServiceAccounts')
-        .controller('BitcoinWarmstorageCtrl', BitcoinWarmstorageCtrl);
+    angular.module('BlurAdmin.pages.services.stellarTestnetService.stellarTestnetServiceAccounts')
+        .controller('StellarTestnetWarmstorageCtrl', StellarTestnetWarmstorageCtrl);
 
     /** @ngInject */
-    function BitcoinWarmstorageCtrl($scope,localStorageManagement,errorHandler,currenciesList,$http,$uibModal,$state,$location,
+    function StellarTestnetWarmstorageCtrl($scope,localStorageManagement,errorHandler,$http,$uibModal,$state,cleanObject,
                                     sharedResources,_,environmentConfig,currencyModifiers,toastr,serializeFiltersService) {
 
         var vm = this;
         vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
         vm.token = localStorageManagement.getValue('TOKEN');
-        $scope.bitcoinCurrency = currenciesList.find(function (element) {
-            return element.code == 'XBT';
-        });
+        $scope.stellarCurrency = {
+            code: "TXLM",
+            description: "Stellar Lumen",
+            symbol: "*",
+            unit: "lumen",
+            divisibility: 7,
+            enabled: true
+        };
         $scope.showOptionsAccountRef = false;
         $scope.loadingWarmstorage = true;
 
@@ -44,12 +49,75 @@
                     }
                 }).catch(function (error) {
                     $scope.loadingWarmstorage =  false;
+                    $scope.transactionsWarmstorageStateMessage = 'Failed to load data';
                     errorHandler.evaluateErrors(error.data);
                     errorHandler.handleErrors(error);
                 });
             }
         };
         vm.getWarmstorage();
+
+        //Public address logic
+
+        $scope.warmStoragePublicAddressPagination = {
+            itemsPerPage: 3,
+            pageNo: 1,
+            maxSize: 5
+        };
+
+        vm.getWarmStoragePublicAddressUrl = function(){
+
+            var searchObj = {
+                page: $scope.warmStoragePublicAddressPagination.pageNo,
+                page_size: $scope.warmStoragePublicAddressPagination.itemsPerPage
+            };
+
+            return vm.serviceUrl + 'admin/warmstorage/accounts/?' +
+                serializeFiltersService.serializeFilters(cleanObject.cleanObj(searchObj));
+        };
+
+        $scope.getWarmStoragePublicAddresses = function () {
+            if(vm.token) {
+                $scope.loadingWarmStoragePublicAddresses = true;
+                var publicAddressUrl = vm.getWarmStoragePublicAddressUrl();
+
+                $http.get(publicAddressUrl, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': vm.token
+                    }
+                }).then(function (res) {
+                    if (res.status === 200) {
+                        $scope.loadingWarmStoragePublicAddresses = false;
+                        $scope.warmStoragePublicAddressData = res.data.data;
+                        $scope.warmStoragePublicAddressesList = $scope.warmStoragePublicAddressData.results;
+                    }
+                }).catch(function (error) {
+                    $scope.loadingWarmStoragePublicAddresses = false;
+                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.handleErrors(error);
+                });
+            }
+        };
+        $scope.getWarmStoragePublicAddresses();
+
+        $scope.addWarmStoragePublicAddressModal = function (page,size) {
+            vm.thePublicAddressModal = $uibModal.open({
+                animation: true,
+                templateUrl: page,
+                size: size,
+                controller: 'AddStellarTestnetWarmstoragePublicAddressModalCtrl'
+            });
+
+            vm.thePublicAddressModal.result.then(function(address){
+                if(address){
+                    $scope.getWarmStoragePublicAddresses();
+                }
+            }, function(){
+            });
+        };
+
+        //Public address logic ends
 
         //transactions logic
 
@@ -331,6 +399,7 @@
                         $scope.transactionsWarmstorageData = res.data.data;
                         $scope.transactionsWarmstorage = $scope.transactionsWarmstorageData.results;
                         if ($scope.transactionsWarmstorage.length == 0) {
+                            $scope.loadingHotwalletTransactions =  false;
                             $scope.transactionsWarmstorageStateMessage = 'No transactions have been found';
                             return;
                         }
@@ -351,21 +420,15 @@
         };
 
         $scope.goToCredit = function () {
-            $location.path('/transactions/history').search({
-                txType: 'credit',
-                currencyCode: 'XBT',
-                emailUser: $scope.warmstorageObj.user_account_identifier,
-                accountUser: $scope.warmstorageObj.rehive_account_reference
-            });
+            $state.go('transactions.credit',{"email": $scope.warmstorageObj.user_account_identifier,
+                "account": $scope.warmstorageObj.rehive_account_reference,
+                "currencyCode": 'TXLM'});
         };
 
         $scope.goToDebit = function () {
-            $location.path('/transactions/history').search({
-                txType: 'debit',
-                currencyCode: 'XBT',
-                emailUser: $scope.warmstorageObj.user_account_identifier,
-                accountUser: $scope.warmstorageObj.rehive_account_reference
-            });
+            $state.go('transactions.debit',{"email": $scope.warmstorageObj.user_account_identifier,
+                "account": $scope.warmstorageObj.rehive_account_reference,
+                "currencyCode": 'TXLM'});
         };
 
         $scope.openWarmstorageModal = function (page, size,transaction) {
@@ -373,7 +436,7 @@
                 animation: true,
                 templateUrl: page,
                 size: size,
-                controller: 'WarmstorageTransactionModalCtrl',
+                controller: 'StellarTestnetWarmstorageTransactionModalCtrl',
                 resolve: {
                     transaction: function () {
                         return transaction;
