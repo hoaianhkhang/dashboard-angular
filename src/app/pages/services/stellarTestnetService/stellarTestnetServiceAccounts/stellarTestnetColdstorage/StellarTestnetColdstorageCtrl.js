@@ -6,7 +6,7 @@
 
     /** @ngInject */
     function StellarTestnetColdstorageCtrl($scope,localStorageManagement,errorHandler,$http,$uibModal,$state,cleanObject,
-                                    sharedResources,_,environmentConfig,currencyModifiers,toastr,serializeFiltersService) {
+                                    sharedResources,_,$location,environmentConfig,currencyModifiers,toastr,serializeFiltersService) {
 
         var vm = this;
         vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
@@ -419,16 +419,24 @@
             vm.getColdstorage('applyFilter');
         };
 
-        $scope.goToCredit = function () {
-            $state.go('transactions.credit',{"email": $scope.coldstorageObj.user_account_identifier,
-                "account": $scope.coldstorageObj.rehive_account_reference,
-                "currencyCode": 'TXLM'});
+        $scope.goToTestnetCredit = function () {
+            $location.path('/transactions/history').search(
+                {
+                    txType: 'credit',
+                    currencyCode: 'TXLM',
+                    emailUser: $scope.coldstorageObj.user_account_identifier,
+                    accountUser: $scope.coldstorageObj.rehive_account_reference
+                });
         };
 
-        $scope.goToDebit = function () {
-            $state.go('transactions.debit',{"email": $scope.coldstorageObj.user_account_identifier,
-                "account": $scope.coldstorageObj.rehive_account_reference,
-                "currencyCode": 'TXLM'});
+        $scope.goToTestnetDebit = function () {
+            $location.path('/transactions/history').search(
+                {
+                    txType: 'debit',
+                    currencyCode: 'TXLM',
+                    emailUser: $scope.coldstorageObj.user_account_identifier,
+                    accountUser: $scope.coldstorageObj.rehive_account_reference
+                });
         };
 
         $scope.openColdstorageModal = function (page, size,transaction) {

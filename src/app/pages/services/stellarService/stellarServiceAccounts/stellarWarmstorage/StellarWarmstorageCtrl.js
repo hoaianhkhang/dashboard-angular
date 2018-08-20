@@ -412,18 +412,6 @@
             vm.getWarmstorage('applyFilter');
         };
 
-        $scope.goToCredit = function () {
-            $state.go('transactions.credit',{"email": $scope.warmstorageObj.user_account_identifier,
-                "account": $scope.warmstorageObj.rehive_account_reference,
-                "currencyCode": 'XLM'});
-        };
-
-        $scope.goToDebit = function () {
-            $state.go('transactions.debit',{"email": $scope.warmstorageObj.user_account_identifier,
-                "account": $scope.warmstorageObj.rehive_account_reference,
-                "currencyCode": 'XLM'});
-        };
-
         $scope.openWarmstorageModal = function (page, size,transaction) {
             vm.theModal = $uibModal.open({
                 animation: true,

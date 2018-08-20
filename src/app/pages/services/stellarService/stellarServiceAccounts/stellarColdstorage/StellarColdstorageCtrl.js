@@ -5,7 +5,7 @@
         .controller('StellarColdstorageCtrl', StellarColdstorageCtrl);
 
     /** @ngInject */
-    function StellarColdstorageCtrl($scope,localStorageManagement,errorHandler,currenciesList,$http,$uibModal,$state,cleanObject,
+    function StellarColdstorageCtrl($scope,localStorageManagement,errorHandler,currenciesList,$http,$uibModal,$location,cleanObject,
                                     sharedResources,_,environmentConfig,currencyModifiers,toastr,serializeFiltersService) {
 
         var vm = this;
@@ -414,15 +414,23 @@
         };
 
         $scope.goToCredit = function () {
-            $state.go('transactions.credit',{"email": $scope.coldstorageObj.user_account_identifier,
-                "account": $scope.coldstorageObj.rehive_account_reference,
-                "currencyCode": 'XLM'});
+            $location.path('/transactions/history').search(
+                {
+                    txType: 'credit',
+                    currencyCode: 'XLM',
+                    emailUser: $scope.coldstorageObj.user_account_identifier,
+                    accountUser: $scope.coldstorageObj.rehive_account_reference
+                });
         };
 
         $scope.goToDebit = function () {
-            $state.go('transactions.debit',{"email": $scope.coldstorageObj.user_account_identifier,
-                "account": $scope.coldstorageObj.rehive_account_reference,
-                "currencyCode": 'XLM'});
+            $location.path('/transactions/history').search(
+                {
+                    txType: 'debit',
+                    currencyCode: 'XLM',
+                    emailUser: $scope.coldstorageObj.user_account_identifier,
+                    accountUser: $scope.coldstorageObj.rehive_account_reference
+                });
         };
 
         $scope.openColdstorageModal = function (page, size,transaction) {
