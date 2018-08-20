@@ -2,10 +2,10 @@
     'use strict';
 
     angular.module('BlurAdmin.pages.services.stellarTestnetService.stellarTestnetServiceAccounts')
-        .directive('stellarHotwallet', stellarHotwallet);
+        .directive('stellarTestnetHotwallet', stellarTestnetHotwallet);
 
     /** @ngInject */
-    function stellarHotwallet() {
+    function stellarTestnetHotwallet() {
         return {
             restrict: 'E',
             controller: 'StellarHotwalletCtrl',

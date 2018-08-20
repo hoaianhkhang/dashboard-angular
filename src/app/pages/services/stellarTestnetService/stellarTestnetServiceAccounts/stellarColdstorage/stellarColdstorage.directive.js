@@ -2,10 +2,10 @@
     'use strict';
 
     angular.module('BlurAdmin.pages.services.stellarTestnetService.stellarTestnetServiceAccounts')
-        .directive('stellarColdstorage', stellarColdstorage);
+        .directive('stellarTestnetColdstorage', stellarTestnetColdstorage);
 
     /** @ngInject */
-    function stellarColdstorage() {
+    function stellarTestnetColdstorage() {
         return {
             restrict: 'E',
             controller: 'StellarColdstorageCtrl',

@@ -15,10 +15,10 @@
         $scope.stellarCurrency = {};
         $scope.assetsObj = [];
 
-        vm.getXLMCurrency = function () {
+        vm.getTXLMCurrency = function () {
             $scope.loadingAssets =  true;
             if(vm.token) {
-                $http.get(environmentConfig.API + '/admin/currencies/XLM/', {
+                $http.get(environmentConfig.API + '/admin/currencies/TXLM/', {
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': vm.token
@@ -34,7 +34,7 @@
                 });
             }
         };
-        vm.getXLMCurrency();
+        vm.getTXLMCurrency();
 
         vm.getAssets = function () {
             $scope.loadingAssets =  true;
