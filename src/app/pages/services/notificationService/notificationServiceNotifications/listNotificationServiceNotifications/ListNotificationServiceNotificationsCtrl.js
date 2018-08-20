@@ -100,10 +100,6 @@
             }
         };
 
-        $scope.goToAddNotificationView = function () {
-            $location.path('/services/notifications/create');
-        };
-
         vm.findIndexOfNotification = function(element){
             return this.id == element.id;
         };
