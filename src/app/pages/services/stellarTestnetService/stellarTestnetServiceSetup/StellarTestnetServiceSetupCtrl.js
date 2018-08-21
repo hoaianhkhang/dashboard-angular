@@ -66,6 +66,7 @@
                         } else if(res.data.data.results.length == 0){
                             vm.createTXLMCurrency();
                         }
+                        $location.path('/services/stellar-testnet/configuration');
                     }
                 }).catch(function (error) {
                     $scope.loadingStellarTestnetService = false;
@@ -234,10 +235,6 @@
                     errorHandler.handleErrors(error);
                 });
             }
-        };
-
-        $scope.goToStellarTestnetServiceConfig = function () {
-            $location.path('/services/stellar-testnet/configuration');
         };
 
     }
