@@ -22,12 +22,14 @@
                 <img class="verification-button" ng-src="{{hotWalletFundObj.qr_code}}">
                 <p ngclipboard ngclipboard-success="copiedSuccessfully()" data-clipboard-text="{{hotWalletFundObj.account_address}}"
                    class="text-center stellar-hotwallet-address pointer"><strong>{{hotWalletFundObj.account_address}}</strong></p>
-                <div class="form-group text-center">
-                    <button ng-click="hotwalletHasBeenFunded = true"
-                            ng-disabled="hotwalletHasBeenFunded"
-                            ng-class="{'btn-primary': !hotwalletHasBeenFunded,'disable-btn': hotwalletHasBeenFunded}" class="btn">
-                        My account is funded <i class="fa fa-check" aria-hidden="true"></i>
-                    </button>
+                <div class="form-group text-center">Your hotwallet account above will be funded with 10000 testnet coins using <a target="_blank" href="https://www.stellar.org/laboratory/#account-creator?network=test">Friendbot</a>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <button ng-click="fundAccountUsingFriendbot()"
+                                    ng-disabled="hotwalletHasBeenFunded"
+                                    ng-class="{'btn-primary': !hotwalletHasBeenFunded,'disable-btn': hotwalletHasBeenFunded}" class="btn" style="margin: 20px auto;">
+                                Fund my account <i class="fa fa-check" aria-hidden="true"></i>
+                        </button>
+                    </div> 
                 </div>
 
             </div>

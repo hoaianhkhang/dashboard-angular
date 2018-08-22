@@ -28,6 +28,24 @@
             toastr.success('Address copied successfully');
         };
 
+        $scope.fundAccountUsingFriendbot = function () {
+            var address = $scope.hotWalletFundObj.account_address
+            var url = "https://friendbot.stellar.org/?addr=" + address
+            $http.get(url, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }).then(function (res) {
+                if (res.status === 200) {
+                    $scope.hotwalletHasBeenFunded = true;
+                }
+            }).catch(function (error) {
+                $scope.hotwalletHasBeenFunded = false;
+                errorHandler.evaluateErrors(error.data);
+                errorHandler.handleErrors(error);
+            });
+        }
+
         $scope.getFundHotwallet = function () {
             $scope.fundingHotwallet = true;
             $http.get(vm.serviceUrl + 'admin/hotwallet/fund/', {
