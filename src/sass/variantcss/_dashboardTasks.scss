@@ -60,3 +60,38 @@
   box-shadow: 0 2px 6px #A8A8A8;
 
 }
+
+@media (max-width: 1200px) {
+  .show-below-1200{
+    display: block;
+    & .dashboard-tasks-icon-below-1200{
+      & .task-icon{
+        float: right;
+        margin: 18px 17px 0 0;
+        font-size: 22px;
+        color: white;
+      }
+      & .task-icon-circle-1{
+        position: absolute;
+        font-size: 10px;
+        display: inline-block;
+        color: #03DBBB;
+        top: 38px;
+        margin-left: 17px;
+      }
+      & .task-icon-circle-2{
+        color: #ed675A;
+        position: absolute;
+        font-size: 10px;
+        display: inline-block;
+        top: 38px;
+        margin-left: 17px;
+      }
+      & .dashboard-tasks-div-below-1200{
+        position: absolute;
+        top: 58px;
+        right: 70px;
+      }
+    }
+  }
+}
