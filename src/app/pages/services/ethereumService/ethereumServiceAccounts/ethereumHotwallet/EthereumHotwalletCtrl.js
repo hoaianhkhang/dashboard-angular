@@ -5,7 +5,7 @@
         .controller('EthereumHotwalletCtrl', EthereumHotwalletCtrl);
 
     /** @ngInject */
-    function EthereumHotwalletCtrl($scope,localStorageManagement,currenciesList,$http,errorHandler,toastr,sharedResources,
+    function EthereumHotwalletCtrl($scope,localStorageManagement,currenciesList,_,$http,errorHandler,toastr,sharedResources,
                                   $uibModal,currencyModifiers,serializeFiltersService,environmentConfig) {
 
         var vm = this;
@@ -136,7 +136,7 @@
         $scope.orderByOptionsHotwallet = ['Latest','Largest','Smallest'];
 
         sharedResources.getSubtypes().then(function (res) {
-            $scope.subtypeOptionsHotwallet = _.pluck(res.data.data,'name');
+            $scope.subtypeOptionsHotwallet = _.pluck(res,'name');
             $scope.subtypeOptionsHotwallet.unshift('');
         });
 

@@ -9,8 +9,8 @@
         $stateProvider
             .state('stellarServiceAssets', {
                 url: '/services/stellar/assets',
-                templateUrl: 'app/pages/services/stellarService/stellarServiceAssets/stellarAssets.html',
-                controller: "StellarAssetsCtrl",
+                templateUrl: 'app/pages/services/stellarService/stellarServiceAssets/stellarServiceAssets.html',
+                controller: "StellarServiceAssetsCtrl",
                 title: 'Assets'
             });
     }
