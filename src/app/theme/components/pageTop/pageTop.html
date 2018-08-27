@@ -8,9 +8,6 @@
         <div>
           <a ng-hide="inCompanySetupViews" href="#/currencies" class="al-logo clearfix" ng-bind="pageTopObj.companyObj.name"></a>
         </div>
-        <div>
-          <a ng-hide="inCompanySetupViews" href class="collapse-menu-link ion-navicon" ba-sidebar-toggle-menu></a>
-        </div>
         <div class="user-profile clearfix">
           <div class="al-user-profile" uib-dropdown>
             <a uib-dropdown-toggle class="profile-toggle-link">
@@ -50,6 +47,15 @@
       <div class="show-below-1200">
         <div>
           <a ng-hide="inCompanySetupViews" href class="collapse-menu-link ion-navicon" ba-sidebar-toggle-menu></a>
+        </div>
+        <div ng-hide="inCompanySetupViews" class="search-bar-main-below-1200" click-outside="hidingSearchBar()">
+          <input type="text" class="page-top-search-below-1200" placeholder="Search by email, mobile number or transaction id" ng-model="searchString"
+                 ng-keydown="($event.keyCode === 13)  && searchGlobal(searchString)"
+                 ng-focus="searchGlobal(searchString)"
+                 ng-change="searchGlobal(searchString)" ng-model-options='{ debounce: 800 }'>
+          <div class="search-bar-div-below-1200">
+            <search-bar-results></search-bar-results>
+          </div>
         </div>
         <div class="user-profile-below-1200 clearfix">
           <div class="al-user-profile" uib-dropdown>
