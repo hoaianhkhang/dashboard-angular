@@ -5,11 +5,14 @@
         .controller('CompanyInfoCtrl', CompanyInfoCtrl);
 
     /** @ngInject */
-    function CompanyInfoCtrl($scope,Rehive,$rootScope,toastr,localStorageManagement,errorHandler,_) {
+    function CompanyInfoCtrl($scope,Rehive,$rootScope,Upload,environmentConfig,
+                             $timeout,toastr,localStorageManagement,errorHandler,_) {
 
         var vm = this;
-        vm.token = localStorageManagement.getValue('token');
+        vm.token = localStorageManagement.getValue('TOKEN');
+        $scope.companyImageUrl = null;
         $scope.companyImageUrl = "/assets/img/app/placeholders/hex_grey.svg";
+        $scope.updatingLogo = false;
         $scope.loadingCompanyInfo = true;
         $scope.company = {
             details : {
@@ -21,6 +24,35 @@
             settings: {}
         };
         $scope.statusOptions = ['Pending','Complete'];
+        $scope.imageFile = {
+            file: {}
+        };
+
+        $scope.upload = function (file) {
+            $scope.updatingLogo = true;
+            Upload.upload({
+                url: environmentConfig.API +'/admin/company/',
+                data: {
+                    logo: $scope.imageFile.file
+                },
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': vm.token},
+                method: "PATCH"
+            }).then(function (res) {
+                if (res.status === 200) {
+                    $timeout(function(){
+                        $scope.companyImageUrl = res.data.data.logo;
+                        $scope.updatingLogo = false;
+                    },0);
+                    //$window.location.reload();
+                }
+            }).catch(function (error) {
+                $scope.updatingLogo = false;
+                errorHandler.evaluateErrors(error.data);
+                errorHandler.handleErrors(error);
+            });
+        };
 
         vm.getCompanyInfo = function () {
             if(vm.token) {
@@ -28,6 +60,7 @@
                 Rehive.admin.company.get().then(function (res) {
                     $scope.loadingCompanyInfo = false;
                     $scope.company.details = res;
+                    $scope.companyImageUrl = res.logo;
                     $scope.$apply();
                 }, function (error) {
                     $scope.loadingCompanyInfo = false;
