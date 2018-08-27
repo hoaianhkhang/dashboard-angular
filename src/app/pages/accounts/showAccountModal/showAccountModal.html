@@ -3,46 +3,53 @@
         <button type="button" class="close" ng-click="$dismiss()" aria-label="Close">
             <em class="ion-ios-close-empty sn-link-close"></em>
         </button>
+        <a class="pull-right modal-title-link-1 pointer"
+                ng-click="goToAccountTransactions()">View Transactions
+        </a>
         <h4 class="modal-title" id="myModalLabel">Account details</h4>
     </div>
     <div class="modal-body">
         <div class="row">
-            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 no-left-padding divider-20">
+            <a class="pull-right divider pointer"
+               ng-click="goToUserAccount()"><i class="fa fa-pencil"></i> Edit account</a>
+        </div>
+        <div class="row">
+            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 no-left-padding divider-20">
                 <p class="text-subtle">Name: </p>
             </div>
-            <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9 no-right-padding">
+            <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 no-right-padding">
                 <p ng-bind="accountObj.name"></p>
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 no-left-padding divider-20">
+            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 no-left-padding divider-20">
                 <p class="text-subtle">User: </p>
             </div>
-            <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9 no-right-padding">
+            <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 no-right-padding">
                 <p ng-bind="accountObj.user.email"></p>
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 no-left-padding divider-20">
+            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 no-left-padding divider-20">
                 <p class="text-subtle">User group: </p>
             </div>
-            <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9 no-right-padding">
+            <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 no-right-padding">
                 <p ng-bind="accountObj.user.group || ''"></p>
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 no-left-padding divider-20">
+            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 no-left-padding divider-20">
                 <p class="text-subtle">Reference: </p>
             </div>
-            <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9 no-right-padding">
+            <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 no-right-padding">
                 <p ng-bind="accountObj.reference"></p>
             </div>
         </div>
         <div class="row">
-            <div ng-class="{'divider-20': accountObj.currencies.length > 0}" class="col-lg-3 col-md-3 col-sm-3 col-xs-3 no-left-padding">
+            <div ng-class="{'divider-20': accountObj.currencies.length > 0}" class="col-lg-2 col-md-2 col-sm-2 col-xs-2 no-left-padding">
                 <p class="text-subtle">Type: </p>
             </div>
-            <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9 no-right-padding">
+            <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 no-right-padding">
                 <p>{{accountObj.primary ? 'primary' : ''}}</p>
             </div>
         </div>
@@ -63,13 +70,7 @@
             </tr>
         </table>
     </div>
-    <div class="modal-footer">
-        <button ng-click="goToUserAccount()"
-                class="btn btn-primary no-margin dashboard-btn pull-right">Edit
-        </button>
-        <button class="btn btn-primary pull-left no-margin margin-right-10"
-                ng-click="goToAccountTransactions()">View Transactions
-        </button>
+    <div class="modal-footer padding-10">
     </div>
 </div>
 <div ba-panel ng-show="loadingAccount">
