@@ -15,10 +15,8 @@
                             <li>Account configuration named <strong>default</strong> which is default & primary</li>
                         </ul>
                     </div>
-                    <button ng-click="checkXLMCurrency()" class="btn btn-primary dashboard-btn pull-right">Add</button>
-                    <button ng-click="goToServices()" class="btn btn-default dashboard-btn pull-right margin-right-10">Cancel</button>
                 </div>
-                <div ng-show="stellarConfigComplete">
+                <div>
                     <div class="divider">
                         <ul class="ul-no-dot">
                             <li>You have successfully added the Stellar Service! This setup will take you through configuring the service.</li>
@@ -26,7 +24,7 @@
                                 if you would like to integrate Stellar into your own front-end or service.</li>
                         </ul>
                     </div>
-                    <button ng-click="goToStellarServiceConfig()" class="btn btn-primary dashboard-btn pull-right">Start</button>
+                    <button ng-click="checkXLMCurrency()" class="btn btn-primary dashboard-btn pull-right">Start</button>
                 </div>
             </div>
         </div>

@@ -19,6 +19,7 @@
         };
         $scope.warmStoragePublicKeyLengthValid = false;
         $scope.showHelpMessage = false;
+        $scope.fundingAccountUsingTestnet = false;
 
         $scope.goToConfigView = function (view) {
             $scope.currentConfigView = view;
@@ -29,22 +30,25 @@
         };
 
         $scope.fundAccountUsingFriendbot = function () {
-            var address = $scope.hotWalletFundObj.account_address
-            var url = "https://friendbot.stellar.org/?addr=" + address
+            $scope.fundingAccountUsingTestnet = true;
+            var address = $scope.hotWalletFundObj.account_address;
+            var url = "https://friendbot.stellar.org/?addr=" + address;
             $http.get(url, {
                 headers: {
                     'Content-Type': 'application/json'
                 }
             }).then(function (res) {
                 if (res.status === 200) {
+                    $scope.fundingAccountUsingTestnet = false;
                     $scope.hotwalletHasBeenFunded = true;
                 }
             }).catch(function (error) {
+                $scope.fundingAccountUsingTestnet = false;
                 $scope.hotwalletHasBeenFunded = false;
                 errorHandler.evaluateErrors(error.data);
                 errorHandler.handleErrors(error);
             });
-        }
+        };
 
         $scope.getFundHotwallet = function () {
             $scope.fundingHotwallet = true;

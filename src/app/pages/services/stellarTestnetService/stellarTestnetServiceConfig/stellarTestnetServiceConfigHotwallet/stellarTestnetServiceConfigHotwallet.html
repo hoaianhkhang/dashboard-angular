@@ -14,24 +14,31 @@
                 </ul>
                 <ul class="group-setup-ul">
                     <li>
-                        You can use the <a target="_blank" href="https://www.stellar.org/laboratory/#account-creator?network=test">Stellar friendbot</a> to fund your hot wallet with testnet Lumens. Enter the address on the right into the Friendbot and click "Get test network lumens"
+                        Rehive uses the Stellar Friendbot to fund your hot wallet with testnet Lumens.
+                        Click the "Fund my account" button on the right to continue.
+                        When using Friendbot manually, enter your public address into the Friendbot and click "Get test network lumens".
                     </li>
                 </ul>
             </div>
             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 custom-form">
-                <img class="verification-button" ng-src="{{hotWalletFundObj.qr_code}}">
-                <p ngclipboard ngclipboard-success="copiedSuccessfully()" data-clipboard-text="{{hotWalletFundObj.account_address}}"
-                   class="text-center stellar-hotwallet-address pointer"><strong>{{hotWalletFundObj.account_address}}</strong></p>
-                <div class="form-group text-center">Your hotwallet account above will be funded with 10000 testnet coins using <a target="_blank" href="https://www.stellar.org/laboratory/#account-creator?network=test">Friendbot</a>
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <button ng-click="fundAccountUsingFriendbot()"
+                <div ng-hide="fundingAccountUsingTestnet">
+                    <img class="stellar-hotwallet-qr-code" ng-src="{{hotWalletFundObj.qr_code}}">
+                    <p ngclipboard ngclipboard-success="copiedSuccessfully()" data-clipboard-text="{{hotWalletFundObj.account_address}}"
+                       class="text-center stellar-hotwallet-address pointer"><strong>{{hotWalletFundObj.account_address}}</strong></p>
+                    <div class="form-group text-center">
+                        Your hot wallet account above will be funded with 10,000 testnet coins using Friendbot.
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <button ng-click="fundAccountUsingFriendbot()"
                                     ng-disabled="hotwalletHasBeenFunded"
                                     ng-class="{'btn-primary': !hotwalletHasBeenFunded,'disable-btn': hotwalletHasBeenFunded}" class="btn" style="margin: 20px auto;">
                                 Fund my account <i class="fa fa-check" aria-hidden="true"></i>
-                        </button>
-                    </div> 
+                            </button>
+                        </div>
+                    </div>
                 </div>
-
+                <div ng-show="fundingAccountUsingTestnet">
+                    <loading-image></loading-image>
+                </div>
             </div>
         </div>
         <hr class="no-margin-horizontal divider-25">
