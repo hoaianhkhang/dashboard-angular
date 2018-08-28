@@ -11,6 +11,7 @@
         vm.token = localStorageManagement.getValue('token');
         $scope.smsAuthObj = {mobile: ''};
         $scope.numberFromGetCall = false;
+        $scope.loadingSmsAuth = false;
 
         $scope.getSmsAuthNumber = function(){
             if(vm.token) {
@@ -25,6 +26,7 @@
                 }, function (error) {
                     $scope.loadingSmsAuth = false;
                     if(error.status == 404){
+                        $scope.$apply();
                         return;
                     }
                     errorHandler.evaluateErrors(error);
