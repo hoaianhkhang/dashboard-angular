@@ -147,6 +147,10 @@ a.collapse-menu-link {
   }
 }
 
+.show-below-1200{
+  display: none;
+}
+
 @media screen and (max-width: $resS) {
   .search {
     display: none;
@@ -165,7 +169,29 @@ a.collapse-menu-link {
     float: left;
     margin: 20px 0 0 0!important;
     position: absolute;
-    left: 180px;
+    left: 17px;
+  }
+  .show-above-1200px{
+    display: none;
+  }
+  .show-below-1200{
+    display: block;
+    & .user-profile-below-1200{
+      float: right;
+      min-width: 50px;
+      margin-top: 7px;
+      & li .under-1200-user-email{
+        font-weight: bold;
+        line-height: 36px;
+        padding: 0 16px 0 20px;
+      }
+      & li .under-1200-company-name{
+        width: 100%;
+        line-height: 36px;
+        padding: 0 16px 0 20px;
+        font-size: 12px;
+      }
+    }
   }
 }
 
