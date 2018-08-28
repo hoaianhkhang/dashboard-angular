@@ -26,33 +26,17 @@
                 Rehive.admin.groups.get({name: $scope.groupName}).then(function (res) {
                     $scope.editGroupObj = res;
                     $scope.editGroupObj.prevName = res.name;
-                    vm.getGroupUsers($scope.editGroupObj);
+                    $scope.loadingGroup = false;
+                    $scope.$apply();
                 }, function (error) {
+                    $scope.loadingGroup = false;
                     errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };
         $scope.getGroup();
-
-        vm.getGroupUsers = function (group) {
-            if(vm.token) {
-                $scope.loadingGroup = true;
-                Rehive.admin.users.overview.get({filters: {
-                    group: group.name
-                }}).then(function (res) {
-                    $scope.totalUsersCount = res.total;
-                    $scope.deactiveUsersCount = res.archived;
-                    $scope.loadingGroup = false;
-                    $scope.$apply();
-                }, function (error) {
-                    $scope.loadingGroup = false;
-                    errorHandler.evaluateErrors(error);
-                    errorHandler.handleErrors(error);
-                    $scope.$apply();
-                });
-            }
-        };
 
         $scope.groupChanged = function(field){
             if(field == 'name' && $scope.editGroupObj.name){

@@ -10,7 +10,7 @@
 
         var vm = this;
         vm.token = localStorageManagement.getValue('token');
-        vm.groupName = $stateParams.groupName;
+        $scope.groupName = $stateParams.groupName;
         vm.updatedGroup = {};
         $scope.loadingGroup = true;
         vm.location = $location.path();
@@ -24,10 +24,10 @@
         $scope.getGroup = function () {
             if(vm.token) {
                 $scope.loadingGroup = true;
-                Rehive.admin.groups.get({name: vm.groupName}).then(function (res) {
+                Rehive.admin.groups.get({name: $scope.groupName}).then(function (res) {
                     $scope.editGroupObj = res;
                     $scope.editGroupObj.prevName = res.name;
-                    vm.getGroupUsers($scope.editGroupObj);
+                    $scope.loadingGroup = false;
                     $scope.$apply();
                 }, function (error) {
                     $scope.loadingGroup = false;
@@ -39,29 +39,10 @@
         };
         $scope.getGroup();
 
-        vm.getGroupUsers = function (group) {
-            if(vm.token) {
-                $scope.loadingGroup = true;
-                Rehive.admin.users.overview.get({filters: {
-                    group: group.name
-                }}).then(function (res) {
-                    $scope.totalUsersCount = res.total;
-                    $scope.deactiveUsersCount = res.archived;
-                    $scope.loadingGroup = false;
-                    $scope.$apply();
-                }, function (error) {
-                    $scope.loadingGroup = false;
-                    errorHandler.evaluateErrors(error);
-                    errorHandler.handleErrors(error);
-                    $scope.$apply();
-                });
-            }
-        };
-
         vm.getGroupSettings = function () {
             if(vm.token) {
                 $scope.loadingGroupSettings = true;
-                Rehive.admin.groups.settings.get(vm.groupName).then(function (res) {
+                Rehive.admin.groups.settings.get($scope.groupName).then(function (res) {
                     $scope.loadingGroupSettings = false;
                     $scope.groupSettingsObj = res;
                     $scope.$apply();
@@ -81,7 +62,7 @@
             updatedSetting[type] = !groupSetting;
 
             if(vm.token) {
-                Rehive.admin.groups.settings.update(vm.groupName,updatedSetting).then(function (res) {
+                Rehive.admin.groups.settings.update($scope.groupName,updatedSetting).then(function (res) {
                     $scope.groupSettingsObj = {};
                     $scope.groupSettingsObj = res;
                     toastr.success('Group setting updated successfully');

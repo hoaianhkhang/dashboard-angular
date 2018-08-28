@@ -1,0 +1,99 @@
+<h1 class="group-details-page-title">Group {{groupName}}</h1>
+<div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 groups-breadcrumb">
+        <span ng-click="goToGroupView('groups/overview')" class="pointer">Groups</span>
+        <span><strong>&nbsp;/&nbsp; Group stats</strong></span>
+    </div>
+</div>
+<div ng-class="{'user-details-view': !loadingGroup}">
+    <!--<div class="row">-->
+    <!--<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 user-details-first-row divider-30">-->
+    <!--<div class="group-hexagon"></div>-->
+    <!--<div class="group-overview-details">-->
+    <!--<span class="group-details-name">{{editGroupObj.name}}</span>-->
+    <!--<p class="user-details-info"><strong>{{totalUsersCount}}</strong> Total users</p>-->
+    <!--<p class="user-details-info"><strong>{{totalUsersCount - deactiveUsersCount}}</strong> Active users</p>-->
+    <!--<p class="user-details-info"><strong>{{deactiveUsersCount}}</strong> Deactivated users</p>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--</div>-->
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <ul class="user-details-nav-bar">
+                <li><a href="/#/groups/{{groupName}}/details" ng-class="{'transaction-location': locationIndicator == 'details'}">Details</a></li>
+                <li><a href="/#/groups/{{groupName}}/users" ng-class="{'transaction-location': locationIndicator == 'users'}">Users</a></li>
+                <li><a href="/#/groups/{{groupName}}/permissions" ng-class="{'transaction-location': locationIndicator == 'permissions'}">Permissions</a></li>
+                <li><a href="/#/groups/{{groupName}}/tiers" ng-class="{'transaction-location': locationIndicator == 'tiers'}">Tiers</a></li>
+                <li><a href="/#/groups/{{groupName}}/account-configurations" ng-class="{'transaction-location': locationIndicator == 'account-configurations'}">Account configurations</a></li>
+                <li><a href="/#/groups/{{groupName}}/transaction-settings" ng-class="{'transaction-location': locationIndicator == 'transaction-settings'}">Transaction settings</a></li>
+                <li><a href="/#/groups/{{groupName}}/stats" ng-class="{'transaction-location': locationIndicator == 'stats'}">Stats</a></li>
+            </ul>
+        </div>
+    </div>
+    <div ng-hide="loadingGroup" class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div ng-hide="loadingStats" style="display: inline-flex;">
+                <!--<div class="panel transaction-stat-panel">-->
+                <!--<div class="panel-body">-->
+                <!--<div class="transaction-stat-contents">-->
+                <!--<div class="transaction-stat-icon stat-icon-1"-->
+                <!--ng-class="{'long-text': (transactionTotalObj.currency.length > 4), 'very-long-text': (transactionTotalObj.currency.length > 6)}">-->
+                <!--{{transactionTotalObj.currency}}-->
+                <!--</div>-->
+                <!--<div class="transaction-stats-details">-->
+                <!--Currency-->
+                <!--</div>-->
+                <!--</div>-->
+
+                <!--</div>-->
+                <!--</div>-->
+                <div class="panel transaction-stat-panel">
+                    <div class="panel-body">
+                        <div class="transaction-stat-contents">
+                            <div class="transaction-stat-icon stat-icon-2">
+                                {{currencyObj.symbol}}
+                            </div>
+                            <div class="transaction-stats-details-2">
+                                <p class="divider-6 pull-right"><strong>{{transactionTotalObj.amount | currencyModifiersFilter: currencyObj.divisibility}}</strong></p>
+                                <br>
+                                <span class="pull-right">Total amount</span>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="panel transaction-stat-panel left-margin-30">
+                    <div class="panel-body">
+                        <div class="transaction-stat-contents">
+                            <div class="transaction-stat-icon stat-icon-3">
+                                <i class="fa fa-money" aria-hidden="true"></i>
+                            </div>
+                            <div class="transaction-stats-details-2">
+                                <p class="divider-6 pull-right"><strong>{{transactionTotalObj.fees | currencyModifiersFilter: currencyObj.divisibility}}</strong></p>
+                                <br>
+                                <span class="pull-right">Total fees</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel transaction-stat-panel left-margin-30">
+                    <div class="panel-body">
+                        <div class="transaction-stat-contents">
+                            <div class="transaction-stat-icon stat-icon-4">
+                                <i class="fa fa-list-ol" aria-hidden="true"></i>
+                            </div>
+                            <div class="transaction-stats-details-2">
+                                <p class="divider-6 pull-right"><strong>{{transactionTotalObj.count}}</strong></p>
+                                <br>
+                                <span class="pull-right">Total count</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div ba-panel ng-show="loadingGroup">
+    <loading-image></loading-image>
+</div>

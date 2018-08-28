@@ -9,10 +9,10 @@
                             $location,$stateParams,errorHandler,$window,toastr,serializeFiltersService,$filter,$uibModal,$ngConfirm) {
 
         var vm = this;
-        vm.groupName = $stateParams.groupName;
+        $scope.groupName = $stateParams.groupName;
         vm.token = localStorageManagement.getValue('token');
         vm.companyIdentifier = localStorageManagement.getValue('companyIdentifier');
-        vm.savedGroupUsersTableColumns = vm.companyIdentifier + vm.groupName + 'usersTable';
+        vm.savedGroupUsersTableColumns = vm.companyIdentifier + $scope.groupName + 'usersTable';
         $rootScope.dashboardTitle = 'Groups | Rehive';
         vm.currenciesList = JSON.parse($window.sessionStorage.currenciesList || '[]');
         vm.location = $location.path();
@@ -458,7 +458,7 @@
                 first_name__contains: $scope.filtersObj.firstNameFilter ? ($scope.applyFiltersObj.firstNameFilter.selectedFirstName ?  $scope.applyFiltersObj.firstNameFilter.selectedFirstName : null): null,
                 last_name__contains: $scope.filtersObj.lastNameFilter ? ($scope.applyFiltersObj.lastNameFilter.selectedLastName ?  $scope.applyFiltersObj.lastNameFilter.selectedLastName : null): null,
                 account: $scope.filtersObj.accountReferenceFilter ? ($scope.applyFiltersObj.accountReferenceFilter.selectedAccountReference ?  $scope.applyFiltersObj.accountReferenceFilter.selectedAccountReference : null): null,
-                group: vm.groupName,
+                group: $scope.groupName,
                 created__gt: vm.dateObj.created__gt ? Date.parse(vm.dateObj.created__gt +'T00:00:00') : null,
                 created__lt: vm.dateObj.created__lt ? Date.parse(vm.dateObj.created__lt +'T00:00:00') : null,
                 updated__gt: vm.updatedDateObj.updated__gt ? Date.parse(vm.updatedDateObj.updated__gt +'T00:00:00') : null,
@@ -538,27 +538,8 @@
         $scope.getGroup = function () {
             if(vm.token) {
                 $scope.loadingGroup = true;
-                Rehive.admin.groups.get({name: vm.groupName}).then(function (res) {
+                Rehive.admin.groups.get({name: $scope.groupName}).then(function (res) {
                     $scope.editGroupObj = res;
-                    vm.getGroupUsers($scope.editGroupObj);
-                    $scope.$apply();
-                }, function (error) {
-                    $scope.loadingGroup = false;
-                    errorHandler.evaluateErrors(error);
-                    errorHandler.handleErrors(error);
-                    $scope.$apply();
-                });
-            }
-        };
-
-        vm.getGroupUsers = function (group) {
-            if(vm.token) {
-                $scope.loadingGroup = true;
-                Rehive.admin.users.overview.get({filters: {
-                    group: group.name
-                }}).then(function (res) {
-                    $scope.totalUsersCount = res.total;
-                    $scope.deactiveUsersCount = res.archived;
                     $scope.loadingGroup = false;
                     $scope.$apply();
                 }, function (error) {
@@ -642,7 +623,7 @@
 
         $scope.deleteUserFromGroup = function (user) {
             $scope.loadingGroup = true;
-            Rehive.admin.users.groups.delete(user.identifier,vm.groupName).then(function (res) {
+            Rehive.admin.users.groups.delete(user.identifier,$scope.groupName).then(function (res) {
                 $scope.getAllUsers();
                 $scope.$apply();
             }, function (error) {
