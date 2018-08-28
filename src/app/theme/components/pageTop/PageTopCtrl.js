@@ -151,7 +151,7 @@
             var filter;
             if(vm.token){
                 if(typeOfInput == 'mobile'){
-                    filter = 'mobile_number__contains';
+                    filter = 'mobile__contains';
                 } else {
                     filter = 'email__contains';
                 }
