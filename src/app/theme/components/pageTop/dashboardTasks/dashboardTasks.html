@@ -20,7 +20,7 @@
                     <a class="pointer file-link" ng-show="task.progress == 100"
                        ng-click="downloadExportFile(page.file)"
                        ng-repeat="page in task.pages">
-                        file {{$index + 1}}
+                        file {{$index + 1}} {{'(' + page.file.split('.')[page.file.split('.').length - 1].toString() + ')' | uppercase}}
                     </a>
                 </div>
             </div>

@@ -37,41 +37,41 @@
             maxSize: 5
         };
 
-        if(localStorageManagement.getValue(vm.savedUserTableColumns)){
-            var headerColumns = JSON.parse(localStorageManagement.getValue(vm.savedUserTableColumns));
-            var recipientFieldExists = false;
-            headerColumns.forEach(function (col) {
-                if(col.colName == 'Archived' || col.fieldName == 'archived'){
-                    recipientFieldExists = true;
-                }
-            });
 
-            if(!recipientFieldExists){
-                headerColumns.splice(8,0,{colName: 'Archived',fieldName: 'archived',visible: false});
-            }
-
-            localStorageManagement.setValue(vm.savedUserTableColumns,JSON.stringify(headerColumns));
-        }
-
-        // renaming col field
         // if(localStorageManagement.getValue(vm.savedUserTableColumns)){
-        //      var headerColumns = JSON.parse(localStorageManagement.getValue(vm.savedUserTableColumns));
-        //      headerColumns.forEach(function (col) {
-        //          if(col.colName == 'Date joined' || col.fieldName == 'date_joined'){
-        //              col.colName = 'Created';
-        //              col.fieldName = 'created';
-        //          }
-        //      });
+        //     var headerColumns = JSON.parse(localStorageManagement.getValue(vm.savedUserTableColumns));
+        //     var recipientFieldExists = false;
+        //     headerColumns.forEach(function (col) {
+        //         if(col.colName == 'Archived' || col.fieldName == 'archived'){
+        //             recipientFieldExists = true;
+        //         }
+        //     });
+        //
+        //     if(!recipientFieldExists){
+        //         headerColumns.splice(8,0,{colName: 'Archived',fieldName: 'archived',visible: false});
+        //     }
         //
         //     localStorageManagement.setValue(vm.savedUserTableColumns,JSON.stringify(headerColumns));
         // }
+
+        //renaming col field
+        if(localStorageManagement.getValue(vm.savedUserTableColumns)){
+             var headerColumns = JSON.parse(localStorageManagement.getValue(vm.savedUserTableColumns));
+             headerColumns.forEach(function (col) {
+                 if(col.colName == 'Mobile number'){
+                     col.fieldName = 'mobile';
+                 }
+             });
+
+            localStorageManagement.setValue(vm.savedUserTableColumns,JSON.stringify(headerColumns));
+        }
 
         $scope.headerColumns = localStorageManagement.getValue(vm.savedUserTableColumns) ? JSON.parse(localStorageManagement.getValue(vm.savedUserTableColumns)) : [
             {colName: 'Identifier',fieldName: 'identifier',visible: true},
             {colName: 'First name',fieldName: 'first_name',visible: true},
             {colName: 'Last name',fieldName: 'last_name',visible: true},
             {colName: 'Email',fieldName: 'email',visible: true},
-            {colName: 'Mobile number',fieldName: 'mobile_number',visible: true},
+            {colName: 'Mobile number',fieldName: 'mobile',visible: true},
             {colName: 'Group name',fieldName: 'groupName',visible: true},
             {colName: 'Created',fieldName: 'created',visible: true},
             {colName: 'Updated',fieldName: 'updated',visible: false},
@@ -498,7 +498,7 @@
                 page_size: $scope.filtersObj.pageSizeFilter? $scope.usersPagination.itemsPerPage : 25,
                 identifier__contains: $scope.filtersObj.identifierFilter ? ($scope.applyFiltersObj.identifierFilter.selectedIdentifier ?  $scope.applyFiltersObj.identifierFilter.selectedIdentifier : null): null,
                 email__contains: $scope.filtersObj.emailFilter ?($scope.applyFiltersObj.emailFilter.selectedEmail ? $scope.applyFiltersObj.emailFilter.selectedEmail : null): null,
-                mobile_number__contains: $scope.filtersObj.mobileFilter ? ($scope.applyFiltersObj.mobileFilter.selectedMobile ? $scope.applyFiltersObj.mobileFilter.selectedMobile : null): null,
+                mobile__contains: $scope.filtersObj.mobileFilter ? ($scope.applyFiltersObj.mobileFilter.selectedMobile ? $scope.applyFiltersObj.mobileFilter.selectedMobile : null): null,
                 first_name__contains: $scope.filtersObj.firstNameFilter ? ($scope.applyFiltersObj.firstNameFilter.selectedFirstName ?  $scope.applyFiltersObj.firstNameFilter.selectedFirstName : null): null,
                 last_name__contains: $scope.filtersObj.lastNameFilter ? ($scope.applyFiltersObj.lastNameFilter.selectedLastName ?  $scope.applyFiltersObj.lastNameFilter.selectedLastName : null): null,
                 account: $scope.filtersObj.accountReferenceFilter ? ($scope.applyFiltersObj.accountReferenceFilter.selectedAccountReference ?  $scope.applyFiltersObj.accountReferenceFilter.selectedAccountReference : null): null,
@@ -559,7 +559,7 @@
                     first_name: userObj.first_name,
                     last_name: userObj.last_name,
                     email: userObj.email,
-                    mobile_number: userObj.mobile_number,
+                    mobile: userObj.mobile,
                     groupName: userObj.groups.length > 0 ? userObj.groups[0].name: null,
                     created: userObj.created ? $filter("date")(userObj.created,'mediumDate') + ' ' + $filter("date")(userObj.created,'shortTime'): null,
                     updated: userObj.updated ? $filter("date")(userObj.updated,'mediumDate') + ' ' + $filter("date")(userObj.updated,'shortTime'): null,

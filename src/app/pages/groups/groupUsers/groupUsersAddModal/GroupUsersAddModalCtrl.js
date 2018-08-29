@@ -27,7 +27,7 @@
                     vm.filter = 'email__contains';
                     vm.filterString = userGroupParams.user;
                 } else if(userGroupParams.inputType == 'Mobile'){
-                    vm.filter = 'mobile_number__contains';
+                    vm.filter = 'mobile__contains';
                     vm.filterString = userGroupParams.user;
                 } else {
                     vm.filter = 'identifier__contains';

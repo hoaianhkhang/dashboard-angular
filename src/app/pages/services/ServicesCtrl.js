@@ -97,9 +97,22 @@
         };
 
         $scope.goToService = function(service) {
+            var serviceName,serviceNameArray;
+
             localStorageManagement.setValue('SERVICEURL',service.url);
-            var serviceNameArray = service.name.split(' ');
-            var pathName = serviceNameArray[0].toLowerCase();
+            var indexOfServiceWord = service.name.search('Service');
+            if(indexOfServiceWord > 0){
+                serviceName = service.name.substring(0,indexOfServiceWord);
+                serviceNameArray = serviceName.trim().split(' ');
+                if(serviceNameArray.length > 1){
+                    serviceName = serviceNameArray.join('-');
+                } else {
+                    serviceName = serviceNameArray.toString();
+                }
+            } else {
+                serviceName = service.name;
+            }
+            var pathName = serviceName.toLowerCase().trim();
             $location.path('/services/' + pathName);
         };
     }

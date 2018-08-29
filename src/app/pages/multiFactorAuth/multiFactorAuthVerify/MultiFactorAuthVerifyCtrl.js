@@ -17,10 +17,10 @@
         vm.getTokenAuthenticationDetails = function(){
             if(vm.token) {
                 $scope.loadingVerifyAuth = true;
-                Rehive.auth.mfa.token.get().then(function (res) {
+                Rehive.auth.mfa.token.enable().then(function (res) {
                     $scope.tokenAuthenticationDetails = res;
-                    $scope.qrCodeUrl = 'https://chart.googleapis.com/chart?cht=qr&chl='+ res.otpauth_url +
-                        '&chs=200x200&chld=L|0';
+                    $scope.qrCodeUrl = 'https://chart.googleapis.com/chart?cht=qr&chl='+
+                        encodeURIComponent(res.otpauth_url) + '&chs=200x200&chld=L|0';
                     delete $scope.tokenAuthenticationDetails['otpauth_url'];
                     $scope.loadingVerifyAuth = false;
                     $scope.$apply();
