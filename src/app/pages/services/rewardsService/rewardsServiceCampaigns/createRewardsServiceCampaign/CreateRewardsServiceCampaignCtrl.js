@@ -90,8 +90,12 @@
                 request: newCampaignParams.request
             };
 
-            newCampaign.start_date = moment(new Date(newCampaignParams.startDate)).format('YYYY-MM-DD');
-            newCampaign.end_date = moment(new Date(newCampaignParams.endDate)).format('YYYY-MM-DD');
+            newCampaign.start_date = moment(new Date(newCampaignParams.startDate)).format('YYYY-MM-DD') +'T00:00:00Z';
+            newCampaign.end_date = moment(new Date(newCampaignParams.endDate)).format('YYYY-MM-DD') +'T00:00:00Z';
+
+            //correct date format
+            // newCampaign.start_date = Date.parse(moment(new Date(newCampaignParams.startDate)).format('YYYY-MM-DD') +'T00:00:00');
+            // newCampaign.end_date = Date.parse(moment(new Date(newCampaignParams.endDate)).format('YYYY-MM-DD') +'T00:00:00');
 
             // if(newCampaignParams.users.length > 0){
             //     newCampaign.users = _.pluck(newCampaignParams.users,'text');
