@@ -13,6 +13,7 @@
       'BlurAdmin.pages.settings',
       'BlurAdmin.pages.currencies',
       'BlurAdmin.pages.transactions',
+      'BlurAdmin.pages.accounts',
       'BlurAdmin.pages.groups',
       'BlurAdmin.pages.currency',
       'BlurAdmin.pages.webhooks',

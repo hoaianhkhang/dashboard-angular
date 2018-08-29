@@ -17,8 +17,7 @@ hr.sidebar-custom-hr{
 }
 
 span.sidebar-custom-menu-title{
-  position: absolute;
-  top: 16px;
+  position: relative;
   z-index: 100;
 }
 
@@ -55,6 +54,10 @@ span.should-be-blue{
   position: absolute;
   top: 25px;
   right: 25px;
+}
+
+.divider-6{
+  margin-bottom: 6px !important;
 }
 
 .divider{

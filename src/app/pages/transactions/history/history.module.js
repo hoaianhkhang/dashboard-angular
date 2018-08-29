@@ -18,7 +18,8 @@
                 params: {
                     identifier: null,
                     transactionId: null,
-                    currencyCode: null
+                    currencyCode: null,
+                    accountRef: null
                 },
                 title: 'History'
             });

@@ -167,7 +167,7 @@
             requestLogsArray.forEach(function (requestLogObj,index,array) {
                 $scope.requestLogs.push({
                     id: requestLogObj.id,
-                    user: requestLogObj.user.email || requestLogObj.user.mobile_number,
+                    user: requestLogObj.user.email || requestLogObj.user.mobile,
                     key: requestLogObj.key,
                     scheme: requestLogObj.scheme,
                     path: requestLogObj.path,

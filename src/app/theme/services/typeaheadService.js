@@ -25,9 +25,9 @@
                     if(mobile.length > 0){
                         return Rehive.admin.users.get({filters: {
                             page_size: 10,
-                            mobile_number__contains: mobile
+                            mobile__contains: mobile
                         }}).then(function (res) {
-                            return _.pluck(res.results,'mobile_number');
+                            return _.pluck(res.results,'mobile');
                         });
                     }
                 };
