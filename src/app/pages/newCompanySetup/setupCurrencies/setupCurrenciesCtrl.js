@@ -27,7 +27,7 @@
             $scope.loadingCurrencies = true;
             if(vm.token){
                 Rehive.admin.currencies.get({filters: {
-                    enabled: true,
+                    archived: false,
                     page_size: 250
                 }}).then(function (res) {
                     $scope.currencies = res.results;
@@ -72,7 +72,7 @@
         vm.getCompanyCurrencies = function(){
             if(vm.token){
                 Rehive.admin.currencies.get({filters: {
-                    enabled: true,
+                    archived: false,
                     page_size: 250
                 }}).then(function (res) {
                     $window.sessionStorage.currenciesList = JSON.stringify(res.results);

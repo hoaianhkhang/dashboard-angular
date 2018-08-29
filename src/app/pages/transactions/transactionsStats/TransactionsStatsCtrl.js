@@ -95,7 +95,7 @@
             $scope.loadingStats = true;
             Rehive.admin.currencies.get({filters: {
                 page_size: 250,
-                enabled: true
+                archived: false
             }}).then(function (res) {
                 if(res.results.length > 0){
                     $scope.currencyOptions = res.results;

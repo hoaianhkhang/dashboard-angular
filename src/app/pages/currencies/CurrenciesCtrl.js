@@ -78,7 +78,7 @@
             Rehive.admin.currencies.get({filters: {
                 page:1,
                 page_size: 250,
-                enabled: true
+                archived: false
             }}).then(function (res) {
                 if($scope.currencyOptions.length > 0){
                     $scope.currencyOptions.length = 0;
@@ -108,7 +108,7 @@
             var searchObj = {
                 page: $scope.pagination.pageNo,
                 page_size: $scope.pagination.itemsPerPage,
-                enabled: true,
+                archived: false,
                 code: $scope.filtersObj.currencyFilter ? $scope.applyFiltersObj.currencyFilter.selectedCurrencyOption.code: null,
                 unit: $scope.filtersObj.unitFilter ? $scope.applyFiltersObj.unitFilter.selectedCurrencyOption.unit: null
             };

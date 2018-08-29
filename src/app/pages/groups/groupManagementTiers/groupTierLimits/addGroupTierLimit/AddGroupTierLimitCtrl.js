@@ -23,7 +23,7 @@
         vm.getCompanyCurrencies = function(){
             if(vm.token){
                 Rehive.admin.currencies.get({filters: {
-                    enabled: true,
+                    archived: false,
                     page_size: 250
                 }}).then(function (res) {
                     $scope.currenciesOptions = res.results;

@@ -16,8 +16,7 @@
             description: "Stellar Lumen",
             symbol: "*",
             unit: "lumen",
-            divisibility: 7,
-            enabled: true
+            divisibility: 7
         };
         $scope.showOptionsAccountRef = false;
         $scope.loadingWarmstorage = true;
