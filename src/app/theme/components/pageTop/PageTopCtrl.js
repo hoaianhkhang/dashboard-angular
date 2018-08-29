@@ -24,6 +24,7 @@
         $scope.inProgressSets = false;
         $scope.dashboardTasksLists = [];
         $scope.showingDashboardTasks = false;
+        $scope.showingDashboardBelow1200Tasks = false;
         $scope.allTasksDone = true;
 
         $scope.pagination = {
@@ -151,7 +152,7 @@
             var filter;
             if(vm.token){
                 if(typeOfInput == 'mobile'){
-                    filter = 'mobile_number__contains';
+                    filter = 'mobile__contains';
                 } else {
                     filter = 'email__contains';
                 }
@@ -413,6 +414,13 @@
             }
         };
 
+        $scope.openDashboardBelow1200Tasks = function () {
+            $scope.showingDashboardBelow1200Tasks = !$scope.showingDashboardBelow1200Tasks;
+            if($scope.showingDashboardBelow1200Tasks && !$scope.transactionSetsExportingInProgress){
+                $scope.allTasksDone = true;
+            }
+        };
+
         $rootScope.$on('exportSetCreate', function(event, obj){
             if(obj.status == 'created'){
                 $scope.transactionSetsExportingInProgress = true;
@@ -422,6 +430,10 @@
 
         $scope.closeDashboardTasksBox = function () {
             $scope.showingDashboardTasks = false;
+        };
+
+        $scope.closeDashboardBelow1200TasksBox = function () {
+            $scope.showingDashboardBelow1200Tasks = false;
         };
 
         // dashboardTasks end

@@ -116,7 +116,7 @@
             {colName: 'Username',fieldName: 'username',visible: false},
             {colName: 'Identifier',fieldName: 'identifier',visible: false},
             {colName: 'Updated',fieldName: 'updatedDate',visible: false},
-            {colName: 'Mobile',fieldName: 'mobile_number',visible: false},
+            {colName: 'Mobile',fieldName: 'mobile',visible: false},
             {colName: 'Destination tx id',fieldName: 'destination_tx_id',visible: false},
             {colName: 'Source tx id',fieldName: 'source_tx_id',visible: false},
             {colName: 'Label',fieldName: 'label',visible: false},
@@ -523,7 +523,7 @@
         vm.formatTransactionsArray = function (transactionsArray) {
             transactionsArray.forEach(function (transactionObj) {
                 $scope.transactions.push({
-                    user: transactionObj.user.email || transactionObj.user.mobile_number,
+                    user: transactionObj.user.email || transactionObj.user.mobile,
                     recipient: transactionObj.destination_transaction ? transactionObj.destination_transaction.id ? transactionObj.destination_transaction.user.email : transactionObj.destination_transaction.user.email + ' (new user)' : "",
                     tx_type: $filter("capitalizeWord")(transactionObj.tx_type),
                     subtype: transactionObj.subtype,
@@ -539,7 +539,7 @@
                     username: transactionObj.user.username,
                     identifier: transactionObj.user.identifier,
                     updatedDate: transactionObj.updated ? $filter("date")(transactionObj.updated,'mediumDate') + ' ' + $filter("date")(transactionObj.updated,'shortTime'): null,
-                    mobile_number: transactionObj.user.mobile_number,
+                    mobile: transactionObj.user.mobile,
                     destination_tx_id: transactionObj.destination_transaction ? transactionObj.destination_transaction.id ? transactionObj.destination_transaction.id : 'ID pending creation' : "",
                     source_tx_id: transactionObj.source_transaction ? transactionObj.source_transaction.id : "",
                     label: transactionObj.label,

@@ -1,0 +1,70 @@
+<div ng-hide="addingAccounts" class="modal-content">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="$dismiss()" aria-label="Close">
+            <em class="ion-ios-close-empty sn-link-close"></em>
+        </button>
+        <h4 class="modal-title" id="myModalLabel">Add Account</h4>
+    </div>
+    <div class="modal-body">
+        <form name="addAccountForm" class="custom-form" novalidate>
+            <div class="form-group divider-20">
+                <label>Name  <span class="required-icon">*</span></label>
+                <input type="text" class="form-control" ng-model="addAccountParams.name"
+                       ng-change="addAccountParams.name = addAccountParams.name.toLowerCase()"
+                       placeholder="Enter account name" required/>
+            </div>
+            <div class="form-group divider-20">
+                <label>User  <span class="required-icon">*</span></label>
+                <input type="text" ng-model="addAccountParams.user" ng-model-options='{ debounce: 800 }'
+                       placeholder="Enter email address"
+                       uib-typeahead="email for email in getUsersEmailTypeahead($viewValue)"
+                       class="form-control" required/>
+            </div>
+            <div class="form-group divider-20">
+                <label>Primary</label>
+                <br>
+                <input class="custom-rehive-checkbox" ng-model="addAccountParams.primary" type="checkbox">
+            </div>
+            <div class="form-group divider-20">
+                <label>Currency</label>
+                <div class="reward-multi-select divider">
+                    <select chosen
+                            multiple
+                            data-placeholder-text-multiple="'Choose one or more currencies'"
+                            width="100"
+                            ng-model="currenciesForNewAccount.list"
+                            ng-options="currency.code for currency in currenciesList | orderBy: 'code' track by currency.code"
+                            required>
+                        <option value=""></option>
+                    </select>
+                </div>
+                <p ng-hide="currenciesList.length > 0 || addingUserAccount">Looks like you haven't added any currencies to your company yet.
+                    Add one by going to the <a href="/#/currencies" target="_blank">currencies page</a>.</p>
+                <p ng-show="currenciesList.length > 0 || addingUserAccount">Currencies selected:
+                    <span ng-repeat="currency in currenciesForNewAccount.list | orderBy: 'code'">
+                    {{$last ? '' + currency.code : currency.code + ',&nbsp;' }}
+                </span>
+                </p>
+            </div>
+            <a ng-click="toggleAdvancedOption()" ng-class="{'': advancedOption == false,'divider-20': advancedOption == true}"
+               class="accounts-advanced-options pointer">Advanced options</a>
+            <div ng-show="advancedOption" class="form-group setup-groups-tooltip-div">
+                <label>Reference &nbsp;<i class="ion-information-circled setup-groups-tooltip" uib-tooltip-html="'Rehive will auto-generate a unique reference for an account.
+                 If you prefer to create your own reference you can enter it below.
+                 References are generally used for identifying deposits from users.'"></i></label>
+                <input type="text" class="form-control" ng-model="addAccountParams.reference" placeholder="Enter account reference"/>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button ng-click="addAccount(addAccountParams)" ng-disabled="!addAccountForm.$valid"
+                class="btn btn-primary no-margin pull-right dashboard-btn">Add
+        </button>
+        <button class="btn btn-default pull-left no-margin dashboard-btn margin-right-10"
+                ng-click="$dismiss()">Close
+        </button>
+    </div>
+</div>
+<div ba-panel ng-show="addingAccounts">
+    <loading-image></loading-image>
+</div>

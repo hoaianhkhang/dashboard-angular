@@ -47,10 +47,6 @@
         };
         $scope.checkStellarTestnetServiceInitialState();
 
-        $scope.goToServices = function(){
-            $location.path('/services');
-        };
-
         $scope.checkTXLMCurrency = function () {
             if(vm.token){
                 $scope.loadingStellarTestnetService = true;

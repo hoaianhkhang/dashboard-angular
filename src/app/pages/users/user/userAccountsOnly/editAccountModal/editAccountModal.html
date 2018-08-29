@@ -19,23 +19,17 @@
                 <input class="custom-rehive-checkbox" ng-model="editUserAccountParams.primary" type="checkbox">
             </div>
             <div class="form-group">
-                <label>Currencies <span class="required-icon">*</span></label>
+                <label>Currencies</label>
                 <div class="reward-multi-select divider">
                     <select chosen
                             multiple
                             data-placeholder-text-multiple="'Choose one or more currencies'"
                             width="100"
                             ng-model="newAccountCurrencies.list"
-                            ng-options="currency.code for currency in currencyOptions | orderBy: 'code' track by currency.code"
-                            required>
+                            ng-options="currency.code for currency in currencyOptions | orderBy: 'code' track by currency.code">
                         <option value=""></option>
                     </select>
                 </div>
-                <p>Currencies selected:
-                    <span ng-repeat="currency in newAccountCurrencies.list | orderBy: 'code'">
-                    {{$last ? '' + currency.code : currency.code + ',&nbsp;' }}
-                </span>
-                </p>
                 <p>Currencies already selected:
                     <span ng-repeat="currencyObj in currenciesList | orderBy: 'currency.code'">
                     {{$last ? '' + currencyObj.currency.code : currencyObj.currency.code + ',&nbsp;'}}

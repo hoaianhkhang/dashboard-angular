@@ -45,11 +45,7 @@
                 errorHandler.handleErrors(error);
             });
         };
-        $scope.checkStellarServiceInitialState();
-
-        $scope.goToServices = function(){
-            $location.path('/services');
-        };
+        //$scope.checkStellarServiceInitialState();
 
         $scope.checkXLMCurrency = function () {
             if(vm.token){
@@ -66,6 +62,7 @@
                         } else if(res.data.data.results.length == 0){
                             vm.createXLMCurrency();
                         }
+                        $location.path('/services/stellar/configuration');
                     }
                 }).catch(function (error) {
                     $scope.loadingStellarService = false;
@@ -234,10 +231,6 @@
                     errorHandler.handleErrors(error);
                 });
             }
-        };
-
-        $scope.goToStellarServiceConfig = function () {
-            $location.path('/services/stellar/configuration');
         };
 
     }

@@ -37,10 +37,13 @@
   & .tooltip-inner{
     background-color: #4d4d4d!important;
     color: white!important;
-    padding: 4px 6px;
+    padding: 4px 4px;
     border-radius: 0;
     text-align: left;
     max-width: 210px;
+  }
+  & .tooltip.top .tooltip-arrow{
+    margin-left: -5px!important;
   }
 }
 

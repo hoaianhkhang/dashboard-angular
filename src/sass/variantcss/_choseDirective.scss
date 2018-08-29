@@ -99,6 +99,14 @@
   }
   & .chosen-container-multi .chosen-choices{
     padding: 2.5px 12px!important;
+    & .search-field .chosen-search-input{
+      font: 14px "Source Sans Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    }
+    & .search-field .chosen-search-input::placeholder{
+      font: 14px "Source Sans Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
+      color: $default-text;
+      opacity: 0.4;
+    }
   }
   & .chosen-container-single .chosen-single{
     height: 34px;
