@@ -28,7 +28,10 @@
             file: {}
         };
 
-        $scope.upload = function (file) {
+        $scope.upload = function () {
+            if(!$scope.imageFile.file.name){
+                return;
+            }
             $scope.updatingLogo = true;
             Upload.upload({
                 url: environmentConfig.API +'/admin/company/',
