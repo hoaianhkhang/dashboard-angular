@@ -25,7 +25,7 @@
                 Rehive.admin.groups.get({name: $scope.groupName}).then(function (res) {
                     $scope.editGroupObj = res;
                     $scope.editGroupObj.prevName = res.name;
-                    $scope.loadingGroup = false;
+                    vm.getGroupUsers($scope.editGroupObj);
                     $scope.$apply();
                 }, function (error) {
                     $scope.loadingGroup = false;
@@ -45,6 +45,26 @@
                 }}).then(function (res) {
                     $scope.totalUsersCount = res.total;
                     $scope.deactiveUsersCount = res.archived;
+                    vm.getGroupUsersPerDay(group);
+                    $scope.$apply();
+                }, function (error) {
+                    $scope.loadingGroup = false;
+                    errorHandler.evaluateErrors(error);
+                    errorHandler.handleErrors(error);
+                    $scope.$apply();
+                });
+            }
+        };
+
+        vm.getGroupUsersPerDay = function (group) {
+            if(vm.token) {
+                $scope.loadingGroup = true;
+                Rehive.admin.users.overview.get({filters: {
+                    group: group.name,
+                    created__lt: Date.parse(moment(new Date()).add(1,'days').format('YYYY-MM-DD') +'T00:00:00'),
+                    created__gt: Date.parse(moment(new Date()).format('YYYY-MM-DD') +'T00:00:00')
+                }}).then(function (res) {
+                    $scope.newUsersToday = res.total;
                     $scope.loadingGroup = false;
                     $scope.$apply();
                 }, function (error) {

@@ -79,6 +79,7 @@
                                 <li ng-click="goToGroupViews('/groups/' + group.name + '/tiers')">Tiers</li>
                                 <li ng-click="goToGroupViews('/groups/' + group.name + '/account-configurations')">Account configurations</li>
                                 <li ng-click="goToGroupViews('/groups/' + group.name + '/transaction-settings')">Transaction settings</li>
+                                <li ng-click="goToGroupViews('/groups/' + group.name + '/stats')">Stats</li>
                                 <li ng-hide="group.name == 'admin' || group.name == 'service'" ng-click="deleteCompanyGroupPrompt(group)">Delete group</li>
                             </ul>
                         </div>
