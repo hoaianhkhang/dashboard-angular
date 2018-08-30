@@ -19,7 +19,7 @@
                 </div>
                 <div class="currencies-page-row">
                     <div>
-                        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
                             <div>
                                 <span><strong>{{group.name}}</strong></span>
                                 <br>
@@ -47,26 +47,26 @@
                                 <span class="currencies-details-heading">Deactivated users</span>
                             </div>
                         </div>
-                        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 group-overview-td">
-                            <div>
-                                <input ng-disabled="group.name == 'admin' || group.name == 'service'" ng-change="updateGroup(group,'default')" class="custom-rehive-checkbox" type="checkbox" ng-model="group.default">
-                                <br>
-                                <span class="currencies-details-heading">Default</span>
-                            </div>
-                            <div ng-show="group.name == 'admin' || group.name == 'service'" class="group-overview-tooltip">
-                               Rehive system group, cannot edit.
-                            </div>
-                        </div>
-                        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 group-overview-td">
-                            <div>
-                                <input ng-disabled="group.name == 'admin' || group.name == 'service'" ng-change="updateGroup(group,'public')" class="custom-rehive-checkbox" type="checkbox" ng-model="group.public">
-                                <br>
-                                <span class="currencies-details-heading">Public</span>
-                            </div>
-                            <div ng-show="group.name == 'admin' || group.name == 'service'" class="group-overview-tooltip">
-                                Rehive system group, cannot edit.
-                            </div>
-                        </div>
+                        <!--<div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 group-overview-td">-->
+                            <!--<div>-->
+                                <!--<input ng-disabled="group.name == 'admin' || group.name == 'service'" ng-change="updateGroup(group,'default')" class="custom-rehive-checkbox" type="checkbox" ng-model="group.default">-->
+                                <!--<br>-->
+                                <!--<span class="currencies-details-heading">Default</span>-->
+                            <!--</div>-->
+                            <!--<div ng-show="group.name == 'admin' || group.name == 'service'" class="group-overview-tooltip">-->
+                               <!--Rehive system group, cannot edit.-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!--<div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 group-overview-td">-->
+                            <!--<div>-->
+                                <!--<input ng-disabled="group.name == 'admin' || group.name == 'service'" ng-change="updateGroup(group,'public')" class="custom-rehive-checkbox" type="checkbox" ng-model="group.public">-->
+                                <!--<br>-->
+                                <!--<span class="currencies-details-heading">Public</span>-->
+                            <!--</div>-->
+                            <!--<div ng-show="group.name == 'admin' || group.name == 'service'" class="group-overview-tooltip">-->
+                                <!--Rehive system group, cannot edit.-->
+                            <!--</div>-->
+                        <!--</div>-->
                     </div>
                     <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1" ng-click="showGroupsOptions(group.name); $event.stopPropagation()" click-outside="closeOptionsBox()">
                         <div>
@@ -79,6 +79,7 @@
                                 <li ng-click="goToGroupViews('/groups/' + group.name + '/tiers')">Tiers</li>
                                 <li ng-click="goToGroupViews('/groups/' + group.name + '/account-configurations')">Account configurations</li>
                                 <li ng-click="goToGroupViews('/groups/' + group.name + '/transaction-settings')">Transaction settings</li>
+                                <li ng-click="goToGroupViews('/groups/' + group.name + '/stats')">Stats</li>
                                 <li ng-hide="group.name == 'admin' || group.name == 'service'" ng-click="deleteCompanyGroupPrompt(group)">Delete group</li>
                             </ul>
                         </div>

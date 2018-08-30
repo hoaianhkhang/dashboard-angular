@@ -10,7 +10,7 @@
 
         var vm = this;
         vm.token = localStorageManagement.getValue('token');
-        vm.groupName = $stateParams.groupName;
+        $scope.groupName = $stateParams.groupName;
         vm.updatedGroup = {};
         $scope.loadingGroup = true;
         vm.location = $location.path();
@@ -25,10 +25,10 @@
         $scope.getGroup = function () {
             if(vm.token) {
                 $scope.loadingGroup = true;
-                Rehive.admin.groups.get({name: vm.groupName}).then(function (res) {
+                Rehive.admin.groups.get({name: $scope.groupName}).then(function (res) {
                     $scope.editGroupObj = res;
                     $scope.editGroupObj.prevName = res.name;
-                    vm.getGroupUsers($scope.editGroupObj);
+                    $scope.loadingGroup = false;
                     $scope.$apply();
                 }, function (error) {
                     $scope.loadingGroup = false;
@@ -39,25 +39,6 @@
             }
         };
         $scope.getGroup();
-
-        vm.getGroupUsers = function (group) {
-            if(vm.token) {
-                $scope.loadingGroup = true;
-                Rehive.admin.users.overview.get({filters: {
-                    group: group.name
-                }}).then(function (res) {
-                    $scope.totalUsersCount = res.total;
-                    $scope.deactiveUsersCount = res.archived;
-                    $scope.loadingGroup = false;
-                    $scope.$apply();
-                }, function (error) {
-                    $scope.loadingGroup = false;
-                    errorHandler.evaluateErrors(error);
-                    errorHandler.handleErrors(error);
-                    $scope.$apply();
-                });
-            }
-        };
 
         $scope.pagination = {
             itemsPerPage: 10,
@@ -95,7 +76,7 @@
 
                 var groupAccountConfigurationsFilterObj = vm.getGroupAccountConfigurationsFilterObj();
 
-                Rehive.admin.groups.accountConfigurations.get(vm.groupName,{filters: groupAccountConfigurationsFilterObj}).then(function (res)
+                Rehive.admin.groups.accountConfigurations.get($scope.groupName,{filters: groupAccountConfigurationsFilterObj}).then(function (res)
                 {
                     $scope.loadingGroupAccountConfigurations = false;
                     $scope.groupAccountConfigurationsData = res;
@@ -124,7 +105,7 @@
 
             }
 
-            Rehive.admin.groups.accountConfigurations.update(vm.groupName,accountConfig.name,updateObj).then(function (res) {
+            Rehive.admin.groups.accountConfigurations.update($scope.groupName,accountConfig.name,updateObj).then(function (res) {
                 toastr.success('Account configuration updated successfully');
                 if(type == 'primary'){
                     $scope.getGroupAccountConfigurations();
@@ -201,7 +182,7 @@
 
         $scope.deleteAccountConfig = function (accountConfiguration) {
             $scope.loadingGroupAccountConfigurations = true;
-            Rehive.admin.groups.accountConfigurations.delete(vm.groupName,accountConfiguration.name).then(function (res) {
+            Rehive.admin.groups.accountConfigurations.delete($scope.groupName,accountConfiguration.name).then(function (res) {
                 toastr.success('Account configuration successfully deleted');
                 $scope.getGroupAccountConfigurations();
                 $scope.$apply();
