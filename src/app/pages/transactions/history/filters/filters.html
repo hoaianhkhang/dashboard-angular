@@ -18,9 +18,19 @@
             </div>
             <div ng-if="filtersObj.accountFilter" class="row divider-top-6">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 date-filter-view">
-                    <input type="text" ng-model="applyFiltersObj.accountFilter.selectedAccount" placeholder="Enter account reference"
-                           auto-focus="filtersObj.accountFilter"
-                           class="transaction-id-input">
+                    <select class="form-control pointer" ng-model="applyFiltersObj.accountFilter.selectedAccountOption"
+                            ng-options="option for option in accountFilterOptions">
+                    </select>
+                    <div ng-show="applyFiltersObj.accountFilter.selectedAccountOption == 'Name'" class="date-filter-in-between-view margin-left-12">
+                        <input type="text" ng-model="applyFiltersObj.accountFilter.selectedAccountName" placeholder="Enter account name"
+                               auto-focus="applyFiltersObj.accountFilter.selectedAccountOption == 'Name'"
+                               class="transaction-id-input">
+                    </div>
+                    <div ng-show="applyFiltersObj.accountFilter.selectedAccountOption == 'Reference'" class="amount-filter-in-between-view margin-left-12">
+                        <input type="text" ng-model="applyFiltersObj.accountFilter.selectedAccountReference" placeholder="Enter account reference"
+                               auto-focus="applyFiltersObj.accountFilter.selectedAccountOption == 'Reference'"
+                               class="transaction-id-input">
+                    </div>
                 </div>
             </div>
         </div>
