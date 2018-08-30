@@ -37,6 +37,19 @@
             maxSize: 5
         };
 
+        //renaming active field
+        if(localStorageManagement.getValue(vm.savedGroupUsersTableColumns)){
+            var headerColumns = JSON.parse(localStorageManagement.getValue(vm.savedGroupUsersTableColumns));
+            headerColumns.forEach(function (col,index,array) {
+                if(col.colName == 'Active'){
+                    col.colName = 'Archived';
+                    col.fieldName = 'archived';
+                }
+            });
+
+            localStorageManagement.setValue(vm.savedGroupUsersTableColumns,JSON.stringify(headerColumns));
+        }
+
         $scope.headerColumns = localStorageManagement.getValue(vm.savedGroupUsersTableColumns) ? JSON.parse(localStorageManagement.getValue(vm.savedGroupUsersTableColumns)) : [
             {colName: 'Identifier',fieldName: 'identifier',visible: true},
             {colName: 'First name',fieldName: 'first_name',visible: true},
@@ -48,7 +61,7 @@
             {colName: 'Updated',fieldName: 'updated',visible: false},
             {colName: 'Status',fieldName: 'status',visible: false},
             {colName: 'KYC status',fieldName: 'kycStatus',visible: false},
-            {colName: 'Active',fieldName: 'active',visible: false},
+            {colName: 'Archived',fieldName: 'archived',visible: false},
             {colName: 'Last login',fieldName: 'last_login',visible: false},
             {colName: 'Verified',fieldName: 'verified',visible: false},
             {colName: 'ID Number',fieldName: 'id_number',visible: false},
@@ -519,7 +532,7 @@
                     updated: userObj.updated ? $filter("date")(userObj.updated,'mediumDate') + ' ' + $filter("date")(userObj.updated,'shortTime'): null,
                     status: $filter("capitalizeWord")(userObj.status),
                     kycStatus: $filter("capitalizeWord")(userObj.kyc.status),
-                    active: userObj.active ? 'Yes' : 'No',
+                    archived: $filter("capitalizeWord")(userObj.archived),
                     last_login: userObj.last_login ? $filter("date")(userObj.last_login,'mediumDate') + ' ' + $filter("date")(userObj.last_login,'shortTime'): null,
                     verified: userObj.verified ? 'Yes' : 'No',
                     id_number: userObj.id_number,

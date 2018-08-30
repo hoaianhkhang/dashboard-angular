@@ -21,28 +21,28 @@
                     <div>
                         <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
                             <div>
-                                <span><strong>{{group.name}}</strong></span>
+                                <span><strong ng-class="{'archived-text': group.archived}">{{group.name}}</strong></span>
                                 <br>
                                 <span class="currencies-details-heading">Group name</span>
                             </div>
                         </div>
                         <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
                             <div>
-                                <span><strong>{{group.totalUsers}}</strong></span>
+                                <span><strong ng-class="{'archived-text': group.archived}">{{group.totalUsers}}</strong></span>
                                 <br>
                                 <span class="currencies-details-heading">Total users</span>
                             </div>
                         </div>
                         <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
                             <div>
-                                <span><strong>{{group.totalUsers - group.deactiveUsers}}</strong></span>
+                                <span><strong ng-class="{'archived-text': group.archived}">{{group.totalUsers - group.deactiveUsers}}</strong></span>
                                 <br>
                                 <span class="currencies-details-heading">Active users</span>
                             </div>
                         </div>
                         <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
                             <div>
-                                <span><strong>{{group.deactiveUsers}}</strong></span>
+                                <span><strong ng-class="{'archived-text': group.archived}">{{group.deactiveUsers}}</strong></span>
                                 <br>
                                 <span class="currencies-details-heading">Deactivated users</span>
                             </div>
@@ -79,7 +79,9 @@
                                 <li ng-click="goToGroupViews('/groups/' + group.name + '/tiers')">Tiers</li>
                                 <li ng-click="goToGroupViews('/groups/' + group.name + '/account-configurations')">Account configurations</li>
                                 <li ng-click="goToGroupViews('/groups/' + group.name + '/transaction-settings')">Transaction settings</li>
-                                <li ng-hide="group.name == 'admin' || group.name == 'service'" ng-click="deleteCompanyGroupPrompt(group)">Delete group</li>
+                                <li ng-show="group.archived" ng-click="restoreGroup(group)">Restore group</li>
+                                <li ng-hide="group.name == 'admin' || group.name == 'service'"
+                                    ng-click="openDeleteGroupModal('app/pages/groups/groupsOverview/deleteGroupModal/deleteGroupModal.html','md',group)">Delete group</li>
                             </ul>
                         </div>
                     </div>

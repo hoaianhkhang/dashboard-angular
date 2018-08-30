@@ -80,6 +80,19 @@
             });
         };
 
+        $scope.restoreBankAccount = function (bankAccount) {
+            $scope.loadingBankAccounts = true;
+            Rehive.admin.bankAccounts.update(bankAccount.id, {archived: false}).then(function (res) {
+                $scope.getBankAccounts();
+                $scope.$apply();
+            }, function (error) {
+                $scope.loadingBankAccounts = false;
+                errorHandler.evaluateErrors(error);
+                errorHandler.handleErrors(error);
+                $scope.$apply();
+            });
+        };
+
         $scope.openAddBankAccountModal = function (page, size) {
             vm.theAddModal = $uibModal.open({
                 animation: true,

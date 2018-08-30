@@ -16,15 +16,17 @@
                     <th></th>
                 </tr>
                 <tr ng-repeat="subtype in subtypes | orderBy: 'created'">
-                    <td class="table-row-center transactions-list-element rehive-table-row-first-child" ng-bind="subtype.tx_type | capitalizeWord"></td>
-                    <td class="table-row-center transactions-list-element" title="{{subtype.name}}" ng-bind="subtype.name"></td>
-                    <td class="table-row-center transactions-list-element" title="{{subtype.label}}" ng-bind="subtype.label || 'None'"></td>
-                    <td class="table-row-center transactions-list-element" title="{{subtype.description}}" ng-bind="subtype.description || 'None'"></td>
-                    <td class="rehive-table-row-last-child">
+                    <td ng-class="{'archived-text': subtype.archived}" class="table-row-center transactions-list-element rehive-table-row-first-child" ng-bind="subtype.tx_type | capitalizeWord"></td>
+                    <td ng-class="{'archived-text': subtype.archived}" class="table-row-center transactions-list-element" title="{{subtype.name}}" ng-bind="subtype.name"></td>
+                    <td ng-class="{'archived-text': subtype.archived}" class="table-row-center transactions-list-element" title="{{subtype.label}}" ng-bind="subtype.label || 'None'"></td>
+                    <td ng-class="{'archived-text': subtype.archived}" class="table-row-center transactions-list-element" title="{{subtype.description}}" ng-bind="subtype.description || 'None'"></td>
+                    <td ng-class="{'archived-text': subtype.archived}" class="rehive-table-row-last-child">
                         <a ng-click="openSubtypeModal('app/pages/transactions/subtypes/subtypeModal/subtypeModal.html','md',subtype)"
                            class="pull-right pointer ">Delete</a>
                         <a ng-click="openEditSubtypeModal('app/pages/transactions/subtypes/editSubtypeModal/editSubtypeModal.html','md',subtype)"
                            class="pull-right pointer user-address-edit margin-right-30">Edit</a>
+                        <a ng-show="subtype.archived" ng-click="restoreSubtype(subtype)"
+                           class="pull-right pointer user-address-edit margin-right-30">Restore</a>
                     </td>
                 </tr>
             </table>

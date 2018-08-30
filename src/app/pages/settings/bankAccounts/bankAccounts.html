@@ -14,10 +14,10 @@
                     <th></th>
                 </tr>
                 <tr ng-repeat="bankAccount in bankAccounts">
-                    <td width="20%" class="table-row-center transactions-list-element rehive-table-row-first-child">{{bankAccount.bank_name}}</td>
-                    <td width="20%" class="table-row-center transactions-list-element">{{bankAccount.name}}</td>
-                    <td width="20%" class="table-row-center transactions-list-element">{{bankAccount.number}}</td>
-                    <td width="20%" class="bank-account-currencies-td">
+                    <td ng-class="{'archived-text': bankAccount.archived}" width="15%" class="table-row-center transactions-list-element rehive-table-row-first-child">{{bankAccount.bank_name}}</td>
+                    <td ng-class="{'archived-text': bankAccount.archived}" width="20%" class="table-row-center transactions-list-element">{{bankAccount.name}}</td>
+                    <td ng-class="{'archived-text': bankAccount.archived}" width="20%" class="table-row-center transactions-list-element">{{bankAccount.number}}</td>
+                    <td ng-class="{'archived-text': bankAccount.archived}" width="10%" class="bank-account-currencies-td">
                         <div class="transactions-list-element ">
                             <span ng-repeat="currency in bankAccount.currencies | orderBy: 'code'"
                                   class="bank-acount-currencies">
@@ -30,11 +30,13 @@
                             </div>
                         </div>
                     </td>
-                    <td width="20%" class="rehive-table-row-last-child">
+                    <td width="35%" class="rehive-table-row-last-child">
                         <a ng-click="openBankAccountModal('app/pages/settings/bankAccounts/bankAccountModal/bankAccountModal.html','md',bankAccount)"
                            class="pull-right pointer ">Delete</a>
                         <a ng-click="openEditBankAccountModal('app/pages/settings/bankAccounts/editBankAccountModal/editBankAccountModal.html','md',bankAccount)"
                            class="pull-right pointer user-address-edit margin-right-30">Edit</a>
+                        <a ng-show="bankAccount.archived" ng-click="restoreBankAccount(bankAccount)"
+                           class="pull-right pointer user-address-edit margin-right-30">Restore</a>
                     </td>
                 </tr>
             </table>

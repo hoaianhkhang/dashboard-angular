@@ -112,45 +112,18 @@
             }
         };
 
-        $scope.deleteCompanyGroupPrompt = function(group) {
-            $ngConfirm({
-                title: 'Delete group',
-                content: "Are you sure you want to delete <b>" + group.name + "</b> ?",
-                animationBounce: 1,
-                animationSpeed: 100,
-                scope: $scope,
-                buttons: {
-                    close: {
-                        text: "Cancel",
-                        btnClass: 'btn-default dashboard-btn'
-                    },
-                    Add: {
-                        text: "Delete",
-                        btnClass: 'btn-danger dashboard-btn',
-                        keys: ['enter'], // will trigger when enter is pressed
-                        action: function(scope){
-                            scope.deleteCompanyGroup(group);
-                        }
-                    }
-                }
+        $scope.restoreGroup = function (group) {
+            $scope.loadingGroups = true;
+            Rehive.admin.groups.update(group.name,{archived: false}).then(function (res) {
+                $scope.closeOptionsBox();
+                $scope.getGroups();
+                $scope.$apply();
+            }, function (error) {
+                $scope.loadingGroups = false;
+                errorHandler.evaluateErrors(error);
+                errorHandler.handleErrors(error);
+                $scope.$apply();
             });
-        };
-
-        $scope.deleteCompanyGroup = function (group) {
-            if(vm.token) {
-                $scope.loadingGroups = true;
-                Rehive.admin.groups.delete(group.name).then(function (res) {
-                    $scope.loadingGroups = false;
-                    toastr.success('Group successfully deleted');
-                    $scope.getGroups();
-                    $scope.$apply();
-                }, function (error) {
-                    $scope.loadingGroups = false;
-                    errorHandler.evaluateErrors(error);
-                    errorHandler.handleErrors(error);
-                    $scope.$apply();
-                });
-            }
         };
 
         $scope.openAddGroupModal = function (page, size) {
@@ -162,6 +135,28 @@
             });
 
             vm.theModal.result.then(function(group){
+                if(group){
+                    $scope.getGroups();
+                }
+            }, function(){
+            });
+        };
+
+        $scope.openDeleteGroupModal = function (page, size, group) {
+            vm.theDeleteModal = $uibModal.open({
+                animation: true,
+                templateUrl: page,
+                size: size,
+                controller: 'DeleteGroupModalCtrl',
+                scope: $scope,
+                resolve: {
+                    group: function () {
+                        return group;
+                    }
+                }
+            });
+
+            vm.theDeleteModal.result.then(function(group){
                 if(group){
                     $scope.getGroups();
                 }

@@ -28,6 +28,19 @@
         };
         vm.getSubtypes();
 
+        $scope.restoreSubtype = function (subtype) {
+            $scope.loadingSubtypes = true;
+            Rehive.admin.subtypes.update(subtype.id, {archived: false}).then(function (res) {
+                vm.getSubtypes();
+                $scope.$apply();
+            }, function (error) {
+                $scope.loadingSubtypes = false;
+                errorHandler.evaluateErrors(error);
+                errorHandler.handleErrors(error);
+                $scope.$apply();
+            });
+        };
+
         $scope.openAddSubtypeModal = function (page, size) {
             vm.theModal = $uibModal.open({
                 animation: true,

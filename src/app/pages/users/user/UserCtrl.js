@@ -198,16 +198,16 @@
 
         };
 
-        $scope.toggleActivateUser = function(active){
+        $scope.toggleActivateUser = function(archived){
             if(vm.token) {
                 $scope.loadingUser = true;
 
                 var formData = new FormData();
 
-                formData.append('active', active);
+                formData.append('archived', archived);
 
                 Rehive.admin.users.update(vm.uuid, formData).then(function (res) {
-                    if(active){
+                    if(archived){
                         toastr.success('Successfully activated the user');
                     } else {
                         toastr.success('Successfully deactivated the user');

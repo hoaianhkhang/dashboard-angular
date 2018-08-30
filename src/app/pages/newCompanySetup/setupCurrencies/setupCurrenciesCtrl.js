@@ -116,25 +116,51 @@
         $scope.deleteCurrencyConfirm = function (currency) {
             $ngConfirm({
                 title: 'Delete currency',
-                content: 'Are you sure you want to delete this currency?',
+                contentUrl: 'app/pages/newCompanySetup/setupCurrencies/deleteCurrencyPrompt.html',
                 animationBounce: 1,
                 animationSpeed: 100,
                 scope: $scope,
+                onScopeReady: function(){
+                    $scope.currency = currency;
+                },
                 buttons: {
                     close: {
-                        text: "No",
-                        btnClass: 'btn-default pull-left dashboard-btn'
+                        text: "Cancel",
+                        btnClass: 'btn-default dashboard-btn'
                     },
-                    ok: {
-                        text: "Yes",
-                        btnClass: 'btn-primary dashboard-btn',
+                    Add: {
+                        text: "Delete permanently",
+                        btnClass: 'btn-danger',
                         keys: ['enter'], // will trigger when enter is pressed
                         action: function(scope){
-                            $scope.deleteCurrency(currency);
+                            if(scope.deleteText != 'DELETE'){
+                                toastr.error('DELETE text did not match');
+                                return;
+                            }
+                            scope.archiveCurrency(currency);
                         }
                     }
                 }
             });
+        };
+        
+        $scope.archiveCurrency = function (currency) {
+            if(currency.archived){
+                $scope.deleteCurrency(currency);
+            } else {
+                $scope.loadingCurrencies = true;
+                Rehive.admin.currencies.update(currency.code, {archived : true}).then(function (res) {
+                    $timeout(function () {
+                        $scope.deleteCurrency(currency);
+                    },1000);
+                    $scope.$apply();
+                }, function (error) {
+                    $scope.loadingCurrencies = false;
+                    errorHandler.evaluateErrors(error);
+                    errorHandler.handleErrors(error);
+                    $scope.$apply();
+                });
+            }
         };
 
         $scope.deleteCurrency = function(currency){
@@ -142,6 +168,7 @@
                 $scope.loadingCurrencies = true;
                 Rehive.admin.currencies.delete(currency.code).then(function (res) {
                     $scope.initialCurrencies.push(currency);
+                    toastr.success('Currency deleted successfully');
                     $timeout(function () {
                         vm.getCurrencies();
                     },1000);

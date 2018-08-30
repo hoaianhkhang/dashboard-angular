@@ -54,12 +54,12 @@
         //     localStorageManagement.setValue(vm.savedUserTableColumns,JSON.stringify(headerColumns));
         // }
 
-        //renaming col field
+        //removing active field
         if(localStorageManagement.getValue(vm.savedUserTableColumns)){
              var headerColumns = JSON.parse(localStorageManagement.getValue(vm.savedUserTableColumns));
-             headerColumns.forEach(function (col) {
-                 if(col.colName == 'Mobile number'){
-                     col.fieldName = 'mobile';
+             headerColumns.forEach(function (col,index,array) {
+                 if(col.colName == 'Active'){
+                     array.splice(index,1);
                  }
              });
 
@@ -78,7 +78,6 @@
             {colName: 'Archived',fieldName: 'archived',visible: false},
             {colName: 'Status',fieldName: 'status',visible: false},
             {colName: 'KYC status',fieldName: 'kycStatus',visible: false},
-            {colName: 'Active',fieldName: 'active',visible: false},
             {colName: 'Last login',fieldName: 'last_login',visible: false},
             {colName: 'Verified',fieldName: 'verified',visible: false},
             {colName: 'ID Number',fieldName: 'id_number',visible: false},
@@ -566,7 +565,6 @@
                     archived: $filter("capitalizeWord")(userObj.archived),
                     status: $filter("capitalizeWord")(userObj.status),
                     kycStatus: $filter("capitalizeWord")(userObj.kyc.status),
-                    active: userObj.active ? 'Yes' : 'No',
                     last_login: userObj.last_login ? $filter("date")(userObj.last_login,'mediumDate') + ' ' + $filter("date")(userObj.last_login,'shortTime'): null,
                     verified: userObj.verified ? 'Yes' : 'No',
                     id_number: userObj.id_number,

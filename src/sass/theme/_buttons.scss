@@ -84,6 +84,14 @@ button.btn.btn-success {
   }
 }
 
+button.btn.btn-gray {
+  color: white;
+  @include buttonColor($gray, $gray);
+  &:active, &:target {
+    background-color: $gray-dark;
+  }
+}
+
 button.btn.btn-info {
   @include buttonColor($info, $info);
   &:active, &:target {
