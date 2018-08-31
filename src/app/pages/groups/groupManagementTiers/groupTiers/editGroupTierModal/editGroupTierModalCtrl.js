@@ -8,7 +8,6 @@
                                     Rehive,localStorageManagement,errorHandler) {
 
         var vm = this;
-
         $scope.editTier = tier;
         vm.token = localStorageManagement.getValue('token');
         vm.updatedTier = {};
