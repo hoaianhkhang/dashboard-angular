@@ -15,7 +15,7 @@
         $scope.addCustomCompanyCurrency = function(newCurrencyParams){
 
             $scope.loadingCustomCurrencies = true;
-            newCurrencyParams.enabled = true;
+            newCurrencyParams.archived = false;
             Rehive.admin.currencies.create(newCurrencyParams).then(function (res) {
                 $scope.loadingCustomCurrencies = false;
                 toastr.success('New custom currency has been created successfully');

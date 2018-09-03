@@ -89,7 +89,7 @@
             if(currencies && currencies.length > 0){
                 $scope.loadingCurrencies = true;
                 currencies.forEach(function(currency,index,array){
-                    currency.enabled = true;
+                    currency.archived = false;
                     Rehive.admin.currencies.create(currency).then(function (res) {
                         vm.getCompanyCurrencies();
                         $rootScope.setupCurrencies = 1;
