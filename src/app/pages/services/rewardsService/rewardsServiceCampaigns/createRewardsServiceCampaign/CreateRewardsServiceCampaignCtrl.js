@@ -5,7 +5,7 @@
         .controller('CreateRewardsServiceCampaignsCtrl', CreateRewardsServiceCampaignsCtrl);
 
     /** @ngInject */
-    function CreateRewardsServiceCampaignsCtrl($scope,$rootScope,environmentConfig,typeaheadService,toastr,_,currencyModifiers,
+    function CreateRewardsServiceCampaignsCtrl($scope,$rootScope,environmentConfig,Rehive,typeaheadService,toastr,_,currencyModifiers,
                                                $http,localStorageManagement,$location,errorHandler,serializeFiltersService) {
 
         var vm = this;
@@ -21,6 +21,7 @@
             endDate: null,
             rewardTotal: null,
             rewardAmount: null,
+            account: {},
             rewardPercentage: null,
             amountType: 'Fixed',
             status: 'active',
@@ -48,24 +49,33 @@
 
         vm.getCompanyCurrencies = function(){
             if(vm.token){
-                $http.get(environmentConfig.API + '/admin/currencies/?enabled=true&page_size=250', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
-                    if (res.status === 200) {
-                        if(res.data.data.results.length > 0){
-                            $scope.currencyOptions = res.data.data.results;
-                        }
-                    }
-                }).catch(function (error) {
-                    errorHandler.evaluateErrors(error.data);
+                Rehive.admin.currencies.get({filters: {
+                    page:1,
+                    page_size: 250,
+                    archived: false
+                }}).then(function (res) {
+                    $scope.currencyOptions = res.results.slice();
+                    $scope.$apply();
+                }, function (error) {
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };
         vm.getCompanyCurrencies();
+
+        $scope.getAllAccounts = function(){
+            Rehive.admin.accounts.get({filters: {page_size: 250}}).then(function (res) {
+                $scope.accountOptions = res.results.slice();
+                $scope.$apply();
+            }, function (error) {
+                errorHandler.evaluateErrors(error);
+                errorHandler.handleErrors(error);
+                $scope.$apply();
+            });
+        };
+        $scope.getAllAccounts();
 
         $scope.addCampaign = function (newCampaignParams) {
 
@@ -87,8 +97,9 @@
                 end_date: null,
                 reward_total: newCampaignParams.rewardTotal ? currencyModifiers.convertToCents(newCampaignParams.rewardTotal,newCampaignParams.currency.divisibility) : null,
                 reward_amount: newCampaignParams.rewardAmount ? currencyModifiers.convertToCents(newCampaignParams.rewardAmount,newCampaignParams.currency.divisibility) : null,
+                account: (newCampaignParams.account && newCampaignParams.account.reference) ? newCampaignParams.account.reference : null,
                 reward_percentage: newCampaignParams.rewardPercentage,
-                amountType: newCampaignParams.amountType ? newCampaignParams.amountType.toLowerCase() : null,
+                amount_type: newCampaignParams.amountType ? newCampaignParams.amountType.toLowerCase() : null,
                 status: newCampaignParams.status,
                 max_per_user: newCampaignParams.max_per_user,
                 visible: newCampaignParams.visible,
