@@ -21,11 +21,14 @@
             endDate: null,
             rewardTotal: null,
             rewardAmount: null,
+            rewardPercentage: null,
+            amountType: 'Fixed',
             status: 'active',
             max_per_user: null,
             visible: false,
             request: false
         };
+        $scope.amountTypeOptions = ['Fixed' , 'Percentage'];
 
         //for angular datepicker
         $scope.dateObj = {};
@@ -84,6 +87,8 @@
                 end_date: null,
                 reward_total: newCampaignParams.rewardTotal ? currencyModifiers.convertToCents(newCampaignParams.rewardTotal,newCampaignParams.currency.divisibility) : null,
                 reward_amount: newCampaignParams.rewardAmount ? currencyModifiers.convertToCents(newCampaignParams.rewardAmount,newCampaignParams.currency.divisibility) : null,
+                reward_percentage: newCampaignParams.rewardPercentage,
+                amountType: newCampaignParams.amountType ? newCampaignParams.amountType.toLowerCase() : null,
                 status: newCampaignParams.status,
                 max_per_user: newCampaignParams.max_per_user,
                 visible: newCampaignParams.visible,

@@ -5,7 +5,7 @@
         .controller('EditRewardsServiceCampaignsCtrl', EditRewardsServiceCampaignsCtrl);
 
     /** @ngInject */
-    function EditRewardsServiceCampaignsCtrl($scope,$stateParams,environmentConfig,typeaheadService,toastr,_,
+    function EditRewardsServiceCampaignsCtrl($scope,$stateParams,environmentConfig,typeaheadService,toastr,_,$filter,
                                              $http,localStorageManagement,$location,errorHandler,currencyModifiers) {
 
         var vm = this;
@@ -16,6 +16,7 @@
         $scope.updatingCampaign =  false;
         $scope.editCampaignParams = {};
         vm.updatedCampaignObj = {};
+        $scope.amountTypeOptions = ['Fixed' , 'Percentage'];
 
         //for angular datepicker
         $scope.dateObj = {};
@@ -70,6 +71,7 @@
                     if (res.status === 200) {
                         var editObj = {};
                         editObj = res.data.data;
+                        console.log(editObj)
                         $scope.currencyOptions.forEach(function (element) {
                             if(element.code == editObj.currency.code){
                                 editObj.currency = element;
@@ -77,6 +79,7 @@
                                 editObj.end_date = moment(editObj.end_date).toDate();
                                 editObj.reward_total = currencyModifiers.convertFromCents(editObj.reward_total,editObj.currency.divisibility);
                                 editObj.reward_amount = currencyModifiers.convertFromCents(editObj.reward_amount,editObj.currency.divisibility);
+                                editObj.amount_type = $filter('capitalizeWord')(editObj.amount_type);
                                 $scope.editCampaignParams = editObj;
                             }
                         });
@@ -121,6 +124,9 @@
             if(vm.updatedCampaignObj.reward_amount){
                 vm.updatedCampaignObj.reward_amount = currencyModifiers.convertToCents(vm.updatedCampaignObj.reward_amount,$scope.editCampaignParams.currency.divisibility);
                 vm.updatedCampaignObj.currency = $scope.editCampaignParams.currency.code;
+            }
+            if(vm.updatedCampaignObj.amount_type){
+                vm.updatedCampaignObj.amount_type = vm.updatedCampaignObj.amount_type.toLowerCase();
             }
 
             $scope.updatingCampaign =  true;

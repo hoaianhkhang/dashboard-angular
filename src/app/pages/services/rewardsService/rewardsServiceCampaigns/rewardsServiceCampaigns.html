@@ -18,15 +18,18 @@
                     <th>Description</th>
                     <th>Start date</th>
                     <th>End date</th>
+                    <th>Balance</th>
                     <th>Status</th>
                     <th></th>
                 </tr>
                 <tr ng-repeat="campaign in campaignList | orderBy: '-created'" class="editable-row">
-                    <td class="rehive-table-row-first-child"><div title="{{campaign.id}}" class="transactions-list-element" ng-bind="campaign.id"></div></td>
+                    <td class="rehive-table-row-first-child"><div title="{{campaign.identifier}}" class="transactions-list-element" ng-bind="campaign.identifier"></div></td>
                     <td><div title="{{campaign.name}}" class="transactions-list-element" ng-bind="campaign.name"></div></td>
                     <td><div title="{{campaign.description}}" class="transactions-list-element" ng-bind="campaign.description"></div></td>
                     <td><div title="{{campaign.start_date | date:'mediumDate'}} {{campaign.start_date | date:'shortTime'}}" class="transactions-list-element" ng-bind="campaign.start_date | date:'mediumDate' + ' ' + campaign.start_date | date:'shortTime'"></div></td>
                     <td><div title="{{campaign.end_date | date:'mediumDate'}} {{campaign.end_date | date:'shortTime'}}" class="transactions-list-element" ng-bind="campaign.end_date | date:'mediumDate' + ' ' + campaign.end_date | date:'shortTime'"></div></td>
+                    <td><div title="{{(campaign.reward_balance | currencyModifiersFilter: campaign.currency.divisibility) + '/' + (campaign.reward_total | currencyModifiersFilter: campaign.currency.divisibility) + ' ' + campaign.currency.code}}"
+                             class="transactions-list-element" ng-bind="(campaign.reward_balance | currencyModifiersFilter: campaign.currency.divisibility) + '/' + (campaign.reward_total | currencyModifiersFilter: campaign.currency.divisibility) + ' ' + campaign.currency.code"></div></td>
                     <td><div title="{{campaign.status | capitalizeWord}}" class="transactions-list-element" ng-bind="campaign.status | capitalizeWord"></div></td>
                     <td class="rehive-table-row-last-child">
                         <span class="user-details-currencies-options-container pull-right" ng-click="showCampaignOptionsBox(campaign); $event.stopPropagation()" click-outside="closeCampaignOptionsBox()">
