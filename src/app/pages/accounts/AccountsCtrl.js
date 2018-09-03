@@ -177,9 +177,8 @@
                     accountObj.currencies.forEach(function (currencyObj,index,array) {
                         if(index == (array.length - 1)){
                             currencyText.push(currencyObj.currency.code);
-
                             $scope.accountsList.push({
-                                user: accountObj.user.email,
+                                user: accountObj.user.email ? accountObj.user.email : accountObj.user.mobile ? accountObj.user.mobile : accountObj.user.id,
                                 group: accountObj.user.group || '',
                                 name: accountObj.name,
                                 reference: accountObj.reference,
@@ -193,7 +192,7 @@
                     });
                 } else {
                     $scope.accountsList.push({
-                        user: accountObj.user.email,
+                        user: accountObj.user.email ? accountObj.user.email : accountObj.user.mobile ? accountObj.user.mobile : accountObj.user.id,
                         group: accountObj.user.group || '',
                         name: accountObj.name,
                         reference: accountObj.reference,
