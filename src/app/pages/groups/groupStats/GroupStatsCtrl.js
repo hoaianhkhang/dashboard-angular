@@ -1,17 +1,15 @@
 (function () {
     'use strict';
 
-    angular.module('BlurAdmin.pages.groups.groupTransactionSettings')
-        .controller('GroupTransactionSettingsCtrl', GroupTransactionSettingsCtrl);
+    angular.module('BlurAdmin.pages.groups.groupStats')
+        .controller('GroupStatsCtrl', GroupStatsCtrl);
 
     /** @ngInject */
-    function GroupTransactionSettingsCtrl($scope,toastr,localStorageManagement,
-                                          Rehive,$stateParams,$location,errorHandler) {
+    function GroupStatsCtrl($scope,localStorageManagement,Rehive,$stateParams,$location,errorHandler,toastr) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('token');
         $scope.groupName = $stateParams.groupName;
-        vm.updatedGroup = {};
         $scope.loadingGroup = true;
         vm.location = $location.path();
         vm.locationArray = vm.location.split('/');
@@ -27,7 +25,7 @@
                 Rehive.admin.groups.get({name: $scope.groupName}).then(function (res) {
                     $scope.editGroupObj = res;
                     $scope.editGroupObj.prevName = res.name;
-                    $scope.loadingGroup = false;
+                    vm.getGroupUsers($scope.editGroupObj);
                     $scope.$apply();
                 }, function (error) {
                     $scope.loadingGroup = false;
@@ -39,41 +37,45 @@
         };
         $scope.getGroup();
 
-        vm.getGroupSettings = function () {
+        vm.getGroupUsers = function (group) {
             if(vm.token) {
-                $scope.loadingGroupSettings = true;
-                Rehive.admin.groups.settings.get($scope.groupName).then(function (res) {
-                    $scope.loadingGroupSettings = false;
-                    $scope.groupSettingsObj = res;
+                $scope.loadingGroup = true;
+                Rehive.admin.users.overview.get({filters: {
+                    group: group.name
+                }}).then(function (res) {
+                    $scope.totalUsersCount = res.total;
+                    $scope.deactiveUsersCount = res.archived;
+                    vm.getGroupUsersPerDay(group);
                     $scope.$apply();
                 }, function (error) {
-                    $scope.loadingGroupSettings = false;
+                    $scope.loadingGroup = false;
                     errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
                     $scope.$apply();
                 });
             }
         };
-        vm.getGroupSettings();
 
-        $scope.toggleGroupSettings = function (groupSetting,type) {
-
-            var updatedSetting = {};
-            updatedSetting[type] = !groupSetting;
-
+        vm.getGroupUsersPerDay = function (group) {
             if(vm.token) {
-                Rehive.admin.groups.settings.update($scope.groupName,updatedSetting).then(function (res) {
-                    $scope.groupSettingsObj = {};
-                    $scope.groupSettingsObj = res;
-                    toastr.success('Group setting updated successfully');
+                $scope.loadingGroup = true;
+                Rehive.admin.users.overview.get({filters: {
+                    group: group.name,
+                    created__lt: Date.parse(moment(new Date()).add(1,'days').format('YYYY-MM-DD') +'T00:00:00'),
+                    created__gt: Date.parse(moment(new Date()).format('YYYY-MM-DD') +'T00:00:00')
+                }}).then(function (res) {
+                    $scope.newUsersToday = res.total;
+                    $scope.loadingGroup = false;
                     $scope.$apply();
                 }, function (error) {
+                    $scope.loadingGroup = false;
                     errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
                     $scope.$apply();
                 });
             }
         };
+
 
 
 

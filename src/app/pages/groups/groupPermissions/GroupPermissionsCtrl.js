@@ -10,7 +10,7 @@
 
         var vm = this;
         vm.token = localStorageManagement.getValue('token');
-        vm.groupName = $stateParams.groupName;
+        $scope.groupName = $stateParams.groupName;
         vm.checkedLevels = [];
         $scope.loadingPermissions = true;
         $scope.totalPermissionsObj = {};
@@ -61,12 +61,13 @@
         $scope.getGroup = function () {
             if(vm.token) {
                 $scope.loadingGroup = true;
-                Rehive.admin.groups.get({name: vm.groupName}).then(function (res) {
+                Rehive.admin.groups.get({name: $scope.groupName}).then(function (res) {
                     $scope.editGroupObj = res;
                     $scope.editGroupObj.prevName = res.name;
-                    vm.getGroupUsers($scope.editGroupObj);
+                    $scope.loadingGroup = false;
                     $scope.$apply();
                 }, function (error) {
+                    $scope.loadingGroup = false;
                     errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
                     $scope.$apply();
@@ -74,25 +75,6 @@
             }
         };
         $scope.getGroup();
-
-        vm.getGroupUsers = function (group) {
-            if(vm.token) {
-                $scope.loadingGroup = true;
-                Rehive.admin.users.overview.get({filters: {
-                    group: group.name
-                }}).then(function (res) {
-                    $scope.totalUsersCount = res.total;
-                    $scope.deactiveUsersCount = res.archived;
-                    $scope.loadingGroup = false;
-                    $scope.$apply();
-                }, function (error) {
-                    $scope.loadingGroup = false;
-                    errorHandler.evaluateErrors(error);
-                    errorHandler.handleErrors(error);
-                    $scope.$apply();
-                });
-            }
-        };
 
         vm.initializePermissions = function () {
             $scope.totalPermissionsObj.accountPermissionsOptions = {
@@ -191,7 +173,7 @@
         vm.getPermissions = function () {
             if(vm.token) {
                 $scope.loadingPermissions = true;
-                Rehive.admin.groups.permissions.get(vm.groupName,{filters: {page_size: 200}}).then(function (res) {
+                Rehive.admin.groups.permissions.get($scope.groupName,{filters: {page_size: 200}}).then(function (res) {
                     $scope.loadingPermissions = false;
                     vm.checkforAllowedPermissions(res.results);
                     $scope.$apply();
@@ -440,7 +422,7 @@
         vm.addPermissions = function (newPermissionObj,last) {
             if(vm.token) {
                 $scope.loadingPermissions = true;
-                Rehive.admin.groups.permissions.create(vm.groupName,newPermissionObj).then(function (res) {
+                Rehive.admin.groups.permissions.create($scope.groupName,newPermissionObj).then(function (res) {
                     if(last){
                         vm.finishSavingPermissionsProcess();
                     }
@@ -460,7 +442,7 @@
         vm.deletePermission = function (permission,last) {
             if(vm.token) {
                 $scope.loadingPermissions = true;
-                Rehive.admin.groups.permissions.delete(vm.groupName,permission.id).then(function (res) {
+                Rehive.admin.groups.permissions.delete($scope.groupName,permission.id).then(function (res) {
                     if(last){
                         vm.finishSavingPermissionsProcess();
                     }

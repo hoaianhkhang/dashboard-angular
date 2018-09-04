@@ -22,6 +22,21 @@
                 </div>
             </div>
         </div>
+        <div id="filterRewardId">
+            <div>
+                <label class="checkbox-inline custom-checkbox nowrap">
+                    <input type="checkbox" ng-model="filtersObj.rewardIdFilter">
+                    <span>Reward id</span>
+                </label>
+            </div>
+            <div ng-if="filtersObj.rewardIdFilter" class="row divider-top-6">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 date-filter-view">
+                    <input type="text" ng-model="applyFiltersObj.rewardIdFilter.selectedRewardId" placeholder="Enter reward id"
+                           auto-focus="filtersObj.rewardIdFilter"
+                           class="transaction-id-input">
+                </div>
+            </div>
+        </div>
         <div id="filterRewardType">
             <div>
                 <label class="checkbox-inline custom-checkbox nowrap">

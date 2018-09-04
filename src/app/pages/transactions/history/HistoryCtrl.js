@@ -23,6 +23,7 @@
         $scope.referenceFilterOptions = ['Is equal to','Is between','Is greater than','Is less than'];
         $scope.dateFilterIntervalOptions = ['days','months'];
         $scope.groupFilterOptions = ['Group name','In a group'];
+        $scope.accountFilterOptions = ['Name','Reference'];
         $scope.filtersCount = 0;
 
         // if(localStorageManagement.getValue(vm.savedTransactionTableColumns)){
@@ -130,7 +131,9 @@
                 selectedUserOption: null
             },
             accountFilter: {
-                selectedAccount: null
+                selectedAccountOption: 'Name',
+                selectedAccountName: null,
+                selectedAccountReference: null
             },
             groupFilter: {
                 selectedGroupOption: 'Group name',
@@ -485,7 +488,8 @@
                 created__lt: vm.dateObj.created__lt ? Date.parse(vm.dateObj.created__lt +'T00:00:00') : null,
                 currency: $scope.filtersObj.currencyFilter || $scope.filtersObj.amountFilter ? $scope.applyFiltersObj.currencyFilter.selectedCurrencyOption.code: null,
                 user: $scope.filtersObj.userFilter ? ($scope.applyFiltersObj.userFilter.selectedUserOption ? $scope.applyFiltersObj.userFilter.selectedUserOption : null): null,
-                account: $scope.filtersObj.accountFilter ? $scope.applyFiltersObj.accountFilter.selectedAccount: null,
+                account__name: $scope.filtersObj.accountFilter ? $scope.applyFiltersObj.accountFilter.selectedAccountOption == 'Name' ? $scope.applyFiltersObj.accountFilter.selectedAccountName : null : null,
+                account: $scope.filtersObj.accountFilter ? $scope.applyFiltersObj.accountFilter.selectedAccountOption == 'Reference' ? $scope.applyFiltersObj.accountFilter.selectedAccountReference : null : null,
                 group: $scope.filtersObj.groupFilter ? $scope.applyFiltersObj.groupFilter.selectedGroupOption == 'Group name'? $scope.applyFiltersObj.groupFilter.selectedGroup.name: null : null,
                 group__isnull: $scope.filtersObj.groupFilter ? $scope.applyFiltersObj.groupFilter.selectedGroupOption == 'In a group'? (!$scope.applyFiltersObj.groupFilter.existsInGroup).toString(): null : null,
                 orderby: $scope.filtersObj.orderByFilter ? ($scope.applyFiltersObj.orderByFilter.selectedOrderByOption == 'Latest' ? '-created' : $scope.applyFiltersObj.orderByFilter.selectedOrderByOption == 'Largest' ? '-amount' : $scope.applyFiltersObj.orderByFilter.selectedOrderByOption == 'Smallest' ? 'amount' : null): null,
@@ -526,6 +530,7 @@
                     vm.formatTransactionsArray($scope.transactionsData.results);
                     if ($scope.transactions.length == 0) {
                         $scope.transactionsStateMessage = 'No transactions have been found';
+                        $scope.$apply();
                         return;
                     }
 

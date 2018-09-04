@@ -109,13 +109,13 @@
     }
   }
   & .chosen-container-single .chosen-single{
-    height: 34px;
-    padding: 5px 12px 6px 12px;
+    height: 34px!important;
+    padding: 5px 12px 6px 12px!important;
     border-radius: 0;
-    border: 1px solid #e7e7e7;
+    border: 1px solid #e7e7e7!important;
     background: none;
     & div b{
-      background-position: 0 7px;
+      background-position: 0 7px!important;
     }
     & abbr{
       top: 11px!important;
@@ -132,5 +132,19 @@
     font: 14px "Source Sans Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
     color: $default-text;
     opacity: 0.4;
+  }
+}
+
+/* @end */
+/* @group Retina compatibility */
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min-resolution: 144dpi), only screen and (min-resolution: 1.5dppx) {
+  .chosen-rtl .chosen-search input[type="text"],
+  .chosen-container-single .chosen-single abbr,
+  .chosen-container-single .chosen-single div b,
+  .chosen-container-single .chosen-search input[type="text"],
+  .chosen-container-multi .chosen-choices .search-choice .search-choice-close,
+  .chosen-container .chosen-results-scroll-down span,
+  .chosen-container .chosen-results-scroll-up span {
+    background-image: url("../../assets/img/chosen-sprite.png") !important;
   }
 }
