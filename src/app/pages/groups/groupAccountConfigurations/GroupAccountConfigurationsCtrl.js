@@ -140,11 +140,8 @@
 
         $scope.restoreAccountConfiguration = function (accountConfig) {
             $scope.loadingGroupAccountConfigurations = true;
-            Rehive.admin.groups.accountConfigurations.update(vm.groupName,accountConfig.name,updateObj).then(function (res) {
-                toastr.success('Account configuration updated successfully');
-                if(type == 'primary'){
-                    $scope.getGroupAccountConfigurations();
-                }
+            Rehive.admin.groups.accountConfigurations.update(vm.groupName,accountConfig.name,{archived : false}).then(function (res) {
+                $scope.getGroupAccountConfigurations();
                 $scope.$apply();
             }, function (error) {
                 $scope.loadingGroupAccountConfigurations = false;
@@ -176,6 +173,27 @@
                 templateUrl: page,
                 size: size,
                 controller: 'ManageGroupAccountConfigModalCtrl',
+                resolve:{
+                    accountConfig: function () {
+                        return groupAccountConfiguration;
+                    }
+                }
+            });
+
+            vm.theManageModal.result.then(function(account){
+                if(account){
+                    $scope.getGroupAccountConfigurations();
+                }
+            }, function(){
+            });
+        };
+
+        $scope.openDeleteAccountConfigurationsModal = function (page, size,groupAccountConfiguration) {
+            vm.theManageModal = $uibModal.open({
+                animation: true,
+                templateUrl: page,
+                size: size,
+                controller: 'DeleteGroupAccountConfigModalCtrl',
                 resolve:{
                     accountConfig: function () {
                         return groupAccountConfiguration;

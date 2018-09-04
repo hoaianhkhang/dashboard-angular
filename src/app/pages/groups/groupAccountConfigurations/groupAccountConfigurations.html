@@ -49,9 +49,9 @@
                             <th></th>
                         </tr>
                         <tr ng-repeat="groupAccountConfiguration in groupAccountConfigurationsList">
-                            <td class="transactions-list-element rehive-table-row-first-child"
+                            <td ng-class="{'archived-text': groupAccountConfiguration.archived}" class="transactions-list-element rehive-table-row-first-child"
                                 title="{{groupAccountConfiguration.name | capitalizeWord}}" ng-bind="groupAccountConfiguration.name"></td>
-                            <td title="{{groupAccountConfiguration.label || 'None'}}"
+                            <td ng-class="{'archived-text': groupAccountConfiguration.archived}" title="{{groupAccountConfiguration.label || 'None'}}"
                                 ng-bind="groupAccountConfiguration.label || 'None'"></td>
                             <td class="transactions-list-element">
                                 <input class="custom-rehive-checkbox" ng-change="updateAccountConfig(groupAccountConfiguration,'default')" ng-model="groupAccountConfiguration.default" type="checkbox">
@@ -59,7 +59,7 @@
                             <td class="transactions-list-element">
                                 <input class="custom-rehive-checkbox" ng-change="updateAccountConfig(groupAccountConfiguration,'primary')" ng-model="groupAccountConfiguration.primary" type="checkbox">
                             </td>
-                            <td class="group-account-currencies-td" width="30%">
+                            <td ng-class="{'archived-text': groupAccountConfiguration.archived}" class="group-account-currencies-td" width="30%">
                                 <span ng-repeat="currency in groupAccountConfiguration.currencies"
                                       class="group-acount-currencies">
                                         {{$index > 5 ? ' ' : $index == 5 ? ' ' + '...' : $last ? ' ' + currency.code : currency.code + ',' }}
@@ -71,11 +71,11 @@
                                 </div>
                             </td>
                             <td class="rehive-table-row-last-child pull-right">
-                                <a ng-click="deleteAccountConfigConfirm(groupAccountConfiguration)"
+                                <a ng-click="openDeleteAccountConfigurationsModal('app/pages/groups/groupAccountConfigurations/deleteGroupAccountConfigModal/deleteGroupAccountConfigModal.html','md',groupAccountConfiguration)"
                                    class="pull-right pointer ">Delete</a>
                                 <a ng-click="openManageAccountConfigurationsModal('app/pages/groups/groupAccountConfigurations/manageGroupAccountConfigModal/manageGroupAccountConfigModal.html','md',groupAccountConfiguration)"
                                    class="pull-right pointer user-address-edit margin-right-30">Manage</a>
-                                <a ng-click="restoreAccountConfiguration(groupAccountConfiguration)"
+                                <a ng-show="groupAccountConfiguration.archived" ng-click="restoreAccountConfiguration(groupAccountConfiguration)"
                                    class="pull-right pointer user-address-edit margin-right-30">Restore</a>
                             </td>
                         </tr>
