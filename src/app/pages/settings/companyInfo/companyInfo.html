@@ -29,11 +29,25 @@
                 <input type="text" ng-change="companySettingsChanged('email_confirmation_url')" ng-model="company.details.settings.email_confirmation_url" class="form-control" placeholder="e.g. https://www.rehive.com/verify/email/">
             </div>
             <div class="form-group">
-                <button ng-click="updateCompanyInfo()" class="btn btn-primary dashboard-btn pull-right">Save</button>
+                <label>Company logo</label>
+                <div class="divider-20">
+                    <img ng-src="{{companyImageUrl}}" width="100" height="100" alt="token Image">
+                </div>
+                <form name="myForm" class="divider-15">
+                    <fieldset>
+                        <input style="padding-left: 5px;text-indent: -5px;width: 300px"
+                               type="file" ngf-select ng-model="imageFile.file" name="file"
+                               accept="image/*" ngf-max-size="5MB" required>
+                    </fieldset>
+                </form>
+                <p class="small">Max size is 5MB. Recommended dimensions are 70 x 40px.</p>
+            </div>
+            <div class="form-group">
+                <button ng-click="updateCompanyInfo();upload();" class="btn btn-primary dashboard-btn pull-right">Save</button>
             </div>
         </div>
     </div>
 </div>
-<div ba-panel ng-show="loadingCompanyInfo">
+<div ba-panel ng-show="loadingCompanyInfo || updatingLogo">
     <loading-image></loading-image>
 </div>

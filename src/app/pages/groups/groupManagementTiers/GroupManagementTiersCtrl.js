@@ -10,7 +10,7 @@
 
         var vm = this;
         vm.token = localStorageManagement.getValue('token');
-        vm.groupName = $stateParams.groupName;
+        $scope.groupName = $stateParams.groupName;
         vm.updatedGroup = {};
         $scope.loadingGroup = true;
         vm.location = $location.path();
@@ -25,7 +25,7 @@
 
         $scope.goToGroupManagementTiersSettings = function (path) {
             $scope.subMenuLocation = path;
-            $location.path('/groups/' + vm.groupName + '/tiers/' + path);
+            $location.path('/groups/' + $scope.groupName + '/tiers/' + path);
         };
 
         if($scope.subMenuLocation != 'limits' && $scope.subMenuLocation != 'fees' && $scope.subMenuLocation != 'settings'
@@ -36,9 +36,9 @@
         $scope.getGroup = function () {
             if(vm.token) {
                 $scope.loadingGroup = true;
-                Rehive.admin.groups.get({name: vm.groupName}).then(function (res) {
+                Rehive.admin.groups.get({name: $scope.groupName}).then(function (res) {
                     $scope.editGroupObj = res;
-                    vm.getGroupUsers($scope.editGroupObj);
+                    $scope.loadingGroup = false;
                     $scope.$apply();
                 }, function (error) {
                     $scope.loadingGroup = false;
@@ -49,27 +49,6 @@
             }
         };
         $scope.getGroup();
-
-        vm.getGroupUsers = function (group) {
-            if(vm.token) {
-                $scope.loadingGroup = true;
-                Rehive.admin.users.overview.get({filters: {
-                    group: group.name
-                }}).then(function (res) {
-                    $scope.totalUsersCount = res.total;
-                    $scope.deactiveUsersCount = res.archived;
-                    $scope.loadingGroup = false;
-                    $scope.$apply();
-                }, function (error) {
-                    $scope.loadingGroup = false;
-                    errorHandler.evaluateErrors(error);
-                    errorHandler.handleErrors(error);
-                    $scope.$apply();
-                });
-            }
-        };
-
-
 
     }
 })();
