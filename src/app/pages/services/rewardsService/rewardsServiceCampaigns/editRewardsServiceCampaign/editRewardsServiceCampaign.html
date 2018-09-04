@@ -72,9 +72,11 @@
             </div>
             <div class="form-group setup-groups-tooltip-div">
                 <label>Amount type <span class="required-icon">*</span>
-                    &nbsp;<i ng-show="editCampaignParams.amount_type == 'Fixed'" uib-tooltip-html="'When amount type is `Fixed` rewards are issued based on this reward amount.'"
+                    &nbsp;<i ng-show="editCampaignParams.amount_type == 'Fixed'"
+                             uib-tooltip-html="'When amount type is `Fixed` rewards are issued based on this reward amount.'"
                              class="ion-information-circled setup-groups-tooltip"></i>
-                    <i ng-show="editCampaignParams.amount_type == 'Percentage'" uib-tooltip-html="'When amount type is `Percentage` rewards are calculated based on the amount * percentage.'"
+                    <i ng-show="editCampaignParams.amount_type == 'Percentage'"
+                       uib-tooltip-html="'When amount type is `Percentage` the rewards are issued based on this percentage and of an amount specified when a reward is created/requested.'"
                        class="ion-information-circled setup-groups-tooltip"></i></label>
                 <div class="form-inline">
                     <select class="form-control pointer short-dropdown"
