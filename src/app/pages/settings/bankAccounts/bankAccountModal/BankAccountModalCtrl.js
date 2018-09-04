@@ -13,13 +13,18 @@
         vm.token = localStorageManagement.getValue('token');
         $scope.deletingBankAccount = false;
 
-        $scope.archiveBankAccount = function () {
-            $scope.loadingBankAccounts = true;
+        $scope.archiveBankAccount = function (deleteBankAccount) {
+            $scope.deletingBankAccount = true;
             Rehive.admin.bankAccounts.update($scope.bankAccount.id, {archived: true}).then(function (res) {
-                $scope.deletingBankAccount = false;
-                toastr.success('Bank account successfully archived');
-                $uibModalInstance.close(res);
-                $scope.$apply();
+                if(deleteBankAccount){
+                    $scope.deleteBankAccount();
+                    $scope.$apply();
+                } else {
+                    $scope.deletingBankAccount = false;
+                    toastr.success('Bank account successfully archived');
+                    $uibModalInstance.close(res);
+                    $scope.$apply();
+                }
             }, function (error) {
                 $scope.deletingBankAccount = false;
                 errorHandler.evaluateErrors(error);
@@ -29,11 +34,6 @@
         };
 
         $scope.deleteBankAccountPrompt = function () {
-            if(!$scope.bankAccount.archived){
-                toastr.error('Cannot delete an unarchived object');
-                return;
-            }
-
             $ngConfirm({
                 title: 'Delete bank account',
                 contentUrl: 'app/pages/settings/bankAccounts/bankAccountModal/deleteBankAccountPrompt.html',
@@ -54,7 +54,11 @@
                                 toastr.error('DELETE text did not match');
                                 return;
                             }
-                            scope.deleteBankAccount();
+                            if(!$scope.bankAccount.archived){
+                                $scope.archiveBankAccount('deleteBankAccount');
+                            } else {
+                                scope.deleteBankAccount();
+                            }
                         }
                     }
                 }

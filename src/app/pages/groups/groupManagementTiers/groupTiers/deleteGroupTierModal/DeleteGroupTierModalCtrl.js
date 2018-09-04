@@ -13,13 +13,21 @@
         $scope.tier = tier;
         $scope.deletingTiers = false;
 
-        $scope.archiveTier = function(tier){
+        $scope.archiveTier = function(deleteTier){
             if(vm.token) {
                 $scope.deletingTiers = true;
-                Rehive.admin.groups.tiers.update(vm.groupName,tier.id, { archived: true }).then(function (res) {
-                    toastr.success('You have successfully archived the tier');
-                    $uibModalInstance.close(true);
-                    $scope.$apply();
+                Rehive.admin.groups.tiers.update(vm.groupName,$scope.tier.id, { archived: true }).then(function (res) {
+                    if(deleteTier){
+                        $scope.deleteGroupTier();
+                        $scope.$apply();
+                    } else {
+                        $scope.deletingTiers = false;
+                        toastr.success('You have successfully archived the tier');
+                        $uibModalInstance.close(true);
+                        $scope.$apply();
+                    }
+
+
                 }, function (error) {
                     $scope.deletingTiers = false;
                     errorHandler.evaluateErrors(error);
@@ -29,12 +37,7 @@
             }
         };
 
-        $scope.deleteGroupTierConfirm = function (tier) {
-            if(!$scope.tier.archived){
-                toastr.error('Cannot delete an unarchived object');
-                return;
-            }
-
+        $scope.deleteGroupTierConfirm = function () {
             $ngConfirm({
                 title: 'Delete tier',
                 contentUrl: 'app/pages/groups/groupManagementTiers/groupTiers/deleteGroupTierModal/deleteGroupTierPrompt.html',
@@ -55,16 +58,20 @@
                                 toastr.error('DELETE text did not match');
                                 return;
                             }
-                            $scope.deleteGroupTier(tier);
+                            if(!$scope.tier.archived){
+                                $scope.archiveTier('deleteTier');
+                            } else {
+                                $scope.deleteGroupTier();
+                            }
                         }
                     }
                 }
             });
         };
 
-        $scope.deleteGroupTier = function (tier) {
+        $scope.deleteGroupTier = function () {
             $scope.deletingTiers = true;
-            Rehive.admin.groups.tiers.delete(vm.groupName,tier.id).then(function (res) {
+            Rehive.admin.groups.tiers.delete(vm.groupName,$scope.tier.id).then(function (res) {
                 toastr.success('Tier successfully deleted');
                 $uibModalInstance.close(true);
                 $scope.$apply();

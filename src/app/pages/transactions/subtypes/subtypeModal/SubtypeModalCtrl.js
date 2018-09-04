@@ -12,12 +12,20 @@
         vm.token = localStorageManagement.getValue('token');
         $scope.deletingSubtype = false;
 
-        $scope.archiveSubtype = function () {
+        $scope.archiveSubtype = function (deleteSubtype) {
             $scope.deletingSubtype = true;
             Rehive.admin.subtypes.update($scope.subtype.id, {archived: true}).then(function (res) {
-                toastr.success('You have successfully archived the subtype');
-                $uibModalInstance.close(true);
-                $scope.$apply();
+                if(deleteSubtype){
+                    $scope.deleteSubtype();
+                    $scope.$apply();
+                } else {
+                    $scope.deletingSubtype = false;
+                    toastr.success('You have successfully archived the subtype');
+                    $uibModalInstance.close(true);
+                    $scope.$apply();
+                }
+
+
             }, function (error) {
                 $scope.deletingSubtype = false;
                 errorHandler.evaluateErrors(error);
@@ -27,11 +35,6 @@
         };
 
         $scope.deleteSubtypePrompt = function () {
-            if(!$scope.subtype.archived){
-                toastr.error('Cannot delete an unarchived object');
-                return;
-            }
-
             $ngConfirm({
                 title: 'Delete subtype',
                 contentUrl: 'app/pages/transactions/subtypes/subtypeModal/deleteSubtypePrompt.html',
@@ -52,7 +55,11 @@
                                 toastr.error('DELETE text did not match');
                                 return;
                             }
-                            scope.deleteSubtype();
+                            if(!$scope.subtype.archived){
+                                $scope.archiveSubtype('deleteSubtype');
+                            } else {
+                                $scope.deleteSubtype();
+                            }
                         }
                     }
                 }

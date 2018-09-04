@@ -1,4 +1,4 @@
-<div class="modal-content">
+<div ng-hide="deletingSubtype" class="modal-content">
     <div class="modal-header">
         <button type="button" class="close" ng-click="$dismiss()" aria-label="Close">
             <em class="ion-ios-close-empty sn-link-close"></em>
@@ -13,4 +13,7 @@
         <button ng-click="deleteSubtypePrompt()" ng-disabled="deletingBankAccount" type="button" class="btn btn-gray pull-right">Delete permanently</button>
         <button ng-click="archiveSubtype()" ng-disabled="deletingBankAccount" type="button" class="btn btn-primary dashboard-btn pull-right">Archive</button>
     </div>
+</div>
+<div ba-panel ng-show="deletingSubtype">
+    <loading-image></loading-image>
 </div>

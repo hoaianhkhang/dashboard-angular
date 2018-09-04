@@ -14,13 +14,18 @@
         $scope.deletingGroups = false;
         $scope.groupsParams = {};
 
-        $scope.archiveGroup = function(group){
+        $scope.archiveGroup = function(deleteGroup){
             $scope.deletingGroups = true;
-            Rehive.admin.groups.update(group.name,{ archived : true}).then(function (res) {
-                $scope.deletingGroups = false;
-                toastr.success('Group successfully archived');
-                $uibModalInstance.close(true);
-                $scope.$apply();
+            Rehive.admin.groups.update($scope.group.name,{ archived : true}).then(function (res) {
+                if(deleteGroup){
+                    $scope.deleteCompanyGroup();
+                    $scope.$apply();
+                } else {
+                    $scope.deletingGroups = false;
+                    toastr.success('Group successfully archived');
+                    $uibModalInstance.close(true);
+                    $scope.$apply();
+                }
             }, function (error) {
                 $scope.deletingGroups = false;
                 errorHandler.evaluateErrors(error);
@@ -30,11 +35,6 @@
         };
 
         $scope.deleteCompanyGroupPrompt = function(group) {
-            if(!$scope.group.archived){
-                toastr.error('Cannot delete an unarchived object');
-                return;
-            }
-
             $ngConfirm({
                 title: 'Delete group',
                 contentUrl: 'app/pages/groups/groupsOverview/deleteGroupModal/deleteGroupPrompt.html',
@@ -55,7 +55,11 @@
                                 toastr.error('DELETE text did not match');
                                 return;
                             }
-                            scope.deleteCompanyGroup();
+                            if(!$scope.group.archived){
+                                $scope.archiveGroup('deleteGroup');
+                            } else {
+                                scope.deleteCompanyGroup();
+                            }
                         }
                     }
                 }
