@@ -9,9 +9,12 @@
         <p>{{subtype.name}}, ({{subtype.tx_type}})</p>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-default dashboard-btn pull-left" ng-click="$dismiss()">Close</button>
-        <button ng-click="deleteSubtypePrompt()" ng-disabled="deletingBankAccount" type="button" class="btn btn-gray pull-right">Delete permanently</button>
-        <button ng-click="archiveSubtype()" ng-disabled="deletingBankAccount" type="button" class="btn btn-primary dashboard-btn pull-right">Archive</button>
+        <!--<button type="button" class="btn btn-default dashboard-btn pull-left" ng-click="$dismiss()">Close</button>-->
+        <button ng-click="deleteSubtypePrompt()"
+                type="button" class="btn btn-default pull-right margin-left-12">Delete permanently</button>
+        <button ng-click="archiveSubtype()" ng-disabled="subtype.archived"
+                ng-class="{'btn-primary': !subtype.archived,'btn-gray': subtype.archived}"
+                type="button" class="btn dashboard-btn pull-right">Archive</button>
     </div>
 </div>
 <div ba-panel ng-show="deletingSubtype">

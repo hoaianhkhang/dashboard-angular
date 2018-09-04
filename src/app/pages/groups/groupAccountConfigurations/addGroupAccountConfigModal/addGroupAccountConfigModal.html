@@ -37,7 +37,7 @@
                             data-placeholder-text-multiple="'Choose one or more currencies'"
                             width="100"
                             ng-model="newAccountConfigurationCurrencies.list"
-                            ng-options="currency.code for currency in currenciesList track by currency.code"
+                            ng-options="currency.code for currency in currenciesList | orderBy: 'code'"
                             required>
                         <option value=""></option>
                     </select>

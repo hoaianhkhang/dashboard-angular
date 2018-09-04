@@ -42,12 +42,12 @@
                 scope: $scope,
                 buttons: {
                     close: {
-                        text: "No",
+                        text: "Cancel",
                         btnClass: 'btn-default dashboard-btn'
                     },
-                    ok: {
-                        text: "Yes",
-                        btnClass: 'btn-primary dashboard-btn',
+                    Add: {
+                        text: "Delete permanently",
+                        btnClass: 'btn-danger',
                         keys: ['enter'], // will trigger when enter is pressed
                         action: function(scope){
                             if(scope.deleteText != 'DELETE'){
