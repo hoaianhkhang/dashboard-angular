@@ -401,14 +401,19 @@
 
         vm.getCurrencyObject = function (transactionTotalObj) {
             $scope.loadingStats = true;
-            $scope.currencyOptions.forEach(function (currency) {
-                if(currency.code == transactionTotalObj.currency){
-                    $scope.applyFiltersObj.currencyFilter.selectedCurrencyOption = currency;
-                    $scope.currencyObj = currency;
-                    $scope.loadingStats = false;
-                    $scope.$apply();
-                }
-            });
+            if($scope.currencyOptions.length > 0){
+                $scope.currencyOptions.forEach(function (currency) {
+                    if(currency.code == transactionTotalObj.currency){
+                        $scope.applyFiltersObj.currencyFilter.selectedCurrencyOption = currency;
+                        $scope.currencyObj = currency;
+                        $scope.loadingStats = false;
+                        $scope.$apply();
+                    }
+                });
+            } else {
+                $scope.loadingStats = false;
+                $scope.$apply();
+            }
         };
 
     }
