@@ -6,11 +6,11 @@
 
     /** @ngInject */
     function TransactionsStatsCtrl($scope,Rehive,serializeFiltersService,currencyModifiers,sharedResources,
-                                   localStorageManagement,typeaheadService,toastr,errorHandler) {
+                                   localStorageManagement,typeaheadService,toastr,_,errorHandler) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('token');
-        $scope.loadingStats = false;
+        $scope.loadingStats = true;
         $scope.currencyObj = {};
         $scope.currencyOptions = [];
         $scope.transactionTotalObj = {};
@@ -98,6 +98,7 @@
             }}).then(function (res) {
                 if(res.results.length > 0){
                     $scope.currencyOptions = res.results;
+                    $scope.getTransactionTotals();
                     $scope.$apply();
                 }
             }, function (error) {
@@ -380,7 +381,7 @@
         };
 
         $scope.getTransactionTotals = function () {
-            // $scope.loadingStats = true;
+            $scope.loadingStats = true;
             $scope.showingFilters = false;
 
             var transactionsStatsFiltersObj = vm.getTransactionsStatsFiltersObj();
@@ -396,10 +397,9 @@
                 $scope.$apply();
             });
         };
-        $scope.getTransactionTotals();
 
         vm.getCurrencyObject = function (transactionTotalObj) {
-            // $scope.loadingStats = true;
+            $scope.loadingStats = true;
             if($scope.currencyOptions.length > 0){
                 $scope.currencyOptions.forEach(function (currency) {
                     if(currency.code == transactionTotalObj.currency){
