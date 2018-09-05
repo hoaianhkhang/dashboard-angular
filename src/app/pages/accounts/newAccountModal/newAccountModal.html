@@ -40,11 +40,6 @@
                 </div>
                 <p ng-hide="currenciesList.length > 0 || addingUserAccount">Looks like you haven't added any currencies to your company yet.
                     Add one by going to the <a href="/#/currencies" target="_blank">currencies page</a>.</p>
-                <p ng-show="currenciesList.length > 0 || addingUserAccount">Currencies selected:
-                    <span ng-repeat="currency in currenciesForNewAccount.list | orderBy: 'code'">
-                    {{$last ? '' + currency.code : currency.code + ',&nbsp;' }}
-                </span>
-                </p>
             </div>
             <a ng-click="toggleAdvancedOption()" ng-class="{'': advancedOption == false,'divider-20': advancedOption == true}"
                class="accounts-advanced-options pointer">Advanced options</a>
