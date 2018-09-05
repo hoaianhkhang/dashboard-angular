@@ -18,7 +18,7 @@
         vm.getUser = function(){
             if(vm.token) {
                 $scope.loadingUserMetadata = true;
-                Rehive.admin.users.get({identifier: vm.uuid}).then(function (res) {
+                Rehive.admin.users.get({id: vm.uuid}).then(function (res) {
                     $scope.formatted = {};
                     $scope.formatted.metadata = {};
                     $scope.user = res;

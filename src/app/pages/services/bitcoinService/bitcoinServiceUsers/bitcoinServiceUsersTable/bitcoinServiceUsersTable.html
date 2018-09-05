@@ -24,8 +24,8 @@
                 </tr>
                 <tr ng-repeat="user in users" data-toggle="modal"
                     class="editable-row center">
-                    <td class="rehive-table-row-first-child"><a href="#/user/{{user.identifier}}/details"><div title="{{user.email}}" ng-bind="user.email"></div></a></td>
-                    <td title="{{user.identifier}}" ng-bind="user.identifier"></td>
+                    <td class="rehive-table-row-first-child"><a href="#/user/{{user.id}}/details"><div title="{{user.email}}" ng-bind="user.email"></div></a></td>
+                    <td title="{{user.id}}" ng-bind="user.id"></td>
                     <td title="{{user.crypto.address}}" ng-bind="user.crypto.address"></td>
                 </tr>
             </table>

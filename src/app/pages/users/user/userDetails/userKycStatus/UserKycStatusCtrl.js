@@ -32,7 +32,7 @@
         vm.getUser = function(){
             $scope.loadingUserKycStatus = true;
             if(vm.token) {
-                Rehive.admin.users.get({identifier: vm.uuid}).then(function (res) {
+                Rehive.admin.users.get({id: vm.uuid}).then(function (res) {
                     $scope.user = res;
                     vm.getUserStatus();
                     $scope.$apply();

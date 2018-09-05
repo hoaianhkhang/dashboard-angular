@@ -14,7 +14,7 @@
             inputType: 'Email'
         };
         $scope.loadingGroup = false;
-        $scope.userOptions = ['Email','Mobile','Identifier'];
+        $scope.userOptions = ['Email','Mobile','Id'];
 
         $scope.getUser = function(userGroupParams){
             if(vm.token) {
@@ -30,7 +30,7 @@
                     vm.filter = 'mobile__contains';
                     vm.filterString = userGroupParams.user;
                 } else {
-                    vm.filter = 'identifier__contains';
+                    vm.filter = 'id__contains';
                     vm.filterString = userGroupParams.user;
                 }
 
@@ -56,7 +56,7 @@
         $scope.deleteUserGroup = function () {
             $scope.loadingGroup = true;
             if($scope.user.groups[0] && $scope.user.groups[0].name){
-                Rehive.admin.users.groups.delete($scope.user.identifier ,$scope.user.groups[0].name).then(function (res) {
+                Rehive.admin.users.groups.delete($scope.user.id ,$scope.user.groups[0].name).then(function (res) {
                     vm.addUserToGroup();
                 }, function (error) {
                     $scope.loadingGroup = false;
@@ -71,7 +71,7 @@
 
         vm.addUserToGroup = function(){
             if(vm.token) {
-                Rehive.admin.users.groups.create($scope.user.identifier, {
+                Rehive.admin.users.groups.create($scope.user.id, {
                     group: vm.group.name
                 }).then(function (res) {
                     $scope.loadingGroup = false;

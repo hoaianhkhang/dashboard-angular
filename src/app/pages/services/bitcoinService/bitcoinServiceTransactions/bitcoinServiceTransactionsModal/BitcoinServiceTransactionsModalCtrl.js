@@ -13,7 +13,7 @@
 
         $scope.goToUser = function () {
             $uibModalInstance.close();
-            $location.path('/user/' + $scope.transaction.user.identifier + '/details');
+            $location.path('/user/' + $scope.transaction.user.id + '/details');
         };
 
         $scope.goToTransactions = function(rehiveCode){

@@ -75,7 +75,7 @@
         vm.updateRequest = function () {
             if(vm.token) {
                 $scope.loadingReward = true;
-                $http.patch(vm.serviceUrl + 'admin/rewards/' + reward.identifier + '/',
+                $http.patch(vm.serviceUrl + 'admin/rewards/' + reward.id + '/',
                     {
                         status: $scope.updateRequestObj.status.toLowerCase()
                     }, {

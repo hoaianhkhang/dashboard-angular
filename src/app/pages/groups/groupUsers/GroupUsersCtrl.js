@@ -41,9 +41,9 @@
         if(localStorageManagement.getValue(vm.savedGroupUsersTableColumns)){
             var headerColumns = JSON.parse(localStorageManagement.getValue(vm.savedGroupUsersTableColumns));
             headerColumns.forEach(function (col,index,array) {
-                if(col.colName == 'Active'){
-                    col.colName = 'Archived';
-                    col.fieldName = 'archived';
+                if(col.colName == 'Identifier'){
+                    //col.colName = 'Archived';
+                    col.fieldName = 'id';
                 }
             });
 
@@ -51,7 +51,7 @@
         }
 
         $scope.headerColumns = localStorageManagement.getValue(vm.savedGroupUsersTableColumns) ? JSON.parse(localStorageManagement.getValue(vm.savedGroupUsersTableColumns)) : [
-            {colName: 'Identifier',fieldName: 'identifier',visible: true},
+            {colName: 'Identifier',fieldName: 'id',visible: true},
             {colName: 'First name',fieldName: 'first_name',visible: true},
             {colName: 'Last name',fieldName: 'last_name',visible: true},
             {colName: 'Email',fieldName: 'email',visible: true},
@@ -465,7 +465,7 @@
             var searchObj = {
                 page: $scope.usersPagination.pageNo,
                 page_size: $scope.filtersObj.pageSizeFilter? $scope.usersPagination.itemsPerPage : 25,
-                identifier__contains: $scope.filtersObj.identifierFilter ? ($scope.applyFiltersObj.identifierFilter.selectedIdentifier ?  $scope.applyFiltersObj.identifierFilter.selectedIdentifier : null): null,
+                id__contains: $scope.filtersObj.identifierFilter ? ($scope.applyFiltersObj.identifierFilter.selectedIdentifier ?  $scope.applyFiltersObj.identifierFilter.selectedIdentifier : null): null,
                 email__contains: $scope.filtersObj.emailFilter ?($scope.applyFiltersObj.emailFilter.selectedEmail ?  $scope.applyFiltersObj.emailFilter.selectedEmail : null): null,
                 mobile__contains: $scope.filtersObj.mobileFilter ? ($scope.applyFiltersObj.mobileFilter.selectedMobile ?  $scope.applyFiltersObj.mobileFilter.selectedMobile : null): null,
                 first_name__contains: $scope.filtersObj.firstNameFilter ? ($scope.applyFiltersObj.firstNameFilter.selectedFirstName ?  $scope.applyFiltersObj.firstNameFilter.selectedFirstName : null): null,
@@ -522,7 +522,7 @@
         vm.formatUsersArray = function (usersArray) {
             usersArray.forEach(function (userObj) {
                 $scope.users.push({
-                    identifier: userObj.identifier,
+                    id: userObj.id,
                     first_name: userObj.first_name,
                     last_name: userObj.last_name,
                     email: userObj.email,
@@ -565,7 +565,7 @@
         };
 
         $scope.displayUser = function (user) {
-            $location.path('/user/' + user.identifier + '/details');
+            $location.path('/user/' + user.id + '/details');
         };
 
         $scope.openAddUserToGroupModal = function (page, size) {
@@ -636,7 +636,7 @@
 
         $scope.deleteUserFromGroup = function (user) {
             $scope.loadingGroup = true;
-            Rehive.admin.users.groups.delete(user.identifier,$scope.groupName).then(function (res) {
+            Rehive.admin.users.groups.delete(user.id,$scope.groupName).then(function (res) {
                 $scope.getAllUsers();
                 $scope.$apply();
             }, function (error) {

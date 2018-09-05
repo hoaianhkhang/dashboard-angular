@@ -58,8 +58,8 @@
         if(localStorageManagement.getValue(vm.savedUserTableColumns)){
              var headerColumns = JSON.parse(localStorageManagement.getValue(vm.savedUserTableColumns));
              headerColumns.forEach(function (col,index,array) {
-                 if(col.colName == 'Active'){
-                     array.splice(index,1);
+                 if(col.colName == 'Identifier'){
+                     col.fieldName == 'id';
                  }
              });
 
@@ -67,7 +67,7 @@
         }
 
         $scope.headerColumns = localStorageManagement.getValue(vm.savedUserTableColumns) ? JSON.parse(localStorageManagement.getValue(vm.savedUserTableColumns)) : [
-            {colName: 'Identifier',fieldName: 'identifier',visible: true},
+            {colName: 'Identifier',fieldName: 'id',visible: true},
             {colName: 'First name',fieldName: 'first_name',visible: true},
             {colName: 'Last name',fieldName: 'last_name',visible: true},
             {colName: 'Email',fieldName: 'email',visible: true},
@@ -495,7 +495,7 @@
             var searchObj = {
                 page: $scope.usersPagination.pageNo,
                 page_size: $scope.filtersObj.pageSizeFilter? $scope.usersPagination.itemsPerPage : 25,
-                identifier__contains: $scope.filtersObj.identifierFilter ? ($scope.applyFiltersObj.identifierFilter.selectedIdentifier ?  $scope.applyFiltersObj.identifierFilter.selectedIdentifier : null): null,
+                id__contains: $scope.filtersObj.identifierFilter ? ($scope.applyFiltersObj.identifierFilter.selectedIdentifier ?  $scope.applyFiltersObj.identifierFilter.selectedIdentifier : null): null,
                 email__contains: $scope.filtersObj.emailFilter ?($scope.applyFiltersObj.emailFilter.selectedEmail ? $scope.applyFiltersObj.emailFilter.selectedEmail : null): null,
                 mobile__contains: $scope.filtersObj.mobileFilter ? ($scope.applyFiltersObj.mobileFilter.selectedMobile ? $scope.applyFiltersObj.mobileFilter.selectedMobile : null): null,
                 first_name__contains: $scope.filtersObj.firstNameFilter ? ($scope.applyFiltersObj.firstNameFilter.selectedFirstName ?  $scope.applyFiltersObj.firstNameFilter.selectedFirstName : null): null,
@@ -554,7 +554,7 @@
         vm.formatUsersArray = function (usersArray) {
             usersArray.forEach(function (userObj) {
                 $scope.users.push({
-                    identifier: userObj.identifier,
+                    id: userObj.id,
                     first_name: userObj.first_name,
                     last_name: userObj.last_name,
                     email: userObj.email,
@@ -584,7 +584,7 @@
         };
 
         $scope.displayUser = function (user) {
-            $location.path('/user/' + user.identifier + '/details');
+            $location.path('/user/' + user.id + '/details');
         };
 
         $scope.closeColumnFiltersBox = function () {

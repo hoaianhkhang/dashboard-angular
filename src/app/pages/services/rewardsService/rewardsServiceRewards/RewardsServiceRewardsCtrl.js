@@ -64,9 +64,9 @@
         };
         vm.getCampaignList();
 
-        $scope.getUserObjEmail = function (identifier) {
+        $scope.getUserObjEmail = function (id) {
             $scope.userEmailObj = '';
-            $http.get(environmentConfig.API + '/admin/users/?user=' + identifier, {
+            $http.get(environmentConfig.API + '/admin/users/?user=' + id, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': vm.token
@@ -103,8 +103,8 @@
             var searchObj = {
                 page: $scope.pagination.pageNo,
                 page_size: $scope.pagination.itemsPerPage || 25,
-                campaign: $scope.filtersObj.campaignFilter ? ($scope.applyFiltersObj.campaignFilter.selectedCampaign ? $scope.applyFiltersObj.campaignFilter.selectedCampaign.identifier : null): null,
-                identifier: $scope.filtersObj.rewardIdFilter ? $scope.applyFiltersObj.rewardIdFilter.selectedRewardId : null,
+                campaign: $scope.filtersObj.campaignFilter ? ($scope.applyFiltersObj.campaignFilter.selectedCampaign ? $scope.applyFiltersObj.campaignFilter.selectedCampaign.id : null): null,
+                id: $scope.filtersObj.rewardIdFilter ? $scope.applyFiltersObj.rewardIdFilter.selectedRewardId : null,
                 reward_type: $scope.filtersObj.rewardTypeFilter ? ($scope.applyFiltersObj.rewardTypeFilter.selectedRewardType ? $scope.applyFiltersObj.rewardTypeFilter.selectedRewardType.toLowerCase() : null): null,
                 status: $scope.filtersObj.statusFilter ? ($scope.applyFiltersObj.statusFilter.selectedStatus ? $scope.applyFiltersObj.statusFilter.selectedStatus.toLowerCase() : null): null
             };
@@ -162,7 +162,7 @@
 
         $scope.rewardStatusChange = function (request,status) {
             if(vm.token) {
-                $http.patch(vm.serviceUrl + 'admin/rewards/' + request.identifier + '/',
+                $http.patch(vm.serviceUrl + 'admin/rewards/' + request.id + '/',
                     {
                         status: status.toLowerCase()
                     }, {

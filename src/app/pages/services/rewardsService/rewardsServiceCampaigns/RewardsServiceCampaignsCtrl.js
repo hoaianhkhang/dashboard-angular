@@ -21,7 +21,7 @@
         };
 
         $scope.showCampaignOptionsBox = function (campaign) {
-            $scope.campaignsId = campaign.identifier;
+            $scope.campaignsId = campaign.id;
         };
 
         $scope.goToCreateCampaignView = function () {
@@ -94,7 +94,7 @@
                         keys: ['enter'], // will trigger when enter is pressed
                         action: function(scope){
                             if(scope.deleteText === 'DELETE'){
-                                scope.deleteCampaign(campaign.identifier);
+                                scope.deleteCampaign(campaign.id);
                             } else {
                                 toastr.error('DELETE text did not match.');
                             }
@@ -130,7 +130,7 @@
         };
 
         $scope.openEditCampaignView = function (campaign) {
-            $location.path('/services/rewards/campaigns/' + campaign.identifier + '/edit');
+            $location.path('/services/rewards/campaigns/' + campaign.id + '/edit');
         };
 
 

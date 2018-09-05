@@ -208,8 +208,8 @@
             $uibModalInstance.close(true);
         };
 
-        $scope.takeToUser = function (identifier) {
-            $location.path('/user/' + identifier + '/details');
+        $scope.takeToUser = function (id) {
+            $location.path('/user/' + id + '/details');
             $scope.$dismiss();
         };
 

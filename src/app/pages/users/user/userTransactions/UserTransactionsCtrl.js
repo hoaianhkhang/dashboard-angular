@@ -538,7 +538,7 @@
                     balance: $filter("currencyModifiersFilter")(transactionObj.balance,transactionObj.currency.divisibility),
                     account: transactionObj.account,
                     username: transactionObj.user.username,
-                    identifier: transactionObj.user.identifier,
+                    identifier: transactionObj.user.id,
                     updatedDate: transactionObj.updated ? $filter("date")(transactionObj.updated,'mediumDate') + ' ' + $filter("date")(transactionObj.updated,'shortTime'): null,
                     mobile: transactionObj.user.mobile,
                     destination_tx_id: transactionObj.destination_transaction ? transactionObj.destination_transaction.id ? transactionObj.destination_transaction.id : 'ID pending creation' : "",

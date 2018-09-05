@@ -58,7 +58,7 @@ angular.module('BlurAdmin', [
                         Rehive.admin.company.get().then(function (res) {
                             $rootScope.pageTopObj.companyObj = {};
                             $rootScope.pageTopObj.companyObj = res;
-                            localStorageManagement.setValue('companyIdentifier',$rootScope.pageTopObj.companyObj.identifier);
+                            localStorageManagement.setValue('companyIdentifier',$rootScope.pageTopObj.companyObj.id);
                             $rootScope.$apply();
                         }, function (error) {
                             if(error.status == 401){

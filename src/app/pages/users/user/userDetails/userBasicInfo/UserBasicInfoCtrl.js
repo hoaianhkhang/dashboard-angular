@@ -21,7 +21,7 @@
         vm.getUser = function(){
             if(vm.token) {
                 $scope.loadingUserBasicInfo = true;
-                Rehive.admin.users.get({identifier: vm.uuid}).then(function (res) {
+                Rehive.admin.users.get({id: vm.uuid}).then(function (res) {
                     $scope.loadingUserBasicInfo = false;
                     if(res.birth_date){
                         var birthdayStringArray = res.birth_date.split('-');

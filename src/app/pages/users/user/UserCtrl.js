@@ -71,7 +71,7 @@
         vm.getUser = function(){
             if(vm.token) {
                 $scope.loadingUser = true;
-                Rehive.admin.users.get({identifier: vm.uuid}).then(function (res) {
+                Rehive.admin.users.get({id: vm.uuid}).then(function (res) {
                     $scope.loadingUser = false;
                     $scope.user = res;
                     vm.calculateHowLongUserHasBeenWithCompany($scope.user.created);
@@ -88,7 +88,7 @@
         vm.getUser();
 
         $scope.copiedSuccessfully= function () {
-            toastr.success('Identifier copied to clipboard');
+            toastr.success('Id copied to clipboard');
         };
 
         vm.calculateHowLongUserHasBeenWithCompany = function (joinedDate) {
@@ -159,7 +159,7 @@
             userData.created = $filter('date')(userData.created,'MMM d y') + ' ' +$filter('date')(userData.created,'shortTime');
             userData.last_login = $filter('date')(userData.last_login,'MMM d y') + ' ' +$filter('date')(userData.last_login,'shortTime');
 
-            var filteredUserData = _.pick(userData,'identifier','first_name','last_name','username','birth_date','age',
+            var filteredUserData = _.pick(userData,'id','first_name','last_name','username','birth_date','age',
                 'nationality','language','company', 'timezone','verified','created','last_login');
 
             var filteredUserEmails = _.pluck(userEmails,'email');
