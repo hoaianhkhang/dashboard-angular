@@ -92,7 +92,6 @@
         $scope.statusOptions = ['Pending','Complete','Failed','Deleted'];
 
         vm.getAllCompanyCurrencies = function () {
-            $scope.loadingStats = true;
             Rehive.admin.currencies.get({filters: {
                 page_size: 250,
                 archived: false
@@ -381,7 +380,7 @@
         };
 
         $scope.getTransactionTotals = function () {
-            $scope.loadingStats = true;
+            // $scope.loadingStats = true;
             $scope.showingFilters = false;
 
             var transactionsStatsFiltersObj = vm.getTransactionsStatsFiltersObj();
@@ -400,7 +399,7 @@
         $scope.getTransactionTotals();
 
         vm.getCurrencyObject = function (transactionTotalObj) {
-            $scope.loadingStats = true;
+            // $scope.loadingStats = true;
             if($scope.currencyOptions.length > 0){
                 $scope.currencyOptions.forEach(function (currency) {
                     if(currency.code == transactionTotalObj.currency){
