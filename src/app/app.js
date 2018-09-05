@@ -67,6 +67,7 @@ angular.module('BlurAdmin', [
                                 $rootScope.pageTopObj = {};
                                 localStorageManagement.deleteValue('TOKEN');
                                 localStorageManagement.deleteValue('token');
+                                Rehive.removeToken();
                                 $location.path('/login');
                             }
                             $rootScope.$apply();
@@ -90,6 +91,7 @@ angular.module('BlurAdmin', [
                                 $rootScope.pageTopObj = {};
                                 localStorageManagement.deleteValue('TOKEN');
                                 localStorageManagement.deleteValue('token');
+                                Rehive.removeToken();
                                 $location.path('/login');
                             }
                             $rootScope.$apply();
@@ -102,6 +104,7 @@ angular.module('BlurAdmin', [
             if(newUrlLastElement == 'login'){
                 localStorageManagement.deleteValue('TOKEN');
                 localStorageManagement.deleteValue('token');
+                Rehive.removeToken();
                 $rootScope.dashboardTitle = 'Rehive';
                 $rootScope.gotToken = false;
                 $rootScope.securityConfigured = true;

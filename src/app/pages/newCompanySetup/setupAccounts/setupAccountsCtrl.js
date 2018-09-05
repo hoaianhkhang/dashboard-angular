@@ -83,6 +83,7 @@
                 $rootScope.pageTopObj = {};
                 localStorageManagement.deleteValue('TOKEN');
                 localStorageManagement.deleteValue('token');
+                Rehive.removeToken();
                 toastr.error('Your session has expired, please log in again');
                 $location.path('/login');
             }
