@@ -261,14 +261,6 @@
             });
         }
 
-        if($state.params.transactionId){
-            $scope.filtersObj.transactionIdFilter = true;
-        }
-
-        if($state.params.identifier){
-            $scope.filtersObj.userFilter = true;
-        }
-
         $scope.showFilters = function () {
             $scope.showingFilters = !$scope.showingFilters;
             $scope.showingColumnFilters = false;
@@ -547,7 +539,8 @@
         };
         if($state.params.accountRef){
             $scope.filtersObj.accountFilter = true;
-            $scope.applyFiltersObj.accountFilter.selectedAccount = $state.params.accountRef;
+            $scope.applyFiltersObj.accountFilter.selectedAccountOption = 'Reference';
+            $scope.applyFiltersObj.accountFilter.selectedAccountReference = $state.params.accountRef;
             $scope.getLatestTransactions();
         } else if($state.params.identifier) {
             $scope.filtersObj.userFilter = true;
