@@ -503,6 +503,7 @@
                     vm.formatTransactionsArray($scope.transactionsData.results);
                     if($scope.transactions.length == 0) {
                         $scope.transactionsStateMessage = 'No transactions have been found';
+                        $scope.$apply();
                         return;
                     }
                     $scope.transactionsStateMessage = '';

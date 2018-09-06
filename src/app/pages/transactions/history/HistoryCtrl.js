@@ -561,7 +561,7 @@
         vm.formatTransactionsArray = function (transactionsArray) {
             transactionsArray.forEach(function (transactionObj) {
                 $scope.transactions.push({
-                    user: transactionObj.user.email || transactionObj.user.mobile,
+                    user: transactionObj.user.email || transactionObj.user.mobile || transactionObj.user.id,
                     recipient: transactionObj.destination_transaction ? transactionObj.destination_transaction.id ? transactionObj.destination_transaction.user.email : transactionObj.destination_transaction.user.email + ' (new user)' : "",
                     tx_type: $filter("capitalizeWord")(transactionObj.tx_type),
                     subtype: transactionObj.subtype,
