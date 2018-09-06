@@ -418,7 +418,7 @@
                 {
                     txType: 'credit',
                     currencyCode: 'XLM',
-                    emailUser: $scope.coldstorageObj.user_account_identifier,
+                    userIdentity: $scope.coldstorageObj.user_account_identifier,
                     accountUser: $scope.coldstorageObj.rehive_account_reference
                 });
         };
@@ -428,7 +428,7 @@
                 {
                     txType: 'debit',
                     currencyCode: 'XLM',
-                    emailUser: $scope.coldstorageObj.user_account_identifier,
+                    userIdentity: $scope.coldstorageObj.user_account_identifier,
                     accountUser: $scope.coldstorageObj.rehive_account_reference
                 });
         };

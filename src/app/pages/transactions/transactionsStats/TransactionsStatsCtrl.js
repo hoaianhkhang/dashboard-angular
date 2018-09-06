@@ -6,11 +6,11 @@
 
     /** @ngInject */
     function TransactionsStatsCtrl($scope,Rehive,serializeFiltersService,currencyModifiers,sharedResources,
-                                   localStorageManagement,typeaheadService,toastr,errorHandler) {
+                                   localStorageManagement,typeaheadService,toastr,_,errorHandler) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('token');
-        $scope.loadingStats = false;
+        $scope.loadingStats = true;
         $scope.currencyObj = {};
         $scope.currencyOptions = [];
         $scope.transactionTotalObj = {};
@@ -92,13 +92,13 @@
         $scope.statusOptions = ['Pending','Complete','Failed','Deleted'];
 
         vm.getAllCompanyCurrencies = function () {
-            $scope.loadingStats = true;
             Rehive.admin.currencies.get({filters: {
                 page_size: 250,
                 archived: false
             }}).then(function (res) {
                 if(res.results.length > 0){
                     $scope.currencyOptions = res.results;
+                    $scope.getTransactionTotals();
                     $scope.$apply();
                 }
             }, function (error) {
@@ -397,7 +397,6 @@
                 $scope.$apply();
             });
         };
-        $scope.getTransactionTotals();
 
         vm.getCurrencyObject = function (transactionTotalObj) {
             $scope.loadingStats = true;
