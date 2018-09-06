@@ -416,7 +416,7 @@
             $location.path('/transactions/history').search({
                 txType: 'credit',
                 currencyCode: 'XBT',
-                emailUser: $scope.coldstorageObj.user_account_identifier,
+                userIdentity: $scope.coldstorageObj.user_account_identifier,
                 accountUser: $scope.coldstorageObj.rehive_account_reference
             });
         };
@@ -425,7 +425,7 @@
             $location.path('/transactions/history').search({
                 txType: 'debit',
                 currencyCode: 'XBT',
-                emailUser: $scope.coldstorageObj.user_account_identifier,
+                userIdentity: $scope.coldstorageObj.user_account_identifier,
                 accountUser: $scope.coldstorageObj.rehive_account_reference
             });
         };
