@@ -44,6 +44,7 @@
                         $rootScope.pageTopObj = {};
                         localStorageManagement.deleteValue('TOKEN');
                         localStorageManagement.deleteValue('token');
+                        Rehive.removeToken();
                         $location.path('/login');
                     }
                 }
