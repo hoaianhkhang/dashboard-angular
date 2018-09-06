@@ -100,8 +100,8 @@
             $scope.getUserAccounts();
         }
 
-        $scope.goToView = function(txType,currency,email,account){
-            $location.path('/transactions/history').search({txType: txType,currencyCode: currency.code,emailUser: email,accountUser: account});
+        $scope.goToView = function(txType,currency,user,account){
+            $location.path('/transactions/history').search({txType: txType,currencyCode: currency.code,userIdentity: user.email || user.mobile || user.id,accountUser: account});
 
         };
 

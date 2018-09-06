@@ -6,12 +6,31 @@
 
     /** @ngInject */
     function GroupsOverviewCtrl($rootScope,$scope,localStorageManagement,$uibModal,
-                                errorHandler,$ngConfirm,toastr,$location,Rehive) {
+                                errorHandler,serializeFiltersService,toastr,$location,Rehive) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('token');
         $rootScope.dashboardTitle = 'Groups | Rehive';
+        $scope.showingGroupFilters = false;
         $scope.groups = [];
+        $scope.groupOptions = [];
+
+        $scope.filtersObj = {
+            nameFilter: false
+        };
+        $scope.applyFiltersObj = {
+            nameFilter:{
+                selectedGroup: {}
+            }
+        };
+
+        $scope.showGroupFilters = function () {
+            $scope.showingGroupFilters = !$scope.showingGroupFilters;
+        };
+
+        $scope.hideGroupFilters = function () {
+            $scope.showingGroupFilters = false;
+        };
 
         $scope.closeOptionsBox = function () {
             $scope.optionsName = '';
@@ -25,8 +44,34 @@
             $location.path(path);
         };
 
+        $scope.clearGroupFilters = function () {
+            $scope.filtersObj = {
+                nameFilter: false
+            };
+        };
+
+        vm.getGroupFiltersObj = function () {
+            $scope.filtersCount = 0;
+
+            for(var x in $scope.filtersObj){
+                if($scope.filtersObj.hasOwnProperty(x)){
+                    if($scope.filtersObj[x]){
+                        $scope.filtersCount = $scope.filtersCount + 1;
+                    }
+                }
+            }
+
+            var searchObj = {
+                page_size: 250,
+                name: $scope.filtersObj.nameFilter ? $scope.applyFiltersObj.nameFilter.selectedGroup.name: null
+            };
+
+            return serializeFiltersService.objectFilters(searchObj);
+        };
+
         $scope.getGroups = function (dontShowLoadingImage) {
             if(vm.token) {
+                $scope.showingGroupFilters = false;
 
                 if(!dontShowLoadingImage){
                     $scope.loadingGroups = true;
@@ -36,8 +81,13 @@
                 //     $scope.groups.length = 0;
                 // }
 
-                Rehive.admin.groups.get({filters: {page_size: 250}}).then(function (res) {
+                var groupFiltersObj = vm.getGroupFiltersObj();
+
+                Rehive.admin.groups.get({filters: groupFiltersObj}).then(function (res) {
                     $scope.groups = res.results;
+                    if($scope.groupOptions.length === 0){
+                        $scope.groupOptions = $scope.groups.slice();
+                    }
                     $scope.groups.forEach(function(element,idx,array){
                         if(idx === array.length - 1){
                             vm.getGroupUsers(element,'last');

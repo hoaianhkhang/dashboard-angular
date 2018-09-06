@@ -212,7 +212,7 @@
 
         if($scope.newTransactionParams.txType){
             $scope.loadingTransactionSettings = true;
-            $scope.debitTransactionData.user = $scope.newTransactionParams.emailUser;
+            $scope.debitTransactionData.user = $scope.newTransactionParams.userIdentity;
             vm.getDebitUserObj($scope.debitTransactionData);
         }
 
