@@ -101,7 +101,7 @@
         // $scope.getRewardsRequests = function () {
         //     if(vm.token) {
         //         $scope.loadingReward = true;
-        //         $http.get(vm.serviceUrl + 'admin/rewards/' + reward.identifier + '/', {
+        //         $http.get(vm.serviceUrl + 'admin/rewards/' + reward.id + '/', {
         //             headers: {
         //                 'Content-Type': 'application/json',
         //                 'Authorization': vm.token

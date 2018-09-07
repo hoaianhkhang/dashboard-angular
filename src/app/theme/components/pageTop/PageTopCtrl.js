@@ -222,7 +222,7 @@
             if(transaction && transaction.id){
                 $state.go('transactions.history',{transactionId: transaction.id});
             } else if($scope.searchedUsers.length > 0) {
-                $state.go('transactions.history',{identifier: $scope.searchedUsers[0].id});
+                $state.go('transactions.history',{id: $scope.searchedUsers[0].id});
             } else {
                 $state.go('transactions.history');
             }

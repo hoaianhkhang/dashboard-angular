@@ -37,7 +37,7 @@
                  ng-src="{{user.profile}}"  width="90" height="90" alt="token Image">
             <div>
                 <p ngclipboard ngclipboard-success="copiedSuccessfully()" data-clipboard-text="{{user.id}}"
-                   class="user-details-info pointer">identifier: {{user.id}}</p>
+                   class="user-details-info pointer">id: {{user.id}}</p>
                 <p class="user-details-info">user for {{beenAUser}}</p>
                 <p class="user-details-info">user group: {{user.groups[0].name || 'None'}}</p>
                 <p class="user-details-info">kyc status: {{user.kyc.status}}</p>

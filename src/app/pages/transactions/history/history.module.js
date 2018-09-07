@@ -16,7 +16,7 @@
                     }
                 },
                 params: {
-                    identifier: null,
+                    id: null,
                     transactionId: null,
                     currencyCode: null,
                     accountRef: null

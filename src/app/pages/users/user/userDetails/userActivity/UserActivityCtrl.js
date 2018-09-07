@@ -30,7 +30,7 @@
         vm.getUser();
 
         $scope.goToTransactions = function(id){
-            $state.go('transactions.history',{"identifier": id});
+            $state.go('transactions.history',{"id": id});
         };
     }
 })();

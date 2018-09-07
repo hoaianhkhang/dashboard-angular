@@ -108,10 +108,10 @@
             });
         };
 
-        $scope.deleteCampaign = function (campaignIdentifier) {
+        $scope.deleteCampaign = function (campaignId) {
             if(vm.token) {
                 $scope.loadingCampaigns = true;
-                $http.delete(vm.serviceUrl + 'admin/campaigns/' + campaignIdentifier + '/', {
+                $http.delete(vm.serviceUrl + 'admin/campaigns/' + campaignId + '/', {
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': vm.token

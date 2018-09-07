@@ -59,7 +59,8 @@
              var headerColumns = JSON.parse(localStorageManagement.getValue(vm.savedUserTableColumns));
              headerColumns.forEach(function (col,index,array) {
                  if(col.colName == 'Identifier'){
-                     col.fieldName == 'id';
+                     col.colName = 'Id';
+                     col.fieldName = 'id';
                  }
              });
 
@@ -67,7 +68,7 @@
         }
 
         $scope.headerColumns = localStorageManagement.getValue(vm.savedUserTableColumns) ? JSON.parse(localStorageManagement.getValue(vm.savedUserTableColumns)) : [
-            {colName: 'Identifier',fieldName: 'id',visible: true},
+            {colName: 'Id',fieldName: 'id',visible: true},
             {colName: 'First name',fieldName: 'first_name',visible: true},
             {colName: 'Last name',fieldName: 'last_name',visible: true},
             {colName: 'Email',fieldName: 'email',visible: true},
@@ -89,7 +90,7 @@
         ];
         $scope.filtersObj = {
             archivedFilter: false,
-            identifierFilter: false,
+            idFilter: false,
             emailFilter: false,
             mobileFilter: false,
             firstNameFilter: false,
@@ -107,8 +108,8 @@
             archivedFilter: {
                 selectedArchivedFilter: 'True'
             },
-            identifierFilter: {
-                selectedIdentifier: ''
+            idFilter: {
+                selectedId: ''
             },
             emailFilter: {
                 selectedEmail: $state.params.email || ''
@@ -182,7 +183,7 @@
         };
 
         $scope.restoreColDefaults = function () {
-            var defaultVisibleHeader = ['Identifier','First name','Last name','Email',
+            var defaultVisibleHeader = ['Id','First name','Last name','Email',
                 'Mobile number','Group name','Created'];
 
             $scope.headerColumns.forEach(function (headerObj) {
@@ -283,7 +284,7 @@
         $scope.clearFilters = function () {
             $scope.filtersObj = {
                 archivedFilter: false,
-                identifierFilter: false,
+                idFilter: false,
                 emailFilter: false,
                 mobileFilter: false,
                 firstNameFilter: false,
@@ -495,7 +496,7 @@
             var searchObj = {
                 page: $scope.usersPagination.pageNo,
                 page_size: $scope.filtersObj.pageSizeFilter? $scope.usersPagination.itemsPerPage : 25,
-                id__contains: $scope.filtersObj.identifierFilter ? ($scope.applyFiltersObj.identifierFilter.selectedIdentifier ?  $scope.applyFiltersObj.identifierFilter.selectedIdentifier : null): null,
+                id__contains: $scope.filtersObj.idFilter ? ($scope.applyFiltersObj.idFilter.selectedId ?  $scope.applyFiltersObj.idFilter.selectedId : null): null,
                 email__contains: $scope.filtersObj.emailFilter ?($scope.applyFiltersObj.emailFilter.selectedEmail ? $scope.applyFiltersObj.emailFilter.selectedEmail : null): null,
                 mobile__contains: $scope.filtersObj.mobileFilter ? ($scope.applyFiltersObj.mobileFilter.selectedMobile ? $scope.applyFiltersObj.mobileFilter.selectedMobile : null): null,
                 first_name__contains: $scope.filtersObj.firstNameFilter ? ($scope.applyFiltersObj.firstNameFilter.selectedFirstName ?  $scope.applyFiltersObj.firstNameFilter.selectedFirstName : null): null,

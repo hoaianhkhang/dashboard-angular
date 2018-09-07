@@ -48,7 +48,7 @@
                 selectedTransactionIdOption: null
             },
             userFilter: {
-                selectedUserOption: $state.params.identifier || null
+                selectedUserOption: $state.params.id || null
             }
         };
         $scope.pagination = {

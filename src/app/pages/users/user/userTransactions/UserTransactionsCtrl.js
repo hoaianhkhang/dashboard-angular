@@ -99,6 +99,18 @@
         $scope.currencyOptions = [];
         $scope.orderByOptions = ['Latest','Largest','Smallest'];
 
+        if(localStorageManagement.getValue(vm.savedUserTransactionTableColumns)){
+            var headerColumns = JSON.parse(localStorageManagement.getValue(vm.savedUserTransactionTableColumns));
+            headerColumns.forEach(function (col) {
+                if(col.colName == 'Identifier'){
+                    col.colName = 'User id';
+                    col.fieldName = 'userId';
+                }
+            });
+
+            localStorageManagement.setValue(vm.savedUserTransactionTableColumns,JSON.stringify(headerColumns));
+        }
+
         $scope.headerColumns = localStorageManagement.getValue(vm.savedUserTransactionTableColumns) ? JSON.parse(localStorageManagement.getValue(vm.savedUserTransactionTableColumns)) : [
             {colName: 'User',fieldName: 'user',visible: true},
             {colName: 'Recipient',fieldName: 'recipient',visible: true},
@@ -114,7 +126,7 @@
             {colName: 'Total amount',fieldName: 'totalAmount',visible: false},
             {colName: 'Balance',fieldName: 'balance',visible: false},
             {colName: 'Username',fieldName: 'username',visible: false},
-            {colName: 'Identifier',fieldName: 'identifier',visible: false},
+            {colName: 'User id',fieldName: 'userId',visible: false},
             {colName: 'Updated',fieldName: 'updatedDate',visible: false},
             {colName: 'Mobile',fieldName: 'mobile',visible: false},
             {colName: 'Destination tx id',fieldName: 'destination_tx_id',visible: false},
@@ -236,7 +248,7 @@
             $scope.filtersObj.transactionIdFilter = true;
         }
 
-        if($state.params.identifier){
+        if($state.params.id){
             $scope.filtersObj.userFilter = true;
         }
 
@@ -538,7 +550,7 @@
                     balance: $filter("currencyModifiersFilter")(transactionObj.balance,transactionObj.currency.divisibility),
                     account: transactionObj.account,
                     username: transactionObj.user.username,
-                    identifier: transactionObj.user.id,
+                    userId: transactionObj.user.id,
                     updatedDate: transactionObj.updated ? $filter("date")(transactionObj.updated,'mediumDate') + ' ' + $filter("date")(transactionObj.updated,'shortTime'): null,
                     mobile: transactionObj.user.mobile,
                     destination_tx_id: transactionObj.destination_transaction ? transactionObj.destination_transaction.id ? transactionObj.destination_transaction.id : 'ID pending creation' : "",
