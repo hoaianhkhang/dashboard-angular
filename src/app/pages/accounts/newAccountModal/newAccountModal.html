@@ -3,12 +3,12 @@
         <button type="button" class="close" ng-click="$dismiss()" aria-label="Close">
             <em class="ion-ios-close-empty sn-link-close"></em>
         </button>
-        <h4 class="modal-title" id="myModalLabel">Add Account</h4>
+        <h4 class="modal-title" id="myModalLabel">Add account</h4>
     </div>
     <div class="modal-body">
         <form name="addAccountForm" class="custom-form" novalidate>
             <div class="form-group divider-20">
-                <label>Name  <span class="required-icon">*</span></label>
+                <label>Account name  <span class="required-icon">*</span></label>
                 <input type="text" class="form-control" ng-model="addAccountParams.name"
                        ng-change="addAccountParams.name = addAccountParams.name.toLowerCase()"
                        placeholder="Enter account name" required/>
@@ -40,11 +40,6 @@
                 </div>
                 <p ng-hide="currenciesList.length > 0 || addingUserAccount">Looks like you haven't added any currencies to your company yet.
                     Add one by going to the <a href="/#/currencies" target="_blank">currencies page</a>.</p>
-                <p ng-show="currenciesList.length > 0 || addingUserAccount">Currencies selected:
-                    <span ng-repeat="currency in currenciesForNewAccount.list | orderBy: 'code'">
-                    {{$last ? '' + currency.code : currency.code + ',&nbsp;' }}
-                </span>
-                </p>
             </div>
             <a ng-click="toggleAdvancedOption()" ng-class="{'': advancedOption == false,'divider-20': advancedOption == true}"
                class="accounts-advanced-options pointer">Advanced options</a>

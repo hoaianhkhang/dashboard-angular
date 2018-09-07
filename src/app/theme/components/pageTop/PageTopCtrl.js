@@ -116,6 +116,7 @@
                         $rootScope.pageTopObj = {};
                         localStorageManagement.deleteValue('TOKEN');
                         localStorageManagement.deleteValue('token');
+                        Rehive.removeToken();
                         $location.path('/login');
                     }
                 });
@@ -268,6 +269,7 @@
                         $rootScope.pageTopObj = {};
                         localStorageManagement.deleteValue('TOKEN');
                         localStorageManagement.deleteValue('token');
+                        Rehive.removeToken();
                         $location.path('/login');
                     }
                     $scope.$apply();
@@ -446,6 +448,7 @@
             $rootScope.pageTopObj = {};
             localStorageManagement.deleteValue('TOKEN');
             localStorageManagement.deleteValue('token');
+            Rehive.removeToken();
             $location.path('/login');
         };
     }

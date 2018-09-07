@@ -261,14 +261,6 @@
             });
         }
 
-        if($state.params.transactionId){
-            $scope.filtersObj.transactionIdFilter = true;
-        }
-
-        if($state.params.identifier){
-            $scope.filtersObj.userFilter = true;
-        }
-
         $scope.showFilters = function () {
             $scope.showingFilters = !$scope.showingFilters;
             $scope.showingColumnFilters = false;
@@ -547,7 +539,8 @@
         };
         if($state.params.accountRef){
             $scope.filtersObj.accountFilter = true;
-            $scope.applyFiltersObj.accountFilter.selectedAccount = $state.params.accountRef;
+            $scope.applyFiltersObj.accountFilter.selectedAccountOption = 'Reference';
+            $scope.applyFiltersObj.accountFilter.selectedAccountReference = $state.params.accountRef;
             $scope.getLatestTransactions();
         } else if($state.params.identifier) {
             $scope.filtersObj.userFilter = true;
@@ -568,7 +561,7 @@
         vm.formatTransactionsArray = function (transactionsArray) {
             transactionsArray.forEach(function (transactionObj) {
                 $scope.transactions.push({
-                    user: transactionObj.user.email || transactionObj.user.mobile,
+                    user: transactionObj.user.email || transactionObj.user.mobile || transactionObj.user.id,
                     recipient: transactionObj.destination_transaction ? transactionObj.destination_transaction.id ? transactionObj.destination_transaction.user.email : transactionObj.destination_transaction.user.email + ' (new user)' : "",
                     tx_type: $filter("capitalizeWord")(transactionObj.tx_type),
                     subtype: transactionObj.subtype,

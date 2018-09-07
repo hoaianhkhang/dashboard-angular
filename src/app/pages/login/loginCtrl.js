@@ -10,6 +10,7 @@
         var vm = this;
         localStorageManagement.deleteValue('TOKEN');
         localStorageManagement.deleteValue('token');
+        Rehive.removeToken();
         $rootScope.dashboardTitle = 'Rehive';
         $scope.path = $location.path();
         $scope.showLoginPassword = false;

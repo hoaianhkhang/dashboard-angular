@@ -30,7 +30,7 @@
                         <option value=""></option>
                     </select>
                 </div>
-                <p>Currencies already selected:
+                <p>Currencies already added:
                     <span ng-repeat="currencyObj in currenciesList | orderBy: 'currency.code'">
                     {{$last ? '' + currencyObj.currency.code : currencyObj.currency.code + ',&nbsp;'}}
                 </span>
