@@ -18,7 +18,7 @@
                 abstract: true,
                 template:'<div ui-view="notificationServiceViews"></div>'
             });
-            $urlRouterProvider.when("/services/notifications", "/services/notifications/settings");
+            $urlRouterProvider.when("/services/notifications", "/services/notifications/list");
     }
 
 })();

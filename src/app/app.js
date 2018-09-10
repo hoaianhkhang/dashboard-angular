@@ -17,6 +17,7 @@ angular.module('BlurAdmin', [
     'ngIntlTelInput',
     'localytics.directives',
     'ngTagsInput',
+    'ui.codemirror',
     'BlurAdmin.theme',
     'BlurAdmin.pages'
 ])
