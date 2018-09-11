@@ -25,7 +25,7 @@
         vm.getUser = function(){
             if(vm.token) {
                 $scope.loadingUserEmails = true;
-                Rehive.admin.users.get({identifier: vm.uuid}).then(function (res) {
+                Rehive.admin.users.get({id: vm.uuid}).then(function (res) {
                     $scope.user = res;
                     vm.getUserEmails();
                     $scope.$apply();

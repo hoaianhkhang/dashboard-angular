@@ -160,7 +160,7 @@
         };
 
         vm.getUserAccounts = function (user,transactionData,recipient) {
-            Rehive.admin.accounts.get({filters: {user: user.identifier}}).then(function (res) {
+            Rehive.admin.accounts.get({filters: {user: user.id}}).then(function (res) {
                 if(res.results.length > 0 ){
                     if(recipient){
                         $scope.recipientUserAccountsAvailable = true;
@@ -189,7 +189,7 @@
         };
 
         vm.getAccounts = function (user,transactionData,recipient) {
-            Rehive.admin.accounts.get({filters: {user: user.identifier,currency: transactionData.currency.code}}).then(function (res) {
+            Rehive.admin.accounts.get({filters: {user: user.id,currency: transactionData.currency.code}}).then(function (res) {
                 if(res.results.length > 0 ){
                     res.results.forEach(function (account) {
                         if(account.primary){
@@ -271,8 +271,8 @@
             $scope.showAdvancedTransferOption = !$scope.showAdvancedTransferOption;
         };
 
-        $scope.goToTransferUserAccountCreate = function (identifier) {
-            $window.open('/#/user/' + identifier + '/accounts?accountAction=newAccount','_blank');
+        $scope.goToTransferUserAccountCreate = function (id) {
+            $window.open('/#/user/' + id + '/accounts?accountAction=newAccount','_blank');
         };
 
     }

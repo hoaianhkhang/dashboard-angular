@@ -47,7 +47,7 @@
 
                 formData.append('metadata', metaData);
 
-                Rehive.admin.users.update(vm.user.identifier, formData).then(function (res) {
+                Rehive.admin.users.update(vm.user.id, formData).then(function (res) {
                     toastr.success('Metadata updated successfully');
                     $scope.formatted = {};
                     $scope.updatingUserMetadata = false;

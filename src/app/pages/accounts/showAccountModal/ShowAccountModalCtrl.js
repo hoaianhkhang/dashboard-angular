@@ -32,7 +32,7 @@
         vm.getAccount();
 
         $scope.goToUserAccount = function () {
-            $window.open('/#/user/' + $scope.accountObj.user.identifier + '/accounts?searchAccount=' + $scope.accountObj.reference,'_blank');
+            $window.open('/#/user/' + $scope.accountObj.user.id + '/accounts?searchAccount=' + $scope.accountObj.reference,'_blank');
         };
 
         $scope.goToAccountTransactions = function () {

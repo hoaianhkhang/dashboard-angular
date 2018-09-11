@@ -129,7 +129,7 @@
         };
 
         vm.getDebitUserAccounts = function (user,debitTransactionData) {
-            Rehive.admin.accounts.get({filters: {user: user.identifier}}).then(function (res) {
+            Rehive.admin.accounts.get({filters: {user: user.id}}).then(function (res) {
                 if(res.results.length > 0){
                     $scope.debitUserAccountsAvailable = true;
                     vm.getDebitAccounts(user,debitTransactionData);
@@ -147,7 +147,7 @@
         };
 
         vm.getDebitAccounts = function (user,debitTransactionData) {
-            Rehive.admin.accounts.get({filters: {user: user.identifier,currency: debitTransactionData.currency.code}}).then(function (res) {
+            Rehive.admin.accounts.get({filters: {user: user.id,currency: debitTransactionData.currency.code}}).then(function (res) {
                 if(res.results.length > 0){
                     $scope.debitCurrencyAccountsAvailable = true;
                     res.results.find(function (account) {
@@ -203,7 +203,7 @@
         };
 
         $scope.goToDebitUserAccountCreate = function () {
-            $window.open('/#/user/' + $scope.retrievedDebitUserObj.identifier + '/accounts?accountAction=newAccount','_blank');
+            $window.open('/#/user/' + $scope.retrievedDebitUserObj.id + '/accounts?accountAction=newAccount','_blank');
         };
 
         if($scope.newTransactionParams.userEmail){

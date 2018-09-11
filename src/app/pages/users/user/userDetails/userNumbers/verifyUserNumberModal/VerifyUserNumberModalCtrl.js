@@ -47,7 +47,7 @@
             $scope.verifyingMobile = true;
             Rehive.auth.mobile.resendMobileVerification({
                 mobile: $scope.mobile.number,
-                company: vm.company.identifier
+                company: vm.company.id
             }).then(function(res){
                 $scope.verifyingMobile = false;
                 toastr.success('Mobile number verification resent successfully');

@@ -40,7 +40,7 @@
         </div>
         <div class="user-company-overview pull-right">
           <span ng-class="{'long-text': (pageTopObj.userInfoObj.email.length > 22), 'very-long-text': (pageTopObj.userInfoObj.email.length > 35)}">{{pageTopObj.userInfoObj.email}}</span>
-          <p>{{pageTopObj.companyObj.identifier}}</p>
+          <p>{{pageTopObj.companyObj.id}}</p>
         </div>
       </div>
 
@@ -65,7 +65,7 @@
             <ul  class="top-dropdown-menu profile-dropdown" uib-dropdown-menu>
               <li><i class="dropdown-arr"></i></li>
               <li><span class="under-1200-user-email" ng-class="{'long-text': (pageTopObj.userInfoObj.email.length > 22), 'very-long-text': (pageTopObj.userInfoObj.email.length > 35)}">{{pageTopObj.userInfoObj.email}}</span></li>
-              <li><span class="under-1200-company-name">{{pageTopObj.companyObj.identifier}}</span></li>
+              <li><span class="under-1200-company-name">{{pageTopObj.companyObj.id}}</span></li>
               <li ng-click="viewProfile()"><a href class="signout text-center"><i class="profile-navbar-icon ion-person"></i>
                 View profile</a></li>
               <li ng-click="logout()"><a href class="signout text-center"><i class="profile-navbar-icon ion-log-out"></i>Log out</a></li>

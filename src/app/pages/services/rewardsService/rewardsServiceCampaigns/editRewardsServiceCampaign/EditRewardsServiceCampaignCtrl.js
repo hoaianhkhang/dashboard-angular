@@ -161,7 +161,7 @@
 
             $scope.updatingCampaign =  true;
             if(vm.token) {
-                $http.patch(vm.baseUrl + 'admin/campaigns/' + $scope.editCampaignParams.identifier + '/',vm.updatedCampaignObj, {
+                $http.patch(vm.baseUrl + 'admin/campaigns/' + $scope.editCampaignParams.id + '/',vm.updatedCampaignObj, {
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': vm.token

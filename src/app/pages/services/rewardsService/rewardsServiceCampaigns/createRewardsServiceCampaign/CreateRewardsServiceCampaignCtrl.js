@@ -92,7 +92,7 @@
                 name: newCampaignParams.name,
                 description: newCampaignParams.description,
                 currency: newCampaignParams.currency.code,
-                company: $rootScope.pageTopObj.companyObj.identifier,
+                company: $rootScope.pageTopObj.companyObj.id,
                 start_date: null,
                 end_date: null,
                 reward_total: newCampaignParams.rewardTotal ? currencyModifiers.convertToCents(newCampaignParams.rewardTotal,newCampaignParams.currency.divisibility) : null,

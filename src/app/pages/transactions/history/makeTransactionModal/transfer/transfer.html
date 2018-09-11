@@ -2,7 +2,7 @@
     <div class="transaction-form" id="transferForm">
         <div class="form-group">
             <label>Sender <span class="required-icon">*</span>&nbsp;
-                <i ng-show="retrievedSenderUserObj.identifier" class="fa fa-user transaction-transfer-sender-user-icon" aria-hidden="true"></i>
+                <i ng-show="retrievedSenderUserObj.id" class="fa fa-user transaction-transfer-sender-user-icon" aria-hidden="true"></i>
                 <div class="row transaction-transfer-sender-user-details">
                     <table>
                         <tr>
@@ -34,7 +34,7 @@
         </div>
         <div class="form-group">
             <label>Recipient <span class="required-icon">*</span>&nbsp;
-                <i ng-show="retrievedRecipientObj.identifier" class="fa fa-user transaction-transfer-recipient-user-icon" aria-hidden="true"></i>
+                <i ng-show="retrievedRecipientObj.id" class="fa fa-user transaction-transfer-recipient-user-icon" aria-hidden="true"></i>
                 <div class="row transaction-transfer-recipient-user-details">
                     <table>
                         <tr>
@@ -70,10 +70,10 @@
         </div>
         <div class="form-group">
             <label>Currency <span class="required-icon">*</span>
-                <span ng-hide="(retrievedSenderUserObj.identifier)">Please choose sender first.</span>
+                <span ng-hide="(retrievedSenderUserObj.id)">Please choose sender first.</span>
             </label>
             <br>
-            <select class="form-control pointer" ng-model="transferTransactionData.currency" ng-change="currencySelected(transferTransactionData,'recipient')" ng-disabled="(!retrievedSenderUserObj.identifier)"
+            <select class="form-control pointer" ng-model="transferTransactionData.currency" ng-change="currencySelected(transferTransactionData,'recipient')" ng-disabled="(!retrievedSenderUserObj.id)"
                     ng-options="currency.code for currency in transferCurrencyOptions | orderBy: 'code' track by currency.code">
             </select>
         </div>
@@ -105,7 +105,7 @@
                     <i>No transactions exist for this account.</i>
                 </div>
             </label>
-            <select class="form-control pointer" ng-model="transferTransactionData.account" ng-change="accountSelected(transferTransactionData)" ng-disabled="(!transferTransactionData.currency.code || !retrievedSenderUserObj.identifier)"
+            <select class="form-control pointer" ng-model="transferTransactionData.account" ng-change="accountSelected(transferTransactionData)" ng-disabled="(!transferTransactionData.currency.code || !retrievedSenderUserObj.id)"
                     ng-options="account.name + ' - ' + account.reference disable when account.disable for account in retrievedSenderUserAccountsArray | orderBy: 'name' track by account.name">
             </select>
         </div>
@@ -138,13 +138,13 @@
                 </div>
                 <span class="no-accounts-available margin-left-10"
                       ng-show="retrievedRecipientAccountsArray.length == 0 &&
-                      retrievedRecipientObj.identifier  && transferTransactionData.currency &&
+                      retrievedRecipientObj.id  && transferTransactionData.currency &&
                        transferTransactionData.currency.code">
                     No accounts found for this user.
-                    <span ng-click="goToTransferUserAccountCreate(retrievedRecipientObj.identifier)"> Add an account here.</span>
+                    <span ng-click="goToTransferUserAccountCreate(retrievedRecipientObj.id)"> Add an account here.</span>
                 </span>
             </label>
-            <select class="form-control pointer" ng-model="transferTransactionData.credit_account" ng-change="accountSelected(transferTransactionData,'recipient')" ng-disabled="!transferTransactionData.currency.code || !retrievedRecipientObj.identifier"
+            <select class="form-control pointer" ng-model="transferTransactionData.credit_account" ng-change="accountSelected(transferTransactionData,'recipient')" ng-disabled="!transferTransactionData.currency.code || !retrievedRecipientObj.id"
                     ng-options="account.name + ' - ' + account.reference disable when account.disable for account in retrievedRecipientAccountsArray | orderBy: 'name' track by account.name">
             </select>
         </div>

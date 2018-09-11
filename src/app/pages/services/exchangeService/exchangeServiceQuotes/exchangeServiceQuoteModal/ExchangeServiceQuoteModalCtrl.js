@@ -39,9 +39,9 @@
             $state.go('transactions.history',{"transactionId": id});
         };
 
-        $scope.goToUserFromExchange = function (identifier) {
+        $scope.goToUserFromExchange = function (id) {
             $uibModalInstance.close();
-            $location.path('/user/' + identifier + '/details');
+            $location.path('/user/' + id + '/details');
         };
 
 

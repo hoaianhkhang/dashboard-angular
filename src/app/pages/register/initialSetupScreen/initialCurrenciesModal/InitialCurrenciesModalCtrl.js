@@ -18,7 +18,7 @@
             if(currencies && currencies.length > 0){
                 $scope.loadingDefaultValues = true;
                 currencies.forEach(function(currency,index,array){
-                    currency.enabled = true;
+                    currency.archived = false;
                     Rehive.admin.currencies.create(currency).then(function (res) {
                         if (index == (array.length - 1)) {
                             vm.addDefaultValues();

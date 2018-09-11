@@ -17,7 +17,7 @@
                 <p class="text-subtle">Reward id: </p>
             </div>
             <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 no-right-padding">
-                <p ng-bind="reward.identifier"></p>
+                <p ng-bind="reward.id"></p>
             </div>
         </div>
         <div class="row">
@@ -25,7 +25,7 @@
                 <p class="text-subtle">Campaign id: </p>
             </div>
             <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 no-right-padding">
-                <p ng-bind="reward.campaign.identifier || 'None'"></p>
+                <p ng-bind="reward.campaign.id || 'None'"></p>
             </div>
         </div>
         <div class="row">

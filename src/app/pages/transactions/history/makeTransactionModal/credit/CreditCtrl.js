@@ -128,7 +128,7 @@
         };
 
         vm.getCreditUserAccounts = function (user,creditTransactionData) {
-            Rehive.admin.accounts.get({filters: {user: user.identifier}}).then(function (res) {
+            Rehive.admin.accounts.get({filters: {user: user.id}}).then(function (res) {
                 if(res.results.length > 0){
                     $scope.creditUserAccountsAvailable = true;
                     vm.getCreditAccounts(user,creditTransactionData);
@@ -146,7 +146,7 @@
         };
 
         vm.getCreditAccounts = function (user,creditTransactionData) {
-            Rehive.admin.accounts.get({filters: {user: user.identifier,currency: creditTransactionData.currency.code}}).then(function (res) {
+            Rehive.admin.accounts.get({filters: {user: user.id,currency: creditTransactionData.currency.code}}).then(function (res) {
                 if(res.results.length > 0){
                     $scope.creditCurrencyAccountsAvailable = true;
                     res.results.find(function (account) {
@@ -202,7 +202,7 @@
         };
 
         $scope.goToCreditUserAccountCreate = function () {
-            $window.open('/#/user/' + $scope.retrievedCreditUserObj.identifier + '/accounts?accountAction=newAccount','_blank');
+            $window.open('/#/user/' + $scope.retrievedCreditUserObj.id + '/accounts?accountAction=newAccount','_blank');
         };
 
         $scope.goToAddCurrencyModal = function () {

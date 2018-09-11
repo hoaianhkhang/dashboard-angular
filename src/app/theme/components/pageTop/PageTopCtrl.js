@@ -57,7 +57,7 @@
                 Rehive.admin.company.get().then(function (res) {
                     $rootScope.pageTopObj.companyObj = {};
                     $rootScope.pageTopObj.companyObj = res;
-                    localStorageManagement.setValue('companyIdentifier',$rootScope.pageTopObj.companyObj.identifier);
+                    localStorageManagement.setValue('companyIdentifier',$rootScope.pageTopObj.companyObj.id);
                     $rootScope.$apply();
                 }, function (err) {
                 });
@@ -204,7 +204,7 @@
 
         $scope.goToUserProfile = function (user) {
             $scope.hidingSearchBar();
-            $location.path('/user/' + user.identifier + '/details');
+            $location.path('/user/' + user.id + '/details');
         };
 
         $scope.goToUsers = function () {
@@ -222,7 +222,7 @@
             if(transaction && transaction.id){
                 $state.go('transactions.history',{transactionId: transaction.id});
             } else if($scope.searchedUsers.length > 0) {
-                $state.go('transactions.history',{identifier: $scope.searchedUsers[0].identifier});
+                $state.go('transactions.history',{id: $scope.searchedUsers[0].id});
             } else {
                 $state.go('transactions.history');
             }

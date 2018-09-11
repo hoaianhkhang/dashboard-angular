@@ -54,7 +54,7 @@
 
         vm.getUserDetails = function (user) {
             if(user){
-                Rehive.admin.users.get({filters: {user: user.identifier}}).then(function (res) {
+                Rehive.admin.users.get({filters: {user: user.id}}).then(function (res) {
                     if(res.results.length == 1){
                         $scope.retrievedUserObj = res.results[0];
                         $scope.retrievedUserObj.metadata = metadataTextService.convertToText($scope.retrievedUserObj.metadata);
@@ -151,11 +151,11 @@
 
         $scope.goToUser = function () {
             $uibModalInstance.close();
-            $window.open('/#/user/' + $scope.transaction.user.identifier + '/details','_blank');
+            $window.open('/#/user/' + $scope.transaction.user.id + '/details','_blank');
         };
         
         $scope.goToUserAccount = function (transaction) {
-            $window.open('/#/user/' + $scope.transaction.user.identifier + '/accounts?searchAccount=' + transaction.account,'_blank');
+            $window.open('/#/user/' + $scope.transaction.user.id + '/accounts?searchAccount=' + transaction.account,'_blank');
         };
 
 

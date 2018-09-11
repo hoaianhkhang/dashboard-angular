@@ -15,7 +15,7 @@
         vm.getUser = function(){
             if(vm.token) {
                 $scope.loadingUserActivity = true;
-                Rehive.admin.users.get({identifier: vm.uuid}).then(function (res) {
+                Rehive.admin.users.get({id: vm.uuid}).then(function (res) {
                     $scope.loadingUserActivity = false;
                     $scope.user = res;
                     $scope.$apply();
@@ -29,8 +29,8 @@
         };
         vm.getUser();
 
-        $scope.goToTransactions = function(identifier){
-            $state.go('transactions.history',{"identifier": identifier});
-        }
+        $scope.goToTransactions = function(id){
+            $state.go('transactions.history',{"id": id});
+        };
     }
 })();

@@ -23,7 +23,7 @@
                     <th></th>
                 </tr>
                 <tr ng-repeat="campaign in campaignList | orderBy: '-created'" class="editable-row">
-                    <td class="rehive-table-row-first-child"><div title="{{campaign.identifier}}" class="transactions-list-element" ng-bind="campaign.identifier"></div></td>
+                    <td class="rehive-table-row-first-child"><div title="{{campaign.id}}" class="transactions-list-element" ng-bind="campaign.id"></div></td>
                     <td><div title="{{campaign.name}}" class="transactions-list-element" ng-bind="campaign.name"></div></td>
                     <td><div title="{{campaign.description}}" class="transactions-list-element" ng-bind="campaign.description"></div></td>
                     <td><div title="{{campaign.start_date | date:'mediumDate'}} {{campaign.start_date | date:'shortTime'}}" class="transactions-list-element" ng-bind="campaign.start_date | date:'mediumDate' + ' ' + campaign.start_date | date:'shortTime'"></div></td>
@@ -34,7 +34,7 @@
                     <td class="rehive-table-row-last-child">
                         <span class="user-details-currencies-options-container pull-right" ng-click="showCampaignOptionsBox(campaign); $event.stopPropagation()" click-outside="closeCampaignOptionsBox()">
                         <span class="fa fa-ellipsis-h pull-right pointer user-details-address-options no-margin"></span>
-                            <ul ng-show="campaign.identifier == campaignsId" class="user-details-address-options-box">
+                            <ul ng-show="campaign.id == campaignsId" class="user-details-address-options-box">
                                 <li ng-click="showCampaignOptionsBox(campaign)"><i class="dropdown-arr"></i></li>
                                 <li ng-click="openEditCampaignView(campaign)">Edit</li>
                                 <li ng-click="deleteCampaignPrompt(campaign)">Delete</li>
