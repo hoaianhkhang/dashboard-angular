@@ -11,13 +11,14 @@
         vm.token = localStorageManagement.getValue('TOKEN');
         vm.baseUrl = localStorageManagement.getValue('SERVICEURL');
         $scope.addingSmsNotification =  false;
-        $scope.smssmsNotificationParams = {
+        $scope.smsNotificationParams = {
             enabled: false,
             preference_enabled: false,
-            event: ''
+            event: '',
+            template: ''
         };
 
-        vm.eventOptionsObj = {
+        vm.smsEventOptionsObj = {
             USER_CREATE: 'user.create',
             USER_UPDATE: 'user.update',
             USER_PASSWORD_RESET: 'user.password.reset',
@@ -39,7 +40,7 @@
             TRANSACTION_EXECUTE: 'transaction.execute'
         };
 
-        $scope.smsTemplateOptions = ['Email','Sms'];
+        $scope.smsTemplateOptions = ['','Sms'];
         $scope.smsEventOptions = ['','User Create','User Update','User Password Reset','User Password Set','User Email Verify','User Mobile Verify',
             'Address Create','Address Update','Document Create','Document Update',
             'Bank Account Create','Bank Account Update','Crypto Account Create','Crypto Account Update',
@@ -58,7 +59,7 @@
                 var event;
                 event = smsNotificationParams.event.toUpperCase();
                 event = event.replace(/ /g, '_');
-                smsNotificationParams.event = vm.eventOptionsObj[event];
+                smsNotificationParams.event = vm.smsEventOptionsObj[event];
             }
 
             $scope.loadingNotifications =  true;

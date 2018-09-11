@@ -27,16 +27,18 @@
             <div class="form-group">
                 <label>Event</label>
                 <br>
-                <select class="form-control pointer" ng-model="emailNotificationParams.event"  ng-options="event for event in eventOptions">
+                <select class="form-control pointer" ng-model="emailNotificationParams.event"  ng-options="event for event in emailEventOptions">
                 </select>
             </div>
             <div class="form-group">
                 <label>Html message</label>
                 <textarea type="text" ng-model="emailNotificationParams.html_message"
                           ui-codemirror ui-codemirror-opts="editorEmailOptions"
+                          ng-codemirror-dictionary-hint="tags"
                           class="form-control"  placeholder='Enter html message'></textarea>
             </div>
-            <button class="btn btn-primary dashboard-btn pull-right">Preview</button>
+            <button ng-disabled="!emailNotificationParams.html_message" ng-click="openHtmlPreviewModal('app/pages/services/notificationService/notificationServiceNotifications/createNotificationServiceNotification/createNotificationServiceNotificationEmail/htmlMessagePreviewModal/htmlMessagePreviewModal.html','md',emailNotificationParams.html_message)"
+                    class="btn btn-primary dashboard-btn pull-right">Preview</button>
             <div class="form-group">
                 <label>Text message</label>
                 <textarea rows="4" type="text" ng-model="emailNotificationParams.text_message"

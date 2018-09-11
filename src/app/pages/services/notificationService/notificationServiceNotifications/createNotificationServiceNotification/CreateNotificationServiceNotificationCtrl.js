@@ -5,7 +5,7 @@
         .controller('CreateNotificationServiceNotificationsCtrl', CreateNotificationServiceNotificationsCtrl);
 
     /** @ngInject */
-    function CreateNotificationServiceNotificationsCtrl($scope,$http,localStorageManagement,$location,errorHandler,toastr) {
+    function CreateNotificationServiceNotificationsCtrl($scope,localStorageManagement) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');

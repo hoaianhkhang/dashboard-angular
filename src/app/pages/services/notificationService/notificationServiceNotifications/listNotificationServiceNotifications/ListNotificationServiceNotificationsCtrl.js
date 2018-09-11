@@ -15,11 +15,16 @@
             count: 0
         };
         $scope.loadingNotifications =  false;
+        $scope.listNotificationView = 'email';
 
         $scope.pagination = {
             itemsPerPage: 20,
             pageNo: 1,
             maxSize: 5
+        };
+
+        $scope.goToListNotificationView = function (path) {
+            $scope.listNotificationView = path;
         };
 
         $scope.toggleAllNotificationsStatus = function () {

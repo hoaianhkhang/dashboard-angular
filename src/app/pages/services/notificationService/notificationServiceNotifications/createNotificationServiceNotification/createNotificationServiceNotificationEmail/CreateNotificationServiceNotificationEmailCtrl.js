@@ -5,7 +5,8 @@
         .controller('CreateNotificationServiceNotificationEmailCtrl', CreateNotificationServiceNotificationEmailCtrl);
 
     /** @ngInject */
-    function CreateNotificationServiceNotificationEmailCtrl($scope,$http,localStorageManagement,$location,errorHandler,toastr) {
+    function CreateNotificationServiceNotificationEmailCtrl($scope,$http,localStorageManagement,
+                                                            $uibModal,$location,errorHandler,toastr) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
@@ -14,8 +15,11 @@
         $scope.emailNotificationParams = {
             enabled: false,
             preference_enabled: false,
-            event: ''
+            event: '',
+            template: ''
         };
+
+        $scope.tags = ['user.id','user.name','user.last_name'];
 
         vm.emailEventOptionsObj = {
             USER_CREATE: 'user.create',
@@ -48,20 +52,19 @@
             mode: 'xml'
         };
 
-        $scope.emailTemplateOptions = ['Email','Sms'];
+        $scope.emailTemplateOptions = ['','Email'];
         $scope.emailEventOptions = ['','User Create','User Update','User Password Reset','User Password Set','User Email Verify','User Mobile Verify',
             'Address Create','Address Update','Document Create','Document Update',
             'Bank Account Create','Bank Account Update','Crypto Account Create','Crypto Account Update',
             'Transaction Create','Transaction Update','Transaction Delete','Transaction Initiate','Transaction Execute'];
 
         $scope.addEmailNotification = function (emailNotificationParams) {
-            console.log(emailNotificationParams)
             return;
             if(emailNotificationParams.event){
                 var event;
                 event = emailNotificationParams.event.toUpperCase();
                 event = event.replace(/ /g, '_');
-                emailNotificationParams.event = vm.eventOptionsObj[event];
+                emailNotificationParams.event = vm.emailEventOptionsObj[event];
             }
 
             $scope.addingEmailNotification =  true;
@@ -86,6 +89,25 @@
 
         $scope.goToListView = function () {
             $location.path('/services/notifications/list');
+        };
+
+        $scope.openHtmlPreviewModal = function (page, size, htmlPreview) {
+            vm.theModal = $uibModal.open({
+                animation: true,
+                templateUrl: page,
+                size: size,
+                controller: 'HtmlMessagePreviewModalCtrl',
+                scope: $scope,
+                resolve: {
+                    htmlPreview: function () {
+                        return htmlPreview;
+                    }
+                }
+            });
+
+            vm.theModal.result.then(function(){
+            }, function(){
+            });
         };
 
     }
