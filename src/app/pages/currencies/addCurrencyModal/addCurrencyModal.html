@@ -15,7 +15,7 @@
             </div>
             <div class="form-group custom-form">
                 <label>Currencies <span class="required-icon">*</span></label>
-                <div class="reward-multi-select divider">
+                <div class="reward-multi-select">
                     <select chosen
                             multiple
                             data-placeholder-text-multiple="'Choose one or more currencies'"
@@ -27,11 +27,6 @@
                     </select>
                 </div>
             </div>
-            <p>Currencies selected:
-                <span ng-repeat="currency in currenciesToAdd | orderBy: 'code'">
-                    <strong>{{$last ? ' ' + currency.code : currency.code + ',' }}</strong>
-                </span>
-            </p>
         </div>
 
         <div id="addCustomCurrency" ng-show="showCustomCurrency && !showCurrencyConfirmPanel">
