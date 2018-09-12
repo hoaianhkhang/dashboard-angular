@@ -18,7 +18,7 @@
         vm.getUserBasicInfo = function(){
             if(vm.token) {
                 $scope.updatingUserBasicInfo = true;
-                Rehive.admin.users.get({identifier: $scope.user.identifier}).then(function (res) {
+                Rehive.admin.users.get({id: $scope.user.id}).then(function (res) {
                     $scope.updatingUserBasicInfo = false;
                     if(res.birth_date){
                         var birthdayStringArray = res.birth_date.split('-');
@@ -62,7 +62,7 @@
                     }
                 }
 
-                Rehive.admin.users.update($scope.user.identifier, formData).then(function (res) {
+                Rehive.admin.users.update($scope.user.id, formData).then(function (res) {
                     $scope.loadingUserBasicInfo = false;
                     toastr.success('Successfully updated the user info');
                     $scope.editUserBasicInfo = {};

@@ -25,7 +25,7 @@
                     <td ng-click="goToTransactionHistoryFromExchange(transaction.id)"><div title="{{transaction.id}}" class="transactions-list-element pointer">
                         <a>{{transaction.id}}</a>
                     </div></td>
-                    <td ng-click="goToUserFromExchange(transaction.user.identifier)"><div title="{{transaction.user.email || transaction.user.mobile}}"
+                    <td ng-click="goToUserFromExchange(transaction.user.id)"><div title="{{transaction.user.email || transaction.user.mobile}}"
                         class="transactions-list-element pointer">
                         <a>{{transaction.user.email || transaction.user.mobile | limitTo: '100'}}</a>
                     </div></td>

@@ -39,7 +39,7 @@
             "symbol": "$",
             "unit": "dollar",
             "divisibility": 2,
-            "enabled": true
+            "archived": false
           },
           {
             "code": "NGN",
@@ -47,7 +47,7 @@
             "symbol": "\u20a6",
             "unit": "naira",
             "divisibility": 2,
-            "enabled": true
+            "archived": false
           }
         ];      
 

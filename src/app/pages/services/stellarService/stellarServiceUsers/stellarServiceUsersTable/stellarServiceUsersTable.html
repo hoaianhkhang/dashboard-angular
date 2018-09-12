@@ -19,13 +19,13 @@
             <table class="table custom-table">
                 <tr>
                     <th class="rehive-table-row-first-child">Email</th>
-                    <th>Identifier</th>
+                    <th>Id</th>
                     <th>Address</th>
                 </tr>
                 <tr ng-repeat="user in users" data-toggle="modal"
                     class="editable-row center">
-                    <td class="rehive-table-row-first-child"><a href="#/user/{{user.identifier}}/details"><div title="{{user.email}}" ng-bind="user.email"></div></a></td>
-                    <td title="{{user.identifier}}" ng-bind="user.identifier"></td>
+                    <td class="rehive-table-row-first-child"><a href="#/user/{{user.id}}/details"><div title="{{user.email}}" ng-bind="user.email"></div></a></td>
+                    <td title="{{user.id}}" ng-bind="user.id"></td>
                     <td title="{{user.crypto.federated_address}}" ng-bind="user.crypto.federated_address"></td>
                 </tr>
             </table>

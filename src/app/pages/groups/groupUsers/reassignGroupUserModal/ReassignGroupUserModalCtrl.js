@@ -30,7 +30,7 @@
 
         vm.getUser = function(){
             if(vm.token) {
-                Rehive.admin.users.get({filters: {identifier: vm.user.identifier}}).then(function (res) {
+                Rehive.admin.users.get({filters: {id: vm.user.id}}).then(function (res) {
                     vm.user = res.results[0];
                     $scope.userEmail = vm.user ? vm.user.email : '';
                     $scope.oldGroup = vm.user.groups[0];
@@ -68,7 +68,7 @@
         $scope.deleteUserGroup = function () {
             $scope.loadingGroups = true;
             if(vm.user.groups[0] && vm.user.groups[0].name){
-                Rehive.admin.users.groups.delete(vm.user.identifier,vm.user.groups[0].name).then(function (res) {
+                Rehive.admin.users.groups.delete(vm.user.id,vm.user.groups[0].name).then(function (res) {
                     vm.reassignUser();
                 }, function (error) {
                     $scope.loadingGroups = false;
@@ -83,7 +83,7 @@
 
         vm.reassignUser = function () {
             if(vm.token) {
-                Rehive.admin.users.groups.create(vm.user.identifier, {
+                Rehive.admin.users.groups.create(vm.user.id, {
                     group: $scope.groupForReassigning.name
                 }).then(function (res) {
                     $scope.loadingGroups = false;

@@ -54,7 +54,7 @@
 
         vm.getCompanyCurrencies = function(){
             if(vm.token){
-                $http.get(environmentConfig.API + '/admin/currencies/?enabled=true&page_size=250', {
+                $http.get(environmentConfig.API + '/admin/currencies/?archived=false&page_size=250', {
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': vm.token
@@ -97,7 +97,7 @@
 
         vm.rewardUserFunc = function (user) {
             var rewardObj = {
-                campaign: $scope.rewardUserObj.campaign ? ($scope.rewardUserObj.campaign.identifier ? $scope.rewardUserObj.campaign.identifier : null) : null,
+                campaign: $scope.rewardUserObj.campaign ? ($scope.rewardUserObj.campaign.id ? $scope.rewardUserObj.campaign.id : null) : null,
                 user: user.id,
                 amount: $scope.rewardUserObj.amount || null,
                 currency: $scope.rewardUserObj.currency ? ($scope.rewardUserObj.currency.code ? $scope.rewardUserObj.currency.code : null) : null,
@@ -105,7 +105,7 @@
                 reward_type: $scope.rewardUserObj.type ? $scope.rewardUserObj.type.toLowerCase() : null
             };
 
-            if($scope.rewardUserObj.campaign && $scope.rewardUserObj.campaign.identifier){
+            if($scope.rewardUserObj.campaign && $scope.rewardUserObj.campaign.id){
                 rewardObj.amount = currencyModifiers.convertToCents($scope.rewardUserObj.amount,$scope.rewardUserObj.campaign.currency.divisibility);
             } else {
                 rewardObj.amount = currencyModifiers.convertToCents($scope.rewardUserObj.amount,$scope.rewardUserObj.currency.divisibility);

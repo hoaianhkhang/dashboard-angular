@@ -50,7 +50,7 @@
         $scope.checkTXLMCurrency = function () {
             if(vm.token){
                 $scope.loadingStellarTestnetService = true;
-                $http.get(environmentConfig.API + '/admin/currencies/?enabled=true&page_size=250&code=TXLM', {
+                $http.get(environmentConfig.API + '/admin/currencies/?archived=false&page_size=250&code=TXLM', {
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': vm.token

@@ -50,7 +50,7 @@
         $scope.checkXLMCurrency = function () {
             if(vm.token){
                 $scope.loadingStellarService = true;
-                $http.get(environmentConfig.API + '/admin/currencies/?enabled=true&page_size=250&code=XLM', {
+                $http.get(environmentConfig.API + '/admin/currencies/?archived=false&page_size=250&code=XLM', {
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': vm.token

@@ -45,7 +45,7 @@
             $scope.verifyingEmail = true;
             Rehive.auth.email.resendEmailVerification({
                 email: email.email,
-                company: vm.company.identifier
+                company: vm.company.id
             }).then(function(res){
                 toastr.success('Email verification resent successfully');
                 $uibModalInstance.close();

@@ -39,7 +39,7 @@
                 <tbody>
                     <tr ng-repeat="reward in rewardsList | orderBy: '-created'" class="editable-row user-details-table-hover pointer"
                         ng-click="openRewardRequestModal('app/pages/services/rewardsService/rewardsServiceRewards/rewardsServiceRewardsModal/rewardsServiceRewardsModal.html','md',reward)">
-                        <td class="transactions-list-element" title="{{reward.identifier}}" ng-bind="reward.identifier"></td>
+                        <td class="transactions-list-element" title="{{reward.id}}" ng-bind="reward.id"></td>
                         <td class="transactions-list-element" title="{{userEmailObj.email}}" ng-bind="reward.user" ng-mouseover="getUserObjEmail(reward.user)"></td>
                         <td class="transactions-list-element" title="{{reward.campaign.name || 'None'}}" ng-bind="reward.campaign.name || 'None'"></td>
                         <td class="transactions-list-element" title="{{reward.currency.code || 'None'}}" ng-bind="reward.currency.code || 'None'"></td>
