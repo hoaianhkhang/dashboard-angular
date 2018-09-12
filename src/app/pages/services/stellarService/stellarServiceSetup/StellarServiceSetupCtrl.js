@@ -45,7 +45,7 @@
                 errorHandler.handleErrors(error);
             });
         };
-        //$scope.checkStellarServiceInitialState();
+        $scope.checkStellarServiceInitialState();
 
         $scope.checkXLMCurrency = function () {
             if(vm.token){
