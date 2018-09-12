@@ -5,11 +5,11 @@
         .controller('UserCtrl', UserCtrl);
 
     /** @ngInject */
-    function UserCtrl($scope,environmentConfig,$http,localStorageManagement,$uibModal,_,toastr,
+    function UserCtrl($scope,Rehive,localStorageManagement,$uibModal,_,toastr,
                       $rootScope,errorHandler,$stateParams,$location,$window,$filter) {
 
         var vm = this;
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
         $rootScope.dashboardTitle = 'User | Rehive';
         $rootScope.shouldBeBlue = 'Users';
         vm.uuid = $stateParams.uuid;
@@ -71,29 +71,24 @@
         vm.getUser = function(){
             if(vm.token) {
                 $scope.loadingUser = true;
-                $http.get(environmentConfig.API + '/admin/users/' + vm.uuid + '/', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
+                Rehive.admin.users.get({id: vm.uuid}).then(function (res) {
                     $scope.loadingUser = false;
-                    if (res.status === 200) {
-                        $scope.user = res.data.data;
-                        vm.calculateHowLongUserHasBeenWithCompany($scope.user.created);
-                        $window.sessionStorage.userData = JSON.stringify(res.data.data);
-                    }
-                }).catch(function (error) {
+                    $scope.user = res;
+                    vm.calculateHowLongUserHasBeenWithCompany($scope.user.created);
+                    $window.sessionStorage.userData = JSON.stringify(res);
+                    $scope.$apply();
+                }, function (error) {
                     $scope.loadingUser = false;
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };
         vm.getUser();
 
         $scope.copiedSuccessfully= function () {
-            toastr.success('Identifier copied to clipboard');
+            toastr.success('Id copied to clipboard');
         };
 
         vm.calculateHowLongUserHasBeenWithCompany = function (joinedDate) {
@@ -164,7 +159,7 @@
             userData.created = $filter('date')(userData.created,'MMM d y') + ' ' +$filter('date')(userData.created,'shortTime');
             userData.last_login = $filter('date')(userData.last_login,'MMM d y') + ' ' +$filter('date')(userData.last_login,'shortTime');
 
-            var filteredUserData = _.pick(userData,'identifier','first_name','last_name','username','birth_date','age',
+            var filteredUserData = _.pick(userData,'id','first_name','last_name','username','birth_date','age',
                 'nationality','language','company', 'timezone','verified','created','last_login');
 
             var filteredUserEmails = _.pluck(userEmails,'email');
@@ -203,27 +198,27 @@
 
         };
 
-        $scope.toggleActivateUser = function(active){
+        $scope.toggleActivateUser = function(archived){
             if(vm.token) {
                 $scope.loadingUser = true;
-                $http.patch(environmentConfig.API + '/admin/users/' + vm.uuid + '/', {active: active}, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
+
+                var formData = new FormData();
+
+                formData.append('archived', archived);
+
+                Rehive.admin.users.update(vm.uuid, formData).then(function (res) {
+                    if(archived){
+                        toastr.success('Successfully activated the user');
+                    } else {
+                        toastr.success('Successfully deactivated the user');
                     }
-                }).then(function (res) {
-                    if (res.status === 200) {
-                        if(active){
-                            toastr.success('Successfully activated the user');
-                        } else {
-                            toastr.success('Successfully deactivated the user');
-                        }
-                        vm.getUser();
-                    }
-                }).catch(function (error) {
+                    vm.getUser();
+                    $scope.$apply();
+                }, function (error) {
                     $scope.loadingUser = false;
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };

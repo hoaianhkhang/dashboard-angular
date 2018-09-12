@@ -23,13 +23,17 @@
                     <input type="text" ng-model="newUserParams.last_name" class="form-control"  placeholder="Enter last name">
                 </div>
                 <div class="form-group">
+                    <label>Username</label>
+                    <input type="text" ng-change="fixformat()" ng-model="newUserParams.username" class="form-control"  placeholder="Enter username" >
+                </div>
+                <div class="form-group">
                     <label>Email</label>
                     <input type="email" ng-model="newUserParams.email" class="form-control"  placeholder="Enter email">
                 </div>
                 <div class="form-group">
                     <label>Mobile number</label><br>
                     <input class="form-control" type="text" placeholder="Enter mobile number"
-                           ng-model="newUserParams.mobile_number" ng-intl-tel-input>
+                           ng-model="newUserParams.mobile" ng-intl-tel-input>
                 </div>
                 <div class="form-group">
                     <label>Nationality</label>

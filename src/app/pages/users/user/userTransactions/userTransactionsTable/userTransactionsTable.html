@@ -3,46 +3,51 @@
         <div class="table-filter-heading">
             <button ng-click="showFilters()" ng-class="{'transactions-filter-btn': (filtersCount > 0), 'transactions-btn': (filtersCount == 0)}"
                     class="btn btn-default">Filters
-                <span ng-show="filtersCount > 0">|</span> <span ng-show="filtersCount > 0" class="filter-count">{{filtersCount}}</span></button>
+                <span ng-show="filtersCount > 0">|</span> <span ng-show="filtersCount > 0" class="filter-count">{{filtersCount}}</span>
+            </button>
+            <span  click-outside="closeColumnFiltersBox()">
+                    <button ng-click="showColumnFilters()" class="btn dynamic-columns btn-default">Columns</button>
+                    <div ng-show="showingColumnFilters">
+                        <user-transactions-column-filters></user-transactions-column-filters>
+                    </div>
+                </span>
             <div ng-show="showingFilters">
                 <user-transactions-filters></user-transactions-filters>
             </div>
-            <button ng-csv="getCSVArray" csv-header="getHeader()" filename="{{getFileName}}"
+            <button ng-click="openExportUserTransactionsModal('app/pages/users/user/userTransactions/userTransactionsExportModal/userTransactionsExportModal.html','md')"
                     class="btn btn-default transactions-btn panel-header-transaction-export">Export</button>
-            <button ng-click="getLatestTransactions('applyFilter')" class="btn btn-default transactions-btn panel-header-user-icon">Refresh</button>
+            <button ng-click="getLatestTransactions('applyFilter')" ng-disabled="loadingTransactions"
+                    class="btn btn-default transactions-btn panel-header-user-icon">Refresh</button>
             <button ng-click="goToNewTransactionModal()"
                     class="btn btn-success transactions-btn panel-transaction-newTx-button">New</button>
         </div>
     </div>
     <div class="panel-body">
+        <div ng-show="transactions.length > 0" class="upper-pagination">
+            <p uib-pagination boundary-links="true" items-per-page="pagination.itemsPerPage"  total-items="transactionsData.count" ng-model="pagination.pageNo"
+               max-size="pagination.maxSize" class="pagination-sm pull-right no-margin" force-ellipses="true" ng-change="getLatestTransactions()"
+               previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></p>
+        </div>
         <div ng-show="transactions.length > 0" class="divider">
-            <table class="table custom-table">
-                <tr>
-                    <th>User</th>
-                    <th>Type</th>
-                    <th>Subtype</th>
-                    <th>Currency</th>
-                    <th>Amount</th>
-                    <th>Fee</th>
-                    <th>Status</th>
-                    <th class="align-right">Date</th>
-                </tr>
-                <tr ng-repeat="transaction in transactions | orderBy: orderByFunction" data-toggle="modal"
-                    ng-click="openModal('app/pages/users/user/userTransactions/userTransactionsModal/userTransactionsModal.html', 'md',transaction)"
-                    class="editable-row center pointer user-details-table-hover">
-                    <td><div title="{{transaction.user.email || transaction.user.mobile_number}}" class="transactions-list-element" ng-bind="transaction.user.email || transaction.user.mobile_number | limitTo: '100'"></div></td>
-                    <td><div title="{{transaction.tx_type}}" class="transactions-list-element" ng-bind="transaction.tx_type | capitalizeWord"></div></td>
-                    <td><div title="{{transaction.subtype}}" class="transactions-list-element" ng-bind="transaction.subtype || 'None'"></div></td>
-                    <td><div title="{{transaction.currency.code}}" class="transactions-list-element" ng-bind="transaction.currency.code"></div></td>
-                    <td><div title="{{transaction.amount  | currencyModifiersFilter: transaction.currency.divisibility}}" class="transactions-list-element" ng-bind="transaction.amount  | currencyModifiersFilter: transaction.currency.divisibility"></div></td>
-                    <td><div title="{{transaction.fee | currencyModifiersFilter: transaction.currency.divisibility}}"
-                             class="transactions-list-element" ng-bind="transaction.fee | currencyModifiersFilter: transaction.currency.divisibility"></div></td>
-                    <td><div title="{{transaction.status | capitalizeWord}}" class="transactions-list-element" ng-bind="transaction.status | capitalizeWord"></div></td>
-                    <td class="align-right"><div title="{{transaction.created | date:'mediumDate'}} {{transaction.created | date:'shortTime'}}">
-                        {{transaction.created | date:'mediumDate'}} {{transaction.created | date:'shortTime'}}</div></td>
-                </tr>
-            </table>
-            <div>
+            <div class="draggable-table">
+                <!--draggable on-drag-end="tableColDrag($start, $target)"-->
+                <table class="table custom-table table-striped">
+                    <thead>
+                    <tr>
+                        <!--class="pointer"-->
+                        <th ng-repeat="header in headerColumns" ng-if="header.visible"  ng-bind="header.colName"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="transaction in transactions | orderBy: orderByFunction" data-toggle="modal"
+                        class="editable-row center pointer user-details-table-hover" ng-click="openModal('app/pages/users/user/userTransactions/userTransactionsModal/userTransactionsModal.html','md',transaction)">
+                        <td class="transactions-list-element" ng-repeat="header in headerColumns"
+                            ng-if="header.visible" ng-bind="transaction[header.fieldName]"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div ng-show="transactions.length > 0">
                 <p uib-pagination boundary-links="true" items-per-page="pagination.itemsPerPage"  total-items="transactionsData.count" ng-model="pagination.pageNo"
                    max-size="pagination.maxSize" class="pagination-sm pull-right transaction-history-pagination" force-ellipses="true" ng-change="getLatestTransactions()"
                    previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></p>

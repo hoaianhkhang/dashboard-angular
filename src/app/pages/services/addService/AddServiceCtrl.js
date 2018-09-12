@@ -13,7 +13,26 @@
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
 
-        $scope.getServices = function(){
+        $scope.getActiveServices = function(){
+            $scope.loadingServices = true;
+            $http.get(environmentConfig.API + '/admin/services/?active=true', {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': vm.token
+                }
+            }).then(function (res) {
+                if (res.status === 200) {
+                    $scope.getAllServices(res.data.data.results);
+                }
+            }).catch(function (error) {
+                $scope.loadingServices = false;
+                errorHandler.evaluateErrors(error.data);
+                errorHandler.handleErrors(error);
+            });
+        };
+        $scope.getActiveServices();
+
+        $scope.getAllServices = function(activeServices){
             $scope.loadingServices = true;
             $http.get(environmentConfig.API + '/admin/services/', {
                 headers: {
@@ -23,6 +42,13 @@
             }).then(function (res) {
                 $scope.loadingServices = false;
                 if (res.status === 200) {
+                    activeServices.forEach(function (service) {
+                        res.data.data.results.forEach(function (serv,ind,arr) {
+                            if(service.id == serv.id){
+                                res.data.data.results.splice(ind,1);
+                            }
+                        });
+                    });
                     $scope.selectedService.selected =  res.data.data.results[0];
                     $scope.serviceListOptions =  res.data.data.results;
                 }
@@ -32,7 +58,6 @@
                 errorHandler.handleErrors(error);
             });
         };
-        $scope.getServices();
 
         $scope.addServicePrompt = function(selectedService) {
             $ngConfirm({
@@ -86,7 +111,7 @@
 
         $scope.goToServices = function(){
             $location.path('/services');
-        }
+        };
 
     }
 })();

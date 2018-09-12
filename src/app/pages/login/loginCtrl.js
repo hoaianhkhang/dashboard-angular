@@ -5,10 +5,12 @@
         .controller('LoginCtrl', LoginCtrl);
 
     /** @ngInject */
-    function LoginCtrl($rootScope,$scope,$http,localStorageManagement,environmentConfig,$location,errorHandler,userVerification,$timeout) {
+    function LoginCtrl($rootScope,Rehive,$scope,localStorageManagement,$location,errorHandler) {
 
         var vm = this;
         localStorageManagement.deleteValue('TOKEN');
+        localStorageManagement.deleteValue('token');
+        Rehive.removeToken();
         $rootScope.dashboardTitle = 'Rehive';
         $scope.path = $location.path();
         $scope.showLoginPassword = false;
@@ -19,57 +21,44 @@
 
         $scope.login = function(user, company, password) {
             $rootScope.$pageFinishedLoading = false;
-
-            $http.post(environmentConfig.API + '/auth/login/', {
+            Rehive.auth.login({
                 user: user,
                 company: company,
                 password: password
-            }).then(function (res) {
-                if (res.status === 200) {
-                    localStorageManagement.setValue('TOKEN','Token ' + res.data.data.token);
-                    vm.checkMultiFactorAuthEnabled(res.data.data.token);
+            }).then(function(res){
+                var token = localStorageManagement.getValue('token');
 
-                }
-            }).catch(function (error) {
+                //remove this at the end of integrating sdk
+                localStorageManagement.setValue('TOKEN','Token ' + token);
+                //remove above line
+
+                vm.checkMultiFactorAuthEnabled(token);
+            },function(error){
                 $rootScope.$pageFinishedLoading = true;
-                errorHandler.evaluateErrors(error.data);
+                errorHandler.evaluateErrors(error);
                 errorHandler.handleErrors(error);
+                $scope.$apply();
             });
         };
 
         vm.checkMultiFactorAuthEnabled = function (token) {
             if(token) {
-                $http.get(environmentConfig.API + '/auth/mfa/', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': 'Token ' + token
+                Rehive.auth.mfa.status.get().then(function (res) {
+                    var enabledObj = vm.checkMultiFactorAuthEnabledFromData(res);
+                    if(enabledObj.enabled){
+                        $rootScope.$pageFinishedLoading = true;
+                        $location.path('/authentication/multi-factor/verify/' + enabledObj.key).search({prevUrl: 'login'});
+                        $rootScope.$apply();
+                    } else {
+                        $rootScope.$pageFinishedLoading = true;
+                        $location.path('/currencies');
+                        $rootScope.$apply();
                     }
-                }).then(function (res) {
-                    if (res.status === 200) {
-                        var enabledObj = vm.checkMultiFactorAuthEnabledFromData(res.data.data);
-                        if(enabledObj.enabled){
-                            $rootScope.$pageFinishedLoading = true;
-                            $location.path('/authentication/multi-factor/verify/' + enabledObj.key).search({prevUrl: 'login'});
-                        } else {
-                            $rootScope.$pageFinishedLoading = false;
-                            userVerification.verify(function(err,verified){
-                                if(verified){
-                                    $rootScope.userFullyVerified = true;
-                                    $rootScope.$pageFinishedLoading = true;
-                                    $location.path('/currencies');
-                                } else {
-                                    $rootScope.userFullyVerified = false;
-                                    $rootScope.$pageFinishedLoading = false;
-                                    $location.path('/verification');
-                                }
-                            });
-                        }
-
-                    }
-                }).catch(function (error) {
+                }, function (error) {
                     $rootScope.$pageFinishedLoading = true;
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $rootScope.$apply();
                 });
             }
         };

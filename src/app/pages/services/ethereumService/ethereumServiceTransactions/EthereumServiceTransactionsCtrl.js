@@ -48,7 +48,7 @@
                 selectedTransactionIdOption: null
             },
             userFilter: {
-                selectedUserOption: $state.params.identifier || null
+                selectedUserOption: $state.params.id || null
             }
         };
         $scope.pagination = {
@@ -178,7 +178,7 @@
                 status: $scope.filtersObj.statusFilter ? $scope.applyFiltersObj.statusFilter.selectedStatusOption: null
             };
 
-            return vm.serviceUrl + 'transactions/?' + serializeFiltersService.serializeFilters(searchObj);
+            return vm.serviceUrl + 'admin/transactions/?' + serializeFiltersService.serializeFilters(searchObj);
         };
 
         $scope.getLatestTransactions = function(applyFilter){

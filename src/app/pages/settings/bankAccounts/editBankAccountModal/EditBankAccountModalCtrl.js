@@ -4,13 +4,13 @@
     angular.module('BlurAdmin.pages.settings.bankAccounts')
         .controller('EditBankAccountModalCtrl', EditBankAccountModalCtrl);
 
-    function EditBankAccountModalCtrl($scope,$uibModalInstance,bankAccount,toastr,$http,$timeout,
-                                      environmentConfig,localStorageManagement,errorHandler,_) {
+    function EditBankAccountModalCtrl($scope,$uibModalInstance,bankAccount,toastr,$timeout,
+                                      Rehive,localStorageManagement,errorHandler,_) {
 
         var vm = this;
 
         $scope.bankAccount = bankAccount;
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
         $scope.updatingBankAccount = false;
         $scope.editBankData = {};
         vm.updatedBankAccount = {};
@@ -23,18 +23,16 @@
 
         vm.getCompanyCurrencies = function(){
             if(vm.token){
-                $http.get(environmentConfig.API + '/admin/currencies/?enabled=true&page_size=250', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
-                    if (res.status === 200) {
-                        $scope.currenciesList = res.data.data.results;
-                    }
-                }).catch(function (error) {
-                    errorHandler.evaluateErrors(error.data);
+                Rehive.admin.currencies.get({filters: {
+                    archived: false,
+                    page_size: 250
+                }}).then(function (res) {
+                    $scope.currenciesList = res.results;
+                    $scope.$apply();
+                }, function (error) {
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };
@@ -42,43 +40,33 @@
 
         vm.getBankAccount = function () {
             $scope.updatingBankAccount = true;
-            $http.get(environmentConfig.API + '/admin/bank-accounts/' + bankAccount.id + '/', {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': vm.token
-                }
-            }).then(function (res) {
-                if (res.status === 200) {
-                    $scope.editBankData = res.data.data;
-                    vm.getBankAccountCurrencies();
-                }
-            }).catch(function (error) {
+            Rehive.admin.bankAccounts.get({id: bankAccount.id}).then(function (res) {
+                $scope.editBankData = res;
+                vm.getBankAccountCurrencies();
+                $scope.$apply();
+            }, function (error) {
                 $scope.updatingBankAccount = false;
-                errorHandler.evaluateErrors(error.data);
+                errorHandler.evaluateErrors(error);
                 errorHandler.handleErrors(error);
+                $scope.$apply();
             });
         };
         vm.getBankAccount();
 
         vm.getBankAccountCurrencies = function () {
             $scope.updatingBankAccount = true;
-            $http.get(environmentConfig.API + '/admin/bank-accounts/' + bankAccount.id + '/currencies/', {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': vm.token
-                }
-            }).then(function (res) {
+            Rehive.admin.bankAccounts.currencies.get(bankAccount.id).then(function (res) {
                 $scope.updatingBankAccount = false;
-                if (res.status === 200) {
-                    $scope.editBankAccountCurrencies.list = res.data.data.results;
-                    $scope.originalBankAccountCurrencies = {
-                        list: _.pluck(res.data.data.results,'code')
-                    };
-                }
-            }).catch(function (error) {
+                $scope.editBankAccountCurrencies.list = res.results;
+                $scope.originalBankAccountCurrencies = {
+                    list: _.pluck(res.results,'code')
+                };
+                $scope.$apply();
+            }, function (error) {
                 $scope.updatingBankAccount = false;
-                errorHandler.evaluateErrors(error.data);
+                errorHandler.evaluateErrors(error);
                 errorHandler.handleErrors(error);
+                $scope.$apply();
             });
         };
 
@@ -88,19 +76,14 @@
 
         $scope.updateBankAccount = function () {
             $scope.updatingBankAccount = true;
-            $http.patch(environmentConfig.API + '/admin/bank-accounts/'+ $scope.editBankData.id + '/', vm.updatedBankAccount, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': vm.token
-                }
-            }).then(function (res) {
-                if (res.status === 200) {
-                    $scope.separateCurrencies($scope.editBankAccountCurrencies);
-                }
-            }).catch(function (error) {
+            Rehive.admin.bankAccounts.update($scope.editBankData.id, vm.updatedBankAccount).then(function (res) {
+                $scope.separateCurrencies($scope.editBankAccountCurrencies);
+                $scope.$apply();
+            }, function (error) {
                 $scope.updatingBankAccount = false;
-                errorHandler.evaluateErrors(error.data);
+                errorHandler.evaluateErrors(error);
                 errorHandler.handleErrors(error);
+                $scope.$apply();
             });
         };
 
@@ -157,44 +140,32 @@
 
         $scope.deleteBankAccountCurrency = function(editBankAccountCurrencies,currencyCode){
             $scope.updatingBankAccount = true;
-            $http.delete(environmentConfig.API + '/admin/bank-accounts/' + $scope.editBankData.id + '/currencies/' + currencyCode + '/', {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': vm.token
-                }
-            }).then(function (res) {
-                if (res.status === 200) {
+            Rehive.admin.bankAccounts.currencies.delete($scope.editBankData.id, currencyCode).then(function (res) {
 
-                }
-            }).catch(function (error) {
+            }, function (error) {
                 $scope.updatingBankAccount = false;
-                errorHandler.evaluateErrors(error.data);
+                errorHandler.evaluateErrors(error);
                 errorHandler.handleErrors(error);
             });
         };
 
         $scope.createBankAccountCurrency = function(editBankAccountCurrencies,currencyCode,last){
             $scope.updatingBankAccount = true;
-            $http.post(environmentConfig.API + '/admin/bank-accounts/' + $scope.editBankData.id + '/currencies/',{currency: currencyCode}, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': vm.token
+            Rehive.admin.bankAccounts.currencies.create($scope.editBankData.id,{currency: currencyCode}).then(function (res) {
+                if(last){
+                    $timeout(function () {
+                        vm.updatedBankAccount = {};
+                        $uibModalInstance.close(true);
+                        $scope.updatingBankAccount = false;
+                        toastr.success('Bank account successfully updated');
+                        $scope.$apply();
+                    },800);
                 }
-            }).then(function (res) {
-                if (res.status === 201) {
-                    if(last){
-                        $timeout(function () {
-                            vm.updatedBankAccount = {};
-                            $uibModalInstance.close(true);
-                            $scope.updatingBankAccount = false;
-                            toastr.success('Bank account successfully updated');
-                        },800);
-                    }
-                }
-            }).catch(function (error) {
+            }, function (error) {
                 $scope.updatingBankAccount = false;
-                errorHandler.evaluateErrors(error.data);
+                errorHandler.evaluateErrors(error);
                 errorHandler.handleErrors(error);
+                $scope.$apply();
             });
         };
 

@@ -5,36 +5,41 @@
         .controller('SubtypesCtrl', SubtypesCtrl);
 
     /** @ngInject */
-    function SubtypesCtrl($scope,environmentConfig,$uibModal,$http,localStorageManagement,$location,errorHandler) {
+    function SubtypesCtrl($scope,Rehive,$uibModal,localStorageManagement,$location,errorHandler) {
 
         var vm = this;
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
         $scope.loadingSubtypes = true;
-        vm.location = $location.path();
-        vm.locationArray = vm.location.split('/');
-        $scope.locationIndicator = vm.locationArray[vm.locationArray.length - 1];
 
         vm.getSubtypes = function () {
             if(vm.token) {
                 $scope.loadingSubtypes = true;
-                $http.get(environmentConfig.API + '/admin/subtypes/', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
+                Rehive.admin.subtypes.get().then(function (res) {
                     $scope.loadingSubtypes = false;
-                    if (res.status === 200) {
-                        $scope.subtypes = res.data.data;
-                    }
-                }).catch(function (error) {
+                    $scope.subtypes = res;
+                    $scope.$apply();
+                }, function (error) {
                     $scope.loadingSubtypes = false;
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };
         vm.getSubtypes();
+
+        $scope.restoreSubtype = function (subtype) {
+            $scope.loadingSubtypes = true;
+            Rehive.admin.subtypes.update(subtype.id, {archived: false}).then(function (res) {
+                vm.getSubtypes();
+                $scope.$apply();
+            }, function (error) {
+                $scope.loadingSubtypes = false;
+                errorHandler.evaluateErrors(error);
+                errorHandler.handleErrors(error);
+                $scope.$apply();
+            });
+        };
 
         $scope.openAddSubtypeModal = function (page, size) {
             vm.theModal = $uibModal.open({

@@ -4,38 +4,37 @@
     angular.module('BlurAdmin.pages.groups.overview')
         .controller('AddGroupsModalCtrl', AddGroupsModalCtrl);
 
-    function AddGroupsModalCtrl($scope,$uibModalInstance,localStorageManagement,environmentConfig,errorHandler,$http) {
+
+    function AddGroupsModalCtrl($scope,Rehive,$uibModalInstance,$filter,localStorageManagement,errorHandler) {
 
         var vm = this;
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
         $scope.addingGroups = false;
         $scope.groupsParams = {};
 
         $scope.groupNameToLowercase = function () {
             if($scope.groupsParams.name){
                 $scope.groupsParams.name = $scope.groupsParams.name.toLowerCase();
+                $scope.groupsParams.label = $filter('capitalizeWord')($scope.groupsParams.name);
+            } else {
+                $scope.groupsParams.label = '';
             }
         };
 
         $scope.addGroup = function (groupsParams) {
             if(vm.token) {
                 $scope.addingGroups = true;
-                $http.post(environmentConfig.API + '/admin/groups/', groupsParams, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
+                Rehive.admin.groups.create(groupsParams).then(function (res) {
                     $scope.addingGroups = false;
-                    if (res.status === 201) {
-                        $scope.groupsParams = {};
-                        $uibModalInstance.close(res.data.data);
-                    }
-                }).catch(function (error) {
+                    $scope.groupsParams = {};
+                    $uibModalInstance.close(res);
+                    $scope.$apply();
+                }, function (error) {
                     $scope.groupsParams = {};
                     $scope.addingGroups = false;
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };

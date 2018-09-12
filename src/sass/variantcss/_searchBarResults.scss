@@ -112,3 +112,42 @@
     }
   }
 }
+
+.search-bar-main-below-1200{
+  display: none;
+}
+
+@media (max-width: 1200px) {
+  .search-bar-main-below-1200{
+    width: 50vw;
+    position: absolute;
+    top: 50%;
+    left: 40%;
+    transform: translate(-50%, -50%);
+    display: inline-block;
+    & .page-top-search-below-1200{
+      width: 50vw;
+      height: 40px;
+      border-radius: 5px;
+      background-color: #5299C3;
+      color: white;
+      border: none;
+      padding: 15px;
+      &::placeholder{
+        color: white;
+        font-weight: 100;
+      }
+      &:focus{
+        border: none;
+        outline: none;
+      }
+      &:active{
+        border: none;
+      }
+    }
+    & .search-bar-div-below-1200{
+      position: absolute;
+      top: 48px;
+    }
+  }
+}

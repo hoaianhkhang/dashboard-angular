@@ -5,11 +5,11 @@
         .controller('AddWebhookModalCtrl', AddWebhookModalCtrl);
 
     /** @ngInject */
-    function AddWebhookModalCtrl($scope,environmentConfig,$uibModalInstance,toastr,webhookUrl,
-                                 secret,$http,localStorageManagement,errorHandler) {
+    function AddWebhookModalCtrl($scope,$uibModalInstance,toastr,webhookUrl,
+                                 Rehive,secret,localStorageManagement,errorHandler) {
 
         var vm = this;
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
         $scope.addingWebhook = false;
 
         $scope.webhooksParams = {
@@ -54,21 +54,15 @@
             event = event.replace(/ /g, '_');
             webhooksParams.event = vm.eventOptionsObj[event];
 
-            $http.post(environmentConfig.API + '/admin/webhooks/', webhooksParams, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': vm.token
-                }
-            }).then(function (res) {
+            Rehive.admin.webhooks.create(webhooksParams).then(function (res) {
                 $scope.addingWebhook = false;
-                if (res.status === 201) {
-                    toastr.success('You have successfully added the webhook');
-                    $uibModalInstance.close(true);
-                }
-            }).catch(function (error) {
+                toastr.success('You have successfully added the webhook');
+                $uibModalInstance.close(true);
+                $scope.$apply();
+            }, function (error) {
                 $scope.webhooksParams = {event: 'User Create'};
                 $scope.addingWebhook = false;
-                errorHandler.evaluateErrors(error.data);
+                errorHandler.evaluateErrors(error);
                 errorHandler.handleErrors(error);
             });
         };

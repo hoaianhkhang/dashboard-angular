@@ -5,19 +5,13 @@
         .service('sharedResources', sharedResources);
 
     /** @ngInject */
-    function sharedResources($http,environmentConfig,_,localStorageManagement) {
+    function sharedResources(Rehive) {
 
         return {
             getSubtypes : function () {
-                var token = localStorageManagement.getValue('TOKEN');
-                return $http.get(environmentConfig.API + '/admin/subtypes/', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': token
-                    }
-                });
+                return Rehive.admin.subtypes.get();
             }
-        }
+        };
     }
 
 })();

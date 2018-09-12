@@ -5,12 +5,12 @@
         .controller('GroupManagementTiersCtrl', GroupManagementTiersCtrl);
 
     /** @ngInject */
-    function GroupManagementTiersCtrl($scope,$http,environmentConfig,localStorageManagement,
+    function GroupManagementTiersCtrl($scope,Rehive,localStorageManagement,
                                           $stateParams,$location,errorHandler) {
 
         var vm = this;
-        vm.token = localStorageManagement.getValue('TOKEN');
-        vm.groupName = $stateParams.groupName;
+        vm.token = localStorageManagement.getValue('token');
+        $scope.groupName = $stateParams.groupName;
         vm.updatedGroup = {};
         $scope.loadingGroup = true;
         vm.location = $location.path();
@@ -25,7 +25,7 @@
 
         $scope.goToGroupManagementTiersSettings = function (path) {
             $scope.subMenuLocation = path;
-            $location.path('/groups/' + vm.groupName + '/tiers/' + path);
+            $location.path('/groups/' + $scope.groupName + '/tiers/' + path);
         };
 
         if($scope.subMenuLocation != 'limits' && $scope.subMenuLocation != 'fees' && $scope.subMenuLocation != 'settings'
@@ -36,50 +36,19 @@
         $scope.getGroup = function () {
             if(vm.token) {
                 $scope.loadingGroup = true;
-
-                $http.get(environmentConfig.API + '/admin/groups/' + vm.groupName + '/', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
-                    if (res.status === 200) {
-                        $scope.editGroupObj = res.data.data;
-                        $scope.editGroupObj.prevName = res.data.data.name;
-                        vm.getGroupUsers($scope.editGroupObj);
-                    }
-                }).catch(function (error) {
-
-                    errorHandler.evaluateErrors(error.data);
+                Rehive.admin.groups.get({name: $scope.groupName}).then(function (res) {
+                    $scope.editGroupObj = res;
+                    $scope.loadingGroup = false;
+                    $scope.$apply();
+                }, function (error) {
+                    $scope.loadingGroup = false;
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };
         $scope.getGroup();
-
-        vm.getGroupUsers = function (group) {
-            if(vm.token) {
-                $scope.loadingGroup = true;
-                $http.get(environmentConfig.API + '/admin/users/overview/?group=' + group.name, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
-                    if (res.status === 200) {
-                        $scope.totalUsersCount = res.data.data.total;
-                        $scope.activeUsersCount = res.data.data.active;
-                        $scope.loadingGroup = false;
-                    }
-                }).catch(function (error) {
-                    $scope.loadingGroup = false;
-                    errorHandler.evaluateErrors(error.data);
-                    errorHandler.handleErrors(error);
-                });
-            }
-        };
-
-
 
     }
 })();

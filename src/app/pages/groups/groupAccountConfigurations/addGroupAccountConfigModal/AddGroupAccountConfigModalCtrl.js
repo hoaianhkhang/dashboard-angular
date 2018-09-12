@@ -4,11 +4,11 @@
     angular.module('BlurAdmin.pages.groups.groupAccountConfigurations')
         .controller('AddGroupAccountConfigModalCtrl', AddGroupAccountConfigModalCtrl);
 
-    function AddGroupAccountConfigModalCtrl($scope,$uibModalInstance,toastr,$http,$stateParams,
-                                    environmentConfig,localStorageManagement,errorHandler,$timeout) {
+    function AddGroupAccountConfigModalCtrl($scope,$uibModalInstance,toastr,$stateParams,$filter,
+                                            Rehive,localStorageManagement,errorHandler,$timeout) {
 
         var vm = this;
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
         vm.groupName = $stateParams.groupName;
         $scope.loadingGroupAccountConfigurations = false;
         $scope.groupAccountConfigurationParams = {};
@@ -19,18 +19,16 @@
 
         vm.getCompanyCurrencies = function(){
             if(vm.token){
-                $http.get(environmentConfig.API + '/admin/currencies/?enabled=true&page_size=250', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
-                    if (res.status === 200) {
-                        $scope.currenciesList = res.data.data.results;
-                    }
-                }).catch(function (error) {
-                    errorHandler.evaluateErrors(error.data);
+                Rehive.admin.currencies.get({filters: {
+                    archived: false,
+                    page_size: 250
+                }}).then(function (res) {
+                    $scope.currenciesList = res.results;
+                    $scope.$apply();
+                }, function (error) {
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };
@@ -39,26 +37,23 @@
         $scope.groupAccountConfigurationNameToLowercase = function () {
             if($scope.groupAccountConfigurationParams.name){
                 $scope.groupAccountConfigurationParams.name = $scope.groupAccountConfigurationParams.name.toLowerCase();
+                $scope.groupAccountConfigurationParams.label = $filter('capitalizeWord')($scope.groupAccountConfigurationParams.name);
             }
         };
 
         $scope.addGroupAccountConfigurations = function(groupAccountConfigurationParams){
             if(vm.token) {
                 $scope.loadingGroupAccountConfigurations = true;
-                $http.post(environmentConfig.API + '/admin/groups/' + vm.groupName + '/account-configurations/',groupAccountConfigurationParams,{
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
-                    if (res.status === 201) {
-                        $scope.groupAccountConfigurationParams = {};
-                        $scope.addGroupAccountConfigurationCurrency(res.data.data);
-                    }
-                }).catch(function (error) {
+                Rehive.admin.groups.accountConfigurations.create(vm.groupName,groupAccountConfigurationParams).then(function (res)
+                {
+                    $scope.groupAccountConfigurationParams = {};
+                    $scope.addGroupAccountConfigurationCurrency(res);
+                    $scope.$apply();
+                }, function (error) {
                     $scope.loadingGroupAccountConfigurations = false;
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };
@@ -66,28 +61,24 @@
         $scope.addGroupAccountConfigurationCurrency = function (account) {
             $scope.loadingGroupAccountConfigurations = true;
             $scope.newAccountConfigurationCurrencies.list.forEach(function (element,index,array) {
-                $http.post(environmentConfig.API + '/admin/groups/' + vm.groupName + '/account-configurations/' + account.name + '/currencies/',{currency: element.code}, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
+                Rehive.admin.groups.accountConfigurations.currencies.create(vm.groupName,account.name,{currency: element.code}).then(function (res)
+                {
+                    if (index === array.length - 1){
+                        $timeout(function () {
+                            $scope.newAccountConfigurationCurrencies = {
+                                list: []
+                            };
+                            $scope.loadingGroupAccountConfigurations = false;
+                            toastr.success('Account configuration successfully added');
+                            $uibModalInstance.close(res);
+                        },100);
+                        $scope.$apply();
                     }
-                }).then(function (res) {
-                    if (res.status === 201) {
-                        if (index === array.length - 1){
-                            $timeout(function () {
-                                $scope.newAccountConfigurationCurrencies = {
-                                    list: []
-                                };
-                                $scope.loadingGroupAccountConfigurations = false;
-                                toastr.success('Account configuration successfully added');
-                                $uibModalInstance.close(res.data);
-                            },100);
-                        }
-                    }
-                }).catch(function (error) {
+                }, function (error) {
                     $scope.loadingGroupAccountConfigurations = false;
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             });
         };

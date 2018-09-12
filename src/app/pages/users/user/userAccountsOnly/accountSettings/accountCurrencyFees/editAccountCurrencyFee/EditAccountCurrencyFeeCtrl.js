@@ -5,10 +5,10 @@
         .controller('EditAccountCurrencyFeeCtrl', EditAccountCurrencyFeeCtrl);
 
     function EditAccountCurrencyFeeCtrl($scope,$uibModalInstance,currencyCode,reference,accountCurrencyFee,sharedResources,$window,
-                                          toastr,$http,environmentConfig,localStorageManagement,currencyModifiers,errorHandler) {
+                                        _,Rehive,toastr,localStorageManagement,currencyModifiers,errorHandler) {
 
         var vm = this;
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
         vm.currencyCode = currencyCode;
         vm.reference = reference;
         vm.accountCurrencyFee = accountCurrencyFee;
@@ -33,34 +33,30 @@
                 params.subtype = '';
             }
             sharedResources.getSubtypes().then(function (res) {
-                res.data.data = res.data.data.filter(function (element) {
+                res = res.filter(function (element) {
                     return element.tx_type == (params.tx_type).toLowerCase();
                 });
-                $scope.subtypeOptions = _.pluck(res.data.data,'name');
+                $scope.subtypeOptions = _.pluck(res,'name');
                 $scope.subtypeOptions.unshift('');
                 $scope.loadingSubtypes = false;
+                $scope.$apply();
             });
         };
 
         vm.getAccountCurrencyFee = function (accountCurrencyFee) {
             $scope.editingAccountCurrencyFees = true;
-            $http.get(environmentConfig.API + '/admin/accounts/' + vm.reference + '/currencies/' + vm.currencyCode + '/fees/' + accountCurrencyFee.id +'/', {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': vm.token
-                }
-            }).then(function (res) {
+            Rehive.admin.accounts.currencies.fees.get(vm.reference,vm.currencyCode, {id: accountCurrencyFee.id}).then(function (res) {
                 $scope.editingAccountCurrencyFees = false;
-                if (res.status === 200) {
-                    $scope.editAccountCurrencyFee = res.data.data;
-                    $scope.editAccountCurrencyFee.value = currencyModifiers.convertFromCents($scope.editAccountCurrencyFee.value,$scope.currencyObj.divisibility);
-                    $scope.editAccountCurrencyFee.tx_type == 'credit' ? $scope.editAccountCurrencyFee.tx_type = 'Credit' : $scope.editAccountCurrencyFee.tx_type = 'Debit';
-                    $scope.getSubtypesArray($scope.editAccountCurrencyFee,'editing');
-                }
-            }).catch(function (error) {
+                $scope.editAccountCurrencyFee = res;
+                $scope.editAccountCurrencyFee.value = currencyModifiers.convertFromCents($scope.editAccountCurrencyFee.value,$scope.currencyObj.divisibility);
+                $scope.editAccountCurrencyFee.tx_type == 'credit' ? $scope.editAccountCurrencyFee.tx_type = 'Credit' : $scope.editAccountCurrencyFee.tx_type = 'Debit';
+                $scope.getSubtypesArray($scope.editAccountCurrencyFee,'editing');
+                $scope.$apply();
+            }, function (error) {
                 $scope.editingAccountCurrencyFees = false;
-                errorHandler.evaluateErrors(error.data);
+                errorHandler.evaluateErrors(error);
                 errorHandler.handleErrors(error);
+                $scope.$apply();
             });
         };
         vm.getAccountCurrencyFee(vm.accountCurrencyFee);
@@ -99,21 +95,16 @@
                 $scope.editingAccountCurrencyFees = true;
                 vm.updatedAccountCurrencyFee.tx_type ? vm.updatedAccountCurrencyFee.tx_type = vm.updatedAccountCurrencyFee.tx_type.toLowerCase() : '';
 
-                $http.patch(environmentConfig.API + '/admin/accounts/' + vm.reference + '/currencies/' + vm.currencyCode + '/fees/' + $scope.editAccountCurrencyFee.id +'/',vm.updatedAccountCurrencyFee,{
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
+                Rehive.admin.accounts.currencies.fees.update(vm.reference,vm.currencyCode,$scope.editAccountCurrencyFee.id,vm.updatedAccountCurrencyFee).then(function (res) {
                     $scope.editingAccountCurrencyFees = false;
-                    if (res.status === 200) {
-                        toastr.success('Fee updated successfully');
-                        $uibModalInstance.close(true);
-                    }
-                }).catch(function (error) {
+                    toastr.success('Fee updated successfully');
+                    $uibModalInstance.close(true);
+                    $scope.$apply();
+                }, function (error) {
                     $scope.editingAccountCurrencyFees = false;
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };

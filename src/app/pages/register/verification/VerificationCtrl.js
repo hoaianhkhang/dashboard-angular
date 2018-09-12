@@ -5,71 +5,53 @@
         .controller('VerificationCtrl', VerificationCtrl);
 
     /** @ngInject */
-    function VerificationCtrl($rootScope,$scope,$http,toastr,environmentConfig,
-                              localStorageManagement,$location,errorHandler,userVerification,_) {
+    function VerificationCtrl($rootScope,Rehive,$scope,toastr,localStorageManagement,
+                              $location,errorHandler,userVerification) {
 
         var vm = this;
-        vm.user = {};
         vm.token = localStorageManagement.getValue('TOKEN');
+        $scope.user = {};
         $scope.verifyingEmail = false;
         $rootScope.$pageFinishedLoading = false;
 
         vm.checkIfUserVerified = function(){
             userVerification.verify(function(err,verified){
                 if(verified){
-                    $rootScope.userFullyVerified = true;
                     $location.path('/welcome_to_rehive');
                 } else {
-                    $rootScope.$pageFinishedLoading = true;
+                    vm.getUserInfo();
                 }
             });
         };
         vm.checkIfUserVerified();
 
         $scope.verifyUser = function(){
-            $scope.verifyingEmail = true;
-            userVerification.verify(function(err,verified){
-                if(verified){
-                    $scope.verifyingEmail = false;
-                    $rootScope.userFullyVerified = true;
-                    $location.path('/welcome_to_rehive');
-                } else {
-                    $scope.verifyingEmail = false;
-                    toastr.error('Please verify your account');
-                }
-            });
+            $location.path('/welcome_to_rehive');
         };
 
         vm.getUserInfo = function(){
-            $http.get(environmentConfig.API + '/user/', {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': vm.token
-                }
-            }).then(function (res) {
-                if (res.status === 200) {
-                    vm.user = res.data.data;
-                }
-            }).catch(function (error) {
-                errorHandler.evaluateErrors(error.data);
+            Rehive.user.get().then(function(res){
+                $scope.user = res;
+                $rootScope.$pageFinishedLoading = true;
+                $rootScope.$apply();
+            },function(error){
+                errorHandler.evaluateErrors(error);
                 errorHandler.handleErrors(error);
+                $rootScope.$apply();
             });
         };
-        vm.getUserInfo();
 
         $scope.resendEmail = function(){
-            $http.post(environmentConfig.API + '/auth/email/verify/resend/',{email: vm.user.email,company: vm.user.company}, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': vm.token
-                }
-            }).then(function (res) {
-                if (res.status === 200) {
-                    toastr.success('Verification email has been re-sent');
-                }
-            }).catch(function (error) {
-                errorHandler.evaluateErrors(error.data);
+            Rehive.auth.email.resendEmailVerification({
+                email: $scope.user.email,
+                company: $scope.user.company
+            }).then(function(res){
+                toastr.success('Verification email has been re-sent');
+                $scope.$apply();
+            },function(error){
+                errorHandler.evaluateErrors(error);
                 errorHandler.handleErrors(error);
+                $scope.$apply();
             });
         };
 
@@ -78,8 +60,9 @@
             $rootScope.gotToken = false;
             $rootScope.securityConfigured = true;
             $rootScope.pageTopObj = {};
-            $rootScope.userFullyVerified = false;
             localStorageManagement.deleteValue('TOKEN');
+            localStorageManagement.deleteValue('token');
+            Rehive.removeToken();
             $location.path('/login');
         };
 

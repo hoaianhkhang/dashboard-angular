@@ -173,7 +173,7 @@
         $scope.orderByOptionsColdstorage = ['Latest','Largest','Smallest'];
 
         sharedResources.getSubtypes().then(function (res) {
-            $scope.subtypeOptionsColdstorage = _.pluck(res.data.data,'name');
+            $scope.subtypeOptionsColdstorage = _.pluck(res,'name');
             $scope.subtypeOptionsColdstorage.unshift('');
         });
 
@@ -366,7 +366,7 @@
 
         $scope.getLatestColdstorageTransactions = function(applyFilter){
             if(vm.token) {
-
+                $scope.loadingColdstorage = true;
                 $scope.showingColdstorageFilters = false;
 
                 $scope.transactionsColdstorageStateMessage = '';
@@ -388,7 +388,7 @@
                         'Authorization': vm.token
                     }
                 }).then(function (res) {
-                    $scope.loadingColdstorage =  false;
+                    $scope.loadingColdstorage = false;
                     if (res.status === 200) {
                         $scope.transactionsColdstorageData = res.data.data;
                         $scope.transactionsColdstorage = $scope.transactionsColdstorageData.results;
@@ -416,7 +416,7 @@
             $location.path('/transactions/history').search({
                 txType: 'credit',
                 currencyCode: 'XBT',
-                emailUser: $scope.coldstorageObj.user_account_identifier,
+                userIdentity: $scope.coldstorageObj.user_account_identifier,
                 accountUser: $scope.coldstorageObj.rehive_account_reference
             });
         };
@@ -425,7 +425,7 @@
             $location.path('/transactions/history').search({
                 txType: 'debit',
                 currencyCode: 'XBT',
-                emailUser: $scope.coldstorageObj.user_account_identifier,
+                userIdentity: $scope.coldstorageObj.user_account_identifier,
                 accountUser: $scope.coldstorageObj.rehive_account_reference
             });
         };

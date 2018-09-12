@@ -1,3 +1,53 @@
+.stellar-testnet-hotwallet-funding-spinner img{
+  display: inline-block!important;
+  width: 34px;
+  height: 34px;
+  margin-left: 4px!important;
+}
+
+.short-dropdown{
+  width: 200px!important;
+}
+
+.short-input-text{
+  width: 400px!important;
+}
+
+.stellar-hotwallet-qr-code{
+  display: block;
+  margin: auto;
+  position: relative;
+  top: -20px;
+  width: 225px;
+  height: 225px;
+}
+
+.disable-btn{
+  background-color: #A8A8A8;
+  border-color: #A8A8A8;
+}
+
+.stellar-public-key-help-message{
+  color: #03DBBB;
+}
+
+.stellar-hotwallet-address{
+  word-wrap: break-word;
+}
+
+.ul-no-dot{
+  padding-left: 0;
+  list-style: none;
+  & > li {
+    margin-bottom: 10px;
+    line-height: 20px;
+  }
+}
+
+.stellar-setup-ul{
+  padding-left: 18px!important;
+};
+
 .stellar-assets-table > tbody > tr > td{
   line-height: 14px!important;
   padding: 12px 6px 0 6px!important;

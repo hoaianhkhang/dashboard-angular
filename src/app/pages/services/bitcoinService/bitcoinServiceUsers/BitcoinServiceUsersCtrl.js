@@ -24,14 +24,14 @@
         };
 
         $scope.filtersObj = {
-            identifierFilter: false,
+            idFilter: false,
             emailFilter: false,
             addressFilter: false,
             pageSizeFilter: false
         };
         $scope.applyFiltersObj = {
-            identifierFilter: {
-                selectedIdentifier: ''
+            idFilter: {
+                selectedId: ''
             },
             emailFilter: {
                 selectedEmail: ''
@@ -49,7 +49,7 @@
 
         $scope.clearFilters = function () {
             $scope.filtersObj = {
-                identifierFilter: false,
+                idFilter: false,
                 emailFilter: false,
                 addressFilter: false,
                 pageSizeFilter: false
@@ -77,7 +77,7 @@
             var searchObj = {
                 page: $scope.usersPagination.pageNo,
                 page_size: $scope.filtersObj.pageSizeFilter? $scope.usersPagination.itemsPerPage : 25,
-                identifier: $scope.filtersObj.identifierFilter ? ($scope.applyFiltersObj.identifierFilter.selectedIdentifier ?  $scope.applyFiltersObj.identifierFilter.selectedIdentifier : null): null,
+                id: $scope.filtersObj.idFilter ? ($scope.applyFiltersObj.idFilter.selectedId ?  $scope.applyFiltersObj.idFilter.selectedId : null): null,
                 email: $scope.filtersObj.emailFilter ?($scope.applyFiltersObj.emailFilter.selectedEmail ?  encodeURIComponent($scope.applyFiltersObj.emailFilter.selectedEmail) : null): null,
                 address: $scope.filtersObj.addressFilter ? ($scope.applyFiltersObj.addressFilter.selectedAddress ?  $scope.applyFiltersObj.addressFilter.selectedAddress: null) : null
             };

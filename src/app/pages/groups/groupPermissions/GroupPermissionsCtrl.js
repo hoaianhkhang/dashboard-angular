@@ -5,11 +5,12 @@
         .controller('GroupPermissionsCtrl', GroupPermissionsCtrl);
 
     /** @ngInject */
-    function GroupPermissionsCtrl($scope,$stateParams,environmentConfig,$http,localStorageManagement,errorHandler,toastr,$location,$timeout) {
+    function GroupPermissionsCtrl($scope,$stateParams,Rehive,localStorageManagement,
+                                  errorHandler,toastr,$location,$timeout) {
 
         var vm = this;
-        vm.token = localStorageManagement.getValue('TOKEN');
-        vm.groupName = $stateParams.groupName;
+        vm.token = localStorageManagement.getValue('token');
+        $scope.groupName = $stateParams.groupName;
         vm.checkedLevels = [];
         $scope.loadingPermissions = true;
         $scope.totalPermissionsObj = {};
@@ -60,48 +61,20 @@
         $scope.getGroup = function () {
             if(vm.token) {
                 $scope.loadingGroup = true;
-
-                $http.get(environmentConfig.API + '/admin/groups/' + vm.groupName + '/', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
-                    if (res.status === 200) {
-                        $scope.editGroupObj = res.data.data;
-                        $scope.editGroupObj.prevName = res.data.data.name;
-                        vm.getGroupUsers($scope.editGroupObj);
-                    }
-                }).catch(function (error) {
-
-                    errorHandler.evaluateErrors(error.data);
+                Rehive.admin.groups.get({name: $scope.groupName}).then(function (res) {
+                    $scope.editGroupObj = res;
+                    $scope.editGroupObj.prevName = res.name;
+                    $scope.loadingGroup = false;
+                    $scope.$apply();
+                }, function (error) {
+                    $scope.loadingGroup = false;
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };
         $scope.getGroup();
-
-        vm.getGroupUsers = function (group) {
-            if(vm.token) {
-                $scope.loadingGroup = true;
-                $http.get(environmentConfig.API + '/admin/users/overview/?group=' + group.name, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
-                    if (res.status === 200) {
-                        $scope.totalUsersCount = res.data.data.total;
-                        $scope.activeUsersCount = res.data.data.active;
-                        $scope.loadingGroup = false;
-                    }
-                }).catch(function (error) {
-                    $scope.loadingGroup = false;
-                    errorHandler.evaluateErrors(error.data);
-                    errorHandler.handleErrors(error);
-                });
-            }
-        };
 
         vm.initializePermissions = function () {
             $scope.totalPermissionsObj.accountPermissionsOptions = {
@@ -200,20 +173,15 @@
         vm.getPermissions = function () {
             if(vm.token) {
                 $scope.loadingPermissions = true;
-                $http.get(environmentConfig.API + '/admin/groups/' + vm.groupName + '/permissions/?page_size=200', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
+                Rehive.admin.groups.permissions.get($scope.groupName,{filters: {page_size: 200}}).then(function (res) {
                     $scope.loadingPermissions = false;
-                    if (res.status === 200) {
-                        vm.checkforAllowedPermissions(res.data.data.results);
-                    }
-                }).catch(function (error) {
+                    vm.checkforAllowedPermissions(res.results);
+                    $scope.$apply();
+                }, function (error) {
                     $scope.loadingPermissions = false;
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };
@@ -454,47 +422,35 @@
         vm.addPermissions = function (newPermissionObj,last) {
             if(vm.token) {
                 $scope.loadingPermissions = true;
-                $http.post(environmentConfig.API + '/admin/groups/' + vm.groupName + '/permissions/', newPermissionObj, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
+                Rehive.admin.groups.permissions.create($scope.groupName,newPermissionObj).then(function (res) {
+                    if(last){
+                        vm.finishSavingPermissionsProcess();
                     }
-                }).then(function (res) {
-                    if (res.status === 201) {
-                        if(last){
-                            vm.finishSavingPermissionsProcess();
-                        }
-                    }
-                }).catch(function (error) {
+                }, function (error) {
                     vm.checkedLevels = [];
                     $scope.permissionParams = {
                         type: 'Account'
                     };
                     $scope.loadingPermissions = false;
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };
 
         vm.deletePermission = function (permission,last) {
             if(vm.token) {
-                $scope.deletingPermission = true;
-                $http.delete(environmentConfig.API + '/admin/groups/' + vm.groupName + '/permissions/' + permission.id + '/', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
+                $scope.loadingPermissions = true;
+                Rehive.admin.groups.permissions.delete($scope.groupName,permission.id).then(function (res) {
+                    if(last){
+                        vm.finishSavingPermissionsProcess();
                     }
-                }).then(function (res) {
-                    if (res.status === 200) {
-                        if(last){
-                            vm.finishSavingPermissionsProcess();
-                        }
-                    }
-                }).catch(function (error) {
-                    $scope.deletingPermission = false;
-                    errorHandler.evaluateErrors(error.data);
+                }, function (error) {
+                    $scope.loadingPermissions = false;
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };

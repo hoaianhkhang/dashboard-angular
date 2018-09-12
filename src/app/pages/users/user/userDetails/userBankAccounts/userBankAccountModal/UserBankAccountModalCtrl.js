@@ -4,31 +4,26 @@
     angular.module('BlurAdmin.pages.users.user')
         .controller('UserBankAccountModalCtrl', UserBankAccountModalCtrl);
 
-    function UserBankAccountModalCtrl($scope,$uibModalInstance,bankAccount,toastr,$http,environmentConfig,localStorageManagement,errorHandler) {
+    function UserBankAccountModalCtrl($scope,Rehive,$uibModalInstance,bankAccount,toastr,localStorageManagement,errorHandler) {
 
         var vm = this;
 
         $scope.userBankAccount = bankAccount;
         $scope.deletingUserBankAccount = false;
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
 
         $scope.deleteUserBankAccount = function () {
             $scope.deletingUserBankAccount = true;
-            $http.delete(environmentConfig.API + '/admin/users/bank-accounts/' + $scope.userBankAccount.id + '/', {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': vm.token
-                }
-            }).then(function (res) {
+            Rehive.admin.users.bankAccounts.delete($scope.userBankAccount.id).then(function (res) {
                 $scope.deletingUserBankAccount = false;
-                if (res.status === 200) {
-                    toastr.success('Bank account successfully deleted');
-                    $uibModalInstance.close($scope.userBankAccount);
-                }
-            }).catch(function (error) {
+                toastr.success('Bank account successfully deleted');
+                $uibModalInstance.close($scope.userBankAccount);
+                $scope.$apply();
+            }, function (error) {
                 $scope.deletingUserBankAccount = false;
-                errorHandler.evaluateErrors(error.data);
+                errorHandler.evaluateErrors(error);
                 errorHandler.handleErrors(error);
+                $scope.$apply();
             });
         };
 

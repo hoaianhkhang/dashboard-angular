@@ -7,7 +7,9 @@
           <div ng-hide="gotCompanyName">
               <div class="row form-group">
                     <div class="col-sm-12">
-                        <input type="text" ng-model="company" class="form-control" id="inputCompany1" placeholder="Company ID" auto-focus="!gotCompanyName">
+                        <label><span class="pull-left login-labels">Company id</span></label>
+                        <input type="text" ng-model="company" class="form-control" ng-change="company = company.toLowerCase()"
+                               id="inputCompany1" placeholder="e.g. blue_coffee" auto-focus="!gotCompanyName">
                     </div>
               </div>
               <div class="row form-group">
@@ -24,12 +26,14 @@
           <div ng-keydown="($event.keyCode === 13) && login(user,company,password)" ng-show="gotCompanyName">
             <div class="row form-group">
                 <div class="col-sm-12">
-                    <input type="text" ng-model="user" class="form-control" id="inputEmail1" placeholder="Email or phone" auto-focus="gotCompanyName">
+                    <label><span class="pull-left login-labels">Email</span></label>
+                    <input type="text" ng-model="user" class="form-control" id="inputEmail1" placeholder="e.g. jane@rehive.com" auto-focus="gotCompanyName">
                 </div>
             </div>
             <div class="row form-group">
                 <div class="col-sm-12">
-                    <input ng-attr-type="{{ showLoginPassword ? 'text' : 'password' }}" ng-model="password" class="form-control" id="inputPassword1" placeholder="Password">
+                    <label><span class="pull-left login-labels">Password</span></label>
+                    <input ng-attr-type="{{ showLoginPassword ? 'text' : 'password' }}" ng-model="password" class="form-control" id="inputPassword1" placeholder="Please enter your password">
                     <i ng-click="toggleLoginPassword()" ng-show="showLoginPassword" class="fa fa-eye-slash pull-right register-password-icon pointer"></i>
                     <i ng-click="toggleLoginPassword()" ng-hide="showLoginPassword" class="fa fa-eye pull-right register-password-icon-show pointer"></i>
                 </div>

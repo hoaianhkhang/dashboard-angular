@@ -14,14 +14,16 @@
                     <th></th>
                 </tr>
                 <tr ng-repeat="tier in tiersList | orderBy: 'created'">
-                    <td class="table-row-center transactions-list-element rehive-table-row-first-child" ng-bind="tier.level"></td>
-                    <td class="table-row-center transactions-list-element" title="{{tier.name}}" ng-bind="tier.name"></td>
-                    <td class="table-row-center transactions-list-element" title="{{tier.description}}" ng-bind="tier.description || 'None'"></td>
+                    <td ng-class="{'archived-text': tier.archived}" class="table-row-center transactions-list-element rehive-table-row-first-child" ng-bind="tier.level"></td>
+                    <td ng-class="{'archived-text': tier.archived}" class="table-row-center transactions-list-element" title="{{tier.name}}" ng-bind="tier.name"></td>
+                    <td ng-class="{'archived-text': tier.archived}" class="table-row-center transactions-list-element" title="{{tier.description}}" ng-bind="tier.description || 'None'"></td>
                     <td class="rehive-table-row-last-child pull-right">
-                        <a ng-click="deleteGroupTierConfirm(tier)"
+                        <a ng-click="openDeleteTierModal('app/pages/groups/groupManagementTiers/groupTiers/deleteGroupTierModal/deleteGroupTierModal.html','md',tier)"
                            class="pull-right pointer ">Delete</a>
                         <a ng-click="openEditTierModal('app/pages/groups/groupManagementTiers/groupTiers/editGroupTierModal/editGroupTierModal.html','md',tier)"
                            class="pull-right pointer user-address-edit margin-right-30">Edit</a>
+                        <a ng-show="tier.archived" ng-click="restoreTier(tier)"
+                           class="pull-right pointer user-address-edit margin-right-30">Restore</a>
                     </td>
                 </tr>
             </table>

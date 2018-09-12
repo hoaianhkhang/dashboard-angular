@@ -1,3 +1,4 @@
+<h1 class="group-details-page-title">{{groupName}}</h1>
 <div class="row">
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 groups-breadcrumb">
         <span ng-click="goToGroupView('groups/overview')" class="pointer">Groups</span>
@@ -9,32 +10,32 @@
         <span ng-show="subMenuLocation == 'settings'"><strong>&nbsp;/&nbsp; Tier settings</strong></span>
     </div>
 </div>
-<h1 class="group-details-page-title">Group tiers</h1>
-<div class="user-details-view" ng-hide="loadingGroup">
-    <div class="row">
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 user-details-first-row divider-30">
-            <div class="group-hexagon"></div>
-            <div class="group-overview-details">
-                <span class="group-details-name">{{editGroupObj.name}}</span>
-                <p class="user-details-info"><strong>{{totalUsersCount}}</strong> Total users</p>
-                <p class="user-details-info"><strong>{{activeUsersCount}}</strong> Active users</p>
-                <p class="user-details-info"><strong>{{totalUsersCount - activeUsersCount}}</strong> Deactivated users</p>
-            </div>
-        </div>
-    </div>
+<div ng-class="{'user-details-view': !loadingGroup}">
+    <!--<div class="row">-->
+        <!--<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 user-details-first-row divider-30">-->
+            <!--<div class="group-hexagon"></div>-->
+            <!--<div class="group-overview-details">-->
+                <!--<span class="group-details-name">{{groupName}}</span>-->
+                <!--<p class="user-details-info"><strong>{{totalUsersCount}}</strong> Total users</p>-->
+                <!--<p class="user-details-info"><strong>{{totalUsersCount - deactiveUsersCount}}</strong> Active users</p>-->
+                <!--<p class="user-details-info"><strong>{{deactiveUsersCount}}</strong> Deactivated users</p>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
     <div class="row">
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <ul class="user-details-nav-bar">
-                <li><a href="/#/groups/{{editGroupObj.name}}/details" ng-class="{'transaction-location': locationIndicator == 'details'}">Details</a></li>
-                <li><a href="/#/groups/{{editGroupObj.name}}/users" ng-class="{'transaction-location': locationIndicator == 'users'}">Users</a></li>
-                <li><a href="/#/groups/{{editGroupObj.name}}/permissions" ng-class="{'transaction-location': locationIndicator == 'permissions'}">Permissions</a></li>
+                <li><a href="/#/groups/{{groupName}}/details" ng-class="{'transaction-location': locationIndicator == 'details'}">Details</a></li>
+                <li><a href="/#/groups/{{groupName}}/users" ng-class="{'transaction-location': locationIndicator == 'users'}">Users</a></li>
+                <li><a href="/#/groups/{{groupName}}/permissions" ng-class="{'transaction-location': locationIndicator == 'permissions'}">Permissions</a></li>
                 <li><a ng-click="goToGroupManagementTiersSettings('list')" ng-class="{'transaction-location': locationIndicator == 'tiers'}">Tiers</a></li>
-                <li><a href="/#/groups/{{editGroupObj.name}}/account-configurations" ng-class="{'transaction-location': locationIndicator == 'account-configurations'}">Account configurations</a></li>
-                <li><a href="/#/groups/{{editGroupObj.name}}/transaction-settings" ng-class="{'transaction-location': locationIndicator == 'transaction-settings'}">Transaction settings</a></li>
+                <li><a href="/#/groups/{{groupName}}/account-configurations" ng-class="{'transaction-location': locationIndicator == 'account-configurations'}">Account configurations</a></li>
+                <li><a href="/#/groups/{{groupName}}/transaction-settings" ng-class="{'transaction-location': locationIndicator == 'transaction-settings'}">Transaction settings</a></li>
+                <li><a href="/#/groups/{{groupName}}/stats" ng-class="{'transaction-location': locationIndicator == 'stats'}">Stats</a></li>
             </ul>
         </div>
     </div>
-    <div class="row">
+    <div ng-hide="loadingGroup" class="row">
         <div class="col-lg-3 col-md-4 col-sm-12 col-xs-12">
             <group-tiers-management-menu></group-tiers-management-menu>
         </div>

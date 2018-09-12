@@ -4,31 +4,26 @@
     angular.module('BlurAdmin.pages.webhooks')
         .controller('WebhooksModalCtrl', WebhooksModalCtrl);
 
-    function WebhooksModalCtrl($scope,$uibModalInstance,webhook,toastr,$http,environmentConfig,localStorageManagement,errorHandler) {
+    function WebhooksModalCtrl($scope,Rehive,$uibModalInstance,webhook,toastr,localStorageManagement,errorHandler) {
 
         var vm = this;
 
         $scope.webhook = webhook;
         $scope.deletingWebhook = false;
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
 
         $scope.deleteWebhook = function () {
             $scope.deletingWebhook = true;
-            $http.delete(environmentConfig.API + '/admin/webhooks/' + $scope.webhook.id + '/', {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': vm.token
-                }
-            }).then(function (res) {
+            Rehive.admin.webhooks.delete($scope.webhook.id).then(function (res) {
                 $scope.deletingWebhook = false;
-                if (res.status === 200) {
-                    toastr.success('Webhook successfully deleted');
-                    $uibModalInstance.close($scope.webhook);
-                }
-            }).catch(function (error) {
+                toastr.success('Webhook successfully deleted');
+                $uibModalInstance.close(true);
+                $scope.$apply();
+            }, function (error) {
                 $scope.deletingWebhook = false;
-                errorHandler.evaluateErrors(error.data);
+                errorHandler.evaluateErrors(error);
                 errorHandler.handleErrors(error);
+                $scope.$apply();
             });
         };
 

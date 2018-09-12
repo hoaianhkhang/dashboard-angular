@@ -3,9 +3,13 @@
         <span class="user-details-panel-title">Dashboard tasks</span>
     </div>
     <div class="panel-body">
-        <div ng-show="dashboardTasksLists.length > 0" class="row divider" ng-repeat="task in dashboardTasksLists | orderBy: '-created'">
+        <div ng-show="dashboardTasksLists.length > 0" class="row dashboard-task-row margin-bottom-10"
+             ng-class="{'untouched-task': task.untouched == true,'incomplete-touched-task': (task.untouched == false && task.progress < 100),
+             'complete-touched-task': (task.untouched == false && task.progress == 100)}"
+             ng-mouseover="task.untouched = false"
+             ng-repeat="task in dashboardTasksLists | orderBy: '-created'">
             <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-                <div class="dashboard-task-bar margin-bottom-10" ng-class="{'no-margin-bottom': $last}">
+                <div class="dashboard-task-bar" ng-class="{'no-margin-bottom': $last}">
                     <p ng-hide="task.progress == 100">
                         <strong>Transactions export in progress</strong>
                     </p>
@@ -16,7 +20,7 @@
                     <a class="pointer file-link" ng-show="task.progress == 100"
                        ng-click="downloadExportFile(page.file)"
                        ng-repeat="page in task.pages">
-                        file {{$index + 1}}
+                        file {{$index + 1}} {{'(' + page.file.split('.')[page.file.split('.').length - 1].toString() + ')' | uppercase}}
                     </a>
                 </div>
             </div>

@@ -5,37 +5,32 @@
         .controller('UserActivityCtrl', UserActivityCtrl);
 
     /** @ngInject */
-    function UserActivityCtrl($scope,environmentConfig,$stateParams,$http,localStorageManagement,errorHandler,$state) {
+    function UserActivityCtrl($scope,Rehive,$stateParams,localStorageManagement,errorHandler,$state) {
 
         var vm = this;
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
         vm.uuid = $stateParams.uuid;
         $scope.loadingUserActivity = true;
 
         vm.getUser = function(){
             if(vm.token) {
                 $scope.loadingUserActivity = true;
-                $http.get(environmentConfig.API + '/admin/users/' + vm.uuid + '/', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
+                Rehive.admin.users.get({id: vm.uuid}).then(function (res) {
                     $scope.loadingUserActivity = false;
-                    if (res.status === 200) {
-                        $scope.user = res.data.data;
-                    }
-                }).catch(function (error) {
+                    $scope.user = res;
+                    $scope.$apply();
+                }, function (error) {
                     $scope.loadingUserActivity = false;
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };
         vm.getUser();
 
-        $scope.goToTransactions = function(identifier){
-            $state.go('transactions.history',{"identifier": identifier});
-        }
+        $scope.goToTransactions = function(id){
+            $state.go('transactions.history',{"id": id});
+        };
     }
 })();

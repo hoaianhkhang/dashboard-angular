@@ -5,36 +5,33 @@
         .controller('SmsAuthenticationCtrl', SmsAuthenticationCtrl);
 
     /** @ngInject */
-    function SmsAuthenticationCtrl($scope,$http,environmentConfig,localStorageManagement,errorHandler,toastr,$location) {
+    function SmsAuthenticationCtrl($scope,Rehive,localStorageManagement,errorHandler,toastr,$location) {
 
         var vm = this;
-        vm.token = localStorageManagement.getValue('TOKEN');
-        $scope.smsAuthObj = {mobile_number: ''};
+        vm.token = localStorageManagement.getValue('token');
+        $scope.smsAuthObj = {mobile: ''};
         $scope.numberFromGetCall = false;
+        $scope.loadingSmsAuth = false;
 
         $scope.getSmsAuthNumber = function(){
             if(vm.token) {
                 $scope.loadingSmsAuth = true;
-                $http.get(environmentConfig.API + '/auth/mfa/sms/', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
+                Rehive.auth.mfa.sms.get().then(function (res) {
+                    if(res && res.mobile){
+                        $scope.smsAuthObj.mobile = res.mobile;
+                        $scope.numberFromGetCall = true;
                     }
-                }).then(function (res) {
-                    if (res.status === 200) {
-                        if(res.data.data && res.data.data.mobile_number){
-                            $scope.smsAuthObj.mobile_number = res.data.data.mobile_number;
-                            $scope.numberFromGetCall = true;
-                        }
-                        $scope.loadingSmsAuth = false;
-                    }
-                }).catch(function (error) {
+                    $scope.loadingSmsAuth = false;
+                    $scope.$apply();
+                }, function (error) {
                     $scope.loadingSmsAuth = false;
                     if(error.status == 404){
+                        $scope.$apply();
                         return;
                     }
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };
@@ -43,22 +40,17 @@
         $scope.deleteSmsAuthNumber = function(){
             if(vm.token) {
                 $scope.loadingSmsAuth = true;
-                $http.delete(environmentConfig.API + '/auth/mfa/sms/', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
-                    if (res.status === 200) {
-                        toastr.success('Sms authentication disabled successfully');
-                        $scope.smsAuthObj = {mobile_number: ''};
-                        $scope.numberFromGetCall = false;
-                        $scope.loadingSmsAuth = false;
-                    }
-                }).catch(function (error) {
+                Rehive.auth.mfa.sms.disable().then(function (res) {
+                    toastr.success('Sms authentication disabled successfully');
+                    $scope.smsAuthObj = {mobile: ''};
+                    $scope.numberFromGetCall = false;
                     $scope.loadingSmsAuth = false;
-                    errorHandler.evaluateErrors(error.data);
+                    $scope.$apply();
+                }, function (error) {
+                    $scope.loadingSmsAuth = false;
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };
@@ -66,21 +58,18 @@
         $scope.postSmsAuthNumber = function(){
             if(vm.token) {
                 $scope.loadingSmsAuth = true;
-                $http.post(environmentConfig.API + '/auth/mfa/sms/',{mobile_number: $scope.smsAuthObj.mobile_number}, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
+                Rehive.auth.mfa.sms.enable({
+                    mobile: $scope.smsAuthObj.mobile
                 }).then(function (res) {
-                    if (res.status === 201) {
-                        toastr.success('Mobile number successfully saved, please enter the OTP to enable sms multi factor authentication');
-                        $location.path('/authentication/multi-factor/verify/sms');
-                        $scope.loadingSmsAuth = false;
-                    }
-                }).catch(function (error) {
+                    toastr.success('Mobile number successfully saved, please enter the OTP to enable sms multi factor authentication');
+                    $location.path('/authentication/multi-factor/verify/sms');
                     $scope.loadingSmsAuth = false;
-                    errorHandler.evaluateErrors(error.data);
+                    $scope.$apply();
+                }, function (error) {
+                    $scope.loadingSmsAuth = false;
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };

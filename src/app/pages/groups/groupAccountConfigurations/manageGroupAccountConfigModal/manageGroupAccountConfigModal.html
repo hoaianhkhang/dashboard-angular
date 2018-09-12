@@ -6,7 +6,7 @@
         </a>
     </div>
     <div class="panel-body">
-        <form name="accountConfigurationForm" class="custom-form">
+        <form name="accountConfigurationForm" class="custom-form" novalidate>
             <div class="form-group">
                 <label>Name <span class="required-icon">*</span></label>
                 <br>
@@ -31,16 +31,18 @@
                        ng-model="editAccountConfiguration.primary" type="checkbox">
             </div>
             <div class="form-group">
-                <label>Currency <span class="required-icon">*</span> <small class="text-muted">(Hold CTRL to select multiple currencies)</small></label>
-                <br>
-                <select class="form-control pointer divider" ng-model="editAccountConfiguration.currencies" multiple
-                        ng-options="currency.code for currency in currenciesList track by currency.code">
-                </select>
-                <p>Currencies selected:
-                    <span ng-repeat="currency in editAccountConfiguration.currencies">
-                    {{$last ? ' ' + currency.code : currency.code + ',' }}
-                </span>
-                </p>
+                <label>Currencies <span class="required-icon">*</span></label>
+                <div class="reward-multi-select divider">
+                    <select chosen
+                            multiple
+                            data-placeholder-text-multiple="'Choose one or more currencies'"
+                            width="100"
+                            ng-model="editAccountConfiguration.currencies"
+                            ng-options="currency.code for currency in currenciesList track by currency.code"
+                            required>
+                        <option value=""></option>
+                    </select>
+                </div>
             </div>
             <!--updateAccountConfiguration(editAccountConfiguration)-->
             <div class="form-group">

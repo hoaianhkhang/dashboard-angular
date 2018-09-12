@@ -5,17 +5,18 @@
         .controller('AddUserCtrl', AddUserCtrl);
 
     /** @ngInject */
-    function AddUserCtrl($scope,environmentConfig,$location,cleanObject,
-                         localStorageManagement,errorHandler,$http,Upload,toastr) {
+    function AddUserCtrl($scope,Rehive,$location,cleanObject,
+                         localStorageManagement,errorHandler,toastr) {
 
         var vm = this;
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
         $scope.showingMoreDetails = false;
         $scope.newUserParams = {
             first_name: '',
             last_name: '',
+            username: '',
             email: '',
-            mobile_number: '',
+            mobile: '',
             id_number: '',
             language: '',
             metadata: '',
@@ -24,21 +25,21 @@
             nationality: "US"
         };
 
+        $scope.fixformat = function(){
+            $scope.newUserParams.username = $scope.newUserParams.username.toLowerCase();
+            $scope.newUserParams.username = $scope.newUserParams.username.replace(/ /g, '_');
+        };
+
         vm.getGroups = function () {
             if(vm.token){
-                $http.get(environmentConfig.API + '/admin/groups/?page_size=250', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
+                Rehive.admin.groups.get({filters: {page_size: 250}}).then(function (res) {
                     $scope.loadingUsers = false;
-                    if (res.status === 200) {
-                        $scope.groups = res.data.data.results;
-                    }
-                }).catch(function (error) {
-                    errorHandler.evaluateErrors(error.data);
+                    $scope.groups = res.results;
+                    $scope.$apply();
+                }, function (error) {
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };
@@ -55,7 +56,7 @@
 
         $scope.addNewUser = function (newUserParams) {
             if(newUserParams.metadata == ''){
-                newUserParams.metadata = {};
+                newUserParams.metadata = '{}';
             } else {
                 if(vm.isJson(newUserParams.metadata)){
                     newUserParams.metadata = newUserParams.metadata;
@@ -73,28 +74,30 @@
 
             var cleanUserParams = cleanObject.cleanObj(newUserParams);
 
-            Upload.upload({
-                url: environmentConfig.API + '/admin/users/',
-                data: cleanUserParams,
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': vm.token},
-                method: "POST"
-            }).then(function (res) {
-                if (res.status === 201) {
-                    $scope.newUserParams = {
-                        nationality: "US",
-                        metadata: ''
-                    };
-                    $scope.backToUsers();
-                    toastr.success('User successfully added');
+            var formData = new FormData();
+
+            for(var key in cleanUserParams) {
+                if (cleanUserParams.hasOwnProperty(key)) {
+                    formData.append(key, cleanUserParams[key]);
                 }
-            }).catch(function (error) {
+            }
+
+            Rehive.admin.users.create(formData).then(function (res) {
+                $scope.newUserParams = {
+                    nationality: "US",
+                    metadata: ''
+                };
+                $scope.backToUsers();
+                toastr.success('User successfully added');
+                $scope.$apply();
+            }, function (error) {
                 $scope.loadingUsers = false;
                 newUserParams.metadata = JSON.stringify(newUserParams.metadata);
-                errorHandler.evaluateErrors(error.data);
+                errorHandler.evaluateErrors(error);
                 errorHandler.handleErrors(error);
+                $scope.$apply();
             });
+
         };
 
         $scope.toggleMoreDetails = function () {

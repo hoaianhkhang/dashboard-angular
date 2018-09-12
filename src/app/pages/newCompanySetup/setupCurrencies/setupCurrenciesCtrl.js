@@ -4,11 +4,11 @@
     angular.module('BlurAdmin.pages.newCompanySetup.setupCurrencies')
         .controller("SetupCurrenciesCtrl", SetupCurrenciesCtrl);
 
-    function SetupCurrenciesCtrl($rootScope,$scope,$http,toastr,currenciesList,$ngConfirm,
-        environmentConfig,$location,errorHandler,$uibModal,localStorageManagement,$window,$timeout) {
+    function SetupCurrenciesCtrl($rootScope,$scope,toastr,currenciesList,$ngConfirm,
+                                 Rehive,$location,errorHandler,$uibModal,localStorageManagement,$window,$timeout) {
 
         var vm = this;
-        vm.token = localStorageManagement.getValue("TOKEN");
+        vm.token = localStorageManagement.getValue("token");
         $scope.currenciesToAdd = [];
         $rootScope.activeSetupRoute = 1;
         localStorageManagement.setValue('activeSetupRoute',1);
@@ -26,45 +26,44 @@
         vm.getCurrencies = function(){
             $scope.loadingCurrencies = true;
             if(vm.token){
-                $http.get(environmentConfig.API + '/admin/currencies/?enabled=true&page_size=250', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
+                Rehive.admin.currencies.get({filters: {
+                    archived: false,
+                    page_size: 250
+                }}).then(function (res) {
+                    $scope.currencies = res.results;
+                    if($scope.currencies.length==0){
+                        $rootScope.setupCurrencies = 0;
+                        localStorageManagement.setValue('setupCurrencies',0);
                     }
-                }).then(function (res) {
-                    if (res.status === 200) {
-                        $scope.currencies = res.data.data.results;
-                        if($scope.currencies.length==0){
-                            $rootScope.setupCurrencies = 0;
-                            localStorageManagement.setValue('setupCurrencies',0);
-                        }
-                        else {
-                            $scope.currencies.forEach(function (currency) {
-                                var index = $scope.initialCurrencies.findIndex(function (element) {
-                                    return element.code == currency.code;
-                                });
-                                if(index >=0){
-                                    $scope.initialCurrencies.splice(index,1);
-                                }
+                    else {
+                        $scope.currencies.forEach(function (currency) {
+                            var index = $scope.initialCurrencies.findIndex(function (element) {
+                                return element.code == currency.code;
                             });
+                            if(index >=0){
+                                $scope.initialCurrencies.splice(index,1);
+                            }
+                        });
 
-                            $window.sessionStorage.currenciesList = JSON.stringify(res.data.data.results);
-                            $rootScope.setupCurrencies = 1;
-                            localStorageManagement.setValue('setupCurrencies',1);
-                        }
-                        $scope.loadingCurrencies = false;
+                        $window.sessionStorage.currenciesList = JSON.stringify(res.results);
+                        $rootScope.setupCurrencies = 1;
+                        localStorageManagement.setValue('setupCurrencies',1);
                     }
-                }).catch(function (error) {
                     $scope.loadingCurrencies = false;
-                    errorHandler.evaluateErrors(error.data);
+                    $scope.$apply();
+                }, function (error) {
+                    $scope.loadingCurrencies = false;
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             } else {
                 $rootScope.gotToken = false;
                 $rootScope.securityConfigured = true;
                 $rootScope.pageTopObj = {};
-                $rootScope.userFullyVerified = false;
                 localStorageManagement.deleteValue('TOKEN');
+                localStorageManagement.deleteValue('token');
+                Rehive.removeToken();
                 toastr.error('Your session has expired, please log in again');
                 $location.path('/login');
             }
@@ -73,18 +72,16 @@
 
         vm.getCompanyCurrencies = function(){
             if(vm.token){
-                $http.get(environmentConfig.API + '/admin/currencies/?enabled=true&page_size=250', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
-                    if (res.status === 200) {
-                        $window.sessionStorage.currenciesList = JSON.stringify(res.data.data.results);
-                    }
-                }).catch(function (error) {
-                    errorHandler.evaluateErrors(error.data);
+                Rehive.admin.currencies.get({filters: {
+                    archived: false,
+                    page_size: 250
+                }}).then(function (res) {
+                    $window.sessionStorage.currenciesList = JSON.stringify(res.results);
+                    $scope.$apply();
+                }, function (error) {
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };
@@ -93,26 +90,21 @@
             if(currencies && currencies.length > 0){
                 $scope.loadingCurrencies = true;
                 currencies.forEach(function(currency,index,array){
-                    currency.enabled = true;
-                    $http.post(environmentConfig.API + '/admin/currencies/',currency, {
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': vm.token
+                    currency.archived = false;
+                    Rehive.admin.currencies.create(currency).then(function (res) {
+                        vm.getCompanyCurrencies();
+                        $rootScope.setupCurrencies = 1;
+                        localStorageManagement.setValue('setupCurrencies',1);
+                        if(index == (array.length - 1)){
+                            vm.getCurrencies();
                         }
-                    }).then(function (res) {
-                        if (res.status === 201) {
-                            vm.getCompanyCurrencies();
-                            $rootScope.setupCurrencies = 1;
-                            localStorageManagement.setValue('setupCurrencies',1);
-                            if(index == (array.length - 1)){
-                                vm.getCurrencies();
-                            }
-                        }
-                    }).catch(function (error) {
+                        $scope.$apply();
+                    }, function (error) {
                         $scope.loadingCurrencies = false;
                         $rootScope.$pageFinishedLoading = true;
-                        errorHandler.evaluateErrors(error.data);
+                        errorHandler.evaluateErrors(error);
                         errorHandler.handleErrors(error);
+                        $scope.$apply();
                     });
                 });
 
@@ -125,46 +117,68 @@
         $scope.deleteCurrencyConfirm = function (currency) {
             $ngConfirm({
                 title: 'Delete currency',
-                content: 'Are you sure you want to delete this currency?',
+                contentUrl: 'app/pages/newCompanySetup/setupCurrencies/deleteCurrencyPrompt.html',
                 animationBounce: 1,
                 animationSpeed: 100,
                 scope: $scope,
+                onScopeReady: function(){
+                    $scope.currency = currency;
+                },
                 buttons: {
                     close: {
-                        text: "No",
-                        btnClass: 'btn-default pull-left dashboard-btn'
+                        text: "Cancel",
+                        btnClass: 'btn-default dashboard-btn'
                     },
-                    ok: {
-                        text: "Yes",
-                        btnClass: 'btn-primary dashboard-btn',
+                    Add: {
+                        text: "Delete permanently",
+                        btnClass: 'btn-danger',
                         keys: ['enter'], // will trigger when enter is pressed
                         action: function(scope){
-                            $scope.deleteCurrency(currency);
+                            if(scope.deleteText != 'DELETE'){
+                                toastr.error('DELETE text did not match');
+                                return;
+                            }
+                            scope.archiveCurrency(currency);
                         }
                     }
                 }
             });
         };
+        
+        $scope.archiveCurrency = function (currency) {
+            if(currency.archived){
+                $scope.deleteCurrency(currency);
+            } else {
+                $scope.loadingCurrencies = true;
+                Rehive.admin.currencies.update(currency.code, {archived : true}).then(function (res) {
+                    $timeout(function () {
+                        $scope.deleteCurrency(currency);
+                    },1000);
+                    $scope.$apply();
+                }, function (error) {
+                    $scope.loadingCurrencies = false;
+                    errorHandler.evaluateErrors(error);
+                    errorHandler.handleErrors(error);
+                    $scope.$apply();
+                });
+            }
+        };
 
         $scope.deleteCurrency = function(currency){
             if(vm.token){
                 $scope.loadingCurrencies = true;
-                $http.delete(environmentConfig.API + '/admin/currencies/'+ currency.code + '/', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
-                    if (res.status === 200) {
-                        $scope.initialCurrencies.push(currency);
-                        $timeout(function () {
-                            vm.getCurrencies();
-                        },1000);
-                    }
-                }).catch(function (error) {
+                Rehive.admin.currencies.delete(currency.code).then(function (res) {
+                    $scope.initialCurrencies.push(currency);
+                    toastr.success('Currency deleted successfully');
+                    $timeout(function () {
+                        vm.getCurrencies();
+                    },1000);
+                    $scope.$apply();
+                }, function (error) {
                     $scope.loadingCurrencies = false;
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };

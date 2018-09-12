@@ -34,7 +34,7 @@
                     if(res.data.data.results.length == 0){
                         toastr.success('No users have been found');
                     } else {
-                        var url = '/#/user/' + res.data.data.results[0].identifier + '/details';
+                        var url = '/#/user/' + res.data.data.results[0].id + '/details';
                         $window.open(url,'_blank');
                     }
                 }

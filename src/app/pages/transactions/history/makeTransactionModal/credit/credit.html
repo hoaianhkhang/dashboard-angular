@@ -2,7 +2,7 @@
     <div class="transaction-form" id="creditForm">
         <div class="form-group">
             <label>User <span class="required-icon">*</span>&nbsp;
-                <i ng-show="retrievedCreditUserObj.identifier" class="fa fa-user transaction-user-icon" aria-hidden="true"></i>
+                <i ng-show="retrievedCreditUserObj.id" class="fa fa-user transaction-user-icon" aria-hidden="true"></i>
                 <div class="row transaction-user-details">
                     <table>
                         <tr>
@@ -38,10 +38,14 @@
         </div>
         <div class="form-group">
             <label>Currency <span class="required-icon">*</span>
-                <span ng-hide="retrievedCreditUserObj.identifier">Please choose user first.</span>
+                <span ng-hide="retrievedCreditUserObj.id">Please choose user first.</span>
+                <span class="no-accounts-available"
+                      ng-show="retrievedCreditUserObj.id && (creditCurrencyOptions.length == 0)">No currencies found.
+                    <span ng-click="goToAddCurrencyModal()"> Please add a currency.</span>
+                </span>
             </label>
             <br>
-            <select class="form-control pointer" ng-model="creditTransactionData.currency" ng-change="creditCurrencySelected(creditTransactionData)" ng-disabled="!retrievedCreditUserObj.identifier"
+            <select class="form-control pointer" ng-model="creditTransactionData.currency" ng-change="creditCurrencySelected(creditTransactionData)" ng-disabled="!retrievedCreditUserObj.id"
                     ng-options="currency.code for currency in creditCurrencyOptions | orderBy: 'code' track by currency.code">
             </select>
         </div>
@@ -83,7 +87,7 @@
                     User has no accounts with selected currency.
                 </span>
             </label>
-            <select class="form-control pointer" ng-model="creditTransactionData.account" ng-change="creditAccountSelected(creditTransactionData)" ng-disabled="!creditTransactionData.currency.code || !retrievedCreditUserObj.identifier"
+            <select class="form-control pointer" ng-model="creditTransactionData.account" ng-change="creditAccountSelected(creditTransactionData)" ng-disabled="!creditTransactionData.currency.code || !retrievedCreditUserObj.id"
                     ng-options="account.name + ' - ' + account.reference disable when account.disable for account in retrievedCreditUserAccountsArray | orderBy: 'name' track by account.name">
             </select>
         </div>

@@ -5,7 +5,7 @@
         .controller('UsersCtrl', UsersCtrl);
 
     /** @ngInject */
-    function UsersCtrl($rootScope,$state,$scope,environmentConfig,$http,typeaheadService,$location,
+    function UsersCtrl($rootScope,$state,Rehive,$scope,typeaheadService,$location,
                        localStorageManagement,errorHandler,$window,toastr,serializeFiltersService,$filter) {
 
         var vm = this;
@@ -24,6 +24,7 @@
         $scope.showingColumnFilters = false;
         $scope.dateFilterOptions = ['Is in the last','In between','Is equal to','Is after','Is before'];
         $scope.dateFilterIntervalOptions = ['days','months'];
+        $scope.archivedOptions = ['True','False'];
         $scope.statusOptions = ['Status','Pending', 'Obsolete', 'Declined', 'Verified', 'Incomplete'];
         $scope.orderByOptions = ['Created','Last login date'];
         $scope.groupFilterOptions = ['Group name','In a group'];
@@ -37,11 +38,30 @@
             maxSize: 5
         };
 
+
+        // if(localStorageManagement.getValue(vm.savedUserTableColumns)){
+        //     var headerColumns = JSON.parse(localStorageManagement.getValue(vm.savedUserTableColumns));
+        //     var recipientFieldExists = false;
+        //     headerColumns.forEach(function (col) {
+        //         if(col.colName == 'Archived' || col.fieldName == 'archived'){
+        //             recipientFieldExists = true;
+        //         }
+        //     });
+        //
+        //     if(!recipientFieldExists){
+        //         headerColumns.splice(8,0,{colName: 'Archived',fieldName: 'archived',visible: false});
+        //     }
+        //
+        //     localStorageManagement.setValue(vm.savedUserTableColumns,JSON.stringify(headerColumns));
+        // }
+
+        //removing active field
         if(localStorageManagement.getValue(vm.savedUserTableColumns)){
              var headerColumns = JSON.parse(localStorageManagement.getValue(vm.savedUserTableColumns));
-             headerColumns.forEach(function (col) {
-                 if(!col.orderByDirection){
-                     col.orderByDirection = 'desc';
+             headerColumns.forEach(function (col,index,array) {
+                 if(col.colName == 'Identifier'){
+                     col.colName = 'Id';
+                     col.fieldName = 'id';
                  }
              });
 
@@ -49,28 +69,29 @@
         }
 
         $scope.headerColumns = localStorageManagement.getValue(vm.savedUserTableColumns) ? JSON.parse(localStorageManagement.getValue(vm.savedUserTableColumns)) : [
-            {colName: 'Identifier',fieldName: 'identifier',visible: true,orderByDirection: 'desc'},
-            {colName: 'First name',fieldName: 'first_name',visible: true,orderByDirection: 'desc'},
-            {colName: 'Last name',fieldName: 'last_name',visible: true,orderByDirection: 'desc'},
-            {colName: 'Email',fieldName: 'email',visible: true,orderByDirection: 'desc'},
-            {colName: 'Mobile number',fieldName: 'mobile_number',visible: true,orderByDirection: 'desc'},
-            {colName: 'Group name',fieldName: 'groupName',visible: true,orderByDirection: 'desc'},
-            {colName: 'Created',fieldName: 'created',visible: true,orderByDirection: 'desc'},
-            {colName: 'Updated',fieldName: 'updated',visible: false,orderByDirection: 'desc'},
-            {colName: 'Status',fieldName: 'status',visible: false,orderByDirection: 'desc'},
-            {colName: 'KYC status',fieldName: 'kycStatus',visible: false,orderByDirection: 'desc'},
-            {colName: 'Active',fieldName: 'active',visible: false,orderByDirection: 'desc'},
-            {colName: 'Last login',fieldName: 'last_login',visible: false,orderByDirection: 'desc'},
-            {colName: 'Verified',fieldName: 'verified',visible: false,orderByDirection: 'desc'},
-            {colName: 'ID Number',fieldName: 'id_number',visible: false,orderByDirection: 'desc'},
-            {colName: 'Nationality',fieldName: 'nationality',visible: false,orderByDirection: 'desc'},
-            {colName: 'Language',fieldName: 'language',visible: false,orderByDirection: 'desc'},
-            {colName: 'Timezone',fieldName: 'timezone',visible: false,orderByDirection: 'desc'},
-            {colName: 'Birth date',fieldName: 'birth_date',visible: false,orderByDirection: 'desc'},
-            {colName: 'Username',fieldName: 'username',visible: false,orderByDirection: 'desc'}
+            {colName: 'Id',fieldName: 'id',visible: true},
+            {colName: 'First name',fieldName: 'first_name',visible: true},
+            {colName: 'Last name',fieldName: 'last_name',visible: true},
+            {colName: 'Email',fieldName: 'email',visible: true},
+            {colName: 'Mobile number',fieldName: 'mobile',visible: true},
+            {colName: 'Group name',fieldName: 'groupName',visible: true},
+            {colName: 'Created',fieldName: 'created',visible: true},
+            {colName: 'Updated',fieldName: 'updated',visible: false},
+            {colName: 'Archived',fieldName: 'archived',visible: false},
+            {colName: 'Status',fieldName: 'status',visible: false},
+            {colName: 'KYC status',fieldName: 'kycStatus',visible: false},
+            {colName: 'Last login',fieldName: 'last_login',visible: false},
+            {colName: 'Verified',fieldName: 'verified',visible: false},
+            {colName: 'ID Number',fieldName: 'id_number',visible: false},
+            {colName: 'Nationality',fieldName: 'nationality',visible: false},
+            {colName: 'Language',fieldName: 'language',visible: false},
+            {colName: 'Timezone',fieldName: 'timezone',visible: false},
+            {colName: 'Birth date',fieldName: 'birth_date',visible: false},
+            {colName: 'Username',fieldName: 'username',visible: false}
         ];
         $scope.filtersObj = {
-            identifierFilter: false,
+            archivedFilter: false,
+            idFilter: false,
             emailFilter: false,
             mobileFilter: false,
             firstNameFilter: false,
@@ -85,8 +106,11 @@
             pageSizeFilter: false
         };
         $scope.applyFiltersObj = {
-            identifierFilter: {
-                selectedIdentifier: ''
+            archivedFilter: {
+                selectedArchivedFilter: 'True'
+            },
+            idFilter: {
+                selectedId: ''
             },
             emailFilter: {
                 selectedEmail: $state.params.email || ''
@@ -157,7 +181,7 @@
         };
 
         $scope.restoreColDefaults = function () {
-            var defaultVisibleHeader = ['Identifier','First name','Last name','Email',
+            var defaultVisibleHeader = ['Id','First name','Last name','Email',
                 'Mobile number','Group name','Created'];
 
             $scope.headerColumns.forEach(function (headerObj) {
@@ -173,21 +197,16 @@
 
         $scope.getGroups = function () {
             if(vm.token) {
-                $http.get(environmentConfig.API + '/admin/groups/?page_size=250', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
+                Rehive.admin.groups.get({filters: {page_size: 250}}).then(function (res) {
+                    if(res.results.length > 0){
+                        $scope.groupOptions = res.results;
+                        $scope.applyFiltersObj.groupFilter.selectedGroup = $scope.groupOptions[0];
                     }
-                }).then(function (res) {
-                    if (res.status === 200) {
-                        if(res.data.data.results.length > 0){
-                            $scope.groupOptions = res.data.data.results;
-                            $scope.applyFiltersObj.groupFilter.selectedGroup = $scope.groupOptions[0];
-                        }
-                    }
-                }).catch(function (error) {
-                    errorHandler.evaluateErrors(error.data);
+                    $scope.$apply();
+                }, function (error) {
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };
@@ -262,7 +281,8 @@
 
         $scope.clearFilters = function () {
             $scope.filtersObj = {
-                identifierFilter: false,
+                archivedFilter: false,
+                idFilter: false,
                 emailFilter: false,
                 mobileFilter: false,
                 firstNameFilter: false,
@@ -439,7 +459,7 @@
             return dateObj;
         };
 
-        vm.getUsersUrl = function(){
+        vm.getUsersFiltersObj = function(){
             $scope.filtersCount = 0;
 
             for(var x in $scope.filtersObj){
@@ -481,9 +501,9 @@
             var searchObj = {
                 page: $scope.usersPagination.pageNo,
                 page_size: $scope.filtersObj.pageSizeFilter? $scope.usersPagination.itemsPerPage : 25,
-                identifier__contains: $scope.filtersObj.identifierFilter ? ($scope.applyFiltersObj.identifierFilter.selectedIdentifier ?  $scope.applyFiltersObj.identifierFilter.selectedIdentifier : null): null,
-                email__contains: $scope.filtersObj.emailFilter ?($scope.applyFiltersObj.emailFilter.selectedEmail ?  encodeURIComponent($scope.applyFiltersObj.emailFilter.selectedEmail) : null): null,
-                mobile_number__contains: $scope.filtersObj.mobileFilter ? ($scope.applyFiltersObj.mobileFilter.selectedMobile ?  encodeURIComponent($scope.applyFiltersObj.mobileFilter.selectedMobile) : null): null,
+                id__contains: $scope.filtersObj.idFilter ? ($scope.applyFiltersObj.idFilter.selectedId ?  $scope.applyFiltersObj.idFilter.selectedId : null): null,
+                email__contains: $scope.filtersObj.emailFilter ?($scope.applyFiltersObj.emailFilter.selectedEmail ? $scope.applyFiltersObj.emailFilter.selectedEmail : null): null,
+                mobile__contains: $scope.filtersObj.mobileFilter ? ($scope.applyFiltersObj.mobileFilter.selectedMobile ? $scope.applyFiltersObj.mobileFilter.selectedMobile : null): null,
                 first_name__contains: $scope.filtersObj.firstNameFilter ? ($scope.applyFiltersObj.firstNameFilter.selectedFirstName ?  $scope.applyFiltersObj.firstNameFilter.selectedFirstName : null): null,
                 last_name__contains: $scope.filtersObj.lastNameFilter ? ($scope.applyFiltersObj.lastNameFilter.selectedLastName ?  $scope.applyFiltersObj.lastNameFilter.selectedLastName : null): null,
                 account: $scope.filtersObj.accountReferenceFilter ? ($scope.applyFiltersObj.accountReferenceFilter.selectedAccountReference ?  $scope.applyFiltersObj.accountReferenceFilter.selectedAccountReference : null): null,
@@ -496,10 +516,11 @@
                 last_login__gt: vm.lastLogindateObj.last_login__gt ? Date.parse(vm.lastLogindateObj.last_login__gt +'T00:00:00') : null,
                 last_login__lt: vm.lastLogindateObj.last_login__lt ? Date.parse(vm.lastLogindateObj.last_login__lt +'T00:00:00') : null,
                 kyc__status: $scope.filtersObj.kycFilter ? ($scope.applyFiltersObj.kycFilter.selectedKycFilter == 'Status' ? null : $scope.applyFiltersObj.kycFilter.selectedKycFilter.toLowerCase()): null,
-                currency__code: $scope.filtersObj.currencyFilter ? ($scope.applyFiltersObj.currencyFilter.selectedCurrency.code ? ($scope.applyFiltersObj.currencyFilter.selectedCurrency.code == 'Currency' ? null : $scope.applyFiltersObj.currencyFilter.selectedCurrency.code) : null): null
+                currency__code: $scope.filtersObj.currencyFilter ? ($scope.applyFiltersObj.currencyFilter.selectedCurrency.code ? ($scope.applyFiltersObj.currencyFilter.selectedCurrency.code == 'Currency' ? null : $scope.applyFiltersObj.currencyFilter.selectedCurrency.code) : null): null,
+                archived: $scope.filtersObj.archivedFilter ? ($scope.applyFiltersObj.archivedFilter.selectedArchivedFilter == 'True' ?  true : false) : null
             };
 
-            return environmentConfig.API + '/admin/users/?' + serializeFiltersService.serializeFilters(searchObj);
+            return serializeFiltersService.objectFilters(searchObj);
         };
 
         $scope.getAllUsers = function(applyFilter){
@@ -515,28 +536,23 @@
                 $scope.users.length = 0;
             }
 
-            var usersUrl = vm.getUsersUrl();
+            var usersFiltersObj = vm.getUsersFiltersObj();
 
-            $http.get(usersUrl, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': vm.token
+            Rehive.admin.users.get({filters: usersFiltersObj}).then(function (res) {
+                $scope.usersData = res;
+                vm.formatUsersArray(res.results);
+                if($scope.users.length == 0){
+                    $scope.usersStateMessage = 'No users have been found';
+                    return;
                 }
-            }).then(function (res) {
-                if (res.status === 200) {
-                    $scope.usersData = res.data.data;
-                    vm.formatUsersArray(res.data.data.results);
-                    if($scope.users.length == 0){
-                        $scope.usersStateMessage = 'No users have been found';
-                        return;
-                    }
-                    $scope.usersStateMessage = '';
-                }
-            }).catch(function (error) {
+                $scope.usersStateMessage = '';
+                $scope.$apply();
+            }, function (error) {
                 $scope.loadingUsers = false;
                 $scope.usersStateMessage = 'Failed to load data';
-                errorHandler.evaluateErrors(error.data);
+                errorHandler.evaluateErrors(error);
                 errorHandler.handleErrors(error);
+                $scope.$apply();
             });
         };
         $scope.getAllUsers();
@@ -544,17 +560,17 @@
         vm.formatUsersArray = function (usersArray) {
             usersArray.forEach(function (userObj) {
                 $scope.users.push({
-                    identifier: userObj.identifier,
+                    id: userObj.id,
                     first_name: userObj.first_name,
                     last_name: userObj.last_name,
                     email: userObj.email,
-                    mobile_number: userObj.mobile_number,
+                    mobile: userObj.mobile,
                     groupName: userObj.groups.length > 0 ? userObj.groups[0].name: null,
                     created: userObj.created ? $filter("date")(userObj.created,'mediumDate') + ' ' + $filter("date")(userObj.created,'shortTime'): null,
                     updated: userObj.updated ? $filter("date")(userObj.updated,'mediumDate') + ' ' + $filter("date")(userObj.updated,'shortTime'): null,
+                    archived: $filter("capitalizeWord")(userObj.archived),
                     status: $filter("capitalizeWord")(userObj.status),
                     kycStatus: $filter("capitalizeWord")(userObj.kyc.status),
-                    active: userObj.active ? 'Yes' : 'No',
                     last_login: userObj.last_login ? $filter("date")(userObj.last_login,'mediumDate') + ' ' + $filter("date")(userObj.last_login,'shortTime'): null,
                     verified: userObj.verified ? 'Yes' : 'No',
                     id_number: userObj.id_number,
@@ -574,7 +590,7 @@
         };
 
         $scope.displayUser = function (user) {
-            $location.path('/user/' + user.identifier + '/details');
+            $location.path('/user/' + user.id + '/details');
         };
 
         $scope.closeColumnFiltersBox = function () {

@@ -29,21 +29,25 @@ $info: #3c8dbc !default;
 $success: #03DBBB !default;
 $warning: #dfb81c !default;
 $danger: #ed675A !default;
+$gray: #A8A8A8 !default;
 
 $primary-light: tint($primary, 30%);
 $info-light: tint($info, 30%);
 $success-light: tint($success, 30%);
 $warning-light: tint($warning, 30%);
 $danger-light: tint($danger, 30%);
+$gray-light: tint($gray, 30%);
 
 $primary-dark: shade($primary, 15%);
 $info-dark: shade($info, 15%);
 $success-dark: shade($success, 15%);
 $warning-dark: shade($warning, 15%);
 $danger-dark: shade($danger, 15%);
+$gray-dark: shade($gray, 15%);
 
 $primary-bg: tint($primary, 20%);
 $info-bg: tint($info, 20%);
 $success-bg: tint($success, 20%);
 $warning-bg: tint($warning, 20%);
 $danger-bg: tint($danger, 20%);
+$gray-bg: shade($gray, 15%);

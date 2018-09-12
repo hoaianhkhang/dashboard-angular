@@ -5,33 +5,44 @@
         .controller('EditAccountModalCtrl', EditAccountModalCtrl);
 
     function EditAccountModalCtrl($scope,$uibModalInstance,account,toastr,$stateParams,currenciesList,
-                                      $http,environmentConfig,localStorageManagement,errorHandler) {
+                                  Rehive,localStorageManagement,errorHandler) {
 
         var vm = this;
         vm.uuid = $stateParams.uuid;
         $scope.userAccount = account;
-        $scope.currenciesList = currenciesList;
+        $scope.currenciesList = currenciesList.slice();
         vm.updatedUserAddress = {};
         $scope.editUserAddress = {};
         $scope.editingUserAddress = true;
         $scope.statusOptions = ['Pending', 'Incomplete', 'Declined', 'Verified'];
         $scope.newAccountCurrencies = {list: []};
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
 
         vm.getCompanyCurrencies = function(){
             if(vm.token){
-                $http.get(environmentConfig.API + '/admin/currencies/?enabled=true&page_size=250', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
+                Rehive.admin.currencies.get({filters: {
+                    archived: false,
+                    page_size: 250
+                }}).then(function (res) {
+                    if($scope.currenciesList.length == 0){
+                        $scope.currencyOptions = res.results;
+                        $scope.$apply();
+                    } else {
+                        $scope.currenciesList.forEach(function (currencyObj) {
+                            var index = res.results.findIndex(function (element) {
+                                return element.code == currencyObj.currency.code;
+                            });
+                            if(index >=0){
+                                res.results.splice(index,1);
+                            }
+                        });
+                        $scope.currencyOptions = res.results;
+                        $scope.$apply();
                     }
-                }).then(function (res) {
-                    if (res.status === 200) {
-                        $scope.currencyOptions = res.data.data.results;
-                    }
-                }).catch(function (error) {
-                    errorHandler.evaluateErrors(error.data);
+                }, function (error) {
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };
@@ -40,20 +51,15 @@
         vm.getAccount = function(){
             if(vm.token) {
                 $scope.loadingUserAccountsList = true;
-                $http.get(environmentConfig.API + '/admin/accounts/' + $scope.userAccount.reference + '/', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
+                Rehive.admin.accounts.get({reference: $scope.userAccount.reference}).then(function (res) {
                     $scope.loadingUserAccountsList = false;
-                    if (res.status === 200) {
-                        $scope.editUserAccountParams = res.data.data;
-                    }
-                }).catch(function (error) {
+                    $scope.editUserAccountParams = res;
+                    $scope.$apply();
+                }, function (error) {
                     $scope.loadingUserAccountsList = false;
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };
@@ -68,25 +74,21 @@
 
             if(vm.token) {
                 $scope.loadingUserAccountsList = true;
-                $http.patch(environmentConfig.API + '/admin/accounts/' + editUserAccountParams.reference + '/',updateUserAccount , {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
+                Rehive.admin.accounts.update(editUserAccountParams.reference, updateUserAccount).then(function (res) {
+                    if($scope.newAccountCurrencies.list.length > 0){
+                        $scope.addAccountCurrency($scope.newAccountCurrencies.list);
+                        $scope.$apply();
+                    } else {
+                        $scope.loadingUserAccountsList = false;
+                        toastr.success('Account updated successfully');
+                        $uibModalInstance.close(res);
+                        $scope.$apply();
                     }
-                }).then(function (res) {
-                    if (res.status === 200) {
-                        if($scope.newAccountCurrencies.list.length > 0){
-                            $scope.addAccountCurrency($scope.newAccountCurrencies.list);
-                        } else {
-                            $scope.loadingUserAccountsList = false;
-                            toastr.success('Account updated successfully');
-                            $uibModalInstance.close(res.data);
-                        }
-                    }
-                }).catch(function (error) {
+                }, function (error) {
                     $scope.loadingUserAccountsList = false;
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };
@@ -95,25 +97,20 @@
 
             listOfCurrencies.forEach(function (element,index,array) {
                 if(vm.token) {
-                    $http.post(environmentConfig.API + '/admin/accounts/' + $scope.userAccount.reference + '/currencies/',{currency: element.code}, {
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': vm.token
+                    Rehive.admin.accounts.currencies.create($scope.userAccount.reference,{currency: element.code}).then(function (res) {
+                        if(index == (array.length - 1)) {
+                            $scope.loadingUserAccountsList = false;
+                            $scope.newAccountCurrencies = {list: []};
+                            toastr.success('Account updated successfully');
+                            $uibModalInstance.close(res);
+                            $scope.$apply();
                         }
-                    }).then(function (res) {
-                        if (res.status === 201) {
-                            if(index == (array.length - 1)) {
-                                $scope.loadingUserAccountsList = false;
-                                $scope.newAccountCurrencies = {list: []};
-                                toastr.success('Account updated successfully');
-                                $uibModalInstance.close(res.data);
-                            }
-                        }
-                    }).catch(function (error) {
+                    }, function (error) {
                         $scope.newAccountCurrencies = {list: []};
                         $scope.loadingUserAccountsList = false;
-                        errorHandler.evaluateErrors(error.data);
+                        errorHandler.evaluateErrors(error);
                         errorHandler.handleErrors(error);
+                        $scope.$apply();
                     });
                 }
             });

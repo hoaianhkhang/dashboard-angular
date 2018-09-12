@@ -173,7 +173,7 @@
         $scope.orderByOptionsWarmstorage = ['Latest','Largest','Smallest'];
 
         sharedResources.getSubtypes().then(function (res) {
-            $scope.subtypeOptionsWarmstorage = _.pluck(res.data.data,'name');
+            $scope.subtypeOptionsWarmstorage = _.pluck(res,'name');
             $scope.subtypeOptionsWarmstorage.unshift('');
         });
 
@@ -366,7 +366,7 @@
 
         $scope.getLatestWarmstorageTransactions = function(applyFilter){
             if(vm.token) {
-
+                $scope.loadingWarmstorage =  true;
                 $scope.showingWarmstorageFilters = false;
 
                 $scope.transactionsWarmstorageStateMessage = '';
@@ -410,18 +410,6 @@
 
         $scope.refreshWarmstoragePage = function () {
             vm.getWarmstorage('applyFilter');
-        };
-
-        $scope.goToCredit = function () {
-            $state.go('transactions.credit',{"email": $scope.warmstorageObj.user_account_identifier,
-                "account": $scope.warmstorageObj.rehive_account_reference,
-                "currencyCode": 'XLM'});
-        };
-
-        $scope.goToDebit = function () {
-            $state.go('transactions.debit',{"email": $scope.warmstorageObj.user_account_identifier,
-                "account": $scope.warmstorageObj.rehive_account_reference,
-                "currencyCode": 'XLM'});
         };
 
         $scope.openWarmstorageModal = function (page, size,transaction) {

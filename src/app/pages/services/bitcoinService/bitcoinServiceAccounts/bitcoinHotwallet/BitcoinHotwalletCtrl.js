@@ -5,7 +5,7 @@
         .controller('BitcoinHotwalletCtrl', BitcoinHotwalletCtrl);
 
     /** @ngInject */
-    function BitcoinHotwalletCtrl($scope,localStorageManagement,currenciesList,$http,errorHandler,toastr,sharedResources,
+    function BitcoinHotwalletCtrl($scope,localStorageManagement,currenciesList,_,$http,errorHandler,toastr,sharedResources,
                                   $uibModal,currencyModifiers,serializeFiltersService,environmentConfig) {
         $scope.bitcoinAccountSettingView = '';
 
@@ -137,7 +137,7 @@
         $scope.orderByOptionsHotwallet = ['Latest','Largest','Smallest'];
 
         sharedResources.getSubtypes().then(function (res) {
-            $scope.subtypeOptionsHotwallet = _.pluck(res.data.data,'name');
+            $scope.subtypeOptionsHotwallet = _.pluck(res,'name');
             $scope.subtypeOptionsHotwallet.unshift('');
         });
 
@@ -330,7 +330,7 @@
 
         $scope.getLatestHotwalletTransactions = function(applyFilter){
             if(vm.token) {
-
+                $scope.loadingHotwalletTransactions =  true;
                 $scope.showingHotwalletFilters = false;
 
                 $scope.transactionsHotwalletStateMessage = '';

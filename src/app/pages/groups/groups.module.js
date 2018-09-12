@@ -8,7 +8,8 @@
         'BlurAdmin.pages.groups.groupPermissions',
         'BlurAdmin.pages.groups.groupAccountConfigurations',
         'BlurAdmin.pages.groups.groupManagementTiers',
-        'BlurAdmin.pages.groups.groupTransactionSettings'
+        'BlurAdmin.pages.groups.groupTransactionSettings',
+        'BlurAdmin.pages.groups.groupStats'
     ])
         .config(routeConfig);
 

@@ -13,22 +13,20 @@
                     <a ng-click="toggleCustomCurrencyView()" class="pointer pull-right">Add custom currency</a>
                 </p>
             </div>
-
             <div class="form-group custom-form">
-                <label>Currencies <span class="required-icon">*</span>
-                    <small class="text-muted">(Hold CTRL to select multiple currencies)</small>
-                </label>
-                <br>
-                <select class="form-control pointer divider currencies-setup-dropdown" ng-model="currenciesToAdd" multiple
-                        ng-options="currency.code + ' - ' + currency.description for currency in initialCurrencies | orderBy: 'code'"
-                        required>
-                </select>
+                <label>Currencies <span class="required-icon">*</span></label>
+                <div class="reward-multi-select">
+                    <select chosen
+                            multiple
+                            data-placeholder-text-multiple="'Choose one or more currencies'"
+                            width="100"
+                            ng-model="currenciesToAdd"
+                            ng-options="currency.code + ' - ' + currency.description for currency in initialCurrencies | orderBy: 'code'"
+                            required>
+                        <option value=""></option>
+                    </select>
+                </div>
             </div>
-            <p>Currencies selected:
-                <span ng-repeat="currency in currenciesToAdd | orderBy: 'code'">
-                    <strong>{{$last ? ' ' + currency.code : currency.code + ',' }}</strong>
-                </span>
-            </p>
         </div>
 
         <div id="addCustomCurrency" ng-show="showCustomCurrency && !showCurrencyConfirmPanel">

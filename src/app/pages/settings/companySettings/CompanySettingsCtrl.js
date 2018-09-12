@@ -5,10 +5,10 @@
         .controller('CompanySettingsCtrl', CompanySettingsCtrl);
 
     /** @ngInject */
-    function CompanySettingsCtrl($scope,environmentConfig,$rootScope,toastr,$http,localStorageManagement,errorHandler,_) {
+    function CompanySettingsCtrl($scope,Rehive,toastr,localStorageManagement,errorHandler) {
 
         var vm = this;
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
         $scope.companyImageUrl = "/assets/img/app/placeholders/hex_grey.svg";
         $scope.loadingCompanySettings = true;
         $scope.company = {
@@ -26,21 +26,16 @@
         vm.getCompanySettings = function () {
             if(vm.token) {
                 $scope.loadingCompanySettings = true;
-                $http.get(environmentConfig.API + '/admin/company/', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
+                Rehive.admin.company.get().then(function (res) {
                     $scope.loadingCompanySettings = false;
-                    if (res.status === 200) {
-                        $scope.company.details = res.data.data;
-                        $scope.companySettingsObj = $scope.company.details.settings;
-                    }
-                }).catch(function (error) {
+                    $scope.company.details = res;
+                    $scope.companySettingsObj = $scope.company.details.settings;
+                    $scope.$apply();
+                }, function (error) {
                     $scope.loadingCompanySettings = false;
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };
@@ -57,20 +52,15 @@
             }
 
             if(vm.token) {
-                $http.patch(environmentConfig.API + '/admin/company/settings/',updatedSetting, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
-                    if (res.status === 200) {
-                        $scope.companySettingsObj = {};
-                        $scope.companySettingsObj = res.data.data;
-                        toastr.success("Company setting successfully updated");
-                    }
-                }).catch(function (error) {
-                    errorHandler.evaluateErrors(error.data);
+                Rehive.admin.company.settings.update(updatedSetting).then(function (res) {
+                    $scope.companySettingsObj = {};
+                    $scope.companySettingsObj = res;
+                    toastr.success("Company setting successfully updated");
+                    $scope.$apply();
+                }, function (error) {
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };

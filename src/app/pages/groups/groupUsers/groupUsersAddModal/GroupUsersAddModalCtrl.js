@@ -4,54 +4,51 @@
     angular.module('BlurAdmin.pages.groups.groupUsers')
         .controller('GroupUsersAddModalCtrl', GroupUsersAddModalCtrl);
 
-    function GroupUsersAddModalCtrl($scope,$uibModalInstance,toastr,group,$http,
-                                    environmentConfig,localStorageManagement,errorHandler) {
+    function GroupUsersAddModalCtrl($scope,$uibModalInstance,toastr,group,Rehive,
+                                    localStorageManagement,errorHandler) {
 
         var vm = this;
         vm.group = group;
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
         $scope.userGroupParams = {
             inputType: 'Email'
         };
         $scope.loadingGroup = false;
-        $scope.userOptions = ['Email','Mobile','Identifier'];
+        $scope.userOptions = ['Email','Mobile','Id'];
 
         $scope.getUser = function(userGroupParams){
             if(vm.token) {
                 $scope.loadingGroup = true;
                 vm.filter = '';
                 vm.filterString = '';
+                vm.filterObj = {};
 
                 if(userGroupParams.inputType == 'Email'){
-                    vm.filter = 'email__contains=';
-                    vm.filterString = encodeURIComponent(userGroupParams.user);
+                    vm.filter = 'email__contains';
+                    vm.filterString = userGroupParams.user;
                 } else if(userGroupParams.inputType == 'Mobile'){
-                    vm.filter = 'mobile_number__contains=';
-                    vm.filterString = encodeURIComponent(userGroupParams.user);
+                    vm.filter = 'mobile__contains';
+                    vm.filterString = userGroupParams.user;
                 } else {
-                    vm.filter = 'identifier__contains=';
+                    vm.filter = 'id__contains';
                     vm.filterString = userGroupParams.user;
                 }
 
-                $http.get(environmentConfig.API + '/admin/users/?' + vm.filter + vm.filterString, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
+                vm.filterObj[vm.filter] = vm.filterString;
+
+                Rehive.admin.users.get({filters: vm.filterObj}).then(function (res) {
+                    if(res.results.length == 0){
+                        toastr.error('No user found');
+                        $scope.loadingGroup = false;
+                    } else {
+                        $scope.user = res.results[0];
+                        $scope.deleteUserGroup();
                     }
-                }).then(function (res) {
-                    if (res.status === 200) {
-                        if(res.data.data.results.length == 0){
-                            toastr.error('No user found');
-                            $scope.loadingGroup = false;
-                        } else {
-                            $scope.user = res.data.data.results[0];
-                            $scope.deleteUserGroup();
-                        }
-                    }
-                }).catch(function (error) {
+                }, function (error) {
                     $scope.loadingGroup = false;
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };
@@ -59,19 +56,13 @@
         $scope.deleteUserGroup = function () {
             $scope.loadingGroup = true;
             if($scope.user.groups[0] && $scope.user.groups[0].name){
-                $http.delete(environmentConfig.API + '/admin/users/' + $scope.user.identifier + '/groups/' + $scope.user.groups[0].name + '/', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
-                    if (res.status === 200) {
-                        vm.addUserToGroup();
-                    }
-                }).catch(function (error) {
+                Rehive.admin.users.groups.delete($scope.user.id ,$scope.user.groups[0].name).then(function (res) {
+                    vm.addUserToGroup();
+                }, function (error) {
                     $scope.loadingGroup = false;
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             } else {
                 vm.addUserToGroup();
@@ -80,21 +71,18 @@
 
         vm.addUserToGroup = function(){
             if(vm.token) {
-                $http.post(environmentConfig.API + '/admin/users/' + $scope.user.identifier + '/groups/', {group: vm.group.name}, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
+                Rehive.admin.users.groups.create($scope.user.id, {
+                    group: vm.group.name
                 }).then(function (res) {
                     $scope.loadingGroup = false;
-                    if (res.status === 201) {
-                        toastr.success('Group successfully added');
-                        $uibModalInstance.close(res.data);
-                    }
-                }).catch(function (error) {
+                    toastr.success('Group successfully added');
+                    $uibModalInstance.close(res);
+                    $scope.$apply();
+                }, function (error) {
                     $scope.loadingGroup = false;
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };

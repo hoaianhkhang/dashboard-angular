@@ -7,13 +7,13 @@
 
   angular.module('BlurAdmin.pages', [
       'ui.router',
-      'BlurAdmin.pages.changePassword',
       'BlurAdmin.pages.multiFactorAuth',
       'BlurAdmin.pages.smsAuth',
       'BlurAdmin.pages.multiFactorAuthVerify',
       'BlurAdmin.pages.settings',
       'BlurAdmin.pages.currencies',
       'BlurAdmin.pages.transactions',
+      'BlurAdmin.pages.accounts',
       'BlurAdmin.pages.groups',
       'BlurAdmin.pages.currency',
       'BlurAdmin.pages.webhooks',
@@ -28,8 +28,8 @@
       'BlurAdmin.pages.companyInfoRequest',
       'BlurAdmin.pages.welcomeToRehive',
       'BlurAdmin.pages.newCompanySetup',
-      'BlurAdmin.pages.buildAFintechApp',
-      'BlurAdmin.pages.initialSetupScreen'
+      'BlurAdmin.pages.initialSetupScreen',
+      'BlurAdmin.pages.accountInfo'
   ])
       .config(routeConfig);
 

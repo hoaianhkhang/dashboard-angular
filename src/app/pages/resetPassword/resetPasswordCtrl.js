@@ -5,20 +5,20 @@
         .controller('ResetPasswordCtrl', ResetPasswordCtrl);
 
     /** @ngInject */
-    function ResetPasswordCtrl($scope,$http,toastr,$location,environmentConfig,errorHandler) {
+    function ResetPasswordCtrl($scope,Rehive,toastr,$location,errorHandler) {
 
         $scope.resetPasswordFunction = function(user,company){
-            $http.post(environmentConfig.API + '/auth/password/reset/', {
+            Rehive.auth.password.reset({
                 user: user,
                 company: company
-            }).then(function (res) {
-                if (res.status === 200) {
-                    toastr.success('Password reset message has been sent');
-                    $location.path('/login');
-                }
-            }).catch(function (error) {
-                errorHandler.evaluateErrors(error.data);
+            }).then(function(res){
+                toastr.success('Password reset message has been sent');
+                $location.path('/login');
+                $scope.$apply();
+            }, function (error) {
+                errorHandler.evaluateErrors(error);
                 errorHandler.handleErrors(error);
+                $scope.$apply();
             });
         };
 

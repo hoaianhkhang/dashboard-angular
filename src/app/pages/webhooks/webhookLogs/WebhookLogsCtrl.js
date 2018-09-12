@@ -5,10 +5,10 @@
         .controller('WebhookLogsCtrl', WebhookLogsCtrl);
 
     /** @ngInject */
-    function WebhookLogsCtrl($scope,environmentConfig,$http,localStorageManagement,serializeFiltersService,errorHandler,$window,$location) {
+    function WebhookLogsCtrl($scope,Rehive,localStorageManagement,serializeFiltersService,errorHandler,$window,$location) {
 
         var vm = this;
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
         $scope.loadingWebhooks = true;
 
         $scope.pagination = {
@@ -17,38 +17,33 @@
             maxSize: 5
         };
 
-        vm.getWebhookTasksUrl = function(){
+        vm.getWebhookTasksFiltersObj = function(){
 
             var searchObj = {
                 page: $scope.pagination.pageNo,
                 page_size: $scope.pagination.itemsPerPage || 1
             };
 
-            return environmentConfig.API + '/admin/webhook-tasks/?' + serializeFiltersService.serializeFilters(searchObj);
+            return serializeFiltersService.objectFilters(searchObj);
         };
 
         $scope.getWebhookTasks = function () {
             if(vm.token) {
                 $scope.loadingWebhooks = true;
 
-                var webhookTasksUrl = vm.getWebhookTasksUrl();
+                var webhookTasksFiltersObj = vm.getWebhookTasksFiltersObj();
 
-                $http.get(webhookTasksUrl, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
+                Rehive.admin.webhookTasks.get({filters: webhookTasksFiltersObj}).then(function (res) {
                     $scope.loadingWebhooks = false;
-                    if (res.status === 200) {
-                        $scope.webhookTasksData = res.data.data;
-                        $scope.webhookTasks = res.data.data.results;
-                        $window.scrollTo(0, 0);
-                    }
-                }).catch(function (error) {
+                    $scope.webhookTasksData = res;
+                    $scope.webhookTasks = res.results;
+                    $window.scrollTo(0, 0);
+                    $scope.$apply();
+                }, function (error) {
                     $scope.loadingWebhooks = false;
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };

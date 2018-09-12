@@ -5,39 +5,55 @@
         .controller('WebhooksListCtrl', WebhooksListCtrl);
 
     /** @ngInject */
-    function WebhooksListCtrl($scope,environmentConfig,$uibModal,toastr,$filter,$http,$location,localStorageManagement,errorHandler,$window,$state) {
+
+    function WebhooksListCtrl($scope,Rehive,$uibModal,serializeFiltersService,
+                              $location,localStorageManagement,errorHandler,$window,$state) {
 
         var vm = this;
         vm.updatedWebhook = {};
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
         $scope.loadingWebhooks = true;
 
         var location = $location.path();
         var locationArray = location.split('/');
         $scope.locationIndicator = locationArray[(locationArray.length -1)];
 
-        vm.getWebhooks = function () {
+        $scope.pagination = {
+            itemsPerPage: 25,
+            pageNo: 1,
+            maxSize: 5
+        };
+
+        vm.getWebhooksFiltersObj = function(){
+            var searchObj = {
+                page: $scope.pagination.pageNo,
+                page_size: $scope.pagination.itemsPerPage || 25
+            };
+
+            return serializeFiltersService.objectFilters(searchObj);
+        };
+
+        $scope.getWebhooks = function () {
             if(vm.token) {
                 $scope.loadingWebhooks = true;
-                $http.get(environmentConfig.API + '/admin/webhooks/', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
+
+                var webhooksFiltersObj = vm.getWebhooksFiltersObj();
+
+                Rehive.admin.webhooks.get({filters: webhooksFiltersObj}).then(function (res) {
                     $scope.loadingWebhooks = false;
-                    if (res.status === 200) {
-                        $scope.webhookList = res.data.data.results;
-                        $window.scrollTo(0, 0);
-                    }
-                }).catch(function (error) {
+                    $scope.webhooksData = res;
+                    $scope.webhookList = res.results;
+                    $window.scrollTo(0, 0);
+                    $scope.$apply();
+                }, function (error) {
                     $scope.loadingWebhooks = false;
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };
-        vm.getWebhooks();
+        $scope.getWebhooks();
 
         $scope.openCreateWebhookModal = function (page, size) {
             vm.theModal = $uibModal.open({
@@ -58,7 +74,7 @@
 
             vm.theModal.result.then(function(webhook){
                 if(webhook){
-                    vm.getWebhooks();
+                    $scope.getWebhooks();
                 }
             }, function(){
             });
@@ -80,7 +96,7 @@
 
             vm.theModal.result.then(function(webhook){
                 if(webhook){
-                    vm.getWebhooks();
+                    $scope.getWebhooks();
                 }
             }, function(){
             });
@@ -102,7 +118,7 @@
 
             vm.theModal.result.then(function(webhook){
                 if(webhook){
-                    vm.getWebhooks();
+                    $scope.getWebhooks();
                 }
             }, function(){
             });

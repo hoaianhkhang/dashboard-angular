@@ -5,7 +5,7 @@
         .controller('ResetPasswordConfirmationCtrl', ResetPasswordConfirmationCtrl);
 
     /** @ngInject */
-    function ResetPasswordConfirmationCtrl($scope,$stateParams,$http,toastr,$location,environmentConfig,errorHandler) {
+    function ResetPasswordConfirmationCtrl($scope,Rehive,$stateParams,toastr,$location,errorHandler) {
 
         $scope.passwordResetDone = false;
         $scope.resettingPassword = false;
@@ -23,22 +23,22 @@
 
         $scope.resetPassword = function(passwordResetParams){
             $scope.resettingPassword = true;
-            $http.post(environmentConfig.API + '/auth/password/reset/confirm/', {
+            Rehive.auth.password.resetConfirm({
                 new_password1: passwordResetParams.new_password1,
                 new_password2: passwordResetParams.new_password2,
                 uid: $stateParams.uid,
                 token: $stateParams.token
-            }).then(function (res) {
-                if (res.status === 200) {
-                    $scope.resettingPassword = false;
-                    $scope.passwordResetDone = true;
-                    toastr.success('Password has been reset with the new password');
-                    $location.path('/login');
-                }
-            }).catch(function (error) {
+            }).then(function(res){
                 $scope.resettingPassword = false;
-                errorHandler.evaluateErrors(error.data);
+                $scope.passwordResetDone = true;
+                toastr.success('Password has been reset with the new password');
+                $location.path('/login');
+                $scope.$apply();
+            },function(error){
+                $scope.resettingPassword = false;
+                errorHandler.evaluateErrors(error);
                 errorHandler.handleErrors(error);
+                $scope.$apply();
             });
         };
 

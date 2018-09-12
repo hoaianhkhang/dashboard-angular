@@ -1,0 +1,58 @@
+<div ng-hide="loadingCampaigns" class="panel">
+    <div class="panel-heading">
+        <span class="user-details-panel-title">Campaigns list</span>
+        <a ng-click="goToCreateCampaignView()" class="user-details-panel-link pull-right pointer">Add</a>
+    </div>
+    <div class="panel-body">
+        <div>
+            <div ng-show="campaignList.length > 0" class="upper-pagination">
+                <p uib-pagination boundary-links="true" items-per-page="campaignPagination.itemsPerPage"  total-items="campaignListData.count" ng-model="campaignPagination.pageNo"
+                   max-size="campaignPagination.maxSize" class="pagination-sm pull-right no-margin" force-ellipses="true" ng-change="getCampaignList()"
+                   previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></p>
+            </div>
+            <table ng-show="campaignList.length > 0" class="table">
+                <tbody>
+                <tr>
+                    <th class="rehive-table-row-first-child">Campaign Id</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Start date</th>
+                    <th>End date</th>
+                    <th>Balance</th>
+                    <th>Status</th>
+                    <th></th>
+                </tr>
+                <tr ng-repeat="campaign in campaignList | orderBy: '-created'" class="editable-row">
+                    <td class="rehive-table-row-first-child"><div title="{{campaign.id}}" class="transactions-list-element" ng-bind="campaign.id"></div></td>
+                    <td><div title="{{campaign.name}}" class="transactions-list-element" ng-bind="campaign.name"></div></td>
+                    <td><div title="{{campaign.description}}" class="transactions-list-element" ng-bind="campaign.description"></div></td>
+                    <td><div title="{{campaign.start_date | date:'mediumDate'}} {{campaign.start_date | date:'shortTime'}}" class="transactions-list-element" ng-bind="campaign.start_date | date:'mediumDate' + ' ' + campaign.start_date | date:'shortTime'"></div></td>
+                    <td><div title="{{campaign.end_date | date:'mediumDate'}} {{campaign.end_date | date:'shortTime'}}" class="transactions-list-element" ng-bind="campaign.end_date | date:'mediumDate' + ' ' + campaign.end_date | date:'shortTime'"></div></td>
+                    <td><div title="{{(campaign.reward_balance | currencyModifiersFilter: campaign.currency.divisibility) + '/' + (campaign.reward_total | currencyModifiersFilter: campaign.currency.divisibility) + ' ' + campaign.currency.code}}"
+                             class="transactions-list-element" ng-bind="(campaign.reward_balance | currencyModifiersFilter: campaign.currency.divisibility) + '/' + (campaign.reward_total | currencyModifiersFilter: campaign.currency.divisibility) + ' ' + campaign.currency.code"></div></td>
+                    <td><div title="{{campaign.status | capitalizeWord}}" class="transactions-list-element" ng-bind="campaign.status | capitalizeWord"></div></td>
+                    <td class="rehive-table-row-last-child">
+                        <span class="user-details-currencies-options-container pull-right" ng-click="showCampaignOptionsBox(campaign); $event.stopPropagation()" click-outside="closeCampaignOptionsBox()">
+                        <span class="fa fa-ellipsis-h pull-right pointer user-details-address-options no-margin"></span>
+                            <ul ng-show="campaign.id == campaignsId" class="user-details-address-options-box">
+                                <li ng-click="showCampaignOptionsBox(campaign)"><i class="dropdown-arr"></i></li>
+                                <li ng-click="openEditCampaignView(campaign)">Edit</li>
+                                <li ng-click="deleteCampaignPrompt(campaign)">Delete</li>
+                            </ul>
+                    </span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <div ng-show="campaignList.length > 0">
+                <p uib-pagination boundary-links="true" items-per-page="campaignPagination.itemsPerPage"  total-items="campaignListData.count" ng-model="campaignPagination.pageNo"
+                   max-size="campaignPagination.maxSize" class="pagination-sm pull-right transaction-history-pagination" force-ellipses="true" ng-change="getCampaignList()"
+                   previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></p>
+            </div>
+            <i ng-hide="campaignList.length > 0">No campaigns are available.</i>
+        </div>
+    </div>
+</div>
+<div ba-panel ng-show="loadingCampaigns">
+    <loading-image></loading-image>
+</div>

@@ -4,33 +4,28 @@
     angular.module('BlurAdmin.pages.newCompanySetup.setupCurrencies')
         .controller("AddCustomCurrencyModalCtrl", AddCustomCurrencyModalCtrl);
 
-    function AddCustomCurrencyModalCtrl($scope,$http,toastr,localStorageManagement,
-                                 environmentConfig,errorHandler,$uibModalInstance) {
+    function AddCustomCurrencyModalCtrl(Rehive,$scope,toastr,localStorageManagement,
+                                        errorHandler,$uibModalInstance) {
 
         var vm = this;
-        vm.token = localStorageManagement.getValue("TOKEN");
+        vm.token = localStorageManagement.getValue("token");
         $scope.newCurrencyParams = {};
         $scope.loadingCustomCurrencies = false;
 
         $scope.addCustomCompanyCurrency = function(newCurrencyParams){
 
             $scope.loadingCustomCurrencies = true;
-            newCurrencyParams.enabled = true;
-            $http.post(environmentConfig.API + '/admin/currencies/', newCurrencyParams, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': vm.token
-                }
-            }).then(function (res) {
+            newCurrencyParams.archived = false;
+            Rehive.admin.currencies.create(newCurrencyParams).then(function (res) {
                 $scope.loadingCustomCurrencies = false;
-                if (res.status === 201) {
-                    toastr.success('New custom currency has been created successfully');
-                    $uibModalInstance.close(res.data);
-                }
-            }).catch(function (error) {
+                toastr.success('New custom currency has been created successfully');
+                $uibModalInstance.close(res);
+                $scope.$apply();
+            }, function (error) {
                 $scope.loadingCustomCurrencies = false;
-                errorHandler.evaluateErrors(error.data);
+                errorHandler.evaluateErrors(error);
                 errorHandler.handleErrors(error);
+                $scope.$apply();
             });
         };
 

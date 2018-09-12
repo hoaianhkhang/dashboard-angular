@@ -1,3 +1,7 @@
+.currency-value-size{
+  overflow-wrap: break-word;
+}
+
 .currencies-pagination{
   height: 70px;
 }
@@ -13,8 +17,7 @@ hr.sidebar-custom-hr{
 }
 
 span.sidebar-custom-menu-title{
-  position: absolute;
-  top: 16px;
+  position: relative;
   z-index: 100;
 }
 
@@ -28,8 +31,7 @@ span.should-be-blue{
 
 .currencies-title{
   color: #022b36;
-  font-size: 16px;
-  font-weight: bold;
+  font-size: 22px!important;
   margin: 0 0 19px 0;
   position: relative;
   top: -7px;
@@ -52,6 +54,10 @@ span.should-be-blue{
   position: absolute;
   top: 25px;
   right: 25px;
+}
+
+.divider-6{
+  margin-bottom: 6px !important;
 }
 
 .divider{

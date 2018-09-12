@@ -5,36 +5,33 @@
         .controller('AddGroupTierLimitCtrl', AddGroupTierLimitCtrl);
 
     function AddGroupTierLimitCtrl($scope,$uibModalInstance,sharedResources,selectedTier,toastr,currencyModifiers,
-                                   $http,environmentConfig,localStorageManagement,errorHandler,_,$stateParams) {
+                                   Rehive,localStorageManagement,errorHandler,_,$stateParams) {
 
         var vm = this;
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
         vm.groupName = $stateParams.groupName;
         $scope.selectedTier = selectedTier;
         $scope.addingTierLimit = false;
         $scope.loadingSubtypes = false;
         $scope.tierLimitsParams = {
-            tx_type: 'Credit',
+            tx_type: 'credit',
             type: 'Maximum',
             subtype: ''
         };
-        $scope.txTypeOptions = ['Credit','Debit'];
         $scope.typeOptions = ['Maximum','Maximum per day','Maximum per month','Minimum','Overdraft'];
 
         vm.getCompanyCurrencies = function(){
             if(vm.token){
-                $http.get(environmentConfig.API + '/admin/currencies/?enabled=true&page_size=250', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
-                    if (res.status === 200) {
-                        $scope.currenciesOptions = res.data.data.results;
-                    }
-                }).catch(function (error) {
-                    errorHandler.evaluateErrors(error.data);
+                Rehive.admin.currencies.get({filters: {
+                    archived: false,
+                    page_size: 250
+                }}).then(function (res) {
+                    $scope.currenciesOptions = res.results;
+                    $scope.$apply();
+                }, function (error) {
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };
@@ -49,12 +46,13 @@
             }
 
             sharedResources.getSubtypes().then(function (res) {
-                res.data.data = res.data.data.filter(function (element) {
+                res = res.filter(function (element) {
                     return element.tx_type == (params.tx_type).toLowerCase();
                 });
-                $scope.subtypeOptions = _.pluck(res.data.data,'name');
+                $scope.subtypeOptions = _.pluck(res,'name');
                 $scope.subtypeOptions.unshift('');
                 $scope.loadingSubtypes = false;
+                $scope.$apply();
             });
         };
         $scope.getSubtypesArray($scope.tierLimitsParams);
@@ -79,26 +77,22 @@
 
                 tierLimitsParams.currency = tierLimitsParams.currency.code;
 
-                $http.post(environmentConfig.API + '/admin/groups/' + vm.groupName + '/tiers/' + $scope.selectedTier.id + '/limits/',tierLimitsParams,{
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
+                Rehive.admin.groups.tiers.limits.create(vm.groupName,$scope.selectedTier.id, tierLimitsParams).then(function (res)
+                {
                     $scope.addingTierLimit = false;
-                    if (res.status === 201) {
-                        toastr.success('Limit added successfully to tier');
-                        $uibModalInstance.close($scope.selectedTier.level);
-                    }
-                }).catch(function (error) {
+                    toastr.success('Limit added successfully to tier');
+                    $uibModalInstance.close($scope.selectedTier.level);
+                    $scope.$apply();
+                }, function (error) {
                     $scope.tierLimitsParams = {
                         tx_type: 'Credit',
                         type: 'Maximum',
                         subtype: ''
                     };
                     $scope.addingTierLimit = false;
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };

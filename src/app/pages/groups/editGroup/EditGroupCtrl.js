@@ -5,10 +5,10 @@
         .controller('EditGroupCtrl', EditGroupCtrl);
 
     /** @ngInject */
-    function EditGroupCtrl($scope,$http,environmentConfig,localStorageManagement,$stateParams,$location,errorHandler,toastr) {
+    function EditGroupCtrl($scope,localStorageManagement,Rehive,$stateParams,$location,errorHandler,toastr) {
 
         var vm = this;
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
         $scope.groupName = $stateParams.groupName;
         vm.updatedGroup = {};
         $scope.loadingGroup = true;
@@ -23,52 +23,32 @@
         $scope.getGroup = function () {
             if(vm.token) {
                 $scope.loadingGroup = true;
-
-                $http.get(environmentConfig.API + '/admin/groups/' + $scope.groupName + '/', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
-                    if (res.status === 200) {
-                        $scope.editGroupObj = res.data.data;
-                        $scope.editGroupObj.prevName = res.data.data.name;
-                        vm.getGroupUsers($scope.editGroupObj);
-                    }
-                }).catch(function (error) {
-
-                    errorHandler.evaluateErrors(error.data);
+                Rehive.admin.groups.get({name: $scope.groupName}).then(function (res) {
+                    $scope.editGroupObj = res;
+                    $scope.editGroupObj.prevName = res.name;
+                    $scope.loadingGroup = false;
+                    $scope.$apply();
+                }, function (error) {
+                    $scope.loadingGroup = false;
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };
         $scope.getGroup();
 
-        vm.getGroupUsers = function (group) {
-            if(vm.token) {
-                $scope.loadingGroup = true;
-                $http.get(environmentConfig.API + '/admin/users/overview/?group=' + group.name, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
-                    if (res.status === 200) {
-                        $scope.totalUsersCount = res.data.data.total;
-                        $scope.activeUsersCount = res.data.data.active;
-                        $scope.loadingGroup = false;
-                    }
-                }).catch(function (error) {
-                    $scope.loadingGroup = false;
-                    errorHandler.evaluateErrors(error.data);
-                    errorHandler.handleErrors(error);
-                });
-            }
-        };
-
         $scope.groupChanged = function(field){
             if(field == 'name' && $scope.editGroupObj.name){
                 $scope.editGroupObj.name = $scope.editGroupObj.name.toLowerCase();
+            }
+
+            if(field == 'default' && $scope.editGroupObj.default){
+                $scope.editGroupObj['public'] = true;
+                vm.updatedGroup['public'] = $scope.editGroupObj['public'];
+            } else if(field == 'public' && !$scope.editGroupObj.public){
+                $scope.editGroupObj['default'] = false;
+                vm.updatedGroup['default'] = $scope.editGroupObj['default'];
             }
 
             vm.updatedGroup[field] = $scope.editGroupObj[field];
@@ -77,26 +57,21 @@
         $scope.updateGroupObj = function (editGroupObj) {
             if(vm.token) {
                 $scope.loadingGroup = true;
-                $http.patch(environmentConfig.API + '/admin/groups/' + editGroupObj.prevName + '/',vm.updatedGroup, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
+                Rehive.admin.groups.update(editGroupObj.prevName,vm.updatedGroup).then(function (res) {
+                    if(editGroupObj.prevName == editGroupObj.name){
+                        $scope.loadingGroup = false;
+                        toastr.success('Group successfully edited');
+                        $scope.getGroup();
+                    } else {
+                        $location.path('/groups/' + res.name + '/details');
+                        toastr.success('Group successfully edited');
                     }
-                }).then(function (res) {
-                    if (res.status === 200) {
-                        if(editGroupObj.prevName == editGroupObj.name){
-                            $scope.loadingGroup = false;
-                            toastr.success('Group successfully edited');
-                            $scope.getGroup();
-                        } else {
-                            $location.path('/groups/' + res.data.data.name + '/details');
-                            toastr.success('Group successfully edited');
-                        }
-                    }
-                }).catch(function (error) {
+                    $scope.$apply();
+                }, function (err) {
                     $scope.loadingGroup = false;
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };

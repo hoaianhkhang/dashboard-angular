@@ -1,5 +1,13 @@
-.sortable-header:hover{
-  background-color: #f4f4f4!important;
+
+.sortable-header:hover {
+  background-color: #f4f4f4 !important;
+}
+
+.user-metadata-tile {
+  width: 100%;
+  & .user-details-metadata{
+    width: inherit;
+  }
 }
 
 .move-icon{

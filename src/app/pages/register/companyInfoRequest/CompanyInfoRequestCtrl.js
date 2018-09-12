@@ -5,53 +5,41 @@
         .controller('CompanyInfoRequestCtrl', CompanyInfoRequestCtrl);
 
     /** @ngInject */
-    function CompanyInfoRequestCtrl($rootScope,$scope,$http,toastr,localStorageManagement,environmentConfig,$location,errorHandler,userVerification) {
+
+    function CompanyInfoRequestCtrl($rootScope,Rehive,$scope,toastr,localStorageManagement,
+                                    $location,errorHandler) {
 
         var vm = this;
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
         $rootScope.$pageFinishedLoading = false;
         $scope.company = {
             name: ''
         };
 
         $scope.goToNextView = function(){
-            $rootScope.userFullyVerified = true;
             $location.path('company/setup/initial');
         };
 
         vm.getCompanyInfo = function () {
             if(vm.token) {
-                $http.get(environmentConfig.API + '/admin/company/', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
+                Rehive.admin.company.get().then(function (res) {
+                    if(res && res.name){
+                        $rootScope.pageTopObj.companyObj = {};
+                        $rootScope.pageTopObj.companyObj = res;
+                        $location.path('company/setup/initial');
+                        $scope.$apply();
+                    } else {
+                        $rootScope.$pageFinishedLoading = true;
+                        $scope.$apply();
                     }
-                }).then(function (res) {
-                    if (res.status === 200) {
-                        if(res.data.data && res.data.data.name){
-                            $rootScope.pageTopObj.companyObj = {};
-                            $rootScope.pageTopObj.companyObj = res.data.data;
-                            userVerification.verify(function(err,verified){
-                                if(verified){
-                                    $rootScope.userFullyVerified = true;
-                                    $location.path('company/setup/initial');
-                                } else {
-                                    $location.path('/verification');
-                                    toastr.error('Please verify your account');
-                                    $rootScope.$pageFinishedLoading = true;
-                                }
-                            });
-                        } else {
-                            $rootScope.$pageFinishedLoading = true;
-                        }
-                    }
-                }).catch(function (error) {
+                }, function (error) {
                     $rootScope.$pageFinishedLoading = true;
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     if(error.status == 403){
                         $location.path('/login');
                     }
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };
@@ -59,31 +47,17 @@
 
         $scope.updateCompanyInfo = function (company) {
             $rootScope.$pageFinishedLoading = false;
-            $http.patch(environmentConfig.API + '/admin/company/',company, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': vm.token
-                }
-            }).then(function (res) {
-                if (res.status === 200) {
-                    $rootScope.pageTopObj.companyObj = {};
-                    $rootScope.pageTopObj.companyObj = res.data.data;
-                    userVerification.verify(function(err,verified){
-                        if(verified){
-                            $rootScope.userFullyVerified = true;
-                            toastr.success('You have successfully updated the company info');
-                            $location.path('company/setup/initial');
-                        } else {
-                            $location.path('/verification');
-                            toastr.error('Please verify your account');
-                            $rootScope.$pageFinishedLoading = true;
-                        }
-                    });
-                }
-            }).catch(function (error) {
+            Rehive.admin.company.update(company).then(function (res) {
+                $rootScope.pageTopObj.companyObj = {};
+                $rootScope.pageTopObj.companyObj = res;
+                toastr.success('You have successfully updated the company info');
+                $location.path('company/setup/initial');
+                $scope.$apply();
+            }, function (error) {
                 $rootScope.$pageFinishedLoading = true;
-                errorHandler.evaluateErrors(error.data);
+                errorHandler.evaluateErrors(error);
                 errorHandler.handleErrors(error);
+                $scope.$apply();
             });
         };
 

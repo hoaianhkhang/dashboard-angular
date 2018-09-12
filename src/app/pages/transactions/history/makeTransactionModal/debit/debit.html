@@ -2,7 +2,7 @@
     <div class="transaction-form" id="debitForm">
         <div class="form-group">
             <label>User <span class="required-icon">*</span>&nbsp;
-                <i ng-show="retrievedDebitUserObj.identifier" class="fa fa-user transaction-user-icon" aria-hidden="true"></i>
+                <i ng-show="retrievedDebitUserObj.id" class="fa fa-user transaction-user-icon" aria-hidden="true"></i>
                 <div class="row transaction-user-details">
                     <table>
                         <tr>
@@ -38,10 +38,10 @@
         </div>
         <div class="form-group">
             <label>Currency <span class="required-icon">*</span>
-                <span ng-hide="retrievedDebitUserObj.identifier">Please choose user first.</span>
+                <span ng-hide="retrievedDebitUserObj.id">Please choose user first.</span>
             </label>
             <br>
-            <select class="form-control pointer" ng-model="debitTransactionData.currency" ng-change="debitCurrencySelected(debitTransactionData)" ng-disabled="!retrievedDebitUserObj.identifier"
+            <select class="form-control pointer" ng-model="debitTransactionData.currency" ng-change="debitCurrencySelected(debitTransactionData)" ng-disabled="!retrievedDebitUserObj.id"
                     ng-options="currency.code for currency in debitCurrencyOptions | orderBy: 'code' track by currency.code">
             </select>
         </div>
@@ -84,7 +84,7 @@
                     User has no accounts with selected currency.
                 </span>
             </label>
-            <select class="form-control pointer" ng-model="debitTransactionData.account" ng-change="debitAccountSelected(debitTransactionData)" ng-disabled="!debitTransactionData.currency.code || !retrievedDebitUserObj.identifier"
+            <select class="form-control pointer" ng-model="debitTransactionData.account" ng-change="debitAccountSelected(debitTransactionData)" ng-disabled="!debitTransactionData.currency.code || !retrievedDebitUserObj.id"
                     ng-options="account.name + ' - ' + account.reference disable when account.disable for account in retrievedDebitUserAccountsArray | orderBy: 'name' track by account.name">
             </select>
         </div>

@@ -4,7 +4,7 @@
     angular.module('BlurAdmin.pages.users.user')
         .controller('EditKycStatusModalCtrl', EditKycStatusModalCtrl);
 
-    function EditKycStatusModalCtrl($scope,$uibModalInstance,userStatus,toastr,uuid,$http,environmentConfig,localStorageManagement,errorHandler) {
+    function EditKycStatusModalCtrl($scope,Rehive,$uibModalInstance,userStatus,toastr,uuid,localStorageManagement,errorHandler) {
 
         var vm = this;
 
@@ -15,32 +15,25 @@
             status: userStatus
         };
         $scope.kycStatusOptions = ['Pending', 'Incomplete', 'Declined', 'Obsolete', 'Verified'];
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
 
         $scope.updateUserKycStatus = function(){
             if(vm.token) {
                 $scope.updatingUserKycStatus = true;
-                $http.patch(environmentConfig.API + '/admin/users/' + $scope.uuid + '/kyc/',{status: $scope.editUserKycStatus.status.toLowerCase()}, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
+                Rehive.admin.users.kyc.update($scope.uuid,{status: $scope.editUserKycStatus.status.toLowerCase()}).then(function (res) {
                     $scope.updatingUserKycStatus = false;
-                    if (res.status === 200) {
-                        toastr.success('Successfully updated the kyc status');
-                        $scope.editUserKycStatus = {};
-                        $uibModalInstance.close(res.data.data);
-                    }
-                }).catch(function (error) {
+                    toastr.success('Successfully updated the kyc status');
+                    $scope.editUserKycStatus = {};
+                    $uibModalInstance.close(res);
+                    $scope.$apply();
+                }, function (error) {
                     $scope.updatingUserKycStatus = false;
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };
-
-
 
     }
 })();

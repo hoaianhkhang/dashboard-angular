@@ -4,11 +4,11 @@
     angular.module('BlurAdmin.pages.transactions.history')
         .controller('CreditCtrl', CreditCtrl);
 
-    function CreditCtrl($http,$scope,errorHandler,toastr,environmentConfig,_,metadataTextService,$window,
-                        sharedResources,localStorageManagement,$state,typeaheadService,currencyModifiers) {
+    function CreditCtrl($scope,Rehive,errorHandler,metadataTextService,$window,
+                        sharedResources,localStorageManagement,typeaheadService) {
 
         var vm = this;
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
         $scope.creditSubtypeOptions = [];
         $scope.creditCurrencyOptions = [];
         $scope.creditTransactionData = {
@@ -32,24 +32,22 @@
 
         vm.getCreditCompanyCurrencies = function(){
             if(vm.token){
-                $http.get(environmentConfig.API + '/admin/currencies/?enabled=true&page_size=250', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
+                Rehive.admin.currencies.get({filters: {
+                    archived: false,
+                    page_size: 250
+                }}).then(function (res) {
+                    $scope.creditCurrencyOptions = res.results;
+                    if($scope.newTransactionParams.currencyCode) {
+                        $scope.creditTransactionData.currency = $scope.creditCurrencyOptions.find(function (element) {
+                            return element.code == $scope.newTransactionParams.currencyCode;
+                        });
+                        vm.getCreditUserAccounts($scope.retrievedCreditUserObj,$scope.creditTransactionData);
                     }
-                }).then(function (res) {
-                    if (res.status === 200) {
-                        $scope.creditCurrencyOptions = res.data.data.results;
-                        if($scope.newTransactionParams.currencyCode) {
-                            $scope.creditTransactionData.currency = $scope.creditCurrencyOptions.find(function (element) {
-                                return element.code == $scope.newTransactionParams.currencyCode;
-                            });
-                            vm.getCreditUserAccounts($scope.retrievedCreditUserObj,$scope.creditTransactionData);
-                        }
-                    }
-                }).catch(function (error) {
-                    errorHandler.evaluateErrors(error.data);
+                    $scope.$apply();
+                }, function (error) {
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };
@@ -59,7 +57,7 @@
 
         $scope.getSubtypes = function () {
             sharedResources.getSubtypes().then(function (res) {
-                $scope.creditSubtypeOptions = res.data.data;
+                $scope.creditSubtypeOptions = res;
             });
         };
         $scope.getSubtypes();
@@ -76,31 +74,29 @@
             $scope.retrievedCreditUserObj = {};
             user = creditTransactionData.user;
 
-            $http.get(environmentConfig.API + '/admin/users/?user=' + encodeURIComponent(user), {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': vm.token
-                }
-            }).then(function (res) {
-                if (res.status === 200) {
-                    if(res.data.data.results.length == 1){
-                        $scope.retrievedCreditUserObj = res.data.data.results[0];
-                        $scope.retrievedCreditUserObj.metadata = metadataTextService.convertToText($scope.retrievedCreditUserObj.metadata);
-                        if($scope.creditCurrencyOptions.length === 1){
-                            $scope.creditTransactionData.currency = $scope.creditCurrencyOptions[0];
-                            vm.getCreditUserAccounts($scope.retrievedCreditUserObj,$scope.creditTransactionData);
-                        } else if($scope.newTransactionParams.txType){
-                            vm.getCreditCompanyCurrencies();
-                        }
-                    } else {
-                        $scope.retrievedCreditUserObj = {};
-                        $scope.retrievedUserAccountsArray = [];
-                        creditTransactionData.currency = {};
+            Rehive.admin.users.get({filters: {user: user}}).then(function (res) {
+                if(res.results.length == 1){
+                    $scope.retrievedCreditUserObj = res.results[0];
+                    $scope.retrievedCreditUserObj.metadata = metadataTextService.convertToText($scope.retrievedCreditUserObj.metadata);
+                    $scope.$apply();
+                    if($scope.creditCurrencyOptions.length === 1){
+                        $scope.creditTransactionData.currency = $scope.creditCurrencyOptions[0];
+                        vm.getCreditUserAccounts($scope.retrievedCreditUserObj,$scope.creditTransactionData);
+                        $scope.$apply();
+                    } else if($scope.newTransactionParams.txType){
+                        vm.getCreditCompanyCurrencies();
+                        $scope.$apply();
                     }
+                } else {
+                    $scope.retrievedCreditUserObj = {};
+                    $scope.retrievedUserAccountsArray = [];
+                    creditTransactionData.currency = {};
+                    $scope.$apply();
                 }
-            }).catch(function (error) {
-                errorHandler.evaluateErrors(error.data);
+            }, function (error) {
+                errorHandler.evaluateErrors(error);
                 errorHandler.handleErrors(error);
+                $scope.$apply();
             });
         };
 
@@ -132,59 +128,51 @@
         };
 
         vm.getCreditUserAccounts = function (user,creditTransactionData) {
-            $http.get(environmentConfig.API + '/admin/accounts/?user='+ user.identifier, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': vm.token
+            Rehive.admin.accounts.get({filters: {user: user.id}}).then(function (res) {
+                if(res.results.length > 0){
+                    $scope.creditUserAccountsAvailable = true;
+                    vm.getCreditAccounts(user,creditTransactionData);
+                    $scope.$apply();
+                } else {
+                    $scope.creditUserAccountsAvailable = false;
+                    $scope.$apply();
                 }
-            }).then(function (res) {
-                if (res.status === 200) {
-                    if(res.data.data.results.length > 0){
-                        $scope.creditUserAccountsAvailable = true;
-                        vm.getCreditAccounts(user,creditTransactionData);
-                    } else {
-                        $scope.creditUserAccountsAvailable = false;
-                    }
-                }
-            }).catch(function (error) {
+            }, function (error) {
                 $scope.loadingTransactionSettings = false;
-                errorHandler.evaluateErrors(error.data);
+                errorHandler.evaluateErrors(error);
                 errorHandler.handleErrors(error);
+                $scope.$apply();
             });
         };
 
         vm.getCreditAccounts = function (user,creditTransactionData) {
-            $http.get(environmentConfig.API + '/admin/accounts/?user='+ user.identifier + '&currency=' + creditTransactionData.currency.code, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': vm.token
+            Rehive.admin.accounts.get({filters: {user: user.id,currency: creditTransactionData.currency.code}}).then(function (res) {
+                if(res.results.length > 0){
+                    $scope.creditCurrencyAccountsAvailable = true;
+                    res.results.find(function (account) {
+                        if(account.reference == $scope.newTransactionParams.accountUser){
+                            creditTransactionData.account = account;
+                            $scope.creditAccountSelected(creditTransactionData);
+                            return true;
+                        } else if(account.primary){
+                            account.name = account.name + ' - (primary)';
+                            creditTransactionData.account = account;
+                            $scope.creditAccountSelected(creditTransactionData);
+                            return true;
+                        }
+                    });
+                    $scope.retrievedCreditUserAccountsArray = res.results;
+                    $scope.$apply();
+                } else {
+                    $scope.creditCurrencyAccountsAvailable = false;
+                    $scope.retrievedCreditUserAccountsArray = res.results;
+                    $scope.$apply();
                 }
-            }).then(function (res) {
-                if (res.status === 200) {
-                    if(res.data.data.results.length > 0){
-                        $scope.creditCurrencyAccountsAvailable = true;
-                        res.data.data.results.find(function (account) {
-                            if(account.reference == $scope.newTransactionParams.accountUser){
-                                creditTransactionData.account = account;
-                                $scope.creditAccountSelected(creditTransactionData);
-                                return true;
-                            } else if(account.primary){
-                                account.name = account.name + ' - (primary)';
-                                creditTransactionData.account = account;
-                                $scope.creditAccountSelected(creditTransactionData);
-                                return true;
-                            }
-                        });
-                        $scope.retrievedCreditUserAccountsArray = res.data.data.results;
-                    } else {
-                        $scope.creditCurrencyAccountsAvailable = false;
-                        $scope.retrievedCreditUserAccountsArray = res.data.data.results;
-                    }
-                }
-            }).catch(function (error) {
+            }, function (error) {
                 $scope.loadingTransactionSettings = false;
-                errorHandler.evaluateErrors(error.data);
+                errorHandler.evaluateErrors(error);
                 errorHandler.handleErrors(error);
+                $scope.$apply();
             });
         };
 
@@ -196,25 +184,29 @@
                 $scope.retrievedCreditAccountTransactions = [];
                 accountRef = creditTransactionData.account.reference;
 
-                $http.get(environmentConfig.API + '/admin/transactions/?page=1&page_size=5&orderby=-created&account=' + accountRef, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
-                    if (res.status === 200) {
-                        $scope.loadingTransactionSettings = false;
-                        $scope.retrievedCreditAccountTransactions = res.data.data.results;
-                    }
-                }).catch(function (error) {
-                    errorHandler.evaluateErrors(error.data);
+                Rehive.admin.transactions.get({filters: {
+                    page: 1,
+                    page_size: 5,
+                    orderby: '-created',
+                    account: accountRef
+                }}).then(function (res) {
+                    $scope.loadingTransactionSettings = false;
+                    $scope.retrievedCreditAccountTransactions = res.results;
+                    $scope.$apply();
+                }, function (error) {
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };
 
         $scope.goToCreditUserAccountCreate = function () {
-            $window.open('/#/user/' + $scope.retrievedCreditUserObj.identifier + '/accounts?accountAction=newAccount','_blank');
+            $window.open('/#/user/' + $scope.retrievedCreditUserObj.id + '/accounts?accountAction=newAccount','_blank');
+        };
+
+        $scope.goToAddCurrencyModal = function () {
+            $window.open('/#/currencies?currencyAction=newCurrency','_blank');
         };
 
         if($scope.newTransactionParams.userEmail){
@@ -222,8 +214,10 @@
         }
 
         if($scope.newTransactionParams.txType){
+            //coming from user accounts credit shortcut
+
             $scope.loadingTransactionSettings = true;
-            $scope.creditTransactionData.user = $scope.newTransactionParams.emailUser;
+            $scope.creditTransactionData.user = $scope.newTransactionParams.userIdentity;
             vm.getCreditUserObj($scope.creditTransactionData);
         }
 

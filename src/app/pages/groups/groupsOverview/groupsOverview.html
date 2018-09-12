@@ -2,6 +2,15 @@
 <div class="panel">
     <div class="panel-heading">
         <div class="table-filter-heading">
+            <div click-outside="hideGroupFilters()">
+                <button ng-click="showGroupFilters()" ng-class="{'transactions-filter-btn': (filtersCount > 0), 'transactions-btn': (filtersCount == 0)}"
+                        class="btn btn-default">Filters
+                    <span ng-show="filtersCount > 0">|</span> <span ng-show="filtersCount > 0" class="filter-count">{{filtersCount}}</span>
+                </button>
+                <div ng-show="showingGroupFilters">
+                    <group-filters></group-filters>
+                </div>
+            </div>
             <div>
                 <button class="btn btn-success pull-right panel-header-button currencies-page-buttons-add"
                         ng-click="openAddGroupModal('app/pages/groups/groupsOverview/addGroupModal/addGroupModal.html','md')">Add group</button>
@@ -21,28 +30,28 @@
                     <div>
                         <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
                             <div>
-                                <span><strong>{{group.name}}</strong></span>
+                                <span><strong ng-class="{'archived-text': group.archived}">{{group.name}}</strong></span>
                                 <br>
                                 <span class="currencies-details-heading">Group name</span>
                             </div>
                         </div>
                         <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
                             <div>
-                                <span><strong>{{group.totalUsers}}</strong></span>
+                                <span><strong ng-class="{'archived-text': group.archived}">{{group.totalUsers}}</strong></span>
                                 <br>
                                 <span class="currencies-details-heading">Total users</span>
                             </div>
                         </div>
                         <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
                             <div>
-                                <span><strong>{{group.activeUsers}}</strong></span>
+                                <span><strong ng-class="{'archived-text': group.archived}">{{group.totalUsers - group.deactiveUsers}}</strong></span>
                                 <br>
                                 <span class="currencies-details-heading">Active users</span>
                             </div>
                         </div>
                         <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
                             <div>
-                                <span><strong>{{group.totalUsers - group.activeUsers}}</strong></span>
+                                <span><strong ng-class="{'archived-text': group.archived}">{{group.deactiveUsers}}</strong></span>
                                 <br>
                                 <span class="currencies-details-heading">Deactivated users</span>
                             </div>
@@ -79,7 +88,10 @@
                                 <li ng-click="goToGroupViews('/groups/' + group.name + '/tiers')">Tiers</li>
                                 <li ng-click="goToGroupViews('/groups/' + group.name + '/account-configurations')">Account configurations</li>
                                 <li ng-click="goToGroupViews('/groups/' + group.name + '/transaction-settings')">Transaction settings</li>
-                                <li ng-hide="group.name == 'admin' || group.name == 'service'" ng-click="deleteCompanyGroupPrompt(group)">Delete group</li>
+                                <li ng-click="goToGroupViews('/groups/' + group.name + '/stats')">Stats</li>
+                                <li ng-show="group.archived" ng-click="restoreGroup(group)">Restore group</li>
+                                <li ng-hide="group.name == 'admin' || group.name == 'service'"
+                                    ng-click="openDeleteGroupModal('app/pages/groups/groupsOverview/deleteGroupModal/deleteGroupModal.html','md',group)">Delete group</li>
                             </ul>
                         </div>
                     </div>

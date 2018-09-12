@@ -5,16 +5,16 @@
         .controller('UserAccountsOnlyCtrl', UserAccountsOnlyCtrl);
 
     /** @ngInject */
-    function UserAccountsOnlyCtrl($scope,environmentConfig,$stateParams,$rootScope,$uibModal,
-                              $http,localStorageManagement,errorHandler,$location,serializeFiltersService) {
+    function UserAccountsOnlyCtrl($scope,Rehive,$stateParams,$rootScope,$uibModal,
+                                  localStorageManagement,errorHandler,$location,serializeFiltersService) {
 
         var vm = this;
-        vm.token = localStorageManagement.getValue('TOKEN');
+        vm.token = localStorageManagement.getValue('token');
         $rootScope.shouldBeBlue = 'Users';
         vm.uuid = $stateParams.uuid;
         vm.reference = '';
         $scope.newAccountCurrencies = {list: []};
-        vm.createNewAccountRequest = $location.search();
+        vm.accountUrlParams = $location.search();
         $scope.loadingUserAccounts = true;
         $scope.optionsCode = '';
         $scope.optionsReference = '';
@@ -48,7 +48,7 @@
             $scope.optionsReference = reference;
         };
 
-        vm.getUsersAccountsUrl = function(){
+        vm.getUsersAccountsFiltersObj = function(){
             $scope.accountsFiltersCount = 0;
 
             for(var x in $scope.filtersObj){
@@ -66,7 +66,7 @@
                 name: $scope.filtersObj.accountNameFilter ?($scope.applyFiltersObj.accountNameFilter.selectedAccountName ?  $scope.applyFiltersObj.accountNameFilter.selectedAccountName : null): null
             };
 
-            return environmentConfig.API + '/admin/accounts/?' + serializeFiltersService.serializeFilters(searchObj);
+            return serializeFiltersService.objectFilters(searchObj);
         };
 
         $scope.getUserAccounts = function(){
@@ -78,34 +78,30 @@
                     $scope.accounts.length = 0;
                 }
 
-                var usersAccountsUrl = vm.getUsersAccountsUrl();
+                var usersAccountsFiltersObj = vm.getUsersAccountsFiltersObj();
 
-                $http.get(usersAccountsUrl, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
+                Rehive.admin.accounts.get({filters: usersAccountsFiltersObj}).then(function (res) {
                     $scope.loadingUserAccounts = false;
-                    if (res.status === 200) {
-                        if(res.data.data.results.length > 0 ){
-                            $scope.accounts = res.data.data.results;
-                        } else {
-                            $scope.accounts = [];
-                        }
-
+                    if(res.results.length > 0 ){
+                        $scope.accounts = res.results;
+                    } else {
+                        $scope.accounts = [];
                     }
-                }).catch(function (error) {
+                    $scope.$apply();
+                }, function (error) {
                     $scope.loadingUserAccounts = false;
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };
-        $scope.getUserAccounts();
+        if(Object.keys(vm.accountUrlParams).length == 0){
+            $scope.getUserAccounts();
+        }
 
-        $scope.goToView = function(txType,currency,email,account){
-            $location.path('/transactions/history').search({txType: txType,currencyCode: currency.code,emailUser: email,accountUser: account});
+        $scope.goToView = function(txType,currency,user,account){
+            $location.path('/transactions/history').search({txType: txType,currencyCode: currency.code,userIdentity: user.email || user.mobile || user.id,accountUser: account});
 
         };
 
@@ -137,9 +133,16 @@
             });
         };
 
-        if(vm.createNewAccountRequest.accountAction == 'newAccount'){
+        if(vm.accountUrlParams.accountAction == 'newAccount'){
             $scope.openAddAccountModal('app/pages/users/user/userAccountsOnly/addAccountModal/addAccountModal.html','md');
             $location.search('accountAction',null);
+        }
+
+        if(vm.accountUrlParams.searchAccount){
+            $scope.filtersObj.accountReferenceFilter = true;
+            $scope.applyFiltersObj.accountReferenceFilter.selectedAccountReference = vm.accountUrlParams.searchAccount;
+            $scope.getUserAccounts();
+            $location.search('searchAccount',null);
         }
 
         $scope.openEditAccountModal = function (page, size,account,currencies) {
@@ -165,6 +168,10 @@
                 }
             }, function(){
             });
+        };
+
+        $scope.goToUserTransactions = function (account) {
+            $location.path('user/' + vm.uuid + '/transactions').search({filterByAccount: account.reference});
         };
 
     }

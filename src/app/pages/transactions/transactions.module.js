@@ -3,7 +3,8 @@
 
     angular.module('BlurAdmin.pages.transactions', [
             'BlurAdmin.pages.transactions.history',
-            'BlurAdmin.pages.transactions.subtypes'
+            'BlurAdmin.pages.transactions.subtypes',
+            'BlurAdmin.pages.transactions.stats'
         ])
         .config(routeConfig);
 
@@ -25,14 +26,21 @@
                     $scope.$on('$locationChangeStart', function (event,newUrl) {
                         var newUrlArray = newUrl.split('/'),
                             newUrlLastElement = _.last(newUrlArray);
-                        if(newUrlLastElement == 'transactions'){
+                        if(newUrlLastElement == 'history' || newUrlLastElement == 'transactions'){
+                            $scope.locationIndicator = 'history';
                             $state.go('transactions.history');
+                        } else if(newUrlLastElement == 'subtypes') {
+                            $scope.locationIndicator = 'subtypes';
+                            $state.go('transactions.subtypes');
+                        } else if(newUrlLastElement == 'stats') {
+                            $scope.locationIndicator = 'stats';
+                            $state.go('transactions.stats');
                         }
                     });
                 },
                 title: 'Transactions',
                 sidebarMeta: {
-                    order: 100
+                    order: 200
                 }
             });
         $urlRouterProvider.when("/transactions", "/transactions/setup");

@@ -4,10 +4,10 @@
     angular.module('BlurAdmin.pages.newCompanySetup.setupUsersGroups')
         .controller("SetupUsersGroupsCtrl", SetupUsersGroupsCtrl);
 
-    function SetupUsersGroupsCtrl($rootScope,$scope,$http,toastr,$ngConfirm,$filter,
-                                    environmentConfig,$location,errorHandler,localStorageManagement) {
+    function SetupUsersGroupsCtrl($rootScope,$scope,toastr,$ngConfirm,$filter,Rehive,
+                                    $location,errorHandler,localStorageManagement) {
         var vm = this;
-        vm.token = localStorageManagement.getValue("TOKEN");
+        vm.token = localStorageManagement.getValue("token");
         $scope.addedGroups = [];
         $scope.user = {};
         $rootScope.$pageFinishedLoading=true;
@@ -18,7 +18,6 @@
         $scope.rehiveSystemGroups = [{name: 'admin'},{name: 'service'}];
 
         $scope.goToNextView = function () {
-            $rootScope.userFullyVerified = true;
             $location.path('company/setup/currency-setup');
         };
 
@@ -35,40 +34,36 @@
             if(vm.token){
                 $scope.loadingUsersGroups = true;
                 $scope.addedGroups = [];
-                $http.get(environmentConfig.API + '/admin/groups/', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
-                    if (res.status === 200) {
-                        res.data.data.results.forEach(function (group) {
-                            if(group.name != 'admin' && group.name != 'service'){
-                                $scope.addedGroups.push(group);
-                            }
-                        });
+                Rehive.admin.groups.get().then(function (res) {
+                    res.results.forEach(function (group) {
+                        if(group.name != 'admin' && group.name != 'service'){
+                            $scope.addedGroups.push(group);
+                        }
+                    });
 
-                        if($scope.addedGroups.length == 2){
-                            $rootScope.setupUsers = 0;
-                            localStorageManagement.setValue('setupUsers',0);
-                        }
-                        else {
-                            $rootScope.setupUsers = 1;
-                            localStorageManagement.setValue('setupUsers',1);
-                        }
-                        $scope.loadingUsersGroups = false;
+                    if($scope.addedGroups.length == 0){
+                        $rootScope.setupUsers = 0;
+                        localStorageManagement.setValue('setupUsers',0);
                     }
-                }).catch(function (error) {
+                    else {
+                        $rootScope.setupUsers = 1;
+                        localStorageManagement.setValue('setupUsers',1);
+                    }
                     $scope.loadingUsersGroups = false;
-                    errorHandler.evaluateErrors(error.data);
+                    $scope.$apply();
+                }, function (error) {
+                    $scope.loadingUsersGroups = false;
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             } else {
                 $rootScope.gotToken = false;
                 $rootScope.securityConfigured = true;
                 $rootScope.pageTopObj = {};
-                $rootScope.userFullyVerified = false;
                 localStorageManagement.deleteValue('TOKEN');
+                localStorageManagement.deleteValue('token');
+                Rehive.removeToken();
                 toastr.error('Your session has expired, please log in again');
                 $location.path('/login');
             }
@@ -77,42 +72,32 @@
         
         $scope.addUserGroupCompanySetup = function (group) {
             $scope.loadingUsersGroups = true;
-            $http.post(environmentConfig.API + '/admin/groups/',group, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': vm.token
-                }
-            }).then(function (res) {
-                if (res.status === 201) {
-                    $scope.user={};
-                    vm.getGroups();
-                }
-            }).catch(function (error) {
+            Rehive.admin.groups.create(group).then(function (res) {
+                $scope.user={};
+                vm.getGroups();
+                $scope.$apply();
+            }, function (error) {
                 $scope.loadingUsersGroups = false;
                 $rootScope.$pageFinishedLoading = true;
-                errorHandler.evaluateErrors(error.data);
+                errorHandler.evaluateErrors(error);
                 errorHandler.handleErrors(error);
+                $scope.$apply();
             });
         };
 
         $scope.updateUserGroupCompanySetup = function (group) {
             $scope.loadingUsersGroups = true;
-            $http.patch(environmentConfig.API + '/admin/groups/' + group.prevName + "/",group, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': vm.token
-                }
-            }).then(function (res) {
-                if (res.status === 200) {
-                    $scope.user={};
-                    $scope.editingUser = false;
-                    $scope.loadingUsersGroups = false;
-                }
-            }).catch(function (error) {
+            Rehive.admin.groups.update(group.prevName,group).then(function (res) {
+                $scope.user={};
+                $scope.editingUser = false;
+                $scope.loadingUsersGroups = false;
+                $scope.$apply();
+            }, function (error) {
                 $scope.loadingUsersGroups = false;
                 $rootScope.$pageFinishedLoading = true;
-                errorHandler.evaluateErrors(error.data);
+                errorHandler.evaluateErrors(error);
                 errorHandler.handleErrors(error);
+                $scope.$apply();
             });
         };
 
@@ -149,19 +134,14 @@
         $scope.deleteGroup = function (name) {
             if(vm.token) {
                 $scope.loadingUsersGroups = true;
-                $http.delete(environmentConfig.API + '/admin/groups/' + name + '/', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
-                    if (res.status === 200) {
-                        vm.getGroups();
-                    }
-                }).catch(function (error) {
+                Rehive.admin.groups.delete(name).then(function (res) {
+                    vm.getGroups();
+                    $scope.$apply();
+                }, function (error) {
                     $scope.loadingUsersGroups = false;
-                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
+                    $scope.$apply();
                 });
             }
         };
