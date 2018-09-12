@@ -42,11 +42,6 @@
                         <option value=""></option>
                     </select>
                 </div>
-                <p>Currencies selected:
-                    <span ng-repeat="currency in newAccountConfigurationCurrencies.list">
-                    {{$last ? ' ' + currency.code : currency.code + ',' }}
-                </span>
-                </p>
             </div>
             <div class="form-group">
                 <button ng-click="addGroupAccountConfigurations(groupAccountConfigurationParams)" ng-disabled="!accountConfigurationForm.$valid"
