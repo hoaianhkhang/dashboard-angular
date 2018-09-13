@@ -5,8 +5,8 @@
         .controller('CreateNotificationServiceNotificationEmailCtrl', CreateNotificationServiceNotificationEmailCtrl);
 
     /** @ngInject */
-    function CreateNotificationServiceNotificationEmailCtrl($scope,$http,localStorageManagement,
-                                                            $uibModal,$location,errorHandler,toastr) {
+    function CreateNotificationServiceNotificationEmailCtrl($scope,$http,localStorageManagement,notificationHtmlTags,
+                                                            $uibModal,$location,errorHandler,toastr,_) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
@@ -18,8 +18,9 @@
             event: '',
             template: ''
         };
-
-        $scope.tags = ['user.id','user.name','user.last_name'];
+        $scope.htmlTags = {
+            tags: []
+        };
 
         vm.emailEventOptionsObj = {
             USER_CREATE: 'user.create',
@@ -58,8 +59,15 @@
             'Bank Account Create','Bank Account Update','Crypto Account Create','Crypto Account Update',
             'Transaction Create','Transaction Update','Transaction Delete','Transaction Initiate','Transaction Execute'];
 
+        $scope.emailEventOptionChanged = function (event) {
+            var newTagsArray = notificationHtmlTags.getNotificationHtmlTags(event);
+            $scope.htmlTags.tags.splice(0,$scope.htmlTags.tags.length);
+            newTagsArray.forEach(function (element) {
+                $scope.htmlTags.tags.push(element);
+            });
+        };
+
         $scope.addEmailNotification = function (emailNotificationParams) {
-            return;
             if(emailNotificationParams.event){
                 var event;
                 event = emailNotificationParams.event.toUpperCase();
