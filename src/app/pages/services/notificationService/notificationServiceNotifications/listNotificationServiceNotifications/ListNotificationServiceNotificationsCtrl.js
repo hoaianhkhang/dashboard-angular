@@ -15,7 +15,7 @@
             count: 0
         };
         $scope.loadingNotifications =  false;
-        $scope.listNotificationView = 'email';
+        $scope.listNotificationType = 'email';
 
         $scope.pagination = {
             itemsPerPage: 20,
@@ -23,8 +23,9 @@
             maxSize: 5
         };
 
-        $scope.goToListNotificationView = function (path) {
-            $scope.listNotificationView = path;
+        $scope.goToListNotificationType = function (path) {
+            $scope.listNotificationType = path;
+            $scope.getNotificationsList();
         };
 
         $scope.toggleAllNotificationsStatus = function () {
@@ -36,7 +37,8 @@
 
         vm.getNotificationListUrl = function(){
 
-            vm.filterParams = '?page=' + $scope.pagination.pageNo + '&page_size=' + $scope.pagination.itemsPerPage; // all the params of the filtering
+            vm.filterParams = '?page=' + $scope.pagination.pageNo + '&page_size=' + $scope.pagination.itemsPerPage +
+                '&type=' + $scope.listNotificationType; // all the params of the filtering
 
             return vm.baseUrl + 'admin/notifications/' + vm.filterParams;
         };

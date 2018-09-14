@@ -54,17 +54,39 @@
             mode: 'xml'
         };
 
-        $scope.addSmsNotification = function (smsNotificationParams) {
-            if(smsNotificationParams.event){
-                var event;
-                event = smsNotificationParams.event.toUpperCase();
-                event = event.replace(/ /g, '_');
-                smsNotificationParams.event = vm.smsEventOptionsObj[event];
+        $scope.smsTemplateOptionChanged = function (template) {
+            if(template){
+                $http.get(vm.baseUrl + 'admin/templates/', {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': vm.token
+                    }
+                }).then(function (res) {
+                    if (res.status === 200) {
+                        console.log(res.data.data)
+                        var templateObj = res.data.data;
+                    }
+                }).catch(function (error) {
+                    $scope.addingEmailNotification =  false;
+                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.handleErrors(error);
+                });
             }
+        };
+
+        $scope.addSmsNotification = function () {
+            if($scope.smsNotificationParams.event){
+                var event;
+                event = $scope.smsNotificationParams.event.toUpperCase();
+                event = event.replace(/ /g, '_');
+                $scope.smsNotificationParams.event = vm.smsEventOptionsObj[event];
+            }
+
+            $scope.smsNotificationParams.type = 'sms';
 
             $scope.loadingNotifications =  true;
             if(vm.token) {
-                $http.post(vm.baseUrl + 'admin/notifications/',smsNotificationParams, {
+                $http.post(vm.baseUrl + 'admin/notifications/',$scope.smsNotificationParams, {
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': vm.token

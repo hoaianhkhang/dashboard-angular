@@ -67,17 +67,39 @@
             });
         };
 
-        $scope.addEmailNotification = function (emailNotificationParams) {
-            if(emailNotificationParams.event){
-                var event;
-                event = emailNotificationParams.event.toUpperCase();
-                event = event.replace(/ /g, '_');
-                emailNotificationParams.event = vm.emailEventOptionsObj[event];
+        $scope.emailTemplateOptionChanged = function (template) {
+            if(template){
+                $http.get(vm.baseUrl + 'admin/templates/', {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': vm.token
+                    }
+                }).then(function (res) {
+                    if (res.status === 200) {
+                        console.log(res.data.data)
+                        var templateObj = res.data.data;
+                    }
+                }).catch(function (error) {
+                    $scope.addingEmailNotification =  false;
+                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.handleErrors(error);
+                });
             }
+        };
+
+        $scope.addEmailNotification = function () {
+            if($scope.emailNotificationParams.event){
+                var event;
+                event = $scope.emailNotificationParams.event.toUpperCase();
+                event = event.replace(/ /g, '_');
+                $scope.emailNotificationParams.event = vm.emailEventOptionsObj[event];
+            }
+
+            $scope.emailNotificationParams.type = 'email';
 
             $scope.addingEmailNotification =  true;
             if(vm.token) {
-                $http.post(vm.baseUrl + 'admin/notifications/',emailNotificationParams, {
+                $http.post(vm.baseUrl + 'admin/notifications/',$scope.emailNotificationParams, {
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': vm.token
