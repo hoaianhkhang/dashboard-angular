@@ -21,7 +21,7 @@
                 </ul>
             </div>
             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 custom-form">
-                <div ng-hide="fundingAccountUsingTestnet">
+                <div>
                     <img class="stellar-hotwallet-qr-code" ng-src="{{hotWalletFundObj.qr_code}}">
                     <p ngclipboard ngclipboard-success="copiedSuccessfully()" data-clipboard-text="{{hotWalletFundObj.account_address}}"
                        class="text-center stellar-hotwallet-address pointer"><strong>{{hotWalletFundObj.account_address}}</strong></p>
@@ -33,11 +33,12 @@
                                     ng-class="{'btn-primary': !hotwalletHasBeenFunded,'disable-btn': hotwalletHasBeenFunded}" class="btn" style="margin: 20px auto;">
                                 Fund my account <i class="fa fa-check" aria-hidden="true"></i>
                             </button>
+                            <loading-image class="stellar-testnet-hotwallet-funding-spinner"
+                                           ng-show="fundingAccountUsingTestnet"></loading-image>
+                            <p ng-show="hotwalletHasBeenFunded" class="stellar-public-key-help-message">
+                                Account successfully funded</p>
                         </div>
                     </div>
-                </div>
-                <div ng-show="fundingAccountUsingTestnet">
-                    <loading-image></loading-image>
                 </div>
             </div>
         </div>
