@@ -36,11 +36,23 @@ function directive($parse, $timeout) {
         CodeMirror.registerHelper('hint', 'dictionaryHint', function(editor) {
             var cur = editor.getCursor(), curLine = editor.getLine(cur.line);
             var start = cur.ch, end = start;
-            while (end < curLine.length && /[{?{? \w }?}?$]+/gm.test(curLine.charAt(end))) ++end;
-            while (start && /[{?{? \w }?}?$]+/gm.test(curLine.charAt(start - 1))) --start;
-            console.log(end)
+            while (end < curLine.length && /[{?{? \w }?}?$]+/.test(curLine.charAt(end))) {
+                ++end;
+            }
+            while (start) {
+                // find space char
+                if((/\S/).test(curLine.charAt(start - 1))){
+                    --start;
+                } else {
+                    // found space character and searching for {
+                    if(curLine.charAt(start - 2) == '{'){
+                        --start;
+                    } else {
+                        break;
+                    }
+                }
+            }
             var curWord = start != end && curLine.slice(start, end);
-            console.log(curWord)
             var regex = new RegExp('^' + curWord, 'i');
             return {
               list: (!curWord ? [] : dictionary.filter(function(item) {

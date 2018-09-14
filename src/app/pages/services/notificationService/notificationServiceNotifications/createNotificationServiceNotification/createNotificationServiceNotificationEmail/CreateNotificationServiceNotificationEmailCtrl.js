@@ -6,7 +6,7 @@
 
     /** @ngInject */
     function CreateNotificationServiceNotificationEmailCtrl($scope,$http,localStorageManagement,notificationHtmlTags,
-                                                            $uibModal,$location,errorHandler,toastr,_) {
+                                                            $uibModal,$location,errorHandler,toastr) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
