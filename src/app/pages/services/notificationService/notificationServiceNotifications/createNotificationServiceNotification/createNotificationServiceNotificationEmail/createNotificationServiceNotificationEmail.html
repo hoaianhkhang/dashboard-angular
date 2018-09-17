@@ -68,10 +68,7 @@
             <div class="form-group">
                 <label>Preference enabled</label>
                 <br>
-                <label  class="checkbox-inline custom-checkbox nowrap">
-                    <input type="checkbox" ng-model="emailNotificationParams.preference_enabled" ng-checked="emailNotificationParams.preference_enabled">
-                    <span></span>
-                </label>
+                <input class="custom-rehive-checkbox" ng-model="emailNotificationParams.preference_enabled" type="checkbox">
             </div>
             <div class="form-group">
                 <button ng-disabled="!notificationEmailForm.$valid" ng-click="addEmailNotification()" class="btn btn-primary dashboard-btn pull-right">Add</button>
