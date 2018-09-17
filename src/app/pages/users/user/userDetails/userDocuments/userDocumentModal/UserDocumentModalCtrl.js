@@ -5,38 +5,62 @@
         .controller('UserDocumentModalCtrl', UserDocumentModalCtrl);
 
     function UserDocumentModalCtrl($scope,Rehive,$uibModalInstance,document,toastr,$filter,uuid,
-                                   $ngConfirm,localStorageManagement,errorHandler) {
+                                   $uibModal,localStorageManagement,errorHandler) {
 
         var vm = this;
         vm.uuid = uuid;
         vm.updatedDocument = {};
         vm.addressTracking = {};
         vm.token = localStorageManagement.getValue('token');
-        $scope.document = document;
+        $scope.document = {};
+        $scope.metadataExists = false;
         $scope.updatingDocument = false;
         $scope.showingDocumentFile = true;
         $scope.defaultImageUrl = "/assets/img/app/placeholders/hex_grey.svg";
-        if(typeof document.metadata == 'string'){
-            try{
-                document.metadata = JSON.parse(document.metadata);
-            } catch(err) {
-                document.metadata = {metadata: document.metadata};
-            }
-
-        }
-        $scope.editDocument = {
-            file: {},
-            document_type: document.document_type,
-            status: $filter('capitalizeWord')(document.status),
-            note: document.note,
-            metadata: document.metadata
-        };
         $scope.userInfo = {
             status: $filter('capitalizeWord')($scope.user.status)
         };
         $scope.userAddresses.forEach(function (element,index) {
             $scope.userAddresses[index].status = $filter('capitalizeWord')($scope.userAddresses[index].status);
         });
+
+        vm.getUserDocument = function () {
+            if(vm.token){
+                $scope.updatingDocument = true;
+                Rehive.admin.users.documents.get({ id: document.id }).then(function (res) {
+                    $scope.document = res;
+                    //checking metadata exists
+                    if($scope.document.metadata && Object.keys($scope.document.metadata).length == 0){
+                        $scope.metadataExists = false;
+                    } else {
+                        $scope.metadataExists = true;
+                    }
+                    if(typeof document.metadata == 'string'){
+                        try{
+                            document.metadata = JSON.parse(res.metadata);
+                        } catch(err) {
+                            document.metadata = {metadata: res.metadata};
+                        }
+
+                    }
+                    $scope.editDocument = {
+                        file: {},
+                        document_type: res.document_type,
+                        status: $filter('capitalizeWord')(res.status),
+                        note: res.note,
+                        metadata: res.metadata
+                    };
+                    $scope.updatingDocument = false;
+                    $scope.$apply();
+                }, function (error) {
+                    $scope.updatingDocument = false;
+                    errorHandler.evaluateErrors(error);
+                    errorHandler.handleErrors(error);
+                    $scope.$apply();
+                });
+            }
+        };
+        vm.getUserDocument();
 
         $scope.documentTypeOptions = ['Utility Bill','Bank Statement','Lease Or Rental Agreement',
             'Municipal Rate and Taxes Invoice','Mortgage Statement','Telephone or Cellular Account','Insurance Policy Document',
@@ -62,14 +86,6 @@
         $scope.kycDocumentSelected = function (field) {
             $scope.showingDocumentFile = false;
             $scope.documentChanged(field);
-        };
-
-        $scope.checkIfMetadataExists = function () {
-            if(Object.keys($scope.editDocument.metadata).length == 0){
-                return false;
-            } else {
-                return true;
-            }
         };
 
         $scope.documentChanged = function (field) {
@@ -115,39 +131,19 @@
                 $scope.updatingDocument = false;
                 errorHandler.evaluateErrors(error);
                 errorHandler.handleErrors(error);
+                $scope.$apply();
             });
         };
 
-        $scope.deleteDocumentConfirm = function () {
-            $ngConfirm({
-                title: 'Delete document',
-                content: 'Are you sure you want to delete this document?',
-                animationBounce: 1,
-                animationSpeed: 100,
-                scope: $scope,
-                buttons: {
-                    close: {
-                        text: "No",
-                        btnClass: 'btn-default dashboard-btn'
-                    },
-                    ok: {
-                        text: "Yes",
-                        btnClass: 'btn-primary dashboard-btn',
-                        keys: ['enter'], // will trigger when enter is pressed
-                        action: function(scope){
-                            $scope.deleteDocument();
-                        }
-                    }
-                }
-            });
-        };
-
-        $scope.deleteDocument = function () {
+        $scope.restoreDocument = function () {
             $scope.updatingDocument = true;
-            Rehive.admin.users.documents.delete($scope.document.id).then(function (res) {
-                $scope.updatingDocument = false;
-                toastr.success('Document successfully deleted');
-                $uibModalInstance.close($scope.document);
+
+            var formData = new FormData();
+
+            formData.append('archived', false);
+
+            Rehive.admin.users.documents.update($scope.document.id, formData).then(function (res) {
+                vm.getUserDocument();
                 $scope.$apply();
             }, function (error) {
                 $scope.updatingDocument = false;
@@ -213,7 +209,29 @@
             }
         };
 
+        $scope.openDeleteUserDocumentModal = function (page, size) {
+            vm.theDeleteModal = $uibModal.open({
+                animation: true,
+                templateUrl: page,
+                size: size,
+                controller: 'DeleteDocumentModalCtrl',
+                scope: $scope,
+                resolve: {
+                    document: function () {
+                        return $scope.document;
+                    }
+                }
+            });
 
+            vm.theDeleteModal.result.then(function(document){
+                if(document){
+                    $uibModalInstance.close(true);
+                } else {
+                    vm.getUserDocument();
+                }
+            }, function(){
+            });
+        };
 
 
     }
