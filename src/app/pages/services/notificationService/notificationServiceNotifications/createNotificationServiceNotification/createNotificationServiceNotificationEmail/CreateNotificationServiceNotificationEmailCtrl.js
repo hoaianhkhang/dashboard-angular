@@ -6,7 +6,7 @@
 
     /** @ngInject */
     function CreateNotificationServiceNotificationEmailCtrl($scope,$http,localStorageManagement,notificationHtmlTags,
-                                                            $uibModal,$location,errorHandler,toastr) {
+                                                            $uibModal,$location,errorHandler,toastr,$filter) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
@@ -69,21 +69,40 @@
 
         $scope.emailTemplateOptionChanged = function (template) {
             if(template){
-                $http.get(vm.baseUrl + 'admin/templates/', {
+                $http.get(vm.baseUrl + 'admin/templates/?type=' + template.toLowerCase(), {
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': vm.token
                     }
                 }).then(function (res) {
                     if (res.status === 200) {
-                        console.log(res.data.data)
-                        var templateObj = res.data.data;
+                        var templateObj = res.data.data.results[0];
+                        $scope.emailNotificationParams = {
+                            template: $filter('capitalizeWord')(templateObj.type),
+                            name: templateObj.name,
+                            description: templateObj.description,
+                            subject: templateObj.subject,
+                            event: $filter('capitalizeDottedSentence')(templateObj.event),
+                            html_message: templateObj.html_message,
+                            text_message: templateObj.text_message,
+                            to_email: templateObj.to_email,
+                            expression: templateObj.expression,
+                            enabled: false,
+                            preference_enabled: false
+                        };
                     }
                 }).catch(function (error) {
                     $scope.addingEmailNotification =  false;
                     errorHandler.evaluateErrors(error.data);
                     errorHandler.handleErrors(error);
                 });
+            } else {
+                $scope.emailNotificationParams = {
+                    enabled: false,
+                    preference_enabled: false,
+                    event: '',
+                    template: ''
+                };
             }
         };
 
@@ -97,9 +116,23 @@
 
             $scope.emailNotificationParams.type = 'email';
 
+            var emailNotificationObj = {
+                name: $scope.emailNotificationParams.name,
+                description: $scope.emailNotificationParams.description,
+                subject: $scope.emailNotificationParams.subject,
+                event: $scope.emailNotificationParams.event,
+                html_message: $scope.emailNotificationParams.html_message,
+                text_message: $scope.emailNotificationParams.text_message,
+                to_email: $scope.emailNotificationParams.to_email,
+                expression: $scope.emailNotificationParams.expression,
+                enabled: $scope.emailNotificationParams.enabled,
+                preference_enabled: $scope.emailNotificationParams.preference_enabled,
+                type: $scope.emailNotificationParams.type
+            };
+
             $scope.addingEmailNotification =  true;
             if(vm.token) {
-                $http.post(vm.baseUrl + 'admin/notifications/',$scope.emailNotificationParams, {
+                $http.post(vm.baseUrl + 'admin/notifications/',emailNotificationObj, {
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': vm.token

@@ -5,7 +5,8 @@
         .controller('CreateNotificationServiceNotificationSmsCtrl', CreateNotificationServiceNotificationSmsCtrl);
 
     /** @ngInject */
-    function CreateNotificationServiceNotificationSmsCtrl($scope,$http,localStorageManagement,$location,errorHandler,toastr) {
+    function CreateNotificationServiceNotificationSmsCtrl($scope,$http,localStorageManagement,$location,errorHandler,
+                                                          toastr,$filter) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
@@ -51,26 +52,45 @@
             lineNumbers: true,
             theme: 'monokai',
             autoCloseTags: true,
+            smartIndent: false,
             mode: 'xml'
         };
 
         $scope.smsTemplateOptionChanged = function (template) {
             if(template){
-                $http.get(vm.baseUrl + 'admin/templates/', {
+                $http.get(vm.baseUrl + 'admin/templates/?type=' + template.toLowerCase(), {
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': vm.token
                     }
                 }).then(function (res) {
                     if (res.status === 200) {
-                        console.log(res.data.data)
-                        var templateObj = res.data.data;
+                        var templateObj = res.data.data.results[0];
+                        $scope.smsNotificationParams = {
+                            template: $filter('capitalizeWord')(templateObj.type),
+                            name: templateObj.name,
+                            description: templateObj.description,
+                            subject: templateObj.subject,
+                            event: $filter('capitalizeDottedSentence')(templateObj.event),
+                            sms_message: templateObj.sms_message,
+                            to_mobile: templateObj.to_mobile,
+                            smsExpression: templateObj.expression,
+                            enabled: false,
+                            preference_enabled: false
+                        };
                     }
                 }).catch(function (error) {
-                    $scope.addingEmailNotification =  false;
+                    $scope.addingSmsNotification =  false;
                     errorHandler.evaluateErrors(error.data);
                     errorHandler.handleErrors(error);
                 });
+            } else {
+                $scope.smsNotificationParams = {
+                    enabled: false,
+                    preference_enabled: false,
+                    event: '',
+                    template: ''
+                };
             }
         };
 
@@ -84,9 +104,22 @@
 
             $scope.smsNotificationParams.type = 'sms';
 
+            var smsNotificationObj = {
+                name: $scope.smsNotificationParams.name,
+                description: $scope.smsNotificationParams.description,
+                subject: $scope.smsNotificationParams.subject,
+                event: $scope.smsNotificationParams.event,
+                sms_message: $scope.smsNotificationParams.sms_message,
+                to_mobile: $scope.smsNotificationParams.to_mobile,
+                expression: $scope.smsNotificationParams.smsExpression,
+                enabled: $scope.smsNotificationParams.enabled,
+                preference_enabled: $scope.smsNotificationParams.preference_enabled,
+                type: $scope.smsNotificationParams.type
+            };
+
             $scope.loadingNotifications =  true;
             if(vm.token) {
-                $http.post(vm.baseUrl + 'admin/notifications/',$scope.smsNotificationParams, {
+                $http.post(vm.baseUrl + 'admin/notifications/',smsNotificationObj, {
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': vm.token

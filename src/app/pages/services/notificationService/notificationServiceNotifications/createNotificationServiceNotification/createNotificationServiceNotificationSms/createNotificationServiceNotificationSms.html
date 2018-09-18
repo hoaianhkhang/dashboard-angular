@@ -47,17 +47,14 @@
             </div>
             <div class="form-group">
                 <label>Expression</label>
-                <textarea type="text" ng-model="smsNotificationParams.expression" class="form-control"
+                <textarea type="text" ng-model="smsNotificationParams.smsExpression" class="form-control"
                           ui-codemirror ui-codemirror-opts="editorSmsOptions"
                           placeholder="Enter expression"></textarea>
             </div>
             <div class="form-group">
                 <label>Preference enabled</label>
                 <br>
-                <label  class="checkbox-inline custom-checkbox nowrap">
-                    <input type="checkbox" ng-model="smsNotificationParams.preference_enabled" ng-checked="smsNotificationParams.preference_enabled">
-                    <span></span>
-                </label>
+                <input class="custom-rehive-checkbox" ng-model="smsNotificationParams.preference_enabled" type="checkbox">
             </div>
             <div class="form-group">
                 <button ng-disabled="!notificationSmsForm.$valid" ng-click="addSmsNotification()" class="btn btn-primary dashboard-btn pull-right">Add</button>
