@@ -53,7 +53,8 @@ function directive($parse, $timeout) {
                 }
             }
             var curWord = start != end && curLine.slice(start, end);
-            var regex = new RegExp('^' + curWord, 'i');
+            // var regex = new RegExp('^' + curWord, 'i');
+            var regex = new RegExp(curWord, 'i');
             return {
               list: (!curWord ? [] : dictionary.filter(function(item) {
                 return item.match(regex);

@@ -1,17 +1,26 @@
 (function () {
     'use strict';
 
-    angular.module('BlurAdmin.pages.services.notificationService.editNotificationServiceNotification')
-        .controller('EditNotificationServiceNotificationCtrl', EditNotificationServiceNotificationCtrl);
+    angular.module('BlurAdmin.pages.services.notificationService.editNotificationServiceNotification.sms')
+        .controller('EditNotificationServiceNotificationSmsCtrl', EditNotificationServiceNotificationSmsCtrl);
 
     /** @ngInject */
-    function EditNotificationServiceNotificationCtrl($scope,$http,localStorageManagement,$filter,errorHandler,$location,$stateParams,toastr) {
+    function EditNotificationServiceNotificationSmsCtrl($scope,$http,localStorageManagement,notificationHtmlTags,
+                                                          $filter,errorHandler,$location,$stateParams,toastr) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
         vm.baseUrl = localStorageManagement.getValue('SERVICEURL');
         vm.updatedNotification = {};
         $scope.loadingNotifications =  false;
+        $scope.editNotification = {
+            enabled: false,
+            preference_enabled: false
+        };
+        $scope.htmlTags = {
+            tags: []
+        };
+        $scope.editorEnabled= false;
 
         vm.eventOptionsObj = {
             USER_CREATE: 'user.create',
@@ -35,10 +44,25 @@
             TRANSACTION_EXECUTE: 'transaction.execute'
         };
 
-        $scope.eventOptions = ['','User Create','User Update','User Password Reset','User Password Set','User Email Verify','User Mobile Verify',
-            'Address Create','Address Update','Document Create','Document Update',
-            'Bank Account Create','Bank Account Update','Crypto Account Create','Crypto Account Update',
-            'Transaction Create','Transaction Update','Transaction Delete','Transaction Initiate','Transaction Execute'];
+        $scope.eventOptions = ['','User Create','User Update','User Password Reset','User Password Set',
+            'User Email Verify','User Mobile Verify','Address Create','Address Update','Document Create',
+            'Document Update', 'Bank Account Create','Bank Account Update','Crypto Account Create',
+            'Crypto Account Update', 'Transaction Create','Transaction Update','Transaction Delete',
+            'Transaction Initiate','Transaction Execute'];
+
+        $scope.editNotificationEditorOptions = {
+            lineWrapping : true,
+            lineNumbers: true,
+            theme: 'monokai',
+            autoCloseTags: true,
+            smartIndent: false,
+            mode: 'xml'
+        };
+
+        $scope.enableEditor = function() {
+            //used to refresh the codemirror element to display latest ng-model
+            $scope.editorEnabled = true;
+        };
 
         vm.getSingleNotification = function () {
             $scope.loadingNotifications =  true;
@@ -51,11 +75,26 @@
                 }).then(function (res) {
                     $scope.loadingNotifications =  false;
                     if (res.status === 200) {
-                        $scope.editNotification = res.data.data;
-                        if(res.data.data.event){
-                            $scope.editNotification.event = $filter('capitalizeDottedSentence')(res.data.data.event);
-                            $scope.editNotification.event = $filter('capitalizeUnderscoredSentence')($scope.editNotification.event);
+                        var notificationObj = res.data.data;
+                        if(notificationObj.event){
+                            notificationObj.event = $filter('capitalizeDottedSentence')(notificationObj.event);
+                            notificationObj.event = $filter('capitalizeUnderscoredSentence')(notificationObj.event);
                         }
+
+                        $scope.editNotification = {
+                            id: notificationObj.id,
+                            name: notificationObj.name,
+                            description: notificationObj.description,
+                            subject: notificationObj.subject,
+                            event: notificationObj.event,
+                            sms_message: notificationObj.sms_message,
+                            to_mobile: notificationObj.to_mobile,
+                            expression: notificationObj.expression,
+                            enabled: notificationObj.enabled,
+                            preference_enabled: notificationObj.preference_enabled
+                        };
+                        $scope.enableEditor();
+                        $scope.smsEditEventOptionChanged(notificationObj.event);
                     }
                 }).catch(function (error) {
                     $scope.loadingNotifications =  false;
@@ -66,6 +105,14 @@
         };
         vm.getSingleNotification();
 
+        $scope.smsEditEventOptionChanged = function (event) {
+            var newTagsArray = notificationHtmlTags.getNotificationHtmlTags(event);
+            $scope.htmlTags.tags.splice(0,$scope.htmlTags.tags.length);
+            newTagsArray.forEach(function (element) {
+                $scope.htmlTags.tags.push(element);
+            });
+        };
+
         $scope.goToNotificationListView = function () {
             $location.path('/services/notifications/list');
         };
@@ -74,6 +121,9 @@
         $scope.notificationChanged = function (field) {
             if(field == 'name'){
                 $scope.editNotification.name = $scope.editNotification.name.toLowerCase();
+            }
+            if(field == 'event'){
+                $scope.smsEditEventOptionChanged($scope.editNotification.event);
             }
 
             vm.updatedNotification[field] = $scope.editNotification[field];
@@ -86,6 +136,8 @@
                 event = event.replace(/ /g, '_');
                 vm.updatedNotification.event = vm.eventOptionsObj[event];
             }
+
+            vm.updatedNotification.type = 'sms';
 
             if(vm.token) {
                 $http.patch(vm.baseUrl + 'admin/notifications/' + $scope.editNotification.id + '/',vm.updatedNotification, {

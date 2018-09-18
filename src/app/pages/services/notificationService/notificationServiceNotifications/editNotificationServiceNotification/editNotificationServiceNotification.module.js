@@ -1,7 +1,10 @@
 (function () {
     'use strict';
 
-    angular.module('BlurAdmin.pages.services.notificationService.editNotificationServiceNotification', [])
+    angular.module('BlurAdmin.pages.services.notificationService.editNotificationServiceNotification', [
+        'BlurAdmin.pages.services.notificationService.editNotificationServiceNotification.email',
+        'BlurAdmin.pages.services.notificationService.editNotificationServiceNotification.sms'
+    ])
         .config(routeConfig);
 
     /** @ngInject */
@@ -11,8 +14,7 @@
                 url: '/:id/edit',
                 views: {
                     'notificationServiceViews' : {
-                        templateUrl:'app/pages/services/notificationService/notificationServiceNotifications/editNotificationServiceNotification/editNotificationServiceNotification.html',
-                        controller: "EditNotificationServiceNotificationCtrl"
+                        template: '<div ui-view="notificationServiceEditViews"></div>'
                     }
                 },
                 title: 'Notifications'

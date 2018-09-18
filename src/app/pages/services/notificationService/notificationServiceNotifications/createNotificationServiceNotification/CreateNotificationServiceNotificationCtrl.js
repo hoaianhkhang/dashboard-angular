@@ -16,6 +16,7 @@
             $scope.createNotificationView = path;
             $location.path('/services/notifications/create/' + $scope.createNotificationView);
         };
+        $scope.goToCreateNotificationView('email');
 
     }
 })();
