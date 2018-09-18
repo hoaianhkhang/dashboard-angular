@@ -10,6 +10,7 @@
                 <th>Category</th>
                 <th>Type</th>
                 <th></th>
+                <th></th>
             </tr>
             <tr class="editable-row center pointer user-details-table-hover"
                 ng-repeat="document in userDocuments" ng-click="openUserDocumentModal('app/pages/users/user/userDetails/userDocuments/userDocumentModal/userDocumentModal.html',document)">
@@ -17,7 +18,11 @@
                 <td>{{document.document_type}}</td>
                 <td class="pull-right"><span ng-class="{'status-pending': document.status == 'pending','status-verified': document.status == 'verified',
                     'status-incomplete-declined': document.status == 'incomplete' || document.status == 'declined' || document.status == 'obsolete'}"
-                                      class="user-address-status">{{document.status | uppercase}}</span></td>
+                                      class="user-address-status">{{document.status | uppercase}}</span>
+                </td>
+                <td class="pull-right">
+                    <span ng-show="document.archived" class="user-primary-account user-address-status">ARCHIVED</span>
+                </td>
             </tr>
         </table>
         <div ng-show="userDocuments.length == 0 && !loadingUserDocuments">

@@ -45,10 +45,10 @@
                     }
                     $scope.editDocument = {
                         file: {},
-                        document_type: res.document_type,
-                        status: $filter('capitalizeWord')(res.status),
-                        note: res.note,
-                        metadata: res.metadata
+                        document_type: document.document_type,
+                        status: $filter('capitalizeWord')(document.status),
+                        note: document.note,
+                        metadata: document.metadata
                     };
                     $scope.updatingDocument = false;
                     $scope.$apply();
@@ -124,7 +124,7 @@
                     $scope.updateUserBasicInfoFromDocumentModal();
                     $scope.$apply();
                 } else {
-                    $uibModalInstance.close($scope.document);
+                    $uibModalInstance.close({success: true, dontReload: false});
                     $scope.$apply();
                 }
             }, function (error) {
@@ -143,7 +143,7 @@
             formData.append('archived', false);
 
             Rehive.admin.users.documents.update($scope.document.id, formData).then(function (res) {
-                vm.getUserDocument();
+                $uibModalInstance.close({success: true, dontReload: true});
                 $scope.$apply();
             }, function (error) {
                 $scope.updatingDocument = false;
@@ -160,7 +160,7 @@
                 formData.append('status', $scope.userInfo.status.toLowerCase());
 
                 Rehive.admin.users.update(vm.uuid, formData).then(function (res) {
-                    $uibModalInstance.close($scope.document);
+                    $uibModalInstance.close({success: true, dontReload: true});
                     $scope.$apply();
                 }, function (error) {
                     errorHandler.evaluateErrors(error);
@@ -188,7 +188,7 @@
                     count = count + 1;
                 }
             } else {
-                $uibModalInstance.close($scope.document);
+                $uibModalInstance.close({success: true, dontReload: false});
             }
         };
 
@@ -198,7 +198,7 @@
                     status: status.toLowerCase()
                 }).then(function (res) {
                     if(last){
-                        $uibModalInstance.close($scope.document);
+                        $uibModalInstance.close({success: true, dontReload: false});
                         $scope.$apply();
                     }
                 }, function (error) {
@@ -223,9 +223,9 @@
                 }
             });
 
-            vm.theDeleteModal.result.then(function(document){
-                if(document){
-                    $uibModalInstance.close(true);
+            vm.theDeleteModal.result.then(function(successObj){
+                if(successObj.success){
+                    $uibModalInstance.close(successObj);
                 } else {
                     vm.getUserDocument();
                 }
