@@ -3,10 +3,7 @@
     <div class="col-lg-3 col-md-4 col-sm-12 col-xs-12">
         <create-notification-service-notification-menu></create-notification-service-notification-menu>
     </div>
-    <div ng-show="createNotificationView == 'email'" class="col-lg-9 col-md-8 col-sm-12 col-xs-12">
-        <create-notification-service-notification-email></create-notification-service-notification-email>
-    </div>
-    <div ng-show="createNotificationView == 'sms'" class="col-lg-9 col-md-8 col-sm-12 col-xs-12">
-        <create-notification-service-notification-sms></create-notification-service-notification-sms>
+    <div class="col-lg-9 col-md-8 col-sm-12 col-xs-12">
+        <div ui-view="createNotificationViews"></div>
     </div>
 </div>

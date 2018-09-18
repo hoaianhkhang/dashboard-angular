@@ -5,15 +5,16 @@
         .controller('CreateNotificationServiceNotificationsCtrl', CreateNotificationServiceNotificationsCtrl);
 
     /** @ngInject */
-    function CreateNotificationServiceNotificationsCtrl($scope,localStorageManagement) {
+    function CreateNotificationServiceNotificationsCtrl($scope,localStorageManagement,$location) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
         vm.baseUrl = localStorageManagement.getValue('SERVICEURL');
-        $scope.createNotificationView = 'sms';
+        $scope.createNotificationView = 'email';
 
         $scope.goToCreateNotificationView = function (path) {
             $scope.createNotificationView = path;
+            $location.path('/services/notifications/create/' + $scope.createNotificationView);
         };
 
     }

@@ -1,7 +1,10 @@
 (function () {
     'use strict';
 
-    angular.module('BlurAdmin.pages.services.notificationService.createNotificationServiceNotification', [])
+    angular.module('BlurAdmin.pages.services.notificationService.createNotificationServiceNotification', [
+        'BlurAdmin.pages.services.notificationService.createNotificationServiceNotification.email',
+        'BlurAdmin.pages.services.notificationService.createNotificationServiceNotification.sms'
+    ])
         .config(routeConfig);
 
     /** @ngInject */
