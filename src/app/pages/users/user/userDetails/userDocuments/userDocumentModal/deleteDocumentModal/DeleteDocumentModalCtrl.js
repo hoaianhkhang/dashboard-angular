@@ -27,7 +27,7 @@
                 } else {
                     $scope.deletingDocument = false;
                     toastr.success('Document successfully archived');
-                    $uibModalInstance.close();
+                    $uibModalInstance.close({success: true, dontReload: true});
                     $scope.$apply();
                 }
             }, function (error) {
@@ -75,7 +75,7 @@
             Rehive.admin.users.documents.delete($scope.document.id).then(function (res) {
                 $scope.deletingDocument = false;
                 toastr.success('Document successfully deleted');
-                $uibModalInstance.close(res);
+                $uibModalInstance.close({success: true, dontReload: true});
                 $scope.$apply();
             }, function (error) {
                 $scope.deletingDocument = false;
