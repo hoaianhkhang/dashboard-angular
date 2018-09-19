@@ -139,7 +139,7 @@
             <div class="form-group">
                 <label>Event</label>
                 <br>
-                <select class="form-control pointer" ng-model="editCampaignParams.event"
+                <select class="form-control pointer" ng-change="campaignChanged('event')" ng-model="editCampaignParams.event"
                         ng-options="event for event in eventOptions">
                 </select>
             </div>
@@ -158,7 +158,8 @@
             <div class="form-group">
                 <label>Groups</label>
                 <div class="reward-multi-select">
-                    <tags-input ng-model="editCampaignParams.groups" placeholder="Enter one or more group name">
+                    <tags-input ng-model="editCampaignParams.groups" on-tag-added="campaignChanged('groups')"
+                                placeholder="Enter one or more group name" on-tag-removed="campaignChanged('groups')">
                         <auto-complete class="reward-tag-users-input" source="getGroupsTypeahead($query)"></auto-complete>
                     </tags-input>
                 </div>
