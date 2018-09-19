@@ -16,7 +16,7 @@
         $scope.updatingCampaign =  false;
         $scope.editCampaignParams = {};
         vm.updatedCampaignObj = {};
-        $scope.amountTypeOptions = ['Fixed' , 'Percentage'];
+        $scope.amountTypeOptions = ['Fixed' , 'Percentage', 'Both'];
 
         //for angular datepicker
         $scope.dateObj = {};
@@ -95,17 +95,20 @@
                                 editObj.end_date = moment(editObj.end_date).toDate();
                                 editObj.reward_total = currencyModifiers.convertFromCents(editObj.reward_total,editObj.currency.divisibility);
                                 editObj.reward_amount = currencyModifiers.convertFromCents(editObj.reward_amount,editObj.currency.divisibility);
-                                editObj.amount_type = $filter('capitalizeWord')(editObj.amount_type);
+                                editObj.amount_type = $filter('capitalizeWord')(editObj.amount_type) == 'Fixed' ? 'Fixed' :
+                                    $filter('capitalizeWord')(editObj.amount_type) == 'Percentage' ? 'Percentage' : 'Both';
                                 if(editObj.account){
                                     $scope.accountOptions.forEach(function (element) {
                                         if(element.reference == editObj.account){
                                             editObj.account = element;
                                             $scope.editCampaignParams = editObj;
+                                            console.log($scope.editCampaignParams)
                                             $scope.updatingCampaign =  false;
                                         }
                                     });
                                 } else {
                                     $scope.editCampaignParams = editObj;
+                                    console.log($scope.editCampaignParams)
                                     $scope.updatingCampaign =  false;
                                 }
                             }
