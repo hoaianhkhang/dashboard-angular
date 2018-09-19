@@ -47,11 +47,13 @@
                 }
             });
 
-            vm.theModal.result.then(function(document){
-                if(document){
+            vm.theModal.result.then(function(successObj){
+                if(successObj.success){
                     vm.getUserDocuments();
                 }
-                $window.location.reload();
+                if(!successObj.dontReload){
+                    $window.location.reload();
+                }
             }, function(){
             });
         };
