@@ -39,7 +39,8 @@
                             <tr>
                                 <th width="50%">
                                     {{totalPermissionsObj[key].permissionsName}}
-                                    <input type="checkbox" class="custom-rehive-checkbox" ng-model="totalPermissionsObj[key].enableAll" ng-click="toggleAllPermissions(key,totalPermissionsObj[key].enableAll)">
+                                    <input type="checkbox" ng-disabled="editGroupObj.name == 'admin' || editGroupObj.name == 'service'" ng-checked="editGroupObj.name == 'admin'"
+                                           class="custom-rehive-checkbox" ng-model="totalPermissionsObj[key].enableAll" ng-click="toggleAllPermissions(key,totalPermissionsObj[key].enableAll)">
                                 </th>
                                 <th width="10%" class="text-center">View</th>
                                 <th width="10%" class="text-center">Add</th>
@@ -53,8 +54,9 @@
                                 </td>
                                 <td class="text-center" ng-repeat="level in permission.levels">
                                     <label  class="checkbox-inline custom-checkbox nowrap">
-                                        <input type="checkbox" ng-change="trackPermissions(permission,level,key)" ng-model="level.enabled"
-                                            ng-checked="level.enabled">
+                                        <input type="checkbox" ng-change="trackPermissions(permission,level,key)"
+                                               ng-disabled="editGroupObj.name == 'admin' || editGroupObj.name == 'service'"
+                                               ng-model="level.enabled" ng-checked="level.enabled || editGroupObj.name == 'admin'">
                                             <span class="account-settings-span"></span>
                                     </label>
                                 </td>
