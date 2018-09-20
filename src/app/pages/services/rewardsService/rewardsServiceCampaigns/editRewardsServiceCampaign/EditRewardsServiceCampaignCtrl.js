@@ -124,17 +124,21 @@
                                 editObj.reward_amount = currencyModifiers.convertFromCents(editObj.reward_amount,editObj.currency.divisibility);
                                 editObj.amount_type = $filter('capitalizeWord')(editObj.amount_type) == 'Fixed' ? 'Fixed' :
                                     $filter('capitalizeWord')(editObj.amount_type) == 'Percentage' ? 'Percentage' : 'Both';
+                                if(editObj.event){
+                                    editObj.event = $filter('capitalizeDottedSentence')(editObj.event);
+                                    editObj.event = $filter('capitalizeUnderscoredSentence')(editObj.event);
+                                } else {
+                                    editObj.event = '';
+                                }
+                                if(editObj.groups){
+                                    editObj.groups = editObj.groups.split(',');
+                                } else {
+                                    editObj.groups = [];
+                                }
                                 if(editObj.account){
                                     $scope.accountOptions.forEach(function (element) {
                                         if(element.reference == editObj.account){
                                             editObj.account = element;
-                                            if(editObj.event){
-                                                editObj.event = $filter('capitalizeDottedSentence')(editObj.event);
-                                                editObj.event = $filter('capitalizeUnderscoredSentence')(editObj.event);
-                                            }
-                                            if(editObj.groups){
-                                                editObj.groups = editObj.groups.split(',');
-                                            }
                                             $scope.editCampaignParams = editObj;
                                             $scope.updatingCampaign =  false;
                                         }
