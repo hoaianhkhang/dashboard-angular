@@ -9,7 +9,8 @@
         <form class="custom-form" name="rewardUserForm" novalidate>
             <div class="form-group divider-20">
                 <label>Campaign name</label><br>
-                <select class="form-control pointer" ng-disabled="rewardUserObj.currency.code" ng-model="rewardUserObj.campaign"
+                <select class="form-control pointer" ng-disabled="rewardUserObj.currency.code"
+                        ng-model="rewardUserObj.campaign"
                         ng-options="campaign.name for campaign in campaignsListOptions">
                 </select>
             </div>
@@ -20,7 +21,11 @@
                        auto-focus="true" required>
             </div>
             <div class="form-group divider-20">
-                <label>Amount <span ng-hide="rewardUserObj.campaign.name != 'No campaign selected'" class="required-icon">*</span></label>
+                <label>Amount
+                    <span ng-show="(rewardUserObj.campaign.name == 'No campaign selected' || rewardUserObj.campaign.amount_type == 'percentage' || rewardUserObj.campaign.amount_type == 'fixedpercentage')"
+                          class="required-icon">*
+                    </span>
+                </label>
                 <input type="number" class="form-control" ng-model="rewardUserObj.amount" placeholder="Enter value" >
             </div>
             <div class="form-group divider-20 setup-groups-tooltip-div">
