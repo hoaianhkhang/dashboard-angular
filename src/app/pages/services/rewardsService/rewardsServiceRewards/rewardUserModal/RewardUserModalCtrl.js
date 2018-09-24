@@ -105,7 +105,7 @@
                 reward_type: $scope.rewardUserObj.type ? $scope.rewardUserObj.type.toLowerCase() : null
             };
 
-            if($scope.rewardUserObj.campaign && $scope.rewardUserObj.campaign.id){
+            if($scope.rewardUserObj.campaign && $scope.rewardUserObj.campaign.id && $scope.rewardUserObj.amount){
                 rewardObj.amount = currencyModifiers.convertToCents($scope.rewardUserObj.amount,$scope.rewardUserObj.campaign.currency.divisibility);
             } else {
                 rewardObj.amount = currencyModifiers.convertToCents($scope.rewardUserObj.amount,$scope.rewardUserObj.currency.divisibility);
