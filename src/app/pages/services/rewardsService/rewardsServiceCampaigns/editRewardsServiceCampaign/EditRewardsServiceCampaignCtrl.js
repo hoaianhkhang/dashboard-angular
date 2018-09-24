@@ -16,7 +16,34 @@
         $scope.updatingCampaign =  false;
         $scope.editCampaignParams = {};
         vm.updatedCampaignObj = {};
-        $scope.amountTypeOptions = ['Fixed' , 'Percentage'];
+        $scope.amountTypeOptions = ['Fixed' , 'Percentage', 'Both'];
+
+        vm.eventOptionsObj = {
+            USER_CREATE: 'user.create',
+            USER_UPDATE: 'user.update',
+            USER_PASSWORD_RESET: 'user.password.reset',
+            USER_PASSWORD_SET: 'user.password.set',
+            USER_EMAIL_VERIFY: 'user.email.verify',
+            USER_MOBILE_VERIFY: 'user.mobile.verify',
+            ADDRESS_CREATE: 'address.create',
+            ADDRESS_UPDATE: 'address.update',
+            DOCUMENT_CREATE: 'document.create',
+            DOCUMENT_UPDATE: 'document.update',
+            BANK_ACCOUNT_CREATE: 'bank_account.create',
+            BANK_ACCOUNT_UPDATE: 'bank_account.update',
+            CRYPTO_ACCOUNT_CREATE: 'crypto_account.create',
+            CRYPTO_ACCOUNT_UPDATE: 'crypto_account.update',
+            TRANSACTION_CREATE: 'transaction.create',
+            TRANSACTION_UPDATE: 'transaction.update',
+            TRANSACTION_DELETE: 'transaction.delete',
+            TRANSACTION_INITIATE: 'transaction.initiate',
+            TRANSACTION_EXECUTE: 'transaction.execute'
+        };
+
+        $scope.eventOptions = ['','User Create','User Update','User Password Reset','User Password Set','User Email Verify','User Mobile Verify',
+            'Address Create','Address Update','Document Create','Document Update',
+            'Bank Account Create','Bank Account Update','Crypto Account Create','Crypto Account Update',
+            'Transaction Create','Transaction Update','Transaction Delete','Transaction Initiate','Transaction Execute'];
 
         //for angular datepicker
         $scope.dateObj = {};
@@ -95,7 +122,19 @@
                                 editObj.end_date = moment(editObj.end_date).toDate();
                                 editObj.reward_total = currencyModifiers.convertFromCents(editObj.reward_total,editObj.currency.divisibility);
                                 editObj.reward_amount = currencyModifiers.convertFromCents(editObj.reward_amount,editObj.currency.divisibility);
-                                editObj.amount_type = $filter('capitalizeWord')(editObj.amount_type);
+                                editObj.amount_type = $filter('capitalizeWord')(editObj.amount_type) == 'Fixed' ? 'Fixed' :
+                                    $filter('capitalizeWord')(editObj.amount_type) == 'Percentage' ? 'Percentage' : 'Both';
+                                if(editObj.event){
+                                    editObj.event = $filter('capitalizeDottedSentence')(editObj.event);
+                                    editObj.event = $filter('capitalizeUnderscoredSentence')(editObj.event);
+                                } else {
+                                    editObj.event = '';
+                                }
+                                if(editObj.groups){
+                                    editObj.groups = editObj.groups.split(',');
+                                } else {
+                                    editObj.groups = [];
+                                }
                                 if(editObj.account){
                                     $scope.accountOptions.forEach(function (element) {
                                         if(element.reference == editObj.account){
@@ -124,7 +163,6 @@
         };
 
         $scope.updateCampaign = function () {
-
             if(moment(vm.updatedCampaignObj.end_date).isBefore(moment(vm.updatedCampaignObj.start_date))){
                 toastr.error('End date cannot be in the past or before start date.');
                 return;
@@ -154,9 +192,23 @@
             }
             if(vm.updatedCampaignObj.amount_type){
                 vm.updatedCampaignObj.amount_type = vm.updatedCampaignObj.amount_type.toLowerCase();
+                if(vm.updatedCampaignObj.amount_type == 'both'){
+                    vm.updatedCampaignObj.amount_type = 'fixedpercentage';
+                }
             }
             if(vm.updatedCampaignObj.account && vm.updatedCampaignObj.account.reference){
                 vm.updatedCampaignObj.account = vm.updatedCampaignObj.account.reference;
+            }
+            if(vm.updatedCampaignObj.groups){
+                vm.updatedCampaignObj.groups = (_.pluck(vm.updatedCampaignObj.groups,'text')).join();
+            }
+            if(vm.updatedCampaignObj.event){
+                if(!vm.updatedCampaignObj.event.includes(".")){
+                    var event;
+                    event = vm.updatedCampaignObj.event.toUpperCase();
+                    event = event.replace(/ /g, '_');
+                    vm.updatedCampaignObj.event = vm.eventOptionsObj[event];
+                }
             }
 
             $scope.updatingCampaign =  true;
