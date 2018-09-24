@@ -173,6 +173,12 @@
         </div>
     </div>
     <div class="form-group">
-        <button ng-click="toggleConfirmTransaction()" class="btn dashboard-btn btn-primary pull-right">Next</button>
+        <button ng-click="toggleConfirmTransaction()"
+                ng-disabled="!transferTransactionData.user ||
+                 !transferTransactionData.recipient ||
+                 !transferTransactionData.amount ||
+                 !transferTransactionData.currency ||
+                 !transferTransactionData.currency.code"
+                class="btn dashboard-btn btn-primary pull-right">Next</button>
     </div>
 </form>

@@ -124,6 +124,13 @@
         </div>
     </div>
     <div class="form-group">
-        <button ng-click="toggleConfirmTransaction()" class="btn dashboard-btn btn-primary pull-right">Next</button>
+        <button ng-click="toggleConfirmTransaction()"
+                ng-disabled="!debitTransactionData.user ||
+                 !debitTransactionData.amount ||
+                 !debitTransactionData.currency ||
+                 !debitTransactionData.currency.code ||
+                 !debitTransactionData.account ||
+                 !debitTransactionData.account.name"
+                class="btn dashboard-btn btn-primary pull-right">Next</button>
     </div>
 </form>
