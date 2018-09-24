@@ -5,7 +5,7 @@
         .controller('UsersCtrl', UsersCtrl);
 
     /** @ngInject */
-    function UsersCtrl($rootScope,$state,Rehive,$scope,typeaheadService,$location,
+    function UsersCtrl($rootScope,$state,Rehive,$scope,typeaheadService,$location,$uibModal,
                        localStorageManagement,errorHandler,$window,toastr,serializeFiltersService,$filter) {
 
         var vm = this;
@@ -580,8 +580,21 @@
             $scope.loadingUsers = false;
         };
 
-        $scope.goToAddUser = function () {
-            $location.path('/users/add');
+        $scope.openAddUserModal = function (page, size) {
+            vm.theAddModal = $uibModal.open({
+                animation: true,
+                templateUrl: page,
+                size: size,
+                controller: 'AddUserModalCtrl'
+            });
+
+            vm.theAddModal.result.then(function(user){
+                if(user){
+                    $scope.getAllUsers();
+                }
+            }, function(){
+            });
+
         };
 
         $scope.displayUser = function (user) {
