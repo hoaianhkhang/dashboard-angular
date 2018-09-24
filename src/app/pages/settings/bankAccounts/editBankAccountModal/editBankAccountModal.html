@@ -57,16 +57,10 @@
                 <select class="form-control pointer divider" ng-model="editBankAccountCurrencies.list" multiple
                         ng-options="currency.code for currency in currenciesList | orderBy: 'code' track by currency.code" required>
                 </select>
-                <p>Currencies selected:
-                    <span ng-repeat="currency in editBankAccountCurrencies.list | orderBy: 'code'">
-                    {{$last ? ' ' + currency.code : currency.code + ',' }}
-                </span>
-                </p>
             </div>
         </form>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-default dashboard-btn pull-left" ng-click="$dismiss()">Close</button>
         <button ng-click="updateBankAccount()" ng-disabled="deletingBankAccount" type="button" class="btn btn-primary dashboard-btn pull-right">Save</button>
     </div>
 </div>
