@@ -6,8 +6,19 @@
     <div class="col-lg-9 col-md-8 col-sm-12 col-xs-12">
         <div ng-hide="loadingNotifications" class="panel">
             <div class="panel-heading">
-                <span class="user-details-panel-title">Notifications list</span>
-                <a href="/#/services/notifications/create" class="user-details-panel-link pull-right pointer">Add</a>
+                <div class="table-filter-heading">
+                    <div>
+                        <button ng-click="showFilters()" ng-class="{'transactions-filter-btn': (filtersCount > 0), 'transactions-btn': (filtersCount == 0)}"
+                                class="btn btn-default">Filters
+                            <span ng-show="filtersCount > 0">|</span> <span ng-show="filtersCount > 0" class="filter-count">{{filtersCount}}</span>
+                        </button>
+                        <div ng-show="showingFilters">
+                            <list-notification-filters></list-notification-filters>
+                        </div>
+                    </div>
+                    <button ng-click="goToCreateNotification()"
+                            class="btn btn-success transactions-btn panel-transaction-newTx-button">Add</button>
+                </div>
             </div>
             <div class="panel-body">
                 <div ng-show="notificationsList.length > 0" class="divider">
