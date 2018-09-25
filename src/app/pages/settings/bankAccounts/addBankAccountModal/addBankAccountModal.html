@@ -51,12 +51,19 @@
                 <label>Bic</label>
                 <input type="text" ng-model="newBankData.bic" class="form-control"  placeholder="e.g. FDDODUMMXXX">
             </div>
-            <div class="form-group">
-                <label>Currencies <small class="text-muted">(Hold CTRL to select multiple currencies)</small></label>
-                <br>
-                <select class="form-control pointer divider" ng-model="bankAccountCurrencies.list" multiple
-                        ng-options="currency.code for currency in currenciesList | orderBy: 'code' track by currency.code" required>
-                </select>
+            <div class="form-group custom-form">
+                <label>Currencies </label>
+                <div class="reward-multi-select">
+                    <select chosen
+                            multiple
+                            data-placeholder-text-multiple="'Choose one or more currencies'"
+                            width="100"
+                            ng-model="bankAccountCurrencies.list"
+                            ng-options="currency.code for currency in currenciesList | orderBy: 'code' track by currency.code"
+                            required>
+                        <option value=""></option>
+                    </select>
+                </div>
             </div>
         </form>
     </div>

@@ -1,9 +1,19 @@
 <div ng-hide="editingWebhook || loadingWebhooks">
     <div class="setting-bank-accounts panel">
         <div class="panel-heading">
-            <span class="user-details-panel-title">Webhooks</span>
-            <a ng-click="openCreateWebhookModal('app/pages/webhooks/webhooksList/addWebhookModal/addWebhookModal.html','md')"
-               class="user-details-panel-link pull-right pointer">Add webhook</a>
+            <div class="table-filter-heading">
+                <div>
+                    <button ng-click="showFilters()" ng-class="{'transactions-filter-btn': (filtersCount > 0), 'transactions-btn': (filtersCount == 0)}"
+                            class="btn btn-default">Filters
+                        <span ng-show="filtersCount > 0">|</span> <span ng-show="filtersCount > 0" class="filter-count">{{filtersCount}}</span>
+                    </button>
+                </div>
+                <div ng-show="showingFilters">
+                    <webhooks-filters></webhooks-filters>
+                </div>
+                <button ng-click="openCreateWebhookModal('app/pages/webhooks/webhooksList/addWebhookModal/addWebhookModal.html','md')"
+                        class="btn btn-success transactions-btn panel-transaction-newTx-button">Add</button>
+            </div>
         </div>
         <div class="panel-body">
             <div ng-show="webhookList.length > 0">
