@@ -4,9 +4,9 @@
     angular.module('BlurAdmin.pages.services.notificationService', [
         'BlurAdmin.pages.services.notificationService.notificationServiceSettings',
         'BlurAdmin.pages.services.notificationService.notificationServiceLogs',
-        'BlurAdmin.pages.services.notificationService.listNotificationServiceNotifications',
-        'BlurAdmin.pages.services.notificationService.createNotificationServiceNotification',
-        'BlurAdmin.pages.services.notificationService.editNotificationServiceNotification'
+        'BlurAdmin.pages.services.notificationService.listNotifications',
+        'BlurAdmin.pages.services.notificationService.createNotification',
+        'BlurAdmin.pages.services.notificationService.editNotification'
     ])
         .config(routeConfig);
 
