@@ -70,6 +70,18 @@
   }
 }
 
+.notification-select-all-bulk-checkbox{
+  position: absolute;
+  top: -4px;
+  width: 200px;
+  & label{
+    position: absolute;
+    top: 4px;
+    left: -62px;
+    font-weight: normal;
+  }
+}
+
 .exchange-pagination li a {
   padding: 7px 10px !important;
 }

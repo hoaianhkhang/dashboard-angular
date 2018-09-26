@@ -16,8 +16,9 @@
                             <list-notification-filters></list-notification-filters>
                         </div>
                     </div>
-                    <button ng-click="goToCreateNotification()"
-                            class="btn btn-success transactions-btn panel-transaction-newTx-button">Add</button>
+                    <button ng-click="goToBulkAdd()" ng-disabled="loadingUsers"
+                            class="btn btn-success panel-header-user-icon">Add bulk</button>
+                    <button ng-click="goToCreateNotification()" class="btn btn-success transactions-btn panel-header-button">Add</button>
                 </div>
             </div>
             <div class="panel-body">

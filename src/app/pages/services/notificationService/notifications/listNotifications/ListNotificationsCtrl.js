@@ -211,6 +211,10 @@
             $location.path('/services/notifications/create/email');
         };
 
+        $scope.goToBulkAdd = function () {
+            $location.path('/services/notifications/bulk/add');
+        };
+
     }
 
 })();

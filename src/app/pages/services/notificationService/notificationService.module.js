@@ -6,7 +6,8 @@
         'BlurAdmin.pages.services.notificationService.notificationServiceLogs',
         'BlurAdmin.pages.services.notificationService.listNotifications',
         'BlurAdmin.pages.services.notificationService.createNotification',
-        'BlurAdmin.pages.services.notificationService.editNotification'
+        'BlurAdmin.pages.services.notificationService.editNotification',
+        'BlurAdmin.pages.services.notificationService.bulkNotifications'
     ])
         .config(routeConfig);
 
