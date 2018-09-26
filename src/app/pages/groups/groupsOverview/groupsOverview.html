@@ -82,13 +82,13 @@
                             <span class="fa fa-ellipsis-h pull-right pointer currencies-options"></span>
                             <ul ng-show="group.name == optionsName" class="currencies-options-box">
                                 <li ng-click="showCurrenciesOptions(currency.code)"><i class="dropdown-arr"></i></li>
-                                <li ng-click="goToGroupViews('/groups/' + group.name + '/details')">Details</li>
-                                <li ng-click="goToGroupViews('/groups/' + group.name + '/users')">Users</li>
-                                <li ng-click="goToGroupViews('/groups/' + group.name + '/permissions')">Permissions</li>
-                                <li ng-click="goToGroupViews('/groups/' + group.name + '/tiers')">Tiers</li>
-                                <li ng-click="goToGroupViews('/groups/' + group.name + '/account-configurations')">Account configurations</li>
-                                <li ng-click="goToGroupViews('/groups/' + group.name + '/transaction-settings')">Transaction settings</li>
-                                <li ng-click="goToGroupViews('/groups/' + group.name + '/stats')">Stats</li>
+                                <a class="group-options-link" ng-href="{{'/#/groups/' + group.name + '/details'}}"><li>Details</li></a>
+                                <a class="group-options-link" ng-href="{{'/#/groups/' + group.name + '/users'}}"><li>Users</li></a>
+                                <a class="group-options-link" ng-href="{{'/#/groups/' + group.name + '/permissions'}}"><li>Permissions</li></a>
+                                <a class="group-options-link" ng-href="{{'/#/groups/' + group.name + '/tiers'}}"><li>Tiers</li></a>
+                                <a class="group-options-link" ng-href="{{'/#/groups/' + group.name + '/account-configurations'}}"><li>Account configurations</li></a>
+                                <a class="group-options-link" ng-href="{{'/#/groups/' + group.name + '/transaction-settings'}}"><li>Transaction settings</li></a>
+                                <a class="group-options-link" ng-href="{{'/#/groups/' + group.name + '/stats'}}"><li>Stats</li></a>
                                 <li ng-show="group.archived" ng-click="restoreGroup(group)">Restore group</li>
                                 <li ng-hide="group.name == 'admin' || group.name == 'service'"
                                     ng-click="openDeleteGroupModal('app/pages/groups/groupsOverview/deleteGroupModal/deleteGroupModal.html','md',group)">Delete group</li>
