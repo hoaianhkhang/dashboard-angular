@@ -5,7 +5,7 @@
         .controller('CreateRewardsServiceCampaignsCtrl', CreateRewardsServiceCampaignsCtrl);
 
     /** @ngInject */
-    function CreateRewardsServiceCampaignsCtrl($scope,$rootScope,environmentConfig,Rehive,typeaheadService,toastr,_,currencyModifiers,
+    function CreateRewardsServiceCampaignsCtrl($scope,$rootScope,Rehive,typeaheadService,toastr,_,currencyModifiers,
                                                $http,localStorageManagement,$location,errorHandler,serializeFiltersService) {
 
         var vm = this;
@@ -26,10 +26,39 @@
             amountType: 'Fixed',
             status: 'active',
             max_per_user: null,
+            event: '',
             visible: false,
-            request: false
+            request: false,
+            groups: []
         };
-        $scope.amountTypeOptions = ['Fixed' , 'Percentage'];
+        $scope.amountTypeOptions = ['Fixed' , 'Percentage', 'Both'];
+
+        vm.eventOptionsObj = {
+            USER_CREATE: 'user.create',
+            USER_UPDATE: 'user.update',
+            USER_PASSWORD_RESET: 'user.password.reset',
+            USER_PASSWORD_SET: 'user.password.set',
+            USER_EMAIL_VERIFY: 'user.email.verify',
+            USER_MOBILE_VERIFY: 'user.mobile.verify',
+            ADDRESS_CREATE: 'address.create',
+            ADDRESS_UPDATE: 'address.update',
+            DOCUMENT_CREATE: 'document.create',
+            DOCUMENT_UPDATE: 'document.update',
+            BANK_ACCOUNT_CREATE: 'bank_account.create',
+            BANK_ACCOUNT_UPDATE: 'bank_account.update',
+            CRYPTO_ACCOUNT_CREATE: 'crypto_account.create',
+            CRYPTO_ACCOUNT_UPDATE: 'crypto_account.update',
+            TRANSACTION_CREATE: 'transaction.create',
+            TRANSACTION_UPDATE: 'transaction.update',
+            TRANSACTION_DELETE: 'transaction.delete',
+            TRANSACTION_INITIATE: 'transaction.initiate',
+            TRANSACTION_EXECUTE: 'transaction.execute'
+        };
+
+        $scope.eventOptions = ['','User Create','User Update','User Password Reset','User Password Set','User Email Verify','User Mobile Verify',
+            'Address Create','Address Update','Document Create','Document Update',
+            'Bank Account Create','Bank Account Update','Crypto Account Create','Crypto Account Update',
+            'Transaction Create','Transaction Update','Transaction Delete','Transaction Initiate','Transaction Execute'];
 
         //for angular datepicker
         $scope.dateObj = {};
@@ -87,7 +116,6 @@
                 return;
             }
 
-
             var newCampaign = {
                 name: newCampaignParams.name,
                 description: newCampaignParams.description,
@@ -103,7 +131,9 @@
                 status: newCampaignParams.status,
                 max_per_user: newCampaignParams.max_per_user,
                 visible: newCampaignParams.visible,
-                request: newCampaignParams.request
+                request: newCampaignParams.request,
+                event: newCampaignParams.event,
+                groups: (_.pluck(newCampaignParams.groups,'text')).join()
             };
 
             newCampaign.start_date = moment(new Date(newCampaignParams.startDate)).format('YYYY-MM-DD') +'T00:00:00Z';
@@ -122,6 +152,17 @@
             // if(newCampaignParams.tags.length > 0){
             //     newCampaign.tags = _.pluck(newCampaignParams.tags,'text');
             // }
+
+            if(newCampaign.amount_type == "both"){
+                newCampaign.amount_type = 'fixedpercentage';
+            }
+
+            if(newCampaign.event){
+                var event;
+                event = newCampaign.event.toUpperCase();
+                event = event.replace(/ /g, '_');
+                newCampaign.event = vm.eventOptionsObj[event];
+            }
 
             newCampaign = serializeFiltersService.objectFilters(newCampaign);
 

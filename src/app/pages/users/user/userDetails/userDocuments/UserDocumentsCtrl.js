@@ -18,6 +18,7 @@
                 Rehive.admin.users.documents.get({filters: {user: vm.uuid}}).then(function (res) {
                     $scope.loadingUserDocuments = false;
                     $scope.userDocuments = res.results;
+                    console.log($scope.userDocuments)
                     $scope.$apply();
                 }, function (error) {
                     $scope.loadingUserDocuments = false;
@@ -46,11 +47,13 @@
                 }
             });
 
-            vm.theModal.result.then(function(document){
-                if(document){
+            vm.theModal.result.then(function(successObj){
+                if(successObj.success){
                     vm.getUserDocuments();
                 }
-                $window.location.reload();
+                if(!successObj.dontReload){
+                    $window.location.reload();
+                }
             }, function(){
             });
         };
