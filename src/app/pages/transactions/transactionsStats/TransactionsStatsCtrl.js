@@ -388,7 +388,16 @@
 
             Rehive.admin.transactions.totals.get({filters: transactionsStatsFiltersObj}).then(function (res) {
                 $scope.transactionTotalObj = res;
-                vm.getCurrencyObject($scope.transactionTotalObj);
+                if($scope.transactionTotalObj.currency){
+                    vm.getCurrencyObject($scope.transactionTotalObj);
+                    $scope.$apply();
+                } else {
+                    $scope.currencyObj = {
+                        symbol: 'N/A'
+                    };
+                    $scope.loadingStats = false;
+                    $scope.$apply();
+                }
                 $scope.$apply();
             }, function (error) {
                 $scope.loadingStats = false;
