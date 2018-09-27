@@ -163,33 +163,57 @@
             }
         };
 
-        // $scope.findEnabledNotifications = function () {
-        //
-        //
-        // };
-        //
-        // $scope.addBulkNotifications = function () {
-        //     $scope.bulkEmailEventOptions.forEach(function (emailNotif,index,arr) {
-        //         if(emailNotif.enabled){
-        //             if(index == (arr.length - 1)){
-        //                 // last email notification
-        //                 vm.addNotification(emailNotif,null,'email');
-        //                 // last email notification
-        //                 $scope.bulkSmsEventOptions.forEach(function (smsNotif,smsIndex,smsArr) {
-        //                     if(smsNotif.enabled){
-        //                         if(smsIndex == (smsArr.length - 1)){
-        //                             vm.addNotification(smsNotif,'last','sms');
-        //                         } else {
-        //                             vm.addNotification(smsNotif,null,'sms');
-        //                         }
-        //                     }
-        //                 });
-        //             } else {
-        //                 vm.addNotification(emailNotif,null,'email');
-        //             }
-        //         }
-        //     });
-        // };
+        $scope.findEnabledNotifications = function () {
+            var enabledEmailEventsArray =[];
+            var enabledSmsEventsArray =[];
+
+            $scope.bulkEmailEventOptions.forEach(function (emailNotif,index,arr) {
+                if(emailNotif.enabled){
+                    enabledEmailEventsArray.push(emailNotif);
+                }
+            });
+
+            $scope.bulkSmsEventOptions.forEach(function (smsNotif,index,arr) {
+                if(smsNotif.enabled){
+                    enabledSmsEventsArray.push(smsNotif);
+                }
+            });
+
+            vm.addBulkNotifications(enabledEmailEventsArray,enabledSmsEventsArray);
+        };
+
+        vm.addBulkNotifications = function (enabledEmailEventsArray,enabledSmsEventsArray) {
+            if(enabledEmailEventsArray.length > 0){
+                enabledEmailEventsArray.forEach(function (emailNotif,index,arr) {
+                    if(index == (arr.length - 1)){
+                        // last email notification
+                        if(enabledSmsEventsArray.length > 0){
+                            vm.addNotification(emailNotif,null,'email');
+                        } else {
+                            vm.addNotification(emailNotif,'last','email');
+                        }
+                        // iterating over the sms array
+                        enabledSmsEventsArray.forEach(function (smsNotif,smsIndex,smsArr) {
+                            if(smsIndex == (smsArr.length - 1)){
+                                vm.addNotification(smsNotif,'last','sms');
+                            } else {
+                                vm.addNotification(smsNotif,null,'sms');
+                            }
+                        });
+                    } else {
+                        vm.addNotification(emailNotif,null,'email');
+                    }
+                });
+            } else {
+                enabledSmsEventsArray.forEach(function (smsNotif,smsIndex,smsArr) {
+                    if(smsIndex == (smsArr.length - 1)){
+                        vm.addNotification(smsNotif,'last','sms');
+                    } else {
+                        vm.addNotification(smsNotif,null,'sms');
+                    }
+                });
+            }
+        };
 
         vm.addNotification = function (notification,last,type) {
             if(notification.event){
@@ -229,11 +253,6 @@
                     type: 'sms'
                 };
             }
-
-
-
-            console.log(notificationObj)
-            return;
 
             $scope.addingBulkNotification =  true;
             if(vm.token) {

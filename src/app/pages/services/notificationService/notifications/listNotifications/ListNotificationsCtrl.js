@@ -201,8 +201,9 @@
             });
 
             vm.theModal.result.then(function(notification){
-                var index = $scope.notificationsList.findIndex(vm.findIndexOfNotification,notification);
-                $scope.notificationsList.splice(index, 1);
+                if(notification){
+                    $scope.getNotificationsList();
+                }
             }, function(){
             });
         };
