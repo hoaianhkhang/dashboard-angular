@@ -5,13 +5,14 @@
         .controller('UsersCtrl', UsersCtrl);
 
     /** @ngInject */
-    function UsersCtrl($rootScope,$state,Rehive,$scope,typeaheadService,$location,
+    function UsersCtrl($rootScope,$state,Rehive,$scope,typeaheadService,$location,$timeout,
                        localStorageManagement,errorHandler,$window,toastr,serializeFiltersService,$filter) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
         vm.companyIdentifier = localStorageManagement.getValue('companyIdentifier');
         vm.savedUserTableColumns = vm.companyIdentifier + 'usersTable';
+        vm.savedUserTableFilters = vm.companyIdentifier + 'usersTableFilters';
         $rootScope.dashboardTitle = 'Users | Rehive';
         vm.currenciesList = JSON.parse($window.sessionStorage.currenciesList || '[]');
         vm.location = $location.path();
@@ -30,6 +31,7 @@
         $scope.groupFilterOptions = ['Group name','In a group'];
         $scope.currencyOptions = [];
         $scope.filtersCount = 0;
+        $scope.initialLoad = true;
 
         $scope.usersPagination = {
             itemsPerPage: 25,
@@ -457,6 +459,20 @@
         vm.getUsersFiltersObj = function(){
             $scope.filtersCount = 0;
 
+            // get saved user table filters from local storage if any
+            // if($scope.initialLoad){
+            //     $scope.initialLoad = false;
+            //     if(localStorageManagement.getValue(vm.savedUserTableFilters)){
+            //         var filterObjects = JSON.parse(localStorageManagement.getValue(vm.savedUserTableFilters));
+            //
+            //         $scope.filtersObj = filterObjects.filtersObj;
+            //         $scope.filtersObj = filterObjects.filtersObj;
+            //
+            //     }
+            // }
+
+            //TODO: need to implement filters from localstorage 
+
             for(var x in $scope.filtersObj){
                 if($scope.filtersObj.hasOwnProperty(x)){
                     if($scope.filtersObj[x]){
@@ -492,7 +508,6 @@
                 };
             }
 
-
             var searchObj = {
                 page: $scope.usersPagination.pageNo,
                 page_size: $scope.filtersObj.pageSizeFilter? $scope.usersPagination.itemsPerPage : 25,
@@ -515,13 +530,24 @@
                 archived: $scope.filtersObj.archivedFilter ? ($scope.applyFiltersObj.archivedFilter.selectedArchivedFilter == 'True' ?  true : false) : null
             };
 
+            vm.saveUsersTableFiltersToLocalStorage({
+                searchObj: serializeFiltersService.objectFilters(searchObj),
+                filtersObj: $scope.filtersObj,
+                applyFiltersObj: $scope.applyFiltersObj
+            });
+
             return serializeFiltersService.objectFilters(searchObj);
+        };
+
+        vm.saveUsersTableFiltersToLocalStorage = function (filterObjects) {
+            localStorageManagement.setValue(vm.savedUserTableFilters,JSON.stringify(filterObjects));
         };
 
         $scope.getAllUsers = function(applyFilter){
             $scope.usersStateMessage = '';
             $scope.loadingUsers = true;
             $scope.showingFilters = false;
+            var usersFiltersObj = {};
 
             if(applyFilter){
                 $scope.usersPagination.pageNo = 1;
@@ -531,8 +557,13 @@
                 $scope.users.length = 0;
             }
 
-            var usersFiltersObj = vm.getUsersFiltersObj();
+            usersFiltersObj = vm.getUsersFiltersObj();
+            vm.getAllUsersApiCall(usersFiltersObj);
 
+        };
+        $scope.getAllUsers();
+
+        vm.getAllUsersApiCall = function (usersFiltersObj) {
             Rehive.admin.users.get({filters: usersFiltersObj}).then(function (res) {
                 $scope.usersData = res;
                 vm.formatUsersArray(res.results);
@@ -550,7 +581,6 @@
                 $scope.$apply();
             });
         };
-        $scope.getAllUsers();
 
         vm.formatUsersArray = function (usersArray) {
             usersArray.forEach(function (userObj) {
