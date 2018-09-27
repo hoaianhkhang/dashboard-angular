@@ -65,8 +65,8 @@
                         if(res.data.data.results.length > 0){
                             $scope.campaignListData = res.data.data;
                             $scope.campaignListData.results.forEach(function (campaign) {
-                                campaign.start_date = moment(campaign.start_date).format('MM/DD/YYYY');
-                                campaign.end_date = moment(campaign.end_date).format('MM/DD/YYYY');
+                                campaign.start_date = moment(campaign.start_date).format('DD/MM/YYYY');
+                                campaign.end_date = moment(campaign.end_date).format('DD/MM/YYYY');
                             });
                             $scope.campaignList = $scope.campaignListData.results;
                         }

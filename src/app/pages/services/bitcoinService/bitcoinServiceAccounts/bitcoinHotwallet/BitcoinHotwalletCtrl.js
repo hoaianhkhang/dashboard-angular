@@ -143,7 +143,7 @@
 
         //for angular datepicker
         $scope.dateObjHotwallet = {};
-        $scope.dateObjHotwallet.format = 'MM/dd/yyyy';
+        $scope.dateObjHotwallet.format = 'dd/MM/yyyy';
         $scope.popup1Hotwallet = {};
         $scope.open1Hotwallet = function() {
             $scope.popup1Hotwallet.opened = true;

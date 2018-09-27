@@ -134,7 +134,7 @@
 
         //for angular datepicker
         $scope.dateObj = {};
-        $scope.dateObj.format = 'MM/dd/yyyy';
+        $scope.dateObj.format = 'dd/MM/yyyy';
         $scope.popup1 = {};
         $scope.open1 = function() {
             $scope.popup1.opened = true;

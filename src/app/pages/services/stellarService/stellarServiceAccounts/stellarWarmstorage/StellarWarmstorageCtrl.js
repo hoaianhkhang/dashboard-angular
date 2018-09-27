@@ -179,7 +179,7 @@
 
         //for angular datepicker
         $scope.dateObjWarmstorage = {};
-        $scope.dateObjWarmstorage.format = 'MM/dd/yyyy';
+        $scope.dateObjWarmstorage.format = 'dd/MM/yyyy';
         $scope.popup1Warmstorage = {};
         $scope.open1Warmstorage = function() {
             $scope.popup1Warmstorage.opened = true;

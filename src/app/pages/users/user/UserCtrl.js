@@ -156,8 +156,8 @@
 
             userData.age = ($filter('ageCalculator')(userData.birth_date)).toString();
             userData.nationality = $filter('isoCountry')(userData.nationality);
-            userData.created = $filter('date')(userData.created,'MMM d y') + ' ' +$filter('date')(userData.created,'shortTime');
-            userData.last_login = $filter('date')(userData.last_login,'MMM d y') + ' ' +$filter('date')(userData.last_login,'shortTime');
+            userData.created = $filter('date')(userData.created,'d MMM y') + ' ' +$filter('date')(userData.created,'shortTime');
+            userData.last_login = $filter('date')(userData.last_login,'d MMM y') + ' ' +$filter('date')(userData.last_login,'shortTime');
 
             var filteredUserData = _.pick(userData,'id','first_name','last_name','username','birth_date','age',
                 'nationality','language','company', 'timezone','verified','created','last_login');
