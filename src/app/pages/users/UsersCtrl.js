@@ -584,8 +584,12 @@
             $location.path('/users/add');
         };
 
-        $scope.displayUser = function (user) {
-            $location.path('/user/' + user.id + '/details');
+        $scope.displayUser = function ($event,user) {
+            if($event.which === 1){
+                $location.path('/user/' + user.id + '/details');
+            } else if($event.which === 3){
+                $window.open('/#/user/' + user.id + '/details','_blank');
+            }
         };
 
         $scope.closeColumnFiltersBox = function () {

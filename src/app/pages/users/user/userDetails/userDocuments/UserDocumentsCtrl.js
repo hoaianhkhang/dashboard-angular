@@ -18,7 +18,6 @@
                 Rehive.admin.users.documents.get({filters: {user: vm.uuid}}).then(function (res) {
                     $scope.loadingUserDocuments = false;
                     $scope.userDocuments = res.results;
-                    console.log($scope.userDocuments)
                     $scope.$apply();
                 }, function (error) {
                     $scope.loadingUserDocuments = false;
