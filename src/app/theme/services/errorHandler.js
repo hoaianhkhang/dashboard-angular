@@ -5,7 +5,7 @@
         .factory('errorHandler', errorHandler);
 
     /** @ngInject */
-    function errorHandler(toastr,$location,localStorageManagement,$rootScope) {
+    function errorHandler(toastr,$location,localStorageManagement,Rehive,$rootScope) {
 
         return {
             evaluateErrors: function (errors) {
