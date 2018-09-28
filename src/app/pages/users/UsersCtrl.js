@@ -587,6 +587,8 @@
         $scope.displayUser = function ($event,user) {
             if($event.which === 1){
                 $location.path('/user/' + user.id + '/details');
+            } else if($event.which === 2){
+                $window.open('/#/user/' + user.id + '/details','_blank');
             } else if($event.which === 3){
                 $window.open('/#/user/' + user.id + '/details','_blank');
             }
