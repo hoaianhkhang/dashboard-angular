@@ -33,13 +33,6 @@
         $scope.filtersCount = 0;
         $scope.initialLoad = true;
 
-        $scope.usersPagination = {
-            itemsPerPage: 25,
-            pageNo: 1,
-            maxSize: 5
-        };
-
-
         // if(localStorageManagement.getValue(vm.savedUserTableColumns)){
         //     var headerColumns = JSON.parse(localStorageManagement.getValue(vm.savedUserTableColumns));
         //     var recipientFieldExists = false;
@@ -165,6 +158,11 @@
             },
             orderByFilter: {
                 selectedOrderByOption: 'Created'
+            },
+            paginationFilter: {
+                itemsPerPage: 25,
+                pageNo: 1,
+                maxSize: 5
             }
         };
 
@@ -323,8 +321,8 @@
         };
 
         $scope.pageSizeChanged =  function () {
-            if($scope.usersPagination.itemsPerPage > 250){
-                $scope.usersPagination.itemsPerPage = 250;
+            if($scope.applyFiltersObj.paginationFilter.itemsPerPage > 250){
+                $scope.applyFiltersObj.paginationFilter.itemsPerPage = 250;
             }
         };
 
@@ -535,6 +533,11 @@
                         },
                         orderByFilter: {
                             selectedOrderByOption: filterObjects.applyFiltersObj.orderByFilter.selectedOrderByOption
+                        },
+                        paginationFilter: {
+                            itemsPerPage: filterObjects.applyFiltersObj.paginationFilter.itemsPerPage,
+                            pageNo: filterObjects.applyFiltersObj.paginationFilter.pageNo,
+                            maxSize: filterObjects.applyFiltersObj.paginationFilter.maxSize
                         }
                     };
 
@@ -542,7 +545,7 @@
                 } else {
                     searchObj = {
                         page: 1,
-                        page_size: $scope.filtersObj.pageSizeFilter? $scope.usersPagination.itemsPerPage : 25
+                        page_size: $scope.filtersObj.pageSizeFilter? $scope.applyFiltersObj.paginationFilter.itemsPerPage : 25
                     };
                 }
 
@@ -576,8 +579,8 @@
                 }
 
                 searchObj = {
-                    page: $scope.usersPagination.pageNo,
-                    page_size: $scope.filtersObj.pageSizeFilter? $scope.usersPagination.itemsPerPage : 25,
+                    page: $scope.applyFiltersObj.paginationFilter.pageNo,
+                    page_size: $scope.filtersObj.pageSizeFilter? $scope.applyFiltersObj.paginationFilter.itemsPerPage : 25,
                     id__contains: $scope.filtersObj.idFilter ? ($scope.applyFiltersObj.idFilter.selectedId ?  $scope.applyFiltersObj.idFilter.selectedId : null): null,
                     email__contains: $scope.filtersObj.emailFilter ?($scope.applyFiltersObj.emailFilter.selectedEmail ? $scope.applyFiltersObj.emailFilter.selectedEmail : null): null,
                     mobile__contains: $scope.filtersObj.mobileFilter ? ($scope.applyFiltersObj.mobileFilter.selectedMobile ? $scope.applyFiltersObj.mobileFilter.selectedMobile : null): null,
@@ -646,7 +649,7 @@
             var usersFiltersObj = {};
 
             if(applyFilter){
-                $scope.usersPagination.pageNo = 1;
+                $scope.applyFiltersObj.paginationFilter.pageNo = 1;
             }
 
             if($scope.users.length > 0 ){
