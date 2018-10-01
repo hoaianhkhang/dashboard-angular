@@ -65,7 +65,7 @@
 
         $scope.getUsersEmailTypeahead = typeaheadService.getUsersEmailTypeahead();
 
-        $scope.displayAdvancedDebitOption = function () {
+        $scope.toggleAdvancedDebitOption = function () {
             $scope.showAdvancedDebitOption = !$scope.showAdvancedDebitOption;
         };
 
