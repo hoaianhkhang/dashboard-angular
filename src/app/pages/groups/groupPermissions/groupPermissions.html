@@ -39,7 +39,9 @@
                             <tr>
                                 <th width="50%">
                                     {{totalPermissionsObj[key].permissionsName}}
-                                    <input type="checkbox" ng-disabled="editGroupObj.name == 'admin' || editGroupObj.name == 'service'" ng-checked="editGroupObj.name == 'admin'"
+                                    <input type="checkbox" ng-disabled="editGroupObj.name == 'admin' || editGroupObj.name == 'service'"
+                                           ng-class="{'permissions-select-all-disabled': (editGroupObj.name == 'admin'  || editGroupObj.name == 'service')}"
+                                           ng-checked="editGroupObj.name == 'admin'"
                                            class="custom-rehive-checkbox" ng-model="totalPermissionsObj[key].enableAll" ng-click="toggleAllPermissions(key,totalPermissionsObj[key].enableAll)">
                                 </th>
                                 <th width="10%" class="text-center">View</th>

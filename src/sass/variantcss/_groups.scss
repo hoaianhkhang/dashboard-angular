@@ -152,21 +152,21 @@
     & .group-permission-tooltip {
       display: inline-block;
       position: absolute;
-      top: -60%;
+      top: -7%;
       left: 63%;
       z-index: 1000;
       line-height: 16px;
       padding: 4px 5px;
       background-color: rgba(0, 0, 0, 0.8);
       color: white;
-      max-width: 150px;
+      width: 150px;
     }
     & .group-permission-tooltip::after {
       content: " ";
       position: absolute;
       bottom: 47%;
       z-index: 1000;
-      left: -6%;
+      left: -3%;
       margin-left: -5px;
       border-width: 5px;
       border-style: solid;
