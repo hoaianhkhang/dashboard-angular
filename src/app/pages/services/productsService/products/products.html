@@ -1,0 +1,63 @@
+<div class="panel">
+    <div class="panel-heading">
+        <div class="table-filter-heading">
+            <div>
+                <button ng-click="showFilters()" ng-class="{'transactions-filter-btn': (filtersCount > 0), 'transactions-btn': (filtersCount == 0)}"
+                        class="btn btn-default">Filters
+                    <span ng-show="filtersCount > 0">|</span> <span ng-show="filtersCount > 0" class="filter-count">{{filtersCount}}</span>
+                </button>
+                <span click-outside="closeColumnFiltersBox()">
+                    <button ng-click="showColumnFilters()" class="btn dynamic-columns btn-default">Columns</button>
+                    <div ng-show="showingColumnFilters">
+                        <columns-filter></columns-filter>
+                    </div>
+                </span>
+                <div ng-show="showingFilters">
+                    <user-filters></user-filters>
+                </div>
+            </div>
+            <button ng-click="getProductsLists('applyFilter')" ng-disabled="loadingProducts"
+                    class="btn btn-default transactions-btn panel-header-user-icon">Refresh</button>
+            <button ng-click="goToAddUser()" class="btn btn-success transactions-btn panel-header-button">New</button>
+        </div>
+    </div>
+    <div class="panel-body">
+        <div ng-hide="loadingProducts">
+            <div ng-show="productsList.length > 0" class="upper-pagination">
+                <p uib-pagination boundary-links="true" items-per-page="productsPagination.itemsPerPage"  total-items="productsListData.count" ng-model="productsPagination.pageNo"
+                   max-size="productsPagination.maxSize" class="pagination-sm pull-right no-margin" force-ellipses="true" ng-change="getProductsLists()"
+                   previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></p>
+            </div>
+            <div ng-show="productsList.length > 0" class="divider">
+                <div class="draggable-table">
+                    <!--draggable on-drag-end="tableColDrag($start, $target)"-->
+                    <table class="table custom-table table-striped">
+                        <thead>
+                        <tr>
+                            <!--class="pointer"-->
+                            <th ng-repeat="header in headerColumns" ng-if="header.visible"  ng-bind="header.colName"></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="user in users | orderBy: orderByFunction" data-toggle="modal"
+                            class="editable-row center pointer user-details-table-hover" ng-click="displayUser(user)">
+                            <td class="transactions-list-element" ng-repeat="header in headerColumns"
+                                ng-if="header.visible" ng-bind="user[header.fieldName]"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div ng-show="productsList.length > 0">
+                    <p uib-pagination boundary-links="true" items-per-page="productsPagination.itemsPerPage"  total-items="productsListData.count" ng-model="productsPagination.pageNo"
+                       max-size="productsPagination.maxSize" class="pagination-sm pull-right transaction-history-pagination" force-ellipses="true" ng-change="getProductsLists()"
+                       previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></p>
+                </div>
+            </div>
+            <i ng-hide="productsList.length > 0">No products are available.</i>
+        </div>
+        <div ng-show="loadingProducts">
+            <loading-image></loading-image>
+        </div>
+    </div>
+</div>
+

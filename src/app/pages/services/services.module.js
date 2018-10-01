@@ -9,6 +9,7 @@
         'BlurAdmin.pages.services.exchangeService',
         'BlurAdmin.pages.services.icoService',
         'BlurAdmin.pages.services.addService',
+        'BlurAdmin.pages.services.productsService',
         'BlurAdmin.pages.services.currencyConversionService',
         'BlurAdmin.pages.services.rewardsService',
         'BlurAdmin.pages.services.stellarTestnetService'
