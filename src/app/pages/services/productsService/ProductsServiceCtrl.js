@@ -27,12 +27,12 @@
         });
 
         vm.locationTracker = function (location) {
-            var baseLocation = '/services/rewards/';
+            var baseLocation = '/services/products/';
             var remainingLocation = location.split(baseLocation).pop();
             var remainingLocationArray = remainingLocation.split('/');
 
-            if(remainingLocationArray[0] == 'products'){
-                $scope.trackedLocation = 'products';
+            if(remainingLocationArray[0] == 'list'){
+                $scope.trackedLocation = 'list';
                 if(remainingLocationArray[(remainingLocationArray.length - 1)] == 'create'){
                     $scope.secondaryTrackedLocation = 'create';
                 } else if(remainingLocationArray[(remainingLocationArray.length - 1)] == 'edit'){

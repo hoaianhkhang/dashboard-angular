@@ -10,12 +10,12 @@
     function routeConfig($stateProvider,$urlRouterProvider) {
         $stateProvider
             .state('productsService', {
-                url: '/services/product',
+                url: '/services/products',
                 abstract: true,
                 templateUrl:'app/pages/services/productsService/productsService.html',
                 controller: "ProductsServiceCtrl"
             });
-        $urlRouterProvider.when("/services/product", "/services/product/products");
+        $urlRouterProvider.when("/services/products", "/services/products/list");
     }
 
 })();

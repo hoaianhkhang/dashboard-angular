@@ -10,6 +10,8 @@
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
         vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
+        vm.companyIdentifier = localStorageManagement.getValue('companyIdentifier');
+        vm.savedProductsTableColumns = vm.companyIdentifier + 'productsServiceProductsTable';
         $scope.loadingProducts =  false;
         $scope.showingProductsFilters = false;
         $scope.showingProductsColumnFilters = false;
@@ -21,6 +23,25 @@
             pageNo: 1,
             maxSize: 5
         };
+
+        // if(localStorageManagement.getValue(vm.savedProductsTableColumns)){
+        //     var headerColumns = JSON.parse(localStorageManagement.getValue(vm.savedProductsTableColumns));
+        //     headerColumns.forEach(function (col) {
+        //         if(col.colName == 'Identifier'){
+        //             col.colName = 'User id';
+        //             col.fieldName = 'userId';
+        //         }
+        //     });
+        //
+        //     localStorageManagement.setValue(vm.savedProductsTableColumns,JSON.stringify(headerColumns));
+        // }
+
+        $scope.headerColumns = localStorageManagement.getValue(vm.savedProductsTableColumns) ? JSON.parse(localStorageManagement.getValue(vm.savedProductsTableColumns)) : [
+            {colName: 'Id',fieldName: 'id',visible: true},
+            {colName: 'Name',fieldName: 'name',visible: true},
+            {colName: 'Currency',fieldName: 'currencyCode',visible: true}
+
+        ];
 
         $scope.filtersObj = {
             idFilter: false,
@@ -39,6 +60,14 @@
             }
         };
 
+        $scope.clearFilters = function () {
+            $scope.filtersObj = {
+                idFilter: false,
+                nameFilter: false,
+                currencyFilter: false
+            };
+        };
+
         $scope.showProductsFilters = function () {
             $scope.showingProductsColumnFilters = false;
             $scope.showingProductsFilters = !$scope.showingProductsFilters;
@@ -48,6 +77,38 @@
             $scope.showingProductsFilters = false;
             $scope.showingProductsColumnFilters = !$scope.showingProductsColumnFilters;
         };
+
+        $scope.closeProductsColumnFiltersBox = function () {
+            $scope.showingProductsColumnFilters = false;
+        };
+
+        //Column filters
+        $scope.selectAllProductsColumns = function () {
+            $scope.headerColumns.forEach(function (headerObj) {
+                headerObj.visible = true;
+            });
+            localStorageManagement.setValue(vm.savedProductsTableColumns,JSON.stringify($scope.headerColumns));
+        };
+
+        $scope.toggleProductsColumnVisibility = function () {
+            localStorageManagement.setValue(vm.savedProductsTableColumns,JSON.stringify($scope.headerColumns));
+        };
+
+        $scope.restoreProductsColDefaults = function () {
+            var defaultVisibleHeader = ['User','Type','Subtype','Currency',
+                'Amount','Fee','Status','Date','Id'];
+
+            $scope.headerColumns.forEach(function (headerObj) {
+                if(defaultVisibleHeader.indexOf(headerObj.colName) > -1){
+                    headerObj.visible = true;
+                } else {
+                    headerObj.visible = false;
+                }
+            });
+
+            localStorageManagement.setValue(vm.savedProductsTableColumns,JSON.stringify($scope.headerColumns));
+        };
+        //Column filters end
 
         vm.getProductsList = function () {
             if(vm.token) {

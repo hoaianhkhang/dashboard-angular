@@ -8,7 +8,7 @@
     function routeConfig($stateProvider,$urlRouterProvider) {
         $stateProvider
             .state('productsService.products', {
-                url: '/products',
+                url: '/list',
                 views: {
                     'productsServiceViews' : {
                         templateUrl:'app/pages/services/productsService/products/products.html',
