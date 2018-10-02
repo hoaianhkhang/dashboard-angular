@@ -40,7 +40,11 @@
         $scope.headerColumns = localStorageManagement.getValue(vm.savedProductsTableColumns) ? JSON.parse(localStorageManagement.getValue(vm.savedProductsTableColumns)) : [
             {colName: 'Id',fieldName: 'id',visible: true},
             {colName: 'Name',fieldName: 'name',visible: true},
-            {colName: 'Currency',fieldName: 'currencyCode',visible: true}
+            {colName: 'Description',fieldName: 'description',visible: true},
+            {colName: 'Value',fieldName: 'value',visible: true},
+            {colName: 'Currency',fieldName: 'currency',visible: true},
+            {colName: 'Quantity',fieldName: 'quantity',visible: true},
+            {colName: 'Type',fieldName: 'product_type',visible: true}
         ];
 
         $scope.filtersObj = {
@@ -95,8 +99,7 @@
         };
 
         $scope.restoreProductsColDefaults = function () {
-            var defaultVisibleHeader = ['User','Type','Subtype','Currency',
-                'Amount','Fee','Status','Date','Id'];
+            var defaultVisibleHeader = ['Id','Name','Description','Currency'];
 
             $scope.headerColumns.forEach(function (headerObj) {
                 if(defaultVisibleHeader.indexOf(headerObj.colName) > -1){
@@ -120,7 +123,6 @@
                 }).then(function (res) {
                     if (res.status === 200) {
                         if(res.data.data.results.length > 0){
-                            console.log(res.data.data)
                             $scope.productsListOptions = res.data.data.results;
                         }
                     }
@@ -180,10 +182,11 @@
                     }
                 }).then(function (res) {
                     if (res.status === 200) {
-                        $scope.loadingProducts = false;
                         if(res.data.data.results.length > 0){
                             $scope.productsListData = res.data.data;
-                            $scope.productsList = $scope.productsListData.results;
+                            vm.formatProductsArray($scope.productsListData.results);
+                        } else {
+                            $scope.loadingProducts = false;
                         }
                     }
                 }).catch(function (error) {
@@ -194,6 +197,22 @@
             }
         };
         $scope.getProductsLists();
+
+        vm.formatProductsArray = function (productsListArray) {
+            productsListArray.forEach(function (productObj) {
+                $scope.productsList.push({
+                    id: productObj.id,
+                    name: productObj.name,
+                    description: productObj.description,
+                    value: productObj.value,
+                    currency: productObj.currency,
+                    quantity: productObj.quantity,
+                    product_type: productObj.product_type
+                });
+            });
+
+            $scope.loadingProducts = false;
+        };
 
         $scope.goToAddProduct =  function () {
             $location.path('/services/products/create');
