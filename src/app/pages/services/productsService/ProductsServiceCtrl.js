@@ -33,16 +33,15 @@
 
             if(remainingLocationArray[0] == 'list'){
                 $scope.trackedLocation = 'list';
-                if(remainingLocationArray[(remainingLocationArray.length - 1)] == 'create'){
-                    $scope.secondaryTrackedLocation = 'create';
-                } else if(remainingLocationArray[(remainingLocationArray.length - 1)] == 'edit'){
-                    $scope.secondaryTrackedLocation = 'edit';
-                } else {
-                    $scope.secondaryTrackedLocation = '';
-                }
-            } else if (remainingLocationArray[0] == 'list'){
+                // if(remainingLocationArray[(0)] == 'create'){
+                //     $scope.trackedLocation = 'list';
+                // } else if(remainingLocationArray[(remainingLocationArray.length - 1)] == 'edit'){
+                //     $scope.trackedLocation = 'list';
+                // } else {
+                //     $scope.secondaryTrackedLocation = '';
+                // }
+            } else if (remainingLocationArray[0] == 'create'){
                 $scope.trackedLocation = 'list';
-                $scope.secondaryTrackedLocation = '';
             }
         };
         vm.locationTracker(vm.location);

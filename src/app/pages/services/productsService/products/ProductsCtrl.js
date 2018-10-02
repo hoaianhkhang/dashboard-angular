@@ -1,11 +1,12 @@
 (function () {
     'use strict';
 
-    angular.module('BlurAdmin.pages.services.productsService.products')
+    angular.module('BlurAdmin.pages.services.productsService.productsList')
         .controller('ProductsCtrl', ProductsCtrl);
 
     /** @ngInject */
-    function ProductsCtrl($scope,$rootScope,$http,localStorageManagement,serializeFiltersService,$uibModal,errorHandler) {
+    function ProductsCtrl($scope,$rootScope,$http,localStorageManagement,serializeFiltersService,
+                          $location,$uibModal,errorHandler) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
@@ -40,7 +41,6 @@
             {colName: 'Id',fieldName: 'id',visible: true},
             {colName: 'Name',fieldName: 'name',visible: true},
             {colName: 'Currency',fieldName: 'currencyCode',visible: true}
-
         ];
 
         $scope.filtersObj = {
@@ -131,7 +131,7 @@
                 });
             }
         };
-        //vm.getProductsList();
+        vm.getProductsList();
 
         vm.getProductsUrl = function(){
             $scope.filtersCount = 0;
@@ -193,8 +193,11 @@
                 });
             }
         };
-        //$scope.getProductsLists();
+        $scope.getProductsLists();
 
+        $scope.goToAddProduct =  function () {
+            $location.path('/services/products/create');
+        };
 
     }
 })();

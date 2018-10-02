@@ -1,13 +1,13 @@
 (function () {
     'use strict';
 
-    angular.module('BlurAdmin.pages.services.productsService.products', [])
+    angular.module('BlurAdmin.pages.services.productsService.productsList', [])
         .config(routeConfig);
 
     /** @ngInject */
     function routeConfig($stateProvider,$urlRouterProvider) {
         $stateProvider
-            .state('productsService.products', {
+            .state('productsService.productsList', {
                 url: '/list',
                 views: {
                     'productsServiceViews' : {

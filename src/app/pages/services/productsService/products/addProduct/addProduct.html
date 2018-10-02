@@ -1,0 +1,81 @@
+<div ng-hide="loadingProduct">
+    <div class="panel">
+        <div class="panel-heading">
+            <span class="user-details-panel-title">Add product</span>
+        </div>
+        <div class="panel-body">
+            <form name="addNewProductForm" class="custom-form" novalidate>
+                <div class="form-group">
+                    <label>Product name</label>
+                    <input type="text" ng-model="newUserParams.first_name" class="form-control"  placeholder="Enter first name" >
+                </div>
+                <div class="form-group">
+                    <label>Product description</label>
+                    <input type="text" ng-model="newUserParams.last_name" class="form-control"  placeholder="Enter last name">
+                </div>
+                <div class="form-group custom-form">
+                    <label>Currencies <span class="required-icon">*</span></label>
+                    <div class="reward-multi-select">
+                        <select chosen
+                                multiple
+                                data-placeholder-text-multiple="'Choose one or more currencies'"
+                                width="100"
+                                ng-model="currenciesToAdd"
+                                ng-options="currency.code + ' - ' + currency.description for currency in initialCurrencies | orderBy: 'code'"
+                                required>
+                            <option value=""></option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" ng-model="newUserParams.email" class="form-control"  placeholder="Enter email">
+                </div>
+                <div class="form-group">
+                    <label>Mobile number</label><br>
+                    <input class="form-control" type="text" placeholder="Enter mobile number"
+                           ng-model="newUserParams.mobile" ng-intl-tel-input>
+                </div>
+                <div class="form-group">
+                    <label>Nationality</label>
+                    <country-select class="form-control pointer" data-ng-model="newUserParams.nationality"></country-select>
+                </div>
+                <div class="form-group">
+                    <label>Group</label><br>
+                    <select class="form-control pointer" ng-model="newUserParams.groups"
+                            ng-options="group.name for group in groups">
+                    </select>
+                </div>
+                <a ng-hide="showingMoreDetails" ng-click="toggleMoreDetails()" class="pull-left pointer">Show more details</a>
+                <div ng-show="showingMoreDetails">
+                    <div class="form-group">
+                        <label>Id_number</label>
+                        <input type="text" ng-model="newUserParams.id_number" class="form-control"  placeholder="Enter id number" >
+                    </div>
+                    <div class="form-group">
+                        <label>Language</label>
+                        <input type="text" ng-model="newUserParams.language" class="form-control"  placeholder="Enter language">
+                    </div>
+                    <div class="form-group">
+                        <label>Metadata</label>
+                        <input type="text" ng-model="newUserParams.metadata" class="form-control"  placeholder='Enter metadata, e.g. {"hello":"world"}'>
+                    </div>
+                    <div class="form-group">
+                        <label>Timezone</label>
+                        <input type="text" ng-model="newUserParams.timezone" class="form-control"  placeholder="Enter timezone">
+                    </div>
+                </div>
+                <a ng-show="showingMoreDetails" ng-click="toggleMoreDetails()" class="pull-left pointer">Show less details</a>
+                <div class="form-group">
+                    <button  ng-click="addNewUser(newUserParams)" class="btn btn-primary dashboard-btn pull-right">Add</button>
+                    <button ng-click="backToUsers()" class="btn btn-default dashboard-btn pull-right margin-right-10">Back</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div ng-show="loadingProduct" class="row">
+    <div ba-panel class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <loading-image></loading-image>
+    </div>
+</div>

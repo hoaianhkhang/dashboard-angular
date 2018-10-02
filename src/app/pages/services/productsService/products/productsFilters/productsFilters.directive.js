@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    angular.module('BlurAdmin.pages.services.productsService.products')
+    angular.module('BlurAdmin.pages.services.productsService.productsList')
         .directive('productsFilters', productsFilters);
 
     /** @ngInject */

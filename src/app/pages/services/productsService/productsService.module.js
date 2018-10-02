@@ -2,7 +2,8 @@
     'use strict';
 
     angular.module('BlurAdmin.pages.services.productsService', [
-        'BlurAdmin.pages.services.productsService.products'
+        'BlurAdmin.pages.services.productsService.productsList',
+        'BlurAdmin.pages.services.productsService.createProduct'
     ])
         .config(routeConfig);
 
