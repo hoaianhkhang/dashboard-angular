@@ -7,63 +7,63 @@
         </div>
     </div>
     <div class="panel-body">
-        <div id="filterCampaign">
+        <div id="filterId">
             <div>
                 <label class="checkbox-inline custom-checkbox nowrap">
-                    <input type="checkbox" ng-model="filtersObj.campaignFilter">
-                    <span>Campaign</span>
+                    <input type="checkbox" ng-model="filtersObj.idFilter">
+                    <span>Id</span>
                 </label>
             </div>
-            <div ng-if="filtersObj.campaignFilter" class="row divider-top-6">
+            <div ng-if="filtersObj.idFilter" class="row divider-top-6">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 date-filter-view">
-                    <select class="form-control pointer currencies-unit-filter" ng-model="applyFiltersObj.campaignFilter.selectedCampaign"
-                            ng-options="campaign.name for campaign in campaignListOptions">
-                    </select>
-                </div>
-            </div>
-        </div>
-        <div id="filterRewardId">
-            <div>
-                <label class="checkbox-inline custom-checkbox nowrap">
-                    <input type="checkbox" ng-model="filtersObj.rewardIdFilter">
-                    <span>Reward id</span>
-                </label>
-            </div>
-            <div ng-if="filtersObj.rewardIdFilter" class="row divider-top-6">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 date-filter-view">
-                    <input type="text" ng-model="applyFiltersObj.rewardIdFilter.selectedRewardId" placeholder="Enter reward id"
-                           auto-focus="filtersObj.rewardIdFilter"
+                    <input type="text" ng-model="applyFiltersObj.idFilter.selectedId" placeholder="Enter product id"
+                           auto-focus="filtersObj.idFilter"
                            class="transaction-id-input">
                 </div>
             </div>
         </div>
-        <div id="filterRewardType">
+        <div id="filterName">
             <div>
                 <label class="checkbox-inline custom-checkbox nowrap">
-                    <input type="checkbox" ng-model="filtersObj.rewardTypeFilter">
-                    <span>Reward type</span>
+                    <input type="checkbox" ng-model="filtersObj.nameFilter">
+                    <span>Name</span>
                 </label>
             </div>
-            <div ng-if="filtersObj.rewardTypeFilter" class="row divider-top-6">
+            <div ng-if="filtersObj.nameFilter" class="row divider-top-6">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 date-filter-view">
-                    <select class="form-control pointer" ng-model="applyFiltersObj.rewardTypeFilter.selectedRewardType"
-                            ng-options="type for type in typeOptions">
+                    <input type="text" ng-model="applyFiltersObj.nameFilter.selectedName" placeholder="Enter product name"
+                           auto-focus="filtersObj.nameFilter"
+                           class="transaction-id-input">
+                </div>
+            </div>
+        </div>
+        <div id="filterCurrency">
+            <div>
+                <label class="checkbox-inline custom-checkbox nowrap">
+                    <input type="checkbox" ng-model="filtersObj.currencyFilter">
+                    <span>Currency</span>
+                </label>
+            </div>
+            <div ng-if="filtersObj.currencyFilter" class="row divider-top-6">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 date-filter-view">
+                    <select class="form-control pointer" ng-model="applyFiltersObj.currencyFilter.selectedCurrency"
+                            ng-options="currency.code for currency in currencyOptions | orderBy: 'code' track by currency.code">
                     </select>
                 </div>
             </div>
         </div>
-        <div id="filterStatus">
+        <div id="filterType">
             <div>
                 <label class="checkbox-inline custom-checkbox nowrap">
-                    <input type="checkbox" ng-model="filtersObj.statusFilter">
-                    <span>Status</span>
+                    <input type="checkbox" ng-model="filtersObj.typeFilter">
+                    <span>Type</span>
                 </label>
             </div>
-            <div ng-if="filtersObj.statusFilter" class="row divider-top-6">
+            <div ng-if="filtersObj.typeFilter" class="row divider-top-6">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 date-filter-view">
-                    <select class="form-control pointer" ng-model="applyFiltersObj.statusFilter.selectedStatus"
-                            ng-options="option for option in statusOptions">
-                    </select>
+                    <input type="text" ng-model="applyFiltersObj.typeFilter.selectedType" placeholder="Enter product type"
+                           auto-focus="filtersObj.typeFilter"
+                           class="transaction-id-input">
                 </div>
             </div>
         </div>

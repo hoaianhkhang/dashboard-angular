@@ -40,7 +40,8 @@
                         </thead>
                         <tbody>
                         <tr ng-repeat="product in productsList | orderBy: orderByFunction" data-toggle="modal"
-                            class="editable-row center pointer user-details-table-hover" ng-click="displayProduct(product)">
+                            class="editable-row center pointer user-details-table-hover"
+                            ng-click="displayProduct('app/pages/services/productsService/products/showProductsModal/showProductsModal.html', 'md',product)">
                             <td class="transactions-list-element" ng-repeat="header in headerColumns"
                                 ng-if="header.visible" ng-bind="product[header.fieldName]"></td>
                         </tr>

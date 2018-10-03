@@ -5,8 +5,8 @@
         .controller('AddProductCtrl', AddProductCtrl);
 
     /** @ngInject */
-    function AddProductCtrl($scope,$rootScope,$http,$location,localStorageManagement,
-                            Rehive,serializeFiltersService,toastr,$uibModal,errorHandler) {
+    function AddProductCtrl($scope,$http,$location,localStorageManagement,currencyModifiers,
+                            Rehive,serializeFiltersService,toastr,errorHandler) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
@@ -43,22 +43,18 @@
 
         $scope.addNewProduct = function (newProductParams) {
 
-            console.log(newProductParams)
-
             var newProduct = {
                 name: newProductParams.name,
                 description: newProductParams.description,
                 currency: newProductParams.currency.code || null,
-                value: newProductParams.value || null,
-                cost_price: newProductParams.cost_price || null,
+                value: currencyModifiers.convertToCents(newProductParams.value,newProductParams.currency.divisibility) || null,
+                cost_price: currencyModifiers.convertToCents(newProductParams.cost_price,newProductParams.currency.divisibility) || null,
                 quantity: newProductParams.quantity || null,
                 product_type: newProductParams.product_type || null,
                 code: newProductParams.code || null
             };
 
             newProduct = serializeFiltersService.objectFilters(newProduct);
-
-            console.log(newProduct)
 
             $scope.addingProduct =  true;
             if(vm.token) {

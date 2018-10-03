@@ -5,7 +5,7 @@
         .controller('ProductsCtrl', ProductsCtrl);
 
     /** @ngInject */
-    function ProductsCtrl($scope,$rootScope,$http,localStorageManagement,serializeFiltersService,
+    function ProductsCtrl($scope,Rehive,$http,localStorageManagement,serializeFiltersService,
                           $location,$uibModal,errorHandler) {
 
         var vm = this;
@@ -50,7 +50,8 @@
         $scope.filtersObj = {
             idFilter: false,
             nameFilter: false,
-            currencyFilter: false
+            currencyFilter: false,
+            typeFilter: false
         };
         $scope.applyFiltersObj = {
             idFilter: {
@@ -61,6 +62,9 @@
             },
             currencyFilter: {
                 selectedCurrency: {}
+            },
+            typeFilter: {
+                selectedType: null
             }
         };
 
@@ -68,9 +72,28 @@
             $scope.filtersObj = {
                 idFilter: false,
                 nameFilter: false,
-                currencyFilter: false
+                currencyFilter: false,
+                typeFilter: false
             };
         };
+
+        vm.getCompanyCurrencies = function(){
+            if(vm.token){
+                Rehive.admin.currencies.get({filters: {
+                    page:1,
+                    page_size: 250,
+                    archived: false
+                }}).then(function (res) {
+                    $scope.currencyOptions = res.results.slice();
+                    $scope.$apply();
+                }, function (error) {
+                    errorHandler.evaluateErrors(error);
+                    errorHandler.handleErrors(error);
+                    $scope.$apply();
+                });
+            }
+        };
+        vm.getCompanyCurrencies();
 
         $scope.showProductsFilters = function () {
             $scope.showingProductsColumnFilters = false;
@@ -212,6 +235,27 @@
             });
 
             $scope.loadingProducts = false;
+        };
+
+        $scope.displayProduct = function (page,size,productObj) {
+            vm.theModal = $uibModal.open({
+                animation: true,
+                templateUrl: page,
+                size: size,
+                controller: 'ShowProductModalCtrl',
+                resolve: {
+                    productObj: function () {
+                        return productObj;
+                    }
+                }
+            });
+
+            vm.theModal.result.then(function(product){
+                if(product){
+                    $scope.getProductsLists();
+                }
+            }, function(){
+            });
         };
 
         $scope.goToAddProduct =  function () {
