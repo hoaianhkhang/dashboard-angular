@@ -11,12 +11,19 @@
                        class="form-control" placeholder="Enter notification name" required>
             </div>
             <div class="form-group">
+                <label>Description</label>
+                <textarea rows="4" type="text" ng-change="notificationChanged('description')" ng-model="editNotification.description" class="form-control"  placeholder='Enter description'></textarea>
+            </div>
+            <div class="form-group">
                 <label>Subject <span class="required-icon">*</span></label>
                 <input type="text" ng-change="notificationChanged('subject')" ng-model="editNotification.subject" class="form-control"  placeholder="Enter subject" required>
             </div>
             <div class="form-group">
-                <label>Description</label>
-                <textarea rows="4" type="text" ng-change="notificationChanged('description')" ng-model="editNotification.description" class="form-control"  placeholder='Enter description'></textarea>
+                <label>Event <span class="required-icon">*</span></label>
+                <br>
+                <select class="form-control pointer" ng-change="notificationChanged('event')"
+                        ng-model="editNotification.event"  ng-options="event for event in eventOptions">
+                </select>
             </div>
             <div class="form-group">
                 <label>Html message</label>
@@ -27,6 +34,8 @@
                           ui-refresh="editorEnabled"
                           class="form-control"  placeholder='Enter html message'></textarea>
             </div>
+            <button ng-disabled="!editNotification.html_message" ng-click="openEditHtmlPreviewModal('app/pages/services/notificationService/notifications/editNotification/editNotificationEmail/editHtmlMessagePreviewModal/editHtmlMessagePreviewModal.html','md',editNotification.html_message)"
+                    class="btn btn-primary dashboard-btn pull-right">Preview</button>
             <div class="form-group">
                 <label>Text message</label>
                 <textarea type="text" ng-model="editNotification.text_message"
@@ -41,13 +50,6 @@
                 <br>
                 <input class="custom-rehive-checkbox" ng-change="notificationChanged('enabled')"
                        ng-model="editNotification.enabled" type="checkbox">
-            </div>
-            <div class="form-group">
-                <label>Event <span class="required-icon">*</span></label>
-                <br>
-                <select class="form-control pointer" ng-change="notificationChanged('event')"
-                        ng-model="editNotification.event"  ng-options="event for event in eventOptions">
-                </select>
             </div>
             <div class="form-group">
                 <label>To email</label>

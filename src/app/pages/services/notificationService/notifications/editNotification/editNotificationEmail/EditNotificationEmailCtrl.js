@@ -6,7 +6,7 @@
 
     /** @ngInject */
     function EditNotificationEmailCtrl($scope,$http,localStorageManagement,notificationHtmlTags,
-                                                          $filter,errorHandler,$location,$stateParams,toastr) {
+                                       $uibModal,$filter,errorHandler,$location,$stateParams,toastr) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
@@ -161,6 +161,25 @@
                     errorHandler.handleErrors(error);
                 });
             }
+        };
+
+        $scope.openEditHtmlPreviewModal = function (page, size, htmlPreview) {
+            vm.theModal = $uibModal.open({
+                animation: true,
+                templateUrl: page,
+                size: size,
+                controller: 'EditHtmlMessagePreviewModalCtrl',
+                scope: $scope,
+                resolve: {
+                    htmlPreview: function () {
+                        return htmlPreview;
+                    }
+                }
+            });
+
+            vm.theModal.result.then(function(){
+            }, function(){
+            });
         };
 
     }
