@@ -17,7 +17,7 @@
                 abstract:true,
                 title: 'Bitcoin service'
             });
-            $urlRouterProvider.when("/services/bitcoin", "/services/bitcoin/settings");
+            $urlRouterProvider.when("/services/bitcoin", "/services/bitcoin/accounts");
     }
 
 })();

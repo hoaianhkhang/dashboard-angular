@@ -17,7 +17,7 @@
                 abstract:true,
                 title: 'Ethereum service'
             });
-            $urlRouterProvider.when("/services/ethereum", "/services/ethereum/settings");
+            $urlRouterProvider.when("/services/ethereum", "/services/ethereum/accounts");
     }
 
 })();
