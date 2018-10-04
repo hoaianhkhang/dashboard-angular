@@ -39,7 +39,10 @@
                             <tr>
                                 <th width="50%">
                                     {{totalPermissionsObj[key].permissionsName}}
-                                    <input type="checkbox" class="custom-rehive-checkbox" ng-model="totalPermissionsObj[key].enableAll" ng-click="toggleAllPermissions(key,totalPermissionsObj[key].enableAll)">
+                                    <input type="checkbox" ng-disabled="editGroupObj.name == 'admin' || editGroupObj.name == 'service'"
+                                           ng-class="{'permissions-select-all-disabled': (editGroupObj.name == 'admin'  || editGroupObj.name == 'service')}"
+                                           ng-checked="editGroupObj.name == 'admin'"
+                                           class="custom-rehive-checkbox" ng-model="totalPermissionsObj[key].enableAll" ng-click="toggleAllPermissions(key,totalPermissionsObj[key].enableAll)">
                                 </th>
                                 <th width="10%" class="text-center">View</th>
                                 <th width="10%" class="text-center">Add</th>
@@ -51,12 +54,17 @@
                                 <td>
                                     <p class="no-margin" ng-bind="permission.type"></p>
                                 </td>
-                                <td class="text-center" ng-repeat="level in permission.levels">
-                                    <label  class="checkbox-inline custom-checkbox nowrap">
-                                        <input type="checkbox" ng-change="trackPermissions(permission,level,key)" ng-model="level.enabled"
-                                            ng-checked="level.enabled">
+                                <td class="text-center group-permission-td" ng-repeat="level in permission.levels">
+                                    <label class="checkbox-inline custom-checkbox nowrap"
+                                           ng-class="{'checkbox-disabled': (editGroupObj.name == 'admin'  || editGroupObj.name == 'service')}">
+                                        <input type="checkbox" ng-change="trackPermissions(permission,level,key)"
+                                               ng-disabled="editGroupObj.name == 'admin' || editGroupObj.name == 'service'"
+                                               ng-model="level.enabled" ng-checked="level.enabled || editGroupObj.name == 'admin'">
                                             <span class="account-settings-span"></span>
                                     </label>
+                                    <div ng-show="editGroupObj.name == 'admin' || editGroupObj.name == 'service'" class="group-permission-tooltip">
+                                        Rehive system group permissions cannot be edited.
+                                    </div>
                                 </td>
                             </tr>
                         </table>
@@ -65,7 +73,11 @@
             </div>
         </div>
     </div>
-    <button ng-hide="loadingPermissions" ng-click="savePermissionsProcess()" class="pull-right btn dashboard-btn btn-primary">Save</button>
+    <button ng-hide="loadingPermissions" ng-click="savePermissionsProcess()"
+            ng-disabled="editGroupObj.name == 'admin' || editGroupObj.name == 'service'"
+            ng-class="{'btn-gray': (editGroupObj.name == 'admin'  || editGroupObj.name == 'service'),
+            'btn-primary': (editGroupObj.name != 'admin'  || editGroupObj.name != 'service')}"
+            class="pull-right btn dashboard-btn">Save</button>
 </div>
 <div ba-panel ng-show="loadingPermissions">
     <loading-image></loading-image>
