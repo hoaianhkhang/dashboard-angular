@@ -65,6 +65,18 @@
   }
 }
 
+.notification-select-all-bulk-checkbox{
+  top: 2px;
+  & label{
+    position: absolute;
+    right: 28px;
+    font-weight: normal;
+  }
+  & input{
+    top: -4px;
+  }
+}
+
 .exchange-pagination li a {
   padding: 7px 10px !important;
 }
