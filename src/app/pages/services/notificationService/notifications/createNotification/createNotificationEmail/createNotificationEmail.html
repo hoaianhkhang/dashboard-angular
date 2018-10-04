@@ -9,7 +9,7 @@
                 <br>
                 <select class="form-control pointer" ng-model="emailNotificationParams.template"
                         ng-change="emailTemplateOptionChanged(emailNotificationParams.template)"
-                        ng-options="template for template in emailTemplateOptions">
+                        ng-options="template.name for template in emailTemplateOptions">
                 </select>
             </div>
             <div class="form-group">
@@ -35,7 +35,7 @@
                 </select>
             </div>
             <div class="form-group">
-                <label>Html message</label>
+                <label>Html message ( Type <b>'{'</b> to see variable options for this event )</label>
                 <textarea type="text" ng-model="emailNotificationParams.html_message"
                           ui-codemirror ui-codemirror-opts="editorEmailOptions"
                           ng-codemirror-dictionary-hint="htmlTags.tags"
@@ -44,7 +44,7 @@
             <button ng-disabled="!emailNotificationParams.html_message" ng-click="openHtmlPreviewModal('app/pages/services/notificationService/notifications/createNotification/createNotificationEmail/htmlMessagePreviewModal/htmlMessagePreviewModal.html','md',emailNotificationParams.html_message)"
                     class="btn btn-primary dashboard-btn pull-right">Preview</button>
             <div class="form-group">
-                <label>Text message</label>
+                <label>Text message ( Type <b>'{'</b> to see variable options for this event )</label>
                 <textarea rows="4" type="text" ng-model="emailNotificationParams.text_message"
                           ui-codemirror ui-codemirror-opts="editorEmailOptions"
                           ng-codemirror-dictionary-hint="htmlTags.tags"

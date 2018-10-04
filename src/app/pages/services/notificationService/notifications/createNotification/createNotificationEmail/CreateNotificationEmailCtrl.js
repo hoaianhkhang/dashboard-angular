@@ -53,7 +53,7 @@
             mode: 'xml'
         };
 
-        $scope.emailTemplateOptions = ['','Email'];
+        $scope.emailTemplateOptions = [];
         $scope.emailEventOptions = ['','User Create','User Update','User Password Reset','User Password Set','User Email Verify','User Mobile Verify',
             'Address Create','Address Update','Document Create','Document Update',
             'Bank Account Create','Bank Account Update','Crypto Account Create','Crypto Account Update',
@@ -73,29 +73,56 @@
             });
         };
 
+        $scope.getEmailTemplateOptions = function () {
+            $scope.addingEmailNotification =  true;
+            $http.get(vm.baseUrl + 'admin/templates/?type=email&page_size=250', {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': vm.token
+                }
+            }).then(function (res) {
+                if (res.status === 200) {
+                    $scope.addingEmailNotification =  false;
+                    $scope.emailTemplateOptions = res.data.data.results;
+                    $scope.emailTemplateOptions.unshift({name: 'No template selected'});
+                    $scope.emailNotificationParams.template = $scope.emailTemplateOptions[0];
+                }
+            }).catch(function (error) {
+                $scope.addingEmailNotification =  false;
+                errorHandler.evaluateErrors(error.data);
+                errorHandler.handleErrors(error);
+            });
+        };
+        $scope.getEmailTemplateOptions();
+
         $scope.emailTemplateOptionChanged = function (template) {
-            if(template){
-                $http.get(vm.baseUrl + 'admin/templates/?type=' + template.toLowerCase(), {
+            if(template.id){
+                $http.get(vm.baseUrl + 'admin/templates/' + template.id + '/', {
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': vm.token
                     }
                 }).then(function (res) {
                     if (res.status === 200) {
-                        var templateObj = res.data.data.results[0];
-                        $scope.emailNotificationParams = {
-                            template: $filter('capitalizeWord')(templateObj.type),
-                            name: templateObj.name,
-                            description: templateObj.description,
-                            subject: templateObj.subject,
-                            event: $filter('capitalizeDottedSentence')(templateObj.event),
-                            html_message: templateObj.html_message,
-                            text_message: templateObj.text_message,
-                            to_email: templateObj.to_email,
-                            expression: templateObj.expression,
-                            enabled: false,
-                            preference_enabled: false
-                        };
+                        var templateObj = res.data.data;
+
+                        $scope.emailTemplateOptions.forEach(function (template,index) {
+                            if(template.name == templateObj.name){
+                                $scope.emailNotificationParams = {
+                                    template: $scope.emailTemplateOptions[index],
+                                    name: templateObj.name,
+                                    description: templateObj.description,
+                                    subject: templateObj.subject,
+                                    event: $filter('capitalizeDottedSentence')(templateObj.event),
+                                    html_message: templateObj.html_message,
+                                    text_message: templateObj.text_message,
+                                    to_email: templateObj.to_email,
+                                    expression: templateObj.expression,
+                                    enabled: false,
+                                    preference_enabled: false
+                                };
+                            }
+                        });
                     }
                 }).catch(function (error) {
                     $scope.addingEmailNotification =  false;

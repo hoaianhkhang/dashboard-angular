@@ -41,7 +41,7 @@
             TRANSACTION_EXECUTE: 'transaction.execute'
         };
 
-        $scope.smsTemplateOptions = ['','Sms'];
+        $scope.smsTemplateOptions = [];
         $scope.smsEventOptions = ['','User Create','User Update','User Password Reset','User Password Set','User Email Verify','User Mobile Verify',
             'Address Create','Address Update','Document Create','Document Update',
             'Bank Account Create','Bank Account Update','Crypto Account Create','Crypto Account Update',
@@ -62,28 +62,55 @@
             }
         };
 
+        $scope.getSmsTemplateOptions = function () {
+            $scope.addingSmsNotification =  true;
+            $http.get(vm.baseUrl + 'admin/templates/?type=sms&page_size=250', {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': vm.token
+                }
+            }).then(function (res) {
+                if (res.status === 200) {
+                    $scope.addingSmsNotification =  false;
+                    $scope.smsTemplateOptions = res.data.data.results;
+                    $scope.smsTemplateOptions.unshift({name: 'No template selected'});
+                    $scope.smsNotificationParams.template = $scope.smsTemplateOptions[0];
+                }
+            }).catch(function (error) {
+                $scope.addingSmsNotification =  false;
+                errorHandler.evaluateErrors(error.data);
+                errorHandler.handleErrors(error);
+            });
+        };
+        $scope.getSmsTemplateOptions();
+
         $scope.smsTemplateOptionChanged = function (template) {
-            if(template){
-                $http.get(vm.baseUrl + 'admin/templates/?type=' + template.toLowerCase(), {
+            if(template.id){
+                $http.get(vm.baseUrl + 'admin/templates/' + template.id + '/', {
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': vm.token
                     }
                 }).then(function (res) {
                     if (res.status === 200) {
-                        var templateObj = res.data.data.results[0];
-                        $scope.smsNotificationParams = {
-                            template: $filter('capitalizeWord')(templateObj.type),
-                            name: templateObj.name,
-                            description: templateObj.description,
-                            subject: templateObj.subject,
-                            event: $filter('capitalizeDottedSentence')(templateObj.event),
-                            sms_message: templateObj.sms_message,
-                            to_mobile: templateObj.to_mobile,
-                            smsExpression: templateObj.expression,
-                            enabled: false,
-                            preference_enabled: false
-                        };
+                        var templateObj = res.data.data;
+
+                        $scope.smsTemplateOptions.forEach(function (template,index) {
+                            if(template.name == templateObj.name){
+                                $scope.smsNotificationParams = {
+                                    template: $scope.smsTemplateOptions[index],
+                                    name: templateObj.name,
+                                    description: templateObj.description,
+                                    subject: templateObj.subject,
+                                    event: $filter('capitalizeDottedSentence')(templateObj.event),
+                                    sms_message: templateObj.sms_message,
+                                    to_mobile: templateObj.to_mobile,
+                                    smsExpression: templateObj.expression,
+                                    enabled: false,
+                                    preference_enabled: false
+                                };
+                            }
+                        });
                     }
                 }).catch(function (error) {
                     $scope.addingSmsNotification =  false;
@@ -123,7 +150,7 @@
                 type: $scope.smsNotificationParams.type
             };
 
-            $scope.loadingNotifications =  true;
+            $scope.addingSmsNotification =  true;
             if(vm.token) {
                 $http.post(vm.baseUrl + 'admin/notifications/',smsNotificationObj, {
                     headers: {
@@ -136,7 +163,7 @@
                         $location.path('/services/notifications/list');
                     }
                 }).catch(function (error) {
-                    $scope.loadingNotifications =  false;
+                    $scope.addingSmsNotification =  false;
                     errorHandler.evaluateErrors(error.data);
                     errorHandler.handleErrors(error);
                 });
