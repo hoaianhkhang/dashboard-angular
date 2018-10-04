@@ -1,11 +1,11 @@
 (function () {
     'use strict';
 
-    angular.module('BlurAdmin.pages.users.addUser')
-        .controller('AddUserCtrl', AddUserCtrl);
+    angular.module('BlurAdmin.pages.users')
+        .controller('AddUserModalCtrl', AddUserModalCtrl);
 
     /** @ngInject */
-    function AddUserCtrl($scope,Rehive,$location,cleanObject,
+    function AddUserModalCtrl($scope,Rehive,$uibModalInstance,cleanObject,
                          localStorageManagement,errorHandler,toastr) {
 
         var vm = this;
@@ -87,7 +87,7 @@
                     nationality: "US",
                     metadata: ''
                 };
-                $scope.backToUsers();
+                $uibModalInstance.close(true);
                 toastr.success('User successfully added');
                 $scope.$apply();
             }, function (error) {
@@ -102,10 +102,6 @@
 
         $scope.toggleMoreDetails = function () {
             $scope.showingMoreDetails = !$scope.showingMoreDetails;
-        };
-
-        $scope.backToUsers = function () {
-            $location.path('/users');
         };
 
     }

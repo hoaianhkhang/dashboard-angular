@@ -92,10 +92,8 @@
             <label>Reference</label>
             <input type="text" ng-model="debitTransactionData.reference" class="form-control"  placeholder="e.g. # 1234">
         </div>
-        <div class="form-group">
-            <div ng-hide="showAdvancedDebitOption">
-                <a class="pointer" ng-click="displayAdvancedDebitOption()">Advanced options</a>
-            </div>
+        <span>
+            <a class="pointer" ng-hide="showAdvancedDebitOption" ng-click="toggleAdvancedDebitOption()">Advanced options</a>
             <div ng-show="showAdvancedDebitOption">
                 <div class="form-group">
                     <label>Subtype</label>
@@ -121,9 +119,15 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-    <div class="form-group">
-        <button ng-click="toggleConfirmTransaction()" class="btn dashboard-btn btn-primary pull-right">Next</button>
+        </span>
+        <a class="pointer" ng-show="showAdvancedDebitOption" ng-click="toggleAdvancedDebitOption()">Hide advanced options</a>
+        <button ng-click="toggleConfirmTransaction()"
+                ng-disabled="!debitTransactionData.user ||
+                 !debitTransactionData.amount ||
+                 !debitTransactionData.currency ||
+                 !debitTransactionData.currency.code ||
+                 !debitTransactionData.account ||
+                 !debitTransactionData.account.name"
+                class="btn dashboard-btn btn-primary pull-right">Next</button>
     </div>
 </form>

@@ -64,7 +64,7 @@
 
         $scope.getUsersEmailTypeahead = typeaheadService.getUsersEmailTypeahead();
 
-        $scope.displayAdvancedCreditOption = function () {
+        $scope.toggleAdvancedCreditOption = function () {
             $scope.showAdvancedCreditOption = !$scope.showAdvancedCreditOption;
         };
 

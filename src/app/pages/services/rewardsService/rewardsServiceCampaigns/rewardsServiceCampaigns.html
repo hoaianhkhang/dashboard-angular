@@ -1,7 +1,21 @@
 <div ng-hide="loadingCampaigns" class="panel">
     <div class="panel-heading">
-        <span class="user-details-panel-title">Campaigns list</span>
-        <a ng-click="goToCreateCampaignView()" class="user-details-panel-link pull-right pointer">Add</a>
+        <div class="table-filter-heading">
+            <div>
+                <button ng-click="showFilters()" ng-class="{'transactions-filter-btn': (filtersCount > 0), 'transactions-btn': (filtersCount == 0)}"
+                        class="btn btn-default">Filters
+                    <span ng-show="filtersCount > 0">|</span> <span ng-show="filtersCount > 0" class="filter-count">{{filtersCount}}</span>
+                </button>
+                </span>
+                <div ng-show="showingFilters">
+                    <rewards-service-campaigns-filters></rewards-service-campaigns-filters>
+                </div>
+            </div>
+            <button ng-click="getCampaignList('applyFilter')" ng-disabled="loadingCampaigns"
+                    class="btn btn-default transactions-btn panel-header-user-icon">Refresh</button>
+            <button ng-click="goToCreateCampaignView()"
+                    class="btn btn-success transactions-btn panel-transaction-newTx-button">Add</button>
+        </div>
     </div>
     <div class="panel-body">
         <div>
