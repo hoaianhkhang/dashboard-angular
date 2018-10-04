@@ -26,13 +26,13 @@
                 </select>
             </div>
             <div class="form-group">
-                <label>Html message ( Type <b>'{'</b> to see variable options for this event )</label>
+                <label>HTML message ( Type <b>'{'</b> to see variable options for this event )</label>
                 <textarea type="text" ng-model="editNotification.html_message"
                           ui-codemirror ui-codemirror-opts="editNotificationEditorOptions"
                           ng-change="notificationChanged('html_message')"
                           ng-codemirror-dictionary-hint="htmlTags.tags"
                           ui-refresh="editorEnabled"
-                          class="form-control"  placeholder='Enter html message'></textarea>
+                          class="form-control"  placeholder='Enter HTML message'></textarea>
             </div>
             <button ng-disabled="!editNotification.html_message" ng-click="openEditHtmlPreviewModal('app/pages/services/notificationService/notifications/editNotification/editNotificationEmail/editHtmlMessagePreviewModal/editHtmlMessagePreviewModal.html','md',editNotification.html_message)"
                     class="btn btn-primary dashboard-btn pull-right">Preview</button>

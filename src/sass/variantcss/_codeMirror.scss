@@ -12,6 +12,10 @@
   height: 41px!important;
 }
 
+.cm-s-monokai.CodeMirror, .cm-s-monokai .CodeMirror-gutters{
+  background-color: #022b36!important;
+}
+
 /* PADDING */
 
 .CodeMirror-lines {

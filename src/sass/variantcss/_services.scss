@@ -66,14 +66,14 @@
 }
 
 .notification-select-all-bulk-checkbox{
-  position: absolute;
-  top: -4px;
-  width: 200px;
+  top: 2px;
   & label{
     position: absolute;
-    top: 4px;
-    left: -62px;
+    right: 28px;
     font-weight: normal;
+  }
+  & input{
+    top: -4px;
   }
 }
 
