@@ -6,7 +6,7 @@
 
     /** @ngInject */
     function GroupsOverviewCtrl($rootScope,$scope,localStorageManagement,$uibModal,
-                                errorHandler,serializeFiltersService,toastr,$location,Rehive) {
+                                errorHandler,serializeFiltersService,toastr,Rehive) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('token');
@@ -38,10 +38,6 @@
 
         $scope.showGroupsOptions = function (code) {
             $scope.optionsName = code;
-        };
-
-        $scope.goToGroupViews = function (path) {
-            $location.path(path);
         };
 
         $scope.clearGroupFilters = function () {
