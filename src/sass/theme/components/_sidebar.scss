@@ -16,7 +16,7 @@ $angle-right: "\f101";
 
 .al-sidebar-list {
   margin: 0;
-  padding: 12px 0 0 0;
+  padding: 0 0 0 0;
   list-style: none;
 }
 
@@ -62,14 +62,16 @@ $angle-right: "\f101";
 
 a.al-sidebar-list-link {
   display: block;
-  height: 42px;
-  line-height: 42px;
+  height: 44px;
+  line-height: 44px;
   text-shadow: none;
   font-size: 14px;
   text-decoration: none;
   color: $sidebar-text;
   white-space: nowrap;
   overflow: hidden;
+  background-color: white;
+  margin-bottom: 5px;
   cursor: pointer;
   &:hover {
     color: $primary;
