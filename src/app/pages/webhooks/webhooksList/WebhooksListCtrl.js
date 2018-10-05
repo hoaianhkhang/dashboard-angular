@@ -13,6 +13,9 @@
         vm.updatedWebhook = {};
         vm.token = localStorageManagement.getValue('token');
         $scope.loadingWebhooks = true;
+        $scope.filtersCount = 0;
+        $scope.showingFilters = false;
+        $scope.webhookList = [];
 
         var location = $location.path();
         var locationArray = location.split('/');
@@ -24,18 +27,59 @@
             maxSize: 5
         };
 
+        $scope.filtersObj = {
+            secretFilter: false
+        };
+        $scope.applyFiltersObj = {
+            secretFilter: {
+                selectedSecretOption: ''
+            }
+        };
+
+        $scope.clearFilters = function () {
+            $scope.filtersObj = {
+                secretFilter: false
+            };
+        };
+
+        $scope.showFilters = function () {
+            $scope.showingFilters = !$scope.showingFilters;
+        };
+
         vm.getWebhooksFiltersObj = function(){
+            $scope.filtersCount = 0;
+
+            for(var x in $scope.filtersObj){
+                if($scope.filtersObj.hasOwnProperty(x)){
+                    if($scope.filtersObj[x]){
+                        $scope.filtersCount = $scope.filtersCount + 1;
+                    }
+                }
+            }
+
             var searchObj = {
                 page: $scope.pagination.pageNo,
-                page_size: $scope.pagination.itemsPerPage || 25
+                page_size: $scope.pagination.itemsPerPage || 25,
+                secret: $scope.filtersObj.secretFilter ? $scope.applyFiltersObj.secretFilter.selectedSecretOption : null
             };
 
             return serializeFiltersService.objectFilters(searchObj);
         };
 
-        $scope.getWebhooks = function () {
+        $scope.getWebhooks = function (applyFilter) {
             if(vm.token) {
+
+                $scope.showingFilters = false;
                 $scope.loadingWebhooks = true;
+
+                if (applyFilter) {
+                    // if function is called from history-filters directive, then pageNo set to 1
+                    $scope.pagination.pageNo = 1;
+                }
+
+                if ($scope.webhookList.length > 0) {
+                    $scope.webhookList.length = 0;
+                }
 
                 var webhooksFiltersObj = vm.getWebhooksFiltersObj();
 

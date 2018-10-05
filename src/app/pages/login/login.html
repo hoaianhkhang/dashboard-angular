@@ -8,7 +8,7 @@
               <div class="row form-group">
                     <div class="col-sm-12">
                         <label><span class="pull-left login-labels">Company id</span></label>
-                        <input type="text" ng-model="company" class="form-control" ng-change="company = company.toLowerCase()"
+                        <input type="text" name="company" ng-model="company" class="form-control" ng-change="company = company.toLowerCase()"
                                id="inputCompany1" placeholder="e.g. blue_coffee" auto-focus="!gotCompanyName">
                     </div>
               </div>
@@ -27,13 +27,15 @@
             <div class="row form-group">
                 <div class="col-sm-12">
                     <label><span class="pull-left login-labels">Email</span></label>
-                    <input type="text" ng-model="user" class="form-control" id="inputEmail1" placeholder="e.g. jane@rehive.com" auto-focus="gotCompanyName">
+                    <input type="text" ng-model="user" class="form-control" id="inputEmail1"
+                           name="email" placeholder="e.g. jane@rehive.com" auto-focus="gotCompanyName">
                 </div>
             </div>
             <div class="row form-group">
                 <div class="col-sm-12">
                     <label><span class="pull-left login-labels">Password</span></label>
-                    <input ng-attr-type="{{ showLoginPassword ? 'text' : 'password' }}" ng-model="password" class="form-control" id="inputPassword1" placeholder="Please enter your password">
+                    <input ng-attr-type="{{ showLoginPassword ? 'text' : 'password' }}" ng-model="password"
+                           name="password" class="form-control" id="inputPassword1" placeholder="Please enter your password">
                     <i ng-click="toggleLoginPassword()" ng-show="showLoginPassword" class="fa fa-eye-slash pull-right register-password-icon pointer"></i>
                     <i ng-click="toggleLoginPassword()" ng-hide="showLoginPassword" class="fa fa-eye pull-right register-password-icon-show pointer"></i>
                 </div>

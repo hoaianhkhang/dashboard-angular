@@ -14,9 +14,10 @@
                     <group-users-filters></group-users-filters>
                 </div>
             </div>
-            <button ng-click="openAddUserToGroupModal('app/pages/groups/groupUsers/groupUsersAddModal/groupUsersAddModal.html','md')" class="btn btn-default transactions-btn panel-header-user-icon">Add</button>
             <button ng-click="getAllUsers('applyFilter')" ng-disabled="loadingGroup"
-                    class="btn btn-default transactions-btn panel-header-button">Refresh</button>
+                    class="btn btn-default transactions-btn panel-header-user-icon">Refresh</button>
+            <button ng-click="openAddUserToGroupModal('app/pages/groups/groupUsers/groupUsersAddModal/groupUsersAddModal.html','md')"
+                    class="btn btn-success transactions-btn panel-header-button">Add</button>
         </div>
     </div>
     <div class="panel-body">
@@ -34,7 +35,7 @@
                     </thead>
                     <tbody>
                     <tr ng-repeat="user in users | orderBy: orderByFunction" data-toggle="modal"
-                        class="editable-row center pointer user-details-table-hover" ng-click="displayUser(user)">
+                        class="editable-row center pointer user-details-table-hover" ng-click="displayGroupUser(user)">
                         <td class="transactions-list-element" ng-repeat="header in headerColumns"
                             ng-if="header.visible" ng-bind="user[header.fieldName]"></td>
                         <td ng-click="$event.stopPropagation()">
