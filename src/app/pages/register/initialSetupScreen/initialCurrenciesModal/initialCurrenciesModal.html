@@ -22,11 +22,6 @@
                     </select>
                 </div>
             </div>
-            <p>Currencies selected:
-                <span ng-repeat="currency in currenciesToAdd | orderBy: 'code'">
-                    <strong>{{$last ? ' ' + currency.code : currency.code + ',' }}</strong>
-                </span>
-            </p>
         </div>
     </div>
     <div class="modal-footer">

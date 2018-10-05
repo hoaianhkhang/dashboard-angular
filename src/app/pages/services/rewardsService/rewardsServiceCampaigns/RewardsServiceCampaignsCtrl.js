@@ -13,8 +13,9 @@
         vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
         $scope.loadingCampaigns =  false;
         $scope.campaignList = [];
-
+        $scope.filtersCount = 0;
         $scope.campaignsId = '';
+        $scope.showingFilters = false;
 
         $scope.closeCampaignOptionsBox = function () {
             $scope.campaignsId = '';
@@ -33,20 +34,60 @@
             pageNo: 1,
             maxSize: 5
         };
+        $scope.filtersObj = {
+            nameFilter: false,
+            idFilter: false
+        };
+        $scope.applyFiltersObj = {
+            nameFilter: {
+                selectedName: ''
+            },
+            idFilter: {
+                selectedId: ''
+            }
+        };
+
+        $scope.clearFilters = function () {
+            $scope.filtersObj = {
+                nameFilter: false,
+                idFilter: false
+            };
+        };
+
+        $scope.showFilters = function () {
+            $scope.showingFilters = !$scope.showingFilters;
+        };
 
         vm.getRewardsCampaignsListsUrl = function(){
+            $scope.filtersCount = 0;
+
+            for(var x in $scope.filtersObj){
+                if($scope.filtersObj.hasOwnProperty(x)){
+                    if($scope.filtersObj[x]){
+                        $scope.filtersCount = $scope.filtersCount + 1;
+                    }
+                }
+            }
 
             var searchObj = {
                 page: $scope.campaignPagination.pageNo,
-                page_size: $scope.campaignPagination.itemsPerPage || 25
+                page_size: $scope.campaignPagination.itemsPerPage || 25,
+                name: $scope.filtersObj.nameFilter ? $scope.applyFiltersObj.nameFilter.selectedName : null,
+                id: $scope.filtersObj.idFilter ? $scope.applyFiltersObj.idFilter.selectedId : null
             };
 
             return vm.serviceUrl + 'admin/campaigns/?' + serializeFiltersService.serializeFilters(searchObj);
         };
 
-        $scope.getCampaignList = function () {
+        $scope.getCampaignList = function (applyFilter) {
             if(vm.token) {
                 $scope.loadingCampaigns =  true;
+                $scope.showingFilters = false;
+
+                if (applyFilter) {
+                    // if function is called from history-filters directive, then pageNo set to 1
+                    $scope.campaignPagination.pageNo = 1;
+                }
 
                 if ($scope.campaignList.length > 0) {
                     $scope.campaignList.length = 0;

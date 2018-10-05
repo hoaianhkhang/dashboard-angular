@@ -267,7 +267,7 @@
             }
         };
 
-        $scope.displayAdvancedTransferOption = function () {
+        $scope.toggleAdvancedTransferOption = function () {
             $scope.showAdvancedTransferOption = !$scope.showAdvancedTransferOption;
         };
 

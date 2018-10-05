@@ -6,7 +6,7 @@
 
     /** @ngInject */
     function ServicesCtrl($rootScope,$scope,$location,$http,environmentConfig,localStorageManagement,
-                          errorHandler,$ngConfirm,$timeout,toastr) {
+                          errorHandler,$ngConfirm,$timeout,toastr,$uibModal) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
@@ -92,10 +92,6 @@
             });
         };
 
-        $scope.goToAddService = function(){
-            $location.path('/services/add');
-        };
-
         $scope.goToService = function(service) {
             var serviceName,serviceNameArray;
 
@@ -114,6 +110,23 @@
             }
             var pathName = serviceName.toLowerCase().trim();
             $location.path('/services/' + pathName);
+        };
+
+        $scope.openAddServicesModal = function (page, size) {
+            vm.theModal = $uibModal.open({
+                animation: true,
+                templateUrl: page,
+                size: size,
+                controller: 'AddServiceModalCtrl',
+                scope: $scope
+            });
+
+            vm.theModal.result.then(function(service){
+                if(service){
+                    $scope.getServices();
+                }
+            }, function(){
+            });
         };
     }
 })();

@@ -564,7 +564,7 @@
             }
         };
 
-        $scope.displayUser = function (user) {
+        $scope.displayGroupUser = function (user) {
             $location.path('/user/' + user.id + '/details');
         };
 

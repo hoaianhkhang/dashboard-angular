@@ -7,6 +7,15 @@
     </div>
     <div class="modal-body">
         <div ng-hide="transactionsExported">
+            <div>
+                <p class="divider">Please select file format:</p>
+                <div class="divider">
+                    <input class="margin-right-10 pointer" type="radio" ng-model="fileOutput.type" value="csv">
+                    <span class="transactions-export-output-csv">CSV</span>
+                    <input class="horizontal-divider-40 margin-right-10 pointer" type="radio" ng-model="fileOutput.type"
+                           value="json"> <span class="transactions-export-output-json">JSON</span>
+                </div>
+            </div>
             <p>Your export will show results for filters:
                 <span ng-show="filtersTextsArray.length == 0">None selected</span>
             </p>

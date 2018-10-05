@@ -156,10 +156,8 @@
             <label>Recipient reference</label>
             <input type="text" ng-model="transferTransactionData.credit_reference" class="form-control"  placeholder="e.g. # 1234">
         </div>
-        <div class="form-group">
-            <div ng-hide="showAdvancedTransferOption">
-                <a class="pointer" ng-click="displayAdvancedTransferOption()">Advanced options</a>
-            </div>
+        <span>
+            <a class="pointer" ng-hide="showAdvancedTransferOption" ng-click="toggleAdvancedTransferOption()">Advanced options</a>
             <div ng-show="showAdvancedTransferOption">
                 <div class="form-group">
                     <label>Sender metadata <i uib-tooltip-html="'<strong>Metadata should be entered in JSON format. e.g. {&#34;Hello&#34;: &#34;World&#34;}</strong>'" class="ion-information-circled"></i></label>
@@ -170,9 +168,14 @@
                     <textarea rows="4" type="text" ng-model="transferTransactionData.debit_metadata" class="form-control"  placeholder='e.g. {"Hello" : "World"}'></textarea>
                 </div>
             </div>
-        </div>
-    </div>
-    <div class="form-group">
-        <button ng-click="toggleConfirmTransaction()" class="btn dashboard-btn btn-primary pull-right">Next</button>
+        </span>
+        <a class="pointer" ng-show="showAdvancedTransferOption" ng-click="toggleAdvancedTransferOption()">Hide advanced options</a>
+        <button ng-click="toggleConfirmTransaction()"
+                ng-disabled="!transferTransactionData.user ||
+                 !transferTransactionData.recipient ||
+                 !transferTransactionData.amount ||
+                 !transferTransactionData.currency ||
+                 !transferTransactionData.currency.code"
+                class="btn dashboard-btn btn-primary pull-right">Next</button>
     </div>
 </form>
