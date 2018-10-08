@@ -109,11 +109,13 @@
     }
   }
   & > tbody > tr > td{
-    padding: 6px 20px;
+    padding: 0 20px;
     border: 1px solid rgba(235, 235, 235, 0.44);
+    & input[type="checkbox"]{
+      margin: 12px 0 0;
+    }
   }
 }
-
 
 .tier-add-header-link{
   color: white;

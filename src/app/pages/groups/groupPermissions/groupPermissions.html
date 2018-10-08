@@ -55,13 +55,10 @@
                                     <p class="no-margin" ng-bind="permission.type"></p>
                                 </td>
                                 <td class="text-center group-permission-td" ng-repeat="level in permission.levels">
-                                    <label class="checkbox-inline custom-checkbox nowrap"
-                                           ng-class="{'checkbox-disabled': (editGroupObj.name == 'admin'  || editGroupObj.name == 'service')}">
-                                        <input type="checkbox" ng-change="trackPermissions(permission,level,key)"
-                                               ng-disabled="editGroupObj.name == 'admin' || editGroupObj.name == 'service'"
-                                               ng-model="level.enabled" ng-checked="level.enabled || editGroupObj.name == 'admin'">
-                                            <span class="account-settings-span"></span>
-                                    </label>
+                                    <input type="checkbox" ng-disabled="editGroupObj.name == 'admin' || editGroupObj.name == 'service'"
+                                           ng-class="{'checkbox-disabled': (editGroupObj.name == 'admin'  || editGroupObj.name == 'service')}"
+                                           ng-checked="level.enabled || editGroupObj.name == 'admin'"
+                                           class="custom-rehive-checkbox" ng-model="level.enabled" ng-change="trackPermissions(permission,level,key)">
                                     <div ng-show="editGroupObj.name == 'admin' || editGroupObj.name == 'service'" class="group-permission-tooltip">
                                         Rehive system group permissions cannot be edited.
                                     </div>

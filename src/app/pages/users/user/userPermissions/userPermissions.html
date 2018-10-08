@@ -21,11 +21,9 @@
                                     <p class="no-margin" ng-bind="permission.type"></p>
                                 </td>
                                 <td class="text-center" ng-repeat="level in permission.levels">
-                                    <label  class="checkbox-inline custom-checkbox nowrap">
-                                        <input type="checkbox" ng-change="trackPermissions(permission,level,key)" ng-model="level.enabled"
-                                               ng-checked="level.enabled">
-                                        <span class="account-settings-span"></span>
-                                    </label>
+                                    <input type="checkbox" ng-checked="level.enabled"
+                                           class="custom-rehive-checkbox" ng-model="level.enabled"
+                                           ng-change="trackPermissions(permission,level,key)">
                                 </td>
                             </tr>
                         </table>

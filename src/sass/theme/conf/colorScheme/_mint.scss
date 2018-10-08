@@ -26,7 +26,7 @@ $progress-default: rgba(#000000, 0.15);
 
 $primary: #A4A5F5 !default;
 $info: #5969F6 !default;
-$success: #03DBBB !default;
+$success: $primary !default;
 $warning: #dfb81c !default;
 $danger: #ed675A !default;
 $gray: #A8A8A8 !default;
