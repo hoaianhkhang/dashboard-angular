@@ -124,7 +124,9 @@
         $scope.creditCurrencySelected = function (creditTransactionData) {
             $scope.retrievedCreditUserAccountsArray = [];
             creditTransactionData.account = {};
-            vm.getCreditUserAccounts($scope.retrievedCreditUserObj,creditTransactionData);
+            if(creditTransactionData.currency && creditTransactionData.currency.code){
+                vm.getCreditUserAccounts($scope.retrievedCreditUserObj,creditTransactionData);
+            }
         };
 
         vm.getCreditUserAccounts = function (user,creditTransactionData) {

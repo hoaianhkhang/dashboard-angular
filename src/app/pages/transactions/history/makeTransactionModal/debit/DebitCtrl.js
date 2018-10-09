@@ -125,7 +125,9 @@
         $scope.debitCurrencySelected = function (debitTransactionData) {
             $scope.retrievedDebitUserAccountsArray = [];
             debitTransactionData.account = {};
-            vm.getDebitUserAccounts($scope.retrievedDebitUserObj,debitTransactionData);
+            if(debitTransactionData.currency && debitTransactionData.currency.code){
+                vm.getDebitUserAccounts($scope.retrievedDebitUserObj,debitTransactionData);
+            }
         };
 
         vm.getDebitUserAccounts = function (user,debitTransactionData) {
