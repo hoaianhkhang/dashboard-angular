@@ -10,8 +10,10 @@
         var vm = this;
         vm.token = localStorageManagement.getValue("token");
         $scope.subtypes = [];
-        $scope.subtype={};
-        $rootScope.$pageFinishedLoading=true;
+        $scope.subtype= {
+            tx_type: 'credit'
+        };
+        $rootScope.$pageFinishedLoading = true;
         $rootScope.activeSetupRoute = 3;
         localStorageManagement.setValue('activeSetupRoute',3);
         $scope.editingSubtypes = false;
@@ -71,7 +73,9 @@
             $scope.loadingSetupSubtypes= true;
             Rehive.admin.subtypes.create(subtype).then(function (res)
             {
-                $scope.subtype={};
+                $scope.subtype= {
+                    tx_type: 'credit'
+                };
                 vm.getSubtypes();
                 $scope.$apply();
             }, function (error) {
@@ -94,7 +98,9 @@
             }
 
             Rehive.admin.subtypes.update(subtype.id, newSubtype).then(function (res) {
-                $scope.subtype={};
+                $scope.subtype= {
+                    tx_type: 'credit'
+                };
                 $scope.editingSubtypes = false;
                 $scope.loadingSetupSubtypes= false;
                 $scope.$apply();

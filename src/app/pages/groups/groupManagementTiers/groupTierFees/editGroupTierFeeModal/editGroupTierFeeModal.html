@@ -7,15 +7,21 @@
     </div>
     <div class="modal-body">
         <form name="editTierFeeForm" class="custom-form" novalidate>
-            <div class="form-group">
+            <div class="divider-20">
                 <label>Select transaction type <span class="required-icon">*</span></label>
                 <div class="divider-20">
-                    <input class="margin-right-10 pointer" type="radio" ng-change="tierFeeChanged('tx_type'); getSubtypesArray(editTierFee);"
-                           ng-model="editTierFee.tx_type" value="credit">
-                    <span class="group-tier-tx-type-credit">Credit</span>
-                    <input class="horizontal-divider-40 margin-right-10 pointer" ng-change="tierFeeChanged('tx_type'); getSubtypesArray(editTierFee);"
-                           type="radio" ng-model="editTierFee.tx_type"
-                           value="debit"> <span class="group-tier-tx-type-debit">Debit</span>
+                    <div class="custom-radio-groups-btn">
+                        <label class="margin-right-10 pointer">
+                            <input class="pointer" type="radio" ng-model="editTierFee.tx_type"
+                                   ng-change="tierFeeChanged('tx_type'); getSubtypesArray(editTierFee);" value="credit">
+                            <span class="custom-radio-btn">Credit</span>
+                        </label>
+                        <label class="margin-right-10 pointer">
+                            <input class="pointer" type="radio" ng-model="editTierFee.tx_type"
+                                   ng-change="tierFeeChanged('tx_type'); getSubtypesArray(editTierFee);" value="debit">
+                            <span class="custom-radio-btn">Debit</span>
+                        </label>
+                    </div>
                 </div>
             </div>
             <div class="form-group divider-20">
