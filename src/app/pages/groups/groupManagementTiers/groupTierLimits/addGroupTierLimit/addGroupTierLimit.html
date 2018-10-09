@@ -26,9 +26,17 @@
             </div>
             <div class="form-group divider-20">
                 <label>Currency <span class="required-icon">*</span></label>
-                <select class="form-control pointer" ng-model="tierLimitsParams.currency"
-                        ng-options="currency.code for currency in currenciesOptions track by currency.code" required>
-                </select>
+                <div class="reward-multi-select">
+                    <select chosen
+                            data-placeholder-text-single="'Choose a currency'"
+                            width="100"
+                            allow-single-deselect="true"
+                            ng-model="tierLimitsParams.currency"
+                            ng-options="currency.code for currency in currenciesOptions | orderBy: 'code' track by currency.code"
+                            required>
+                        <option value=""></option>
+                    </select>
+                </div>
             </div>
             <div class="form-group divider-20">
                 <label>Amount</label>
