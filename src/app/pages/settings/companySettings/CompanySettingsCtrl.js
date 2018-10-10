@@ -22,6 +22,12 @@
         };
         $scope.companySettingsObj = {};
         $scope.statusOptions = ['Pending','Complete'];
+        $scope.companyDateFormatString = localStorageManagement.getValue('DATE_FORMAT');
+        $scope.companyDateFormat = ['MM/dd/yyyy','dd/MM/yyyy'];
+
+        $scope.companyDateFormatChanged = function (companyDateFormatString) {
+            localStorageManagement.setValue('DATE_FORMAT',companyDateFormatString);
+        };
 
         vm.getCompanySettings = function () {
             if(vm.token) {

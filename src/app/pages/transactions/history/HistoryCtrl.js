@@ -12,6 +12,7 @@
         var vm = this;
         vm.token = localStorageManagement.getValue('token');
         vm.companyIdentifier = localStorageManagement.getValue('companyIdentifier');
+        $scope.companyDateFormatString = localStorageManagement.getValue('DATE_FORMAT');
         vm.savedTransactionTableColumns = vm.companyIdentifier + 'transactionsTable';
         vm.newTransactionParams = $location.search();
         $rootScope.dashboardTitle = 'Transactions history | Rehive';
@@ -224,7 +225,7 @@
 
         //for angular datepicker
         $scope.dateObj = {};
-        $scope.dateObj.format = 'MM/dd/yyyy';
+        $scope.dateObj.format = $scope.companyDateFormatString;
         $scope.popup1 = {};
         $scope.open1 = function() {
             $scope.popup1.opened = true;
