@@ -22,11 +22,18 @@
         };
         $scope.companySettingsObj = {};
         $scope.statusOptions = ['Pending','Complete'];
-        $scope.companyDateFormatString = localStorageManagement.getValue('DATE_FORMAT');
-        $scope.companyDateFormat = ['MM/dd/yyyy','dd/MM/yyyy'];
+        $scope.companyDateFormatString = localStorageManagement.getValue('DATE_FORMAT').toLowerCase();
+        $scope.companyDateFormat = ['mm/dd/yyyy','dd/mm/yyyy'];
 
         $scope.companyDateFormatChanged = function (companyDateFormatString) {
-            localStorageManagement.setValue('DATE_FORMAT',companyDateFormatString);
+            var string;
+            if(companyDateFormatString == 'mm/dd/yyyy'){
+                string = 'MM/dd/yyyy';
+            } else {
+                string = 'dd/MM/yyyy';
+            }
+
+            localStorageManagement.setValue('DATE_FORMAT',string);
         };
 
         vm.getCompanySettings = function () {

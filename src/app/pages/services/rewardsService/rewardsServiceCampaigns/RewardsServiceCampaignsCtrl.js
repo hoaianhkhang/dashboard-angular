@@ -11,6 +11,7 @@
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
         vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
+        $scope.companyDateFormatString = localStorageManagement.getValue('DATE_FORMAT').toUpperCase();
         $scope.loadingCampaigns =  false;
         $scope.campaignList = [];
         $scope.filtersCount = 0;
@@ -106,8 +107,8 @@
                         if(res.data.data.results.length > 0){
                             $scope.campaignListData = res.data.data;
                             $scope.campaignListData.results.forEach(function (campaign) {
-                                campaign.start_date = moment(campaign.start_date).format('MM/DD/YYYY');
-                                campaign.end_date = moment(campaign.end_date).format('MM/DD/YYYY');
+                                campaign.start_date = moment(campaign.start_date).format($scope.companyDateFormatString);
+                                campaign.end_date = moment(campaign.end_date).format($scope.companyDateFormatString);
                             });
                             $scope.campaignList = $scope.campaignListData.results;
                         }

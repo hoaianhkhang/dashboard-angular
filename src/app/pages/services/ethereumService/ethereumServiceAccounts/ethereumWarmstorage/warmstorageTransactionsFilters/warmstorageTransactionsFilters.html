@@ -33,7 +33,7 @@
                                    uib-datepicker-popup="{{dateObjWarmstorage.format}}" popup-placement="bottom-left"
                                    ng-model="applyFiltersWarmstorageObj.dateFilter.dateFrom"
                                    show-button-bar="false" datepicker-options="{showWeeks: false}"
-                                   placeholder="mm/dd/yyyy" is-open="popup1Warmstorage.opened" close-text="Close" />
+                                   placeholder="{{companyDateFormatString | lowercase}}" is-open="popup1Warmstorage.opened" close-text="Close" />
                             <span class="input-group-btn">
                                 <button type="button" class="btn btn-default calender-button" ng-click="open1Warmstorage()">
                                     <i class="glyphicon glyphicon-calendar"></i></button>
@@ -45,7 +45,7 @@
                                    uib-datepicker-popup="{{dateObjWarmstorage.format}}" popup-placement="bottom-left"
                                    ng-model="applyFiltersWarmstorageObj.dateFilter.dateTo"
                                    show-button-bar="false" datepicker-options="{showWeeks: false}"
-                                   placeholder="mm/dd/yyyy" is-open="popup2Warmstorage.opened" close-text="Close" />
+                                   placeholder="{{companyDateFormatString | lowercase}}" is-open="popup2Warmstorage.opened" close-text="Close" />
                             <span class="input-group-btn">
                                 <button type="button" class="btn btn-default calender-button" ng-click="open2Warmstorage()">
                                     <i class="glyphicon glyphicon-calendar"></i></button>
@@ -57,7 +57,7 @@
                             <input type="text" class="form-control transaction-date-filter-input custom-datepicker"
                                    uib-datepicker-popup="{{dateObjWarmstorage.format}}" popup-placement="bottom-left"
                                    ng-model="applyFiltersWarmstorageObj.dateFilter.dateEqualTo" show-button-bar="false" datepicker-options="{showWeeks: false}"
-                                   placeholder="mm/dd/yyyy" is-open="popup1Warmstorage.opened" close-text="Close" />
+                                   placeholder="{{companyDateFormatString | lowercase}}" is-open="popup1Warmstorage.opened" close-text="Close" />
                             <span class="input-group-btn">
                                 <button type="button" class="btn btn-default calender-button" ng-click="open1Warmstorage()">
                                     <i class="glyphicon glyphicon-calendar"></i></button>
@@ -69,7 +69,7 @@
                             <input type="text" class="form-control transaction-date-filter-input custom-datepicker"
                                    uib-datepicker-popup="{{dateObjWarmstorage.format}}" popup-placement="bottom-left"
                                    ng-model="applyFiltersWarmstorageObj.dateFilter.dateFrom" show-button-bar="false" datepicker-options="{showWeeks: false}"
-                                   placeholder="mm/dd/yyyy" is-open="popup1Warmstorage.opened" close-text="Close" />
+                                   placeholder="{{companyDateFormatString | lowercase}}" is-open="popup1Warmstorage.opened" close-text="Close" />
                             <span class="input-group-btn">
                                 <button type="button" class="btn btn-default calender-button" ng-click="open1Warmstorage()">
                                     <i class="glyphicon glyphicon-calendar"></i></button>
@@ -81,7 +81,7 @@
                             <input type="text" class="form-control transaction-date-filter-input custom-datepicker"
                                    uib-datepicker-popup="{{dateObjWarmstorage.format}}" popup-placement="bottom-left"
                                    ng-model="applyFiltersWarmstorageObj.dateFilter.dateTo" show-button-bar="false" datepicker-options="{showWeeks: false}"
-                                   placeholder="mm/dd/yyyy" is-open="popup2Warmstorage.opened" close-text="Close" />
+                                   placeholder="{{companyDateFormatString | lowercase}}" is-open="popup2Warmstorage.opened" close-text="Close" />
                             <span class="input-group-btn">
                                 <button type="button" class="btn btn-default calender-button" ng-click="open2Warmstorage()">
                                     <i class="glyphicon glyphicon-calendar"></i></button>

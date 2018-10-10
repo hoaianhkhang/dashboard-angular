@@ -37,7 +37,7 @@
                            uib-datepicker-popup="{{dateObj.format}}" popup-placement="bottom-left"
                            ng-model="newCampaignParams.startDate"
                            show-button-bar="false" datepicker-options="{showWeeks: false}"
-                           placeholder="mm/dd/yyyy" is-open="popup1.opened" close-text="Close" required/>
+                           placeholder="{{companyDateFormatString | lowercase}}" is-open="popup1.opened" close-text="Close" required/>
                     <span class="input-group-btn">
                                 <button type="button" class="btn btn-default calender-button" ng-click="open1()">
                                     <i class="glyphicon glyphicon-calendar"></i></button>
@@ -53,7 +53,7 @@
                            uib-datepicker-popup="{{dateObj.format}}" popup-placement="bottom-left"
                            ng-model="newCampaignParams.endDate"
                            show-button-bar="false" datepicker-options="{showWeeks: false}"
-                           placeholder="mm/dd/yyyy" is-open="popup2.opened" close-text="Close" required/>
+                           placeholder="{{companyDateFormatString | lowercase}}" is-open="popup2.opened" close-text="Close" required/>
                     <span class="input-group-btn">
                                 <button type="button" class="btn btn-default calender-button" ng-click="open2()">
                                     <i class="glyphicon glyphicon-calendar"></i></button>

@@ -12,6 +12,7 @@
         var vm = this;
         vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
         vm.token = localStorageManagement.getValue('TOKEN');
+        $scope.companyDateFormatString = localStorageManagement.getValue('DATE_FORMAT');
         $scope.bitcoinCurrency = currenciesList.find(function (element) {
             return element.code == 'XBT';
         });
@@ -143,7 +144,7 @@
 
         //for angular datepicker
         $scope.dateObjHotwallet = {};
-        $scope.dateObjHotwallet.format = 'MM/dd/yyyy';
+        $scope.dateObjHotwallet.format = $scope.companyDateFormatString;
         $scope.popup1Hotwallet = {};
         $scope.open1Hotwallet = function() {
             $scope.popup1Hotwallet.opened = true;
