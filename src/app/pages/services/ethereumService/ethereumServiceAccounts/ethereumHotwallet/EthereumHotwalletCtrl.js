@@ -12,7 +12,7 @@
         vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
         vm.token = localStorageManagement.getValue('TOKEN');
         $scope.ethereumCurrency = currenciesList.find(function (element) {
-            return element.code == 'XLM';
+            return element.code == 'ETH';
         });
         $scope.loadingHotwalletTransactions = true;
         $scope.hotwalletObjLength = 0;
