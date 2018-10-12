@@ -2,7 +2,6 @@
   background-color: $sidebar;
   position: fixed;
   z-index: 904;
-  box-shadow: 2px 0 3px rgba(0, 0, 0, 0.5);
   height: 70px;
   width: 100%;
   min-width: $resMin;
@@ -93,7 +92,7 @@ a.collapse-menu-link {
 
   &:hover {
     text-decoration: none;
-    color: #84c9f1;;
+    color: $primary;
   }
 }
 

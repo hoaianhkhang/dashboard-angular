@@ -19,6 +19,9 @@
       $scope.hoverElemHeight =  $event.currentTarget.clientHeight;
       var menuTopValue = 70;
       $scope.hoverElemTop = $event.currentTarget.getBoundingClientRect().top - menuTopValue;
+        if(($event.currentTarget.innerText).trim() == 'Build a fintech app'){
+            $scope.hoverElemTop = -menuTopValue ;
+        }
     };
 
     $scope.$on('$stateChangeSuccess', function () {

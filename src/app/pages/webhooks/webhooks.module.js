@@ -17,7 +17,8 @@
                 controller: "WebhooksCtrl",
                 title: 'Webhooks',
                 sidebarMeta: {
-                    order: 500
+                    order: 500,
+                    icon: 'sidebar-webhooks-icon'
                 }
             });
     }

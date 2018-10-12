@@ -40,7 +40,8 @@
                 },
                 title: 'Transactions',
                 sidebarMeta: {
-                    order: 200
+                    order: 200,
+                    icon: 'sidebar-transactions-icon'
                 }
             });
         $urlRouterProvider.when("/transactions", "/transactions/setup");

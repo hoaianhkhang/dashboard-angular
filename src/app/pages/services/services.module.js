@@ -24,7 +24,8 @@
                 controller: "ServicesCtrl",
                 title: 'Services',
                 sidebarMeta: {
-                    order: 600
+                    order: 600,
+                    icon: 'sidebar-services-icon'
                 }
             });
     }
