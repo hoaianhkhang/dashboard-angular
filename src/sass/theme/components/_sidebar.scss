@@ -102,6 +102,26 @@ a.al-sidebar-list-link {
   }
 }
 
+
+.al-sidebar-list-item:last-child a.al-sidebar-list-link {
+  position: relative;
+  display: block;
+  bottom: 0;
+  color: #ffffff!important;
+  background-color: $primary;
+  margin: 15px;
+  border-radius: 3px;
+  & span{
+    
+  }
+  &:hover{
+    background-color: #7678f0;
+  }
+  &:active{
+    background-color: #7678f0;
+  }
+}
+
 .slimScrollBar, .slimScrollRail {
   border-radius: 0px !important;
   width: 4px !important;
