@@ -3,10 +3,11 @@
   <ul class="al-sidebar-list" slimscroll="{height: '{{menuHeight}}px'}" slimscroll-watch="menuHeight" >
     <li ng-repeat="item in ::menuItems" class="al-sidebar-list-item"
         ng-class="::{'with-sub-menu': item.subMenu}" ui-sref-active="selected"
+        ng-click="sideBarMenuSelected($event)"
         ba-sidebar-toggling-item="item">
       <!--<hr class="sidebar-custom-hr" ng-show="item.title=='Build a fintech app'">-->
       <a ng-mouseenter="hoverItem($event, item)" ui-state="item.stateRef || ''" ng-href="{{::(item.fixedHref ? item.fixedHref: '')}}" ng-if="::!item.subMenu" class="al-sidebar-list-link">
-        <i class="{{ ::item.icon }}"></i>
+        <i ng-hide="item.title =='Build a fintech app'" class="{{ ::item.icon }}"></i>
         <span ng-class="{'sidebar-custom-menu-title': item.title =='Build a fintech app','should-be-blue': shouldBeBlue == item.title}">
           {{ ::item.title }}
         </span>
@@ -58,4 +59,5 @@
   </ul>
   <div class="sidebar-hover-elem" ng-style="{top: hoverElemTop + 'px', height: hoverElemHeight + 'px'}"
        ng-class="{'show-hover-elem': showHoverElem }"></div>
+  <div class="sidebar-hover-elem" ng-style="{top: selectedElemTop + 'px', height: hoverElemHeight + 'px'}"></div>
 </aside>

@@ -40,6 +40,9 @@ $angle-right: "\f101";
     color: $primary;
     a.al-sidebar-list-link {
       color: $primary;
+      i {
+        background-color: $primary;
+      }
       b {
         color: $primary;
       }
@@ -62,45 +65,45 @@ $angle-right: "\f101";
 }
 
 .sidebar-currencies-icon{
-  background-image: url("../../../assets/img/currencies.svg");
-  background-repeat: no-repeat;
+  mask-image: url("../../../assets/img/currencies.svg");
+  mask-repeat: no-repeat;
 }
 
 .sidebar-accounts-icon{
-  background-image: url("../../../assets/img/accounts.svg");
-  background-repeat: no-repeat;
+  mask-image: url("../../../assets/img/accounts.svg");
+  mask-repeat: no-repeat;
 }
 
 .sidebar-transactions-icon{
-  background-image: url("../../../assets/img/transactions.svg");
-  background-repeat: no-repeat;
+  mask-image: url("../../../assets/img/transactions.svg");
+  mask-repeat: no-repeat;
 }
 
 .sidebar-users-icon{
-  background-image: url("../../../assets/img/users.svg");
-  background-repeat: no-repeat;
+  mask-image: url("../../../assets/img/users.svg");
+  mask-repeat: no-repeat;
 }
 
 .sidebar-groups-icon{
-  background-image: url("../../../assets/img/groups.svg");
-  background-repeat: no-repeat;
+  mask-image: url("../../../assets/img/groups.svg");
+  mask-repeat: no-repeat;
   width: 20px!important;
   margin-right: 1px!important;
 }
 
 .sidebar-webhooks-icon{
-  background-image: url("../../../assets/img/webhooks.svg");
-  background-repeat: no-repeat;
+  mask-image: url("../../../assets/img/webhooks.svg");
+  mask-repeat: no-repeat;
 }
 
 .sidebar-services-icon{
-  background-image: url("../../../assets/img/services.svg");
-  background-repeat: no-repeat;
+  mask-image: url("../../../assets/img/services.svg");
+  mask-repeat: no-repeat;
 }
 
 .sidebar-settings-icon{
-  background-image: url("../../../assets/img/settings.svg");
-  background-repeat: no-repeat;
+  mask-image: url("../../../assets/img/settings.svg");
+  mask-repeat: no-repeat;
 }
 
 a.al-sidebar-list-link {
@@ -122,8 +125,12 @@ a.al-sidebar-list-link {
     b {
       color: $primary;
     }
+    i {
+      background-color: $primary;
+    }
   }
   i {
+    background-color: #A5A4BF;
     position: relative;
     margin-right: 3px;
     height: 16px;
@@ -164,7 +171,7 @@ a.al-sidebar-list-link {
   border-radius: 3px;
   padding: 0!important;
   & span{
-    margin-left: 15px;
+    margin: 0 37.5px;
   }
   &:hover{
     background-color: #7678f0;

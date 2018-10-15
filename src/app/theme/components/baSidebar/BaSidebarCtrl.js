@@ -24,6 +24,12 @@
         }
     };
 
+    $scope.sideBarMenuSelected = function ($event) {
+        var menuTopValue = 70;
+        $scope.selectedElemTop = $event.currentTarget.getBoundingClientRect().top - menuTopValue;
+        $scope.hoverElemHeight =  $event.currentTarget.clientHeight;
+    };
+
     $scope.$on('$stateChangeSuccess', function () {
       if (baSidebarService.canSidebarBeHidden() || window.innerWidth < 1201) {
         baSidebarService.setMenuCollapsed(true);
