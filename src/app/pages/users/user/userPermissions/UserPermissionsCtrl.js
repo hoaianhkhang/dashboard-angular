@@ -17,79 +17,7 @@
         vm.checkedLevels = [];
         $scope.loadingPermissions = true;
         $scope.totalPermissionsObj = {};
-        vm.mockPermissionsResults = [
-            {
-                id: 3,
-                section: "admin",
-                type: "account",
-                level: "add"
-            },
-            {
-                id: 5,
-                section: "admin",
-                type: "account",
-                level: "change"
-            },
-            {
-                id: 7,
-                section: "admin",
-                type: "account",
-                level: "delete"
-            },
-            {
-                id: 1,
-                section: "admin",
-                type: "account",
-                level: "view"
-            },
-            {
-                id: 11,
-                section: "admin",
-                type: "address",
-                level: "add"
-            },
-            {
-                id: 13,
-                section: "admin",
-                type: "address",
-                level: "change"
-            },
-            {
-                id: 15,
-                section: "admin",
-                type: "address",
-                level: "delete"
-            },
-            {
-                id: 9,
-                section: "admin",
-                type: "address",
-                level: "view"
-            },
-            {
-                id: 19,
-                section: "admin",
-                type: "currency",
-                level: "add"
-            },
-            {
-                id: 21,
-                section: "user",
-                type: "currency",
-                level: "change"
-            },
-            {
-                id: 23,
-                section: "user",
-                type: "currency",
-                level: "delete"
-            },
-            {
-                id: 17,
-                section: "user",
-                type: "currency",
-                level: "view"
-            }];
+        $scope.addPermissionsArray = [];
         $scope.typeOptionsObj = {
             ACCOUNT : 'account',
             ADDRESS : 'address',
@@ -173,7 +101,6 @@
             if(vm.token) {
                 $scope.loadingPermissions = true;
                 Rehive.admin.users.permissions.get(vm.uuid,{filters: {page_size: 250}}).then(function (res) {
-                    res.results = vm.mockPermissionsResults;
                     $scope.loadingPermissions = false;
                     vm.checkforAllowedPermissions(res.results);
                     $scope.$apply();
@@ -240,7 +167,7 @@
                 }
 
                 index = vm.checkedLevels.findIndex(function (element) {
-                    return (element.type == permissionObj.type && element.level == levelObj.name);
+                    return (element.type == permissionObj.type && element.level == levelObj.name && element.section == permissionObj.section);
                 });
 
                 return index;
@@ -394,57 +321,72 @@
             }
         };
 
-        $scope.savePermissionsProcess = function(){
-            console.log(vm.checkedLevels);
-            return
+        $scope.separateCheckedLevels = function () {
+            var addingPermissionArray = [];
+            var deletingPermissionArray = [];
 
-            vm.checkedLevels.forEach(function(element,idx,array){
-                $scope.loadingPermissions = true;
-                var type;
-                type = element.type.toUpperCase();
-                type = type.replace(/ /g, '_');
-                if(idx === array.length - 1){
-                    if(element.id){
-                        vm.deletePermission(element,'last');
-                    } else {
-                        vm.addPermissions({type: $scope.typeOptionsObj[type],level: element.level},'last');
-                    }
-
-                    return false;
-                }
-
-                if(element.id){
-                    vm.deletePermission(element);
+            vm.checkedLevels.forEach(function (elem) {
+                if(elem.id){
+                    deletingPermissionArray.push(elem);
                 } else {
-                    vm.addPermissions({type: $scope.typeOptionsObj[type],level: element.level});
+                    addingPermissionArray.push(elem);
                 }
-
             });
+
+            $scope.savePermissionsProcess(addingPermissionArray,deletingPermissionArray);
+
         };
 
-        vm.addPermissions = function (newPermissionObj,last) {
+        $scope.savePermissionsProcess = function(addingPermissionArray,deletingPermissionArray){
+            if(addingPermissionArray.length > 0){
+                addingPermissionArray.forEach(function (elem,ind,arr) {
+                    var type = '';
+                    if(ind === arr.length - 1){
+                        type = elem.type.toUpperCase();
+                        type = type.replace(/ /g, '_');
+                        elem.type = $scope.typeOptionsObj[type];
+                        vm.addPermissions(addingPermissionArray,deletingPermissionArray);
+                        return false;
+                    }
+
+                    type = elem.type.toUpperCase();
+                    type = type.replace(/ /g, '_');
+                    elem.type = $scope.typeOptionsObj[type];
+                });
+            } else {
+                vm.deletePermissionsArray(deletingPermissionArray);
+            }
+        };
+
+        vm.addPermissions = function (addingPermissionArray,deletingPermissionArray) {
             if(vm.token) {
                 $scope.loadingPermissions = true;
-                Rehive.admin.users.permissions.create(vm.uuid, newPermissionObj).then(function (res) {
-                    if(last){
-                        vm.finishSavingPermissionsProcess();
-                        $scope.$apply();
-                    }
-                }).then(function (res) {
-                    if(last){
-                        vm.finishSavingPermissionsProcess();
-                        $scope.$apply();
-                    }
+                Rehive.admin.users.permissions.create(vm.uuid,{permissions: addingPermissionArray}).then(function (res) {
+                    vm.deletePermissionsArray(deletingPermissionArray);
+                    $scope.$apply();
                 }, function (error) {
                     vm.checkedLevels = [];
-                    $scope.permissionParams = {
-                        type: 'Account'
-                    };
                     $scope.loadingPermissions = false;
                     errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
                     $scope.$apply();
                 });
+            }
+        };
+        
+        vm.deletePermissionsArray = function (deletingPermissionArray) {
+            if(deletingPermissionArray.length > 0){
+                deletingPermissionArray.forEach(function(element,idx,array){
+                    $scope.loadingPermissions = true;
+                    if(idx === array.length - 1){
+                        vm.deletePermission(element,'last');
+                        return false;
+                    }
+                    vm.deletePermission(element);
+
+                });
+            } else {
+                vm.finishSavingPermissionsProcess();
             }
         };
 
