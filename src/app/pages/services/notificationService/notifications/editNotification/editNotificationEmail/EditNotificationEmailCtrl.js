@@ -120,7 +120,7 @@
 
 
         $scope.notificationChanged = function (field) {
-            if($scope.editNotification.expression.length > 150){
+            if($scope.editNotification.expression && $scope.editNotification.expression.length > 150){
                 toastr.error('Expression cannot exceed 150 characters');
             }
 

@@ -12,7 +12,7 @@
         vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
         vm.token = localStorageManagement.getValue('TOKEN');
         $scope.ethereumCurrency = currenciesList.find(function (element) {
-            return element.code == 'XBT';
+            return element.code == 'ETH';
         });
         $scope.showOptionsAccountRef = false;
         $scope.loadingWarmstorage = true;
@@ -353,7 +353,7 @@
         $scope.goToCredit = function () {
             $location.path('/transactions/history').search({
                 txType: 'credit',
-                currencyCode: 'XBT',
+                currencyCode: 'ETH',
                 userIdentity: $scope.warmstorageObj.user_account_identifier,
                 accountUser: $scope.warmstorageObj.rehive_account_reference
             });
@@ -362,7 +362,7 @@
         $scope.goToDebit = function () {
             $location.path('/transactions/history').search({
                 txType: 'debit',
-                currencyCode: 'XBT',
+                currencyCode: 'ETH',
                 userIdentity: $scope.warmstorageObj.user_account_identifier,
                 accountUser: $scope.warmstorageObj.rehive_account_reference
             });
