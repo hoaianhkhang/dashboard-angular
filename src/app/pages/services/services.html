@@ -9,7 +9,8 @@
                 </div>
             </div>
             <div>
-                <button class="btn btn-success pull-right panel-header-button currencies-page-button-filter" ng-click="goToAddService()">Add</button>
+                <button class="btn btn-success pull-right panel-header-button currencies-page-button-filter"
+                        ng-click="openAddServicesModal('app/pages/services/addServiceModal/addServiceModal.html','md')">Add</button>
             </div>
         </div>
     </div>
@@ -30,9 +31,9 @@
                         <td  width="15%" ng-bind="service.name"></td>
                         <td width="50%" ng-bind="service.description"></td>
                         <td class="rehive-table-row-last-child">
-                            <a ng-click="goToService(service)"
-                               class="pull-right pointer ">Manage</a>
-                            <a ng-click="deactivateServicePrompt(service)"
+                            <a ng-mousedown="goToService($event,service)"
+                               class="pull-right pointer" oncontextmenu="return false">Manage</a>
+                            <a ng-click="deactivateServicePrompt(service)" oncontextmenu="return false"
                                class="pull-right pointer user-address-edit margin-right-30">Deactivate</a>
                         </td>
                     </tr>

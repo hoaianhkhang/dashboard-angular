@@ -17,6 +17,11 @@
         });
         $scope.loadingHotwalletTransactions = true;
         $scope.hotwalletObjLength = 0;
+        if(vm.serviceUrl.indexOf('bitcoin-testnet') > 0){
+            $scope.inTestnetService = true;
+        } else {
+            $scope.inTestnetService = false;
+        }
 
         vm.getHotwalletActive = function (applyFilter) {
             $scope.loadingHotwalletTransactions =  true;

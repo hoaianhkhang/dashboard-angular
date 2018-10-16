@@ -19,7 +19,8 @@
             </div>
             <button ng-click="getAllUsers('applyFilter')" ng-disabled="loadingUsers"
                     class="btn btn-default transactions-btn panel-header-user-icon">Refresh</button>
-            <button ng-click="goToAddUser()" class="btn btn-success transactions-btn panel-header-button">New</button>
+            <button ng-click="openAddUserModal('app/pages/users/addUserModal/addUserModal.html','md')"
+                    class="btn btn-success transactions-btn panel-header-button">New</button>
         </div>
     </div>
     <div class="panel-body">
@@ -40,7 +41,8 @@
                     </thead>
                     <tbody>
                         <tr ng-repeat="user in users | orderBy: orderByFunction" data-toggle="modal"
-                            class="editable-row center pointer user-details-table-hover" ng-click="displayUser(user)">
+                            class="editable-row center pointer user-details-table-hover"
+                            ng-mousedown="displayUser($event,user)" oncontextmenu="return false">
                             <td class="transactions-list-element" ng-repeat="header in headerColumns"
                                 ng-if="header.visible" ng-bind="user[header.fieldName]"></td>
                         </tr>

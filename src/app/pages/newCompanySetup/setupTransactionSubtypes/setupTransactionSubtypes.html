@@ -76,7 +76,7 @@
             <div class="divider-20" ng-repeat="subtype in subtypes" ng-hide="subtypes.length == 0"
                  ng-class="{'no-margin-bottom': $last}">
                 <span>{{subtype.name}}</span>
-                <span class="pull-right  groups-delete-x-icon pointer" ng-click="deleteSubtypeConfirm(subtype.id)">x</span>
+                <span class="pull-right  groups-delete-x-icon pointer" ng-click="deleteSubtypeConfirm(subtype)">x</span>
                 <span style="font-size: 10px;line-height: 20px;font-weight: 500; padding: 0 5px 5px 5px;"
                       ng-click="editSubtypeObj(subtype)"
                       class="pull-right margin-right-25 pointer">

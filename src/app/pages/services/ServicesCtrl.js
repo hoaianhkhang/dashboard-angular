@@ -6,7 +6,7 @@
 
     /** @ngInject */
     function ServicesCtrl($rootScope,$scope,$location,$http,environmentConfig,localStorageManagement,
-                          errorHandler,$ngConfirm,$timeout,toastr) {
+                          errorHandler,$ngConfirm,$timeout,toastr,$uibModal,$window) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
@@ -92,11 +92,7 @@
             });
         };
 
-        $scope.goToAddService = function(){
-            $location.path('/services/add');
-        };
-
-        $scope.goToService = function(service) {
+        $scope.goToService = function($event,service) {
             var serviceName,serviceNameArray;
 
             localStorageManagement.setValue('SERVICEURL',service.url);
@@ -113,7 +109,31 @@
                 serviceName = service.name;
             }
             var pathName = serviceName.toLowerCase().trim();
-            $location.path('/services/' + pathName);
+
+            if($event.which === 1){
+                $location.path('/services/' + pathName);
+            } else if($event.which === 2){
+                $window.open('/#/services/' + pathName,'_blank');
+            } else if($event.which === 3){
+                $window.open('/#/services/' + pathName,'_blank');
+            }
+        };
+
+        $scope.openAddServicesModal = function (page, size) {
+            vm.theModal = $uibModal.open({
+                animation: true,
+                templateUrl: page,
+                size: size,
+                controller: 'AddServiceModalCtrl',
+                scope: $scope
+            });
+
+            vm.theModal.result.then(function(service){
+                if(service){
+                    $scope.getServices();
+                }
+            }, function(){
+            });
         };
     }
 })();

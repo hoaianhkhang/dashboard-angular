@@ -1,3 +1,7 @@
+.group-options-link{
+  color: #022b36!important;
+}
+
 .group-tier-tx-type-credit{
   position: absolute;
   top: 48px;
@@ -131,6 +135,47 @@
   position: relative;
   & .group-tooltip{
     display: none;
+  }
+}
+
+.checkbox-disabled{
+  & > span.account-settings-span {
+    &:before{
+      background-color: #d6d6d6;
+    }
+  }
+}
+
+.group-permission-td{
+  position: relative;
+  & .group-permission-tooltip{
+    display: none;
+  }
+  &:hover {
+    position: relative;
+    & .group-permission-tooltip {
+      display: inline-block;
+      position: absolute;
+      top: -7%;
+      left: 63%;
+      z-index: 1000;
+      line-height: 16px;
+      padding: 4px 5px;
+      background-color: rgba(0, 0, 0, 0.8);
+      color: white;
+      width: 150px;
+    }
+    & .group-permission-tooltip::after {
+      content: " ";
+      position: absolute;
+      bottom: 47%;
+      z-index: 1000;
+      left: -3%;
+      margin-left: -5px;
+      border-width: 5px;
+      border-style: solid;
+      border-color: transparent black transparent transparent;
+    }
   }
 }
 

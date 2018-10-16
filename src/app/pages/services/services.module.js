@@ -12,7 +12,8 @@
         'BlurAdmin.pages.services.productsService',
         'BlurAdmin.pages.services.currencyConversionService',
         'BlurAdmin.pages.services.rewardsService',
-        'BlurAdmin.pages.services.stellarTestnetService'
+        'BlurAdmin.pages.services.stellarTestnetService',
+        'BlurAdmin.pages.services.bitcoinTestnetService'
     ])
         .config(routeConfig);
 

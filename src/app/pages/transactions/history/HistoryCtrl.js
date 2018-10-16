@@ -24,6 +24,8 @@
         $scope.dateFilterIntervalOptions = ['days','months'];
         $scope.groupFilterOptions = ['Group name','In a group'];
         $scope.accountFilterOptions = ['Name','Reference'];
+        $scope.visibleColumnsArray = [];
+        $scope.visibleColumnsSelectionChanged = false;
         $scope.filtersCount = 0;
 
         // if(localStorageManagement.getValue(vm.savedTransactionTableColumns)){
@@ -180,6 +182,7 @@
         };
 
         $scope.toggleColumnVisibility = function () {
+            $scope.visibleColumnsSelectionChanged = true;
             localStorageManagement.setValue(vm.savedTransactionTableColumns,JSON.stringify($scope.headerColumns));
         };
 
@@ -429,6 +432,38 @@
             return referenceObj;
         };
 
+        vm.getVisibleColumnsArray = function () {
+            var visibleColumnsArray = [];
+
+            $scope.headerColumns.forEach(function (col) {
+                if(col.visible){
+                    if(col.fieldName === 'user' || col.fieldName === 'username' || col.fieldName === 'userId' || col.fieldName === 'mobile'){
+                        visibleColumnsArray.push('user');
+                    } else if(col.fieldName === 'recipient' || col.fieldName === 'destination_tx_id'){
+                        visibleColumnsArray.push('destination_transaction');
+                    } else if(col.fieldName === 'currencyCode'){
+                        visibleColumnsArray.push('currency');
+                    } else if(col.fieldName === 'createdDate'){
+                        visibleColumnsArray.push('created');
+                    } else if(col.fieldName === 'updatedDate'){
+                        visibleColumnsArray.push('updated');
+                    } else if(col.fieldName === 'totalAmount'){
+                        visibleColumnsArray.push('total_amount');
+                        visibleColumnsArray.push('currency');
+                    } else if(col.fieldName === 'source_tx_id'){
+                        visibleColumnsArray.push('source_transaction');
+                    } else {
+                        visibleColumnsArray.push(col.fieldName);
+                        if(col.fieldName === 'amount' || col.fieldName === 'fee' || col.fieldName === 'balance'){
+                            visibleColumnsArray.push('currency');
+                        }
+                    }
+                }
+            });
+
+            return _.uniq(visibleColumnsArray);
+        };
+
         vm.getTransactionsFiltersObj = function(){
             $scope.filtersCount = 0;
             $scope.filtersObjForExport = {};
@@ -470,6 +505,8 @@
                 };
             }
 
+            $scope.visibleColumnsArray = vm.getVisibleColumnsArray();
+
             var searchObj = {
                 page: $scope.pagination.pageNo,
                 page_size: $scope.filtersObj.pageSizeFilter? $scope.pagination.itemsPerPage : 25,
@@ -493,7 +530,8 @@
                 source_transaction : $scope.filtersObj.sourceIdFilter ? 'true' : null,
                 tx_type: $scope.filtersObj.transactionTypeFilter ? $scope.applyFiltersObj.transactionTypeFilter.selectedTransactionTypeOption.toLowerCase() : null,
                 status: $scope.filtersObj.statusFilter ? $scope.applyFiltersObj.statusFilter.selectedStatusOption: null,
-                subtype: $scope.filtersObj.transactionSubtypeFilter ? ($scope.applyFiltersObj.transactionSubtypeFilter.selectedTransactionSubtypeOption ? $scope.applyFiltersObj.transactionSubtypeFilter.selectedTransactionSubtypeOption: null): null
+                subtype: $scope.filtersObj.transactionSubtypeFilter ? ($scope.applyFiltersObj.transactionSubtypeFilter.selectedTransactionSubtypeOption ? $scope.applyFiltersObj.transactionSubtypeFilter.selectedTransactionSubtypeOption: null): null,
+                fields: $scope.visibleColumnsArray.join(',')
             };
 
             $scope.filtersObjForExport = searchObj;
@@ -505,6 +543,8 @@
             if(vm.token) {
 
                 $scope.showingFilters = false;
+                $scope.showingColumnFilters = false;
+                $scope.visibleColumnsSelectionChanged = false;
 
                 $scope.transactionsStateMessage = '';
                 $scope.loadingTransactions = true;
@@ -564,28 +604,28 @@
         vm.formatTransactionsArray = function (transactionsArray) {
             transactionsArray.forEach(function (transactionObj) {
                 $scope.transactions.push({
-                    user: transactionObj.user.email || transactionObj.user.mobile || transactionObj.user.id,
+                    user: transactionObj.user ? transactionObj.user.email || transactionObj.user.mobile || transactionObj.user.id : '',
                     recipient: transactionObj.destination_transaction ? transactionObj.destination_transaction.id ? transactionObj.destination_transaction.user.email : transactionObj.destination_transaction.user.email + ' (new user)' : "",
-                    tx_type: $filter("capitalizeWord")(transactionObj.tx_type),
-                    subtype: transactionObj.subtype,
-                    currencyCode: transactionObj.currency.code,
-                    amount: $filter("currencyModifiersFilter")(transactionObj.amount,transactionObj.currency.divisibility),
-                    fee: $filter("currencyModifiersFilter")(transactionObj.fee,transactionObj.currency.divisibility),
-                    status: transactionObj.status,
-                    id: transactionObj.id,
-                    createdDate: $filter("date")(transactionObj.created,'mediumDate') + ' ' + $filter("date")(transactionObj.created,'shortTime'),
-                    totalAmount: $filter("currencyModifiersFilter")(transactionObj.total_amount,transactionObj.currency.divisibility),
-                    balance: $filter("currencyModifiersFilter")(transactionObj.balance,transactionObj.currency.divisibility),
-                    account: transactionObj.account,
-                    username: transactionObj.user.username,
-                    userId: transactionObj.user.id,
-                    updatedDate: transactionObj.updated ? $filter("date")(transactionObj.updated,'mediumDate') + ' ' + $filter("date")(transactionObj.updated,'shortTime'): null,
-                    mobile: transactionObj.user.mobile,
+                    tx_type: transactionObj.tx_type ? $filter("capitalizeWord")(transactionObj.tx_type) : '',
+                    subtype: transactionObj.subtype ? transactionObj.subtype : '',
+                    currencyCode: transactionObj.currency ? transactionObj.currency.code : '',
+                    amount: transactionObj.amount ? $filter("currencyModifiersFilter")(transactionObj.amount,transactionObj.currency.divisibility) : '',
+                    fee: transactionObj.fee ? $filter("currencyModifiersFilter")(transactionObj.fee,transactionObj.currency.divisibility) : '',
+                    status: transactionObj.status ? transactionObj.status : '',
+                    id: transactionObj.id ? transactionObj.id : '',
+                    createdDate: transactionObj.created ? $filter("date")(transactionObj.created,'mediumDate') + ' ' + $filter("date")(transactionObj.created,'shortTime') : '',
+                    totalAmount: transactionObj.total_amount ? $filter("currencyModifiersFilter")(transactionObj.total_amount,transactionObj.currency.divisibility) : '',
+                    balance: transactionObj.balance ? $filter("currencyModifiersFilter")(transactionObj.balance,transactionObj.currency.divisibility) : '',
+                    account: transactionObj.account ? transactionObj.account : '',
+                    username: transactionObj.user ? transactionObj.user.username : '',
+                    userId: transactionObj.user ? transactionObj.user.id : '',
+                    updatedDate: transactionObj.updated ? $filter("date")(transactionObj.updated,'mediumDate') + ' ' + $filter("date")(transactionObj.updated,'shortTime') : '',
+                    mobile: transactionObj.user ? transactionObj.user.mobile : '',
                     destination_tx_id: transactionObj.destination_transaction ? transactionObj.destination_transaction.id ? transactionObj.destination_transaction.id : 'ID pending creation' : "",
                     source_tx_id: transactionObj.source_transaction ? transactionObj.source_transaction.id : "",
-                    label: transactionObj.label,
-                    reference: transactionObj.reference,
-                    note: transactionObj.note,
+                    label: transactionObj.label ? transactionObj.label : '',
+                    reference: transactionObj.reference ? transactionObj.reference : '',
+                    note: transactionObj.note ? transactionObj.note : '',
                     metadata: transactionObj.metadata
                 });
             });
@@ -619,6 +659,9 @@
                 resolve: {
                     filtersObjForExport: function () {
                         return $scope.filtersObjForExport;
+                    },
+                    visibleColumnsArray: function () {
+                        return $scope.visibleColumnsArray;
                     }
                 }
             });
@@ -664,6 +707,9 @@
         });
 
         $scope.closeColumnFiltersBox = function () {
+            if($scope.visibleColumnsSelectionChanged){
+                $scope.getLatestTransactions();
+            }
             $scope.showingColumnFilters = false;
         };
 
