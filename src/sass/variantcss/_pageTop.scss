@@ -80,19 +80,26 @@ a.al-dashboard-version{
   width: 50vw;
   height: 40px;
   border-radius: 3px;
-  background-color: #ffffff;
+  background-color: $sidebar;
   color: $default-text;
   border: 1px solid #F8F8FA;
-  padding: 15px 15px 15px 35px;
+  padding: 15px 15px 15px 45px;
   &::placeholder{
     color: $default-text;
     font-weight: 100;
   }
+  &:hover{
+    background-color: #ffffff;
+    border: 1px solid #EAEAEF;
+    outline: none;
+  }
   &:focus{
+    background-color: #ffffff;
     border: 1px solid #EAEAEF;
     outline: none;
   }
   &:active{
+    background-color: #ffffff;
     border: 1px solid #EAEAEF;
   }
 }

@@ -16,7 +16,7 @@
     content: '';
     position: absolute;
     top: 26px;
-    left: 246px;
+    left: 250px;
     display: block;
     background-image: url('../../assets/img/magnifyingglass.svg');
     background-repeat: no-repeat;
@@ -149,7 +149,7 @@
       width: 50vw;
       height: 40px;
       border-radius: 5px;
-      background-color: #ffffff;
+      background-color: $sidebar;
       color: $default-text;
       border: none;
       padding: 15px 15px 15px 35px;
@@ -157,11 +157,18 @@
         color: $default-text;
         font-weight: 100;
       }
+      &:hover{
+        background-color: #ffffff;
+        border: 1px solid #EAEAEF;
+        outline: none;
+      }
       &:focus{
+        background-color: #ffffff;
         border: 1px solid #EAEAEF;
         outline: none;
       }
       &:active{
+        background-color: #ffffff;
         border: 1px solid #EAEAEF;
       }
     }

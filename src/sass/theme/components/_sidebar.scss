@@ -38,6 +38,14 @@ $angle-right: "\f101";
   padding: 0;
   &.selected:not(.with-sub-menu) {
     color: $primary;
+    &::before{
+      position: absolute;
+      content: '';
+      display: block;
+      width: 4px;
+      height: 44px;
+      background-color: $primary;
+    }
     a.al-sidebar-list-link {
       color: $primary;
       i {
@@ -136,7 +144,7 @@ a.al-sidebar-list-link {
     height: 16px;
     width: 18px;
     display: inline-block;
-    top: 5px;
+    top: 4px;
   }
   b {
     display: block;
@@ -343,6 +351,12 @@ a.al-sidebar-list-link {
 @media (min-width: $resXS + 1) {
   .menu-collapsed {
     @include sidebar-collapsed();
+    .al-sidebar-list-item.selected:not(.with-sub-menu) {
+        &::before{
+          width: 0;
+          transition: 0.5s;
+        }
+    }
     a.al-sidebar-list-link{
       padding-left: 0;
       transition: 0.5s;
