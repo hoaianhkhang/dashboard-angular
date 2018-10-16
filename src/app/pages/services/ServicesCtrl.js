@@ -93,7 +93,6 @@
         };
 
         $scope.goToService = function($event,service) {
-            console.log($event)
             var serviceName,serviceNameArray;
 
             localStorageManagement.setValue('SERVICEURL',service.url);

@@ -17,6 +17,11 @@
         });
         $scope.showOptionsAccountRef = false;
         $scope.loadingWarmstorage = true;
+        if(vm.serviceUrl.indexOf('bitcoin-testnet') > 0){
+            $scope.inTestnetService = true;
+        } else {
+            $scope.inTestnetService = false;
+        }
 
         $scope.closeOptionsBox = function () {
             $scope.showOptionsAccountRef = false;
