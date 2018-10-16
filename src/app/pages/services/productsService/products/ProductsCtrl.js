@@ -37,10 +37,27 @@
         //     localStorageManagement.setValue(vm.savedProductsTableColumns,JSON.stringify(headerColumns));
         // }
 
+        if(localStorageManagement.getValue(vm.savedProductsTableColumns)){
+            var headerColumns = JSON.parse(localStorageManagement.getValue(vm.savedProductsTableColumns));
+            var recipientFieldExists = false;
+            headerColumns.forEach(function (col) {
+                if(col.colName == 'Cost price'){
+                    recipientFieldExists = true;
+                }
+            });
+
+            if(!recipientFieldExists){
+                headerColumns.splice(4,0,{colName: 'Cost price',fieldName: 'cost_price',visible: true});
+            }
+
+            localStorageManagement.setValue(vm.savedProductsTableColumns,JSON.stringify(headerColumns));
+        }
+
         $scope.headerColumns = localStorageManagement.getValue(vm.savedProductsTableColumns) ? JSON.parse(localStorageManagement.getValue(vm.savedProductsTableColumns)) : [
             {colName: 'Id',fieldName: 'id',visible: true},
             {colName: 'Name',fieldName: 'name',visible: true},
             {colName: 'Description',fieldName: 'description',visible: true},
+            {colName: 'Cost price',fieldName: 'cost_price',visible: true},
             {colName: 'Value',fieldName: 'value',visible: true},
             {colName: 'Currency',fieldName: 'currency',visible: true},
             {colName: 'Quantity',fieldName: 'quantity',visible: true},
@@ -227,6 +244,7 @@
                     id: productObj.id,
                     name: productObj.name,
                     description: productObj.description,
+                    cost_price: productObj.cost_price,
                     value: productObj.value,
                     currency: productObj.currency,
                     quantity: productObj.quantity,
