@@ -467,6 +467,10 @@
                 }
             });
 
+            if((_.indexOf(visibleColumnsArray, 'id') === -1)){
+                visibleColumnsArray.push('id');
+            }
+
             return _.uniq(visibleColumnsArray);
         };
 
