@@ -627,7 +627,7 @@
                     id: transactionObj.id ? transactionObj.id : '',
                     createdDate: transactionObj.created ? $filter("date")(transactionObj.created,'mediumDate') + ' ' + $filter("date")(transactionObj.created,'shortTime') : '',
                     totalAmount: transactionObj.total_amount ? $filter("currencyModifiersFilter")(transactionObj.total_amount,transactionObj.currency.divisibility) : '',
-                    balance: transactionObj.balance ? $filter("currencyModifiersFilter")(transactionObj.balance,transactionObj.currency.divisibility) : '',
+                    balance: $filter("currencyModifiersFilter")(transactionObj.balance,transactionObj.currency.divisibility),
                     account: transactionObj.account ? transactionObj.account : '',
                     username: transactionObj.user ? transactionObj.user.username : '',
                     userId: transactionObj.user ? transactionObj.user.id : '',
