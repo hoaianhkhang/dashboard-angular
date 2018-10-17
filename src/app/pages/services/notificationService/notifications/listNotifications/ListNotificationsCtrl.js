@@ -11,7 +11,7 @@
         vm.token = localStorageManagement.getValue('TOKEN');
         vm.baseUrl = localStorageManagement.getValue('SERVICEURL');
         $scope.allNotifications = {
-            enabled: false,
+            all: false,
             count: 0
         };
         $scope.loadingNotifications =  false;
@@ -81,12 +81,12 @@
             $scope.getNotificationsList();
         };
 
-        $scope.toggleAllNotificationsStatus = function () {
-            $scope.notificationsList.forEach(function (notification) {
-                notification.enabled = $scope.allNotifications.enabled;
-                $scope.toggleNotificationStatus(notification);
-            });
-        };
+        // $scope.toggleAllNotificationsStatus = function () {
+        //     $scope.notificationsList.forEach(function (notification) {
+        //         notification.enabled = $scope.allNotifications.enabled;
+        //         $scope.toggleNotificationStatus(notification);
+        //     });
+        // };
 
         vm.getNotificationListUrl = function(){
             var event = '';

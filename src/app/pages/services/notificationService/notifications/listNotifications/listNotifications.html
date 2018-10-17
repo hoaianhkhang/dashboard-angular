@@ -29,14 +29,16 @@
                             <th>Subject</th>
                             <th>
                                 Enabled
-                                <div class="notification-select-all-checkbox">
-                                    <input class="custom-rehive-checkbox" ng-click="toggleAllNotificationsStatus()"
-                                           ng-model="allNotifications.enabled" type="checkbox">
-                                    <label>Select all</label>
-                                </div>
                             </th>
                             <th>Event</th>
                             <th></th>
+                            <th>
+                                <div class="notification-select-all-checkbox">
+                                    <input class="custom-rehive-checkbox" ng-click="toggleAllNotificationsActions()"
+                                           ng-model="allNotifications.all" type="checkbox">
+                                    <label>Select all</label>
+                                </div>
+                            </th>
                         </tr>
                         <tr ng-repeat="notification in notificationsList" class="editable-row">
                             <td class="transactions-list-element rehive-table-row-first-child" title="{{notification.name}}" ng-bind="notification.name"></td>
@@ -52,6 +54,10 @@
                                    class="pull-right pointer ">Delete</a>
                                 <a ng-href="/#/services/notifications/{{notification.id}}/edit/{{notification.type}}"
                                    class="pull-right pointer user-address-edit margin-right-30">Edit</a>
+                            </td>
+                            <td class="transactions-list-element pull-right">
+                                <input class="custom-rehive-checkbox" ng-click="toggleNotificationAction(notification)"
+                                       type="checkbox">
                             </td>
                         </tr>
                     </table>

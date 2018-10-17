@@ -55,12 +55,13 @@
 
 .notification-select-all-checkbox{
   position: absolute;
-  top: -68px;
+  top: -3px;
+  right: -175px;
   width: 200px;
   & label{
     position: absolute;
     top: 3px;
-    left: 28px;
+    left: -61px;
     font-weight: normal;
   }
 }
