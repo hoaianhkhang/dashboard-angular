@@ -10,13 +10,16 @@
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
         vm.baseUrl = localStorageManagement.getValue('SERVICEURL');
-        $scope.createNotificationView = 'email';
+        var location = $location.path();
+        var locationArray = location.split('/');
+        $scope.locationIndicator = locationArray[(locationArray.length -1)];
+        $scope.createNotificationView = $scope.locationIndicator;
 
         $scope.goToCreateNotificationView = function (path) {
             $scope.createNotificationView = path;
             $location.path('/services/notifications/create/' + $scope.createNotificationView);
         };
-        $scope.goToCreateNotificationView('email');
+        $scope.goToCreateNotificationView($scope.locationIndicator);
 
     }
 })();

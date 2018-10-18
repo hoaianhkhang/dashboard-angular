@@ -316,7 +316,7 @@
         };
 
         $scope.goToCreateNotification = function () {
-            $location.path('/services/notifications/create/email');
+            $location.path('/services/notifications/create/' + $scope.listNotificationType);
         };
 
         $scope.goToBulkAdd = function () {
