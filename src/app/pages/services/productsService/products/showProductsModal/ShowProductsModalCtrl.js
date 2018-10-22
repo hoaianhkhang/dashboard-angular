@@ -25,7 +25,7 @@
                     archived: false
                 }}).then(function (res) {
                     $scope.currencyOptions = res.results.slice();
-                    $scope.getProducts();
+                    $scope.getProduct();
                     $scope.$apply();
                 }, function (error) {
                     $scope.deletingProduct = false;
@@ -37,7 +37,7 @@
         };
         vm.getCompanyCurrencies();
 
-        $scope.getProducts = function(){
+        $scope.getProduct = function(){
             if(vm.token) {
                 $scope.deletingProduct = true;
                 $http.get(vm.serviceUrl + 'admin/products/' + productObj.id + '/', {
@@ -49,13 +49,14 @@
                     if (res.status === 200) {
                         $scope.deletingProduct =  false;
                         $scope.productObject = res.data.data;
-                        if($scope.currencyOptions.length > 0){
-                            $scope.currencyOptions.forEach(function (currency) {
-                                if(currency.code == $scope.productObject.currency){
-                                    $scope.productObject.currency = currency;
-                                }
-                            });
-                        }
+                        console.log(res)
+                        // if($scope.currencyOptions.length > 0){
+                        //     $scope.currencyOptions.forEach(function (currency) {
+                        //         if(currency.code == $scope.productObject.currency){
+                        //             $scope.productObject.currency = currency;
+                        //         }
+                        //     });
+                        // }
                     }
                 }).catch(function (error) {
                     $scope.deletingProduct =  false;
@@ -79,9 +80,9 @@
             var updatedProduct = {
                 name: vm.updatedProduct.name,
                 description: vm.updatedProduct.description,
-                currency: vm.updatedProduct.currency.code || null,
-                value: currencyModifiers.convertToCents(vm.updatedProduct.value,vm.updatedProduct.currency.divisibility) || null,
-                cost_price: currencyModifiers.convertToCents(vm.updatedProduct.cost_price,vm.updatedProduct.currency.divisibility) || null,
+                currency: vm.updatedProduct.currency ? vm.updatedProduct.currency.code : null,
+                value: vm.updatedProduct.value ? currencyModifiers.convertToCents(vm.updatedProduct.value,vm.updatedProduct.currency.divisibility) : null,
+                cost_price: vm.updatedProduct.cost_price ? currencyModifiers.convertToCents(vm.updatedProduct.cost_price,vm.updatedProduct.currency.divisibility) : null,
                 quantity: vm.updatedProduct.quantity || null,
                 product_type: vm.updatedProduct.product_type || null,
                 code: vm.updatedProduct.code || null
