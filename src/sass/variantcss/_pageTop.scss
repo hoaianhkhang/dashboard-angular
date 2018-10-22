@@ -84,6 +84,7 @@ a.al-dashboard-version{
   color: $default-text;
   border: 1px solid #F8F8FA;
   padding: 15px 15px 15px 45px;
+  transition: linear border 0.5s, background-color 0.5s;
   &::placeholder{
     color: $default-text;
     font-weight: 100;
