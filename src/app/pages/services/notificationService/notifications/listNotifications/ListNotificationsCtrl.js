@@ -17,8 +17,8 @@
         };
         $scope.loadingNotifications =  false;
         $scope.showingActionsBox = false;
-        $scope.listNotificationType = 'email';
         $scope.filtersCount = 0;
+        vm.listParams = $location.search();
         $scope.showingFilters = false;
         $scope.selectedAction = 'Enable';
         $scope.actionOptions = ['Enable', 'Disable', 'Delete'];
@@ -67,6 +67,16 @@
                 selectedEvent: ''
             }
         };
+        if(vm.listParams.type == 'email'){
+            $scope.listNotificationType = 'email';
+            $location.search({type: null});
+        } else if(vm.listParams.type == 'sms'){
+            $scope.listNotificationType = 'sms';
+            $location.search({type: null});
+            $location.search();
+        } else {
+            $scope.listNotificationType = 'email';
+        }
 
         $scope.showActionsBox = function () {
             $scope.showingFilters = false;

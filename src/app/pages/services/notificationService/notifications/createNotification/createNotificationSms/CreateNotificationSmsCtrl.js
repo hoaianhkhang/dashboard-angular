@@ -57,6 +57,9 @@
             theme: 'monokai',
             autoCloseTags: true,
             smartIndent: false,
+            extraKeys: {
+                "Ctrl-Space": "autocomplete"
+            },
             mode: 'xml'
         };
 
@@ -172,7 +175,7 @@
                 }).then(function (res) {
                     if (res.status === 200) {
                         toastr.success('Notification added successfully');
-                        $location.path('/services/notifications/list');
+                        $location.path('/services/notifications/list').search({type: 'sms'});
                     }
                 }).catch(function (error) {
                     $scope.addingSmsNotification =  false;
@@ -182,8 +185,8 @@
             }
         };
 
-        $scope.goToListView = function () {
-            $location.path('/services/notifications/list');
+        $scope.goToSMSListView = function () {
+            $location.path('/services/notifications/list').search({type: 'sms'});
         };
 
     }
