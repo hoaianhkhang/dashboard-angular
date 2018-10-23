@@ -5,7 +5,7 @@
         .controller('ShowProductModalCtrl', ShowProductModalCtrl);
 
     function ShowProductModalCtrl($scope,$stateParams,$uibModalInstance,serializeFiltersService,$ngConfirm,Rehive,
-                                  toastr,$http,productObj,currencyModifiers,localStorageManagement,errorHandler) {
+                                  toastr,$http,productObj,$filter,currencyModifiers,localStorageManagement,errorHandler) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
@@ -48,10 +48,12 @@
                 }).then(function (res) {
                     if (res.status === 200) {
                         $scope.deletingProduct =  false;
+                        res.data.data.cost_price = $filter("currencyModifiersFilter")(productObj.cost_price,productObj.currency.divisibility);
+                        res.data.data.value = $filter("currencyModifiersFilter")(productObj.value,productObj.currency.divisibility);
                         $scope.productObject = res.data.data;
                         if($scope.currencyOptions.length > 0){
                             $scope.currencyOptions.forEach(function (currency) {
-                                if(currency.code == $scope.productObject.currency){
+                                if(currency.code == $scope.productObject.currency.code){
                                     $scope.productObject.currency = currency;
                                 }
                             });
@@ -77,14 +79,14 @@
             $scope.deletingProduct = true;
 
             var updatedProduct = {
-                name: vm.updatedProduct.name,
-                description: vm.updatedProduct.description,
-                currency: vm.updatedProduct.currency.code || null,
-                value: currencyModifiers.convertToCents(vm.updatedProduct.value,vm.updatedProduct.currency.divisibility) || null,
-                cost_price: currencyModifiers.convertToCents(vm.updatedProduct.cost_price,vm.updatedProduct.currency.divisibility) || null,
-                quantity: vm.updatedProduct.quantity || null,
-                product_type: vm.updatedProduct.product_type || null,
-                code: vm.updatedProduct.code || null
+                name: vm.updatedProduct.name ? vm.updatedProduct.name : null,
+                description: vm.updatedProduct.description ? vm.updatedProduct.description : null,
+                currency: vm.updatedProduct.currency ? vm.updatedProduct.currency.code : null,
+                value: vm.updatedProduct.value ? currencyModifiers.convertToCents(vm.updatedProduct.value,$scope.productObject.currency.divisibility) : null,
+                cost_price: vm.updatedProduct.cost_price ? currencyModifiers.convertToCents(vm.updatedProduct.cost_price,$scope.productObject.currency.divisibility) : null,
+                quantity: vm.updatedProduct.quantity ? vm.updatedProduct.quantity : null,
+                product_type: vm.updatedProduct.product_type ? vm.updatedProduct.product_type : null,
+                code: vm.updatedProduct.code ? vm.updatedProduct.code : null
             };
 
             updatedProduct = serializeFiltersService.objectFilters(updatedProduct);

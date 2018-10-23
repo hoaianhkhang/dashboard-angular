@@ -6,7 +6,7 @@
 
     /** @ngInject */
     function ProductsCtrl($scope,Rehive,$http,localStorageManagement,serializeFiltersService,
-                          $location,$uibModal,errorHandler) {
+                          $location,$uibModal,errorHandler,$filter) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
@@ -244,9 +244,9 @@
                     id: productObj.id,
                     name: productObj.name,
                     description: productObj.description,
-                    cost_price: productObj.cost_price,
-                    value: productObj.value,
-                    currency: productObj.currency,
+                    cost_price: productObj.cost_price ? $filter("currencyModifiersFilter")(productObj.cost_price,productObj.currency.divisibility) : '',
+                    value: productObj.value ? $filter("currencyModifiersFilter")(productObj.value,productObj.currency.divisibility) : '',
+                    currency: productObj.currency ? productObj.currency.code : null,
                     quantity: productObj.quantity,
                     product_type: productObj.product_type
                 });
