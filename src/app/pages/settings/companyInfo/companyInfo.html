@@ -29,6 +29,19 @@
                 <input type="text" ng-change="companySettingsChanged('email_confirmation_url')" ng-model="company.details.settings.email_confirmation_url" class="form-control" placeholder="e.g. https://www.rehive.com/verify/email/">
             </div>
             <div class="form-group">
+                <label>Company configuration</label>
+                <textarea rows="4" ng-change="companyInfoChanged('config')" ng-model="company.details.config" class="form-control" placeholder='Enter config json e.g. {"Hello":"World"}'></textarea>
+            </div>
+            <div class="form-group">
+                <label>Public</label>
+                <div ng-show="company.details.public">
+                    <i class="fa fa-toggle-on user-switch-active no-margin"  ng-click="companyInfoChanged('public')"></i>
+                </div>
+                <div ng-hide="company.details.public">
+                    <i class="fa fa-toggle-on fa-rotate-180 user-switch-inactive no-margin"  ng-click="companyInfoChanged('public')"></i>
+                </div>
+            </div>
+            <div class="form-group">
                 <label>Company logo</label>
                 <div class="divider-20">
                     <img ng-src="{{companyImageUrl}}" width="100" height="100" alt="token Image">

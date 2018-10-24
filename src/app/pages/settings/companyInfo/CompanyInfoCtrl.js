@@ -62,6 +62,11 @@
                 $scope.loadingCompanyInfo = true;
                 Rehive.admin.company.get().then(function (res) {
                     $scope.loadingCompanyInfo = false;
+                    if(Object.keys(res.config).length == 0){
+                        res.config = '';
+                    } else {
+                        res.config = JSON.stringify(res.config);
+                    }
                     $scope.company.details = res;
                     $scope.companyImageUrl = res.logo;
                     $scope.$apply();
@@ -102,11 +107,32 @@
         };
 
         $scope.companyInfoChanged = function(field){
+            if(field == 'public'){
+                $scope.company.details[field] = !$scope.company.details[field];
+            }
             vm.updatedCompanyInfo[field] = $scope.company.details[field];
+        };
+
+        var isJson = function (str) {
+            try {
+                JSON.parse(str);
+            } catch (e) {
+                return false;
+            }
+            return true;
         };
 
         $scope.updateCompanyInfo = function () {
             $scope.loadingCompanyInfo = true;
+            if(vm.updatedCompanyInfo.config){
+                if(isJson(vm.updatedCompanyInfo.config)){
+                    vm.updatedCompanyInfo.config = JSON.parse(vm.updatedCompanyInfo.config);
+                } else {
+                    toastr.error('Incorrect metadata format');
+                    $scope.loadingCompanyInfo = false;
+                    return false;
+                }
+            }
 
             Rehive.admin.company.update(vm.updatedCompanyInfo).then(function (res) {
                 vm.updatedCompanyInfo = {};
