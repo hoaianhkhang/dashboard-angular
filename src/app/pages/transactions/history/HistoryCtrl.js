@@ -181,6 +181,8 @@
         };
 
         $scope.selectAllColumns = function () {
+
+            //Todo: dont save metadata objects
             $scope.headerColumns.forEach(function (headerObj) {
                 headerObj.visible = true;
             });
@@ -188,11 +190,13 @@
         };
 
         $scope.toggleColumnVisibility = function () {
+            //Todo: dont save metadata objects
             $scope.visibleColumnsSelectionChanged = true;
             localStorageManagement.setValue(vm.savedTransactionTableColumns,JSON.stringify($scope.headerColumns));
         };
 
         $scope.restoreColDefaults = function () {
+            //Todo: dont save metadata objects
             var defaultVisibleHeader = ['User','Type','Subtype','Currency',
                 'Amount','Fee','Status','Date','Id'];
 
@@ -625,6 +629,7 @@
                     for(var key in transactionObj.metadata){
                         if(transactionObj.metadata.hasOwnProperty(key)){
                             metadataObject[key] = transactionObj.metadata[key];
+                            $scope.headerColumns.push({colName: key,fieldName: key,visible: false,from: 'metadata'});
                         }
                     }
                 }
