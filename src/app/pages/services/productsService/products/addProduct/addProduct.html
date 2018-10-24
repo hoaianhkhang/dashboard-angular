@@ -11,11 +11,11 @@
                            placeholder="Enter product name" required>
                 </div>
                 <div class="form-group">
-                    <label>Product description <span class="required-icon">*</span></label>
+                    <label>Product description </label>
                     <input type="text" ng-model="newProductParams.description" class="form-control"  placeholder="Enter description name" required>
                 </div>
                 <div class="form-group custom-form">
-                    <label>Currencies <span class="required-icon">*</span></label>
+                    <label>Currency <span class="required-icon">*</span></label>
                     <div class="reward-multi-select">
                         <select chosen
                                 data-placeholder-text-single="'Choose a currency'"
@@ -29,31 +29,32 @@
                 </div>
                 <div class="form-group setup-groups-tooltip-div">
                     <label>Value <span class="required-icon">*</span>
-                        &nbsp;<i uib-tooltip-html="'Reward currency that will be credited to the user account.'"
-                                 class="ion-information-circled setup-groups-tooltip"></i></label>
+                        
                     <input type="text" ng-model="newProductParams.value" class="form-control"  placeholder="Enter value" required>
                 </div>
                 <div class="form-group setup-groups-tooltip-div">
-                    <label>Cost price <span class="required-icon">*</span>
-                        &nbsp;<i uib-tooltip-html="'Reward currency that will be credited to the user account.'"
-                                 class="ion-information-circled setup-groups-tooltip"></i></label><br>
+                    <label>Cost price 
+                        
+                        &nbsp;<i uib-tooltip-html="'The price value that the product / item was bought for, if different from the value of the product / item.'"
+                        class="ion-information-circled setup-groups-tooltip"></i>
+                    
                     <input type="text" ng-model="newProductParams.cost_price" class="form-control"  placeholder="Enter cost price" required>
                 </div>
                 <div class="form-group setup-groups-tooltip-div">
-                    <label>Quantity <span class="required-icon">*</span>
-                        &nbsp;<i uib-tooltip-html="'Reward currency that will be credited to the user account.'"
+                    <label>Quantity 
+                        &nbsp;<i uib-tooltip-html="'The amount of stock held for this product /item.'"
                                  class="ion-information-circled setup-groups-tooltip"></i></label>
                     <input type="text" ng-model="newProductParams.quantity" class="form-control"  placeholder="Enter quantity" required>
                 </div>
                 <div class="form-group setup-groups-tooltip-div">
-                    <label>Product type <span class="required-icon">*</span>
-                        &nbsp;<i uib-tooltip-html="'Reward currency that will be credited to the user account.'"
+                    <label>Product type 
+                        &nbsp;<i uib-tooltip-html="'A categorical tag to label products / items of the same type..'"
                                  class="ion-information-circled setup-groups-tooltip"></i></label>
                     <input type="text" ng-model="newProductParams.product_type" class="form-control"  placeholder="Enter product type" required>
                 </div>
                 <div class="form-group setup-groups-tooltip-div">
-                    <label>Code (barcode) <span class="required-icon">*</span>
-                        &nbsp;<i uib-tooltip-html="'Reward currency that will be credited to the user account.'"
+                    <label>Code (barcode) 
+                        &nbsp;<i uib-tooltip-html="'A barcode or unique code so that the product / item can be referenced from systems outside the Rehive environment.'"
                                  class="ion-information-circled setup-groups-tooltip"></i></label>
                     <input type="text" ng-model="newProductParams.code" class="form-control"  placeholder="Enter code" required>
                 </div>
