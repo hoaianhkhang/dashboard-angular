@@ -41,7 +41,7 @@
             if(vm.token) {
                 $scope.loadingSmsAuth = true;
                 Rehive.auth.mfa.sms.disable().then(function (res) {
-                    toastr.success('Sms authentication disabled successfully');
+                    toastr.success('SMS authentication disabled successfully');
                     $scope.smsAuthObj = {mobile: ''};
                     $scope.numberFromGetCall = false;
                     $scope.loadingSmsAuth = false;

@@ -50,6 +50,9 @@
             theme: 'monokai',
             autoCloseTags: true,
             smartIndent: false,
+            extraKeys: {
+                "Ctrl-Space": "autocomplete"
+            },
             mode: 'xml'
         };
 
@@ -173,7 +176,7 @@
                 }).then(function (res) {
                     if (res.status === 200) {
                         toastr.success('Notification added successfully');
-                        $location.path('/services/notifications/list');
+                        $location.path('/services/notifications/list').search({type: 'email'});
                     }
                 }).catch(function (error) {
                     $scope.addingEmailNotification =  false;
@@ -181,10 +184,6 @@
                     errorHandler.handleErrors(error);
                 });
             }
-        };
-
-        $scope.goToListView = function () {
-            $location.path('/services/notifications/list');
         };
 
         $scope.openHtmlPreviewModal = function (page, size, htmlPreview) {
@@ -204,6 +203,10 @@
             vm.theModal.result.then(function(){
             }, function(){
             });
+        };
+
+        $scope.goToEmailListView = function () {
+            $location.path('/services/notifications/list').search({type: 'email'});
         };
 
     }
