@@ -619,7 +619,17 @@
 
         vm.formatTransactionsArray = function (transactionsArray) {
             transactionsArray.forEach(function (transactionObj) {
-                $scope.transactions.push({
+                var metadataObject = {};
+
+                if(transactionObj.metadata && Object.keys(transactionObj.metadata).length){
+                    for(var key in transactionObj.metadata){
+                        if(transactionObj.metadata.hasOwnProperty(key)){
+                            metadataObject[key] = transactionObj.metadata[key];
+                        }
+                    }
+                }
+
+                var transactionObject = {
                     user: transactionObj.user ? transactionObj.user.email || transactionObj.user.mobile || transactionObj.user.id : '',
                     recipient: transactionObj.destination_transaction ? transactionObj.destination_transaction.id ? transactionObj.destination_transaction.user.email : transactionObj.destination_transaction.user.email + ' (new user)' : "",
                     tx_type: transactionObj.tx_type ? $filter("capitalizeWord")(transactionObj.tx_type) : '',
@@ -643,9 +653,14 @@
                     reference: transactionObj.reference ? transactionObj.reference : '',
                     note: transactionObj.note ? transactionObj.note : '',
                     metadata: transactionObj.metadata ? JSON.stringify(transactionObj.metadata) : ''
-                });
+                };
+
+                transactionObject = _.extend(transactionObject,metadataObject);
+
+                $scope.transactions.push(transactionObject);
             });
 
+            console.log($scope.transactions)
             $scope.loadingTransactions = false;
         };
 
