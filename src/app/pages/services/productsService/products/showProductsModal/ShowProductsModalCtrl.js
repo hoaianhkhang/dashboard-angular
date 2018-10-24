@@ -25,7 +25,7 @@
                     archived: false
                 }}).then(function (res) {
                     $scope.currencyOptions = res.results.slice();
-                    $scope.getProducts();
+                    $scope.getProduct();
                     $scope.$apply();
                 }, function (error) {
                     $scope.deletingProduct = false;
@@ -37,7 +37,7 @@
         };
         vm.getCompanyCurrencies();
 
-        $scope.getProducts = function(){
+        $scope.getProduct = function(){
             if(vm.token) {
                 $scope.deletingProduct = true;
                 $http.get(vm.serviceUrl + 'admin/products/' + productObj.id + '/', {
