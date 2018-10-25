@@ -182,7 +182,6 @@
 
         $scope.selectAllColumns = function () {
 
-            //Todo: dont save metadata objects
             $scope.headerColumns.forEach(function (headerObj) {
                 headerObj.visible = true;
             });
@@ -190,13 +189,11 @@
         };
 
         $scope.toggleColumnVisibility = function () {
-            //Todo: dont save metadata objects
             $scope.visibleColumnsSelectionChanged = true;
             localStorageManagement.setValue(vm.savedTransactionTableColumns,JSON.stringify($scope.headerColumns));
         };
 
         $scope.restoreColDefaults = function () {
-            //Todo: dont save metadata objects
             var defaultVisibleHeader = ['User','Type','Subtype','Currency',
                 'Amount','Fee','Status','Date','Id'];
 
@@ -559,6 +556,14 @@
             return serializeFiltersService.objectFilters(searchObj);
         };
 
+        vm.clearHeaderColumnsOffPreviousMetadata = function () {
+            // $scope.headerColumns.forEach(function (element,index,arr) {
+            //     if(element.from){
+            //         $scope.headerColumns.splice(index,1);
+            //     }
+            // });
+        };
+
         $scope.getLatestTransactions = function(applyFilter){
             if(vm.token) {
 
@@ -568,6 +573,9 @@
 
                 $scope.transactionsStateMessage = '';
                 $scope.loadingTransactions = true;
+
+                //clear previous metadata headers
+                vm.clearHeaderColumnsOffPreviousMetadata($scope.headerColumns);
 
                 if (applyFilter) {
                     // if function is called from history-filters directive, then pageNo set to 1
@@ -622,14 +630,23 @@
         }
 
         vm.formatTransactionsArray = function (transactionsArray) {
+
             transactionsArray.forEach(function (transactionObj) {
                 var metadataObject = {};
+                var metadataKeyExists = false;
 
                 if(transactionObj.metadata && Object.keys(transactionObj.metadata).length){
                     for(var key in transactionObj.metadata){
                         if(transactionObj.metadata.hasOwnProperty(key)){
                             metadataObject[key] = transactionObj.metadata[key];
-                            $scope.headerColumns.push({colName: key,fieldName: key,visible: false,from: 'metadata'});
+                            $scope.headerColumns.forEach(function (element) {
+                               if(element.fieldName == key){
+                                   metadataKeyExists = true;
+                               }
+                            });
+                            if(!metadataKeyExists){
+                                $scope.headerColumns.push({colName: key,fieldName: key,visible: false,from: 'metadata'});
+                            }
                         }
                     }
                 }
@@ -646,7 +663,7 @@
                     id: transactionObj.id ? transactionObj.id : '',
                     createdDate: transactionObj.created ? $filter("date")(transactionObj.created,'mediumDate') + ' ' + $filter("date")(transactionObj.created,'shortTime') : '',
                     totalAmount: transactionObj.total_amount ? $filter("currencyModifiersFilter")(transactionObj.total_amount,transactionObj.currency.divisibility) : '',
-                    balance: $filter("currencyModifiersFilter")(transactionObj.balance,transactionObj.currency.divisibility),
+                    balance: transactionObj.balance ? $filter("currencyModifiersFilter")(transactionObj.balance,transactionObj.currency.divisibility) : '',
                     account: transactionObj.account ? transactionObj.account : '',
                     username: transactionObj.user ? transactionObj.user.username : '',
                     userId: transactionObj.user ? transactionObj.user.id : '',
@@ -665,7 +682,7 @@
                 $scope.transactions.push(transactionObject);
             });
 
-            console.log($scope.transactions)
+            localStorageManagement.setValue(vm.savedTransactionTableColumns,JSON.stringify($scope.headerColumns));
             $scope.loadingTransactions = false;
         };
 
