@@ -15,6 +15,9 @@
                         controller: "ListNotificationsCtrl"
                     }
                 },
+                params: {
+                    type: null
+                },
                 title: 'Notifications'
             });
     }

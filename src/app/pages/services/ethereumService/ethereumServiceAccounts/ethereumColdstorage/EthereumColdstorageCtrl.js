@@ -11,6 +11,7 @@
         var vm = this;
         vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
         vm.token = localStorageManagement.getValue('TOKEN');
+        $scope.companyDateFormatString = localStorageManagement.getValue('DATE_FORMAT');
         $scope.ethereumCurrency = currenciesList.find(function (element) {
             return element.code == 'ETH';
         });
@@ -179,7 +180,7 @@
 
         //for angular datepicker
         $scope.dateObjColdstorage = {};
-        $scope.dateObjColdstorage.format = 'MM/dd/yyyy';
+        $scope.dateObjColdstorage.format = $scope.companyDateFormatString;
         $scope.popup1Coldstorage = {};
         $scope.open1Coldstorage = function() {
             $scope.popup1Coldstorage.opened = true;

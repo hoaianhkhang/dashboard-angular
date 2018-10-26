@@ -94,13 +94,13 @@
                     }
                 }
             }
-            $scope.filtersTextsArray.push('Fields: ' + $scope.visibleColumnsArray.join(', ') + ', metadata');
+            $scope.filtersTextsArray.push('Fields: ' + $scope.visibleColumnsArray.join(', '));
             $scope.exportingTransactions = false;
         };
 
         $scope.exportTransansactionsSet = function() {
             $scope.exportingTransactions = true;
-            $scope.filtersObjForExportDeepCopy.fields = $scope.visibleColumnsArray.join(',') + ',metadata';
+            $scope.filtersObjForExportDeepCopy.fields = $scope.visibleColumnsArray.join(',');
 
             Rehive.admin.transactions.sets.create({
                 page_size: 10000,

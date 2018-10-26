@@ -15,6 +15,7 @@
         vm.uuid = $stateParams.uuid;
         vm.userTransactionsFilterParams = $location.search();
         vm.companyIdentifier = localStorageManagement.getValue('companyIdentifier');
+        $scope.companyDateFormatString = localStorageManagement.getValue('DATE_FORMAT');
         vm.savedUserTransactionTableColumns = vm.companyIdentifier + 'userTransactionsTable';
         $scope.showingFilters = false;
         $scope.showingColumnFilters = false;
@@ -205,7 +206,7 @@
 
         //for angular datepicker
         $scope.dateObj = {};
-        $scope.dateObj.format = 'MM/dd/yyyy';
+        $scope.dateObj.format = $scope.companyDateFormatString;
         $scope.popup1 = {};
         $scope.open1 = function() {
             $scope.popup1.opened = true;

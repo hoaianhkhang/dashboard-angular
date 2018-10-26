@@ -32,6 +32,10 @@ angular.module('BlurAdmin', [
             $rootScope.$pageFinishedLoading = true;
         };
 
+        if(!localStorageManagement.getValue('DATE_FORMAT')){
+            localStorageManagement.setValue('DATE_FORMAT','MM/dd/yyyy');
+        }
+
         $rootScope.dashboardTitle = 'Rehive';
 
         $rootScope.pageTopObj = {};

@@ -5,7 +5,7 @@
         .factory('errorHandler', errorHandler);
 
     /** @ngInject */
-    function errorHandler(toastr,$location,localStorageManagement,$rootScope) {
+    function errorHandler(toastr,$location,localStorageManagement,$rootScope,Rehive) {
 
         return {
             evaluateErrors: function (errors) {
@@ -17,7 +17,12 @@
                                 if(key == 'non_field_errors'){
                                     key = 'error';
                                 }
-                                toastr.error(error, (key.charAt(0).toUpperCase() + key.slice(1)));
+                                var errorTitle = (key.charAt(0).toUpperCase() + key.slice(1));
+                                if((errorTitle == 'Password1' || errorTitle == 'Password2')){
+                                    errorTitle = 'Password';
+                                }
+
+                                toastr.error(error, errorTitle);
                             });
                         } else {
                             toastr.error(errors.message);

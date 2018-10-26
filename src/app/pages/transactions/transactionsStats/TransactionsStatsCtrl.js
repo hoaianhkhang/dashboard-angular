@@ -10,6 +10,7 @@
 
         var vm = this;
         vm.token = localStorageManagement.getValue('token');
+        $scope.companyDateFormatString = localStorageManagement.getValue('DATE_FORMAT');
         $scope.loadingStats = true;
         $scope.currencyObj = {};
         $scope.currencyOptions = [];
@@ -134,7 +135,7 @@
 
         //for angular datepicker
         $scope.dateObj = {};
-        $scope.dateObj.format = 'MM/dd/yyyy';
+        $scope.dateObj.format = $scope.companyDateFormatString;
         $scope.popup1 = {};
         $scope.open1 = function() {
             $scope.popup1.opened = true;

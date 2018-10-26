@@ -19,7 +19,7 @@
                         <span class="fa fa-ellipsis-h pull-right pointer user-details-address-options no-margin"></span>
                             <ul ng-show="address.id == optionsId" class="user-details-address-options-box">
                                 <li ng-click="showAddressOptionsBox(address)"><i class="dropdown-arr"></i></li>
-                                <li ng-hide="address.status != 'pending'" ng-click="verifyUserAddressConfirm(address.id,'verified')">Verify</li>
+                                <li ng-hide="address.status != 'pending'" ng-click="verifyUserAddressConfirm(address.id,'verified')">Verification</li>
                                 <li ng-click="openEditUserAddressModal('app/pages/users/user/userDetails/userAddress/editUserAddressModal/editUserAddressModal.html','md',address)">Edit</li>
                                 <li ng-click="openUserAddressModal('app/pages/users/user/userDetails/userAddress/userAddressModal/userAddressModal.html','md',address)">Delete</li>
                             </ul>

@@ -12,6 +12,7 @@
         var vm = this;
         vm.token = localStorageManagement.getValue('token');
         vm.companyIdentifier = localStorageManagement.getValue('companyIdentifier');
+        $scope.companyDateFormatString = localStorageManagement.getValue('DATE_FORMAT');
         vm.savedTransactionTableColumns = vm.companyIdentifier + 'transactionsTable';
         vm.newTransactionParams = $location.search();
         $rootScope.dashboardTitle = 'Transactions history | Rehive';
@@ -28,33 +29,33 @@
         $scope.visibleColumnsSelectionChanged = false;
         $scope.filtersCount = 0;
 
-        // if(localStorageManagement.getValue(vm.savedTransactionTableColumns)){
-        //     var headerColumns = JSON.parse(localStorageManagement.getValue(vm.savedTransactionTableColumns));
-        //     var recipientFieldExists = false;
-        //     headerColumns.forEach(function (col) {
-        //         if(col.colName == 'Recipient' || col.fieldName == 'recipient'){
-        //             recipientFieldExists = true;
-        //         }
-        //     });
-        //
-        //     if(!recipientFieldExists){
-        //         headerColumns.splice(1,0,{colName: 'Recipient',fieldName: 'recipient',visible: true});
-        //     }
-        //
-        //     localStorageManagement.setValue(vm.savedTransactionTableColumns,JSON.stringify(headerColumns));
-        // }
-
         if(localStorageManagement.getValue(vm.savedTransactionTableColumns)){
-                 var headerColumns = JSON.parse(localStorageManagement.getValue(vm.savedTransactionTableColumns));
-                 headerColumns.forEach(function (col) {
-                     if(col.colName == 'Identifier'){
-                         col.colName = 'User id';
-                         col.fieldName = 'userId';
-                     }
-                 });
+            var headerColumns = JSON.parse(localStorageManagement.getValue(vm.savedTransactionTableColumns));
+            var recipientFieldExists = false;
+            headerColumns.forEach(function (col) {
+                if(col.colName == 'Metadata'){
+                    recipientFieldExists = true;
+                }
+            });
 
-                localStorageManagement.setValue(vm.savedTransactionTableColumns,JSON.stringify(headerColumns));
+            if(!recipientFieldExists){
+                headerColumns.splice(22,0,{colName: 'Metadata',fieldName: 'metadata',visible: false});
             }
+
+            localStorageManagement.setValue(vm.savedTransactionTableColumns,JSON.stringify(headerColumns));
+        }
+
+        // if(localStorageManagement.getValue(vm.savedTransactionTableColumns)){
+        //          var headerColumns = JSON.parse(localStorageManagement.getValue(vm.savedTransactionTableColumns));
+        //          headerColumns.forEach(function (col) {
+        //              if(col.colName == 'Identifier'){
+        //                  col.colName = 'User id';
+        //                  col.fieldName = 'userId';
+        //              }
+        //          });
+        //
+        //         localStorageManagement.setValue(vm.savedTransactionTableColumns,JSON.stringify(headerColumns));
+        //     }
 
         $scope.headerColumns = localStorageManagement.getValue(vm.savedTransactionTableColumns) ? JSON.parse(localStorageManagement.getValue(vm.savedTransactionTableColumns)) : [
             {colName: 'User',fieldName: 'user',visible: true},
@@ -78,7 +79,8 @@
             {colName: 'Source tx id',fieldName: 'source_tx_id',visible: false},
             {colName: 'Label',fieldName: 'label',visible: false},
             {colName: 'Reference',fieldName: 'reference',visible: false},
-            {colName: 'Note',fieldName: 'note',visible: false}
+            {colName: 'Note',fieldName: 'note',visible: false},
+            {colName: 'Metadata',fieldName: 'metadata',visible: false}
         ];
         $scope.filtersObj = {
             dateFilter: false,
@@ -87,6 +89,7 @@
             transactionTypeFilter: false,
             transactionSubtypeFilter: false,
             transactionIdFilter: false,
+            metadataFilter: false,
             destinationIdFilter: false,
             sourceIdFilter: false,
             referenceFilter: false,
@@ -123,6 +126,10 @@
             },
             transactionIdFilter: {
                 selectedTransactionIdOption: null
+            },
+            metadataFilter: {
+                selectedMetadataKey: '',
+                selectedMetadataValue: ''
             },
             referenceFilter: {
                 selectedReferenceOption: 'Is equal to',
@@ -168,6 +175,7 @@
         $scope.orderByOptions = ['Latest','Largest','Smallest'];
         $scope.groupOptions = [];
 
+        //Column filters
         $scope.showColumnFilters = function () {
             $scope.showingFilters = false;
             $scope.showingColumnFilters = !$scope.showingColumnFilters;
@@ -199,6 +207,7 @@
 
             localStorageManagement.setValue(vm.savedTransactionTableColumns,JSON.stringify($scope.headerColumns));
         };
+        //Column filters end
 
         sharedResources.getSubtypes().then(function (res) {
             $scope.subtypeOptions = _.pluck(res,'name');
@@ -224,7 +233,7 @@
 
         //for angular datepicker
         $scope.dateObj = {};
-        $scope.dateObj.format = 'MM/dd/yyyy';
+        $scope.dateObj.format = $scope.companyDateFormatString;
         $scope.popup1 = {};
         $scope.open1 = function() {
             $scope.popup1.opened = true;
@@ -278,6 +287,7 @@
                 transactionTypeFilter: false,
                 transactionSubtypeFilter: false,
                 transactionIdFilter: false,
+                metadataFilter: false,
                 destinationIdFilter: false,
                 sourceIdFilter: false,
                 userFilter: false,
@@ -459,6 +469,10 @@
                 }
             });
 
+            if((_.indexOf(visibleColumnsArray, 'id') === -1)){
+                visibleColumnsArray.push('id');
+            }
+
             return _.uniq(visibleColumnsArray);
         };
 
@@ -531,6 +545,12 @@
                 subtype: $scope.filtersObj.transactionSubtypeFilter ? ($scope.applyFiltersObj.transactionSubtypeFilter.selectedTransactionSubtypeOption ? $scope.applyFiltersObj.transactionSubtypeFilter.selectedTransactionSubtypeOption: null): null,
                 fields: $scope.visibleColumnsArray.join(',')
             };
+
+            if($scope.filtersObj.metadataFilter){
+                searchObj['metadata__' + $scope.applyFiltersObj.metadataFilter.selectedMetadataKey] = $scope.applyFiltersObj.metadataFilter.selectedMetadataValue;
+            } else {
+                searchObj['metadata__' + $scope.applyFiltersObj.metadataFilter.selectedMetadataKey] = null;
+            }
 
             $scope.filtersObjForExport = searchObj;
 
@@ -613,7 +633,7 @@
                     id: transactionObj.id ? transactionObj.id : '',
                     createdDate: transactionObj.created ? $filter("date")(transactionObj.created,'mediumDate') + ' ' + $filter("date")(transactionObj.created,'shortTime') : '',
                     totalAmount: transactionObj.total_amount ? $filter("currencyModifiersFilter")(transactionObj.total_amount,transactionObj.currency.divisibility) : '',
-                    balance: transactionObj.balance ? $filter("currencyModifiersFilter")(transactionObj.balance,transactionObj.currency.divisibility) : '',
+                    balance: $filter("currencyModifiersFilter")(transactionObj.balance,transactionObj.currency.divisibility),
                     account: transactionObj.account ? transactionObj.account : '',
                     username: transactionObj.user ? transactionObj.user.username : '',
                     userId: transactionObj.user ? transactionObj.user.id : '',
@@ -624,7 +644,7 @@
                     label: transactionObj.label ? transactionObj.label : '',
                     reference: transactionObj.reference ? transactionObj.reference : '',
                     note: transactionObj.note ? transactionObj.note : '',
-                    metadata: transactionObj.metadata
+                    metadata: transactionObj.metadata ? JSON.stringify(transactionObj.metadata) : ''
                 });
             });
 
