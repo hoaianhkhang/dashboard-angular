@@ -55,6 +55,26 @@
             </div>
         </div>
         <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-left-padding divider">
+                <p class="text-subtle">Rehive response: </p>
+            </div>
+            <div class="metadata col-lg-8 col-md-8 col-sm-8 col-xs-8 no-right-padding">
+                <div ng-show="formattedData.rehive_response">
+                    <pre>{{formattedData.rehive_response}}</pre>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-left-padding divider">
+                <p class="text-subtle">Horizon response: </p>
+            </div>
+            <div class="metadata col-lg-8 col-md-8 col-sm-8 col-xs-8 no-right-padding">
+                <div ng-show="formattedData.horizon_response">
+                    <pre>{{formattedData.horizon_response}}</pre>
+                </div>
+            </div>
+        </div>
+        <div class="row">
             <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-left-padding">
                 <p class="text-subtle divider">Status:</p>
             </div>

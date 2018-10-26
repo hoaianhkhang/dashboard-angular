@@ -97,6 +97,23 @@
         };
         vm.initializePermissions();
 
+        vm.getUser = function(){
+            if(vm.token) {
+                $scope.loadingPermissions = true;
+                Rehive.admin.users.get({id: vm.uuid}).then(function (res) {
+                    $scope.user = res;
+                    vm.getPermissions();
+                    $scope.$apply();
+                }, function (error) {
+                    $scope.loadingPermissions = false;
+                    errorHandler.evaluateErrors(error);
+                    errorHandler.handleErrors(error);
+                    $scope.$apply();
+                });
+            }
+        };
+        vm.getUser();
+
         vm.getPermissions = function () {
             if(vm.token) {
                 $scope.loadingPermissions = true;
@@ -112,7 +129,6 @@
                 });
             }
         };
-        vm.getPermissions();
 
         vm.checkforAllowedPermissions = function (permissionsArray) {
             permissionsArray.forEach(function (permission,index) {

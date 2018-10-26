@@ -56,6 +56,9 @@
             theme: 'monokai',
             autoCloseTags: true,
             smartIndent: false,
+            extraKeys: {
+                "Ctrl-Space": "autocomplete"
+            },
             mode: 'xml'
         };
 
@@ -119,7 +122,7 @@
 
 
         $scope.notificationChanged = function (field) {
-            if($scope.editNotificationSms.expression.length > 150){
+            if($scope.editNotificationSms.expression && $scope.editNotificationSms.expression.length > 150){
                 toastr.error('Expression cannot exceed 150 characters');
             }
 

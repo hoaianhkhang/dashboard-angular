@@ -6,7 +6,7 @@
 
     /** @ngInject */
     function CreateNotificationSmsCtrl($scope,$http,localStorageManagement,$location,errorHandler,
-                                                          toastr,$filter) {
+                                       notificationHtmlTags,toastr,$filter) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
@@ -18,6 +18,10 @@
             event: '',
             template: ''
         };
+        $scope.smsTags = {
+            tags: []
+        };
+
 
         vm.smsEventOptionsObj = {
             USER_CREATE: 'user.create',
@@ -53,6 +57,9 @@
             theme: 'monokai',
             autoCloseTags: true,
             smartIndent: false,
+            extraKeys: {
+                "Ctrl-Space": "autocomplete"
+            },
             mode: 'xml'
         };
 
@@ -60,6 +67,14 @@
             if($scope.smsNotificationParams.smsExpression.length > 150){
                 toastr.error('Expression cannot exceed 150 characters');
             }
+        };
+
+        $scope.smsEventOptionChanged = function (event) {
+            var newTagsArray = notificationHtmlTags.getNotificationHtmlTags(event);
+            $scope.smsTags.tags.splice(0,$scope.smsTags.tags.length);
+            newTagsArray.forEach(function (element) {
+                $scope.smsTags.tags.push(element);
+            });
         };
 
         $scope.getSmsTemplateOptions = function () {
@@ -160,7 +175,7 @@
                 }).then(function (res) {
                     if (res.status === 200) {
                         toastr.success('Notification added successfully');
-                        $location.path('/services/notifications/list');
+                        $location.path('/services/notifications/list').search({type: 'sms'});
                     }
                 }).catch(function (error) {
                     $scope.addingSmsNotification =  false;
@@ -170,8 +185,8 @@
             }
         };
 
-        $scope.goToListView = function () {
-            $location.path('/services/notifications/list');
+        $scope.goToSMSListView = function () {
+            $location.path('/services/notifications/list').search({type: 'sms'});
         };
 
     }
