@@ -11,6 +11,7 @@
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
         vm.companyIdentifier = localStorageManagement.getValue('companyIdentifier');
+        $scope.companyDateFormatString = localStorageManagement.getValue('DATE_FORMAT');
         vm.savedUserTableColumns = vm.companyIdentifier + 'usersTable';
         vm.savedUserTableFilters = vm.companyIdentifier + 'usersTableFilters';
         $rootScope.dashboardTitle = 'Users | Rehive';
@@ -243,7 +244,7 @@
 
         //for angular datepicker
         $scope.dateObj = {};
-        $scope.dateObj.format = 'MM/dd/yyyy';
+        $scope.dateObj.format = $scope.companyDateFormatString;
         $scope.popup1 = {};
         $scope.open1 = function() {
             $scope.popup1.opened = true;

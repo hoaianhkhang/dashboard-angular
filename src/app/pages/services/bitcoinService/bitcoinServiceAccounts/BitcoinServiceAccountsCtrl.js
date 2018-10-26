@@ -5,12 +5,15 @@
         .controller('BitcoinServiceAccountsCtrl', BitcoinServiceAccountsCtrl);
 
     /** @ngInject */
-    function BitcoinServiceAccountsCtrl($scope) {
+    function BitcoinServiceAccountsCtrl($scope,$timeout) {
         $scope.bitcoinAccountSettingView = '';
 
         $scope.goToBitcoinAccountSetting = function (setting) {
             $scope.bitcoinAccountSettingView = setting;
         };
+        $timeout(function () {
+            $scope.goToBitcoinAccountSetting('hotwallet');
+        },200);
     }
 
 })();

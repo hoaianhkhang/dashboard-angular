@@ -109,15 +109,16 @@
                 </td>
             </tr>
             <tr>
-                <td class="table-row-center transactions-list-element rehive-table-row-first-child">
+                <td class="table-row-center divider transactions-list-element rehive-table-row-first-child">
                     Require terms and conditions
                 </td>
-                <td class="rehive-table-row-last-child">
+                <td class="rehive-table-row-last-child divider">
                     <div ng-show="companySettingsObj.require_terms_and_conditions">
                         <i class="fa fa-toggle-on user-switch-active pull-right no-margin"  ng-click="toggleCompanySettings(companySettingsObj.require_terms_and_conditions,'require_terms_and_conditions')"></i>
                     </div>
                     <div ng-hide="companySettingsObj.require_terms_and_conditions">
-                        <i class="fa fa-toggle-on fa-rotate-180 user-switch-inactive pull-right no-margin"  ng-click="toggleCompanySettings(companySettingsObj.require_terms_and_conditions,'require_terms_and_conditions')"></i>
+                        <i class="fa fa-toggle-on fa-rotate-180 user-switch-inactive pull-right no-margin"
+                           ng-click="toggleCompanySettings(companySettingsObj.require_terms_and_conditions,'require_terms_and_conditions')"></i>
                     </div>
                 </td>
             </tr>
@@ -129,6 +130,17 @@
                     <select class="form-control pointer pull-right company-setting-dropdown"  ng-model="companySettingsObj.default_transaction_status"
                             ng-change="toggleCompanySettings(companySettingsObj.default_transaction_status,'default_transaction_status')"
                             ng-options="status for status in statusOptions">
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="table-row-center transactions-list-element rehive-table-row-first-child">
+                    Company date format
+                </td>
+                <td class="rehive-table-row-last-child">
+                    <select class="form-control pointer pull-right company-setting-date-dropdown"  ng-model="companyDateFormatString"
+                            ng-change="companyDateFormatChanged(companyDateFormatString)"
+                            ng-options="dateFormat for dateFormat in companyDateFormat">
                     </select>
                 </td>
             </tr>

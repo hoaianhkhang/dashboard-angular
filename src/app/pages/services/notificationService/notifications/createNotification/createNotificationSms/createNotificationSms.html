@@ -1,6 +1,6 @@
 <div ng-hide="addingSmsNotification" class="panel">
     <div class="panel-heading">
-        <span class="user-details-panel-title">Create notification</span>
+        <span class="user-details-panel-title">Create SMS notification</span>
     </div>
     <div class="panel-body">
         <form name="notificationSmsForm" class="custom-form" novalidate>
@@ -29,12 +29,17 @@
             <div class="form-group">
                 <label>Event</label>
                 <br>
-                <select class="form-control pointer" ng-model="smsNotificationParams.event"  ng-options="event for event in smsEventOptions">
+                <select class="form-control pointer" ng-model="smsNotificationParams.event"
+                        ng-change="smsEventOptionChanged(smsNotificationParams.event)"
+                        ng-options="event for event in smsEventOptions">
                 </select>
             </div>
             <div class="form-group">
-                <label>Sms message</label>
-                <textarea rows="4" type="text" ng-model="smsNotificationParams.sms_message" class="form-control"  placeholder='Enter sms message'></textarea>
+                <label>SMS message ( Type <b>{{</b> to see variable options for this event )</label>
+                <textarea type="text" ng-model="smsNotificationParams.sms_message"
+                          ui-codemirror ui-codemirror-opts="editorSmsOptions"
+                          ng-codemirror-dictionary-hint="smsTags.tags"
+                          class="form-control"  placeholder='Enter SMS message'></textarea>
             </div>
             <div class="form-group">
                 <label>Enabled</label>
@@ -58,7 +63,7 @@
             </div>
             <div class="form-group">
                 <button ng-disabled="!notificationSmsForm.$valid || smsNotificationParams.smsExpression.length > 150" ng-click="addSmsNotification()" class="btn btn-primary dashboard-btn pull-right">Add</button>
-                <button ng-click="goToListView()" class="btn btn-default dashboard-btn pull-right margin-right-10">Back</button>
+                <button ng-click="goToSMSListView()" class="btn btn-default dashboard-btn pull-right margin-right-10">Back</button>
             </div>
         </form>
     </div>

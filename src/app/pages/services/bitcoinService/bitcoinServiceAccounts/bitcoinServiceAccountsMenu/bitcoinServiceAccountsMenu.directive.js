@@ -8,6 +8,7 @@
     function bitcoinServiceAccountsMenu() {
         return {
             restrict: 'E',
+            require: '^parent',
             templateUrl: 'app/pages/services/bitcoinService/bitcoinServiceAccounts/bitcoinServiceAccountsMenu/bitcoinServiceAccountsMenu.html'
         };
     }

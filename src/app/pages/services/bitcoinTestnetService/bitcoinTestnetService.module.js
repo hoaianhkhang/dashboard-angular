@@ -12,7 +12,7 @@
                 abstract:true,
                 title: 'Bitcoin testnet service'
             });
-        $urlRouterProvider.when("/services/bitcoin-testnet", "/services/bitcoin/settings");
+        $urlRouterProvider.when("/services/bitcoin-testnet", "/services/bitcoin/accounts");
     }
 
 })();

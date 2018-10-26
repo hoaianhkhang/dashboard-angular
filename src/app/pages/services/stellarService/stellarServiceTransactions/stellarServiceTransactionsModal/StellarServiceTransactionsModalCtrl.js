@@ -5,7 +5,10 @@
         .controller('StellarServiceTransactionsModalCtrl', StellarServiceTransactionsModalCtrl);
 
     function StellarServiceTransactionsModalCtrl($uibModalInstance,$scope,transaction,metadataTextService,$state,$location) {
-        $scope.metadata = metadataTextService.convertToText(transaction.metadata);
+
+        $scope.formattedData = {};
+        $scope.formattedData.rehive_response = metadataTextService.convertToText(transaction.rehive_response);
+        $scope.formattedData.horizon_response = metadataTextService.convertToText(transaction.horizon_response);
         $scope.transaction = transaction;
 
         $scope.goToUser = function () {

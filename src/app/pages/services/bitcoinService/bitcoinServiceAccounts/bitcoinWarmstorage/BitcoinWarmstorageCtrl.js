@@ -11,11 +11,17 @@
         var vm = this;
         vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
         vm.token = localStorageManagement.getValue('TOKEN');
+        $scope.companyDateFormatString = localStorageManagement.getValue('DATE_FORMAT');
         $scope.bitcoinCurrency = currenciesList.find(function (element) {
             return element.code == 'XBT';
         });
         $scope.showOptionsAccountRef = false;
         $scope.loadingWarmstorage = true;
+        if(vm.serviceUrl.indexOf('bitcoin-testnet') > 0){
+            $scope.inTestnetService = true;
+        } else {
+            $scope.inTestnetService = false;
+        }
 
         $scope.closeOptionsBox = function () {
             $scope.showOptionsAccountRef = false;
@@ -117,7 +123,7 @@
 
         //for angular datepicker
         $scope.dateObjWarmstorage = {};
-        $scope.dateObjWarmstorage.format = 'MM/dd/yyyy';
+        $scope.dateObjWarmstorage.format = $scope.companyDateFormatString;
         $scope.popup1Warmstorage = {};
         $scope.open1Warmstorage = function() {
             $scope.popup1Warmstorage.opened = true;
