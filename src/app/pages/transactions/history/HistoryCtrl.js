@@ -556,14 +556,6 @@
             return serializeFiltersService.objectFilters(searchObj);
         };
 
-        vm.clearHeaderColumnsOffPreviousMetadata = function () {
-            // $scope.headerColumns.forEach(function (element,index,arr) {
-            //     if(element.from){
-            //         $scope.headerColumns.splice(index,1);
-            //     }
-            // });
-        };
-
         $scope.getLatestTransactions = function(applyFilter){
             if(vm.token) {
 
@@ -573,9 +565,6 @@
 
                 $scope.transactionsStateMessage = '';
                 $scope.loadingTransactions = true;
-
-                //clear previous metadata headers
-                vm.clearHeaderColumnsOffPreviousMetadata($scope.headerColumns);
 
                 if (applyFilter) {
                     // if function is called from history-filters directive, then pageNo set to 1
