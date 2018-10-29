@@ -36,6 +36,22 @@
                 dateTo: '',
                 dateEqualTo: ''
             },
+            updatedFilter: {
+                selectedDateOption: 'Is in the last',
+                selectedDayIntervalOption: 'days',
+                dayInterval: '',
+                dateFrom: '',
+                dateTo: '',
+                dateEqualTo: ''
+            },
+            completedFilter: {
+                selectedDateOption: 'Is in the last',
+                selectedDayIntervalOption: 'days',
+                dayInterval: '',
+                dateFrom: '',
+                dateTo: '',
+                dateEqualTo: ''
+            },
             statusFilter: {
                 selectedStatusOption: 'Pending'
             },
@@ -77,6 +93,28 @@
             $scope.popup2.opened = true;
         };
 
+        $scope.popup3 = {};
+        $scope.open3 = function() {
+            $scope.popup3.opened = true;
+        };
+
+        $scope.popup4 = {};
+        $scope.open4 = function() {
+            $scope.popup4.opened = true;
+        };
+
+        $scope.popup5 = {};
+        $scope.open5 = function() {
+            $scope.popup5.opened = true;
+        };
+
+        $scope.popup6 = {};
+        $scope.open6 = function() {
+            $scope.popup6.opened = true;
+        };
+
+        // end angular datepicker
+
         $scope.pageSizeChanged =  function () {
             if($scope.pagination.itemsPerPage > 250){
                 $scope.pagination.itemsPerPage = 250;
@@ -99,8 +137,8 @@
             };
         };
 
-        $scope.dayIntervalChanged = function () {
-            if($scope.applyFiltersObj.dateFilter.dayInterval <= 0){
+        $scope.dayIntervalChanged = function (dayInterval) {
+            if(dayInterval <= 0){
                 toastr.success('Please enter a positive value');
             }
         };
@@ -147,6 +185,90 @@
             return dateObj;
         };
 
+        vm.getUpdatedFilters = function () {
+            var updatedDateObj = {
+                updated__lt: null,
+                created__gt: null
+            };
+
+            switch($scope.applyFiltersObj.updatedFilter.selectedDateOption) {
+                case 'Is in the last':
+                    if($scope.applyFiltersObj.updatedFilter.selectedDayIntervalOption == 'days'){
+                        updatedDateObj.updated__lt = moment().add(1,'days').format('YYYY-MM-DD');
+                        updatedDateObj.updated__gt = moment().subtract($scope.applyFiltersObj.updatedFilter.dayInterval,'days').format('YYYY-MM-DD');
+                    } else {
+                        updatedDateObj.updated__lt = moment().add(1,'days').format('YYYY-MM-DD');
+                        updatedDateObj.updated__gt = moment().subtract($scope.applyFiltersObj.updatedFilter.dayInterval,'months').format('YYYY-MM-DD');
+                    }
+
+                    break;
+                case 'In between':
+                    updatedDateObj.updated__lt = moment(new Date($scope.applyFiltersObj.updatedFilter.dateTo)).add(1,'days').format('YYYY-MM-DD');
+                    updatedDateObj.updated__gt = moment(new Date($scope.applyFiltersObj.updatedFilter.dateFrom)).format('YYYY-MM-DD');
+
+                    break;
+                case 'Is equal to':
+                    updatedDateObj.updated__lt = moment(new Date($scope.applyFiltersObj.updatedFilter.dateEqualTo)).add(1,'days').format('YYYY-MM-DD');
+                    updatedDateObj.updated__gt = moment(new Date($scope.applyFiltersObj.updatedFilter.dateEqualTo)).format('YYYY-MM-DD');
+
+                    break;
+                case 'Is after':
+                    updatedDateObj.updated__lt = null;
+                    updatedDateObj.updated__gt = moment(new Date($scope.applyFiltersObj.updatedFilter.dateFrom)).add(1,'days').format('YYYY-MM-DD');
+                    break;
+                case 'Is before':
+                    updatedDateObj.updated__lt = moment(new Date($scope.applyFiltersObj.updatedFilter.dateTo)).format('YYYY-MM-DD');
+                    updatedDateObj.updated__gt = null;
+                    break;
+                default:
+                    break;
+            }
+
+            return updatedDateObj;
+        };
+
+        vm.getCompletedDateFilters = function () {
+            var completedDateObj = {
+                completed__lt: null,
+                completed__gt: null
+            };
+
+            switch($scope.applyFiltersObj.completedFilter.selectedDateOption) {
+                case 'Is in the last':
+                    if($scope.applyFiltersObj.completedFilter.selectedDayIntervalOption == 'days'){
+                        completedDateObj.completed__lt = moment().add(1,'days').format('YYYY-MM-DD');
+                        completedDateObj.completed__gt = moment().subtract($scope.applyFiltersObj.completedFilter.dayInterval,'days').format('YYYY-MM-DD');
+                    } else {
+                        completedDateObj.completed__lt = moment().add(1,'days').format('YYYY-MM-DD');
+                        completedDateObj.completed__gt = moment().subtract($scope.applyFiltersObj.completedFilter.dayInterval,'months').format('YYYY-MM-DD');
+                    }
+
+                    break;
+                case 'In between':
+                    completedDateObj.completed__lt = moment(new Date($scope.applyFiltersObj.completedFilter.dateTo)).add(1,'days').format('YYYY-MM-DD');
+                    completedDateObj.completed__gt = moment(new Date($scope.applyFiltersObj.completedFilter.dateFrom)).format('YYYY-MM-DD');
+
+                    break;
+                case 'Is equal to':
+                    completedDateObj.completed__lt = moment(new Date($scope.applyFiltersObj.completedFilter.dateEqualTo)).add(1,'days').format('YYYY-MM-DD');
+                    completedDateObj.completed__gt = moment(new Date($scope.applyFiltersObj.completedFilter.dateEqualTo)).format('YYYY-MM-DD');
+
+                    break;
+                case 'Is after':
+                    completedDateObj.completed__lt = null;
+                    completedDateObj.completed__gt = moment(new Date($scope.applyFiltersObj.completedFilter.dateFrom)).add(1,'days').format('YYYY-MM-DD');
+                    break;
+                case 'Is before':
+                    completedDateObj.completed__lt = moment(new Date($scope.applyFiltersObj.completedFilter.dateTo)).format('YYYY-MM-DD');
+                    completedDateObj.completed__gt = null;
+                    break;
+                default:
+                    break;
+            }
+
+            return completedDateObj;
+        };
+
         vm.getTransactionUrl = function(){
             $scope.filtersCount = 0;
 
@@ -167,11 +289,33 @@
                 };
             }
 
+            if($scope.filtersObj.updatedFilter){
+                vm.updatedDateObj = vm.getUpdatedFilters();
+            } else{
+                vm.updatedDateObj = {
+                    updated__lt: null,
+                    updated__gt: null
+                };
+            }
+
+            if($scope.filtersObj.completedFilter){
+                vm.completedDateObj = vm.getCompletedDateFilters();
+            } else{
+                vm.completedDateObj = {
+                    completed__lt: null,
+                    completed__gt: null
+                };
+            }
+
             var searchObj = {
                 page: $scope.pagination.pageNo,
                 page_size: $scope.filtersObj.pageSizeFilter? $scope.pagination.itemsPerPage : 26,
                 created__gt: vm.dateObj.created__gt ? Date.parse(vm.dateObj.created__gt +'T00:00:00') : null,
                 created__lt: vm.dateObj.created__lt ? Date.parse(vm.dateObj.created__lt +'T00:00:00') : null,
+                updated__gt: vm.updatedDateObj.updated__gt ? Date.parse(vm.updatedDateObj.updated__gt +'T00:00:00') : null,
+                updated__lt: vm.updatedDateObj.updated__lt ? Date.parse(vm.updatedDateObj.updated__lt +'T00:00:00') : null,
+                completed__gt: vm.completedDateObj.completed__gt ? Date.parse(vm.completedDateObj.completed__gt +'T00:00:00') : null,
+                completed__lt: vm.completedDateObj.completed__lt ? Date.parse(vm.completedDateObj.completed__lt +'T00:00:00') : null,
                 email: $scope.filtersObj.userFilter ? ($scope.applyFiltersObj.userFilter.selectedUserOption ? encodeURIComponent($scope.applyFiltersObj.userFilter.selectedUserOption) : null): null,
                 transaction_hash: $scope.filtersObj.transactionHashFilter ? ($scope.applyFiltersObj.transactionHashFilter.selectedTransactionHashOption ? encodeURIComponent($scope.applyFiltersObj.transactionHashFilter.selectedTransactionHashOption) : null): null,
                 rehive_code: $scope.filtersObj.transactionIdFilter ? ($scope.applyFiltersObj.transactionIdFilter.selectedTransactionIdOption ? encodeURIComponent($scope.applyFiltersObj.transactionIdFilter.selectedTransactionIdOption) : null): null,

@@ -26,6 +26,8 @@
                     <th>Rehive code</th>
                     <th>Status</th>
                     <th class="align-right">Created</th>
+                    <th class="align-right">Updated</th>
+                    <th class="align-right">Completed</th>
                 </tr>
                 <tr ng-repeat="transaction in transactions | orderBy: '-created'" data-toggle="modal"
                     ng-click="openModal('app/pages/services/stellarService/stellarServiceTransactions/stellarServiceTransactionsModal/stellarServiceTransactionsModal.html', 'lg',transaction)"
@@ -40,6 +42,10 @@
                     <td class="transactions-list-element" title="{{transaction.status}}"  ng-bind="transaction.status"></td>
                     <td class="transactions-list-element align-right" title="{{transaction.created | date:'mediumDate'}} {{transaction.created | date:'shortTime'}}">
                         {{transaction.created | date:'mediumDate'}} {{transaction.created | date:'shortTime'}}</td>
+                    <td class="transactions-list-element align-right" title="{{transaction.updated | date:'mediumDate'}} {{transaction.updated | date:'shortTime'}}">
+                        {{transaction.updated | date:'mediumDate'}} {{transaction.updated | date:'shortTime'}}</td>
+                    <td class="transactions-list-element align-right" title="{{transaction.completed | date:'mediumDate'}} {{transaction.completed | date:'shortTime'}}">
+                        {{transaction.completed | date:'mediumDate'}} {{transaction.completed | date:'shortTime'}}</td>
                 </tr>
             </table>
             <div>
