@@ -86,11 +86,7 @@
                         btnClass: 'btn-default dashboard-btn',
                         keys: ['enter'], // will trigger when enter is pressed
                         action: function(scope){
-                            if(scope.deactivateText === 'DEACTIVATE'){
-                                scope.deactivateService();
-                            } else {
-                                toastr.error('DEACTIVATE text did not match.');
-                            }
+                            scope.deactivateService(scope.password);
                         }
                     },
                     close: {
@@ -101,9 +97,9 @@
             });
         };
 
-        $scope.deactivateService = function () {
+        $scope.deactivateService = function (password) {
             if(vm.token) {
-                $scope.loadingCampaigns = true;
+                $scope.updatingCompanyDetails = true;
                 $http.put(environmentConfig.API + '/admin/services/' + vm.serviceId + '/',{password: password,active: false}, {
                     headers: {
                         'Content-Type': 'application/json',
@@ -112,13 +108,13 @@
                 }).then(function (res) {
                     if (res.status === 200) {
                         $timeout(function () {
-                            $scope.loadingCampaigns = false;
+                            $scope.updatingCompanyDetails = false;
                             toastr.success('Service has been successfully deactivated');
                             $location.path('/services');
                         },600);
                     }
                 }).catch(function (error) {
-                    $scope.loadingCampaigns = false;
+                    $scope.updatingCompanyDetails = false;
                     errorHandler.evaluateErrors(error.data);
                     errorHandler.handleErrors(error);
                 });

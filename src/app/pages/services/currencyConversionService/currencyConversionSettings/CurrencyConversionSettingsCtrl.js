@@ -1,31 +1,30 @@
 (function () {
     'use strict';
 
-    angular.module('BlurAdmin.pages.services.ethereumService.ethereumServiceSettings')
-        .controller('EthereumServiceSettingsCtrl', EthereumServiceSettingsCtrl);
+    angular.module('BlurAdmin.pages.services.currencyConversionService.currencyConversionSettings')
+        .controller('CurrencyConversionSettingsCtrl', CurrencyConversionSettingsCtrl);
 
     /** @ngInject */
-    function EthereumServiceSettingsCtrl($rootScope,$scope,localStorageManagement,$ngConfirm,$http,environmentConfig,
-                                         $timeout,toastr,$location,errorHandler) {
+    function CurrencyConversionSettingsCtrl($rootScope,$scope,localStorageManagement,$http,$ngConfirm,environmentConfig,
+                                        $timeout,toastr,$location,errorHandler) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
         vm.serviceId = localStorageManagement.getValue('SERVICEID');
-        $rootScope.dashboardTitle = 'Ethereum service | Rehive';
-        $scope.ethereumSettingView = '';
-        $scope.loadingHdkeys =  true;
-        $scope.addingHdkey =  false;
-        $scope.deactivatingEthereum = false;
+        $rootScope.dashboardTitle = 'Currency conversion service | Rehive';
+        $scope.currencyConversionSettingView = '';
+        $scope.deactivatingCurrencyConversion = false;
 
-        $scope.goToEthereumSetting = function (setting) {
-            $scope.ethereumSettingView = setting;
+        $scope.goToCurrencyConversionSetting = function (setting) {
+            $scope.currencyConversionSettingView = setting;
         };
-        $scope.goToEthereumSetting('hdkeys');
+        $scope.goToCurrencyConversionSetting('deactivation');
 
-        $scope.deactivateEthereumServiceConfirm = function () {
+        $scope.deactivateCurrencyConversionServiceConfirm = function () {
             $ngConfirm({
                 title: 'Deactivate service',
-                contentUrl: 'app/pages/services/bitcoinService/bitcoinServiceSettings/bitcoinDeactivation/bitcoinDeactivationPrompt.html',
+                contentUrl: 'app/pages/services/currencyConversionService/currencyConversionSettings/' +
+                'currencyConversionDeactivation/currencyConversionDeactivationPrompt.html',
                 animationBounce: 1,
                 animationSpeed: 100,
                 scope: $scope,
@@ -35,7 +34,7 @@
                         btnClass: 'btn-default dashboard-btn',
                         keys: ['enter'], // will trigger when enter is pressed
                         action: function(scope){
-                            scope.deactivateEthereumService(scope.password);
+                            scope.deactivateCurrencyConversionService(scope.password);
                         }
                     },
                     close: {
@@ -46,9 +45,9 @@
             });
         };
 
-        $scope.deactivateEthereumService = function (password) {
+        $scope.deactivateCurrencyConversionService = function (password) {
             if(vm.token) {
-                $scope.deactivatingEthereum = true;
+                $scope.deactivatingCurrencyConversion = true;
                 $http.put(environmentConfig.API + '/admin/services/' + vm.serviceId + '/',{password: password,active: false}, {
                     headers: {
                         'Content-Type': 'application/json',
@@ -57,13 +56,13 @@
                 }).then(function (res) {
                     if (res.status === 200) {
                         $timeout(function () {
-                            $scope.deactivatingEthereum = false;
+                            $scope.deactivatingCurrencyConversion = false;
                             toastr.success('Service has been successfully deactivated');
                             $location.path('/services');
                         },600);
                     }
                 }).catch(function (error) {
-                    $scope.deactivatingEthereum = false;
+                    $scope.deactivatingCurrencyConversion = false;
                     errorHandler.evaluateErrors(error.data);
                     errorHandler.handleErrors(error);
                 });
