@@ -42,6 +42,8 @@
                 // }
             } else if (remainingLocationArray[0] == 'create'){
                 $scope.trackedLocation = 'list';
+            } else if (remainingLocationArray[0] == 'settings'){
+                $scope.trackedLocation = 'settings';
             }
         };
         vm.locationTracker(vm.location);

@@ -5,7 +5,8 @@
         'BlurAdmin.pages.services.rewardsService.rewardsServiceCampaigns',
         'BlurAdmin.pages.services.rewardsService.createRewardsServiceCampaign',
         'BlurAdmin.pages.services.rewardsService.editRewardsServiceCampaign',
-        'BlurAdmin.pages.services.rewardsService.rewardsServiceRewards'
+        'BlurAdmin.pages.services.rewardsService.rewardsServiceRewards',
+        'BlurAdmin.pages.services.rewardsService.rewardsServiceSettings'
     ])
         .config(routeConfig);
 
