@@ -3,7 +3,7 @@
         <span class="user-details-panel-title">Create fintech app</span>
     </div>
     <div class="panel-body">
-        <div class="pointer divider-20" ng-click="goToView('/company/setup/groups')">
+        <div class="pointer divider-20" ng-click="goToView('/company/setup/company-details')">
             <div class="company-setup-menu-navigation-div">
                 <div ng-show="setupUsers==0 && activeSetupRoute<0" class="menu-number">
                     <span class="menu-number-text">1</span>
@@ -11,10 +11,28 @@
                 <div ng-show="activeSetupRoute==0" class="menu-number setup-menu-active">
                     <span class="menu-number-text">1</span>
                 </div>
-                <div ng-show="setupUsers==0 && activeSetupRoute>0" class="menu-arrow">
+                <div ng-show="setupCompany==0 && activeSetupRoute>0" class="menu-arrow">
                     <span class="menu-arrow-text">⤵</span>
                 </div>
-                <div ng-show="setupUsers==1 && activeSetupRoute!=0" class="menu-mark">
+                <div ng-show="setupCompany==1 && activeSetupRoute!=0" class="menu-mark">
+                    <div class="menu-mark-text"></div>
+                </div>
+                <span class="company-setup-menu-navigation-title">Company</span>
+            </div>
+        </div>
+
+        <div class="pointer divider-20" ng-click="goToView('/company/setup/groups')">
+            <div class="company-setup-menu-navigation-div">
+                <div ng-show="setupUsers==0 && activeSetupRoute<1" class="menu-number">
+                    <span class="menu-number-text">2</span>
+                </div>
+                <div ng-show="activeSetupRoute==1" class="menu-number setup-menu-active">
+                    <span class="menu-number-text">2</span>
+                </div>
+                <div ng-show="setupUsers==0 && activeSetupRoute>1" class="menu-arrow">
+                    <span class="menu-arrow-text">⤵</span>
+                </div>
+                <div ng-show="setupUsers==1 && activeSetupRoute!=1" class="menu-mark">
                     <div class="menu-mark-text"></div>
                 </div>
                 <span class="company-setup-menu-navigation-title">Groups</span>
@@ -23,16 +41,16 @@
 
         <div class="pointer divider-20" ng-click="goToView('/company/setup/currency-setup')">
             <div class="company-setup-menu-navigation-div">
-                <div ng-show="setupCurrencies==0 && activeSetupRoute<1" class="menu-number">
-                    <span class="menu-number-text">2</span>
+                <div ng-show="setupCurrencies==0 && activeSetupRoute<2" class="menu-number">
+                    <span class="menu-number-text">3</span>
                 </div>
-                <div ng-show="activeSetupRoute==1" class="menu-number setup-menu-active">
-                    <span class="menu-number-text">2</span>
+                <div ng-show="activeSetupRoute==2" class="menu-number setup-menu-active">
+                    <span class="menu-number-text">3</span>
                 </div>
-                <div ng-show="setupCurrencies==0 && activeSetupRoute>1" class="menu-arrow">
+                <div ng-show="setupCurrencies==0 && activeSetupRoute>2" class="menu-arrow">
                     <span class="menu-arrow-text">⤵</span>
                 </div>
-                <div ng-show="setupCurrencies==1 && activeSetupRoute!=1" class="menu-mark">
+                <div ng-show="setupCurrencies==1 && activeSetupRoute!=2" class="menu-mark">
                     <div class="menu-mark-text"></div>
                 </div>
                 <span class="company-setup-menu-navigation-title">Currencies</span>
@@ -42,31 +60,31 @@
 
         <div class="pointer divider-20" ng-click="goToView('/company/setup/accounts')">
             <div class="company-setup-menu-navigation-div">
-                <div ng-show="setupAccounts==0 && activeSetupRoute<2" class="menu-number">
-                    <span class="menu-number-text">3</span>
+                <div ng-show="setupAccounts==0 && activeSetupRoute<3" class="menu-number">
+                    <span class="menu-number-text">4</span>
                 </div>
-                <div ng-show="activeSetupRoute==2" class="menu-number setup-menu-active">
-                    <span class="menu-number-text">3</span>
+                <div ng-show="activeSetupRoute==3" class="menu-number setup-menu-active">
+                    <span class="menu-number-text">4</span>
                 </div>
-                <div ng-show="setupAccounts==0 && activeSetupRoute>2" class="menu-arrow">
+                <div ng-show="setupAccounts==0 && activeSetupRoute>3" class="menu-arrow">
                     <span class="menu-arrow-text">⤵</span>
                 </div>
-                <div ng-show="setupAccounts==1 && activeSetupRoute!=2" class="menu-mark">
+                <div ng-show="setupAccounts==1 && activeSetupRoute!=3" class="menu-mark">
                     <div class="menu-mark-text"></div>
                 </div>
                 <span class="company-setup-menu-navigation-title">Accounts</span>
             </div>
         </div>
 
-        <div class="pointer" ng-click="goToView('/company/setup/subtypes')">
+        <div clnter" ng-click="goToView('/company/setup/subtypes')">
             <div class="company-setup-menu-navigation-div">
-                <div ng-show="setupSubtypes==0 && activeSetupRoute<3" class="menu-number">
-                    <span class="menu-number-text">4</span>
+                <div ng-show="setupSubtypes==0 && activeSetupRoute<4" class="menu-number">
+                    <span class="menu-number-text">5</span>
                 </div>
-                <div ng-show="activeSetupRoute==3" class="menu-number setup-menu-active">
-                    <span class="menu-number-text">4</span>
+                <div ng-show="activeSetupRoute==4" class="menu-number setup-menu-active">
+                    <span class="menu-number-text">5</span>
                 </div>
-                <div ng-show="setupSubtypes==1 && activeSetupRoute!=3" class="menu-mark">
+                <div ng-show="setupSubtypes==1 && activeSetupRoute!=4" class="menu-mark">
                     <div class="menu-mark-text"></div>
                 </div>
                 <span class="company-setup-menu-navigation-title">Transaction subtypes</span>
