@@ -18,8 +18,10 @@
                 Rehive.admin.requests.get({id: vm.log.id}).then(function (res) {
                     $scope.loadingRequestLog = false;
                     $scope.requestLog = res;
+                    console.log(res)
                     $scope.params = metadataTextService.convertToText(res.params);
                     $scope.headers = metadataTextService.convertToText(res.headers);
+                    $scope.body = metadataTextService.convertToText(res.body);
                     $scope.$apply();
                 }, function (error) {
                     $scope.loadingRequestLog = false;
