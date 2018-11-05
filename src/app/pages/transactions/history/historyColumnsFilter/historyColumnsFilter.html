@@ -10,6 +10,8 @@
         <div class="column-options-div">
             <p ng-click="selectAllColumns()" class="columns-restore column-option1">Select all</p>
             <p ng-click="restoreColDefaults()" class="columns-restore column-option2">Restore defaults</p>
+            <p ng-click="openCustomMetadataModal('app/pages/transactions/history/historyColumnsFilter/addCustomMetadataModal/addCustomMetadataModal.html', 'md')"
+               class="columns-restore custom-metadata pull-right">Add custom metadata columns</p>
         </div>
         <div ng-repeat="column in headerColumns | filter: columnSearch">
             <div>

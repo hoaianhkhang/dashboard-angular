@@ -743,6 +743,21 @@
 
         };
 
+        $scope.openCustomMetadataModal = function (page, size) {
+            vm.theCustomMetadata = $uibModal.open({
+                animation: true,
+                templateUrl: page,
+                size: size,
+                controller: 'AddCustomMetadataModalCtrl'
+            });
+
+            vm.theCustomMetadata.result.then(function(transaction){
+
+            }, function(){
+            });
+
+        };
+
         $scope.$on("modalClosing",function(event,transactionHasBeenUpdated){
            if(transactionHasBeenUpdated){
                $scope.clearFilters();
