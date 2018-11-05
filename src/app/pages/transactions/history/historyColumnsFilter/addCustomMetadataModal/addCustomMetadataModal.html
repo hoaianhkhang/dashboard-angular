@@ -16,20 +16,14 @@
         <div class="form-group custom-form">
             <label>Metadata columns</label>
             <div class="reward-multi-select">
-                <select chosen
-                        multiple
-                        data-placeholder-text-multiple="'Choose one or more metadata'"
-                        width="100"
-                        ng-model="metadataToAdd"
-                        ng-options="currency.code + ' - ' + currency.description for currency in initialCurrencies | orderBy: 'code'"
-                        required>
-                    <option value=""></option>
-                </select>
+                <tags-input ng-model="metadataToAdd" placeholder="Enter one or more custom metadata">
+                    <auto-complete class="reward-tag-users-input" source="metadataInputChanges($query)"></auto-complete>
+                </tags-input>
             </div>
         </div>
     </div>
     <div class="modal-footer">
-        <button ng-click="goToconfirmSelection('normal',currenciesToAdd)" ng-disabled="currenciesToAdd.length == 0"
+        <button ng-click="goToconfirmSelection('normal',currenciesToAdd)"
                 class="btn btn-primary pull-right dashboard-btn">Add
         </button>
     </div>

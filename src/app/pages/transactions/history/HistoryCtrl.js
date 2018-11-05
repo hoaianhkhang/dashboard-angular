@@ -182,7 +182,6 @@
         };
 
         $scope.selectAllColumns = function () {
-
             $scope.headerColumns.forEach(function (headerObj) {
                 headerObj.visible = true;
             });
@@ -621,28 +620,8 @@
         }
 
         vm.formatTransactionsArray = function (transactionsArray) {
-
             transactionsArray.forEach(function (transactionObj) {
-                var metadataObject = {};
-                var metadataKeyExists = false;
-
-                if(transactionObj.metadata && Object.keys(transactionObj.metadata).length){
-                    for(var key in transactionObj.metadata){
-                        if(transactionObj.metadata.hasOwnProperty(key)){
-                            metadataObject[key] = transactionObj.metadata[key];
-                            $scope.headerColumns.forEach(function (element) {
-                               if(element.fieldName == key){
-                                   metadataKeyExists = true;
-                               }
-                            });
-                            if(!metadataKeyExists){
-                                $scope.headerColumns.push({colName: key,fieldName: key,visible: false,from: 'metadata'});
-                            }
-                        }
-                    }
-                }
-
-                var transactionObject = {
+                $scope.transactions.push({
                     user: transactionObj.user ? transactionObj.user.email || transactionObj.user.mobile || transactionObj.user.id : '',
                     recipient: transactionObj.destination_transaction ? transactionObj.destination_transaction.id ? transactionObj.destination_transaction.user.email : transactionObj.destination_transaction.user.email + ' (new user)' : "",
                     tx_type: transactionObj.tx_type ? $filter("capitalizeWord")(transactionObj.tx_type) : '',
@@ -654,7 +633,7 @@
                     id: transactionObj.id ? transactionObj.id : '',
                     createdDate: transactionObj.created ? $filter("date")(transactionObj.created,'mediumDate') + ' ' + $filter("date")(transactionObj.created,'shortTime') : '',
                     totalAmount: transactionObj.total_amount ? $filter("currencyModifiersFilter")(transactionObj.total_amount,transactionObj.currency.divisibility) : '',
-                    balance: transactionObj.balance ? $filter("currencyModifiersFilter")(transactionObj.balance,transactionObj.currency.divisibility) : '',
+                    balance: $filter("currencyModifiersFilter")(transactionObj.balance,transactionObj.currency.divisibility),
                     account: transactionObj.account ? transactionObj.account : '',
                     username: transactionObj.user ? transactionObj.user.username : '',
                     userId: transactionObj.user ? transactionObj.user.id : '',
@@ -666,14 +645,9 @@
                     reference: transactionObj.reference ? transactionObj.reference : '',
                     note: transactionObj.note ? transactionObj.note : '',
                     metadata: transactionObj.metadata ? JSON.stringify(transactionObj.metadata) : ''
-                };
-
-                transactionObject = _.extend(transactionObject,metadataObject);
-
-                $scope.transactions.push(transactionObject);
+                });
             });
 
-            localStorageManagement.setValue(vm.savedTransactionTableColumns,JSON.stringify($scope.headerColumns));
             $scope.loadingTransactions = false;
         };
 
@@ -759,10 +733,10 @@
         };
 
         $scope.$on("modalClosing",function(event,transactionHasBeenUpdated){
-           if(transactionHasBeenUpdated){
-               $scope.clearFilters();
-               $scope.getLatestTransactions();
-           }
+            if(transactionHasBeenUpdated){
+                $scope.clearFilters();
+                $scope.getLatestTransactions();
+            }
         });
 
         $scope.closeColumnFiltersBox = function () {
