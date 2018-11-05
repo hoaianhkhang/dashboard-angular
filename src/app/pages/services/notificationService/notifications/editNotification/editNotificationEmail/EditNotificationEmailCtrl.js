@@ -56,6 +56,9 @@
             theme: 'monokai',
             autoCloseTags: true,
             smartIndent: false,
+            extraKeys: {
+                "Ctrl-Space": "autocomplete"
+            },
             mode: 'xml'
         };
 

@@ -10,27 +10,20 @@
         //var vm = this;
         $scope.path = $location.path();
         $scope.registerData = {
-            first_name: '',
-            last_name: '',
             email: '',
             company: '',
             password1: '',
-            password2: '',
             terms_and_conditions: false
         };
         $scope.showPassword1 = false;
-        $scope.showPassword2 = false;
 
         $scope.togglePasswordVisibility1 = function () {
             $scope.showPassword1 = !$scope.showPassword1;
         };
 
-        $scope.togglePasswordVisibility2 = function () {
-            $scope.showPassword2 = !$scope.showPassword2;
-        };
-
         $scope.registerUser = function() {
             $rootScope.$pageFinishedLoading = false;
+            $scope.registerData.password2 = $scope.registerData.password1;
             Rehive.auth.registerCompany($scope.registerData).then(function (res) {
                 $rootScope.pageTopObj.userInfoObj = {};
                 $rootScope.pageTopObj.userInfoObj = res;

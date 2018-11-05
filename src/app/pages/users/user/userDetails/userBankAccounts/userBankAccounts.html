@@ -15,7 +15,7 @@
                         <span class="fa fa-ellipsis-h pull-right pointer user-details-address-options no-margin"></span>
                             <ul ng-show="bank.id == optionsId" class="user-details-address-options-box">
                                 <li ng-click="showBankOptionsBox(bank)"><i class="dropdown-arr"></i></li>
-                                <li ng-hide="bank.status != 'pending'" ng-click="verifyBankAccountConfirm(bank)">Verify</li>
+                                <li ng-hide="bank.status != 'pending'" ng-click="verifyBankAccountConfirm(bank)">Verification</li>
                                 <li ng-click="openEditUserBankAccountModal('app/pages/users/user/userDetails/userBankAccounts/editUserBankAccountModal/editUserBankAccountModal.html','md',bank)">Edit</li>
                                 <li ng-click="openUserBankAccountModal('app/pages/users/user/userDetails/userBankAccounts/userBankAccountModal/userBankAccountModal.html','md',bank)">Delete</li>
                             </ul>

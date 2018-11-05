@@ -175,6 +175,7 @@
         $scope.orderByOptions = ['Latest','Largest','Smallest'];
         $scope.groupOptions = [];
 
+        //Column filters
         $scope.showColumnFilters = function () {
             $scope.showingFilters = false;
             $scope.showingColumnFilters = !$scope.showingColumnFilters;
@@ -207,6 +208,7 @@
 
             localStorageManagement.setValue(vm.savedTransactionTableColumns,JSON.stringify($scope.headerColumns));
         };
+        //Column filters end
 
         sharedResources.getSubtypes().then(function (res) {
             $scope.subtypeOptions = _.pluck(res,'name');

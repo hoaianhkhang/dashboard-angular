@@ -17,7 +17,7 @@
             enabled: false,
             preference_enabled: false
         };
-        $scope.htmlTags = {
+        $scope.smsTags = {
             tags: []
         };
         $scope.editorEnabled= false;
@@ -56,6 +56,9 @@
             theme: 'monokai',
             autoCloseTags: true,
             smartIndent: false,
+            extraKeys: {
+                "Ctrl-Space": "autocomplete"
+            },
             mode: 'xml'
         };
 
@@ -107,14 +110,14 @@
 
         $scope.smsEditEventOptionChanged = function (event) {
             var newTagsArray = notificationHtmlTags.getNotificationHtmlTags(event);
-            $scope.htmlTags.tags.splice(0,$scope.htmlTags.tags.length);
+            $scope.smsTags.tags.splice(0,$scope.smsTags.tags.length);
             newTagsArray.forEach(function (element) {
-                $scope.htmlTags.tags.push(element);
+                $scope.smsTags.tags.push(element);
             });
         };
 
         $scope.goToNotificationListView = function () {
-            $location.path('/services/notifications/list');
+            $location.path('/services/notifications/list').search({type: 'sms'});
         };
 
 
@@ -152,7 +155,7 @@
                 }).then(function (res) {
                     if (res.status === 200) {
                         toastr.success('Notification updated successfully');
-                        $location.path('/services/notifications/list');
+                        $location.path('/services/notifications/list').search({type: 'sms'});
                     }
                 }).catch(function (error) {
                     $scope.loadingNotifications =  false;
