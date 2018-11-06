@@ -17,13 +17,17 @@
             <label>Metadata columns</label>
             <div class="reward-multi-select">
                 <tags-input ng-model="metadataToAdd" placeholder="Enter one or more custom metadata">
-                    <auto-complete class="reward-tag-users-input" source="metadataInputChanges($query)"></auto-complete>
+                    <auto-complete class="reward-tag-users-input"
+                                   load-on-focus="true"
+                                   load-on-empty="true"
+                                   source="metadataInputChanges($query)">
+                    </auto-complete>
                 </tags-input>
             </div>
         </div>
     </div>
     <div class="modal-footer">
-        <button ng-click="goToconfirmSelection('normal',currenciesToAdd)"
+        <button ng-click="addMetadataColumns(metadataToAdd)"
                 class="btn btn-primary pull-right dashboard-btn">Add
         </button>
     </div>
