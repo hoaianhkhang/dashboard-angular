@@ -45,25 +45,19 @@
   padding: 100px 64px 64px 64px;
 }
 
+.onboarding-menu-div{
+  display: flex;
+}
+
 .company-setup-menu-navigation-div{
-  position: relative;
   line-height: 14px;
+  display: inline-block;
 }
 
 .company-setup-menu-navigation-title{
-  margin: 0;
+  margin: 4px 0 0 6px;
   display: inline-block;
   position: relative;
-  top: -7px;
-  left: 6px;
-}
-
-.company-setup-menu-navigation-long-title{
-  margin: 0;
-  display: inline;
-  position: absolute;
-  top: 5px;
-  left: 33px;
 }
 
 .menu-number {
