@@ -787,11 +787,32 @@
             }
         });
 
-        $scope.closeColumnFiltersBox = function () {
-            if($scope.visibleColumnsSelectionChanged){
+        $scope.closeColumnFiltersBox = function (callLatestTransactions) {
+            if($scope.visibleColumnsSelectionChanged || callLatestTransactions){
                 $scope.getLatestTransactions();
             }
+
+            //removing deleted metadata columns from $scope.headerColumns
+            var indexArray = [];
+            $scope.headerColumns.forEach(function (elem,index) {
+                if(elem.hide){
+                    indexArray.push(index);
+                }
+            });
+            if(indexArray.length > 0){
+                indexArray = indexArray.sort(function(a, b){return b-a;});
+                indexArray.forEach(function (ind) {
+                    $scope.headerColumns.splice(ind,1);
+                });
+
+                localStorageManagement.setValue(vm.savedTransactionTableColumns,JSON.stringify($scope.headerColumns));
+            }
+
             $scope.showingColumnFilters = false;
+        };
+
+        $scope.deleteMetadataColumn = function (column) {
+            column.hide = true;
         };
 
         // shortcuts from other places

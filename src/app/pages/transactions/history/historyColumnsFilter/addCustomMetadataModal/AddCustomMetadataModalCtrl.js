@@ -10,12 +10,29 @@
         var vm = this;
         vm.token = localStorageManagement.getValue('token');
         $scope.addingCustomMetadata = false;
-        $scope.transactionsMetadataColumns = transactionsMetadataColumns.slice();
-        $scope.metadataOptions = transactionsMetadataColumns.slice();
+        vm.transactionsMetadataColumns = transactionsMetadataColumns.slice();
+        $scope.metadataOptions = [];
         vm.companyIdentifier = localStorageManagement.getValue('companyIdentifier');
         vm.savedTransactionTableColumns = vm.companyIdentifier + 'transactionsTable';
         $scope.headerColumns = JSON.parse(localStorageManagement.getValue(vm.savedTransactionTableColumns));
         $scope.metadataToAdd = [];
+
+        vm.initializeMetadataOptions = function () {
+            var indexArray = [];
+            vm.transactionsMetadataColumns.forEach(function (element,index) {
+                $scope.headerColumns.forEach(function (column) {
+                    if(column.fieldName == element){
+                        indexArray.push(index);
+                    }
+                });
+            });
+            indexArray = indexArray.sort(function(a, b){return b-a;});
+            indexArray.forEach(function (ind) {
+                vm.transactionsMetadataColumns.splice(ind,1);
+            });
+            $scope.metadataOptions = vm.transactionsMetadataColumns.slice();
+        };
+        vm.initializeMetadataOptions();
 
         $scope.metadataInputChanges = function (query) {
             return $filter('filter')($scope.metadataOptions,query);
