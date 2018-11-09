@@ -31,12 +31,12 @@
                 <div ng-show="notificationsList.length > 0" class="divider">
                     <table class="table custom-table">
                         <tr>
-                            <th class="rehive-table-row-first-child">Name</th>
+                            <th class="rehive-table-row-first-child">Event</th>
+                            <th>Name</th>
                             <th>Subject</th>
                             <th>
                                 Enabled
                             </th>
-                            <th>Event</th>
                             <th></th>
                             <th>
                                 <div class="notification-select-all-checkbox">
@@ -46,15 +46,133 @@
                                 </div>
                             </th>
                         </tr>
-                        <tr ng-repeat="notification in notificationsList" class="editable-row">
-                            <td width="10%" class="transactions-list-element rehive-table-row-first-child" title="{{notification.name}}" ng-bind="notification.name"></td>
+                        <tr ng-show="addressNotificationsList.length > 0" class="editable-row">
+                            <td class="transactions-list-element rehive-table-row-first-child"><b>Address</b></td>
+                        </tr>
+                        <tr ng-repeat="notification in (addressNotificationsList = (notificationsList | filter: filterNotifications('Address') | orderBy: 'event'))" class="editable-row">
+                            <td width="15%" class="transactions-list-element rehive-table-row-first-child" title="{{notification.event | capitalizeDottedSentence | capitalizeUnderscoredSentence}}"
+                                ng-bind="notification.event | capitalizeDottedSentence | capitalizeUnderscoredSentence"></td>
+                            <td width="10%" class="transactions-list-element" title="{{notification.name}}" ng-bind="notification.name"></td>
                             <td width="30%" class="transactions-list-element" title="{{notification.subject || 'None'}}" ng-bind="notification.subject || 'None'"></td>
                             <td width="10%" class="transactions-list-element">
-                                <input class="custom-rehive-checkbox" ng-click="toggleNotificationStatus(notification)"
+                                <input class="custom-rehive-checkbox" ng-click="toggleNotificationStatus(notification,'last')"
                                        ng-model="notification.enabled" type="checkbox">
                             </td>
-                            <td width="15%" class="transactions-list-element" title="{{notification.event | capitalizeDottedSentence | capitalizeUnderscoredSentence}}"
+                            <td width="20%" class="rehive-table-row-last-child">
+                                <a ng-click="openNotificationModal('app/pages/services/notificationService/notifications/listNotifications/notificationModal/notificationModal.html','md',notification)"
+                                   class="pull-right pointer ">Delete</a>
+                                <a ng-href="/#/services/notifications/{{notification.id}}/edit/{{notification.type}}"
+                                   class="pull-right pointer user-address-edit margin-right-30">Edit</a>
+                            </td>
+                            <td width="10%" class="transactions-list-element">
+                                <input class="custom-rehive-checkbox pull-right" ng-click="toggleNotificationAction(notification)"
+                                       ng-model="notification.action" type="checkbox">
+                            </td>
+                        </tr>
+                        <tr ng-show="bankNotificationsList.length > 0" class="editable-row">
+                            <td class="transactions-list-element rehive-table-row-first-child"><b>Bank accounts</b></td>
+                        </tr>
+                        <tr ng-repeat="notification in (bankNotificationsList = (notificationsList | filter: filterNotifications('Bank Account') | orderBy: 'event'))" class="editable-row">
+                            <td width="15%" class="transactions-list-element rehive-table-row-first-child" title="{{notification.event | capitalizeDottedSentence | capitalizeUnderscoredSentence}}"
                                 ng-bind="notification.event | capitalizeDottedSentence | capitalizeUnderscoredSentence"></td>
+                            <td width="10%" class="transactions-list-element" title="{{notification.name}}" ng-bind="notification.name"></td>
+                            <td width="30%" class="transactions-list-element" title="{{notification.subject || 'None'}}" ng-bind="notification.subject || 'None'"></td>
+                            <td width="10%" class="transactions-list-element">
+                                <input class="custom-rehive-checkbox" ng-click="toggleNotificationStatus(notification,'last')"
+                                       ng-model="notification.enabled" type="checkbox">
+                            </td>
+                            <td width="20%" class="rehive-table-row-last-child">
+                                <a ng-click="openNotificationModal('app/pages/services/notificationService/notifications/listNotifications/notificationModal/notificationModal.html','md',notification)"
+                                   class="pull-right pointer ">Delete</a>
+                                <a ng-href="/#/services/notifications/{{notification.id}}/edit/{{notification.type}}"
+                                   class="pull-right pointer user-address-edit margin-right-30">Edit</a>
+                            </td>
+                            <td width="10%" class="transactions-list-element">
+                                <input class="custom-rehive-checkbox pull-right" ng-click="toggleNotificationAction(notification)"
+                                       ng-model="notification.action" type="checkbox">
+                            </td>
+                        </tr>
+                        <tr ng-show="cryptoNotificationsList.length > 0" class="editable-row">
+                            <td class="transactions-list-element rehive-table-row-first-child"><b>Crypto accounts</b></td>
+                        </tr>
+                        <tr ng-repeat="notification in (cryptoNotificationsList = (notificationsList | filter: filterNotifications('Crypto Account') | orderBy: 'event'))" class="editable-row">
+                            <td width="15%" class="transactions-list-element rehive-table-row-first-child" title="{{notification.event | capitalizeDottedSentence | capitalizeUnderscoredSentence}}"
+                                ng-bind="notification.event | capitalizeDottedSentence | capitalizeUnderscoredSentence"></td>
+                            <td width="10%" class="transactions-list-element" title="{{notification.name}}" ng-bind="notification.name"></td>
+                            <td width="30%" class="transactions-list-element" title="{{notification.subject || 'None'}}" ng-bind="notification.subject || 'None'"></td>
+                            <td width="10%" class="transactions-list-element">
+                                <input class="custom-rehive-checkbox" ng-click="toggleNotificationStatus(notification,'last')"
+                                       ng-model="notification.enabled" type="checkbox">
+                            </td>
+                            <td width="20%" class="rehive-table-row-last-child">
+                                <a ng-click="openNotificationModal('app/pages/services/notificationService/notifications/listNotifications/notificationModal/notificationModal.html','md',notification)"
+                                   class="pull-right pointer ">Delete</a>
+                                <a ng-href="/#/services/notifications/{{notification.id}}/edit/{{notification.type}}"
+                                   class="pull-right pointer user-address-edit margin-right-30">Edit</a>
+                            </td>
+                            <td width="10%" class="transactions-list-element">
+                                <input class="custom-rehive-checkbox pull-right" ng-click="toggleNotificationAction(notification)"
+                                       ng-model="notification.action" type="checkbox">
+                            </td>
+                        </tr>
+                        <tr ng-show="documentsNotificationsList.length > 0" class="editable-row">
+                            <td class="transactions-list-element rehive-table-row-first-child"><b>Documents</b></td>
+                        </tr>
+                        <tr ng-repeat="notification in (documentsNotificationsList = (notificationsList | filter: filterNotifications('Document') | orderBy: 'event'))" class="editable-row">
+                            <td width="15%" class="transactions-list-element rehive-table-row-first-child" title="{{notification.event | capitalizeDottedSentence | capitalizeUnderscoredSentence}}"
+                                ng-bind="notification.event | capitalizeDottedSentence | capitalizeUnderscoredSentence"></td>
+                            <td width="10%" class="transactions-list-element" title="{{notification.name}}" ng-bind="notification.name"></td>
+                            <td width="30%" class="transactions-list-element" title="{{notification.subject || 'None'}}" ng-bind="notification.subject || 'None'"></td>
+                            <td width="10%" class="transactions-list-element">
+                                <input class="custom-rehive-checkbox" ng-click="toggleNotificationStatus(notification,'last')"
+                                       ng-model="notification.enabled" type="checkbox">
+                            </td>
+                            <td width="20%" class="rehive-table-row-last-child">
+                                <a ng-click="openNotificationModal('app/pages/services/notificationService/notifications/listNotifications/notificationModal/notificationModal.html','md',notification)"
+                                   class="pull-right pointer ">Delete</a>
+                                <a ng-href="/#/services/notifications/{{notification.id}}/edit/{{notification.type}}"
+                                   class="pull-right pointer user-address-edit margin-right-30">Edit</a>
+                            </td>
+                            <td width="10%" class="transactions-list-element">
+                                <input class="custom-rehive-checkbox pull-right" ng-click="toggleNotificationAction(notification)"
+                                       ng-model="notification.action" type="checkbox">
+                            </td>
+                        </tr>
+                        <tr ng-show="transactionsNotificationsList.length > 0" class="editable-row">
+                            <td class="transactions-list-element rehive-table-row-first-child"><b>Transactions</b></td>
+                        </tr>
+                        <tr ng-repeat="notification in (transactionsNotificationsList = (notificationsList | filter: filterNotifications('Transaction') | orderBy: 'event'))" class="editable-row">
+                            <td width="15%" class="transactions-list-element rehive-table-row-first-child" title="{{notification.event | capitalizeDottedSentence | capitalizeUnderscoredSentence}}"
+                                ng-bind="notification.event | capitalizeDottedSentence | capitalizeUnderscoredSentence"></td>
+                            <td width="10%" class="transactions-list-element" title="{{notification.name}}" ng-bind="notification.name"></td>
+                            <td width="30%" class="transactions-list-element" title="{{notification.subject || 'None'}}" ng-bind="notification.subject || 'None'"></td>
+                            <td width="10%" class="transactions-list-element">
+                                <input class="custom-rehive-checkbox" ng-click="toggleNotificationStatus(notification,'last')"
+                                       ng-model="notification.enabled" type="checkbox">
+                            </td>
+                            <td width="20%" class="rehive-table-row-last-child">
+                                <a ng-click="openNotificationModal('app/pages/services/notificationService/notifications/listNotifications/notificationModal/notificationModal.html','md',notification)"
+                                   class="pull-right pointer ">Delete</a>
+                                <a ng-href="/#/services/notifications/{{notification.id}}/edit/{{notification.type}}"
+                                   class="pull-right pointer user-address-edit margin-right-30">Edit</a>
+                            </td>
+                            <td width="10%" class="transactions-list-element">
+                                <input class="custom-rehive-checkbox pull-right" ng-click="toggleNotificationAction(notification)"
+                                       ng-model="notification.action" type="checkbox">
+                            </td>
+                        </tr>
+                        <tr ng-show="usersNotificationsList.length > 0" class="editable-row">
+                            <td class="transactions-list-element rehive-table-row-first-child"><b>Users</b></td>
+                        </tr>
+                        <tr ng-repeat="notification in (usersNotificationsList = (notificationsList | filter: filterNotifications('User') | orderBy: 'event'))" class="editable-row">
+                            <td width="15%" class="transactions-list-element rehive-table-row-first-child" title="{{notification.event | capitalizeDottedSentence | capitalizeUnderscoredSentence}}"
+                                ng-bind="notification.event | capitalizeDottedSentence | capitalizeUnderscoredSentence"></td>
+                            <td width="10%" class="transactions-list-element" title="{{notification.name}}" ng-bind="notification.name"></td>
+                            <td width="30%" class="transactions-list-element" title="{{notification.subject || 'None'}}" ng-bind="notification.subject || 'None'"></td>
+                            <td width="10%" class="transactions-list-element">
+                                <input class="custom-rehive-checkbox" ng-click="toggleNotificationStatus(notification,'last')"
+                                       ng-model="notification.enabled" type="checkbox">
+                            </td>
                             <td width="20%" class="rehive-table-row-last-child">
                                 <a ng-click="openNotificationModal('app/pages/services/notificationService/notifications/listNotifications/notificationModal/notificationModal.html','md',notification)"
                                    class="pull-right pointer ">Delete</a>

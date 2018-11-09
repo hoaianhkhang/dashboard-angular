@@ -6,7 +6,7 @@
 
     /** @ngInject */
     function ListNotificationsCtrl($scope,$http,localStorageManagement,$uibModal,errorHandler,
-                                   $ngConfirm,$location,_,toastr) {
+                                   $ngConfirm,$location,_,toastr,$filter,$timeout) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
@@ -165,6 +165,18 @@
         };
         $scope.getNotificationsList();
 
+        $scope.filterNotifications = function (keywords) {
+            return function(notif) {
+                var event = $filter('capitalizeDottedSentence')(notif.event);
+                event = $filter('capitalizeUnderscoredSentence')(event);
+                if(event.indexOf(keywords) > -1) {
+                    return true;
+                } else {
+                    return false;
+                }
+            };
+        };
+
         $scope.toggleAllNotificationsActions = function () {
             $scope.notificationsList.forEach(function (notification) {
                 notification.action = $scope.allNotifications.allActions;
@@ -270,10 +282,12 @@
                         'Authorization': vm.token
                     }
                 }).then(function (res) {
-                    if (last) {
-                        vm.notificationIdArray = [];
-                        toastr.success('Notification updated successfully');
-                        $scope.getNotificationsList();
+                    if(last) {
+                        $timeout(function () {
+                            vm.notificationIdArray = [];
+                            toastr.success('Notification updated successfully');
+                            $scope.getNotificationsList();
+                        },600);
                     }
                 }).catch(function (error) {
                     $scope.loadingNotifications = false;
@@ -292,9 +306,11 @@
                 }
             }).then(function (res) {
                 if(last){
-                    vm.notificationIdArray = [];
-                    toastr.success('Notifications successfully deleted');
-                    $scope.getNotificationsList();
+                    $timeout(function () {
+                        vm.notificationIdArray = [];
+                        toastr.success('Notifications successfully deleted');
+                        $scope.getNotificationsList();
+                    },600);
                 }
             }).catch(function (error) {
                 $scope.loadingNotifications = false;
