@@ -10,8 +10,8 @@
         var vm = this;
         vm.token = localStorageManagement.getValue("token");
         $scope.currenciesToAdd = [];
-        $rootScope.activeSetupRoute = 1;
-        localStorageManagement.setValue('activeSetupRoute',1);
+        $rootScope.activeSetupRoute = 2;
+        localStorageManagement.setValue('activeSetupRoute',2);
         $scope.initialCurrencies = currenciesList.slice();
         $scope.loadingCurrencies = true;
 
