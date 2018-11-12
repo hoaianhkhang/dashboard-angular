@@ -6,6 +6,12 @@
                         class="btn btn-default">Filters
                     <span ng-show="filtersCount > 0">|</span> <span ng-show="filtersCount > 0" class="filter-count">{{filtersCount}}</span>
                 </button>
+                <span click-outside="closeColumnFiltersBox()">
+                    <button ng-click="showColumnFilters()" class="btn dynamic-columns btn-default">Columns</button>
+                    <div ng-show="showingColumnFilters">
+                        <stellar-transactions-columns-filter></stellar-transactions-columns-filter>
+                    </div>
+                </span>
                 <div ng-show="showingFilters">
                     <stellar-service-transactions-filter></stellar-service-transactions-filter>
                 </div>
@@ -17,37 +23,25 @@
     <div class="panel-body">
         <div ng-show="transactions.length > 0" class="divider">
             <div class="draggable-table">
-                <table class="table custom-table">
+                <!--draggable on-drag-end="tableColDrag($start, $target)"-->
+                <table class="table custom-table table-striped">
+                    <thead>
                     <tr>
-                        <th>Email</th>
-                        <th>Amount</th>
-                        <th>Type</th>
-                        <th>Transaction hash</th>
-                        <th>Confirmations</th>
-                        <th>Rehive code</th>
-                        <th>Status</th>
-                        <th class="align-right">Created</th>
-                        <th class="align-right">Updated</th>
-                        <th class="align-right">Completed</th>
+                        <!--class="pointer"-->
+                        <th ng-repeat="header in headerColumns" ng-if="header.visible"
+                            ng-class="{'align-right': ( header.colName == 'Created' || header.colName == 'Updated' || header.colName == 'Completed' )}"
+                            ng-bind="header.colName"></th>
                     </tr>
+                    </thead>
+                    <tbody>
                     <tr ng-repeat="transaction in transactions | orderBy: '-created'" data-toggle="modal"
                         ng-click="openModal('app/pages/services/stellarService/stellarServiceTransactions/stellarServiceTransactionsModal/stellarServiceTransactionsModal.html', 'lg',transaction)"
                         class="editable-row center pointer user-details-table-hover">
-                        <td class="transactions-list-element" title="{{transaction.user.email}}"  ng-bind="transaction.user.email"></td>
-                        <td  class="transactions-list-element" title="{{transaction.amount | currencyModifiersFilter: transaction.currency.divisibility || 7}}"
-                             ng-bind="transaction.amount | currencyModifiersFilter: transaction.currency.divisibility || 7"></td>
-                        <td class="transactions-list-element" title="{{transaction.tx_type}}"  ng-bind="transaction.tx_type | capitalizeWord"></td>
-                        <td class="transactions-list-element" title="{{transaction.transaction_hash}}"  ng-bind="transaction.transaction_hash"></td>
-                        <td class="transactions-list-element" title="{{transaction.confirmations}}"  ng-bind="transaction.confirmations"></td>
-                        <td class="transactions-list-element" title="{{transaction.rehive_code}}"  ng-bind="transaction.rehive_code"></td>
-                        <td class="transactions-list-element" title="{{transaction.status}}"  ng-bind="transaction.status"></td>
-                        <td class="transactions-list-element align-right" title="{{transaction.created | date:'mediumDate'}} {{transaction.created | date:'shortTime'}}">
-                            {{transaction.created | date:'mediumDate'}} {{transaction.created | date:'shortTime'}}</td>
-                        <td class="transactions-list-element align-right" title="{{transaction.updated | date:'mediumDate'}} {{transaction.updated | date:'shortTime'}}">
-                            {{transaction.updated | date:'mediumDate'}} {{transaction.updated | date:'shortTime'}}</td>
-                        <td class="transactions-list-element align-right" title="{{transaction.completed | date:'mediumDate'}} {{transaction.completed | date:'shortTime'}}">
-                            {{transaction.completed | date:'mediumDate'}} {{transaction.completed | date:'shortTime'}}</td>
+                        <td class="transactions-list-element" ng-repeat="header in headerColumns"
+                            ng-class="{'align-right' : (header.fieldName == 'created' || header.fieldName == 'updated' || header.fieldName == 'completed')}"
+                            ng-if="header.visible" ng-bind="transaction[header.fieldName]"></td>
                     </tr>
+                    </tbody>
                 </table>
             </div>
             <div>

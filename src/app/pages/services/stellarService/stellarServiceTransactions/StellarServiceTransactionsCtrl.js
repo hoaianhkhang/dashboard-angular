@@ -5,19 +5,37 @@
         .controller('StellarServiceTransactionsCtrl', StellarServiceTransactionsCtrl);
 
     /** @ngInject */
-    function StellarServiceTransactionsCtrl($scope,$http,localStorageManagement,$uibModal,toastr,
+    function StellarServiceTransactionsCtrl($scope,$http,localStorageManagement,$uibModal,toastr,$filter,
                                             errorHandler,$state,$window,typeaheadService,serializeFiltersService) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
         vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
+        vm.companyIdentifier = localStorageManagement.getValue('companyIdentifier');
+        vm.savedStellarTransactionTableColumns = vm.companyIdentifier + 'stellarTransactionsTable';
         $scope.companyDateFormatString = localStorageManagement.getValue('DATE_FORMAT');
         vm.currenciesList = JSON.parse($window.sessionStorage.currenciesList || '[]');
         $scope.showingFilters = false;
+        $scope.showingColumnFilters = false;
+        $scope.visibleColumnsSelectionChanged = false;
         $scope.dateFilterOptions = ['Is in the last','In between','Is equal to','Is after','Is before'];
         $scope.amountFilterOptions = ['Is equal to','Is between','Is greater than','Is less than'];
         $scope.dateFilterIntervalOptions = ['days','months'];
         $scope.filtersCount = 0;
+
+        $scope.headerColumns = localStorageManagement.getValue(vm.savedStellarTransactionTableColumns) ? JSON.parse(localStorageManagement.getValue(vm.savedStellarTransactionTableColumns)) : [
+            {colName: 'Email',fieldName: 'email',visible: true},
+            {colName: 'Amount',fieldName: 'amount',visible: true},
+            {colName: 'Type',fieldName: 'tx_type',visible: true},
+            {colName: 'Transaction hash',fieldName: 'transaction_hash',visible: true},
+            {colName: 'Confirmations',fieldName: 'confirmations',visible: true},
+            {colName: 'Rehive code',fieldName: 'rehive_code',visible: true},
+            {colName: 'Status',fieldName: 'status',visible: true},
+            {colName: 'Created',fieldName: 'created',visible: true},
+            {colName: 'Updated',fieldName: 'updated',visible: false},
+            {colName: 'Completed',fieldName: 'completed',visible: false}
+        ];
+
         $scope.filtersObj = {
             dateFilter: false,
             statusFilter: false,
@@ -114,6 +132,47 @@
         };
 
         // end angular datepicker
+
+        //Column filters
+        $scope.showColumnFilters = function () {
+            $scope.showingFilters = false;
+            $scope.showingColumnFilters = !$scope.showingColumnFilters;
+        };
+
+        $scope.selectAllColumns = function () {
+            $scope.headerColumns.forEach(function (headerObj) {
+                headerObj.visible = true;
+            });
+            localStorageManagement.setValue(vm.savedStellarTransactionTableColumns,JSON.stringify($scope.headerColumns));
+        };
+
+        $scope.toggleColumnVisibility = function () {
+            $scope.visibleColumnsSelectionChanged = true;
+            localStorageManagement.setValue(vm.savedStellarTransactionTableColumns,JSON.stringify($scope.headerColumns));
+        };
+
+        $scope.restoreColDefaults = function () {
+            var defaultVisibleHeader = ['Email','Amount','Type','Transaction hash',
+                'Confirmations','Rehive code','Status','Created'];
+
+            $scope.headerColumns.forEach(function (headerObj) {
+                if(defaultVisibleHeader.indexOf(headerObj.colName) > -1){
+                    headerObj.visible = true;
+                } else {
+                    headerObj.visible = false;
+                }
+            });
+
+            localStorageManagement.setValue(vm.savedStellarTransactionTableColumns,JSON.stringify($scope.headerColumns));
+        };
+
+        $scope.closeColumnFiltersBox = function () {
+            if($scope.visibleColumnsSelectionChanged){
+                $scope.getLatestTransactions();
+            }
+            $scope.showingColumnFilters = false;
+        };
+        //Column filters end
 
         $scope.pageSizeChanged =  function () {
             if($scope.pagination.itemsPerPage > 250){
@@ -331,6 +390,8 @@
             if(vm.token) {
 
                 $scope.showingFilters = false;
+                $scope.showingColumnFilters = false;
+                $scope.visibleColumnsSelectionChanged = false;
 
                 $scope.transactionsStateMessage = '';
                 $scope.loadingTransactions = true;
@@ -355,7 +416,7 @@
                     $scope.loadingTransactions = false;
                     if (res.status === 200) {
                         $scope.transactionsData = res.data.data;
-                        $scope.transactions = $scope.transactionsData.results;
+                        vm.formatTransactionsArray($scope.transactionsData.results);
                         if ($scope.transactions == 0) {
                             $scope.transactionsStateMessage = 'No transactions have been found';
                             return;
@@ -372,6 +433,25 @@
             }
         };
         $scope.getLatestTransactions();
+
+        vm.formatTransactionsArray = function (transactionsArray) {
+            transactionsArray.forEach(function (transactionObj) {
+                $scope.transactions.push({
+                    email: transactionObj.user ? transactionObj.user.email : '',
+                    amount: transactionObj.amount ? $filter("currencyModifiersFilter")(transactionObj.amount,transactionObj.currency ? transactionObj.currency.divisibility : 7) : '',
+                    tx_type: transactionObj.tx_type ? $filter("capitalizeWord")(transactionObj.tx_type) : '',
+                    transaction_hash: transactionObj.transaction_hash ? transactionObj.transaction_hash : '',
+                    confirmations: transactionObj.confirmations ? transactionObj.confirmations : '',
+                    rehive_code: transactionObj.rehive_code ? transactionObj.rehive_code : '',
+                    status: transactionObj.status ? transactionObj.status : '',
+                    created: transactionObj.created ? $filter("date")(transactionObj.created,'mediumDate') + ' ' + $filter("date")(transactionObj.created,'shortTime') : '',
+                    updated: transactionObj.updated ? $filter("date")(transactionObj.updated,'mediumDate') + ' ' + $filter("date")(transactionObj.updated,'shortTime') : '',
+                    completed: transactionObj.completed ? $filter("date")(transactionObj.completed,'mediumDate') + ' ' + $filter("date")(transactionObj.completed,'shortTime') : ''
+                });
+            });
+
+            $scope.loadingTransactions = false;
+        };
 
         $scope.getUsersEmailTypeahead = typeaheadService.getUsersEmailTypeahead();
 
