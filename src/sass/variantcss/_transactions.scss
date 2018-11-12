@@ -1,8 +1,11 @@
 .metadata-column-delete{
   display: inline-block;
   position: relative;
-  top: 3px;
+  margin: 0;
+  font-size: 14px;
+  top: 2px;
   cursor: pointer;
+  transform: scale(1.4,1);
   &:hover{
     color: #ed675A;
   }
