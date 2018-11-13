@@ -11,7 +11,7 @@
         vm.baseUrl = localStorageManagement.getValue('SERVICEURL');
         $scope.addingassets = false;
 
-        $scope.addassets = function (assetParams) {
+        $scope.addAssets = function (assetParams) {
             $scope.addingassets = true;
 
             $http.post(vm.baseUrl + 'admin/asset/', assetParams, {

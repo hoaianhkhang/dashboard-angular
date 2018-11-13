@@ -2,12 +2,13 @@
     'use strict';
 
     angular.module('BlurAdmin.pages.newCompanySetup',[
+        'BlurAdmin.pages.newCompanySetup.setupCompany',
         'BlurAdmin.pages.newCompanySetup.setupUsersGroups',
         'BlurAdmin.pages.newCompanySetup.setupCurrencies',
         'BlurAdmin.pages.newCompanySetup.setupAccounts',
         'BlurAdmin.pages.newCompanySetup.setupTransactionSubtypes'
     ])
-        .config(routeConfig)
+        .config(routeConfig);
 
     /** @ngInject */
 
@@ -21,7 +22,7 @@
                         controller:'NewCompanySetupCtrl'
                     }
                 }
-            })
+            });
     }
 
 })();

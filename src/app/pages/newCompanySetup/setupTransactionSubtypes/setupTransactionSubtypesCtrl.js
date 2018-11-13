@@ -12,8 +12,8 @@
         $scope.subtypes = [];
         $scope.subtype={};
         $rootScope.$pageFinishedLoading=true;
-        $rootScope.activeSetupRoute = 3;
-        localStorageManagement.setValue('activeSetupRoute',3);
+        $rootScope.activeSetupRoute = 4;
+        localStorageManagement.setValue('activeSetupRoute',4);
         $scope.editingSubtypes = false;
         $scope.loadingSetupSubtypes= true;
 

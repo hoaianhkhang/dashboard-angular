@@ -11,8 +11,8 @@
         $scope.addedGroups = [];
         $scope.user = {};
         $rootScope.$pageFinishedLoading=true;
-        $rootScope.activeSetupRoute = 0;
-        localStorageManagement.setValue('activeSetupRoute',0);
+        $rootScope.activeSetupRoute = 1;
+        localStorageManagement.setValue('activeSetupRoute',1);
         $scope.editingUser = false;
         $scope.loadingUsersGroups = true;
         $scope.rehiveSystemGroups = [{name: 'admin'},{name: 'service'}];
