@@ -38,7 +38,7 @@
             </div>
             <div class="form-group" ng-show="transactionType.tx_type == 'debit'">
                 <span>You are about to debit <strong>{{debitTransactionData.currency.symbol}}{{debitTransactionData.amount}}</strong>
-                    to <strong>{{retrievedDebitUserObj.email || retrievedDebitUserObj.mobile || retrievedDebitUserObj.id}}</strong></span>
+                    from <strong>{{retrievedDebitUserObj.email || retrievedDebitUserObj.mobile || retrievedDebitUserObj.id}}</strong></span>
             </div>
             <div class="form-group" ng-show="transactionType.tx_type == 'transfer'">
                 <span>You are about to transfer <strong>{{transferTransactionData.currency.symbol}}{{transferTransactionData.amount}}</strong>
@@ -70,7 +70,7 @@
             </div>
             <div ng-show="transactionType.tx_type == 'debit'">
                 <div class="form-group">
-                    <span><strong>{{debitTransactionData.currency.symbol}}{{debitTransactionData.amount}}</strong> has been debited to
+                    <span><strong>{{debitTransactionData.currency.symbol}}{{debitTransactionData.amount}}</strong> has been debited from
                     <strong>{{retrievedDebitUserObj.email || retrievedDebitUserObj.mobile || retrievedDebitUserObj.id}}</strong></span>
                 </div>
                 <div class="form-group">
