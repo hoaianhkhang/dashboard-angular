@@ -47,8 +47,8 @@
                         </tr>
                         <tr ng-repeat="notification in (addressNotificationsList = (notificationsList | filter: filterNotifications('Address') | orderBy: 'event'))" class="editable-row">
                             <td width="25%" class="transactions-list-element rehive-table-row-first-child" title="{{notification.name}}" ng-bind="notification.name"></td>
-                            <td width="35%" class="transactions-list-element" title="{{notification.subject || 'None'}}" ng-bind="notification.subject || 'None'"></td>
-                            <td width="5%" class="transactions-list-element">
+                            <td width="30%" class="transactions-list-element" title="{{notification.subject || 'None'}}" ng-bind="notification.subject || 'None'"></td>
+                            <td width="10%" class="transactions-list-element">
                                 <input class="custom-rehive-checkbox" ng-click="toggleNotificationStatus(notification,'last')"
                                        ng-model="notification.enabled" type="checkbox">
                             </td>
@@ -70,8 +70,8 @@
                         </tr>
                         <tr ng-repeat="notification in (bankNotificationsList = (notificationsList | filter: filterNotifications('Bank Account') | orderBy: 'event'))" class="editable-row">
                             <td width="25%" class="transactions-list-element rehive-table-row-first-child" title="{{notification.name}}" ng-bind="notification.name"></td>
-                            <td width="35%" class="transactions-list-element" title="{{notification.subject || 'None'}}" ng-bind="notification.subject || 'None'"></td>
-                            <td width="5%" class="transactions-list-element">
+                            <td width="30%" class="transactions-list-element" title="{{notification.subject || 'None'}}" ng-bind="notification.subject || 'None'"></td>
+                            <td width="10%" class="transactions-list-element">
                                 <input class="custom-rehive-checkbox" ng-click="toggleNotificationStatus(notification,'last')"
                                        ng-model="notification.enabled" type="checkbox">
                             </td>
@@ -93,8 +93,8 @@
                         </tr>
                         <tr ng-repeat="notification in (cryptoNotificationsList = (notificationsList | filter: filterNotifications('Crypto Account') | orderBy: 'event'))" class="editable-row">
                             <td width="25%" class="transactions-list-element rehive-table-row-first-child" title="{{notification.name}}" ng-bind="notification.name"></td>
-                            <td width="35%" class="transactions-list-element" title="{{notification.subject || 'None'}}" ng-bind="notification.subject || 'None'"></td>
-                            <td width="5%" class="transactions-list-element">
+                            <td width="30%" class="transactions-list-element" title="{{notification.subject || 'None'}}" ng-bind="notification.subject || 'None'"></td>
+                            <td width="10%" class="transactions-list-element">
                                 <input class="custom-rehive-checkbox" ng-click="toggleNotificationStatus(notification,'last')"
                                        ng-model="notification.enabled" type="checkbox">
                             </td>
@@ -116,8 +116,8 @@
                         </tr>
                         <tr ng-repeat="notification in (documentsNotificationsList = (notificationsList | filter: filterNotifications('Document') | orderBy: 'event'))" class="editable-row">
                             <td width="25%" class="transactions-list-element rehive-table-row-first-child" title="{{notification.name}}" ng-bind="notification.name"></td>
-                            <td width="35%" class="transactions-list-element" title="{{notification.subject || 'None'}}" ng-bind="notification.subject || 'None'"></td>
-                            <td width="5%" class="transactions-list-element">
+                            <td width="30%" class="transactions-list-element" title="{{notification.subject || 'None'}}" ng-bind="notification.subject || 'None'"></td>
+                            <td width="10%" class="transactions-list-element">
                                 <input class="custom-rehive-checkbox" ng-click="toggleNotificationStatus(notification,'last')"
                                        ng-model="notification.enabled" type="checkbox">
                             </td>
@@ -139,8 +139,8 @@
                         </tr>
                         <tr ng-repeat="notification in (transactionsNotificationsList = (notificationsList | filter: filterNotifications('Transaction') | orderBy: 'event'))" class="editable-row">
                             <td width="25%" class="transactions-list-element rehive-table-row-first-child" title="{{notification.name}}" ng-bind="notification.name"></td>
-                            <td width="35%" class="transactions-list-element" title="{{notification.subject || 'None'}}" ng-bind="notification.subject || 'None'"></td>
-                            <td width="5%" class="transactions-list-element">
+                            <td width="30%" class="transactions-list-element" title="{{notification.subject || 'None'}}" ng-bind="notification.subject || 'None'"></td>
+                            <td width="10%" class="transactions-list-element">
                                 <input class="custom-rehive-checkbox" ng-click="toggleNotificationStatus(notification,'last')"
                                        ng-model="notification.enabled" type="checkbox">
                             </td>
@@ -162,8 +162,8 @@
                         </tr>
                         <tr ng-repeat="notification in (usersNotificationsList = (notificationsList | filter: filterNotifications('User') | orderBy: 'event'))" class="editable-row">
                             <td width="25%" class="transactions-list-element rehive-table-row-first-child" title="{{notification.name}}" ng-bind="notification.name"></td>
-                            <td width="35%" class="transactions-list-element" title="{{notification.subject || 'None'}}" ng-bind="notification.subject || 'None'"></td>
-                            <td width="5%" class="transactions-list-element">
+                            <td width="30%" class="transactions-list-element" title="{{notification.subject || 'None'}}" ng-bind="notification.subject || 'None'"></td>
+                            <td width="10%" class="transactions-list-element">
                                 <input class="custom-rehive-checkbox" ng-click="toggleNotificationStatus(notification,'last')"
                                        ng-model="notification.enabled" type="checkbox">
                             </td>
