@@ -142,7 +142,6 @@
                         if(res.data.data.results.length > 0){
                             $scope.rewardsData = res.data.data;
                             $scope.rewardsList = $scope.rewardsData.results;
-                            console.log($scope.rewardsList)
                         }
                     }
                 }).catch(function (error) {

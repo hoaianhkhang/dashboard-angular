@@ -134,7 +134,8 @@
                 visible: newCampaignParams.visible,
                 request: newCampaignParams.request,
                 event: newCampaignParams.event,
-                groups: (_.pluck(newCampaignParams.groups,'text')).join()
+                groups: (_.pluck(newCampaignParams.groups,'text')).join(),
+                users: (_.pluck(newCampaignParams.users,'text'))
             };
 
             newCampaign.start_date = moment(new Date(newCampaignParams.startDate)).format('YYYY-MM-DD') +'T00:00:00Z';

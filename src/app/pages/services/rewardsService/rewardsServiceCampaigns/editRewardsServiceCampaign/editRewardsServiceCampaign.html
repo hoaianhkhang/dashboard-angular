@@ -157,6 +157,16 @@
                 <input class="custom-rehive-checkbox" ng-change="campaignChanged('request')" ng-model="editCampaignParams.request" type="checkbox">
             </div>
             <div class="form-group">
+                <label>Users</label>
+                <div class="reward-multi-select">
+                    <tags-input ng-model="editCampaignParams.users" on-tag-added="campaignChanged('users')"
+                                on-tag-removed="campaignChanged('users')"
+                                placeholder="Enter one or more user email">
+                        <auto-complete class="reward-tag-users-input" source="getUsersEmailTypeahead($query)"></auto-complete>
+                    </tags-input>
+                </div>
+            </div>
+            <div class="form-group">
                 <label>Groups</label>
                 <div class="reward-multi-select">
                     <tags-input ng-model="editCampaignParams.groups" on-tag-added="campaignChanged('groups')"
