@@ -256,14 +256,14 @@
                 resolve: {
                     transaction: function () {
                         return transaction;
-                    },
-                    bitcoinInfoUrl: function () {
-                        return $scope.bitcoinInfoObj.insight_node_url;
                     }
                 }
             });
         };
 
+        // bitcoinBlockTrailUrl: function () {
+        //     return $scope.bitcoinInfoObj.insight_node_url;
+        // }
 
     }
 })();
