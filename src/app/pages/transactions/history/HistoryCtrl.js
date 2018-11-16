@@ -14,6 +14,9 @@
         vm.companyIdentifier = localStorageManagement.getValue('companyIdentifier');
         $scope.companyDateFormatString = localStorageManagement.getValue('DATE_FORMAT');
         vm.savedTransactionTableColumns = vm.companyIdentifier + 'transactionsTable';
+        vm.savedTransactionMetadataColumns = vm.companyIdentifier + 'transactionsMetadataColumns';
+        $scope.transactionsMetadataColumns = localStorageManagement.getValue(vm.savedTransactionMetadataColumns) ?
+            JSON.parse(localStorageManagement.getValue(vm.savedTransactionMetadataColumns)) : [];
         vm.newTransactionParams = $location.search();
         $rootScope.dashboardTitle = 'Transactions history | Rehive';
         vm.currenciesList = JSON.parse($window.sessionStorage.currenciesList || '[]');
@@ -473,6 +476,10 @@
                 visibleColumnsArray.push('id');
             }
 
+            if((_.indexOf(visibleColumnsArray, 'metadata') === -1)){
+                visibleColumnsArray.push('metadata');
+            }
+
             return _.uniq(visibleColumnsArray);
         };
 
@@ -620,8 +627,38 @@
         }
 
         vm.formatTransactionsArray = function (transactionsArray) {
+
+            //save unique metadata keys from 1st transactions
+            if((transactionsArray[0].metadata) && (Object.keys(transactionsArray[0].metadata).length > 0)){
+                for(var key in transactionsArray[0].metadata){
+                    var metadataKeyExists = false;
+                    if(transactionsArray[0].metadata.hasOwnProperty(key)){
+                        $scope.transactionsMetadataColumns.forEach(function (element) {
+                            if(element == key){
+                                metadataKeyExists = true;
+                            }
+                        });
+                        if(!metadataKeyExists){
+                            $scope.transactionsMetadataColumns.push(key);
+                        }
+                    }
+                }
+            }
+
+            localStorageManagement.setValue(vm.savedTransactionMetadataColumns,JSON.stringify($scope.transactionsMetadataColumns));
+
             transactionsArray.forEach(function (transactionObj) {
-                $scope.transactions.push({
+                var metadataObject = {};
+
+                if((transactionObj.metadata) && (Object.keys(transactionObj.metadata).length > 0)){
+                    for(var key in transactionObj.metadata){
+                        if(transactionObj.metadata.hasOwnProperty(key)){
+                            metadataObject[key] = transactionObj.metadata[key];
+                        }
+                    }
+                }
+
+                var transactionObject = {
                     user: transactionObj.user ? transactionObj.user.email || transactionObj.user.mobile || transactionObj.user.id : '',
                     recipient: transactionObj.destination_transaction ? transactionObj.destination_transaction.id ? transactionObj.destination_transaction.user.email : transactionObj.destination_transaction.user.email + ' (new user)' : "",
                     tx_type: transactionObj.tx_type ? $filter("capitalizeWord")(transactionObj.tx_type) : '',
@@ -645,7 +682,11 @@
                     reference: transactionObj.reference ? transactionObj.reference : '',
                     note: transactionObj.note ? transactionObj.note : '',
                     metadata: transactionObj.metadata ? JSON.stringify(transactionObj.metadata) : ''
-                });
+                };
+
+                transactionObject = _.extend(transactionObject,metadataObject);
+
+                $scope.transactions.push(transactionObject);
             });
 
             $scope.loadingTransactions = false;
@@ -717,18 +758,61 @@
 
         };
 
-        $scope.$on("modalClosing",function(event,transactionHasBeenUpdated){
-           if(transactionHasBeenUpdated){
-               $scope.clearFilters();
-               $scope.getLatestTransactions();
-           }
-        });
+        $scope.openCustomMetadataModal = function (page, size) {
+            vm.theCustomMetadata = $uibModal.open({
+                animation: true,
+                templateUrl: page,
+                size: size,
+                controller: 'AddCustomMetadataModalCtrl',
+                resolve: {
+                    transactionsMetadataColumns: function () {
+                        return $scope.transactionsMetadataColumns;
+                    }
+                }
+            });
 
-        $scope.closeColumnFiltersBox = function () {
-            if($scope.visibleColumnsSelectionChanged){
+            vm.theCustomMetadata.result.then(function(metadataAdded){
+                if(metadataAdded){
+                    $scope.headerColumns = JSON.parse(localStorageManagement.getValue(vm.savedTransactionTableColumns));
+                }
+            }, function(){
+            });
+
+        };
+
+        $scope.$on("modalClosing",function(event,transactionHasBeenUpdated){
+            if(transactionHasBeenUpdated){
+                $scope.clearFilters();
                 $scope.getLatestTransactions();
             }
+        });
+
+        $scope.closeColumnFiltersBox = function (callLatestTransactions) {
+            if($scope.visibleColumnsSelectionChanged || callLatestTransactions){
+                $scope.getLatestTransactions();
+            }
+
+            //removing deleted metadata columns from $scope.headerColumns
+            var indexArray = [];
+            $scope.headerColumns.forEach(function (elem,index) {
+                if(elem.hide){
+                    indexArray.push(index);
+                }
+            });
+            if(indexArray.length > 0){
+                indexArray = indexArray.sort(function(a, b){return b-a;});
+                indexArray.forEach(function (ind) {
+                    $scope.headerColumns.splice(ind,1);
+                });
+
+                localStorageManagement.setValue(vm.savedTransactionTableColumns,JSON.stringify($scope.headerColumns));
+            }
+
             $scope.showingColumnFilters = false;
+        };
+
+        $scope.deleteMetadataColumn = function (column) {
+            column.hide = true;
         };
 
         // shortcuts from other places
