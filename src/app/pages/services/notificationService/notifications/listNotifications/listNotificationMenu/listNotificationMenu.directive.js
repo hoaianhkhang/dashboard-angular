@@ -2,16 +2,14 @@
     'use strict';
 
     angular.module('BlurAdmin.pages.services.notificationService.listNotifications')
-        .directive('listNotificationsMenu', listNotificationsMenu);
+        .directive('listNotificationMenu', listNotificationMenu);
 
     /** @ngInject */
-    function listNotificationsMenu() {
+    function listNotificationMenu() {
         return {
             restrict: 'E',
-            require: '^parent',
             templateUrl: 'app/pages/services/notificationService/notifications/' +
-            'listNotifications/listNotificationsMenu/' +
-            'listNotificationsMenu.html'
+            'listNotifications/listNotificationMenu/listNotificationMenu.html'
         };
     }
 })();
