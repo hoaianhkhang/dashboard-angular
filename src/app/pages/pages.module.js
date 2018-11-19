@@ -25,8 +25,6 @@
       'BlurAdmin.pages.resetPasswordConfirmation',
       'BlurAdmin.pages.verifyAdminEmail',
       'BlurAdmin.pages.verification',
-      'BlurAdmin.pages.companyInfoRequest',
-      'BlurAdmin.pages.welcomeToRehive',
       'BlurAdmin.pages.newCompanySetup',
       'BlurAdmin.pages.initialSetupScreen',
       'BlurAdmin.pages.accountInfo'

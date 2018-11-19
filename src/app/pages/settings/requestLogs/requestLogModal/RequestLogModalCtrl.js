@@ -20,6 +20,7 @@
                     $scope.requestLog = res;
                     $scope.params = metadataTextService.convertToText(res.params);
                     $scope.headers = metadataTextService.convertToText(res.headers);
+                    $scope.body = metadataTextService.convertToText(res.body);
                     $scope.$apply();
                 }, function (error) {
                     $scope.loadingRequestLog = false;
