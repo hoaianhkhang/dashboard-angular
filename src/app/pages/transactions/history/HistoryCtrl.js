@@ -158,7 +158,7 @@
                 selectedCurrencyOption: {}
             },
             orderByFilter: {
-                selectedOrderByOption: 'Latest'
+                selectedOrderByOption: 'Created'
             }
         };
         $scope.pagination = {
@@ -176,7 +176,7 @@
         $scope.typeOptions = ['Credit','Debit']; //Transfer
         $scope.statusOptions = ['Pending','Complete','Failed','Deleted'];
         $scope.currencyOptions = [];
-        $scope.orderByOptions = ['Latest','Largest','Smallest'];
+        $scope.orderByOptions = ['Amount','Balance','Created','Fee','Reference','Total amount','Updated'];
         $scope.groupOptions = [];
 
         //Column filters
@@ -556,7 +556,7 @@
                 status: $scope.filtersObj.statusFilter ? $scope.applyFiltersObj.statusFilter.selectedStatusOption: null,
                 subtype: $scope.filtersObj.transactionSubtypeFilter ? ($scope.applyFiltersObj.transactionSubtypeFilter.selectedTransactionSubtypeOption ? $scope.applyFiltersObj.transactionSubtypeFilter.selectedTransactionSubtypeOption: null): null,
                 fields: $scope.visibleColumnsArray.join(','),
-                orderby: $scope.filtersObj.orderByFilter ? ($scope.applyFiltersObj.orderByFilter.selectedOrderByOption == 'Latest' ? '-created' : $scope.applyFiltersObj.orderByFilter.selectedOrderByOption == 'Largest' ? '-amount' : $scope.applyFiltersObj.orderByFilter.selectedOrderByOption == 'Smallest' ? 'amount' : null): null
+                orderby: $scope.filtersObj.orderByFilter ? ($scope.applyFiltersObj.orderByFilter.selectedOrderByOption).toLowerCase() : ''
             };
 
             if($scope.filtersObj.metadataFilter){
