@@ -167,7 +167,8 @@
                 selectedCurrencyOption: {}
             },
             orderByFilter: {
-                selectedOrderByOption: 'Created'
+                selectedOrderByOption: {},
+                selectedOrderByDirection: 'Desc'
             }
         };
         $scope.pagination = {
@@ -184,8 +185,17 @@
         $scope.loadingTransactions = false;
         $scope.typeOptions = ['Credit','Debit']; //Transfer
         $scope.statusOptions = ['Pending','Complete','Failed','Deleted'];
+        $scope.orderByOptions = [
+            {name:'Amount',fieldName: 'amount'},
+            {name:'Balance',fieldName: 'balance'},
+            {name:'Created',fieldName: 'created'},
+            {name:'Fee',fieldName: 'fee'},
+            {name:'Reference',fieldName: 'reference'},
+            {name:'Total amount',fieldName: 'total_amount'},
+            {name:'Updated',fieldName: 'updated'}
+        ];
+        $scope.orderByDirection = ['Desc','Asc'];
         $scope.currencyOptions = [];
-        $scope.orderByOptions = ['Amount','Balance','Created','Fee','Reference','Total amount','Updated'];
         $scope.groupOptions = [];
 
         //Column filters
@@ -275,6 +285,15 @@
                 $scope.pagination.itemsPerPage = 10000;
             }
         };
+
+        vm.getOrderByInitialValue = function () {
+            $scope.orderByOptions.forEach(function (orderByElement,index) {
+                if(orderByElement.name === 'Created'){
+                    $scope.applyFiltersObj.orderByFilter.selectedOrderByOption = $scope.orderByOptions[index];
+                }
+            });
+        };
+        vm.getOrderByInitialValue();
 
         vm.getCompanyCurrencies = function(){
             //adding currency as default value in both results array and ng-model of currency
@@ -565,7 +584,7 @@
                 status: $scope.filtersObj.statusFilter ? $scope.applyFiltersObj.statusFilter.selectedStatusOption: null,
                 subtype: $scope.filtersObj.transactionSubtypeFilter ? ($scope.applyFiltersObj.transactionSubtypeFilter.selectedTransactionSubtypeOption ? $scope.applyFiltersObj.transactionSubtypeFilter.selectedTransactionSubtypeOption: null): null,
                 fields: $scope.visibleColumnsArray.join(','),
-                orderby: $scope.filtersObj.orderByFilter ? ($scope.applyFiltersObj.orderByFilter.selectedOrderByOption).toLowerCase() : ''
+                orderby: $scope.filtersObj.orderByFilter ? $scope.applyFiltersObj.orderByFilter.selectedOrderByDirection == 'Desc' ? '-' + $scope.applyFiltersObj.orderByFilter.selectedOrderByOption.fieldName : $scope.applyFiltersObj.orderByFilter.selectedOrderByOption.fieldName : ''
             };
 
             if($scope.filtersObj.metadataFilter){
