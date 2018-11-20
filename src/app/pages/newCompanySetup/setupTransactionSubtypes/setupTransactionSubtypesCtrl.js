@@ -4,7 +4,7 @@
     angular.module('BlurAdmin.pages.newCompanySetup.setupTransactionSubtypes')
         .controller("SetupTransactionSubtypesCtrl", SetupTransactionSubtypesCtrl);
 
-    function SetupTransactionSubtypesCtrl($rootScope,$scope,toastr,$ngConfirm,$filter,
+    function SetupTransactionSubtypesCtrl($rootScope,$scope,toastr,$ngConfirm,$filter,$timeout,
                                           Rehive,$location,errorHandler,localStorageManagement) {
 
         var vm = this;
@@ -12,8 +12,8 @@
         $scope.subtypes = [];
         $scope.subtype={};
         $rootScope.$pageFinishedLoading=true;
-        $rootScope.activeSetupRoute = 3;
-        localStorageManagement.setValue('activeSetupRoute',3);
+        $rootScope.activeSetupRoute = 4;
+        localStorageManagement.setValue('activeSetupRoute',4);
         $scope.editingSubtypes = false;
         $scope.loadingSetupSubtypes= true;
 
@@ -107,33 +107,56 @@
             });
         };
 
-        $scope.deleteSubtypeConfirm = function (id) {
+        $scope.deleteSubtypeConfirm = function (subtype) {
             $ngConfirm({
                 title: 'Delete subtype',
-                content: 'Are you sure you want to delete this subtype?',
+                contentUrl: 'app/pages/newCompanySetup/setupTransactionSubtypes/deleteTransactionSubtypesPrompt.html',
                 animationBounce: 1,
                 animationSpeed: 100,
                 scope: $scope,
                 buttons: {
                     close: {
-                        text: "No",
-                        btnClass: 'btn-default pull-left dashboard-btn'
+                        text: "Cancel",
+                        btnClass: 'btn-default dashboard-btn'
                     },
-                    ok: {
-                        text: "Yes",
-                        btnClass: 'btn-primary dashboard-btn',
+                    Add: {
+                        text: "Delete permanently",
+                        btnClass: 'btn-danger',
                         keys: ['enter'], // will trigger when enter is pressed
                         action: function(scope){
-                            $scope.deleteSelectedItem(id);
+                            if(scope.deleteText != 'DELETE'){
+                                toastr.error('DELETE text did not match');
+                                return;
+                            }
+                            $scope.archiveSubtype(subtype);
                         }
                     }
                 }
             });
         };
 
-        $scope.deleteSelectedItem = function (id) {
+        $scope.archiveSubtype = function (subtype) {
+            if(subtype.archived){
+                $scope.deleteSelectedItem(subtype);
+            } else {
+                $scope.loadingSetupSubtypes = true;
+                Rehive.admin.subtypes.update(subtype.id, {archived : true}).then(function (res) {
+                    $timeout(function () {
+                        $scope.deleteSelectedItem(subtype);
+                    },1000);
+                    $scope.$apply();
+                }, function (error) {
+                    $scope.loadingSetupSubtypes = false;
+                    errorHandler.evaluateErrors(error);
+                    errorHandler.handleErrors(error);
+                    $scope.$apply();
+                });
+            }
+        };
+
+        $scope.deleteSelectedItem = function (subtype) {
             $scope.loadingSetupSubtypes= true;
-            Rehive.admin.subtypes.delete(id).then(function (res) {
+            Rehive.admin.subtypes.delete(subtype.id).then(function (res) {
                 vm.getSubtypes();
                 $scope.$apply();
             }, function (error) {

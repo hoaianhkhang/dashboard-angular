@@ -11,6 +11,7 @@
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
         vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
+        $scope.companyDateFormatString = localStorageManagement.getValue('DATE_FORMAT');
         vm.currenciesList = JSON.parse($window.sessionStorage.currenciesList || '[]');
         $scope.showingFilters = false;
         $scope.dateFilterOptions = ['Is in the last','In between','Is equal to','Is after','Is before'];
@@ -65,7 +66,7 @@
 
         //for angular datepicker
         $scope.dateObj = {};
-        $scope.dateObj.format = 'MM/dd/yyyy';
+        $scope.dateObj.format = $scope.companyDateFormatString;
         $scope.popup1 = {};
         $scope.open1 = function() {
             $scope.popup1.opened = true;
@@ -255,14 +256,14 @@
                 resolve: {
                     transaction: function () {
                         return transaction;
-                    },
-                    bitcoinInfoUrl: function () {
-                        return $scope.bitcoinInfoObj.insight_node_url;
                     }
                 }
             });
         };
 
+        // bitcoinBlockTrailUrl: function () {
+        //     return $scope.bitcoinInfoObj.insight_node_url;
+        // }
 
     }
 })();

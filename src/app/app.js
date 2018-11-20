@@ -17,6 +17,8 @@ angular.module('BlurAdmin', [
     'ngIntlTelInput',
     'localytics.directives',
     'ngTagsInput',
+    'ui.codemirror',
+    'ng.codemirror.dictionary.hint',
     'BlurAdmin.theme',
     'BlurAdmin.pages'
 ])
@@ -29,6 +31,10 @@ angular.module('BlurAdmin', [
         $window.onload = function(){
             $rootScope.$pageFinishedLoading = true;
         };
+
+        if(!localStorageManagement.getValue('DATE_FORMAT')){
+            localStorageManagement.setValue('DATE_FORMAT','MM/dd/yyyy');
+        }
 
         $rootScope.dashboardTitle = 'Rehive';
 

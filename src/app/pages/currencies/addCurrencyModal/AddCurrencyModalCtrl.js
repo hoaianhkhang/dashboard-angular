@@ -24,7 +24,7 @@
             $scope.showCurrencyConfirmPanel = false;
         };
 
-        $scope.goToconfirmSelection = function (type,currencies) {
+        $scope.goToConfirmSelection = function (type,currencies) {
             $scope.currenciesThatWillBeAdded = [];
             if(Array.isArray(currencies)){
                 $scope.currenciesThatWillBeAddedType = 'normal';

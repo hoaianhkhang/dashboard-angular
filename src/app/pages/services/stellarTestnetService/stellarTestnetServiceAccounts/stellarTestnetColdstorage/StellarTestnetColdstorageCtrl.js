@@ -5,12 +5,13 @@
         .controller('StellarTestnetColdstorageCtrl', StellarTestnetColdstorageCtrl);
 
     /** @ngInject */
-    function StellarTestnetColdstorageCtrl($scope,localStorageManagement,errorHandler,$http,$uibModal,$state,cleanObject,
+    function StellarTestnetColdstorageCtrl($scope,localStorageManagement,errorHandler,$http,$uibModal,cleanObject,
                                     sharedResources,_,$location,environmentConfig,currencyModifiers,toastr,serializeFiltersService) {
 
         var vm = this;
         vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
         vm.token = localStorageManagement.getValue('TOKEN');
+        $scope.companyDateFormatString = localStorageManagement.getValue('DATE_FORMAT');
         $scope.publicAddressesList = [];
         $scope.stellarCurrency = {
             code: "TXLM",
@@ -185,7 +186,7 @@
 
         //for angular datepicker
         $scope.dateObjColdstorage = {};
-        $scope.dateObjColdstorage.format = 'MM/dd/yyyy';
+        $scope.dateObjColdstorage.format = $scope.companyDateFormatString;
         $scope.popup1Coldstorage = {};
         $scope.open1Coldstorage = function() {
             $scope.popup1Coldstorage.opened = true;

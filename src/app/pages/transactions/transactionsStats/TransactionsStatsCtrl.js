@@ -10,6 +10,7 @@
 
         var vm = this;
         vm.token = localStorageManagement.getValue('token');
+        $scope.companyDateFormatString = localStorageManagement.getValue('DATE_FORMAT');
         $scope.loadingStats = true;
         $scope.currencyObj = {};
         $scope.currencyOptions = [];
@@ -134,7 +135,7 @@
 
         //for angular datepicker
         $scope.dateObj = {};
-        $scope.dateObj.format = 'MM/dd/yyyy';
+        $scope.dateObj.format = $scope.companyDateFormatString;
         $scope.popup1 = {};
         $scope.open1 = function() {
             $scope.popup1.opened = true;
@@ -388,7 +389,16 @@
 
             Rehive.admin.transactions.totals.get({filters: transactionsStatsFiltersObj}).then(function (res) {
                 $scope.transactionTotalObj = res;
-                vm.getCurrencyObject($scope.transactionTotalObj);
+                if($scope.transactionTotalObj.currency){
+                    vm.getCurrencyObject($scope.transactionTotalObj);
+                    $scope.$apply();
+                } else {
+                    $scope.currencyObj = {
+                        symbol: 'N/A'
+                    };
+                    $scope.loadingStats = false;
+                    $scope.$apply();
+                }
                 $scope.$apply();
             }, function (error) {
                 $scope.loadingStats = false;

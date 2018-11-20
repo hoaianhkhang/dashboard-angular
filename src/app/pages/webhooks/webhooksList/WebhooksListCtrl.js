@@ -13,6 +13,35 @@
         vm.updatedWebhook = {};
         vm.token = localStorageManagement.getValue('token');
         $scope.loadingWebhooks = true;
+        $scope.filtersCount = 0;
+        $scope.showingFilters = false;
+        $scope.webhookList = [];
+        $scope.eventOptions = ['User Create','User Update','User Password Reset','User Password Set','User Email Verify','User Mobile Verify',
+            'Address Create','Address Update','Document Create','Document Update', 'Bank Account Create','Bank Account Update',
+            'Crypto Account Create','Crypto Account Update','Transaction Create','Transaction Update','Transaction Delete',
+            'Transaction Initiate','Transaction Execute'];
+
+        vm.eventOptionsObj = {
+            USER_CREATE: 'user.create',
+            USER_UPDATE: 'user.update',
+            USER_PASSWORD_RESET: 'user.password.reset',
+            USER_PASSWORD_SET: 'user.password.set',
+            USER_EMAIL_VERIFY: 'user.email.verify',
+            USER_MOBILE_VERIFY: 'user.mobile.verify',
+            ADDRESS_CREATE: 'address.create',
+            ADDRESS_UPDATE: 'address.update',
+            DOCUMENT_CREATE: 'document.create',
+            DOCUMENT_UPDATE: 'document.update',
+            BANK_ACCOUNT_CREATE: 'bank_account.create',
+            BANK_ACCOUNT_UPDATE: 'bank_account.update',
+            CRYPTO_ACCOUNT_CREATE: 'crypto_account.create',
+            CRYPTO_ACCOUNT_UPDATE: 'crypto_account.update',
+            TRANSACTION_CREATE: 'transaction.create',
+            TRANSACTION_UPDATE: 'transaction.update',
+            TRANSACTION_DELETE: 'transaction.delete',
+            TRANSACTION_INITIATE: 'transaction.initiate',
+            TRANSACTION_EXECUTE: 'transaction.execute'
+        };
 
         var location = $location.path();
         var locationArray = location.split('/');
@@ -24,18 +53,78 @@
             maxSize: 5
         };
 
+        $scope.filtersObj = {
+            eventFilter: false,
+            urlFilter: false,
+            secretFilter: false
+        };
+        $scope.applyFiltersObj = {
+            eventFilter: {
+                selectedEventOption: ''
+            },
+            urlFilter: {
+                selectedUrlOption: ''
+            },
+            secretFilter: {
+                selectedSecretOption: ''
+            }
+        };
+
+        $scope.clearFilters = function () {
+            $scope.filtersObj = {
+                eventFilter: false,
+                urlFilter: false,
+                secretFilter: false
+            };
+        };
+
+        $scope.showFilters = function () {
+            $scope.showingFilters = !$scope.showingFilters;
+        };
+
         vm.getWebhooksFiltersObj = function(){
+            $scope.filtersCount = 0;
+
+            for(var x in $scope.filtersObj){
+                if($scope.filtersObj.hasOwnProperty(x)){
+                    if($scope.filtersObj[x]){
+                        $scope.filtersCount = $scope.filtersCount + 1;
+                    }
+                }
+            }
+            
+            var event;
+            if($scope.filtersObj.eventFilter){
+                event = $scope.applyFiltersObj.eventFilter.selectedEventOption.toUpperCase();
+                event = event.replace(/ /g, '_');
+                event = vm.eventOptionsObj[event];
+            }
+
             var searchObj = {
                 page: $scope.pagination.pageNo,
-                page_size: $scope.pagination.itemsPerPage || 25
+                page_size: $scope.pagination.itemsPerPage || 25,
+                event: $scope.filtersObj.eventFilter ? event : null,
+                url: $scope.filtersObj.urlFilter ? $scope.applyFiltersObj.urlFilter.selectedUrlOption : null,
+                secret: $scope.filtersObj.secretFilter ? $scope.applyFiltersObj.secretFilter.selectedSecretOption : null
             };
 
             return serializeFiltersService.objectFilters(searchObj);
         };
 
-        $scope.getWebhooks = function () {
+        $scope.getWebhooks = function (applyFilter) {
             if(vm.token) {
+
+                $scope.showingFilters = false;
                 $scope.loadingWebhooks = true;
+
+                if (applyFilter) {
+                    // if function is called from history-filters directive, then pageNo set to 1
+                    $scope.pagination.pageNo = 1;
+                }
+
+                if ($scope.webhookList.length > 0) {
+                    $scope.webhookList.length = 0;
+                }
 
                 var webhooksFiltersObj = vm.getWebhooksFiltersObj();
 

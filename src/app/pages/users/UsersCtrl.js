@@ -5,12 +5,13 @@
         .controller('UsersCtrl', UsersCtrl);
 
     /** @ngInject */
-    function UsersCtrl($rootScope,$state,Rehive,$scope,typeaheadService,$location,
+    function UsersCtrl($rootScope,$state,Rehive,$scope,typeaheadService,$location,$uibModal,
                        localStorageManagement,errorHandler,$window,toastr,serializeFiltersService,$filter) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
         vm.companyIdentifier = localStorageManagement.getValue('companyIdentifier');
+        $scope.companyDateFormatString = localStorageManagement.getValue('DATE_FORMAT');
         vm.savedUserTableColumns = vm.companyIdentifier + 'usersTable';
         $rootScope.dashboardTitle = 'Users | Rehive';
         vm.currenciesList = JSON.parse($window.sessionStorage.currenciesList || '[]');
@@ -239,7 +240,7 @@
 
         //for angular datepicker
         $scope.dateObj = {};
-        $scope.dateObj.format = 'MM/dd/yyyy';
+        $scope.dateObj.format = $scope.companyDateFormatString;
         $scope.popup1 = {};
         $scope.open1 = function() {
             $scope.popup1.opened = true;
@@ -585,12 +586,31 @@
             $scope.loadingUsers = false;
         };
 
-        $scope.goToAddUser = function () {
-            $location.path('/users/add');
+        $scope.openAddUserModal = function (page, size) {
+            vm.theAddModal = $uibModal.open({
+                animation: true,
+                templateUrl: page,
+                size: size,
+                controller: 'AddUserModalCtrl'
+            });
+
+            vm.theAddModal.result.then(function(user){
+                if(user){
+                    $scope.getAllUsers();
+                }
+            }, function(){
+            });
+
         };
 
-        $scope.displayUser = function (user) {
-            $location.path('/user/' + user.id + '/details');
+        $scope.displayUser = function ($event,user) {
+            if($event.which === 1){
+                $location.path('/user/' + user.id + '/details');
+            } else if($event.which === 2){
+                $window.open('/#/user/' + user.id + '/details','_blank');
+            } else if($event.which === 3){
+                $window.open('/#/user/' + user.id + '/details','_blank');
+            }
         };
 
         $scope.closeColumnFiltersBox = function () {

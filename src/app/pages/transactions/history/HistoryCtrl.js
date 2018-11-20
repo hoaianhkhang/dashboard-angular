@@ -12,7 +12,11 @@
         var vm = this;
         vm.token = localStorageManagement.getValue('token');
         vm.companyIdentifier = localStorageManagement.getValue('companyIdentifier');
+        $scope.companyDateFormatString = localStorageManagement.getValue('DATE_FORMAT');
         vm.savedTransactionTableColumns = vm.companyIdentifier + 'transactionsTable';
+        vm.savedTransactionMetadataColumns = vm.companyIdentifier + 'transactionsMetadataColumns';
+        $scope.transactionsMetadataColumns = localStorageManagement.getValue(vm.savedTransactionMetadataColumns) ?
+            JSON.parse(localStorageManagement.getValue(vm.savedTransactionMetadataColumns)) : [];
         vm.newTransactionParams = $location.search();
         $rootScope.dashboardTitle = 'Transactions history | Rehive';
         vm.currenciesList = JSON.parse($window.sessionStorage.currenciesList || '[]');
@@ -24,6 +28,8 @@
         $scope.dateFilterIntervalOptions = ['days','months'];
         $scope.groupFilterOptions = ['Group name','In a group'];
         $scope.accountFilterOptions = ['Name','Reference'];
+        $scope.visibleColumnsArray = [];
+        $scope.visibleColumnsSelectionChanged = false;
         $scope.filtersCount = 0;
         $scope.orderByVariable = '-createdDate';
 
@@ -38,33 +44,33 @@
             localStorageManagement.setValue(vm.savedTransactionTableColumns,JSON.stringify(headerColumns));
         }
 
-        // if(localStorageManagement.getValue(vm.savedTransactionTableColumns)){
-        //     var headerColumns = JSON.parse(localStorageManagement.getValue(vm.savedTransactionTableColumns));
-        //     var recipientFieldExists = false;
-        //     headerColumns.forEach(function (col) {
-        //         if(col.colName == 'Recipient' || col.fieldName == 'recipient'){
-        //             recipientFieldExists = true;
-        //         }
-        //     });
-        //
-        //     if(!recipientFieldExists){
-        //         headerColumns.splice(1,0,{colName: 'Recipient',fieldName: 'recipient',visible: true});
-        //     }
-        //
-        //     localStorageManagement.setValue(vm.savedTransactionTableColumns,JSON.stringify(headerColumns));
-        // }
-
         if(localStorageManagement.getValue(vm.savedTransactionTableColumns)){
-                 var headerColumns = JSON.parse(localStorageManagement.getValue(vm.savedTransactionTableColumns));
-                 headerColumns.forEach(function (col) {
-                     if(col.colName == 'Identifier'){
-                         col.colName = 'User id';
-                         col.fieldName = 'userId';
-                     }
-                 });
+            var headerColumns = JSON.parse(localStorageManagement.getValue(vm.savedTransactionTableColumns));
+            var recipientFieldExists = false;
+            headerColumns.forEach(function (col) {
+                if(col.colName == 'Metadata'){
+                    recipientFieldExists = true;
+                }
+            });
 
-                localStorageManagement.setValue(vm.savedTransactionTableColumns,JSON.stringify(headerColumns));
+            if(!recipientFieldExists){
+                headerColumns.splice(22,0,{colName: 'Metadata',fieldName: 'metadata',visible: false});
             }
+
+            localStorageManagement.setValue(vm.savedTransactionTableColumns,JSON.stringify(headerColumns));
+        }
+
+        // if(localStorageManagement.getValue(vm.savedTransactionTableColumns)){
+        //          var headerColumns = JSON.parse(localStorageManagement.getValue(vm.savedTransactionTableColumns));
+        //          headerColumns.forEach(function (col) {
+        //              if(col.colName == 'Identifier'){
+        //                  col.colName = 'User id';
+        //                  col.fieldName = 'userId';
+        //              }
+        //          });
+        //
+        //         localStorageManagement.setValue(vm.savedTransactionTableColumns,JSON.stringify(headerColumns));
+        //     }
 
         $scope.headerColumns = localStorageManagement.getValue(vm.savedTransactionTableColumns) ? JSON.parse(localStorageManagement.getValue(vm.savedTransactionTableColumns)) : [
             {colName: 'User',fieldName: 'user',visible: true},
@@ -88,7 +94,8 @@
             {colName: 'Source tx id',fieldName: 'source_tx_id',visible: false},
             {colName: 'Label',fieldName: 'label',visible: false},
             {colName: 'Reference',fieldName: 'reference',visible: false},
-            {colName: 'Note',fieldName: 'note',visible: false}
+            {colName: 'Note',fieldName: 'note',visible: false},
+            {colName: 'Metadata',fieldName: 'metadata',visible: false}
         ];
         $scope.filtersObj = {
             dateFilter: false,
@@ -97,6 +104,7 @@
             transactionTypeFilter: false,
             transactionSubtypeFilter: false,
             transactionIdFilter: false,
+            metadataFilter: false,
             destinationIdFilter: false,
             sourceIdFilter: false,
             referenceFilter: false,
@@ -133,6 +141,10 @@
             },
             transactionIdFilter: {
                 selectedTransactionIdOption: null
+            },
+            metadataFilter: {
+                selectedMetadataKey: '',
+                selectedMetadataValue: ''
             },
             referenceFilter: {
                 selectedReferenceOption: 'Is equal to',
@@ -178,6 +190,7 @@
         $scope.orderByOptions = ['Latest','Largest','Smallest'];
         $scope.groupOptions = [];
 
+        //Column filters
         $scope.showColumnFilters = function () {
             $scope.showingFilters = false;
             $scope.showingColumnFilters = !$scope.showingColumnFilters;
@@ -191,6 +204,7 @@
         };
 
         $scope.toggleColumnVisibility = function () {
+            $scope.visibleColumnsSelectionChanged = true;
             localStorageManagement.setValue(vm.savedTransactionTableColumns,JSON.stringify($scope.headerColumns));
         };
 
@@ -208,6 +222,7 @@
 
             localStorageManagement.setValue(vm.savedTransactionTableColumns,JSON.stringify($scope.headerColumns));
         };
+        //Column filters end
 
         sharedResources.getSubtypes().then(function (res) {
             $scope.subtypeOptions = _.pluck(res,'name');
@@ -233,7 +248,7 @@
 
         //for angular datepicker
         $scope.dateObj = {};
-        $scope.dateObj.format = 'MM/dd/yyyy';
+        $scope.dateObj.format = $scope.companyDateFormatString;
         $scope.popup1 = {};
         $scope.open1 = function() {
             $scope.popup1.opened = true;
@@ -287,6 +302,7 @@
                 transactionTypeFilter: false,
                 transactionSubtypeFilter: false,
                 transactionIdFilter: false,
+                metadataFilter: false,
                 destinationIdFilter: false,
                 sourceIdFilter: false,
                 userFilter: false,
@@ -439,6 +455,46 @@
             return referenceObj;
         };
 
+        vm.getVisibleColumnsArray = function () {
+            var visibleColumnsArray = [];
+
+            $scope.headerColumns.forEach(function (col) {
+                if(col.visible){
+                    if(col.fieldName === 'user' || col.fieldName === 'username' || col.fieldName === 'userId' || col.fieldName === 'mobile'){
+                        visibleColumnsArray.push('user');
+                    } else if(col.fieldName === 'recipient' || col.fieldName === 'destination_tx_id'){
+                        visibleColumnsArray.push('destination_transaction');
+                    } else if(col.fieldName === 'currencyCode'){
+                        visibleColumnsArray.push('currency');
+                    } else if(col.fieldName === 'createdDate'){
+                        visibleColumnsArray.push('created');
+                    } else if(col.fieldName === 'updatedDate'){
+                        visibleColumnsArray.push('updated');
+                    } else if(col.fieldName === 'totalAmount'){
+                        visibleColumnsArray.push('total_amount');
+                        visibleColumnsArray.push('currency');
+                    } else if(col.fieldName === 'source_tx_id'){
+                        visibleColumnsArray.push('source_transaction');
+                    } else {
+                        visibleColumnsArray.push(col.fieldName);
+                        if(col.fieldName === 'amount' || col.fieldName === 'fee' || col.fieldName === 'balance'){
+                            visibleColumnsArray.push('currency');
+                        }
+                    }
+                }
+            });
+
+            if((_.indexOf(visibleColumnsArray, 'id') === -1)){
+                visibleColumnsArray.push('id');
+            }
+
+            if((_.indexOf(visibleColumnsArray, 'metadata') === -1)){
+                visibleColumnsArray.push('metadata');
+            }
+
+            return _.uniq(visibleColumnsArray);
+        };
+
         vm.getTransactionsFiltersObj = function(){
             $scope.filtersCount = 0;
             $scope.filtersObjForExport = {};
@@ -480,6 +536,8 @@
                 };
             }
 
+            $scope.visibleColumnsArray = vm.getVisibleColumnsArray();
+
             var searchObj = {
                 page: $scope.pagination.pageNo,
                 page_size: $scope.filtersObj.pageSizeFilter? $scope.pagination.itemsPerPage : 25,
@@ -503,8 +561,15 @@
                 source_transaction : $scope.filtersObj.sourceIdFilter ? 'true' : null,
                 tx_type: $scope.filtersObj.transactionTypeFilter ? $scope.applyFiltersObj.transactionTypeFilter.selectedTransactionTypeOption.toLowerCase() : null,
                 status: $scope.filtersObj.statusFilter ? $scope.applyFiltersObj.statusFilter.selectedStatusOption: null,
-                subtype: $scope.filtersObj.transactionSubtypeFilter ? ($scope.applyFiltersObj.transactionSubtypeFilter.selectedTransactionSubtypeOption ? $scope.applyFiltersObj.transactionSubtypeFilter.selectedTransactionSubtypeOption: null): null
+                subtype: $scope.filtersObj.transactionSubtypeFilter ? ($scope.applyFiltersObj.transactionSubtypeFilter.selectedTransactionSubtypeOption ? $scope.applyFiltersObj.transactionSubtypeFilter.selectedTransactionSubtypeOption: null): null,
+                fields: $scope.visibleColumnsArray.join(',')
             };
+
+            if($scope.filtersObj.metadataFilter){
+                searchObj['metadata__' + $scope.applyFiltersObj.metadataFilter.selectedMetadataKey] = $scope.applyFiltersObj.metadataFilter.selectedMetadataValue;
+            } else {
+                searchObj['metadata__' + $scope.applyFiltersObj.metadataFilter.selectedMetadataKey] = null;
+            }
 
             $scope.filtersObjForExport = searchObj;
 
@@ -515,6 +580,8 @@
             if(vm.token) {
 
                 $scope.showingFilters = false;
+                $scope.showingColumnFilters = false;
+                $scope.visibleColumnsSelectionChanged = false;
 
                 $scope.transactionsStateMessage = '';
                 $scope.loadingTransactions = true;
@@ -572,32 +639,66 @@
         }
 
         vm.formatTransactionsArray = function (transactionsArray) {
+
+            //save unique metadata keys from 1st transactions
+            if((transactionsArray[0].metadata) && (Object.keys(transactionsArray[0].metadata).length > 0)){
+                for(var key in transactionsArray[0].metadata){
+                    var metadataKeyExists = false;
+                    if(transactionsArray[0].metadata.hasOwnProperty(key)){
+                        $scope.transactionsMetadataColumns.forEach(function (element) {
+                            if(element == key){
+                                metadataKeyExists = true;
+                            }
+                        });
+                        if(!metadataKeyExists){
+                            $scope.transactionsMetadataColumns.push(key);
+                        }
+                    }
+                }
+            }
+
+            localStorageManagement.setValue(vm.savedTransactionMetadataColumns,JSON.stringify($scope.transactionsMetadataColumns));
+
             transactionsArray.forEach(function (transactionObj) {
-                $scope.transactions.push({
-                    user: transactionObj.user.email || transactionObj.user.mobile || transactionObj.user.id,
+                var metadataObject = {};
+
+                if((transactionObj.metadata) && (Object.keys(transactionObj.metadata).length > 0)){
+                    for(var key in transactionObj.metadata){
+                        if(transactionObj.metadata.hasOwnProperty(key)){
+                            metadataObject[key] = transactionObj.metadata[key];
+                        }
+                    }
+                }
+
+                var transactionObject = {
+                    user: transactionObj.user ? transactionObj.user.email || transactionObj.user.mobile || transactionObj.user.id : '',
                     recipient: transactionObj.destination_transaction ? transactionObj.destination_transaction.id ? transactionObj.destination_transaction.user.email : transactionObj.destination_transaction.user.email + ' (new user)' : "",
-                    tx_type: $filter("capitalizeWord")(transactionObj.tx_type),
-                    subtype: transactionObj.subtype,
-                    currencyCode: transactionObj.currency.code,
-                    amount: $filter("currencyModifiersFilter")(transactionObj.amount,transactionObj.currency.divisibility),
-                    fee: $filter("currencyModifiersFilter")(transactionObj.fee,transactionObj.currency.divisibility),
-                    status: transactionObj.status,
-                    id: transactionObj.id,
-                    createdDate: $filter("date")(transactionObj.created,'mediumDate') + ' ' + $filter("date")(transactionObj.created,'shortTime'),
-                    totalAmount: $filter("currencyModifiersFilter")(transactionObj.total_amount,transactionObj.currency.divisibility),
-                    balance: $filter("currencyModifiersFilter")(transactionObj.balance,transactionObj.currency.divisibility),
-                    account: transactionObj.account,
-                    username: transactionObj.user.username,
-                    userId: transactionObj.user.id,
-                    updatedDate: transactionObj.updated ? $filter("date")(transactionObj.updated,'mediumDate') + ' ' + $filter("date")(transactionObj.updated,'shortTime'): null,
-                    mobile: transactionObj.user.mobile,
+                    tx_type: transactionObj.tx_type ? $filter("capitalizeWord")(transactionObj.tx_type) : '',
+                    subtype: transactionObj.subtype ? transactionObj.subtype : '',
+                    currencyCode: transactionObj.currency ? transactionObj.currency.code : '',
+                    amount: transactionObj.amount ? $filter("currencyModifiersFilter")(transactionObj.amount,transactionObj.currency.divisibility) : '',
+                    fee: transactionObj.fee ? $filter("currencyModifiersFilter")(transactionObj.fee,transactionObj.currency.divisibility) : '',
+                    status: transactionObj.status ? transactionObj.status : '',
+                    id: transactionObj.id ? transactionObj.id : '',
+                    createdDate: transactionObj.created ? $filter("date")(transactionObj.created,'mediumDate') + ' ' + $filter("date")(transactionObj.created,'shortTime') : '',
+                    totalAmount: transactionObj.total_amount ? $filter("currencyModifiersFilter")(transactionObj.total_amount,transactionObj.currency.divisibility) : '',
+                    balance: transactionObj.balance ? $filter("currencyModifiersFilter")(transactionObj.balance,transactionObj.currency.divisibility) : '',
+                    account: transactionObj.account ? transactionObj.account : '',
+                    username: transactionObj.user ? transactionObj.user.username : '',
+                    userId: transactionObj.user ? transactionObj.user.id : '',
+                    updatedDate: transactionObj.updated ? $filter("date")(transactionObj.updated,'mediumDate') + ' ' + $filter("date")(transactionObj.updated,'shortTime') : '',
+                    mobile: transactionObj.user ? transactionObj.user.mobile : '',
                     destination_tx_id: transactionObj.destination_transaction ? transactionObj.destination_transaction.id ? transactionObj.destination_transaction.id : 'ID pending creation' : "",
                     source_tx_id: transactionObj.source_transaction ? transactionObj.source_transaction.id : "",
-                    label: transactionObj.label,
-                    reference: transactionObj.reference,
-                    note: transactionObj.note,
-                    metadata: transactionObj.metadata
-                });
+                    label: transactionObj.label ? transactionObj.label : '',
+                    reference: transactionObj.reference ? transactionObj.reference : '',
+                    note: transactionObj.note ? transactionObj.note : '',
+                    metadata: transactionObj.metadata ? JSON.stringify(transactionObj.metadata) : ''
+                };
+
+                transactionObject = _.extend(transactionObject,metadataObject);
+
+                $scope.transactions.push(transactionObject);
             });
 
             $scope.loadingTransactions = false;
@@ -629,6 +730,9 @@
                 resolve: {
                     filtersObjForExport: function () {
                         return $scope.filtersObjForExport;
+                    },
+                    visibleColumnsArray: function () {
+                        return $scope.visibleColumnsArray;
                     }
                 }
             });
@@ -666,15 +770,61 @@
 
         };
 
+        $scope.openCustomMetadataModal = function (page, size) {
+            vm.theCustomMetadata = $uibModal.open({
+                animation: true,
+                templateUrl: page,
+                size: size,
+                controller: 'AddCustomMetadataModalCtrl',
+                resolve: {
+                    transactionsMetadataColumns: function () {
+                        return $scope.transactionsMetadataColumns;
+                    }
+                }
+            });
+
+            vm.theCustomMetadata.result.then(function(metadataAdded){
+                if(metadataAdded){
+                    $scope.headerColumns = JSON.parse(localStorageManagement.getValue(vm.savedTransactionTableColumns));
+                }
+            }, function(){
+            });
+
+        };
+
         $scope.$on("modalClosing",function(event,transactionHasBeenUpdated){
-           if(transactionHasBeenUpdated){
-               $scope.clearFilters();
-               $scope.getLatestTransactions();
-           }
+            if(transactionHasBeenUpdated){
+                $scope.clearFilters();
+                $scope.getLatestTransactions();
+            }
         });
 
-        $scope.closeColumnFiltersBox = function () {
+        $scope.closeColumnFiltersBox = function (callLatestTransactions) {
+            if($scope.visibleColumnsSelectionChanged || callLatestTransactions){
+                $scope.getLatestTransactions();
+            }
+
+            //removing deleted metadata columns from $scope.headerColumns
+            var indexArray = [];
+            $scope.headerColumns.forEach(function (elem,index) {
+                if(elem.hide){
+                    indexArray.push(index);
+                }
+            });
+            if(indexArray.length > 0){
+                indexArray = indexArray.sort(function(a, b){return b-a;});
+                indexArray.forEach(function (ind) {
+                    $scope.headerColumns.splice(ind,1);
+                });
+
+                localStorageManagement.setValue(vm.savedTransactionTableColumns,JSON.stringify($scope.headerColumns));
+            }
+
             $scope.showingColumnFilters = false;
+        };
+
+        $scope.deleteMetadataColumn = function (column) {
+            column.hide = true;
         };
 
         // shortcuts from other places

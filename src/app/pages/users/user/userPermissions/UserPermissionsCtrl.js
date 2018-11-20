@@ -35,6 +35,7 @@
             USER_ADDRESS : 'useraddress',
             USER_BANK_ACCOUNT : 'userbankaccount',
             MOBILE : 'mobile',
+            EMAIL_ADDRESS : 'emailaddress',
             GROUP: 'group',
             GROUP_TIER: 'grouptier',
             GROUP_TIER_FEE: 'grouptierfee',
@@ -96,7 +97,8 @@
                     {type:'User',levelCounter: 0,levels: [{name: 'view',enabled: false},{name: 'add',enabled: false},{name: 'change',enabled: false},{name: 'delete',enabled: false},{name: 'all',enabled: false}]},
                     {type:'User address',levelCounter: 0,levels: [{name: 'view',enabled: false},{name: 'add',enabled: false},{name: 'change',enabled: false},{name: 'delete',enabled: false},{name: 'all',enabled: false}]},
                     {type:'User bank account',levelCounter: 0,levels: [{name: 'view',enabled: false},{name: 'add',enabled: false},{name: 'change',enabled: false},{name: 'delete',enabled: false},{name: 'all',enabled: false}]},
-                    {type:'Mobile',levelCounter: 0,levels: [{name: 'view',enabled: false},{name: 'add',enabled: false},{name: 'change',enabled: false},{name: 'delete',enabled: false},{name: 'all',enabled: false}]}
+                    {type:'Mobile',levelCounter: 0,levels: [{name: 'view',enabled: false},{name: 'add',enabled: false},{name: 'change',enabled: false},{name: 'delete',enabled: false},{name: 'all',enabled: false}]},
+                    {type:'Email address',levelCounter: 0,levels: [{name: 'view',enabled: false},{name: 'add',enabled: false},{name: 'change',enabled: false},{name: 'delete',enabled: false},{name: 'all',enabled: false}]}
                 ]};
 
             $scope.totalPermissionsObj.groupPermissionsOptions = {
@@ -147,6 +149,23 @@
         };
         vm.initializePermissions();
 
+        vm.getUser = function(){
+            if(vm.token) {
+                $scope.loadingPermissions = true;
+                Rehive.admin.users.get({id: vm.uuid}).then(function (res) {
+                    $scope.user = res;
+                    vm.getPermissions();
+                    $scope.$apply();
+                }, function (error) {
+                    $scope.loadingPermissions = false;
+                    errorHandler.evaluateErrors(error);
+                    errorHandler.handleErrors(error);
+                    $scope.$apply();
+                });
+            }
+        };
+        vm.getUser();
+
         vm.getPermissions = function () {
             if(vm.token) {
                 $scope.loadingPermissions = true;
@@ -162,7 +181,6 @@
                 });
             }
         };
-        vm.getPermissions();
 
         vm.checkforAllowedPermissions = function (permissionsArray) {
             permissionsArray.forEach(function (permission,index) {

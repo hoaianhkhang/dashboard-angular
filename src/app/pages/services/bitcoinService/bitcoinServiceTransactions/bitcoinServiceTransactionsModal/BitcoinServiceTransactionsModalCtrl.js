@@ -4,12 +4,18 @@
     angular.module('BlurAdmin.pages.services.bitcoinService.bitcoinServiceTransactions')
         .controller('BitcoinServiceTransactionsModalCtrl', BitcoinServiceTransactionsModalCtrl);
 
-    function BitcoinServiceTransactionsModalCtrl($uibModalInstance,$scope,transaction,bitcoinInfoUrl,metadataTextService,$state,$location) {
+    function BitcoinServiceTransactionsModalCtrl($uibModalInstance,$scope,transaction,metadataTextService,
+                                                 localStorageManagement,$state,$location) {
 
+        var vm = this;
         $scope.rehive_response = metadataTextService.convertToText(transaction.rehive_response);
         $scope.transaction = transaction;
-        $scope.bitcoinInfoUrl = bitcoinInfoUrl;
-
+        vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
+        if(vm.serviceUrl.indexOf('testnet') > 0){
+            $scope.bitcoinBlockTrailUrl = 'https://www.blocktrail.com/tBTC';
+        } else {
+            $scope.bitcoinBlockTrailUrl = 'https://www.blocktrail.com/BTC';
+        }
 
         $scope.goToUser = function () {
             $uibModalInstance.close();

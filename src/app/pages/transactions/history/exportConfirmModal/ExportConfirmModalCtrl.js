@@ -5,7 +5,7 @@
         .controller('ExportConfirmModalCtrl', ExportConfirmModalCtrl);
 
     function ExportConfirmModalCtrl($rootScope,$scope,$filter,filtersObjForExport,localStorageManagement,
-                                    Rehive,currenciesList,serializeFiltersService,errorHandler,toastr) {
+                                    Rehive,visibleColumnsArray,currenciesList,serializeFiltersService,errorHandler,toastr) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
@@ -21,6 +21,7 @@
         $scope.currencyObjectsList = currenciesList.slice();
         $scope.exportingTransactions = false;
         $scope.transactionsExported = false;
+        $scope.visibleColumnsArray = visibleColumnsArray;
 
         vm.getCompanyCurrencies = function(){
             if(vm.token){
@@ -93,11 +94,14 @@
                     }
                 }
             }
+            $scope.filtersTextsArray.push('Fields: ' + $scope.visibleColumnsArray.join(', '));
             $scope.exportingTransactions = false;
         };
 
         $scope.exportTransansactionsSet = function() {
             $scope.exportingTransactions = true;
+            $scope.filtersObjForExportDeepCopy.fields = $scope.visibleColumnsArray.join(',');
+
             Rehive.admin.transactions.sets.create({
                 page_size: 10000,
                 query: $scope.filtersObjForExportDeepCopy,

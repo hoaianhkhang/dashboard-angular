@@ -12,6 +12,7 @@
         $scope.groupName = $stateParams.groupName;
         vm.token = localStorageManagement.getValue('token');
         vm.companyIdentifier = localStorageManagement.getValue('companyIdentifier');
+        $scope.companyDateFormatString = localStorageManagement.getValue('DATE_FORMAT');
         vm.savedGroupUsersTableColumns = vm.companyIdentifier + $scope.groupName + 'usersTable';
         $rootScope.dashboardTitle = 'Groups | Rehive';
         vm.currenciesList = JSON.parse($window.sessionStorage.currenciesList || '[]');
@@ -219,7 +220,7 @@
 
         //for angular datepicker
         $scope.dateObj = {};
-        $scope.dateObj.format = 'MM/dd/yyyy';
+        $scope.dateObj.format = $scope.companyDateFormatString;
         $scope.popup1 = {};
         $scope.open1 = function() {
             $scope.popup1.opened = true;
@@ -564,7 +565,7 @@
             }
         };
 
-        $scope.displayUser = function (user) {
+        $scope.displayGroupUser = function (user) {
             $location.path('/user/' + user.id + '/details');
         };
 

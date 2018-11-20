@@ -9,7 +9,6 @@
         $scope.ethereumAccountSettingView = 'hotwallet';
 
         $scope.goToEthereumAccountSetting = function (setting) {
-            console.log(setting)
             $scope.ethereumAccountSettingView = setting;
         };
     }

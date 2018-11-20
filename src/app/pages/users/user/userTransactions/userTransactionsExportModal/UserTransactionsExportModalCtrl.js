@@ -14,6 +14,7 @@
         delete filtersObjForExport.page_size;
         $scope.filtersObjForExportDeepCopy = Object.assign({}, serializeFiltersService.objectFilters(filtersObjForExport));
         $scope.filtersObjForExport = serializeFiltersService.objectFilters(filtersObjForExport);
+        $scope.fileOutput = {type: 'csv'};
         $scope.transactionSetResponse =  {};
         $scope.filtersTextsArray = [];
         $scope.filterCurrencyObj = {};
@@ -39,6 +40,7 @@
                         $scope.$apply();
                     } else {
                         vm.filtersObjToText();
+                        $scope.exportingTransactions = false;
                         $scope.$apply();
                     }
                 }, function (error) {
@@ -98,7 +100,8 @@
             $scope.exportingTransactions = true;
             Rehive.admin.transactions.sets.create({
                 page_size: 10000,
-                query: $scope.filtersObjForExportDeepCopy
+                query: $scope.filtersObjForExportDeepCopy,
+                file_format: $scope.fileOutput.type
             }).then(function (res) {
                 $scope.exportingTransactions = false;
                 $scope.transactionsExported = true;
