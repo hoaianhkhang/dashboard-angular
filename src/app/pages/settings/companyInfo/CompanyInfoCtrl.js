@@ -125,13 +125,9 @@
         $scope.updateCompanyInfo = function () {
             $scope.loadingCompanyInfo = true;
             if(vm.updatedCompanyInfo.config){
-                if(isJson(vm.updatedCompanyInfo.config)){
-                    vm.updatedCompanyInfo.config = JSON.parse(vm.updatedCompanyInfo.config);
-                } else {
-                    toastr.error('Incorrect metadata format');
-                    $scope.loadingCompanyInfo = false;
-                    return false;
-                }
+                vm.updatedCompanyInfo.config = JSON.parse(vm.updatedCompanyInfo.config);
+            } else {
+                vm.updatedCompanyInfo.config = {};
             }
 
             Rehive.admin.company.update(vm.updatedCompanyInfo).then(function (res) {
