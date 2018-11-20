@@ -154,11 +154,10 @@
                     <br>
                     <input class="custom-rehive-checkbox" ng-model="newCampaignParams.request" type="checkbox">
                 </div>
-                <div class="form-group setup-groups-tooltip-div">
-                    <label>Users &nbsp;<i uib-tooltip-html="'Enter one of more user IDs.'"
-                                          class="ion-information-circled setup-groups-tooltip"></i></label>
+                <div class="form-group">
+                    <label>Users</label>
                     <div class="reward-multi-select">
-                        <tags-input ng-model="newCampaignParams.users" placeholder="Enter one or more user email">
+                        <tags-input ng-model="newCampaignParams.users" placeholder="Enter one of more user IDs.">
                             <auto-complete class="reward-tag-users-input" source="getUsersEmailTypeahead($query)"></auto-complete>
                         </tags-input>
                     </div>
