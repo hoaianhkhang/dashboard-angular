@@ -15,7 +15,9 @@
         vm.companyIdentifier = localStorageManagement.getValue('companyIdentifier');
         vm.savedTransactionTableColumns = vm.companyIdentifier + 'transactionsTable';
         $scope.headerColumns = JSON.parse(localStorageManagement.getValue(vm.savedTransactionTableColumns));
-        $scope.metadataToAdd = [];
+        $scope.metadataToAdd = {
+            list: []
+        };
 
         vm.initializeMetadataOptions = function () {
             var indexArray = [];
@@ -38,23 +40,26 @@
             return $filter('filter')($scope.metadataOptions,query);
         };
 
-        $scope.addMetadataColumns = function (metadataToAdd) {
-            var metadataArray = _.pluck(metadataToAdd,'text');
+        $scope.addMetadataColumns = function (metadataToAddArray) {
+            console.log(metadataToAddArray)
+            var metadataArray = _.pluck(metadataToAddArray,'text');
 
-            metadataArray.forEach(function (key) {
-                var metadataExists = false;
-                $scope.headerColumns.forEach(function (element) {
-                    if(element.fieldName == key){
-                        metadataExists = true;
+            if(metadataArray.length > 0){
+                metadataArray.forEach(function (key) {
+                    var metadataExists = false;
+                    $scope.headerColumns.forEach(function (element) {
+                        if(element.fieldName == key){
+                            metadataExists = true;
+                        }
+                    });
+                    if(!metadataExists){
+                        $scope.headerColumns.push({colName: key,fieldName: key,visible: true,from: 'metadata'});
                     }
                 });
-                if(!metadataExists){
-                    $scope.headerColumns.push({colName: key,fieldName: key,visible: true,from: 'metadata'});
-                }
-            });
 
-            localStorageManagement.setValue(vm.savedTransactionTableColumns,JSON.stringify($scope.headerColumns));
-            $uibModalInstance.close(true);
+                localStorageManagement.setValue(vm.savedTransactionTableColumns,JSON.stringify($scope.headerColumns));
+                $uibModalInstance.close(true);
+            }
         };
 
 
