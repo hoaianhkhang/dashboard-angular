@@ -61,31 +61,40 @@
         //         localStorageManagement.setValue(vm.savedTransactionTableColumns,JSON.stringify(headerColumns));
         //     }
 
-        $scope.headerColumns = localStorageManagement.getValue(vm.savedTransactionTableColumns) ? JSON.parse(localStorageManagement.getValue(vm.savedTransactionTableColumns)) : [
-            {colName: 'User',fieldName: 'user',visible: true},
-            {colName: 'Recipient',fieldName: 'recipient',visible: true},
-            {colName: 'Type',fieldName: 'tx_type',visible: true},
-            {colName: 'Subtype',fieldName: 'subtype',visible: true},
-            {colName: 'Currency',fieldName: 'currencyCode',visible: true},
-            {colName: 'Amount',fieldName: 'amount',visible: true},
-            {colName: 'Fee',fieldName: 'fee',visible: true},
-            {colName: 'Status',fieldName: 'status',visible: true},
-            {colName: 'Id',fieldName: 'id',visible: true},
-            {colName: 'Date',fieldName: 'createdDate',visible: true},
-            {colName: 'Total amount',fieldName: 'totalAmount',visible: false},
-            {colName: 'Balance',fieldName: 'balance',visible: false},
-            {colName: 'Account',fieldName: 'account',visible: false},
-            {colName: 'Username',fieldName: 'username',visible: false},
-            {colName: 'User id',fieldName: 'userId',visible: false},
-            {colName: 'Updated',fieldName: 'updatedDate',visible: false},
-            {colName: 'Mobile',fieldName: 'mobile',visible: false},
-            {colName: 'Destination tx id',fieldName: 'destination_tx_id',visible: false},
-            {colName: 'Source tx id',fieldName: 'source_tx_id',visible: false},
-            {colName: 'Label',fieldName: 'label',visible: false},
-            {colName: 'Reference',fieldName: 'reference',visible: false},
-            {colName: 'Note',fieldName: 'note',visible: false},
-            {colName: 'Metadata',fieldName: 'metadata',visible: false}
-        ];
+        $scope.initializeHeaderCol = function () {
+            var headerCols = [
+                {colName: 'User',fieldName: 'user',visible: true},
+                {colName: 'Recipient',fieldName: 'recipient',visible: true},
+                {colName: 'Type',fieldName: 'tx_type',visible: true},
+                {colName: 'Subtype',fieldName: 'subtype',visible: true},
+                {colName: 'Currency',fieldName: 'currencyCode',visible: true},
+                {colName: 'Amount',fieldName: 'amount',visible: true},
+                {colName: 'Fee',fieldName: 'fee',visible: true},
+                {colName: 'Status',fieldName: 'status',visible: true},
+                {colName: 'Id',fieldName: 'id',visible: true},
+                {colName: 'Date',fieldName: 'createdDate',visible: true},
+                {colName: 'Total amount',fieldName: 'totalAmount',visible: false},
+                {colName: 'Balance',fieldName: 'balance',visible: false},
+                {colName: 'Account',fieldName: 'account',visible: false},
+                {colName: 'Username',fieldName: 'username',visible: false},
+                {colName: 'User id',fieldName: 'userId',visible: false},
+                {colName: 'Updated',fieldName: 'updatedDate',visible: false},
+                {colName: 'Mobile',fieldName: 'mobile',visible: false},
+                {colName: 'Destination tx id',fieldName: 'destination_tx_id',visible: false},
+                {colName: 'Source tx id',fieldName: 'source_tx_id',visible: false},
+                {colName: 'Label',fieldName: 'label',visible: false},
+                {colName: 'Reference',fieldName: 'reference',visible: false},
+                {colName: 'Note',fieldName: 'note',visible: false},
+                {colName: 'Metadata',fieldName: 'metadata',visible: false}
+            ];
+
+            localStorageManagement.setValue(vm.savedTransactionTableColumns,JSON.stringify(headerCols));
+
+            return headerCols;
+
+        };
+
+        $scope.headerColumns = localStorageManagement.getValue(vm.savedTransactionTableColumns) ? JSON.parse(localStorageManagement.getValue(vm.savedTransactionTableColumns)) : $scope.initializeHeaderCol();
         $scope.filtersObj = {
             dateFilter: false,
             amountFilter: false,
