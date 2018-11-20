@@ -35,17 +35,6 @@
 
         if(localStorageManagement.getValue(vm.savedTransactionTableColumns)){
             var headerColumns = JSON.parse(localStorageManagement.getValue(vm.savedTransactionTableColumns));
-            headerColumns.forEach(function (col) {
-                if(!col.orderByDirection){
-                    col.orderByDirection = 'desc';
-                }
-            });
-
-            localStorageManagement.setValue(vm.savedTransactionTableColumns,JSON.stringify(headerColumns));
-        }
-
-        if(localStorageManagement.getValue(vm.savedTransactionTableColumns)){
-            var headerColumns = JSON.parse(localStorageManagement.getValue(vm.savedTransactionTableColumns));
             var recipientFieldExists = false;
             headerColumns.forEach(function (col) {
                 if(col.colName == 'Metadata'){
@@ -261,10 +250,15 @@
 
         //end angular datepicker
 
-        $scope.orderByFunction = function () {
-            return ($scope.applyFiltersObj.orderByFilter.selectedOrderByOption == 'Latest' ? '-created' :
-                $scope.applyFiltersObj.orderByFilter.selectedOrderByOption == 'Largest' ? '-amount' :
-                    $scope.applyFiltersObj.orderByFilter.selectedOrderByOption == 'Smallest' ? 'amount' : '');
+        $scope.orderByFunction = function (header) {
+            // if(header.orderByDirection == 'desc'){
+            //     header.orderByDirection = 'asc';
+            //     $scope.orderByVariable = header.fieldName;
+            // } else {
+            //     header.orderByDirection = 'desc';
+            //     $scope.orderByVariable = '-' + header.fieldName;
+            //     localStorageManagement.setValue(vm.savedTransactionTableColumns,JSON.stringify($scope.headerColumns));
+            // }
         };
 
         $scope.pageSizeChanged =  function () {
@@ -555,14 +549,14 @@
                 account: $scope.filtersObj.accountFilter ? $scope.applyFiltersObj.accountFilter.selectedAccountOption == 'Reference' ? $scope.applyFiltersObj.accountFilter.selectedAccountReference : null : null,
                 group: $scope.filtersObj.groupFilter ? $scope.applyFiltersObj.groupFilter.selectedGroupOption == 'Group name'? $scope.applyFiltersObj.groupFilter.selectedGroup.name: null : null,
                 group__isnull: $scope.filtersObj.groupFilter ? $scope.applyFiltersObj.groupFilter.selectedGroupOption == 'In a group'? (!$scope.applyFiltersObj.groupFilter.existsInGroup).toString(): null : null,
-                orderby: $scope.filtersObj.orderByFilter ? ($scope.applyFiltersObj.orderByFilter.selectedOrderByOption == 'Latest' ? '-created' : $scope.applyFiltersObj.orderByFilter.selectedOrderByOption == 'Largest' ? '-amount' : $scope.applyFiltersObj.orderByFilter.selectedOrderByOption == 'Smallest' ? 'amount' : null): null,
                 id: $scope.filtersObj.transactionIdFilter ? ($scope.applyFiltersObj.transactionIdFilter.selectedTransactionIdOption ? $scope.applyFiltersObj.transactionIdFilter.selectedTransactionIdOption : null): null,
                 destination_transaction : $scope.filtersObj.destinationIdFilter ? 'true' : null,
                 source_transaction : $scope.filtersObj.sourceIdFilter ? 'true' : null,
                 tx_type: $scope.filtersObj.transactionTypeFilter ? $scope.applyFiltersObj.transactionTypeFilter.selectedTransactionTypeOption.toLowerCase() : null,
                 status: $scope.filtersObj.statusFilter ? $scope.applyFiltersObj.statusFilter.selectedStatusOption: null,
                 subtype: $scope.filtersObj.transactionSubtypeFilter ? ($scope.applyFiltersObj.transactionSubtypeFilter.selectedTransactionSubtypeOption ? $scope.applyFiltersObj.transactionSubtypeFilter.selectedTransactionSubtypeOption: null): null,
-                fields: $scope.visibleColumnsArray.join(',')
+                fields: $scope.visibleColumnsArray.join(','),
+                orderby: $scope.filtersObj.orderByFilter ? ($scope.applyFiltersObj.orderByFilter.selectedOrderByOption == 'Latest' ? '-created' : $scope.applyFiltersObj.orderByFilter.selectedOrderByOption == 'Largest' ? '-amount' : $scope.applyFiltersObj.orderByFilter.selectedOrderByOption == 'Smallest' ? 'amount' : null): null
             };
 
             if($scope.filtersObj.metadataFilter){
