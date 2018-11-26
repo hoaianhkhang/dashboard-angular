@@ -31,7 +31,6 @@
         $scope.visibleColumnsArray = [];
         $scope.visibleColumnsSelectionChanged = false;
         $scope.filtersCount = 0;
-        $scope.orderByVariable = '-createdDate';
 
         if(localStorageManagement.getValue(vm.savedTransactionTableColumns)){
             var headerColumns = JSON.parse(localStorageManagement.getValue(vm.savedTransactionTableColumns));
@@ -186,13 +185,13 @@
         $scope.typeOptions = ['Credit','Debit']; //Transfer
         $scope.statusOptions = ['Pending','Complete','Failed','Deleted'];
         $scope.orderByOptions = [
-            {name:'Amount',fieldName: 'amount'},
-            {name:'Balance',fieldName: 'balance'},
-            {name:'Created',fieldName: 'created'},
-            {name:'Fee',fieldName: 'fee'},
-            {name:'Reference',fieldName: 'reference'},
-            {name:'Total amount',fieldName: 'total_amount'},
-            {name:'Updated',fieldName: 'updated'}
+            {name:'Amount',fieldName: 'amount',tableFieldName: 'amount'},
+            {name:'Balance',fieldName: 'balance',tableFieldName: 'balance'},
+            {name:'Created',fieldName: 'created',tableFieldName: 'createdDate'},
+            {name:'Fee',fieldName: 'fee',tableFieldName: 'fee'},
+            {name:'Reference',fieldName: 'reference',tableFieldName: 'reference'},
+            {name:'Total amount',fieldName: 'total_amount',tableFieldName: 'totalAmount'},
+            {name:'Updated',fieldName: 'updated',tableFieldName: 'updatedDate'}
         ];
         $scope.orderByDirection = ['Desc','Asc'];
         $scope.currencyOptions = [];
@@ -270,14 +269,29 @@
         //end angular datepicker
 
         $scope.orderByFunction = function (header) {
-            // if(header.orderByDirection == 'desc'){
-            //     header.orderByDirection = 'asc';
-            //     $scope.orderByVariable = header.fieldName;
-            // } else {
-            //     header.orderByDirection = 'desc';
-            //     $scope.orderByVariable = '-' + header.fieldName;
-            //     localStorageManagement.setValue(vm.savedTransactionTableColumns,JSON.stringify($scope.headerColumns));
-            // }
+            if($scope.applyFiltersObj.orderByFilter.selectedOrderByDirection === 'Desc'){
+                $scope.filtersObj.orderByFilter = true;
+                if(header.fieldName == $scope.applyFiltersObj.orderByFilter.selectedOrderByOption.tableFieldName){
+                    $scope.applyFiltersObj.orderByFilter.selectedOrderByDirection = 'Asc';
+                }
+                $scope.orderByOptions.forEach(function (element) {
+                    if(element.tableFieldName == header.fieldName){
+                        $scope.applyFiltersObj.orderByFilter.selectedOrderByOption = element;
+                        $scope.getLatestTransactions();
+                    }
+                });
+            } else if($scope.applyFiltersObj.orderByFilter.selectedOrderByDirection === 'Asc'){
+                $scope.filtersObj.orderByFilter = true;
+                if(header.fieldName != $scope.applyFiltersObj.orderByFilter.selectedOrderByOption.tableFieldName){
+                    $scope.applyFiltersObj.orderByFilter.selectedOrderByDirection = 'Desc';
+                }
+                $scope.orderByOptions.forEach(function (element) {
+                    if(element.tableFieldName == header.fieldName){
+                        $scope.applyFiltersObj.orderByFilter.selectedOrderByOption = element;
+                        $scope.getLatestTransactions();
+                    }
+                });
+            }
         };
 
         $scope.pageSizeChanged =  function () {
@@ -847,6 +861,21 @@
 
         $scope.deleteMetadataColumn = function (column) {
             column.hide = true;
+        };
+
+        $scope.styleHeaders = function (header) {
+            var sortableHeaderExists = false;
+
+            $scope.orderByOptions.forEach(function (element) {
+                if(element.tableFieldName == header.fieldName){
+                    sortableHeaderExists = true;
+                }
+            });
+
+            if(sortableHeaderExists){
+                return 'pointer sortable-header';
+            }
+
         };
 
         // shortcuts from other places
