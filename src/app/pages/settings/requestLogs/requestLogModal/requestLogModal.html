@@ -93,6 +93,16 @@
                     </div>
                 </div>
             </div>
+            <div class="row" ng-class="{'divider': !body}">
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                    <p class="text-subtle">Body: </p>
+                </div>
+                <div class="metadata col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                    <div ng-show="body">
+                        <pre>{{body}}</pre>
+                    </div>
+                </div>
+            </div>
             <div class="row divider">
                 <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
                     <p class="text-subtle">Params: </p>
@@ -116,7 +126,7 @@
         </div>
     </div>
     <div class="modal-footer">
-        <button ng-click="$dismiss" class="btn btn-default pull-right dashboard-btn">
+        <button ng-click="$dismiss()" class="btn btn-default pull-right dashboard-btn">
             Close
         </button>
     </div>

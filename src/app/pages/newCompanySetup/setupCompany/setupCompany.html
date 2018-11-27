@@ -1,0 +1,54 @@
+<div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 company-setup-col-8">
+    <div class="panel">
+        <div class="panel-heading">
+            <span class="user-details-panel-title">Company details</span>
+        </div>
+        <div class="panel-body">
+            <div class=" row divider-25">
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <ul class="group-setup-ul">
+                        <li>Tell us a bit about your company.</li>
+                        <li>Company name and description are displayed in the user-facing wallets. Adding these will make your company more user-friendly.</li>
+                    </ul>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 custom-form">
+                    <div ng-hide="loadingCompanyDetails" class="form-group">
+                        <label>Company name <span class="required-icon">*</span></label>
+                        <input type="text" class="form-control" ng-model="company.name"
+                               placeholder="Company" required>
+                    </div>
+                    <div ng-hide="loadingCompanyDetails" class="form-group">
+                        <label>Company description</label>
+                        <textarea rows="4" class="form-control" ng-model="company.description"
+                                  placeholder="e.g. Currency Corp is a registered financial services provider."></textarea>
+                    </div>
+                    <div ng-hide="loadingCompanyDetails" class="form-group">
+                        <label>Website url</label>
+                        <input type="text" class="form-control" ng-model="company.website"
+                               placeholder="e.g. https://www.rehive.com" >
+                    </div>
+                    <!--<div ng-hide="loadingCompanyDetails" class="form-group">-->
+                        <!--<button ng-click="" ng-disabled="!company.name"-->
+                                <!--class="btn btn-primary pull-right dashboard-btn">Update-->
+                        <!--</button>-->
+                    <!--</div>-->
+                    <div ba-panel ng-show="loadingCompanyDetails">
+                        <loading-image></loading-image>
+                    </div>
+                </div>
+            </div>
+            <hr class="no-margin-horizontal divider-25">
+            <div class="form-group">
+                <button ng-click="goToNextView()" ng-disabled="setupCompany==1"
+                        class="btn btn-primary setup-skip-btn pull-left dashboard-btn">Skip
+                </button>
+                <button ng-click="skipAllView()"
+                        class="btn btn-primary setup-skip-btn pull-left dashboard-btn margin-left-10">Skip all
+                </button>
+                <button ng-click="updateCompanyInfo(company)" ng-disabled="setupCompany==0"
+                        class="btn btn-primary pull-right dashboard-btn">Next
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -16,8 +16,8 @@
         $scope.accounts = [];
         $scope.editingAccount= false;
         $scope.showAccountConfigsOfGroup = -1;
-        $rootScope.activeSetupRoute = 2;
-        localStorageManagement.setValue('activeSetupRoute',2);
+        $rootScope.activeSetupRoute = 3;
+        localStorageManagement.setValue('activeSetupRoute',3);
         $scope.loadingCompanySetupAccounts = true;
 
         $scope.accountConfigNameChanged = function (account) {
