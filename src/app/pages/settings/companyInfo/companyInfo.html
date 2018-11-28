@@ -29,6 +29,14 @@
                 <input type="text" ng-change="companySettingsChanged('email_confirmation_url')" ng-model="company.details.settings.email_confirmation_url" class="form-control" placeholder="e.g. https://www.rehive.com/verify/email/">
             </div>
             <div class="form-group">
+                <label>Terms and conditions url</label>
+                <input type="text" ng-change="companySettingsChanged('terms_and_conditions_url')" ng-model="company.details.settings.terms_and_conditions_url" class="form-control" placeholder="e.g. https://www.rehive.com/reset/password/">
+            </div>
+            <div class="form-group">
+                <label>Privacy policy url</label>
+                <input type="text" ng-change="companySettingsChanged('privacy_policy_url')" ng-model="company.details.settings.privacy_policy_url" class="form-control" placeholder="e.g. https://www.rehive.com/verify/email/">
+            </div>
+            <div class="form-group">
                 <label>Company configuration</label>
                 <textarea rows="4" ng-change="companyInfoChanged('config')" ng-model="company.details.config" class="form-control" placeholder='Enter config json e.g. {"Hello":"World"}'></textarea>
             </div>
