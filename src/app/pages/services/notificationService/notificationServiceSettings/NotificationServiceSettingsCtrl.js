@@ -6,7 +6,7 @@
 
     /** @ngInject */
     function NotificationServiceSettingsCtrl(environmentConfig,$rootScope,$scope,$http,$ngConfirm,$timeout,$location,
-                                             localStorageManagement,toastr,errorHandler,$state) {
+                                             localStorageManagement,toastr,errorHandler,$state,$uibModal) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
@@ -123,6 +123,40 @@
 
         $scope.goToGeneralWebhooks = function(secret){
             $state.go('webhooks.list',{"secret": secret,"webhookUrl": vm.webhookUrl});
+        };
+
+        $scope.openAddSendGridModal = function (page, size) {
+            vm.theSendGridModal = $uibModal.open({
+                animation: true,
+                templateUrl: page,
+                size: size,
+                controller: 'SendGridModalCtrl',
+                scope: $scope
+            });
+
+            vm.theSendGridModal.result.then(function(service){
+                // if(service){
+                //     $scope.getServices();
+                // }
+            }, function(){
+            });
+        };
+
+        $scope.openAddTwilioModal = function (page, size) {
+            vm.theTwilioModal = $uibModal.open({
+                animation: true,
+                templateUrl: page,
+                size: size,
+                controller: 'TwilioModalCtrl',
+                scope: $scope
+            });
+
+            vm.theTwilioModal.result.then(function(service){
+                // if(service){
+                //     $scope.getServices();
+                // }
+            }, function(){
+            });
         };
 
 
