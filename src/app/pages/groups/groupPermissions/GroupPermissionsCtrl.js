@@ -37,6 +37,32 @@
             WEBHOOK : 'webhook'
         };
 
+        vm.location = $location.path();
+        vm.locationArray = vm.location.split('/');
+        $scope.locationIndicator = vm.locationArray[vm.locationArray.length - 1];
+
+        $scope.goToGroupView = function (path) {
+            $location.path(path);
+        };
+
+        $scope.getGroup = function () {
+            if(vm.token) {
+                $scope.loadingGroup = true;
+                Rehive.admin.groups.get({name: $scope.groupName}).then(function (res) {
+                    $scope.editGroupObj = res;
+                    $scope.editGroupObj.prevName = res.name;
+                    $scope.loadingGroup = false;
+                    $scope.$apply();
+                }, function (error) {
+                    $scope.loadingGroup = false;
+                    errorHandler.evaluateErrors(error);
+                    errorHandler.handleErrors(error);
+                    $scope.$apply();
+                });
+            }
+        };
+        $scope.getGroup();
+
         vm.initializePermissions = function () {
             $scope.totalPermissionsObj.adminPermissionsOptions = {
                 permissionsName: 'Admin permissions',

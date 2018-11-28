@@ -43,7 +43,8 @@
             </div>
         </div>
     </div>
-    <button ng-click="separateCheckedLevels()" class="pull-right btn dashboard-btn btn-primary">Save</button>
+    <button ng-disabled="user.groups[0].name == 'admin' || user.groups[0].name == 'service'"
+            ng-click="separateCheckedLevels()" class="pull-right btn dashboard-btn btn-primary">Save</button>
 </div>
 <div ba-panel ng-show="loadingPermissions">
     <loading-image></loading-image>
