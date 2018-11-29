@@ -10,6 +10,15 @@
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
+        $scope.sendGridDetails = {
+            apiKey: '',
+            fromEmail: ''
+        };
+        vm.updatedDendGridDetails = {};
+
+        $scope.sendGridDetailsChanged = function (field) {
+            vm.updatedDendGridDetails[field] = $scope.sendGridDetails[field];
+        };
 
 
 

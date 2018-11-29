@@ -36,6 +36,7 @@
                     $scope.updatingCompanyDetails =  false;
                     if (res.status === 200) {
                       $scope.company = res.data.data;
+                      console.log($scope.company)
                     }
                 }).catch(function (error) {
                     $scope.updatingCompanyDetails =  false;
