@@ -124,9 +124,10 @@
 
         $scope.updateCompanyInfo = function () {
             $scope.loadingCompanyInfo = true;
+
             if(vm.updatedCompanyInfo.config){
                 vm.updatedCompanyInfo.config = JSON.parse(vm.updatedCompanyInfo.config);
-            } else {
+            } else if(vm.updatedCompanyInfo.config ===''){
                 vm.updatedCompanyInfo.config = {};
             }
 
