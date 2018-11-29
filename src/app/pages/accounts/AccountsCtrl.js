@@ -29,7 +29,7 @@
 
         $scope.headerColumns = localStorageManagement.getValue(vm.savedAccountsTableColumns) ? JSON.parse(localStorageManagement.getValue(vm.savedAccountsTableColumns)) : [
             {colName: 'User',fieldName: 'user',visible: true},
-            {colName: 'User group',fieldName: 'group',visible: true},
+            {colName: 'User group',fieldName: 'group',visible: false},
             {colName: 'Account name',fieldName: 'name',visible: true},
             {colName: 'Reference',fieldName: 'reference',visible: true},
             {colName: 'Type',fieldName: 'primary',visible: true},
@@ -39,7 +39,9 @@
             nameFilter: false,
             primaryFilter: false,
             referenceFilter: false,
-            userFilter: false
+            userFilter: false,
+            balanceFilter: false,
+            availableBalanceFilter: false
         };
         $scope.applyFiltersObj = {
             nameFilter: {
@@ -53,8 +55,31 @@
             },
             userFilter: {
                 selectedUserFilter: ''
+            },
+            balanceFilter: {
+                selectedBalanceArray: []
+            },
+            availableBalanceFilter: {
+                selectedAvailableBalanceArray: []
             }
         };
+
+        vm.getCompanyCurrencies = function(){
+            if(vm.token){
+                Rehive.admin.currencies.get({filters: {
+                    archived: false,
+                    page_size: 250
+                }}).then(function (res) {
+                    $scope.currenciesOptions = res.results;
+                    $scope.$apply();
+                }, function (error) {
+                    errorHandler.evaluateErrors(error);
+                    errorHandler.handleErrors(error);
+                    $scope.$apply();
+                });
+            }
+        };
+        vm.getCompanyCurrencies();
 
         $scope.showColumnFilters = function () {
             $scope.showingFilters = false;
@@ -78,7 +103,7 @@
         };
 
         $scope.restoreColDefaults = function () {
-            var defaultVisibleHeader = ['User','User group','Account name','Reference','Type',
+            var defaultVisibleHeader = ['User','Account name','Reference','Type',
                 'Currencies'];
 
             $scope.headerColumns.forEach(function (headerObj) {
@@ -144,6 +169,7 @@
             Rehive.admin.accounts.get({filters: accountsFiltersObj}).then(function (res) {
                 $scope.accountsListData = res;
                 if(res.results.length > 0){
+                    console.log(res.results)
                     vm.formatAccountsArray(res.results);
                 } else {
                     $scope.accountsList = [];
