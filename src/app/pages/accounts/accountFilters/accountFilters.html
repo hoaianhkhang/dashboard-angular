@@ -30,27 +30,21 @@
                     <span>Balance</span>
                 </label>
             </div>
-            <div ng-if="filtersObj.balanceFilter" class="row divider-top-6">
+            <div ng-if="filtersObj.balanceFilter" class="row">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 date-filter-view">
-                    <select chosen
-                            multiple
-                            data-placeholder-text-multiple="'Choose one or more currencies'"
-                            ng-model="applyFiltersObj.balanceFilter.selectedBalanceArray"
-                            ng-options="currency.code for currency in currenciesOptions | orderBy: 'code' track by currency.code"
-                            required>
-                        <option value=""></option>
-                    </select>
+                    <div class="currencies-chosen-multi-select">
+                        <select chosen
+                                multiple
+                                data-placeholder-text-multiple="'Choose one or more currencies'"
+                                ng-model="applyFiltersObj.balanceFilter.selectedBalanceArray"
+                                ng-options="currency.code for currency in currenciesOptions | orderBy: 'code' track by currency.code"
+                                required>
+                            <option value=""></option>
+                        </select>
+                    </div>
                 </div>
             </div>
         </div>
-        <!--<select chosen-->
-                <!--multiple-->
-                <!--data-placeholder-text-multiple="'Choose one or more currencies'"-->
-                <!--ng-model="applyFiltersObj.balanceFilter.selectedBalanceArray"-->
-                <!--ng-options="currency.code for currency in currencyOptions | orderBy: 'code' track by currency.code"-->
-                <!--required>-->
-            <!--<option value=""></option>-->
-        <!--</select>-->
         <div id="filterAvailableBalance">
             <div>
                 <label class="checkbox-inline custom-checkbox nowrap">
@@ -58,11 +52,18 @@
                     <span>Available balance</span>
                 </label>
             </div>
-            <div ng-if="filtersObj.availableBalanceFilter" class="row divider-top-6">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 date-filter-view">
-                    <select class="form-control pointer" ng-model="applyFiltersObj.availableBalanceFilter.selectedAvailableBalanceArray"
-                            ng-options="currency.code for currency in currencyOptions | orderBy: 'code' track by currency.code">
-                    </select>
+            <div ng-if="filtersObj.availableBalanceFilter" class="row">
+                <div class="currencies-chosen-multi-select">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <select chosen
+                                multiple
+                                data-placeholder-text-multiple="'Choose one or more currencies'"
+                                ng-model="applyFiltersObj.availableBalanceFilter.selectedAvailableBalanceArray"
+                                ng-options="currency.code for currency in currenciesOptions | orderBy: 'code' track by currency.code"
+                                required>
+                            <option value=""></option>
+                        </select>
+                    </div>
                 </div>
             </div>
         </div>
