@@ -6,7 +6,7 @@
 
     /** @ngInject */
     function AccountsCtrl($rootScope,$scope,localStorageManagement,typeaheadService,
-                            errorHandler,serializeFiltersService,$uibModal,Rehive) {
+                          _,errorHandler,serializeFiltersService,$uibModal,Rehive,$filter) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
@@ -196,24 +196,54 @@
         $scope.getAllAccounts();
 
         vm.formatAccountsArray = function (accountsArray) {
+
+            // inserting currency balance and available balance of first account obj and its first currency object
+            if(accountsArray[0].currencies && accountsArray[0].currencies.length > 0){
+                var headerColumnsExist = false;
+                $scope.headerColumns.forEach(function (header) {
+                    if((accountsArray[0].currencies[0].currency.code + 'balance') === header.fieldName){
+                        headerColumnsExist = true;
+                    }
+                });
+
+                if(!headerColumnsExist){
+                    $scope.headerColumns.push({colName: accountsArray[0].currencies[0].currency.code + ' balance',fieldName:  accountsArray[0].currencies[0].currency.code + 'balance',visible: true});
+                    $scope.headerColumns.push({colName: accountsArray[0].currencies[0].currency.code + ' available balance',fieldName: accountsArray[0].currencies[0].currency.code + 'availableBalance',visible: true});
+                }
+            }
+
             accountsArray.forEach(function (accountObj) {
                 var currencyText = [];
+                var currencyBalanceAndAvailableBalanceObject = {};
 
                 if(accountObj.currencies.length > 0){
                     accountObj.currencies.forEach(function (currencyObj,index,array) {
                         if(index == (array.length - 1)){
+
+                            currencyBalanceAndAvailableBalanceObject[currencyObj.currency.code + 'balance'] = $filter("currencyModifiersFilter")(currencyObj.balance,currencyObj.currency.divisibility);
+                            currencyBalanceAndAvailableBalanceObject[currencyObj.currency.code + 'availableBalance'] = $filter("currencyModifiersFilter")(currencyObj.available_balance,currencyObj.currency.divisibility);
                             currencyText.push(currencyObj.currency.code);
-                            $scope.accountsList.push({
+
+                            var accountObject = {};
+
+                            accountObject = {
                                 user: accountObj.user.email ? accountObj.user.email : accountObj.user.mobile ? accountObj.user.mobile : accountObj.user.id,
                                 group: accountObj.user.group || '',
                                 name: accountObj.name,
                                 reference: accountObj.reference,
                                 primary: accountObj.primary ? 'primary': '',
                                 currencies: currencyText.sort().join(', ')
-                            });
+                            };
+
+                            accountObject = _.extend(accountObject,currencyBalanceAndAvailableBalanceObject);
+
+                            $scope.accountsList.push(accountObject);
+
                             $scope.$apply();
                         }
 
+                        currencyBalanceAndAvailableBalanceObject[currencyObj.currency.code + 'balance'] = $filter("currencyModifiersFilter")(currencyObj.balance,currencyObj.currency.divisibility);
+                        currencyBalanceAndAvailableBalanceObject[currencyObj.currency.code + 'availableBalance'] = $filter("currencyModifiersFilter")(currencyObj.available_balance,currencyObj.currency.divisibility);
                         currencyText.push(currencyObj.currency.code);
                     });
                 } else {
