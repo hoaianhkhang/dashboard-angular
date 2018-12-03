@@ -11,10 +11,10 @@
             <p ng-click="selectAllColumns()" class="columns-restore column-option1">Select all</p>
             <p ng-click="restoreColDefaults()" class="columns-restore column-option2">Restore defaults</p>
         </div>
-        <div ng-repeat="column in headerColumns | filter: columnSearch | orderBy: 'colName'">
+        <div ng-repeat="column in headerColumns | orderBy: 'colName' | filter: columnSearch track by $index">
             <div>
                 <label class="checkbox-inline custom-checkbox nowrap">
-                    <input ng-change="toggleColumnVisibility()" type="checkbox" ng-model="column.visible">
+                    <input ng-change="toggleColumnVisibility(column)" type="checkbox" ng-model="column.visible">
                     <span ng-bind="column.colName"></span>
                 </label>
             </div>
