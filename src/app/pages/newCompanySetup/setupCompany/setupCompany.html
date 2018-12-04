@@ -15,6 +15,7 @@
                     <div ng-hide="loadingCompanyDetails" class="form-group">
                         <label>Company name <span class="required-icon">*</span></label>
                         <input type="text" class="form-control" ng-model="company.name"
+                               ng-change="companyNameChange()"
                                placeholder="Company" required>
                     </div>
                     <div ng-hide="loadingCompanyDetails" class="form-group">
