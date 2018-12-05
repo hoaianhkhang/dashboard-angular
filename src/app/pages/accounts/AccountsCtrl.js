@@ -20,6 +20,8 @@
         $scope.showingColumnFilters = false;
         $scope.loadingAccounts = false;
         $scope.filtersCount = 0;
+        $scope.insertingBalanceCurrencyFromHeader = false;
+        $scope.insertingAvailableBalanceCurrencyFromHeader = false;
 
         $scope.accountsPagination = {
             itemsPerPage: 25,
@@ -200,49 +202,56 @@
             // if header has no balance or available balance fields
             if(firstAccountInList.currencies && firstAccountInList.currencies.length > 0){
                 var fieldNameArray = _.pluck($scope.headerColumns,'fieldName');
-                var fieldNameBalanceArray = fieldNameArray.filter(function (field) {
+                var balanceArray = fieldNameArray.filter(function (field) {
+                    if(field.indexOf('balance') > 0){ return true; }
+                });
+                var availableBalanceArray = fieldNameArray.filter(function (field) {
                     if(field.indexOf('availableBalance') > 0){ return true; }
                 });
 
-                console.log(fieldNameBalanceArray)
-
-                if(fieldNameBalanceArray.length === 0){
+                if(balanceArray.length === 0){
                     if($scope.currenciesOptions.length > 0){
                         $scope.currenciesOptions.forEach(function (currency) {
                             if(currency.code === firstAccountInList.currencies[0].currency.code){
+                                if($scope.applyFiltersObj.balanceFilter.selectedBalanceArray === undefined){
+                                    $scope.applyFiltersObj.balanceFilter.selectedBalanceArray = [];
+                                }
                                 $scope.applyFiltersObj.balanceFilter.selectedBalanceArray.push(currency);
+                            }
+                        });
+                    }
+                } else {
+                    balanceArray.forEach(function (balanceCurrency) {
+                        $scope.currenciesOptions.forEach(function (currency) {
+                            if(currency.code === balanceCurrency.replace('balance','')){
+                                $scope.insertingBalanceCurrencyFromHeader = true;
+                                $scope.applyFiltersObj.balanceFilter.selectedBalanceArray.push(currency);
+                            }
+                        });
+                    });
+                }
+
+                if(availableBalanceArray.length === 0){
+                    if($scope.currenciesOptions.length > 0){
+                        $scope.currenciesOptions.forEach(function (currency) {
+                            if(currency.code === firstAccountInList.currencies[0].currency.code){
+                                if($scope.applyFiltersObj.availableBalanceFilter.selectedAvailableBalanceArray === undefined){
+                                    $scope.applyFiltersObj.availableBalanceFilter.selectedAvailableBalanceArray = [];
+                                }
                                 $scope.applyFiltersObj.availableBalanceFilter.selectedAvailableBalanceArray.push(currency);
                             }
                         });
                     }
                 } else {
-                    if($scope.currenciesOptions.length > 0){
+                    availableBalanceArray.forEach(function (availableBalanceCurrency) {
                         $scope.currenciesOptions.forEach(function (currency) {
-                            if(currency.code === firstAccountInList.currencies[0].currency.code){
-                                // $scope.applyFiltersObj.balanceFilter.selectedBalanceArray.push(currency);
-                                // $scope.applyFiltersObj.availableBalanceFilter.selectedAvailableBalanceArray.push(currency);
+                            if(currency.code === availableBalanceCurrency.replace('availableBalance','')){
+                                $scope.insertingAvailableBalanceCurrencyFromHeader = true;
+                                $scope.applyFiltersObj.availableBalanceFilter.selectedAvailableBalanceArray.push(currency);
                             }
                         });
-                    }
+                    });
                 }
-
-                // fieldNameBalanceArray.forEach(function (fieldName) {
-                //     var headerColumnsExist = false;
-                //     if((firstAccountInList.currencies[0].currency.code + 'availableBalance') === fieldName){
-                //         headerColumnsExist = true;
-                //     }
-
-                    // if(!headerColumnsExist){
-                    //     if($scope.currenciesOptions.length > 0){
-                    //         $scope.currenciesOptions.forEach(function (currency) {
-                    //             if(currency.code === firstAccountInList.currencies[0].currency.code){
-                    //                 $scope.applyFiltersObj.balanceFilter.selectedBalanceArray.push(currency);
-                    //                 $scope.applyFiltersObj.availableBalanceFilter.selectedAvailableBalanceArray.push(currency);
-                    //             }
-                    //         });
-                    //     }
-                    // }
-                // });
             }
         };
 
@@ -340,65 +349,73 @@
         };
 
         $scope.$watchCollection("applyFiltersObj.balanceFilter.selectedBalanceArray", function( newValue, oldValue ) {
-            if(newValue === undefined){
-                newValue = [];
-            }
-
-            if(oldValue === undefined){
-                oldValue = [];
-            }
-
-            var objectAdded = false;
-            if(newValue.length > oldValue.length){
-                objectAdded = true;
+            if($scope.insertingBalanceCurrencyFromHeader){
+                $scope.insertingBalanceCurrencyFromHeader = false;
             } else {
-                objectAdded = false;
-            }
+                if(newValue === undefined){
+                    newValue = [];
+                }
 
-            var changedObjectArray = compareArrayOfObjects.differentElem(newValue, oldValue);
+                if(oldValue === undefined){
+                    oldValue = [];
+                }
 
-            if(changedObjectArray && changedObjectArray.length > 0){
-                if(objectAdded){
-                    $scope.headerColumns.push({colName: changedObjectArray[0].code + ' balance',fieldName:  changedObjectArray[0].code + 'balance',visible: true});
-                    localStorageManagement.setValue(vm.savedAccountsTableColumns,JSON.stringify($scope.headerColumns));
+                var objectAdded = false;
+                if(newValue.length > oldValue.length){
+                    objectAdded = true;
                 } else {
-                    $scope.headerColumns.forEach(function (header,index) {
-                        if(header.fieldName === (changedObjectArray[0].code + 'balance')){
-                            $scope.headerColumns.splice(index,1);
-                        }
-                    });
+                    objectAdded = false;
+                }
+
+                var changedObjectArray = compareArrayOfObjects.differentElem(newValue, oldValue);
+
+                if(changedObjectArray && changedObjectArray.length > 0){
+                    if(objectAdded){
+                        $scope.headerColumns.push({colName: changedObjectArray[0].code + ' balance',fieldName:  changedObjectArray[0].code + 'balance',visible: true});
+                        localStorageManagement.setValue(vm.savedAccountsTableColumns,JSON.stringify($scope.headerColumns));
+                    } else {
+                        $scope.headerColumns.forEach(function (header,index) {
+                            if(header.fieldName === (changedObjectArray[0].code + 'balance')){
+                                $scope.headerColumns.splice(index,1);
+                            }
+                        });
+                    }
                 }
             }
         },true);
 
         $scope.$watchCollection("applyFiltersObj.availableBalanceFilter.selectedAvailableBalanceArray", function( newValue, oldValue ) {
-            if(newValue === undefined){
-                newValue = [];
-            }
-
-            if(oldValue === undefined){
-                oldValue = [];
-            }
-
-            var objectAdded = false;
-            if(newValue.length > oldValue.length){
-                objectAdded = true;
+            if($scope.insertingAvailableBalanceCurrencyFromHeader) {
+                $scope.insertingAvailableBalanceCurrencyFromHeader = false;
             } else {
-                objectAdded = false;
-            }
+                if(newValue === undefined){
+                    newValue = [];
+                }
 
-            var changedObjectArray = compareArrayOfObjects.differentElem(newValue, oldValue);
+                if(oldValue === undefined){
+                    oldValue = [];
+                }
 
-            if(changedObjectArray && changedObjectArray.length > 0){
-                if(objectAdded){
-                    $scope.headerColumns.push({colName: changedObjectArray[0].code + ' available balance',fieldName:  changedObjectArray[0].code + 'availableBalance',visible: true});
-                    localStorageManagement.setValue(vm.savedAccountsTableColumns,JSON.stringify($scope.headerColumns));
+                var objectAdded = false;
+                if(newValue.length > oldValue.length){
+                    objectAdded = true;
                 } else {
-                    $scope.headerColumns.forEach(function (header,index) {
-                        if(header.fieldName === (changedObjectArray[0].code + 'availableBalance')){
-                            $scope.headerColumns.splice(index,1);
-                        }
-                    });
+                    objectAdded = false;
+                }
+
+                var changedObjectArray = compareArrayOfObjects.differentElem(newValue, oldValue);
+
+                if(changedObjectArray && changedObjectArray.length > 0){
+                    if(objectAdded){
+                        $scope.headerColumns.push({colName: changedObjectArray[0].code + ' available balance',fieldName:  changedObjectArray[0].code + 'availableBalance',visible: true});
+                        localStorageManagement.setValue(vm.savedAccountsTableColumns,JSON.stringify($scope.headerColumns));
+                    } else {
+                        $scope.headerColumns.forEach(function (header,index) {
+                            if(header.fieldName === (changedObjectArray[0].code + 'availableBalance')){
+                                $scope.headerColumns.splice(index,1);
+                            }
+                        });
+                    }
                 }
             }
         },true);
