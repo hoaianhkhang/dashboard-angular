@@ -18,6 +18,7 @@
         $scope.updatingCompanyDetails =  false;
         vm.updatedCompany = {};
         $scope.company = {};
+        $scope.twilioCredsList = [];
 
         $scope.goToNotificationSetting = function (setting) {
             $scope.notificationSettingView = setting;
@@ -36,7 +37,6 @@
                     $scope.updatingCompanyDetails =  false;
                     if (res.status === 200) {
                       $scope.company = res.data.data;
-                      console.log($scope.company)
                     }
                 }).catch(function (error) {
                     $scope.updatingCompanyDetails =  false;
@@ -126,6 +126,32 @@
             $state.go('webhooks.list',{"secret": secret,"webhookUrl": vm.webhookUrl});
         };
 
+        vm.getTwilioCredentials = function () {
+            $scope.updatingCompanyDetails = true;
+            if(vm.token) {
+                $http.get(vm.baseUrl + 'admin/credentials/', {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': vm.token
+                    }
+                }).then(function (res) {
+                    if (res.status === 200) {
+                        $scope.updatingCompanyDetails = false;
+                        res.data.data.results.forEach(function (creds) {
+                           if(creds.credential_type === 'twilio'){
+                               $scope.twilioCredsList = [creds];
+                           }
+                        });
+                    }
+                }).catch(function (error) {
+                    $scope.updatingCompanyDetails =  false;
+                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.handleErrors(error);
+                });
+            }
+        };
+        vm.getTwilioCredentials();
+
         $scope.openAddSendGridModal = function (page, size) {
             vm.theSendGridModal = $uibModal.open({
                 animation: true,
@@ -144,20 +170,22 @@
         };
 
         $scope.openAddTwilioModal = function (page, size) {
-            vm.theTwilioModal = $uibModal.open({
-                animation: true,
-                templateUrl: page,
-                size: size,
-                controller: 'TwilioModalCtrl',
-                scope: $scope
-            });
+            if($scope.twilioCredsList.length === 0){
+                vm.theTwilioModal = $uibModal.open({
+                    animation: true,
+                    templateUrl: page,
+                    size: size,
+                    controller: 'TwilioModalCtrl',
+                    scope: $scope
+                });
 
-            vm.theTwilioModal.result.then(function(service){
-                // if(service){
-                //     $scope.getServices();
-                // }
-            }, function(){
-            });
+                vm.theTwilioModal.result.then(function(twilioCreds){
+                    if(twilioCreds){
+                        vm.getTwilioCredentials();
+                    }
+                }, function(){
+                });
+            }
         };
 
 
