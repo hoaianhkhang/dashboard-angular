@@ -13,7 +13,7 @@
                 <input type="email" class="form-control divider" ng-change="companyDetailsChanged('email')" ng-model="company.email" placeholder="Enter from email" required/>
             </div>
             <div class="form-group">
-                <a class="pointer" ng-click="openAddSendGridModal('app/pages/services/notificationService/notificationServiceSettings/notificationCompanyDetails/sendGridModal/sendGridModal.html','md')">
+                <a ng-class="{'archived-text': sendGridCredsList.length > 0}" class="pointer" ng-click="openAddSendGridModal('app/pages/services/notificationService/notificationServiceSettings/notificationCompanyDetails/sendGridModal/sendGridModal.html','md')">
                     Add SendGrid details</a>
             </div>
             <div class="form-group">
@@ -28,7 +28,7 @@
 <div ng-hide="updatingCompanyDetails || twilioCredsList.length == 0" class="panel">
     <div class="panel-heading">
         <span class="user-details-panel-title">Twilio details</span>
-        <a ng-click="openAddUserCryptoAccountsModal('app/pages/users/user/userDetails/userCryptoAccounts/addUserCryptoAccountsModal/addUserCryptoAccountsModal.html','md')" class="user-details-panel-link pull-right pointer">remove</a>
+        <a ng-click="deleteTwilioCredsPrompt(twilioCredsList[0])" class="user-details-panel-link pull-right pointer">remove</a>
     </div>
     <div class="panel-body">
         <table ng-show="twilioCredsList.length > 0" class="table setting-bank-accounts-table">
@@ -40,10 +40,33 @@
             </tr>
             <tr ng-repeat="twilioCred in twilioCredsList">
                 <td width="15%" class="table-row-center transactions-list-element rehive-table-row-first-child">{{twilioCred.credentials.twilio_from_number}}</td>
-                <td width="25%" class="table-row-center transactions-list-element">{{twilioCred.credentials.twilio_sid}}</td>
-                <td width="25%" class="table-row-center transactions-list-element">{{twilioCred.credentials.twilio_token}}</td>
-                <td width="35%" class="rehive-table-row-last-child">
-                    <a ng-click="openBankAccountModal('app/pages/settings/bankAccounts/bankAccountModal/bankAccountModal.html','md',bankAccount)"
+                <td width="30%" class="table-row-center transactions-list-element">{{twilioCred.credentials.twilio_sid}}</td>
+                <td width="30%" class="table-row-center transactions-list-element">{{twilioCred.credentials.twilio_token}}</td>
+                <td width="25%" class="rehive-table-row-last-child">
+                    <a ng-click="openEditTwilioModal('app/pages/services/notificationService/notificationServiceSettings/notificationCompanyDetails/editTwilioModal/editTwilioModal.html','md',twilioCred)"
+                       class="pull-right pointer ">Edit</a>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div ng-hide="updatingCompanyDetails || sendGridCredsList.length == 0" class="panel">
+    <div class="panel-heading">
+        <span class="user-details-panel-title">Sendgrid details</span>
+        <a ng-click="deleteSendGridCredsPrompt(sendGridCredsList[0])" class="user-details-panel-link pull-right pointer">remove</a>
+    </div>
+    <div class="panel-body">
+        <table ng-show="sendGridCredsList.length > 0" class="table setting-bank-accounts-table">
+            <tr>
+                <th class="rehive-table-row-first-child">From email</th>
+                <th>Api key</th>
+                <th></th>
+            </tr>
+            <tr ng-repeat="sendGridCred in sendGridCredsList">
+                <td width="25%" class="table-row-center transactions-list-element rehive-table-row-first-child">{{sendGridCred.credentials.sendgrid_from_email}}</td>
+                <td width="50%" class="table-row-center transactions-list-element">{{sendGridCred.credentials.sendgrid_api_key}}</td>
+                <td width="25%" class="rehive-table-row-last-child">
+                    <a ng-click="openEditSendGridModal('app/pages/services/notificationService/notificationServiceSettings/notificationCompanyDetails/editSendGridModal/editSendGridModal.html','md',sendGridCred)"
                        class="pull-right pointer ">Edit</a>
                 </td>
             </tr>
