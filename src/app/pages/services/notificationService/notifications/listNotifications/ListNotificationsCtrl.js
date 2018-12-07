@@ -167,8 +167,14 @@
 
         $scope.filterNotifications = function (keywords) {
             return function(notif) {
-                var event = $filter('capitalizeDottedSentence')(notif.event);
-                event = $filter('capitalizeUnderscoredSentence')(event);
+                var event = '';
+                if(notif.event){
+                    event = $filter('capitalizeDottedSentence')(notif.event);
+                    event = $filter('capitalizeUnderscoredSentence')(event);
+                } else {
+                    event = 'Misc';
+                }
+
                 if(event.indexOf(keywords) > -1) {
                     return true;
                 } else {
