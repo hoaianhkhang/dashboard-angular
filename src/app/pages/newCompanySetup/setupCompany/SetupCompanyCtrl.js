@@ -15,6 +15,16 @@
             name: ''
         };
 
+        $scope.companyNameChange = function () {
+            if($scope.company.name){
+                $rootScope.setupCompany = 1;
+                localStorageManagement.setValue('setupCompany',1);
+            } else {
+                $rootScope.setupCompany = 0;
+                localStorageManagement.setValue('setupCompany',0);
+            }
+        };
+
         $scope.goToNextView = function () {
             $location.path('company/setup/groups');
         };

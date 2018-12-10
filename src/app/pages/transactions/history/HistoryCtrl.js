@@ -638,7 +638,7 @@
         vm.formatTransactionsArray = function (transactionsArray) {
 
             //save unique metadata keys from 1st transactions
-            if((transactionsArray[0].metadata) && (Object.keys(transactionsArray[0].metadata).length > 0)){
+            if((transactionsArray[0] && transactionsArray[0].metadata) && (Object.keys(transactionsArray[0].metadata).length > 0)){
                 for(var key in transactionsArray[0].metadata){
                     var metadataKeyExists = false;
                     if(transactionsArray[0].metadata.hasOwnProperty(key)){
