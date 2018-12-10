@@ -259,7 +259,6 @@
                         res.data.data.results.forEach(function (creds) {
                             if(creds.credential_type === 'sendgrid'){
                                 $scope.sendGridCredsList = [creds];
-                                console.log($scope.sendGridCredsList)
                             }
                         });
                     }
