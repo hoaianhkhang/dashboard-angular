@@ -180,6 +180,29 @@
                                        ng-model="notification.action" type="checkbox">
                             </td>
                         </tr>
+                        <tr ng-show="miscNotificationsList.length > 0" class="editable-row">
+                            <td class="transactions-list-element rehive-table-row-first-child"><b>Misc</b></td>
+                        </tr>
+                        <tr ng-repeat="notification in (miscNotificationsList = (notificationsList | filter: filterNotifications('Misc') | orderBy: 'event'))" class="editable-row">
+                            <td width="25%" class="transactions-list-element rehive-table-row-first-child" title="{{notification.name}}" ng-bind="notification.name"></td>
+                            <td width="30%" class="transactions-list-element" title="{{notification.subject || 'None'}}" ng-bind="notification.subject || 'None'"></td>
+                            <td width="10%" class="transactions-list-element">
+                                <input class="custom-rehive-checkbox" ng-click="toggleNotificationStatus(notification,'last')"
+                                       ng-model="notification.enabled" type="checkbox">
+                            </td>
+                            <td width="15%" class="transactions-list-element" title="{{notification.event | capitalizeDottedSentence | capitalizeUnderscoredSentence}}"
+                                ng-bind="notification.event | capitalizeDottedSentence | capitalizeUnderscoredSentence"></td>
+                            <td width="15%" class="rehive-table-row-last-child">
+                                <a ng-click="openNotificationModal('app/pages/services/notificationService/notifications/listNotifications/notificationModal/notificationModal.html','md',notification)"
+                                   class="pull-right pointer ">Delete</a>
+                                <a ng-href="/#/services/notifications/{{notification.id}}/edit/{{notification.type}}"
+                                   class="pull-right pointer user-address-edit margin-right-30">Edit</a>
+                            </td>
+                            <td width="5%" class="transactions-list-element">
+                                <input class="custom-rehive-checkbox pull-right" ng-click="toggleNotificationAction(notification)"
+                                       ng-model="notification.action" type="checkbox">
+                            </td>
+                        </tr>
                     </table>
                     <div>
                         <p uib-pagination boundary-links="true" items-per-page="pagination.itemsPerPage"  total-items="notificationsListData.count" ng-model="pagination.pageNo"
