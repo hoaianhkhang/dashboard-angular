@@ -85,7 +85,7 @@
                         <span>{{group.name}}</span>
                         <span class="pull-right groups-delete-x-icon pointer"
                               ng-hide="group.name=='admin' || group.name=='service'"
-                              ng-click="deleteGroupConfirm(group.name)">x</span>
+                              ng-click="deleteGroupConfirm(group)">x</span>
                         <span style="font-size: 10px;line-height: 20px;font-weight: 500; padding: 0 5px 5px 5px;"
                               ng-class="{'pointer': group.name!='admin' && group.name!='service'}"
                               ng-click="group.name!='admin' && group.name!='service' ? editUser(group):null"
