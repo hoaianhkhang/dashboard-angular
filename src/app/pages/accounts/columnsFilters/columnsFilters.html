@@ -13,10 +13,10 @@
         </div>
         <div class="column-filters-dropdown">
             <label class="checkbox-inline custom-checkbox nowrap">
-                <input ng-change="toggleColumnVisibility(column)" type="checkbox" ng-model="availableBalanceColumn">
+                <input type="checkbox" ng-model="availableBalanceColumn">
                 <span>Available balance</span>
             </label>
-            <div class="accounts-column-multi-select">
+            <div ng-show="availableBalanceColumn" class="accounts-column-multi-select">
                 <select chosen
                         multiple
                         data-placeholder-text-multiple="'Choose one or more currencies'"
@@ -29,10 +29,10 @@
         </div>
         <div class="column-filters-dropdown">
             <label class="checkbox-inline custom-checkbox nowrap">
-                <input ng-change="toggleColumnVisibility(column)" type="checkbox" ng-model="column.visible">
+                <input type="checkbox" ng-model="balanceColumn">
                 <span>Balance</span>
             </label>
-            <div class="accounts-column-multi-select">
+            <div ng-show="balanceColumn" class="accounts-column-multi-select">
                 <select chosen
                         multiple
                         data-placeholder-text-multiple="'Choose one or more currencies'"

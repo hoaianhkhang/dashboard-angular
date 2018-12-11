@@ -41,9 +41,7 @@
             nameFilter: false,
             primaryFilter: false,
             referenceFilter: false,
-            userFilter: false,
-            balanceFilter: false,
-            availableBalanceFilter: false
+            userFilter: false
         };
         $scope.applyFiltersObj = {
             nameFilter: {
@@ -57,12 +55,6 @@
             },
             userFilter: {
                 selectedUserFilter: ''
-            },
-            balanceFilter: {
-                selectedBalanceArray: []
-            },
-            availableBalanceFilter: {
-                selectedAvailableBalanceArray: []
             }
         };
 

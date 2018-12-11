@@ -4,6 +4,7 @@
 
 .column-filters-dropdown{
   display: inline-flex!important;
+  width: 100%;
   & .accounts-column-multi-select{
     padding-left: 6px;
     & .chosen-container{

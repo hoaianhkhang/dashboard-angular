@@ -23,50 +23,6 @@
                 </div>
             </div>
         </div>
-        <div id="filterBalance">
-            <div>
-                <label class="checkbox-inline custom-checkbox nowrap">
-                    <input type="checkbox" ng-model="filtersObj.balanceFilter">
-                    <span>Balance</span>
-                </label>
-            </div>
-            <div ng-if="filtersObj.balanceFilter" class="row">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 date-filter-view">
-                    <div class="currencies-chosen-multi-select">
-                        <select chosen
-                                multiple
-                                data-placeholder-text-multiple="'Choose one or more currencies'"
-                                ng-model="applyFiltersObj.balanceFilter.selectedBalanceArray"
-                                ng-options="currency.code for currency in currenciesOptions | orderBy: 'code' track by currency.code"
-                                required>
-                            <option value=""></option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div id="filterAvailableBalance">
-            <div>
-                <label class="checkbox-inline custom-checkbox nowrap">
-                    <input type="checkbox" ng-model="filtersObj.availableBalanceFilter">
-                    <span>Available balance</span>
-                </label>
-            </div>
-            <div ng-if="filtersObj.availableBalanceFilter" class="row">
-                <div class="currencies-chosen-multi-select">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <select chosen
-                                multiple
-                                data-placeholder-text-multiple="'Choose one or more currencies'"
-                                ng-model="applyFiltersObj.availableBalanceFilter.selectedAvailableBalanceArray"
-                                ng-options="currency.code for currency in currenciesOptions | orderBy: 'code' track by currency.code"
-                                required>
-                            <option value=""></option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-        </div>
         <div id="filterPrimary">
             <div>
                 <label class="checkbox-inline custom-checkbox nowrap">
