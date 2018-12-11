@@ -149,7 +149,14 @@
             };
 
             if(vm.updatedCompanyInfo.config){
-                vm.updatedCompanyInfo.config = JSON.parse(vm.updatedCompanyInfo.config);
+                if(isJson(vm.updatedCompanyInfo.config)){
+                    vm.updatedCompanyInfo.config = JSON.parse(vm.updatedCompanyInfo.config);
+                } else {
+                    toastr.error('Must be a valid json object','Config');
+                    vm.updatedCompanyInfo.config = $scope.company.details.config;
+                    vm.getCompanyInfo();
+                    return;
+                }
             } else if(vm.updatedCompanyInfo.config ===''){
                 vm.updatedCompanyInfo.config = {};
             }
