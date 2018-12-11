@@ -257,7 +257,7 @@
 
         vm.formatAccountsArray = function (accountsArray) {
 
-            vm.getCurrencyHeaderColumns(accountsArray[0]);
+            //vm.getCurrencyHeaderColumns(accountsArray[0]);
 
             accountsArray.forEach(function (accountObj) {
                 var currencyText = [];
