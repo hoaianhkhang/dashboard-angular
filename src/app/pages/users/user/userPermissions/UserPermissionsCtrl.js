@@ -115,7 +115,7 @@
                 Rehive.admin.groups.permissions.get(user.groups[0].name,{filters: {page_size: 200}}).then(function (res) {
                     $scope.loadingPermissions = false;
                     if(res.results.length > 0){
-                        vm.markGroupPermissions(res.results);
+                        vm.getPermissions(res.results);
                     } else {
                         vm.getPermissions([]);
                     }
@@ -127,10 +127,6 @@
                     $scope.$apply();
                 });
             }
-        };
-
-        vm.markGroupPermissions = function (groupPermissions) {
-            // mark group permissions
         };
 
         vm.getPermissions = function (groupPermissions) {
