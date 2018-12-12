@@ -57,6 +57,10 @@
                 selectedUserFilter: ''
             }
         };
+        $scope.columnFiltersObj = {
+            balanceArray: [],
+            availableBalanceArray: []
+        };
 
         $scope.showColumnFilters = function () {
             $scope.showingFilters = false;
@@ -205,10 +209,10 @@
                     if($scope.currenciesOptions.length > 0){
                         $scope.currenciesOptions.forEach(function (currency) {
                             if(currency.code === firstAccountInList.currencies[0].currency.code){
-                                if($scope.applyFiltersObj.balanceFilter.selectedBalanceArray === undefined){
-                                    $scope.applyFiltersObj.balanceFilter.selectedBalanceArray = [];
+                                if($scope.columnFiltersObj.balanceArray === undefined){
+                                    $scope.columnFiltersObj.balanceArray = [];
                                 }
-                                $scope.applyFiltersObj.balanceFilter.selectedBalanceArray.push(currency);
+                                $scope.columnFiltersObj.balanceArray.push(currency);
                             }
                         });
                     }
@@ -217,7 +221,7 @@
                         $scope.currenciesOptions.forEach(function (currency) {
                             if(currency.code === balanceCurrency.replace('balance','')){
                                 $scope.insertingBalanceCurrencyFromHeader = true;
-                                $scope.applyFiltersObj.balanceFilter.selectedBalanceArray.push(currency);
+                                $scope.columnFiltersObj.balanceArray.push(currency);
                             }
                         });
                     });
@@ -227,10 +231,10 @@
                     if($scope.currenciesOptions.length > 0){
                         $scope.currenciesOptions.forEach(function (currency) {
                             if(currency.code === firstAccountInList.currencies[0].currency.code){
-                                if($scope.applyFiltersObj.availableBalanceFilter.selectedAvailableBalanceArray === undefined){
-                                    $scope.applyFiltersObj.availableBalanceFilter.selectedAvailableBalanceArray = [];
+                                if($scope.columnFiltersObj.availableBalanceArray === undefined){
+                                    $scope.columnFiltersObj.availableBalanceArray = [];
                                 }
-                                $scope.applyFiltersObj.availableBalanceFilter.selectedAvailableBalanceArray.push(currency);
+                                $scope.columnFiltersObj.availableBalanceArray.push(currency);
                             }
                         });
                     }
@@ -239,7 +243,7 @@
                         $scope.currenciesOptions.forEach(function (currency) {
                             if(currency.code === availableBalanceCurrency.replace('availableBalance','')){
                                 $scope.insertingAvailableBalanceCurrencyFromHeader = true;
-                                $scope.applyFiltersObj.availableBalanceFilter.selectedAvailableBalanceArray.push(currency);
+                                $scope.columnFiltersObj.availableBalanceArray.push(currency);
                             }
                         });
                     });
@@ -249,7 +253,7 @@
 
         vm.formatAccountsArray = function (accountsArray) {
 
-            //vm.getCurrencyHeaderColumns(accountsArray[0]);
+            vm.getCurrencyHeaderColumns(accountsArray[0]);
 
             accountsArray.forEach(function (accountObj) {
                 var currencyText = [];
@@ -340,7 +344,7 @@
             $scope.showingColumnFilters = false;
         };
 
-        $scope.$watchCollection("applyFiltersObj.balanceFilter.selectedBalanceArray", function( newValue, oldValue ) {
+        $scope.$watchCollection("columnFiltersObj.balanceArray", function( newValue, oldValue ) {
             if($scope.insertingBalanceCurrencyFromHeader){
                 $scope.insertingBalanceCurrencyFromHeader = false;
             } else {
@@ -369,6 +373,7 @@
                         $scope.headerColumns.forEach(function (header,index) {
                             if(header.fieldName === (changedObjectArray[0].code + 'balance')){
                                 $scope.headerColumns.splice(index,1);
+                                localStorageManagement.setValue(vm.savedAccountsTableColumns,JSON.stringify($scope.headerColumns));
                             }
                         });
                     }
@@ -376,7 +381,7 @@
             }
         },true);
 
-        $scope.$watchCollection("applyFiltersObj.availableBalanceFilter.selectedAvailableBalanceArray", function( newValue, oldValue ) {
+        $scope.$watchCollection("columnFiltersObj.availableBalanceArray", function( newValue, oldValue ) {
             if($scope.insertingAvailableBalanceCurrencyFromHeader) {
                 $scope.insertingAvailableBalanceCurrencyFromHeader = false;
             } else {
@@ -405,6 +410,7 @@
                         $scope.headerColumns.forEach(function (header,index) {
                             if(header.fieldName === (changedObjectArray[0].code + 'availableBalance')){
                                 $scope.headerColumns.splice(index,1);
+                                localStorageManagement.setValue(vm.savedAccountsTableColumns,JSON.stringify($scope.headerColumns));
                             }
                         });
                     }

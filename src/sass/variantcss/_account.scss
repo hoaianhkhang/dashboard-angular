@@ -12,7 +12,7 @@
       & > .chosen-choices{
         line-height: 22px!important;
         & li.search-choice{
-          margin: 6px 5px 3px 0!important;
+          margin: 3px 5px 2px 0!important;
           padding: 1px 20px 0 5px!important;
           & .search-choice-close{
             top: 2px!important;
@@ -21,6 +21,7 @@
         & .search-field{
           height: 22px!important;
           & input.chosen-search-input.default{
+            line-height: 22px!important;
             height: 22px!important;
             margin: 0!important;
             width: 298px!important;

@@ -20,7 +20,7 @@
                 <select chosen
                         multiple
                         data-placeholder-text-multiple="'Choose one or more currencies'"
-                        ng-model="applyFiltersObj.balanceFilter.selectedBalanceArray"
+                        ng-model="columnFiltersObj.availableBalanceArray"
                         ng-options="currency.code for currency in currenciesOptions | orderBy: 'code' track by currency.code"
                         required>
                     <option value=""></option>
@@ -36,7 +36,7 @@
                 <select chosen
                         multiple
                         data-placeholder-text-multiple="'Choose one or more currencies'"
-                        ng-model="applyFiltersObj.balanceFilter.selectedBalanceArray"
+                        ng-model="columnFiltersObj.balanceArray"
                         ng-options="currency.code for currency in currenciesOptions | orderBy: 'code' track by currency.code"
                         required>
                     <option value=""></option>
