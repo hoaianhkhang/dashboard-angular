@@ -97,7 +97,7 @@
                 $scope.loadingPermissions = true;
                 Rehive.admin.users.get({id: vm.uuid}).then(function (res) {
                     $scope.user = res;
-                    vm.getPermissions();
+                    vm.getGroupPermissions($scope.user);
                     $scope.$apply();
                 }, function (error) {
                     $scope.loadingPermissions = false;
@@ -109,12 +109,36 @@
         };
         vm.getUser();
 
-        vm.getPermissions = function () {
+        vm.getGroupPermissions = function (user) {
+            if(vm.token) {
+                $scope.loadingPermissions = true;
+                Rehive.admin.groups.permissions.get(user.groups[0].name,{filters: {page_size: 200}}).then(function (res) {
+                    $scope.loadingPermissions = false;
+                    if(res.results.length > 0){
+                        vm.markGroupPermissions(res.results);
+                    } else {
+                        vm.getPermissions([]);
+                    }
+                    $scope.$apply();
+                }, function (error) {
+                    $scope.loadingPermissions = false;
+                    errorHandler.evaluateErrors(error);
+                    errorHandler.handleErrors(error);
+                    $scope.$apply();
+                });
+            }
+        };
+
+        vm.markGroupPermissions = function (groupPermissions) {
+            // mark group permissions
+        };
+
+        vm.getPermissions = function (groupPermissions) {
             if(vm.token) {
                 $scope.loadingPermissions = true;
                 Rehive.admin.users.permissions.get(vm.uuid,{filters: {page_size: 250}}).then(function (res) {
                     $scope.loadingPermissions = false;
-                    vm.checkforAllowedPermissions(res.results);
+                    vm.checkforAllowedPermissions(res.results.concat(groupPermissions));
                     $scope.$apply();
                 }, function (error) {
                     $scope.loadingPermissions = false;
@@ -424,7 +448,7 @@
                 $scope.loadingPermissions = false;
                 vm.checkedLevels = [];
                 toastr.success('Permissions successfully saved');
-                vm.getPermissions();
+                vm.getGroupPermissions($scope.user);
             },2500);
         };
 
