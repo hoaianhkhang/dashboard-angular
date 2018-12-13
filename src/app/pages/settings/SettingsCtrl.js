@@ -23,6 +23,9 @@
             vm.locationArray = vm.location.split('/');
             $scope.locationIndicator = vm.locationArray[vm.locationArray.length - 1];
             $scope.settingsLocation = $scope.locationIndicator;
+            if($scope.locationIndicator === 'settings'){
+                $scope.goToSetting('/settings/company-info');
+            }
         });
 
         $scope.goToSetting = function(path){
