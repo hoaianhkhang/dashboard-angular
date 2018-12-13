@@ -9,8 +9,8 @@
                                 <th width="50%">
                                     {{totalPermissionsObj[key].permissionsName}}
                                     <input type="checkbox" class="custom-rehive-checkbox" ng-model="totalPermissionsObj[key].enableAll"
-                                           ng-disabled="user.groups[0].name == 'admin' || user.groups[0].name == 'service'"
-                                           ng-class="{'permissions-select-all-disabled': (user.groups[0].name == 'admin' || user.groups[0].name == 'service')}"
+                                           ng-disabled="user.groups[0].name == 'admin'"
+                                           ng-class="{'permissions-select-all-disabled': (user.groups[0].name == 'admin')}"
                                            ng-checked="user.groups[0].name == 'admin'"
                                            ng-click="toggleAllPermissions(key,totalPermissionsObj[key].enableAll)">
                                 </th>
@@ -26,13 +26,13 @@
                                 </td>
                                 <td class="text-center group-permission-td" ng-repeat="level in permission.levels">
                                     <label class="checkbox-inline custom-checkbox nowrap"
-                                            ng-class="{'checkbox-disabled': (user.groups[0].name == 'admin'  || user.groups[0].name == 'service')}">
+                                            ng-class="{'checkbox-disabled': (user.groups[0].name == 'admin')}">
                                         <input type="checkbox" ng-change="trackPermissions(permission,level,key)" ng-model="level.enabled"
-                                               ng-disabled="user.groups[0].name == 'admin' || user.groups[0].name == 'service'"
+                                               ng-disabled="user.groups[0].name == 'admin'"
                                                ng-checked="level.enabled || user.groups[0].name == 'admin'">
                                         <span class="account-settings-span"></span>
                                     </label>
-                                    <div ng-show="user.groups[0].name == 'admin' || user.groups[0].name == 'service'" class="group-permission-tooltip">
+                                    <div ng-show="user.groups[0].name == 'admin'" class="group-permission-tooltip">
                                         Rehive system group user permissions cannot be edited.
                                     </div>
                                 </td>
@@ -43,7 +43,8 @@
             </div>
         </div>
     </div>
-    <button ng-click="savePermissionsProcess()" class="pull-right btn dashboard-btn btn-primary">Save</button>
+    <button ng-disabled="user.groups[0].name == 'admin'"
+            ng-click="separateCheckedLevels()" class="pull-right btn dashboard-btn btn-primary">Save</button>
 </div>
 <div ba-panel ng-show="loadingPermissions">
     <loading-image></loading-image>
