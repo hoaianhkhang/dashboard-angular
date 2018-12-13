@@ -6,7 +6,7 @@
 
     /** @ngInject */
     function EditTwilioModalCtrl($scope,$http,errorHandler,twilioCreds,
-                                 $uibModalInstance,toastr,localStorageManagement) {
+                                $uibModalInstance,toastr,localStorageManagement) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
@@ -18,7 +18,6 @@
         $scope.updateTwilioCredentials = function () {
             $scope.editingTwilioCreds =  true;
             if(vm.token) {
-
                 $http.patch(vm.baseUrl + 'admin/credentials/' + twilioCreds.id + '/',{ credentials : $scope.editTwilioCredsObj}, {
                     headers: {
                         'Content-Type': 'application/json',

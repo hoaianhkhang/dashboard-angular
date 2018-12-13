@@ -8,6 +8,7 @@
     function EditSendGridModalCtrl($scope,$http,errorHandler,sendGridCreds,
                                    $uibModalInstance,toastr,localStorageManagement) {
 
+
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
         vm.baseUrl = localStorageManagement.getValue('SERVICEURL');
@@ -18,7 +19,6 @@
         $scope.updateSendGridCredentials = function () {
             $scope.editingSendGridCreds =  true;
             if(vm.token) {
-
                 $http.patch(vm.baseUrl + 'admin/credentials/' + sendGridCreds.id + '/',{ credentials: $scope.editSendGridCredsObj}, {
                     headers: {
                         'Content-Type': 'application/json',
