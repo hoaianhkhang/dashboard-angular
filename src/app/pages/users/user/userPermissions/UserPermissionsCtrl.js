@@ -115,9 +115,11 @@
                 Rehive.admin.groups.permissions.get(user.groups[0].name,{filters: {page_size: 200}}).then(function (res) {
                     $scope.loadingPermissions = false;
                     if(res.results.length > 0){
-                        vm.getPermissions(res.results);
+                        vm.checkforAllowedPermissions(res.results,'fromGroup');
+                        vm.getPermissions();
                     } else {
-                        vm.getPermissions([]);
+                        vm.checkforAllowedPermissions([]);
+                        vm.getPermissions();
                     }
                     $scope.$apply();
                 }, function (error) {
@@ -129,12 +131,12 @@
             }
         };
 
-        vm.getPermissions = function (groupPermissions) {
+        vm.getPermissions = function () {
             if(vm.token) {
                 $scope.loadingPermissions = true;
                 Rehive.admin.users.permissions.get(vm.uuid,{filters: {page_size: 250}}).then(function (res) {
                     $scope.loadingPermissions = false;
-                    vm.checkforAllowedPermissions(res.results.concat(groupPermissions));
+                    vm.checkforAllowedPermissions(res.results);
                     $scope.$apply();
                 }, function (error) {
                     $scope.loadingPermissions = false;
@@ -145,27 +147,43 @@
             }
         };
 
-        vm.checkforAllowedPermissions = function (permissionsArray) {
+        vm.checkforAllowedPermissions = function (permissionsArray,fromGroup) {
             permissionsArray.forEach(function (permission,index) {
                 Object.keys($scope.totalPermissionsObj).forEach(function(key) {
                     if($scope.totalPermissionsObj[key].section === permission.section){
                         $scope.totalPermissionsObj[key].permissions.forEach(function (element,permissionsIndex) {
                             if(permission.type.toLowerCase() === element.type.replace(/ /g, '').toLowerCase()){
+                                // for group permissions
+                                if(fromGroup){
+                                    $scope.totalPermissionsObj[key].permissions[permissionsIndex].from = 'fromGroup';
+                                }
                                 element.levels.forEach(function (level,levelIndex) {
                                     if(permission.level === level.name){
                                         $scope.totalPermissionsObj[key].permissions[permissionsIndex].levels[levelIndex].enabled = true;
                                         $scope.totalPermissionsObj[key].permissions[permissionsIndex].levels[levelIndex].id = permissionsArray[index].id;
                                         $scope.totalPermissionsObj[key].permissions[permissionsIndex].levelCounter = $scope.totalPermissionsObj[key].permissions[permissionsIndex].levelCounter + 1;
+                                        // for group permissions
+                                        if(fromGroup){
+                                            $scope.totalPermissionsObj[key].permissions[permissionsIndex].levels[levelIndex].from = 'fromGroup';
+                                        }
                                         if($scope.totalPermissionsObj[key].permissions[permissionsIndex].levelCounter === 4){
                                             var allIndex = $scope.totalPermissionsObj[key].permissions[permissionsIndex].levels.findIndex(function (element) {
                                                 return element.name === 'all';
                                             });
                                             $scope.totalPermissionsObj[key].permissions[permissionsIndex].levels[allIndex].enabled = true;
+                                            // for group permissions
+                                            if(fromGroup){
+                                                $scope.totalPermissionsObj[key].permissions[permissionsIndex].levels[allIndex].from = 'fromGroup';
+                                            }
                                         }
 
                                         $scope.totalPermissionsObj[key].permissionCounter = $scope.totalPermissionsObj[key].permissionCounter + 1;
                                         if($scope.totalPermissionsObj[key].permissionCounter === (($scope.totalPermissionsObj[key].permissions.length) * 4)){
                                             $scope.totalPermissionsObj[key].enableAll = true;
+                                            // for group permissions
+                                            if(fromGroup){
+                                                $scope.totalPermissionsObj[key].from = 'fromGroup';
+                                            }
                                         }
                                     }
                                 });
@@ -179,7 +197,7 @@
         $scope.toggleAllPermissions = function (key,enabledAll) {
             $scope.totalPermissionsObj[key].permissions.forEach(function (permission) {
                 permission.levels.forEach(function (level) {
-                    if(level.name === 'all'){
+                    if(level.name === 'all' && level.from !== 'fromGroup'){
                         level.enabled = enabledAll;
                         $scope.trackPermissions(permission,level,key);
                     }

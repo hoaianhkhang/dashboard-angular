@@ -9,8 +9,8 @@
                                 <th width="50%">
                                     {{totalPermissionsObj[key].permissionsName}}
                                     <input type="checkbox" class="custom-rehive-checkbox" ng-model="totalPermissionsObj[key].enableAll"
-                                           ng-disabled="user.groups[0].name == 'admin'"
-                                           ng-class="{'permissions-select-all-disabled': (user.groups[0].name == 'admin')}"
+                                           ng-disabled="user.groups[0].name == 'admin' || (totalPermissionsObj[key].from == 'fromGroup')"
+                                           ng-class="{'permissions-select-all-disabled': (user.groups[0].name == 'admin') || (totalPermissionsObj[key].from == 'fromGroup')}"
                                            ng-checked="user.groups[0].name == 'admin'"
                                            ng-click="toggleAllPermissions(key,totalPermissionsObj[key].enableAll)">
                                 </th>
@@ -26,9 +26,9 @@
                                 </td>
                                 <td class="text-center group-permission-td" ng-repeat="level in permission.levels">
                                     <label class="checkbox-inline custom-checkbox nowrap"
-                                            ng-class="{'checkbox-disabled': (user.groups[0].name == 'admin')}">
+                                            ng-class="{'checkbox-disabled': (user.groups[0].name == 'admin') || (level.from == 'fromGroup')}">
                                         <input type="checkbox" ng-change="trackPermissions(permission,level,key)" ng-model="level.enabled"
-                                               ng-disabled="user.groups[0].name == 'admin'"
+                                               ng-disabled="user.groups[0].name == 'admin' || (level.from == 'fromGroup')"
                                                ng-checked="level.enabled || user.groups[0].name == 'admin'">
                                         <span class="account-settings-span"></span>
                                     </label>
