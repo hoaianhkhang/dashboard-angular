@@ -110,7 +110,7 @@
         vm.getUser();
 
         vm.getGroupPermissions = function (user) {
-            if(vm.token) {
+            if(user.groups.length > 0) {
                 $scope.loadingPermissions = true;
                 Rehive.admin.groups.permissions.get(user.groups[0].name,{filters: {page_size: 200}}).then(function (res) {
                     $scope.loadingPermissions = false;
@@ -118,7 +118,6 @@
                         vm.checkforAllowedPermissions(res.results,'fromGroup');
                         vm.getPermissions();
                     } else {
-                        vm.checkforAllowedPermissions([]);
                         vm.getPermissions();
                     }
                     $scope.$apply();
@@ -128,6 +127,8 @@
                     errorHandler.handleErrors(error);
                     $scope.$apply();
                 });
+            } else {
+                vm.getPermissions();
             }
         };
 
