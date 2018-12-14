@@ -22,6 +22,8 @@
         $scope.filtersCount = 0;
         $scope.insertingBalanceCurrencyFromHeader = false;
         $scope.insertingAvailableBalanceCurrencyFromHeader = false;
+        $scope.availableBalanceColumn = true;
+        $scope.balanceColumn = true;
 
         $scope.accountsPagination = {
             itemsPerPage: 25,

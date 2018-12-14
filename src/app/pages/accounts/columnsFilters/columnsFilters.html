@@ -44,7 +44,7 @@
             </div>
         </div>
         <div ng-repeat="column in headerColumns | orderBy: 'colName' | filter: columnSearch track by $index">
-            <div>
+            <div ng-hide="(column.colName.indexOf(' available balance') > 0) || (column.colName.indexOf(' balance') > 0)">
                 <label class="checkbox-inline custom-checkbox nowrap">
                     <input ng-change="toggleColumnVisibility(column)" type="checkbox" ng-model="column.visible">
                     <span ng-bind="column.colName"></span>
