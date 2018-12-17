@@ -18,7 +18,7 @@
                 },
                 title: 'Build a fintech app',
                 sidebarMeta: {
-                    order: 700
+                    order: 900
                 }
             });
     }
