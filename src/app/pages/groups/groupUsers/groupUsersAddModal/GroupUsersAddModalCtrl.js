@@ -14,7 +14,6 @@
             inputType: 'Email'
         };
         $scope.loadingGroup = false;
-        $scope.userOptions = ['Email','Mobile','Id'];
 
         $scope.getUser = function(userGroupParams){
             if(vm.token) {
