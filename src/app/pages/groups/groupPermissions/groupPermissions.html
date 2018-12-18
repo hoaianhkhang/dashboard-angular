@@ -70,7 +70,7 @@
             </div>
         </div>
     </div>
-    <button ng-hide="loadingPermissions" ng-click="savePermissionsProcess()"
+    <button ng-hide="loadingPermissions" ng-click="separateCheckedLevels()"
             ng-disabled="editGroupObj.name == 'admin' || editGroupObj.name == 'service'"
             ng-class="{'btn-gray': (editGroupObj.name == 'admin'  || editGroupObj.name == 'service'),
             'btn-primary': (editGroupObj.name != 'admin'  || editGroupObj.name != 'service')}"

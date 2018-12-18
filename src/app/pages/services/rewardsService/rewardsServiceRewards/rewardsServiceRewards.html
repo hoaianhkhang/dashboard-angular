@@ -52,8 +52,8 @@
                         </td>
                         <td ng-click="$event.stopPropagation()">
                             <div ng-show="reward.reward_type == 'Request'">
-                                <a ng-hide="reward.status == 'reject'" class="margin-right-10 pointer" ng-click="rewardStatusChange(reward,'reject')">Reject</a>
-                                <a ng-hide="reward.status == 'accept'" class="pointer" ng-click="rewardStatusChange(reward,'accept')">Accept</a>
+                                <a ng-hide="reward.status == 'rejected'" class="margin-right-10 pointer" ng-click="rewardStatusChange(reward,'reject')">Reject</a>
+                                <a ng-hide="reward.status == 'accepted'" class="pointer" ng-click="rewardStatusChange(reward,'accept')">Accept</a>
                             </div>
                         </td>
                     </tr>

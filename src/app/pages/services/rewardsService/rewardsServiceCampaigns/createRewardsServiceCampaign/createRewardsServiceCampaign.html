@@ -163,6 +163,14 @@
                     <input class="custom-rehive-checkbox" ng-model="newCampaignParams.request" type="checkbox">
                 </div>
                 <div class="form-group">
+                    <label>Users</label>
+                    <div class="reward-multi-select">
+                        <tags-input ng-model="newCampaignParams.users" placeholder="Enter one or more user IDs.">
+                            <auto-complete class="reward-tag-users-input" source="getUsersEmailTypeahead($query)"></auto-complete>
+                        </tags-input>
+                    </div>
+                </div>
+                <div class="form-group">
                     <label>Groups</label>
                     <div class="reward-multi-select">
                         <tags-input ng-model="newCampaignParams.groups" placeholder="Enter one or more group name">
@@ -212,14 +220,7 @@
     <!--<br>-->
     <!--<input class="form-control" ng-model="newCampaignParams.rewardTotal" type="number">-->
 <!--</div>-->
-<!--<div class="form-group">-->
-    <!--<label>Users</label>-->
-    <!--<div class="reward-multi-select">-->
-        <!--<tags-input ng-model="newCampaignParams.users" placeholder="Enter one or more user email">-->
-            <!--<auto-complete class="reward-tag-users-input" source="getUsersEmailTypeahead($query)"></auto-complete>-->
-        <!--</tags-input>-->
-    <!--</div>-->
-<!--</div>-->
+
 <!--<div class="form-group">-->
     <!--<label>Groups</label>-->
     <!--<div class="reward-multi-select">-->

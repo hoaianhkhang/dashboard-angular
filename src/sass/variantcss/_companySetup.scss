@@ -45,14 +45,19 @@
   padding: 100px 64px 64px 64px;
 }
 
+.onboarding-menu-div{
+  display: flex;
+}
+
 .company-setup-menu-navigation-div{
-  position: relative;
+  line-height: 14px;
+  display: inline-block;
 }
 
 .company-setup-menu-navigation-title{
-  position: absolute;
-  top:4px;
-  left:36px;
+  margin: 4px 0 0 6px;
+  display: inline-block;
+  position: relative;
 }
 
 .menu-number {
@@ -87,6 +92,7 @@
   margin-top: 5px;
 };
 .menu-arrow {
+  display: inline-block;
   position: relative;
   background-color: white;
   border: 1px solid #B8B7C6;
@@ -106,6 +112,7 @@
 
 .menu-mark {
   position: relative;
+  display: inline-block;
   background-color: white;
   border: 1px solid #00E5B8;
   width: 24px;

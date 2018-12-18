@@ -36,13 +36,13 @@
                     <thead>
                     <tr>
                         <!--class="pointer"-->
-                        <th ng-repeat="header in headerColumns" ng-if="header.visible"  ng-bind="header.colName"></th>
+                        <th ng-repeat="header in headerColumns track by $index" ng-if="header.visible"  ng-bind="header.colName"></th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr ng-repeat="account in accountsList | orderBy: '-created'" data-toggle="modal"
                         class="editable-row center pointer user-details-table-hover" ng-click="displayAccount('app/pages/accounts/showAccountModal/showAccountModal.html','md',account)">
-                        <td class="transactions-list-element" title="{{account[header.fieldName]}}" ng-repeat="header in headerColumns"
+                        <td class="transactions-list-element" title="{{account[header.fieldName]}}" ng-repeat="header in headerColumns track by $index"
                             ng-if="header.visible" ng-bind="account[header.fieldName]"></td>
                     </tr>
                     </tbody>

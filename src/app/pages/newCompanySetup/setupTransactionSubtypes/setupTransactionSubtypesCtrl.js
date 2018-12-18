@@ -10,12 +10,10 @@
         var vm = this;
         vm.token = localStorageManagement.getValue("token");
         $scope.subtypes = [];
-        $scope.subtype= {
-            tx_type: 'credit'
-        };
-        $rootScope.$pageFinishedLoading = true;
-        $rootScope.activeSetupRoute = 3;
-        localStorageManagement.setValue('activeSetupRoute',3);
+        $scope.subtype={};
+        $rootScope.$pageFinishedLoading=true;
+        $rootScope.activeSetupRoute = 4;
+        localStorageManagement.setValue('activeSetupRoute',4);
         $scope.editingSubtypes = false;
         $scope.loadingSetupSubtypes= true;
 
