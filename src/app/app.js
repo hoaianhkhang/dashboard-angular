@@ -47,9 +47,6 @@ angular.module('BlurAdmin', [
 
             $rootScope.shouldBeBlue = '';
 
-            var newUrlArray = newUrl.split('/'),
-                newUrlLastElement = _.last(newUrlArray);
-
             routeManagement(event,newUrl);
         });
 
