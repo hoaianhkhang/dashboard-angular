@@ -211,9 +211,11 @@
         }
 
         if($scope.newTransactionParams.txType){
-            $scope.loadingTransactionSettings = true;
-            $scope.debitTransactionData.user = $scope.newTransactionParams.userIdentity;
-            vm.getDebitUserObj($scope.debitTransactionData);
+            if($scope.newTransactionParams.userIdentity){
+                $scope.loadingTransactionSettings = true;
+                $scope.debitTransactionData.user = $scope.newTransactionParams.userIdentity;
+                vm.getDebitUserObj($scope.debitTransactionData);
+            }
         }
 
     }
