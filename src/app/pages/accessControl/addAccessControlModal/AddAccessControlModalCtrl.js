@@ -5,7 +5,7 @@
         .controller('AddAccessControlModalCtrl', AddAccessControlModalCtrl);
 
     /** @ngInject */
-    function AddAccessControlModalCtrl($scope,$http,$uibModalInstance,toastr,environmentConfig,
+    function AddAccessControlModalCtrl($scope,$uibModalInstance,toastr,
                                        Rehive,localStorageManagement,errorHandler) {
 
         var vm = this;
@@ -29,23 +29,17 @@
 
             newAccessControlRule[accessControlParams.applyRuleTo] = accessControlParams[accessControlParams.applyRuleTo];
 
-            $http.post(environmentConfig.API + '/admin/access-control-rules/',newAccessControlRule, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': vm.token
-                }
-            }).then(function (res) {
-                $scope.loadingAccessControl = false;
-                if(res.status === 200 || res.status === 201) {
-                    toastr.success('You have successfully added the access control rule');
-                    $uibModalInstance.close(true);
-                }
-            }).catch(function (error) {
-                $scope.loadingAccessControl = false;
+            Rehive.admin.accessControlRules.create(newAccessControlRule).then(function (res) {
+                $scope.addingAccessControlRules = false;
+                toastr.success('You have successfully added the access control rule');
+                $uibModalInstance.close(true);
+                $scope.$apply();
+            }, function (error) {
+                $scope.addingAccessControlRules = false;
                 errorHandler.evaluateErrors(error.data);
                 errorHandler.handleErrors(error);
+                $scope.$apply();
             });
-
         };
 
     }

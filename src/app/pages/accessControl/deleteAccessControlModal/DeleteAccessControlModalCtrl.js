@@ -4,8 +4,8 @@
     angular.module('BlurAdmin.pages.accessControl')
         .controller('DeleteAccessControlModalCtrl', DeleteAccessControlModalCtrl);
 
-    function DeleteAccessControlModalCtrl($scope,Rehive,$uibModalInstance,rule,$http,
-                                          environmentConfig,toastr,localStorageManagement,errorHandler) {
+    function DeleteAccessControlModalCtrl($scope,Rehive,$uibModalInstance,rule,
+                                          toastr,localStorageManagement,errorHandler) {
 
         var vm = this;
 
@@ -15,25 +15,18 @@
 
         $scope.deleteAccessControlRule = function () {
             $scope.deletingAccessControlRule = true;
-            $http.delete(environmentConfig.API + '/admin/access-control-rules/' + rule.id + '/', {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': vm.token
-                }
-            }).then(function (res) {
+            Rehive.admin.accessControlRules.delete(rule.id).then(function (res) {
                 $scope.deletingAccessControlRule = false;
-                if(res.status === 200) {
-                    toastr.success('You have successfully deleted the access control rule');
-                    $uibModalInstance.close(true);
-                }
-            }).catch(function (error) {
+                toastr.success('You have successfully deleted the access control rule');
+                $uibModalInstance.close(true);
+                $scope.$apply();
+            }, function (error) {
                 $scope.deletingAccessControlRule = false;
                 errorHandler.evaluateErrors(error.data);
                 errorHandler.handleErrors(error);
+                $scope.$apply();
             });
         };
-
-
 
     }
 })();

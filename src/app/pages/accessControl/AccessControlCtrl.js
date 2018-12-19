@@ -5,8 +5,8 @@
         .controller('AccessControlCtrl', AccessControlCtrl);
 
     /** @ngInject */
-    function AccessControlCtrl($rootScope,$scope,serializeFiltersService,$http,environmentConfig,
-                               localStorageManagement,errorHandler,$uibModal) {
+    function AccessControlCtrl($rootScope,$scope,serializeFiltersService,
+                               localStorageManagement,errorHandler,$uibModal,Rehive) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
@@ -41,21 +41,19 @@
 
         $scope.getAccessControlRules = function(){
             $scope.loadingAccessControl = true;
-            $http.get(environmentConfig.API + '/admin/access-control-rules/', {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': vm.token
-                }
-            }).then(function (res) {
+
+            var accessControlFiltersObj = vm.getAccessControlFiltersObj();
+
+            Rehive.admin.accessControlRules.get({filters: accessControlFiltersObj}).then(function (res) {
                 $scope.loadingAccessControl = false;
-                if (res.status === 200) {
-                    $scope.accessControlRulesData =  res.data.data;
-                    $scope.accessControlRules =  res.data.data.results;
-                }
-            }).catch(function (error) {
+                $scope.accessControlRulesData =  res;
+                $scope.accessControlRules =  res.results;
+                $scope.$apply();
+            }, function (error) {
                 $scope.loadingAccessControl = false;
                 errorHandler.evaluateErrors(error.data);
                 errorHandler.handleErrors(error);
+                $scope.$apply();
             });
         };
         $scope.getAccessControlRules();

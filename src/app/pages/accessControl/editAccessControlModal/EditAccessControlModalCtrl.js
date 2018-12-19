@@ -5,7 +5,7 @@
         .controller('EditAccessControlModalCtrl', EditAccessControlModalCtrl);
 
     /** @ngInject */
-    function EditAccessControlModalCtrl($scope,$http,$uibModalInstance,toastr,environmentConfig,
+    function EditAccessControlModalCtrl($scope,$http,$uibModalInstance,toastr,Rehive,environmentConfig,
                                         rule,localStorageManagement,errorHandler,serializeFiltersService) {
 
         var vm = this;
@@ -17,14 +17,9 @@
 
         $scope.getAccessControlRule = function () {
             $scope.editingAccessControlRules = true;
-            $http.get(environmentConfig.API + '/admin/access-control-rules/' + rule.id + '/', {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': vm.token
-                }
-            }).then(function (res) {
+            Rehive.admin.accessControlRules.get({id: rule.id}).then(function (res) {
                 $scope.editingAccessControlRules = false;
-                $scope.editAccessControlParams = res.data.data;
+                $scope.editAccessControlParams = res;
                 if($scope.editAccessControlParams.user && $scope.editAccessControlParams.user.id){
                     $scope.editAccessControlParams.applyRuleTo = 'user';
                     $scope.editAccessControlParams.user = $scope.editAccessControlParams.user.email || $scope.editAccessControlParams.user.mobile || $scope.editAccessControlParams.user.id;
@@ -34,10 +29,12 @@
                 } else {
                     $scope.editAccessControlParams.applyRuleTo = 'user';
                 }
-            }).catch(function (error) {
+                $scope.$apply();
+            }, function (error) {
                 $scope.editingAccessControlRules = false;
                 errorHandler.evaluateErrors(error.data);
                 errorHandler.handleErrors(error);
+                $scope.$apply();
             });
         };
         $scope.getAccessControlRule();
@@ -63,56 +60,18 @@
                 updatedRuleObj.user = ' ';
             }
 
-            $http.patch(environmentConfig.API + '/admin/access-control-rules/' + rule.id + '/',serializeFiltersService.objectFilters(updatedRuleObj), {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': vm.token
-                }
-            }).then(function (res) {
-                if(res.status === 200 || res.status === 201) {
-                    $scope.editingAccessControlRules = false;
-                    toastr.success('You have successfully updated the access control rule');
-                    $uibModalInstance.close(true);
-                }
-            }).catch(function (error) {
+            Rehive.admin.accessControlRules.update(rule.id,serializeFiltersService.objectFilters(updatedRuleObj)).then(function (res) {
+                $scope.editingAccessControlRules = false;
+                toastr.success('You have successfully updated the access control rule');
+                $uibModalInstance.close(true);
+                $scope.$apply();
+            }, function (error) {
                 $scope.editingAccessControlRules = false;
                 errorHandler.evaluateErrors(error.data);
                 errorHandler.handleErrors(error);
+                $scope.$apply();
             });
-
-
         };
-
-        // $scope.addAccessControlRules = function (accessControlParams) {
-        //     $scope.editingAccessControlRules = true;
-        //
-        //     var newAccessControlRule = {
-        //         type: accessControlParams.type,
-        //         action: accessControlParams.action,
-        //         value: accessControlParams.value,
-        //         label: accessControlParams.label
-        //     };
-        //
-        //     newAccessControlRule[accessControlParams.applyRuleTo] = accessControlParams[accessControlParams.applyRuleTo];
-        //
-        //     $http.post(environmentConfig.API + '/admin/access-control-rules/',newAccessControlRule, {
-        //         headers: {
-        //             'Content-Type': 'application/json',
-        //             'Authorization': vm.token
-        //         }
-        //     }).then(function (res) {
-        //         $scope.editingAccessControlRules = false;
-        //         if(res.status === 200 || res.status === 201) {
-        //             toastr.success('You have successfully added the access control rule');
-        //             $uibModalInstance.close(true);
-        //         }
-        //     }).catch(function (error) {
-        //         $scope.editingAccessControlRules = false;
-        //         errorHandler.evaluateErrors(error.data);
-        //         errorHandler.handleErrors(error);
-        //     });
-        //
-        // };
 
     }
 })();
