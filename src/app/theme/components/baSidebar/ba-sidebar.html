@@ -50,7 +50,8 @@
              ng-if="::(!subitem.subMenu && !subitem.disabled)"
              ui-state="subitem.stateRef || ''"
              ng-href="{{::(subitem.fixedHref ? subitem.fixedHref: '')}}">
-            {{ ::subitem.title}}
+            {{ ::subitem.title}} {{ ::subitem.fixedHref}}
+            <i class="{{ ::subitem.icon }}"></i>
           </a>
         </li>
       </ul>
