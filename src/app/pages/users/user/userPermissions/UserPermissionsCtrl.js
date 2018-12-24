@@ -240,9 +240,6 @@
                             vm.checkedLevels.push({type: permission.type,level: permissionsLevel.name,section: permission.section});
                             permission.levelCounter = 4;
                             $scope.totalPermissionsObj[permissionOptionKey].enableAll = vm.isEnabledAllOnCounter(permissionOptionKey,'Increment');
-                            // if($scope.totalPermissionsObj[permissionOptionKey].permissionCounter == ($scope.totalPermissionsObj[permissionOptionKey].permissions.length * 4)){
-                            //     $scope.totalPermissionsObj[permissionOptionKey].enableAll = true;
-                            // }
                         } else if(permissionsLevel.id && !permissionsLevel.enabled){
                             permissionsLevel.enabled = true;
                             var index = findIndexOfLevel(permission,permissionsLevel);
@@ -258,6 +255,7 @@
                             vm.checkedLevels.push({type: permission.type,level: permissionsLevel.name,id: permissionsLevel.id,section: permission.section});
                             permission.levelCounter = 0;
                             $scope.totalPermissionsObj[permissionOptionKey].enableAll = vm.isEnabledAllOnCounter(permissionOptionKey,'Decrement');
+
                         } else if(!permissionsLevel.id  && permissionsLevel.enabled) {
                             permissionsLevel.enabled = false;
                             var index = findIndexOfLevel(permission,permissionsLevel);
@@ -271,57 +269,29 @@
             } else {
 
                 //level.enabled && level.id means they were ticked from before
-
                 if(level.enabled && level.id){
                     var index = findIndexOfLevel(permission,level);
-                    if(index > -1){
-                        vm.checkedLevels.splice(index,1);
-                        permission.levelCounter = permission.levelCounter + 1;
-                        if(permission.levelCounter === 4){
-                            var allIndex = permission.levels.findIndex(function (element) {
-                                return element.name == 'all';
-                            });
-                            permission.levels[allIndex].enabled = true;
-                        }
-                        $scope.totalPermissionsObj[permissionOptionKey].enableAll = vm.isEnabledAllOnCounter(permissionOptionKey,'Increment');
-                        return;
-                    } else {
-                        vm.checkedLevels.push({type: permission.type,level: level.name,id: level.id,section: permission.section});
-                        permission.levelCounter = permission.levelCounter - 1;
-                        if(permission.levelCounter < 4){
-                            var allIndex = permission.levels.findIndex(function (element) {
-                                return element.name == 'all';
-                            });
-                            permission.levels[allIndex].enabled = false;
-                        }
-                        $scope.totalPermissionsObj[permissionOptionKey].enableAll = vm.isEnabledAllOnCounter(permissionOptionKey,'Decrement');
-                        return;
+                    vm.checkedLevels.splice(index,1);
+                    permission.levelCounter = permission.levelCounter + 1;
+                    if(permission.levelCounter === 4){
+                        var allIndex = permission.levels.findIndex(function (element) {
+                            return element.name == 'all';
+                        });
+                        permission.levels[allIndex].enabled = true;
                     }
+                    $scope.totalPermissionsObj[permissionOptionKey].enableAll = vm.isEnabledAllOnCounter(permissionOptionKey,'Increment');
+                    return;
                 } else if(!level.enabled && level.id){
-                    var index = findIndexOfLevel(permission,level);
-                    if(index > -1){
-                        vm.checkedLevels.splice(index,1);
-                        permission.levelCounter = permission.levelCounter + 1;
-                        if(permission.levelCounter === 4){
-                            var allIndex = permission.levels.findIndex(function (element) {
-                                return element.name == 'all';
-                            });
-                            permission.levels[allIndex].enabled = true;
-                        }
-                        $scope.totalPermissionsObj[permissionOptionKey].enableAll = vm.isEnabledAllOnCounter(permissionOptionKey,'Increment');
-                        return;
-                    } else {
-                        vm.checkedLevels.push({type: permission.type,level: level.name,id: level.id,section: permission.section});
-                        permission.levelCounter = permission.levelCounter - 1;
-                        if(permission.levelCounter < 4){
-                            var allIndex = permission.levels.findIndex(function (element) {
-                                return element.name == 'all';
-                            });
-                            permission.levels[allIndex].enabled = false;
-                        }
-                        $scope.totalPermissionsObj[permissionOptionKey].enableAll = vm.isEnabledAllOnCounter(permissionOptionKey,'Decrement');
-                        return;
+                    vm.checkedLevels.push({type: permission.type,level: level.name,id: level.id,section: permission.section});
+                    permission.levelCounter = permission.levelCounter - 1;
+                    if(permission.levelCounter < 4){
+                        var allIndex = permission.levels.findIndex(function (element) {
+                            return element.name == 'all';
+                        });
+                        permission.levels[allIndex].enabled = false;
                     }
+                    $scope.totalPermissionsObj[permissionOptionKey].enableAll = vm.isEnabledAllOnCounter(permissionOptionKey,'Decrement');
+                    return;
                 }
 
                 //only level.enabled means they were not ticked from before
