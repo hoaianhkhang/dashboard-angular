@@ -9,10 +9,9 @@
         $stateProvider
             .state('developers.statusPage', {
                 url: '/status-page',
-                controller: function () {
-
-                },
+                fixedHref: 'http://status.rehive.com/',
                 title: "Status page",
+                blank: true,
                 sidebarMeta: {
                     icon: 'fa fa-external-link',
                     order: 400
