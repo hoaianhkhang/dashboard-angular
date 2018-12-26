@@ -6,7 +6,7 @@
 
     /** @ngInject */
     function TransactionsStatsCtrl($scope,Rehive,serializeFiltersService,currencyModifiers,sharedResources,
-                                   localStorageManagement,typeaheadService,toastr,_,errorHandler,dateFiltersService) {
+                                   localStorageManagement,typeaheadService,toastr,_,errorHandler,multiOptionsFilterService) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('token');
@@ -179,7 +179,7 @@
         };
 
         vm.getDateFilters = function () {
-            var evaluatedDateObj = dateFiltersService.evaluatedDates($scope.applyFiltersObj.dateFilter);
+            var evaluatedDateObj = multiOptionsFilterService.evaluatedDates($scope.applyFiltersObj.dateFilter);
 
             var dateObj = {
                 created__lt: evaluatedDateObj.date__lt,

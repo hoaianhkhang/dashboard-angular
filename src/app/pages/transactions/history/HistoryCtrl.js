@@ -7,7 +7,7 @@
     /** @ngInject */
     function HistoryCtrl($rootScope,Rehive,$scope,localStorageManagement,$uibModal,sharedResources,
                          toastr,currencyModifiers,errorHandler,$state,$window,typeaheadService,$filter,
-                         serializeFiltersService,$location,_,dateFiltersService) {
+                         serializeFiltersService,$location,_,multiOptionsFilterService) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('token');
@@ -317,7 +317,7 @@
         };
 
         vm.getDateFilters = function () {
-            var evaluatedDateObj = dateFiltersService.evaluatedDates($scope.applyFiltersObj.dateFilter);
+            var evaluatedDateObj = multiOptionsFilterService.evaluatedDates($scope.applyFiltersObj.dateFilter);
 
             var dateObj = {
                 created__lt: evaluatedDateObj.date__lt,

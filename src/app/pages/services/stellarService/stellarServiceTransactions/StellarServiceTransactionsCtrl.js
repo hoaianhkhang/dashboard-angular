@@ -5,7 +5,7 @@
         .controller('StellarServiceTransactionsCtrl', StellarServiceTransactionsCtrl);
 
     /** @ngInject */
-    function StellarServiceTransactionsCtrl($scope,$http,localStorageManagement,$uibModal,toastr,$filter,dateFiltersService,
+    function StellarServiceTransactionsCtrl($scope,$http,localStorageManagement,$uibModal,toastr,$filter,multiOptionsFilterService,
                                             errorHandler,$state,$window,typeaheadService,serializeFiltersService) {
 
         var vm = this;
@@ -203,7 +203,7 @@
         };
 
         vm.getDateFilters = function () {
-            var evaluatedDateObj = dateFiltersService.evaluatedDates($scope.applyFiltersObj.dateFilter);
+            var evaluatedDateObj = multiOptionsFilterService.evaluatedDates($scope.applyFiltersObj.dateFilter);
 
             var dateObj = {
                 created__lt: evaluatedDateObj.date__lt,
@@ -214,7 +214,7 @@
         };
 
         vm.getUpdatedFilters = function () {
-            var evaluatedDateObj = dateFiltersService.evaluatedDates($scope.applyFiltersObj.updatedFilter);
+            var evaluatedDateObj = multiOptionsFilterService.evaluatedDates($scope.applyFiltersObj.updatedFilter);
 
             var updatedDateObj = {
                 updated__lt: evaluatedDateObj.date__lt,
@@ -225,7 +225,7 @@
         };
 
         vm.getCompletedDateFilters = function () {
-            var evaluatedDateObj = dateFiltersService.evaluatedDates($scope.applyFiltersObj.completedFilter);
+            var evaluatedDateObj = multiOptionsFilterService.evaluatedDates($scope.applyFiltersObj.completedFilter);
 
             var completedDateObj = {
                 completed__lt: evaluatedDateObj.date__lt,

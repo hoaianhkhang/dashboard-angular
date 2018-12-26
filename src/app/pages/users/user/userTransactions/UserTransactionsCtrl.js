@@ -5,7 +5,7 @@
         .controller('UserTransactionsCtrl', UserTransactionsCtrl);
 
     /** @ngInject */
-    function UserTransactionsCtrl($scope,Rehive,localStorageManagement,$uibModal,sharedResources,toastr,currencyModifiers,_,dateFiltersService,
+    function UserTransactionsCtrl($scope,Rehive,localStorageManagement,$uibModal,sharedResources,toastr,currencyModifiers,_,multiOptionsFilterService,
                                   errorHandler,$state,$location,$window,typeaheadService,$filter,serializeFiltersService,$rootScope,$stateParams) {
 
         var vm = this;
@@ -286,7 +286,7 @@
         };
 
         vm.getDateFilters = function () {
-            var evaluatedDateObj = dateFiltersService.evaluatedDates($scope.applyFiltersObj.dateFilter);
+            var evaluatedDateObj = multiOptionsFilterService.evaluatedDates($scope.applyFiltersObj.dateFilter);
 
             var dateObj = {
                 created__lt: evaluatedDateObj.date__lt,

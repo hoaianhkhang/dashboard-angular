@@ -2,10 +2,10 @@
     'use strict';
 
     angular.module('BlurAdmin.theme')
-        .service('dateFiltersService', dateFiltersService);
+        .service('multiOptionsFilterService', multiOptionsFilterService);
 
     /** @ngInject */
-    function dateFiltersService() {
+    function multiOptionsFilterService() {
 
         return {
             evaluatedDates : function (dateFilter) {

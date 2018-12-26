@@ -5,7 +5,7 @@
         .controller('GroupUsersCtrl', GroupUsersCtrl);
 
     /** @ngInject */
-    function GroupUsersCtrl($rootScope,$state,$scope,localStorageManagement,typeaheadService,Rehive,dateFiltersService,
+    function GroupUsersCtrl($rootScope,$state,$scope,localStorageManagement,typeaheadService,Rehive,multiOptionsFilterService,
                             $location,$stateParams,errorHandler,$window,toastr,serializeFiltersService,$filter,$uibModal,$ngConfirm) {
 
         var vm = this;
@@ -300,7 +300,7 @@
         };
 
         vm.getCreatedFilters = function () {
-            var evaluatedDateObj = dateFiltersService.evaluatedDates($scope.applyFiltersObj.createdFilter);
+            var evaluatedDateObj = multiOptionsFilterService.evaluatedDates($scope.applyFiltersObj.createdFilter);
 
             var dateObj = {
                 created__lt: evaluatedDateObj.date__lt,
@@ -311,7 +311,7 @@
         };
 
         vm.getLastLoginDateFilters = function () {
-            var evaluatedDateObj = dateFiltersService.evaluatedDates($scope.applyFiltersObj.lastLoginDateFilter);
+            var evaluatedDateObj = multiOptionsFilterService.evaluatedDates($scope.applyFiltersObj.lastLoginDateFilter);
 
             var dateObj = {
                 last_login__lt: evaluatedDateObj.date__lt,
@@ -322,7 +322,7 @@
         };
 
         vm.getUpdatedDateFilters = function () {
-            var evaluatedDateObj = dateFiltersService.evaluatedDates($scope.applyFiltersObj.updatedFilter);
+            var evaluatedDateObj = multiOptionsFilterService.evaluatedDates($scope.applyFiltersObj.updatedFilter);
 
             var dateObj = {
                 updated__lt: evaluatedDateObj.date__lt,

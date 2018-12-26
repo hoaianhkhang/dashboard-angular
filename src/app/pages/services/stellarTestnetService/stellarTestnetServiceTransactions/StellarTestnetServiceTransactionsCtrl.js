@@ -5,7 +5,7 @@
         .controller('StellarTestnetServiceTransactionsCtrl', StellarTestnetServiceTransactionsCtrl);
 
     /** @ngInject */
-    function StellarTestnetServiceTransactionsCtrl($scope,$http,localStorageManagement,$uibModal,toastr,dateFiltersService,
+    function StellarTestnetServiceTransactionsCtrl($scope,$http,localStorageManagement,$uibModal,toastr,multiOptionsFilterService,
                                             errorHandler,$state,$window,typeaheadService,serializeFiltersService) {
 
         var vm = this;
@@ -106,7 +106,7 @@
         };
 
         vm.getDateFilters = function () {
-            var evaluatedDateObj = dateFiltersService.evaluatedDates($scope.applyFiltersObj.dateFilter);
+            var evaluatedDateObj = multiOptionsFilterService.evaluatedDates($scope.applyFiltersObj.dateFilter);
 
             var dateObj = {
                 created__lt: evaluatedDateObj.date__lt,
