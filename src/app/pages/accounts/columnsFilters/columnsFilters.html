@@ -11,10 +11,42 @@
             <p ng-click="selectAllColumns()" class="columns-restore column-option1">Select all</p>
             <p ng-click="restoreColDefaults()" class="columns-restore column-option2">Restore defaults</p>
         </div>
-        <div ng-repeat="column in headerColumns | filter: columnSearch">
-            <div>
+        <div class="column-filters-dropdown">
+            <label class="checkbox-inline custom-checkbox nowrap">
+                <input type="checkbox" ng-model="availableBalanceColumn">
+                <span>Available balance</span>
+            </label>
+            <div ng-show="availableBalanceColumn" class="accounts-column-multi-select">
+                <select chosen
+                        multiple
+                        data-placeholder-text-multiple="'Choose one or more currencies'"
+                        ng-model="columnFiltersObj.availableBalanceArray"
+                        ng-options="currency.code for currency in currenciesOptions | orderBy: 'code' track by currency.code"
+                        required>
+                    <option value=""></option>
+                </select>
+            </div>
+        </div>
+        <div class="column-filters-dropdown">
+            <label class="checkbox-inline custom-checkbox nowrap">
+                <input type="checkbox" ng-model="balanceColumn">
+                <span>Balance</span>
+            </label>
+            <div ng-show="balanceColumn" class="accounts-column-multi-select">
+                <select chosen
+                        multiple
+                        data-placeholder-text-multiple="'Choose one or more currencies'"
+                        ng-model="columnFiltersObj.balanceArray"
+                        ng-options="currency.code for currency in currenciesOptions | orderBy: 'code' track by currency.code"
+                        required>
+                    <option value=""></option>
+                </select>
+            </div>
+        </div>
+        <div ng-repeat="column in headerColumns | orderBy: 'colName' | filter: columnSearch track by $index">
+            <div ng-hide="(column.colName.indexOf(' available balance') > 0) || (column.colName.indexOf(' balance') > 0)">
                 <label class="checkbox-inline custom-checkbox nowrap">
-                    <input ng-change="toggleColumnVisibility()" type="checkbox" ng-model="column.visible">
+                    <input ng-change="toggleColumnVisibility(column)" type="checkbox" ng-model="column.visible">
                     <span ng-bind="column.colName"></span>
                 </label>
             </div>

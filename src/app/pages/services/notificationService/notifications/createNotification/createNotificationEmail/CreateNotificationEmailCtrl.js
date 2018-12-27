@@ -13,7 +13,7 @@
         vm.baseUrl = localStorageManagement.getValue('SERVICEURL');
         $scope.addingEmailNotification =  false;
         $scope.emailNotificationParams = {
-            enabled: false,
+            enabled: true,
             preference_enabled: false,
             event: '',
             template: ''
@@ -121,7 +121,7 @@
                                     text_message: templateObj.text_message,
                                     to_email: templateObj.to_email,
                                     expression: templateObj.expression,
-                                    enabled: false,
+                                    enabled: true,
                                     preference_enabled: false
                                 };
                             }

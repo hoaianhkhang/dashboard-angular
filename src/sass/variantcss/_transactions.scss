@@ -507,6 +507,31 @@
       left: 6px;
       top: 7px;
     }
+    & .currencies-chosen-multi-select{
+      & .chosen-container{
+        width: 310px!important;
+        & > .chosen-choices{
+          line-height: 22px!important;
+          & li.search-choice{
+            margin: 6px 5px 3px 0!important;
+            padding: 1px 20px 0 5px!important;
+            & .search-choice-close{
+              top: 2px!important;
+            }
+          }
+          & .search-field{
+            height: 22px!important;
+            & input.chosen-search-input.default{
+              height: 22px!important;
+              margin: 0!important;
+              width: 298px!important;
+              &::placeholder{
+              }
+            }
+          }
+        }
+      }
+    }
     & .date-filter-in-between-view{
       display: inline-flex;
       line-height: 0;
