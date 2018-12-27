@@ -48,6 +48,98 @@
                 }
 
                 return dateObj;
+            },
+            evaluatedAmounts: function (amountFilter) {
+                var amountObj = {
+                    amount: null,
+                    amount__lt: null,
+                    amount__gt: null
+                };
+
+                switch(amountFilter.selectedAmountOption) {
+                    case 'Is equal to':
+                        amountObj = {
+                            amount: amountFilter.amount,
+                            amount__lt: null,
+                            amount__gt: null
+                        };
+
+                        break;
+                    case 'Is between':
+                        amountObj = {
+                            amount: null,
+                            amount__lt: amountFilter.amount__lt,
+                            amount__gt: amountFilter.amount__gt
+                        };
+
+                        break;
+                    case 'Is greater than':
+                        amountObj = {
+                            amount: null,
+                            amount__lt: null,
+                            amount__gt: amountFilter.amount__gt
+                        };
+
+                        break;
+                    case 'Is less than':
+                        amountObj = {
+                            amount: null,
+                            amount__lt: amountFilter.amount__lt,
+                            amount__gt: null
+                        };
+
+                        break;
+                    default:
+                        break;
+                }
+
+                return amountObj;
+            },
+            evaluateReference: function (referenceFilter) {
+                var referenceObj = {
+                    reference: null,
+                    reference__lt: null,
+                    reference__gt: null
+                };
+
+                switch(referenceFilter.selectedReferenceOption) {
+                    case 'Is equal to':
+                        referenceObj = {
+                            reference: referenceFilter.reference,
+                            reference__lt: null,
+                            reference__gt: null
+                        };
+
+                        break;
+                    case 'Is between':
+                        referenceObj = {
+                            reference: null,
+                            reference__lt: referenceFilter.reference__lt,
+                            reference__gt: referenceFilter.reference__gt
+                        };
+
+                        break;
+                    case 'Is greater than':
+                        referenceObj = {
+                            reference: null,
+                            reference__lt: null,
+                            reference__gt: referenceFilter.reference__gt
+                        };
+
+                        break;
+                    case 'Is less than':
+                        referenceObj = {
+                            reference: null,
+                            reference__lt: referenceFilter.reference__lt,
+                            reference__gt: null
+                        };
+
+                        break;
+                    default:
+                        break;
+                }
+
+                return referenceObj;
             }
         };
     }

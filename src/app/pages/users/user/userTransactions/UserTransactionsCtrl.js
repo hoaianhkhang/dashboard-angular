@@ -297,97 +297,23 @@
         };
 
         vm.getAmountFilters = function () {
-            var amountObj = {
-                amount: null,
-                amount__lt: null,
-                amount__gt: null
+            var evaluatedAmountObj = multiOptionsFilterService.evaluatedAmounts($scope.applyFiltersObj.amountFilter);
+
+            return {
+                amount: evaluatedAmountObj.amount,
+                amount__lt: evaluatedAmountObj.amount__lt,
+                amount__gt: evaluatedAmountObj.amount__gt
             };
-
-            switch($scope.applyFiltersObj.amountFilter.selectedAmountOption) {
-                case 'Is equal to':
-                    amountObj = {
-                        amount: $scope.applyFiltersObj.amountFilter.amount,
-                        amount__lt: null,
-                        amount__gt: null
-                    };
-
-                    break;
-                case 'Is between':
-                    amountObj = {
-                        amount: null,
-                        amount__lt: $scope.applyFiltersObj.amountFilter.amount__lt,
-                        amount__gt: $scope.applyFiltersObj.amountFilter.amount__gt
-                    };
-
-                    break;
-                case 'Is greater than':
-                    amountObj = {
-                        amount: null,
-                        amount__lt: null,
-                        amount__gt: $scope.applyFiltersObj.amountFilter.amount__gt
-                    };
-
-                    break;
-                case 'Is less than':
-                    amountObj = {
-                        amount: null,
-                        amount__lt: $scope.applyFiltersObj.amountFilter.amount__lt,
-                        amount__gt: null
-                    };
-
-                    break;
-                default:
-                    break;
-            }
-
-            return amountObj;
         };
 
         vm.getReferenceFilters = function () {
-            var referenceObj = {
-                reference: null,
-                reference__lt: null,
-                reference__gt: null
+            var evaluatedAmountObj = multiOptionsFilterService.evaluateReference($scope.applyFiltersObj.referenceFilter);
+
+            return {
+                reference: evaluatedAmountObj.reference,
+                reference__lt: evaluatedAmountObj.reference__lt,
+                reference__gt: evaluatedAmountObj.reference__gt
             };
-
-            switch($scope.applyFiltersObj.referenceFilter.selectedReferenceOption) {
-                case 'Is equal to':
-                    referenceObj = {
-                        reference: $scope.applyFiltersObj.referenceFilter.reference,
-                        reference__lt: null,
-                        reference__gt: null
-                    };
-
-                    break;
-                case 'Is between':
-                    referenceObj = {
-                        reference: null,
-                        reference__lt: $scope.applyFiltersObj.referenceFilter.reference__lt,
-                        reference__gt: $scope.applyFiltersObj.referenceFilter.reference__gt
-                    };
-
-                    break;
-                case 'Is greater than':
-                    referenceObj = {
-                        reference: null,
-                        reference__lt: null,
-                        reference__gt: $scope.applyFiltersObj.referenceFilter.reference__gt
-                    };
-
-                    break;
-                case 'Is less than':
-                    referenceObj = {
-                        reference: null,
-                        reference__lt: $scope.applyFiltersObj.referenceFilter.reference__lt,
-                        reference__gt: null
-                    };
-
-                    break;
-                default:
-                    break;
-            }
-
-            return referenceObj;
         };
 
         vm.getTransactionsFiltersObj = function(){
