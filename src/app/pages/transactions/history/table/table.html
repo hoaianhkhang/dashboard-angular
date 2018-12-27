@@ -38,7 +38,7 @@
                     <tr>
                         <th ng-click="orderByFunction(header)" ng-class="styleHeaders(header)"
                             ng-repeat="header in headerColumns" ng-if="header.visible">
-                            {{header.colName}}&nbsp;&nbsp;
+                            <span ng-class="styleHeaders(header)">{{header.colName}}</span>&nbsp;&nbsp;
                             <i ng-class="{'selected-sorting-caret': (applyFiltersObj.orderByFilter.selectedOrderByOption.tableFieldName == header.fieldName)}"
                                ng-show="((applyFiltersObj.orderByFilter.selectedOrderByDirection == 'Desc') && (applyFiltersObj.orderByFilter.selectedOrderByOption.tableFieldName == header.fieldName))"
                                class="fa fa-caret-down"></i>

@@ -1,6 +1,9 @@
 
-.sortable-header:hover {
-  background-color: #f4f4f4 !important;
+.sortable-header{
+  color: #00008b !important;
+  &:hover {
+    background-color: #f4f4f4 !important;
+  }
 }
 
 .user-metadata-tile {

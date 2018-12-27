@@ -204,6 +204,7 @@
         };
 
         $scope.selectAllColumns = function () {
+            $scope.visibleColumnsSelectionChanged = true;
             $scope.headerColumns.forEach(function (headerObj) {
                 headerObj.visible = true;
             });
@@ -282,9 +283,7 @@
                 });
             } else if($scope.applyFiltersObj.orderByFilter.selectedOrderByDirection === 'Asc'){
                 $scope.filtersObj.orderByFilter = true;
-                if(header.fieldName != $scope.applyFiltersObj.orderByFilter.selectedOrderByOption.tableFieldName){
-                    $scope.applyFiltersObj.orderByFilter.selectedOrderByDirection = 'Desc';
-                }
+                $scope.applyFiltersObj.orderByFilter.selectedOrderByDirection = 'Desc';
                 $scope.orderByOptions.forEach(function (element) {
                     if(element.tableFieldName == header.fieldName){
                         $scope.applyFiltersObj.orderByFilter.selectedOrderByOption = element;
