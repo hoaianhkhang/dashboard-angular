@@ -206,6 +206,7 @@
         };
 
         $scope.restoreColDefaults = function () {
+            $scope.visibleColumnsSelectionChanged = true;
             var defaultVisibleHeader = ['User','Type','Subtype','Currency',
                 'Amount','Fee','Status','Date','Id'];
 
