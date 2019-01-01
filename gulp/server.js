@@ -48,45 +48,45 @@ browserSync.use(browserSyncSpa({
   selector: '[ng-app]'// Only needed for angular apps
 }));
 
-gulp.task('localEnv', function () {
+gulp.task('localEnv', gulp.series(function () {
   gulp.src('./src/app/config/configFile.json')
       .pipe(gulpNgConfig('BlurAdmin.config',{environment: 'local'}))
-      .pipe(gulp.dest('./src/app/config/'))
-});
+      .pipe(gulp.dest('./src/app/config/'));
+}));
 
 
-gulp.task('stagingEnv', function () {
+gulp.task('stagingEnv',gulp.series( function () {
   gulp.src('./src/app/config/configFile.json')
       .pipe(gulpNgConfig('BlurAdmin.config',{environment: 'staging'}))
-      .pipe(gulp.dest('./src/app/config/'))
-});
+      .pipe(gulp.dest('./src/app/config/'));
+}));
 
-gulp.task('productionEnv', function () {
+gulp.task('productionEnv',gulp.series( function () {
   gulp.src('./src/app/config/configFile.json')
       .pipe(gulpNgConfig('BlurAdmin.config',{environment: 'production'}))
-      .pipe(gulp.dest('./src/app/config/'))
-});
+      .pipe(gulp.dest('./src/app/config/'));
+}));
 
-gulp.task('serve', ['productionEnv','watch'], function () {
+gulp.task('serve',gulp.series('productionEnv','watch', function () {
   browserSyncInit([path.join(conf.paths.tmp, '/serve'), conf.paths.src]);
-});
+}));
 
-gulp.task('serve:local', ['localEnv','watch'], function () {
+gulp.task('serve:local',gulp.series('localEnv','watch', function () {
   browserSyncInit([path.join(conf.paths.tmp, '/serve'), conf.paths.src]);
-});
+}));
 
-gulp.task('serve:staging', ['stagingEnv','watch'], function () {
+gulp.task('serve:staging',gulp.series('stagingEnv','watch', function () {
   browserSyncInit([path.join(conf.paths.tmp, '/serve'), conf.paths.src]);
-});
+}));
 
-gulp.task('serve:dist', ['productionEnv','build'], function () {
+gulp.task('serve:dist', gulp.series('productionEnv','build', function () {
   browserSyncInit(conf.paths.dist);
-});
+}));
 
-gulp.task('serve:e2e', ['inject'], function () {
+gulp.task('serve:e2e', gulp.series('inject', function () {
   browserSyncInit([conf.paths.tmp + '/serve', conf.paths.src], []);
-});
+}));
 
-gulp.task('serve:e2e-dist', ['build'], function () {
+gulp.task('serve:e2e-dist',gulp.series('build', function () {
   browserSyncInit(conf.paths.dist, []);
-});
+}));

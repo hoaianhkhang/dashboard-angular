@@ -11,21 +11,21 @@ var $ = require('gulp-load-plugins')();
 var wiredep = require('wiredep').stream;
 var _ = require('lodash');
 
-gulp.task('styles-reload', ['styles'], function () {
+gulp.task('styles-reload',gulp.series('styles'], function () {
   return buildStyles()
     .pipe(browserSync.stream());
-});
+}));
 
-gulp.task('styles', function () {
+gulp.task('styles',gulp.series( function () {
   return buildStyles();
-});
+}));
 
-gulp.task('stylesAuth', function () {
+gulp.task('stylesAuth',gulp.series( function () {
   return buildSingleScss(path.join(conf.paths.src, '/sass/auth.scss'));
-});
-gulp.task('styles404', function () {
+}));
+gulp.task('styles404',gulp.series( function () {
   return buildSingleScss(path.join(conf.paths.src, '/sass/404.scss'));
-});
+}));
 
 var buildStyles = function () {
   var sassOptions = {

@@ -9,7 +9,7 @@ var $ = require('gulp-load-plugins')({
   pattern: ['gulp-*','gulp-rev','gulp-rev-rewrite','main-bower-files', 'uglify-save-license', 'del']
 });
 
-gulp.task('partials', function () {
+gulp.task('partials',gulp.series(function () {
   return gulp.src([
     path.join(conf.paths.src, '/app/**/*.html'),
     path.join(conf.paths.tmp, '/serve/app/**/*.html')
@@ -24,9 +24,9 @@ gulp.task('partials', function () {
       root: 'app'
     }))
     .pipe(gulp.dest(conf.paths.tmp + '/partials/'));
-});
+}));
 
-gulp.task('html', ['inject', 'partials'], function () {
+gulp.task('html', gulp.series('inject', 'partials', function () {
   var partialsInjectFile = gulp.src(path.join(conf.paths.tmp, '/partials/templateCacheHtml.js'), { read: false });
   var partialsInjectOptions = {
     starttag: '<!-- inject:partials -->',
@@ -68,17 +68,17 @@ gulp.task('html', ['inject', 'partials'], function () {
     .pipe(htmlFilter.restore)
     .pipe(gulp.dest(path.join(conf.paths.dist, '/')))
     .pipe($.size({ title: path.join(conf.paths.dist, '/'), showFiles: true }));
-  });
+}));
 
 // Only applies for fonts from bower dependencies
 // Custom fonts are handled by the "other" task
-gulp.task('fonts', function () {
+gulp.task('fonts',gulp.series( function () {
   return gulp.src($.mainBowerFiles('**/*.{eot,svg,ttf,woff,woff2}'))
     .pipe($.flatten())
     .pipe(gulp.dest(path.join(conf.paths.dist, '/fonts/')));
-});
+}));
 
-gulp.task('other', ['copyVendorImages'], function () {
+gulp.task('other',gulp.series('copyVendorImages', function () {
   var fileFilter = $.filter(function (file) {
     return file.stat.isFile();
   });
@@ -90,39 +90,39 @@ gulp.task('other', ['copyVendorImages'], function () {
   ])
     .pipe(fileFilter)
     .pipe(gulp.dest(path.join(conf.paths.dist, '/')));
-});
+}));
 
-gulp.task('clean', function () {
+gulp.task('clean',gulp.series( function () {
   return $.del([path.join(conf.paths.dist, '/*'), path.join(conf.paths.tmp, '/*')]);
-});
+}));
 
-gulp.task('localEnv', function () {
+gulp.task('localEnv', gulp.series(function () {
   gulp.src('./src/app/config/configFile.json')
       .pipe(gulpNgConfig('BlurAdmin.config',{environment: 'local'}))
       .pipe(gulp.dest('./src/app/config/'))
-});
+}));
 
-gulp.task('stagingEnv', function () {
+gulp.task('stagingEnv', gulp.series(function () {
   gulp.src('./src/app/config/configFile.json')
       .pipe(gulpNgConfig('BlurAdmin.config',{environment: 'staging'}))
       .pipe(gulp.dest('./src/app/config/'))
-});
+}));
 
-gulp.task('productionEnv', function () {
+gulp.task('productionEnv',gulp.series( function () {
   gulp.src('./src/app/config/configFile.json')
       .pipe(gulpNgConfig('BlurAdmin.config',{environment: 'production'}))
       .pipe(gulp.dest('./src/app/config/'))
-});
+}));
 
-gulp.task('placeholderEnv', function () {
+gulp.task('placeholderEnv',gulp.series( function () {
   gulp.src('./src/app/config/configFile.json')
       .pipe(gulpNgConfig('BlurAdmin.config',{environment: 'placeholder'}))
       .pipe(gulp.dest('./src/app/config/'))
-});
+}));
 
-gulp.task('build', ['productionEnv','html', 'fonts', 'other']);
+gulp.task('build',gulp.series('productionEnv','html', 'fonts', 'other'));
 
-gulp.task('build:staging', ['stagingEnv','html', 'fonts', 'other']);
-gulp.task('build:local', ['localEnv','html', 'fonts', 'other']);
-gulp.task('build:production', ['productionEnv','html', 'fonts', 'other']);
-gulp.task('build:placeholder', ['placeholderEnv','html', 'fonts', 'other']);
+gulp.task('build:staging',gulp.series('stagingEnv','html', 'fonts', 'other'));
+gulp.task('build:local', gulp.series('localEnv','html', 'fonts', 'other'));
+gulp.task('build:production', gulp.series('productionEnv','html', 'fonts', 'other'));
+gulp.task('build:placeholder',gulp.series('placeholderEnv','html', 'fonts', 'other'));
