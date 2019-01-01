@@ -208,16 +208,21 @@
                 });
 
                 if(balanceArray.length === 0){
-                    if($scope.currenciesOptions.length > 0){
-                        $scope.currenciesOptions.forEach(function (currency) {
-                            if(currency.code === firstAccountInList.currencies[0].currency.code){
-                                if($scope.columnFiltersObj.balanceArray === undefined){
-                                    $scope.columnFiltersObj.balanceArray = [];
-                                }
-                                $scope.columnFiltersObj.balanceArray.push(currency);
-                            }
-                        });
+                    // if($scope.currenciesOptions.length > 0){
+                    //     $scope.currenciesOptions.forEach(function (currency) {
+                    //         if(currency.code === firstAccountInList.currencies[0].currency.code){
+                    //             if($scope.columnFiltersObj.balanceArray === undefined){
+                    //                 $scope.columnFiltersObj.balanceArray = [];
+                    //             }
+                    //             $scope.columnFiltersObj.balanceArray.push(currency);
+                    //         }
+                    //     });
+                    // }
+
+                    if($scope.columnFiltersObj.balanceArray === undefined){
+                        $scope.columnFiltersObj.balanceArray = [];
                     }
+                    $scope.columnFiltersObj.balanceArray.push(firstAccountInList.currencies[0].currency);
                 } else {
                     balanceArray.forEach(function (balanceCurrency) {
                         $scope.currenciesOptions.forEach(function (currency) {
@@ -230,16 +235,21 @@
                 }
 
                 if(availableBalanceArray.length === 0){
-                    if($scope.currenciesOptions.length > 0){
-                        $scope.currenciesOptions.forEach(function (currency) {
-                            if(currency.code === firstAccountInList.currencies[0].currency.code){
-                                if($scope.columnFiltersObj.availableBalanceArray === undefined){
-                                    $scope.columnFiltersObj.availableBalanceArray = [];
-                                }
-                                $scope.columnFiltersObj.availableBalanceArray.push(currency);
-                            }
-                        });
+                    // if($scope.currenciesOptions.length > 0){
+                    //     $scope.currenciesOptions.forEach(function (currency) {
+                    //         if(currency.code === firstAccountInList.currencies[0].currency.code){
+                    //             if($scope.columnFiltersObj.availableBalanceArray === undefined){
+                    //                 $scope.columnFiltersObj.availableBalanceArray = [];
+                    //             }
+                    //             $scope.columnFiltersObj.availableBalanceArray.push(currency);
+                    //         }
+                    //     });
+                    // }
+
+                    if($scope.columnFiltersObj.availableBalanceArray === undefined){
+                        $scope.columnFiltersObj.availableBalanceArray = [];
                     }
+                    $scope.columnFiltersObj.availableBalanceArray.push(firstAccountInList.currencies[0].currency);
                 } else {
                     availableBalanceArray.forEach(function (availableBalanceCurrency) {
                         $scope.currenciesOptions.forEach(function (currency) {
