@@ -1,37 +1,23 @@
 'use strict';
 
 var gulp = require('gulp');
-var klawSync = require('klaw-sync');
 
 /**
  *  This will load all js or coffee files in the gulp directory
  *  in order to load all gulp tasks
  */
-// klawSync.readdirSyncRecursive('./gulp').filter(function(file) {
-//   return (/\.(js|coffee)$/i).test(file);
-// }).map(function(file) {
-//   console.log(file)
-//   require('./gulp/' + file);
-// });
 
-
-var paths;
-try {
-    paths = klawSync('./gulp', {filter: function(file) {
-        return (/\.(js|coffee)$/i).test(file.path);
-    }});
-} catch (er) {
-    console.error(er);
-}
-
-paths.map(function(file) {
-  var filePathArray = file.path.split('/');
-  var fileName = filePathArray[filePathArray.length - 1];
-    // require('./gulp/' + fileName);
-});
-
-
-
+require('./gulp/styles');
+require('./gulp/scripts');
+require('./gulp/images');
+require('./gulp/inject');
+require('./gulp/conf');
+require('./gulp/devRelease');
+require('./gulp/docs');
+require('./gulp/watch');
+require('./gulp/build');
+require('./gulp/server');
+require('./gulp/marketplace');
 
 /**
  *  Default task clean temporaries directories and launch the

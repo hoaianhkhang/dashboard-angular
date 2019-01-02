@@ -11,6 +11,20 @@ var _ = require('lodash');
 
 var browserSync = require('browser-sync');
 
+gulp.task('injectAuth',gulp.series('stylesAuth', function () {
+    return injectAlone({
+        css: [path.join('!' + conf.paths.tmp, '/serve/app/vendor.css'), path.join(conf.paths.tmp, '/serve/app/auth.css')],
+        paths: [path.join(conf.paths.src, '/auth.html'), path.join(conf.paths.src, '/reg.html')]
+    });
+}));
+
+gulp.task('inject404',gulp.series('styles404', function () {
+    return injectAlone({
+        css: [path.join('!' + conf.paths.tmp, '/serve/app/vendor.css'), path.join(conf.paths.tmp, '/serve/app/404.css')],
+        paths: path.join(conf.paths.src, '/404.html')
+    });
+}));
+
 gulp.task('inject',gulp.series('scripts', 'styles', 'injectAuth', 'inject404', 'copyVendorImages', function () {
     var injectStyles = gulp.src([
         path.join(conf.paths.tmp, '/serve/app/main.css'),
@@ -40,20 +54,6 @@ gulp.task('inject',gulp.series('scripts', 'styles', 'injectAuth', 'inject404', '
 
 gulp.task('inject-reload', gulp.series('inject', function () {
   browserSync.reload();
-}));
-
-gulp.task('injectAuth',gulp.series('stylesAuth', function () {
-  return injectAlone({
-    css: [path.join('!' + conf.paths.tmp, '/serve/app/vendor.css'), path.join(conf.paths.tmp, '/serve/app/auth.css')],
-    paths: [path.join(conf.paths.src, '/auth.html'), path.join(conf.paths.src, '/reg.html')]
-  });
-}));
-
-gulp.task('inject404',gulp.series('styles404', function () {
-  return injectAlone({
-    css: [path.join('!' + conf.paths.tmp, '/serve/app/vendor.css'), path.join(conf.paths.tmp, '/serve/app/404.css')],
-    paths: path.join(conf.paths.src, '/404.html')
-  });
 }));
 
 var injectAlone = function (options) {

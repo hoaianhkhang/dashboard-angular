@@ -33,6 +33,15 @@ gulp.task('dev-copy-lib', gulp.series(function () {
       .pipe(gulp.dest(path.join(conf.paths.devDist, 'lib')));
 }));
 
+gulp.task('dev-copy-assets',gulp.series('inject', 'dev-copy-lib', 'dev-fonts', function () {
+    return gulp
+        .src([
+            conf.paths.src + '/**/*',
+            path.join(conf.paths.tmp, '/serve/**/*')
+        ])
+        .pipe(gulp.dest(conf.paths.devDist));
+}));
+
 gulp.task('dev-css-replace', gulp.series('dev-copy-assets', function() {
   return gulp.src(path.join(conf.paths.devDist, '*.html'))
       .pipe($.replace(/<link rel="stylesheet" href="\.\.\/bower_components\/.*\/(.*)"\s*?\/>/g, '<link rel="stylesheet" href="lib/$1" >'))
@@ -42,15 +51,6 @@ gulp.task('dev-css-replace', gulp.series('dev-copy-assets', function() {
 gulp.task('dev-js-replace',gulp.series('dev-copy-assets', function() {
   return gulp.src(path.join(conf.paths.devDist, '.html'))
       .pipe($.replace(/<script src="\.\.\/bower_components\/.*\/(.*)"\s*?>/g, '<script src="lib/$1">'))
-      .pipe(gulp.dest(conf.paths.devDist));
-}));
-
-gulp.task('dev-copy-assets',gulp.series('inject', 'dev-copy-lib', 'dev-fonts', function () {
-  return gulp
-      .src([
-        conf.paths.src + '/**/*',
-        path.join(conf.paths.tmp, '/serve/**/*')
-      ])
       .pipe(gulp.dest(conf.paths.devDist));
 }));
 

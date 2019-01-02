@@ -11,13 +11,13 @@ var $ = require('gulp-load-plugins')();
 var wiredep = require('wiredep').stream;
 var _ = require('lodash');
 
-gulp.task('styles-reload',gulp.series('styles'], function () {
-  return buildStyles()
-    .pipe(browserSync.stream());
+gulp.task('styles',gulp.series( function () {
+    return buildStyles();
 }));
 
-gulp.task('styles',gulp.series( function () {
-  return buildStyles();
+gulp.task('styles-reload',gulp.series('styles', function () {
+  return buildStyles()
+    .pipe(browserSync.stream());
 }));
 
 gulp.task('stylesAuth',gulp.series( function () {

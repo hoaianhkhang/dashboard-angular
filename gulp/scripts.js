@@ -8,13 +8,12 @@ var browserSync = require('browser-sync');
 
 var $ = require('gulp-load-plugins')();
 
-
 gulp.task('scripts-reload',gulp.series( function() {
   return buildScripts()
     .pipe(browserSync.stream());
 }));
 
-gulp.task('scripts', gulp.series(function() {
+gulp.task('scripts', gulp.series(function scriptsFunction() {
   return buildScripts();
 }));
 

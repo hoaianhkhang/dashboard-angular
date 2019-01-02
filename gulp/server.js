@@ -61,14 +61,16 @@ gulp.task('stagingEnv',gulp.series( function () {
       .pipe(gulp.dest('./src/app/config/'));
 }));
 
-gulp.task('productionEnv',gulp.series( function () {
+gulp.task('productionEnv',gulp.series( function productionEnvFunction(done) {
   gulp.src('./src/app/config/configFile.json')
       .pipe(gulpNgConfig('BlurAdmin.config',{environment: 'production'}))
       .pipe(gulp.dest('./src/app/config/'));
+  done();
 }));
 
-gulp.task('serve',gulp.series('productionEnv','watch', function () {
+gulp.task('serve',gulp.series('productionEnv','watch', function serveFuntion(done) {
   browserSyncInit([path.join(conf.paths.tmp, '/serve'), conf.paths.src]);
+  done();
 }));
 
 gulp.task('serve:local',gulp.series('localEnv','watch', function () {
