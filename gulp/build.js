@@ -37,11 +37,10 @@ gulp.task('html', gulp.series('inject', 'partials', function () {
   var htmlFilter = $.filter('*.html', { restore: true, dot:true});
   var jsFilter = $.filter('**/*.js', { restore: true, dot:true});
   var cssFilter = $.filter('**/*.css', { restore: true, dot:true});
-  var assets;
 
   return gulp.src(path.join(conf.paths.tmp, '/serve/*.html'))
     .pipe($.inject(partialsInjectFile, partialsInjectOptions))
-    .pipe(assets = $.useref.assets())
+    .pipe($.useref({searchPath: './'}))
     .pipe($.rev())
     .pipe(jsFilter)
     .pipe($.sourcemaps.init())
@@ -55,8 +54,6 @@ gulp.task('html', gulp.series('inject', 'partials', function () {
     .pipe($.minifyCss({ processImport: false }))
     .pipe($.sourcemaps.write('maps'))
     .pipe(cssFilter.restore)
-    .pipe(assets.restore())
-    .pipe($.useref())
     .pipe($.revRewrite())
     .pipe(htmlFilter)
     .pipe($.minifyHtml({
