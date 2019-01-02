@@ -96,28 +96,32 @@ gulp.task('clean',gulp.series( function () {
   return $.del([path.join(conf.paths.dist, '/*'), path.join(conf.paths.tmp, '/*')]);
 }));
 
-gulp.task('localEnv', gulp.series(function () {
+gulp.task('localEnv', gulp.series(function localEnvFunction(done) {
   gulp.src('./src/app/config/configFile.json')
       .pipe(gulpNgConfig('BlurAdmin.config',{environment: 'local'}))
-      .pipe(gulp.dest('./src/app/config/'))
+      .pipe(gulp.dest('./src/app/config/'));
+    done();
 }));
 
-gulp.task('stagingEnv', gulp.series(function () {
+gulp.task('stagingEnv', gulp.series(function stagingEnvFunction(done) {
   gulp.src('./src/app/config/configFile.json')
       .pipe(gulpNgConfig('BlurAdmin.config',{environment: 'staging'}))
-      .pipe(gulp.dest('./src/app/config/'))
+      .pipe(gulp.dest('./src/app/config/'));
+    done();
 }));
 
-gulp.task('productionEnv',gulp.series( function () {
+gulp.task('productionEnv',gulp.series( function productionEnvFunction(done) {
   gulp.src('./src/app/config/configFile.json')
       .pipe(gulpNgConfig('BlurAdmin.config',{environment: 'production'}))
-      .pipe(gulp.dest('./src/app/config/'))
+      .pipe(gulp.dest('./src/app/config/'));
+  done();
 }));
 
-gulp.task('placeholderEnv',gulp.series( function () {
+gulp.task('placeholderEnv',gulp.series( function placeholderEnvFunction(done) {
   gulp.src('./src/app/config/configFile.json')
       .pipe(gulpNgConfig('BlurAdmin.config',{environment: 'placeholder'}))
-      .pipe(gulp.dest('./src/app/config/'))
+      .pipe(gulp.dest('./src/app/config/'));
+    done();
 }));
 
 gulp.task('build',gulp.series('productionEnv','html', 'fonts', 'other'));
