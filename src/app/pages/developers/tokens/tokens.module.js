@@ -11,7 +11,7 @@
                 url: '/tokens',
                 controller: 'TokensCtrl',
                 templateUrl: 'app/pages/developers/tokens/tokens.html',
-                title: "Api tokens",
+                title: "API tokens",
                 sidebarMeta: {
                     order: 100
                 }
