@@ -20,7 +20,7 @@
                 controller: "SettingsCtrl",
                 title: 'Settings',
                 sidebarMeta: {
-                    order: 800
+                    order: 700
                 }
             });
     }
