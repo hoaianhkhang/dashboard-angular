@@ -104,9 +104,7 @@
         $scope.$watch('debitTransactionData.user',function () {
             if($scope.debitTransactionData.user){
                 vm.resetDebitData();
-                if(!$scope.newTransactionParams.txType){
-                    vm.getDebitUserObj($scope.debitTransactionData);
-                }
+                vm.getDebitUserObj($scope.debitTransactionData);
             } else {
                 vm.resetDebitData();
             }

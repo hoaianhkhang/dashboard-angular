@@ -103,9 +103,7 @@
         $scope.$watch('creditTransactionData.user',function () {
             if($scope.creditTransactionData.user){
                 vm.resetCreditData();
-                if(!$scope.newTransactionParams.txType){
-                    vm.getCreditUserObj($scope.creditTransactionData);
-                }
+                vm.getCreditUserObj($scope.creditTransactionData);
             } else {
                 vm.resetCreditData();
             }
