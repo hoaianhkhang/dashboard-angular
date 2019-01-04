@@ -1,19 +1,19 @@
 (function () {
     'use strict';
 
-    angular.module('BlurAdmin.pages.accessControl', [])
+    angular.module('BlurAdmin.pages.developers.accessControl', [])
         .config(routeConfig);
 
     /** @ngInject */
     function routeConfig($stateProvider,$urlRouterProvider) {
         $stateProvider
-            .state('accessControl', {
+            .state('developers.accessControl', {
                 url: '/access-control',
-                templateUrl: 'app/pages/accessControl/accessControl.html',
+                templateUrl: 'app/pages/developers/accessControl/accessControl.html',
                 controller: "AccessControlCtrl",
                 title: 'Access control',
                 sidebarMeta: {
-                    order: 700
+                    order: 100
                 }
             });
     }

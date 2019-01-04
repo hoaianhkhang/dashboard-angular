@@ -12,7 +12,7 @@
                 <!--<div ng-show="showingFilters">-->
                     <!--&lt;!&ndash;<webhooks-filters></webhooks-filters>&ndash;&gt;-->
                 <!--</div>-->
-                <button ng-click="openAddAccessControlModal('app/pages/accessControl/addAccessControlModal/addAccessControlModal.html','md')"
+                <button ng-click="openAddAccessControlModal('app/pages/developers/accessControl/addAccessControlModal/addAccessControlModal.html','md')"
                         class="btn btn-success transactions-btn panel-transaction-newTx-button">Add</button>
             </div>
         </div>
@@ -37,9 +37,9 @@
                             ng-bind="rule.user.email || rule.user.mobile || rule.user.id"></td>
                         <td class="table-row-center transactions-list-element" title="{{rule.group.name}}" ng-bind="rule.group.name"></td>
                         <td width="30%" class="rehive-table-row-last-child">
-                            <a ng-click="openDeleteAccessControlModal('app/pages/accessControl/deleteAccessControlModal/deleteAccessControlModal.html','md',rule)"
+                            <a ng-click="openDeleteAccessControlModal('app/pages/developers/accessControl/deleteAccessControlModal/deleteAccessControlModal.html','md',rule)"
                                class="pull-right pointer ">Delete</a>
-                            <a ng-click="openEditAccessControlModal('app/pages/accessControl/editAccessControlModal/editAccessControlModal.html','md',rule)"
+                            <a ng-click="openEditAccessControlModal('app/pages/developers/accessControl/editAccessControlModal/editAccessControlModal.html','md',rule)"
                                class="pull-right pointer user-address-edit margin-right-30">Edit</a>
                         </td>
                     </tr>

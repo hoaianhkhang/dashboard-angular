@@ -14,7 +14,7 @@
                 blank: true,
                 sidebarMeta: {
                     icon: 'fa fa-external-link',
-                    order: 400
+                    order: 600
                 }
             });
     }

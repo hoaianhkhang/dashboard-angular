@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    angular.module('BlurAdmin.pages.accessControl')
+    angular.module('BlurAdmin.pages.developers.accessControl')
         .controller('DeleteAccessControlModalCtrl', DeleteAccessControlModalCtrl);
 
     function DeleteAccessControlModalCtrl($scope,Rehive,$uibModalInstance,rule,

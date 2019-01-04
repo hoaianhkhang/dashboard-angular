@@ -26,7 +26,6 @@
       'BlurAdmin.pages.verifyAdminEmail',
       'BlurAdmin.pages.verification',
       'BlurAdmin.pages.newCompanySetup',
-      'BlurAdmin.pages.accessControl',
       'BlurAdmin.pages.initialSetupScreen',
       'BlurAdmin.pages.accountInfo'
   ])
