@@ -255,6 +255,11 @@
 
         vm.formatAccountsArray = function (accountsArray) {
 
+            if(accountsArray.length === 0){
+                $scope.loadingAccounts = false;
+                return false;
+            }
+
             vm.getCurrencyHeaderColumns(accountsArray[0]);
 
             accountsArray.forEach(function (accountObj) {

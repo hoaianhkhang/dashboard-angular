@@ -481,13 +481,8 @@
                 }
             });
 
-            if((_.indexOf(visibleColumnsArray, 'id') === -1)){
-                visibleColumnsArray.push('id');
-            }
-
-            if((_.indexOf(visibleColumnsArray, 'metadata') === -1)){
-                visibleColumnsArray.push('metadata');
-            }
+            visibleColumnsArray.push('id');
+            visibleColumnsArray.push('metadata');
 
             return _.uniq(visibleColumnsArray);
         };

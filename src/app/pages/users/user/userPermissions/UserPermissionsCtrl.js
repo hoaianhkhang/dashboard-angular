@@ -254,18 +254,20 @@
                             vm.checkedLevels.push({type: permission.type,level: permissionsLevel.name,id: permissionsLevel.id,section: permission.section});
                             permission.levelCounter = 0;
                             $scope.totalPermissionsObj[permissionOptionKey].permissionCounter = $scope.totalPermissionsObj[permissionOptionKey].permissionCounter - 1;
-                            if($scope.totalPermissionsObj[permissionOptionKey].permissionCounter < ($scope.totalPermissionsObj[permissionOptionKey].permissions.length * 4)){
-                                $scope.totalPermissionsObj[permissionOptionKey].enableAll = false;
-                            }
+                            // $scope.totalPermissionsObj[permissionOptionKey].permissionCounter < ($scope.totalPermissionsObj[permissionOptionKey].permissions.length * 4
+                            $scope.totalPermissionsObj[permissionOptionKey].enableAll = false;
+
                         } else if(!permissionsLevel.id  && permissionsLevel.enabled) {
                             permissionsLevel.enabled = false;
                             var index = findIndexOfLevel(permission,permissionsLevel);
                             vm.checkedLevels.splice(index,1);
                             permission.levelCounter = 0;
                             $scope.totalPermissionsObj[permissionOptionKey].permissionCounter = $scope.totalPermissionsObj[permissionOptionKey].permissionCounter - 1;
-                            if($scope.totalPermissionsObj[permissionOptionKey].permissionCounter < ($scope.totalPermissionsObj[permissionOptionKey].permissions.length * 4)){
-                                $scope.totalPermissionsObj[permissionOptionKey].enableAll = false;
-                            }
+                            // if it breaks
+                            // if($scope.totalPermissionsObj[permissionOptionKey].permissionCounter < ($scope.totalPermissionsObj[permissionOptionKey].permissions.length * 4)){
+                            //     $scope.totalPermissionsObj[permissionOptionKey].enableAll = false;
+                            // }
+                            $scope.totalPermissionsObj[permissionOptionKey].enableAll = false;
                         }
                     });
                 }
