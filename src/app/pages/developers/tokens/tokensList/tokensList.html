@@ -1,0 +1,50 @@
+<div ng-hide="loadingAPITokens" class="panel">
+    <div class="panel-heading">
+        <span class="user-details-panel-title">API tokens list</span>
+        <a ng-click="goToAddTokenView()" class="user-details-panel-link pull-right pointer">Add</a>
+    </div>
+    <div class="panel-body">
+        <div>
+            <table class="table custom-table">
+                <tbody>
+                    <tr>
+                        <td class="rehive-table-row-first-child">This is the company's list of authentication tokens</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div>
+            <table class="table">
+                <tbody>
+                <tr>
+                    <th class="rehive-table-row-first-child">Token</th>
+                    <th>Expires</th>
+                    <th>Service</th>
+                    <th></th>
+                </tr>
+                <tr ng-repeat="token in tokensList" class="editable-row">
+                    <td class="rehive-table-row-first-child"><div title="{{token.token_key}}" class="transactions-list-element" ng-bind="token.token_key"></div></td>
+                    <td><div title="{{token.expires | date:'mediumDate'}} {{token.expires | date:'shortTime'}}"
+                             class="transactions-list-element">
+                        <div ng-show="token.expires">
+                            {{token.expires | date:'mediumDate'}} {{token.expires | date:'shortTime'}}
+                        </div>
+                        <div ng-show="!token.expires">
+                            Permanent Key
+                        </div>
+                    </div>
+                    </td>
+                    <td><div title="{{token.service}}" class="transactions-list-element" ng-bind="token.service"></div></td>
+                    <td class="rehive-table-row-last-child">
+                        <a ng-click="openDeleteTokenModal('app/pages/developers/tokens/deleteTokenModal/deleteTokenModal.html','md',token)"
+                           class="pull-right pointer">Delete</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div ba-panel ng-show="loadingAPITokens">
+    <loading-image></loading-image>
+</div>

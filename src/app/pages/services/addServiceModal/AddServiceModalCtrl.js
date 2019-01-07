@@ -5,8 +5,8 @@
         .controller('AddServiceModalCtrl', AddServiceModalCtrl);
 
     /** @ngInject */
-    function AddServiceModalCtrl($scope,$http,environmentConfig,errorHandler,
-                                 $uibModalInstance,toastr,localStorageManagement,$ngConfirm,$timeout) {
+    function AddServiceModalCtrl($scope,$http,environmentConfig,errorHandler,$timeout,
+                                 $uibModalInstance,toastr,localStorageManagement,$ngConfirm) {
 
         $scope.selectedServices = [];
         $scope.loadingServices = true;
@@ -51,6 +51,10 @@
                         });
                     });
                     $scope.serviceListOptions =  res.data.data.results;
+                    $timeout(function () {
+                        var wrappedResult = angular.element('.chosen-search-input');
+                        wrappedResult.focus();
+                    },100);
                 }
             }).catch(function (error) {
                 $scope.loadingServices = false;
