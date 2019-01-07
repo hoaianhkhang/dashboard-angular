@@ -33,7 +33,7 @@
 
         $scope.headerColumns = localStorageManagement.getValue(vm.savedAccountsTableColumns) ? JSON.parse(localStorageManagement.getValue(vm.savedAccountsTableColumns)) : [
             {colName: 'User',fieldName: 'user',visible: true},
-            {colName: 'User group',fieldName: 'group',visible: false},
+            {colName: 'User group',fieldName: 'group',visible: true},
             {colName: 'Account name',fieldName: 'name',visible: true},
             {colName: 'Reference',fieldName: 'reference',visible: true},
             {colName: 'Type',fieldName: 'primary',visible: true},
@@ -81,7 +81,7 @@
             localStorageManagement.setValue(vm.savedAccountsTableColumns,JSON.stringify($scope.headerColumns));
         };
 
-        $scope.toggleColumnVisibility = function (column) {
+        $scope.toggleColumnVisibility = function () {
             localStorageManagement.setValue(vm.savedAccountsTableColumns,JSON.stringify($scope.headerColumns));
         };
 
@@ -255,6 +255,11 @@
 
         vm.formatAccountsArray = function (accountsArray) {
 
+            if(accountsArray.length === 0){
+                $scope.loadingAccounts = false;
+                return false;
+            }
+
             vm.getCurrencyHeaderColumns(accountsArray[0]);
 
             accountsArray.forEach(function (accountObj) {
@@ -271,7 +276,7 @@
 
                             var accountObject = {
                                 user: accountObj.user.email ? accountObj.user.email : accountObj.user.mobile ? accountObj.user.mobile : accountObj.user.id,
-                                group: accountObj.user.group || '',
+                                group: accountObj.user.groups.length > 0 ? accountObj.user.groups[0].name : '',
                                 name: accountObj.name,
                                 reference: accountObj.reference,
                                 primary: accountObj.primary ? 'primary': '',
@@ -292,7 +297,7 @@
                 } else {
                     $scope.accountsList.push({
                         user: accountObj.user.email ? accountObj.user.email : accountObj.user.mobile ? accountObj.user.mobile : accountObj.user.id,
-                        group: accountObj.user.group || '',
+                        group: accountObj.user.groups.length > 0 ? accountObj.user.groups[0].name : '',
                         name: accountObj.name,
                         reference: accountObj.reference,
                         primary: accountObj.primary ? 'primary': '',
