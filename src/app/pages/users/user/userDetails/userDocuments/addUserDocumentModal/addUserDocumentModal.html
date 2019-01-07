@@ -12,7 +12,8 @@
         <form name="addDocumentForm" class="custom-form" novalidate>
             <fieldset class="divider-20">
                 <input ng-change="documentChanged()" type="file" ngf-select ng-model="userDocumentParams.file" name="file"
-                       accept="image/*" ngf-max-size="10MB" required>
+                       accept="image/*" ngf-max-size="5MB" class="divider-20" required>
+                <span>Max size is 5MB</span>
             </fieldset>
             <div class="form-group divider-20">
                 <label>Document type <span class="required-icon">*</span></label>
