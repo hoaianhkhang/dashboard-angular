@@ -1,3 +1,38 @@
+.custom-file-upload{
+  & label{
+    display: block;
+  }
+  & input[type="file"]{
+    opacity: 0;
+    z-index: 0;
+    display: inline-block;
+  }
+  & .custom-file-upload-span{
+    display: inline-block;
+    color: #022b36;
+    font-weight: 500;
+    position: absolute;
+    left: 25px;
+    z-index: 0;
+  }
+  & .custom-file-upload-span-2{
+    display: inline-block;
+    font-weight: 500;
+    color: #022b36;
+    position: absolute;
+    left: 15px;
+    z-index: 0;
+  }
+  & .custom-file-upload-span-3{
+    display: inline-block;
+    font-weight: 500;
+    color: #022b36;
+    position: absolute;
+    left: 0px;
+    z-index: 0;
+  }
+}
+
 .change-group-confirm p{
   margin-bottom: 25px;
   line-height: 16px;
