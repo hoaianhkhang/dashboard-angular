@@ -43,6 +43,9 @@
             } else if (remainingLocationArray[0] == 'list'){
                 $scope.trackedLocation = 'list';
                 $scope.secondaryTrackedLocation = '';
+            } else if (remainingLocationArray[0] == 'settings'){
+                $scope.trackedLocation = 'settings';
+                $scope.secondaryTrackedLocation = '';
             }
 
             // else if (remainingLocationArray[1] == 'accounts'){

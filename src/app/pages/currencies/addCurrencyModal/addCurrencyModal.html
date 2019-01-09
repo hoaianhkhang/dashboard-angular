@@ -123,10 +123,10 @@
         </div>
     </div>
     <div class="modal-footer">
-        <button ng-hide="showCustomCurrency || showCurrencyConfirmPanel" ng-click="goToconfirmSelection('normal',currenciesToAdd)" ng-disabled="currenciesToAdd.length == 0"
+        <button ng-hide="showCustomCurrency || showCurrencyConfirmPanel" ng-click="goToConfirmSelection('normal',currenciesToAdd)" ng-disabled="currenciesToAdd.length == 0"
                 class="btn btn-primary pull-right dashboard-btn">Add
         </button>
-        <button ng-show="showCustomCurrency && !showCurrencyConfirmPanel" ng-disabled="!customCurrencyForm.$valid" ng-click="goToconfirmSelection('custom',newCurrencyParams)"
+        <button ng-show="showCustomCurrency && !showCurrencyConfirmPanel" ng-disabled="!customCurrencyForm.$valid" ng-click="goToConfirmSelection('custom',newCurrencyParams)"
                 class="btn btn-primary pull-right dashboard-btn">Add
         </button>
         <button ng-show="showCustomCurrency && !showCurrencyConfirmPanel" class="btn btn-default pull-right dashboard-btn margin-right-10"

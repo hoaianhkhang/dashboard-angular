@@ -6,6 +6,8 @@
   height: 250px;
   color: black;
   direction: ltr;
+  resize: vertical;
+  overflow: auto !important;
 }
 
 .codemirror-sm .CodeMirror{

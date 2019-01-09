@@ -7,7 +7,8 @@
         "BlurAdmin.pages.services.stellarTestnetService.stellarTestnetServiceSetup",
         "BlurAdmin.pages.services.stellarTestnetService.stellarTestnetServiceConfig",
         "BlurAdmin.pages.services.stellarTestnetService.stellarTestnetServiceAccounts",
-        "BlurAdmin.pages.services.stellarTestnetService.stellarTestnetServiceAssets"
+        "BlurAdmin.pages.services.stellarTestnetService.stellarTestnetServiceAssets",
+        'BlurAdmin.pages.services.stellarTestnetService.stellarTestnetSettings'
     ])
         .config(routeConfig);
 

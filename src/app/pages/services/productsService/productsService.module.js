@@ -3,7 +3,8 @@
 
     angular.module('BlurAdmin.pages.services.productsService', [
         'BlurAdmin.pages.services.productsService.productsList',
-        'BlurAdmin.pages.services.productsService.createProduct'
+        'BlurAdmin.pages.services.productsService.createProduct',
+        'BlurAdmin.pages.services.productsService.productsSettings'
     ])
         .config(routeConfig);
 

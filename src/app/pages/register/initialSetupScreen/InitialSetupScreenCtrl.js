@@ -15,7 +15,7 @@
         $scope.showDefaultSetup = false;
 
         $scope.goToNextView=function () {
-            $location.path('company/setup/groups');
+            $location.path('company/setup/company-details');
         };
 
         vm.getCurrencies = function(){
