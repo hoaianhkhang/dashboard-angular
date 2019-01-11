@@ -33,7 +33,7 @@
 
         $scope.headerColumns = localStorageManagement.getValue(vm.savedAccountsTableColumns) ? JSON.parse(localStorageManagement.getValue(vm.savedAccountsTableColumns)) : [
             {colName: 'User',fieldName: 'user',visible: true},
-            {colName: 'User group',fieldName: 'group',visible: false},
+            {colName: 'User group',fieldName: 'group',visible: true},
             {colName: 'Account name',fieldName: 'name',visible: true},
             {colName: 'Reference',fieldName: 'reference',visible: true},
             {colName: 'Type',fieldName: 'primary',visible: true},
@@ -81,7 +81,7 @@
             localStorageManagement.setValue(vm.savedAccountsTableColumns,JSON.stringify($scope.headerColumns));
         };
 
-        $scope.toggleColumnVisibility = function (column) {
+        $scope.toggleColumnVisibility = function () {
             localStorageManagement.setValue(vm.savedAccountsTableColumns,JSON.stringify($scope.headerColumns));
         };
 
@@ -208,16 +208,21 @@
                 });
 
                 if(balanceArray.length === 0){
-                    if($scope.currenciesOptions.length > 0){
-                        $scope.currenciesOptions.forEach(function (currency) {
-                            if(currency.code === firstAccountInList.currencies[0].currency.code){
-                                if($scope.columnFiltersObj.balanceArray === undefined){
-                                    $scope.columnFiltersObj.balanceArray = [];
-                                }
-                                $scope.columnFiltersObj.balanceArray.push(currency);
-                            }
-                        });
+                    // if($scope.currenciesOptions.length > 0){
+                    //     $scope.currenciesOptions.forEach(function (currency) {
+                    //         if(currency.code === firstAccountInList.currencies[0].currency.code){
+                    //             if($scope.columnFiltersObj.balanceArray === undefined){
+                    //                 $scope.columnFiltersObj.balanceArray = [];
+                    //             }
+                    //             $scope.columnFiltersObj.balanceArray.push(currency);
+                    //         }
+                    //     });
+                    // }
+
+                    if($scope.columnFiltersObj.balanceArray === undefined){
+                        $scope.columnFiltersObj.balanceArray = [];
                     }
+                    $scope.columnFiltersObj.balanceArray.push(firstAccountInList.currencies[0].currency);
                 } else {
                     balanceArray.forEach(function (balanceCurrency) {
                         $scope.currenciesOptions.forEach(function (currency) {
@@ -230,16 +235,21 @@
                 }
 
                 if(availableBalanceArray.length === 0){
-                    if($scope.currenciesOptions.length > 0){
-                        $scope.currenciesOptions.forEach(function (currency) {
-                            if(currency.code === firstAccountInList.currencies[0].currency.code){
-                                if($scope.columnFiltersObj.availableBalanceArray === undefined){
-                                    $scope.columnFiltersObj.availableBalanceArray = [];
-                                }
-                                $scope.columnFiltersObj.availableBalanceArray.push(currency);
-                            }
-                        });
+                    // if($scope.currenciesOptions.length > 0){
+                    //     $scope.currenciesOptions.forEach(function (currency) {
+                    //         if(currency.code === firstAccountInList.currencies[0].currency.code){
+                    //             if($scope.columnFiltersObj.availableBalanceArray === undefined){
+                    //                 $scope.columnFiltersObj.availableBalanceArray = [];
+                    //             }
+                    //             $scope.columnFiltersObj.availableBalanceArray.push(currency);
+                    //         }
+                    //     });
+                    // }
+
+                    if($scope.columnFiltersObj.availableBalanceArray === undefined){
+                        $scope.columnFiltersObj.availableBalanceArray = [];
                     }
+                    $scope.columnFiltersObj.availableBalanceArray.push(firstAccountInList.currencies[0].currency);
                 } else {
                     availableBalanceArray.forEach(function (availableBalanceCurrency) {
                         $scope.currenciesOptions.forEach(function (currency) {
@@ -254,6 +264,11 @@
         };
 
         vm.formatAccountsArray = function (accountsArray) {
+
+            if(accountsArray.length === 0){
+                $scope.loadingAccounts = false;
+                return false;
+            }
 
             vm.getCurrencyHeaderColumns(accountsArray[0]);
 
@@ -271,7 +286,7 @@
 
                             var accountObject = {
                                 user: accountObj.user.email ? accountObj.user.email : accountObj.user.mobile ? accountObj.user.mobile : accountObj.user.id,
-                                group: accountObj.user.group || '',
+                                group: accountObj.user.groups.length > 0 ? accountObj.user.groups[0].name : '',
                                 name: accountObj.name,
                                 reference: accountObj.reference,
                                 primary: accountObj.primary ? 'primary': '',
@@ -292,7 +307,7 @@
                 } else {
                     $scope.accountsList.push({
                         user: accountObj.user.email ? accountObj.user.email : accountObj.user.mobile ? accountObj.user.mobile : accountObj.user.id,
-                        group: accountObj.user.group || '',
+                        group: accountObj.user.groups.length > 0 ? accountObj.user.groups[0].name : '',
                         name: accountObj.name,
                         reference: accountObj.reference,
                         primary: accountObj.primary ? 'primary': '',
