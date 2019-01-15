@@ -31,6 +31,7 @@
         $scope.groupFilterOptions = ['Group name','In a group'];
         $scope.currencyOptions = [];
         $scope.filtersCount = 0;
+        $scope.orderByVariable = '-created';
 
         $scope.usersPagination = {
             itemsPerPage: 25,
@@ -161,9 +162,6 @@
             },
             kycFilter: {
                 selectedKycFilter: 'Status'
-            },
-            orderByFilter: {
-                selectedOrderByOption: 'Created'
             }
         };
 
@@ -325,8 +323,15 @@
             }
         };
 
-        $scope.orderByFunction = function () {
-            return ($scope.applyFiltersObj.orderByFilter.selectedOrderByOption == 'Created' ? '-created' : '-last_login');
+        $scope.orderByFunction = function (header) {
+            if(header.orderByDirection == 'desc'){
+                header.orderByDirection = 'asc';
+                $scope.orderByVariable = header.fieldName;
+            } else {
+                header.orderByDirection = 'desc';
+                $scope.orderByVariable = '-' + header.fieldName;
+                localStorageManagement.setValue(vm.savedUserTableColumns,JSON.stringify($scope.headerColumns));
+            }
         };
 
         vm.getCreatedDateFilters = function () {

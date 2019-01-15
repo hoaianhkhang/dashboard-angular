@@ -19,6 +19,7 @@
         $scope.totalPermissionsObj = {};
         $scope.addPermissionsArray = [];
         $scope.typeOptionsObj = {
+            ACCESS_CONTROL_RULE : 'accesscontrolrule',
             ACCOUNT : 'account',
             ADDRESS : 'address',
             CURRENCY : 'currency',
@@ -47,6 +48,7 @@
                 enableAll: false,
                 permissionCounter: 0,
                 permissions: [
+                    {type:'Access control rule',section: 'admin',levelCounter: 0,levels: [{name: 'view',enabled: false},{name: 'add',enabled: false},{name: 'change',enabled: false},{name: 'delete',enabled: false},{name: 'all',enabled: false}]},
                     {type:'Account',section: 'admin',levelCounter: 0,levels: [{name: 'view',enabled: false},{name: 'add',enabled: false},{name: 'change',enabled: false},{name: 'delete',enabled: false},{name: 'all',enabled: false}]},
                     {type:'Address',section: 'admin',levelCounter: 0,levels: [{name: 'view',enabled: false},{name: 'add',enabled: false},{name: 'change',enabled: false},{name: 'delete',enabled: false},{name: 'all',enabled: false}]},
                     {type:'Bank account',section: 'admin',levelCounter: 0,levels: [{name: 'view',enabled: false},{name: 'add',enabled: false},{name: 'change',enabled: false},{name: 'delete',enabled: false},{name: 'all',enabled: false}]},
