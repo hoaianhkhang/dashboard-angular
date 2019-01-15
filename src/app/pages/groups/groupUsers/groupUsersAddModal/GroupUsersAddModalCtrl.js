@@ -5,7 +5,7 @@
         .controller('GroupUsersAddModalCtrl', GroupUsersAddModalCtrl);
 
     function GroupUsersAddModalCtrl($scope,$uibModalInstance,toastr,group,Rehive,
-                                    localStorageManagement,errorHandler) {
+                                    localStorageManagement,errorHandler,typeaheadService) {
 
         var vm = this;
         vm.group = group;
@@ -14,9 +14,11 @@
             inputType: 'Email'
         };
         $scope.loadingGroup = false;
-        $scope.userOptions = ['Email','Mobile','Id'];
 
-        $scope.getUser = function(userGroupParams){
+        $scope.getUsersEmailTypeahead = typeaheadService.getUsersEmailTypeahead();
+        $scope.getUsersMobileTypeahead = typeaheadService.getUsersMobileTypeahead();
+
+        $scope.getUserToAddToGroup = function(userGroupParams){
             if(vm.token) {
                 $scope.loadingGroup = true;
                 vm.filter = '';
@@ -25,13 +27,13 @@
 
                 if(userGroupParams.inputType == 'Email'){
                     vm.filter = 'email__contains';
-                    vm.filterString = userGroupParams.user;
+                    vm.filterString = userGroupParams.email;
                 } else if(userGroupParams.inputType == 'Mobile'){
                     vm.filter = 'mobile__contains';
-                    vm.filterString = userGroupParams.user;
+                    vm.filterString = userGroupParams.mobile;
                 } else {
                     vm.filter = 'id__contains';
-                    vm.filterString = userGroupParams.user;
+                    vm.filterString = userGroupParams.id;
                 }
 
                 vm.filterObj[vm.filter] = vm.filterString;
