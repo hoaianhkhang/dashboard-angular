@@ -262,8 +262,13 @@
             <div ng-if="filtersObj.orderByFilter" class="row divider-top-6">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 date-filter-view">
                     <select class="form-control pointer" ng-model="applyFiltersObj.orderByFilter.selectedOrderByOption"
-                            ng-options="orderBy for orderBy in orderByOptions">
+                            ng-options="orderbyoption.name for orderbyoption in orderByOptions">
                     </select>
+                    <div class="date-filter-view">
+                        <select class="form-control pointer margin-left-12" ng-model="applyFiltersObj.orderByFilter.selectedOrderByDirection"
+                                ng-options="direction for direction in orderByDirection">
+                        </select>
+                    </div>
                 </div>
             </div>
         </div>

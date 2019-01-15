@@ -1,3 +1,11 @@
+
+.sortable-header{
+  color: #3c8dbc !important;
+  &:hover {
+    background-color: #f4f4f4 !important;
+  }
+}
+
 .user-metadata-tile {
   width: 100%;
   & .user-details-metadata{
@@ -22,6 +30,11 @@
   display: inline-block;
   margin-left: 13px !important;
 }
+
+.custom-metadata{
+  display: inline-block;
+}
+
 .draggable-table{
   white-space: nowrap;
   overflow-x: scroll;

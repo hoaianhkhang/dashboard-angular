@@ -13,7 +13,8 @@
             email: '',
             company: '',
             password1: '',
-            terms_and_conditions: false
+            terms_and_conditions: false,
+            privacy_policy: false
         };
         $scope.showPassword1 = false;
 
@@ -24,6 +25,7 @@
         $scope.registerUser = function() {
             $rootScope.$pageFinishedLoading = false;
             $scope.registerData.password2 = $scope.registerData.password1;
+            $scope.registerData.privacy_policy = $scope.registerData.terms_and_conditions;
             Rehive.auth.registerCompany($scope.registerData).then(function (res) {
                 $rootScope.pageTopObj.userInfoObj = {};
                 $rootScope.pageTopObj.userInfoObj = res;

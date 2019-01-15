@@ -1,3 +1,24 @@
+.selected-sorting-caret {
+  color: black !important;
+}
+
+.metadata-column-delete{
+  display: inline-block;
+  position: relative;
+  margin: 0;
+  font-size: 14px;
+  top: 2px;
+  cursor: pointer;
+  transform: scale(1.4,1);
+  &:hover{
+    color: #ed675A;
+  }
+}
+
+.inline-block{
+  display: inline-block;
+}
+
 .new-transaction-close-btn{
   position: relative;
   top: -6px;
@@ -485,6 +506,31 @@
     & input.account-primary-checkbox{
       left: 6px;
       top: 7px;
+    }
+    & .currencies-chosen-multi-select{
+      & .chosen-container{
+        width: 310px!important;
+        & > .chosen-choices{
+          line-height: 22px!important;
+          & li.search-choice{
+            margin: 6px 5px 3px 0!important;
+            padding: 1px 20px 0 5px!important;
+            & .search-choice-close{
+              top: 2px!important;
+            }
+          }
+          & .search-field{
+            height: 22px!important;
+            & input.chosen-search-input.default{
+              height: 22px!important;
+              margin: 0!important;
+              width: 298px!important;
+              &::placeholder{
+              }
+            }
+          }
+        }
+      }
     }
     & .date-filter-in-between-view{
       display: inline-flex;

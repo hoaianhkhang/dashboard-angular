@@ -7,7 +7,9 @@
     function NewCompanySetupCtrl($rootScope, $scope, $location,localStorageManagement) {
         var vm=this;
         vm.token = localStorageManagement.getValue("token");
+        $rootScope.dashboardTitle = 'Setup | Rehive';
         $scope.companySetupView = 'initialSetupScreen';
+        $rootScope.setupCompany = localStorageManagement.getValue('setupCompany') || 0;
         $rootScope.setupUsers = localStorageManagement.getValue('setupUsers') || 0;
         $rootScope.setupCurrencies = localStorageManagement.getValue('setupCurrencies') || 0;
         $rootScope.setupAccounts = localStorageManagement.getValue('setupAccounts') || 0;

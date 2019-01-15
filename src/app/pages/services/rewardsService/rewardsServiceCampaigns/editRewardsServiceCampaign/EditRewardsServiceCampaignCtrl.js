@@ -136,6 +136,11 @@
                                 } else {
                                     editObj.groups = [];
                                 }
+                                if(editObj.users){
+                                    editObj.users = editObj.users;
+                                } else {
+                                    editObj.users = [];
+                                }
                                 if(editObj.account){
                                     $scope.accountOptions.forEach(function (element) {
                                         if(element.reference == editObj.account){
@@ -199,6 +204,9 @@
             }
             if(vm.updatedCampaignObj.account && vm.updatedCampaignObj.account.reference){
                 vm.updatedCampaignObj.account = vm.updatedCampaignObj.account.reference;
+            }
+            if(vm.updatedCampaignObj.users){
+                vm.updatedCampaignObj.users = (_.pluck(vm.updatedCampaignObj.users,'text'));
             }
             if(vm.updatedCampaignObj.groups){
                 vm.updatedCampaignObj.groups = (_.pluck(vm.updatedCampaignObj.groups,'text')).join();

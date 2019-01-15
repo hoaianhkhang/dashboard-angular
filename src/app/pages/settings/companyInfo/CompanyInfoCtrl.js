@@ -27,6 +27,21 @@
         $scope.imageFile = {
             file: {}
         };
+        $scope.editorEnabled= false;
+
+        $scope.editorEmailOptions = {
+            lineWrapping : true,
+            lineNumbers: true,
+            theme: 'monokai',
+            autoCloseTags: true,
+            smartIndent: false,
+            mode: 'xml'
+        };
+
+        $scope.enableEditor = function() {
+            //used to refresh the codemirror element to display latest ng-model
+            $scope.editorEnabled = true;
+        };
 
         $scope.upload = function () {
             if(!$scope.imageFile.file.name){
@@ -65,10 +80,11 @@
                     if(Object.keys(res.config).length == 0){
                         res.config = '';
                     } else {
-                        res.config = JSON.stringify(res.config);
+                        res.config = JSON.stringify(res.config,null,4);
                     }
                     $scope.company.details = res;
                     $scope.companyImageUrl = res.logo;
+                    $scope.enableEditor();
                     $scope.$apply();
                 }, function (error) {
                     $scope.loadingCompanyInfo = false;
@@ -124,14 +140,25 @@
 
         $scope.updateCompanyInfo = function () {
             $scope.loadingCompanyInfo = true;
+            //reintailize scopes
+            $scope.editorEnabled = false;
+            $scope.company = {
+                details : {
+                    settings: {}
+                }
+            };
+
             if(vm.updatedCompanyInfo.config){
                 if(isJson(vm.updatedCompanyInfo.config)){
                     vm.updatedCompanyInfo.config = JSON.parse(vm.updatedCompanyInfo.config);
                 } else {
-                    toastr.error('Incorrect metadata format');
-                    $scope.loadingCompanyInfo = false;
-                    return false;
+                    toastr.error('Must be a valid json object','Config');
+                    vm.updatedCompanyInfo.config = $scope.company.details.config;
+                    vm.getCompanyInfo();
+                    return;
                 }
+            } else if(vm.updatedCompanyInfo.config ===''){
+                vm.updatedCompanyInfo.config = {};
             }
 
             Rehive.admin.company.update(vm.updatedCompanyInfo).then(function (res) {

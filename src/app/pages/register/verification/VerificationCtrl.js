@@ -17,7 +17,7 @@
         vm.checkIfUserVerified = function(){
             userVerification.verify(function(err,verified){
                 if(verified){
-                    $location.path('/welcome_to_rehive');
+                    $location.path('/company/setup/initial');
                 } else {
                     vm.getUserInfo();
                 }
@@ -26,7 +26,7 @@
         vm.checkIfUserVerified();
 
         $scope.verifyUser = function(){
-            $location.path('/welcome_to_rehive');
+            $location.path('/company/setup/initial');
         };
 
         vm.getUserInfo = function(){

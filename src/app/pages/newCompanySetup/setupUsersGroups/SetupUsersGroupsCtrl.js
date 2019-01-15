@@ -5,14 +5,14 @@
         .controller("SetupUsersGroupsCtrl", SetupUsersGroupsCtrl);
 
     function SetupUsersGroupsCtrl($rootScope,$scope,toastr,$ngConfirm,$filter,Rehive,
-                                    $location,errorHandler,localStorageManagement) {
+                                    $location,errorHandler,localStorageManagement,$timeout) {
         var vm = this;
         vm.token = localStorageManagement.getValue("token");
         $scope.addedGroups = [];
         $scope.user = {};
         $rootScope.$pageFinishedLoading=true;
-        $rootScope.activeSetupRoute = 0;
-        localStorageManagement.setValue('activeSetupRoute',0);
+        $rootScope.activeSetupRoute = 1;
+        localStorageManagement.setValue('activeSetupRoute',1);
         $scope.editingUser = false;
         $scope.loadingUsersGroups = true;
         $scope.rehiveSystemGroups = [{name: 'admin'},{name: 'service'}];
@@ -107,34 +107,60 @@
             $scope.editingUser = true;
         };
 
-        $scope.deleteGroupConfirm = function (name) {
+        $scope.deleteGroupConfirm = function (group) {
             $ngConfirm({
                 title: 'Delete group',
-                content: 'Are you sure you want to delete this group?',
+                contentUrl: 'app/pages/newCompanySetup/setupUsersGroups/deleteUsersGroupPrompt.html',
                 animationBounce: 1,
                 animationSpeed: 100,
                 scope: $scope,
+                onScopeReady: function(){
+                    $scope.groupName = group.name;
+                },
                 buttons: {
                     close: {
-                        text: "No",
-                        btnClass: 'btn-default pull-left dashboard-btn'
+                        text: "Cancel",
+                        btnClass: 'btn-default dashboard-btn'
                     },
-                    ok: {
-                        text: "Yes",
-                        btnClass: 'btn-primary dashboard-btn',
+                    Add: {
+                        text: "Delete permanently",
+                        btnClass: 'btn-danger',
                         keys: ['enter'], // will trigger when enter is pressed
                         action: function(scope){
-                            $scope.deleteGroup(name);
+                            if(scope.deleteText != 'DELETE'){
+                                toastr.error('DELETE text did not match');
+                                return;
+                            }
+                            scope.archiveGroup(group);
                         }
                     }
                 }
             });
         };
 
-        $scope.deleteGroup = function (name) {
+        $scope.archiveGroup = function (group) {
+            if(group.archived){
+                $scope.deleteCurrency(group);
+            } else {
+                $scope.loadingUsersGroups = true;
+                Rehive.admin.groups.update(group.name, {archived : true}).then(function (res) {
+                    $timeout(function () {
+                        $scope.deleteGroup(group);
+                    },1000);
+                    $scope.$apply();
+                }, function (error) {
+                    $scope.loadingUsersGroups = false;
+                    errorHandler.evaluateErrors(error);
+                    errorHandler.handleErrors(error);
+                    $scope.$apply();
+                });
+            }
+        };
+
+        $scope.deleteGroup = function (group) {
             if(vm.token) {
                 $scope.loadingUsersGroups = true;
-                Rehive.admin.groups.delete(name).then(function (res) {
+                Rehive.admin.groups.delete(group.name).then(function (res) {
                     vm.getGroups();
                     $scope.$apply();
                 }, function (error) {

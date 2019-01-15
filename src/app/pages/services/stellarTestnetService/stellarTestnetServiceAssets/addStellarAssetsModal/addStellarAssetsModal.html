@@ -12,9 +12,26 @@
                 <input class="form-control" ng-model="assetParams.currency_code" placeholder="Enter 3-12 character asset code">
             </div>
             <br>
-            <div class="form-group">
-                <label>Issuer address</label>
+            <div class="form-group setup-groups-tooltip-div">
+                <label>Issuer address
+                    &nbsp;<i uib-tooltip-html="'The public address of the Stellar issuer account for the asset.'"
+                                              class="ion-information-circled setup-groups-tooltip"></i></label>
                 <input class="form-control" ng-model="assetParams.address" placeholder="Enter the account address of the asset Issuer">
+            </div>
+            <br>
+            <div class="form-group">
+                <label>Description</label>
+                <input class="form-control" ng-model="assetParams.description" placeholder="Enter description">
+            </div>
+            <br>
+            <div class="form-group">
+                <label>Symbol</label>
+                <input class="form-control" ng-model="assetParams.symbol" placeholder="Enter symbol">
+            </div>
+            <br>
+            <div class="form-group">
+                <label>Unit</label>
+                <input class="form-control" ng-model="assetParams.unit" placeholder="Enter unit">
             </div>
         </form>
     </div>

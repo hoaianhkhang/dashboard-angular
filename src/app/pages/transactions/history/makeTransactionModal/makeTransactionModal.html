@@ -38,7 +38,7 @@
             </div>
             <div class="form-group" ng-show="transactionType.tx_type == 'debit'">
                 <span>You are about to debit <strong>{{debitTransactionData.currency.symbol}}{{debitTransactionData.amount}}</strong>
-                    to <strong>{{retrievedDebitUserObj.email || retrievedDebitUserObj.mobile || retrievedDebitUserObj.id}}</strong></span>
+                    from <strong>{{retrievedDebitUserObj.email || retrievedDebitUserObj.mobile || retrievedDebitUserObj.id}}</strong></span>
             </div>
             <div class="form-group" ng-show="transactionType.tx_type == 'transfer'">
                 <span>You are about to transfer <strong>{{transferTransactionData.currency.symbol}}{{transferTransactionData.amount}}</strong>
@@ -52,7 +52,8 @@
                 </span>
             </div>
             <div class="form-group">
-                <button ng-click="createTransaction()" class="btn dashboard-btn btn-primary pull-right">Confirm</button>
+                <button ng-disabled="onGoingTransaction" ng-click="createTransaction()"
+                        class="btn dashboard-btn btn-primary pull-right">Confirm</button>
                 <button ng-click="toggleConfirmTransaction()" class="btn dashboard-btn btn-default pull-left">Back</button>
             </div>
         </div>
@@ -70,7 +71,7 @@
             </div>
             <div ng-show="transactionType.tx_type == 'debit'">
                 <div class="form-group">
-                    <span><strong>{{debitTransactionData.currency.symbol}}{{debitTransactionData.amount}}</strong> has been debited to
+                    <span><strong>{{debitTransactionData.currency.symbol}}{{debitTransactionData.amount}}</strong> has been debited from
                     <strong>{{retrievedDebitUserObj.email || retrievedDebitUserObj.mobile || retrievedDebitUserObj.id}}</strong></span>
                 </div>
                 <div class="form-group">
