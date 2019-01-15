@@ -162,6 +162,14 @@
             },
             kycFilter: {
                 selectedKycFilter: 'Status'
+            },
+            orderByFilter: {
+                selectedOrderByOption: 'Created'
+            },
+            paginationFilter: {
+                itemsPerPage: 25,
+                pageNo: 1,
+                maxSize: 5
             }
         };
 

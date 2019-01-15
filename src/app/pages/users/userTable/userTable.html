@@ -24,6 +24,9 @@
         </div>
     </div>
     <div class="panel-body">
+        <div ng-show="filtersCount > 0" class="divider">
+            <p class="filter-text">Your results are currently being filtered</p>
+        </div>
         <div ng-show="users.length > 0" class="upper-pagination">
             <p uib-pagination boundary-links="true" items-per-page="applyFiltersObj.paginationFilter.itemsPerPage"  total-items="usersData.count" ng-model="applyFiltersObj.paginationFilter.pageNo"
                max-size="applyFiltersObj.paginationFilter.maxSize" class="pagination-sm pull-right no-margin" force-ellipses="true" ng-change="getAllUsers()"
