@@ -35,5 +35,13 @@
             $location.path('/authentication/multi-factor');
         };
 
+        $scope.goToDisableMFA = function () {
+            if($scope.activatedMfa.toLowerCase() === 'sms'){
+                $location.path('/authentication/multi-factor/sms');
+            } else {
+                $location.path('/authentication/multi-factor/verify/token');
+            }
+        };
+
     }
 })();
