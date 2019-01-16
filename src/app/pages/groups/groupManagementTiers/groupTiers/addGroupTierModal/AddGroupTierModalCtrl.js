@@ -17,6 +17,7 @@
         $scope.addGroupTier = function(){
             if(vm.token) {
                 $scope.addingTiers = true;
+                $scope.newTier.name = $scope.newTier.level.toString();
                 Rehive.admin.groups.tiers.create(vm.groupName,$scope.newTier).then(function (res) {
                     $scope.addingTiers = false;
                     $scope.newTier = {currency: $scope.currencyCode,level: 1};
