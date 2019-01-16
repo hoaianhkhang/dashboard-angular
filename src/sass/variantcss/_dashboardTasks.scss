@@ -26,6 +26,19 @@
 .file-link{
   margin-top: 10px;
   display: block;
+  & i{
+    display: inline-block;
+    & img{
+      width: 34px;
+      height: 34px;
+    }
+  }
+  & span{
+    position: absolute;
+    display: inline-block;
+    bottom: 12px;
+    left: 57px;
+  }
 }
 
 .dashboard-tasks-icon{

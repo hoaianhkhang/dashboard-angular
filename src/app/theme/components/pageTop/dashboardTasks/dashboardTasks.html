@@ -3,7 +3,7 @@
         <span class="user-details-panel-title">Dashboard tasks</span>
     </div>
     <div class="panel-body">
-        <div ng-show="dashboardTasksLists.length > 0" class="row dashboard-task-row margin-bottom-10"
+        <div ng-show="dashboardTasksLists.length > 0" class="row dashboard-task-row"
              ng-class="{'untouched-task': task.untouched == true,'incomplete-touched-task': (task.untouched == false && task.progress < 100),
              'complete-touched-task': (task.untouched == false && task.progress == 100)}"
              ng-mouseover="task.untouched = false"
@@ -16,7 +16,10 @@
                     <p ng-show="task.progress == 100">
                         <strong>Transactions export complete</strong>
                     </p>
-                    <a class="file-link" ng-hide="task.progress == 100">{{task.progress}}% done</a>
+                    <a class="file-link" ng-hide="task.progress == 100">
+                        <i class="dashboard-task-spinner"><loading-image></loading-image></i>
+                        <span>Generating</span>
+                    </a>
                     <a class="pointer file-link" ng-show="task.progress == 100"
                        ng-click="downloadExportFile(page.file)"
                        ng-repeat="page in task.pages">
