@@ -44,17 +44,22 @@
                        placeholder="Please enter label">
             </div>
             <div class="form-group transaction-radio-inputs divider-20">
-                <label>Search for a user/group to apply this rule to</label>
+                <label>Who should this rule apply to?</label>
                 <div class="transaction-radio-input-block">
                     <div class="margin-right-10">
                         <input class="margin-right-10 pointer" type="radio" ng-change="accessControlRuleChanged('applyRuleTo')"
+                               ng-model="editAccessControlParams.applyRuleTo" value="everyone">
+                        <span class="transaction-radio-labels1">Everyone</span>
+                    </div>
+                    <div class="margin-right-10">
+                        <input class="horizontal-divider-40 margin-right-10 pointer" type="radio" ng-change="accessControlRuleChanged('applyRuleTo')"
                                ng-model="editAccessControlParams.applyRuleTo" value="user">
-                        <span class="transaction-radio-labels1">User</span>
+                        <span class="transaction-radio-labels2">User</span>
                     </div>
                     <div class="margin-right-10">
                         <input class="horizontal-divider-40 margin-right-10 pointer" type="radio" ng-change="accessControlRuleChanged('applyRuleTo')"
                                ng-model="editAccessControlParams.applyRuleTo" value="group">
-                        <span class="transaction-radio-labels2">Group</span>
+                        <span class="transaction-radio-labels3">Group</span>
                     </div>
                 </div>
             </div>
