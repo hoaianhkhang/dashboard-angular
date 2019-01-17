@@ -17,7 +17,11 @@
                     for(var key in res){
                         if (res.hasOwnProperty(key)) {
                             if(res[key]){
-                                $scope.activatedMfa = key;
+                                if(key === 'sms'){
+                                    $scope.activatedMfa = key.toUpperCase();
+                                } else {
+                                    $scope.activatedMfa = key;
+                                }
                                 $scope.$apply();
                             }
                         }
