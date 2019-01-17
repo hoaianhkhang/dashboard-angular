@@ -26,18 +26,18 @@
 .file-link{
   margin-top: 10px;
   display: block;
-  & i{
+  & i.dashboard-task-spinner{
     display: inline-block;
     & img{
-      width: 34px;
-      height: 34px;
+      width: 17px;
+      height: 17px;
     }
   }
   & span{
     position: absolute;
     display: inline-block;
-    bottom: 12px;
-    left: 57px;
+    bottom: 4px;
+    left: 41px;
   }
 }
 
