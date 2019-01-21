@@ -43,23 +43,23 @@
                 <input type="text" ng-model="editAccessControlParams.label" class="form-control" ng-change="accessControlRuleChanged('label')"
                        placeholder="Please enter label">
             </div>
-            <div class="form-group transaction-radio-inputs divider-20">
+            <div class="form-group access-control-radio-inputs divider-20">
                 <label>Who should this rule apply to?</label>
-                <div class="transaction-radio-input-block">
+                <div class="access-control-radio-input-block">
                     <div class="margin-right-10">
                         <input class="margin-right-10 pointer" type="radio" ng-change="accessControlRuleChanged('applyRuleTo')"
                                ng-model="editAccessControlParams.applyRuleTo" value="everyone">
-                        <span class="transaction-radio-labels1">Everyone</span>
+                        <span class="access-control-radio-labels1">Everyone</span>
                     </div>
                     <div class="margin-right-10">
-                        <input class="horizontal-divider-40 margin-right-10 pointer" type="radio" ng-change="accessControlRuleChanged('applyRuleTo')"
+                        <input class="horizontal-divider-55 margin-right-10 pointer" type="radio" ng-change="accessControlRuleChanged('applyRuleTo')"
                                ng-model="editAccessControlParams.applyRuleTo" value="user">
-                        <span class="transaction-radio-labels2">User</span>
+                        <span class="access-control-radio-labels2">User</span>
                     </div>
                     <div class="margin-right-10">
-                        <input class="horizontal-divider-40 margin-right-10 pointer" type="radio" ng-change="accessControlRuleChanged('applyRuleTo')"
+                        <input class="horizontal-divider-30 margin-right-10 pointer" type="radio" ng-change="accessControlRuleChanged('applyRuleTo')"
                                ng-model="editAccessControlParams.applyRuleTo" value="group">
-                        <span class="transaction-radio-labels3">Group</span>
+                        <span class="access-control-radio-labels3">Group</span>
                     </div>
                 </div>
             </div>
