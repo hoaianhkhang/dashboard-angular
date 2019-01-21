@@ -5,7 +5,7 @@
         .controller('UserAdminCtrl', UserAdminCtrl);
 
     /** @ngInject */
-    function UserAdminCtrl($scope,Rehive,toastr,$stateParams,localStorageManagement,$uibModal,errorHandler) {
+    function UserAdminCtrl($scope,Rehive,toastr,$stateParams,localStorageManagement,$ngConfirm,$uibModal,errorHandler) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('token');
@@ -14,6 +14,48 @@
         $scope.loadingUserAdmin = false;
         $scope.listOfEmails = [];
         vm.emailSituation = '';
+
+        $scope.checkUserMFAStatus = function () {
+
+        };
+
+        $scope.removeMFAStatusConfirm = function () {
+            $ngConfirm({
+                title: 'Remove multi-factor authentication',
+                content: 'Are you sure you want to remove multi-factor authentication from this user?',
+                animationBounce: 1,
+                animationSpeed: 100,
+                scope: $scope,
+                buttons: {
+                    close: {
+                        text: "No",
+                        btnClass: 'btn-default pull-left dashboard-btn'
+                    },
+                    ok: {
+                        text: "Yes",
+                        btnClass: 'btn-primary dashboard-btn',
+                        keys: ['enter'], // will trigger when enter is pressed
+                        action: function(scope){
+                            vm.removeMFAStatus();
+                        }
+                    }
+                }
+            });
+        };
+
+        vm.removeMFAStatus = function () {
+            // Rehive.auth.password.reset({
+            //     user: vm.uuid,
+            //     company: vm.companyIdentifier
+            // }).then(function(res){
+            //     toastr.success('Password reset email sent successfully');
+            //     $scope.$apply();
+            // }, function (error) {
+            //     errorHandler.evaluateErrors(error);
+            //     errorHandler.handleErrors(error);
+            //     $scope.$apply();
+            // });
+        };
 
         $scope.getUserEmailsFromResendPasswordLink = function(){
             $scope.loadingUserAdmin = true;
