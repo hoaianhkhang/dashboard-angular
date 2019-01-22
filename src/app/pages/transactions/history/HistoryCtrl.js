@@ -166,7 +166,8 @@
                 selectedCurrencyOption: {}
             },
             orderByFilter: {
-                selectedOrderByOption: 'Latest'
+                selectedOrderByOption: {},
+                selectedOrderByDirection: 'Desc'
             }
         };
         $scope.pagination = {
@@ -183,8 +184,17 @@
         $scope.loadingTransactions = false;
         $scope.typeOptions = ['Credit','Debit']; //Transfer
         $scope.statusOptions = ['Pending','Complete','Failed','Deleted'];
+        $scope.orderByOptions = [
+            {name:'Amount',fieldName: 'amount',tableFieldName: 'amount'},
+            {name:'Balance',fieldName: 'balance',tableFieldName: 'balance'},
+            {name:'Created',fieldName: 'created',tableFieldName: 'createdDate'},
+            {name:'Fee',fieldName: 'fee',tableFieldName: 'fee'},
+            {name:'Reference',fieldName: 'reference',tableFieldName: 'reference'},
+            {name:'Total amount',fieldName: 'total_amount',tableFieldName: 'totalAmount'},
+            {name:'Updated',fieldName: 'updated',tableFieldName: 'updatedDate'}
+        ];
+        $scope.orderByDirection = ['Desc','Asc'];
         $scope.currencyOptions = [];
-        $scope.orderByOptions = ['Latest','Largest','Smallest'];
         $scope.groupOptions = [];
 
         //Column filters
@@ -194,6 +204,7 @@
         };
 
         $scope.selectAllColumns = function () {
+            $scope.visibleColumnsSelectionChanged = true;
             $scope.headerColumns.forEach(function (headerObj) {
                 headerObj.visible = true;
             });
@@ -206,6 +217,7 @@
         };
 
         $scope.restoreColDefaults = function () {
+            $scope.visibleColumnsSelectionChanged = true;
             var defaultVisibleHeader = ['User','Type','Subtype','Currency',
                 'Amount','Fee','Status','Date','Id'];
 
@@ -258,10 +270,28 @@
 
         //end angular datepicker
 
-        $scope.orderByFunction = function () {
-            return ($scope.applyFiltersObj.orderByFilter.selectedOrderByOption == 'Latest' ? '-created' :
-                $scope.applyFiltersObj.orderByFilter.selectedOrderByOption == 'Largest' ? '-amount' :
-                    $scope.applyFiltersObj.orderByFilter.selectedOrderByOption == 'Smallest' ? 'amount' : '');
+        $scope.orderByFunction = function (header) {
+            if($scope.applyFiltersObj.orderByFilter.selectedOrderByDirection === 'Desc'){
+                $scope.filtersObj.orderByFilter = true;
+                if(header.fieldName == $scope.applyFiltersObj.orderByFilter.selectedOrderByOption.tableFieldName){
+                    $scope.applyFiltersObj.orderByFilter.selectedOrderByDirection = 'Asc';
+                }
+                $scope.orderByOptions.forEach(function (element) {
+                    if(element.tableFieldName == header.fieldName){
+                        $scope.applyFiltersObj.orderByFilter.selectedOrderByOption = element;
+                        $scope.getLatestTransactions();
+                    }
+                });
+            } else if($scope.applyFiltersObj.orderByFilter.selectedOrderByDirection === 'Asc'){
+                $scope.filtersObj.orderByFilter = true;
+                $scope.applyFiltersObj.orderByFilter.selectedOrderByDirection = 'Desc';
+                $scope.orderByOptions.forEach(function (element) {
+                    if(element.tableFieldName == header.fieldName){
+                        $scope.applyFiltersObj.orderByFilter.selectedOrderByOption = element;
+                        $scope.getLatestTransactions();
+                    }
+                });
+            }
         };
 
         $scope.pageSizeChanged =  function () {
@@ -269,6 +299,15 @@
                 $scope.pagination.itemsPerPage = 10000;
             }
         };
+
+        vm.getOrderByInitialValue = function () {
+            $scope.orderByOptions.forEach(function (orderByElement,index) {
+                if(orderByElement.name === 'Created'){
+                    $scope.applyFiltersObj.orderByFilter.selectedOrderByOption = $scope.orderByOptions[index];
+                }
+            });
+        };
+        vm.getOrderByInitialValue();
 
         vm.getCompanyCurrencies = function(){
             //adding currency as default value in both results array and ng-model of currency
@@ -481,13 +520,8 @@
                 }
             });
 
-            if((_.indexOf(visibleColumnsArray, 'id') === -1)){
-                visibleColumnsArray.push('id');
-            }
-
-            if((_.indexOf(visibleColumnsArray, 'metadata') === -1)){
-                visibleColumnsArray.push('metadata');
-            }
+            visibleColumnsArray.push('id');
+            visibleColumnsArray.push('metadata');
 
             return _.uniq(visibleColumnsArray);
         };
@@ -552,14 +586,14 @@
                 account: $scope.filtersObj.accountFilter ? $scope.applyFiltersObj.accountFilter.selectedAccountOption == 'Reference' ? $scope.applyFiltersObj.accountFilter.selectedAccountReference : null : null,
                 group: $scope.filtersObj.groupFilter ? $scope.applyFiltersObj.groupFilter.selectedGroupOption == 'Group name'? $scope.applyFiltersObj.groupFilter.selectedGroup.name: null : null,
                 group__isnull: $scope.filtersObj.groupFilter ? $scope.applyFiltersObj.groupFilter.selectedGroupOption == 'In a group'? (!$scope.applyFiltersObj.groupFilter.existsInGroup).toString(): null : null,
-                orderby: $scope.filtersObj.orderByFilter ? ($scope.applyFiltersObj.orderByFilter.selectedOrderByOption == 'Latest' ? '-created' : $scope.applyFiltersObj.orderByFilter.selectedOrderByOption == 'Largest' ? '-amount' : $scope.applyFiltersObj.orderByFilter.selectedOrderByOption == 'Smallest' ? 'amount' : null): null,
                 id: $scope.filtersObj.transactionIdFilter ? ($scope.applyFiltersObj.transactionIdFilter.selectedTransactionIdOption ? $scope.applyFiltersObj.transactionIdFilter.selectedTransactionIdOption : null): null,
                 destination_transaction : $scope.filtersObj.destinationIdFilter ? 'true' : null,
                 source_transaction : $scope.filtersObj.sourceIdFilter ? 'true' : null,
                 tx_type: $scope.filtersObj.transactionTypeFilter ? $scope.applyFiltersObj.transactionTypeFilter.selectedTransactionTypeOption.toLowerCase() : null,
                 status: $scope.filtersObj.statusFilter ? $scope.applyFiltersObj.statusFilter.selectedStatusOption: null,
                 subtype: $scope.filtersObj.transactionSubtypeFilter ? ($scope.applyFiltersObj.transactionSubtypeFilter.selectedTransactionSubtypeOption ? $scope.applyFiltersObj.transactionSubtypeFilter.selectedTransactionSubtypeOption: null): null,
-                fields: $scope.visibleColumnsArray.join(',')
+                fields: $scope.visibleColumnsArray.join(','),
+                orderby: $scope.filtersObj.orderByFilter ? $scope.applyFiltersObj.orderByFilter.selectedOrderByDirection == 'Desc' ? '-' + $scope.applyFiltersObj.orderByFilter.selectedOrderByOption.fieldName : $scope.applyFiltersObj.orderByFilter.selectedOrderByOption.fieldName : ''
             };
 
             if($scope.filtersObj.metadataFilter){
@@ -822,6 +856,21 @@
 
         $scope.deleteMetadataColumn = function (column) {
             column.hide = true;
+        };
+
+        $scope.styleHeaders = function (header) {
+            var sortableHeaderExists = false;
+
+            $scope.orderByOptions.forEach(function (element) {
+                if(element.tableFieldName == header.fieldName){
+                    sortableHeaderExists = true;
+                }
+            });
+
+            if(sortableHeaderExists){
+                return 'pointer sortable-header';
+            }
+
         };
 
         // shortcuts from other places

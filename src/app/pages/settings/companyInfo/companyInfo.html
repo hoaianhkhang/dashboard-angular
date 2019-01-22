@@ -55,13 +55,17 @@
             <div class="form-group">
                 <label>Company logo</label>
                 <div class="divider-20">
-                    <img ng-src="{{companyImageUrl}}" width="100" height="100" alt="token Image">
+                    <img ng-hide="imageFile.file.name" ng-src="{{companyImageUrl}}" width="100" height="100" alt="token Image">
+                    <img ng-show="imageFile.file.name" ngf-thumbnail="imageFile.file" width="100" height="100" alt="token Image">
                 </div>
-                <form name="myForm" class="divider-15">
-                    <fieldset>
-                        <input style="padding-left: 5px;text-indent: -5px;width: 300px"
-                               type="file" ngf-select ng-model="imageFile.file" name="file"
-                               accept="image/*" ngf-max-size="5MB" required>
+                <form name="myForm" class="divider">
+                    <fieldset class="custom-file-upload">
+                        <label>
+                            <span class="custom-file-upload-span"><button>Choose File</button></span>
+                            <input style="padding-left: 5px;text-indent: -5px;width: 300px"
+                                   type="file" ngf-select ng-model="imageFile.file" name="file"
+                                   accept="image/*" ngf-max-size="5MB" required>
+                        </label>
                     </fieldset>
                 </form>
                 <p class="small">Max size is 5MB. Recommended dimensions are 70 x 40px.</p>

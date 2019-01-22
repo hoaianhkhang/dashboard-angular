@@ -70,8 +70,8 @@
                                 <li ng-click="goToView('/currency/' + currency.code + '/overview')">View more details</li>
                                 <li ng-click="goToUsersState(currency.code)">View users</li>
                                 <li ng-click="goToHistoryState(currency.code)">View transactions</li>
-                                <li ng-click="goToView('/transactions/debit')">Create debit</li>
-                                <li ng-click="goToView('/transactions/credit')">Create credit</li>
+                                <li ng-click="goToTransactionsModalView('debit')">Create debit</li>
+                                <li ng-click="goToTransactionsModalView('credit')">Create credit</li>
                             </ul>
                         </div>
                     </div>

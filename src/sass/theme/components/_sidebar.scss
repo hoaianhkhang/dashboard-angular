@@ -156,7 +156,7 @@ a.al-sidebar-list-link {
     font-size: 18px;
     position: absolute;
     right: 10px;
-    top: 12px;
+    top: 15px;
     padding: 0;
     text-align: center;
     color: $sidebar-text;
@@ -190,7 +190,7 @@ a.al-sidebar-list-link {
 }
 
 .slimScrollBar, .slimScrollRail {
-  border-radius: 0px !important;
+  border-radius: 0 !important;
   width: 4px !important;
   left: 176px;
 }
@@ -225,11 +225,14 @@ a.al-sidebar-list-link {
       font-size: 13px;
       text-decoration: none;
       color: #8aa4af;
-      padding-left: 20px;
+      padding-left: 33px;
       height: auto;
-      line-height: 27px;
+      line-height: 34px;
       &:hover {
         color: $primary;
+      }
+      i {
+        margin-left: 6px;
       }
     }
     &.selected:not(.with-sub-menu) > a {

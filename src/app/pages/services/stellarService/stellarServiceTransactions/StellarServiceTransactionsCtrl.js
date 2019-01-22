@@ -152,6 +152,7 @@
         };
 
         $scope.restoreColDefaults = function () {
+            $scope.visibleColumnsSelectionChanged = true;
             var defaultVisibleHeader = ['Email','Amount','Type','Transaction hash',
                 'Confirmations','Rehive code','Status','Created'];
 

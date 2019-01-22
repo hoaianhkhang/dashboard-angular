@@ -97,11 +97,16 @@
                 </div>
                 <h4 ng-class="{'no-margin-top': document.document_category == 'Other'}">Document</h4>
                 <form class="custom-form" novalidate>
-                    <fieldset class="divider-20">
-                        <input ng-change="kycDocumentSelected('file')" type="file"
-                               ng-disabled="document.archived"
-                               ngf-select ng-model="editDocument.file" name="file"
-                               accept="image/*" ngf-max-size="10MB" required>
+                    <fieldset class="divider-20 custom-file-upload">
+                        <label>
+                            <span class="custom-file-upload-span-2"><button>Choose File</button></span>
+                            <input ng-change="kycDocumentSelected('file')" type="file"
+                                   ng-disabled="document.archived"
+                                   class="divider-6"
+                                   ngf-select ng-model="editDocument.file" name="file"
+                                   accept="image/*" ngf-max-size="5MB" required>
+                        </label>
+                        <p class="small">Max size is 5MB.</p>
                     </fieldset>
                     <div class="form-group divider-20">
                         <label>Document type <span class="required-icon">*</span></label>
@@ -132,9 +137,14 @@
             <div ng-hide="showingDocumentFile" class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-left-padding no-right-padding">
                 <img class="divider-20" ngf-thumbnail="editDocument.file" height="500px" width="100%">
                 <form class="custom-form" novalidate>
-                    <fieldset class="divider-20">
-                        <input ng-change="kycDocumentSelected('file')" type="file" ngf-select ng-model="editDocument.file" name="file"
-                               accept="image/*" ngf-max-size="10MB" required>
+                    <fieldset class="divider-20 custom-file-upload">
+                        <label>
+                            <span class="custom-file-upload-span-3"><button>Choose File</button></span>
+                            <input ng-change="kycDocumentSelected('file')" type="file" ngf-select ng-model="editDocument.file" name="file"
+                                   class="divider-6"
+                                   accept="image/*" ngf-max-size="5MB" required>
+                        </label>
+                        <p class="small">Max size is 5MB.</p>
                     </fieldset>
                     <div class="form-group divider-20">
                         <label>Document type <span class="required-icon">*</span></label>
