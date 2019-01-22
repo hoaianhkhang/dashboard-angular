@@ -16,10 +16,10 @@
                         controller:'InitialSetupScreenCtrl'
                     }
                 },
-                title: 'Build a fintech app',
-                sidebarMeta: {
-                    order: 800
-                }
+                title: 'Build a fintech app'
+                // sidebarMeta: {
+                //     order: 800
+                // }
             });
     }
 
