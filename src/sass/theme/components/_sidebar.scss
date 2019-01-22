@@ -17,7 +17,7 @@ $angle-right: "\f101";
 .al-sidebar-list {
   margin: 5px 0 0 0;
   padding: 0 0 0 0;
-  height: 500px;
+  height: 400px;
   list-style: none;
   overflow-y: auto;
 }
@@ -172,11 +172,15 @@ a.al-sidebar-list-link {
 
 .sidebar-initial-setup-link {
   display: block;
+  text-align: center;
   color: #ffffff!important;
   background-color: $primary;
   border-radius: 3px;
   margin: 0 10px;
-  padding: 14px 40px;
+  padding: 14px 0;
+  width: 200px;
+  position: fixed;
+  bottom: 10px;
   & span{
     margin: 0 37.5px;
   }
@@ -279,9 +283,15 @@ a.al-sidebar-list-link {
   .al-sidebar {
     width: 0;
 
+    .sidebar-initial-setup-link{
+      opacity: 0;
+    }
+
     .fa-angle-down, .fa-angle-up {
       opacity: 0;
     }
+
+
 
     .al-sidebar-sublist {
       position: absolute;
