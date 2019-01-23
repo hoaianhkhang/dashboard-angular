@@ -17,7 +17,6 @@ $angle-right: "\f101";
 .al-sidebar-list {
   margin: 5px 0 0 0;
   padding: 0 0 0 0;
-  height: 400px;
   list-style: none;
   overflow-y: auto;
 }
@@ -360,6 +359,12 @@ a.al-sidebar-list-link {
       left: 0;
       transition: left 0.5s ease;
     }
+  }
+}
+
+@media (max-height: 720px) {
+  .al-sidebar-list{
+    height: 400px;
   }
 }
 
