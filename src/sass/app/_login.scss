@@ -77,6 +77,11 @@ $text-color: #494242;
   }
 }
 
+.invalid-data{
+  border-color: $danger;
+  box-shadow: 0 0 2px $danger;
+}
+
 .auth-input {
   width: 300px;
   margin-bottom: 24px;
