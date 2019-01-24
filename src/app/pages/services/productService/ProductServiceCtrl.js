@@ -29,23 +29,17 @@
         vm.locationTracker = function (location) {
             var baseLocation = '/services/product/';
             var remainingLocation = location.split(baseLocation).pop();
-            var remainingLocationArray = remainingLocation.split('/');
 
-            if(remainingLocationArray[0] == 'list'){
-                $scope.trackedLocation = 'list';
-                // if(remainingLocationArray[(0)] == 'create'){
-                //     $scope.trackedLocation = 'list';
-                // } else if(remainingLocationArray[(remainingLocationArray.length - 1)] == 'edit'){
-                //     $scope.trackedLocation = 'list';
-                // } else {
-                //     $scope.secondaryTrackedLocation = '';
-                // }
-            } else if (remainingLocationArray[0] == 'create'){
-                $scope.trackedLocation = 'list';
-            } else if (remainingLocationArray[0] == 'settings'){
+            if(remainingLocation.indexOf('settings') != -1){
                 $scope.trackedLocation = 'settings';
-            } else if (remainingLocationArray[0] == 'orders'){
+            } else if (remainingLocation.indexOf('orders') != -1){
                 $scope.trackedLocation = 'orders';
+            } else if(remainingLocation.indexOf('list') != -1){
+                $scope.trackedLocation = 'list';
+            } else if (remainingLocation.indexOf('create') != -1){
+                $scope.trackedLocation = 'list';
+            } else if (remainingLocation.indexOf('edit') != -1){
+                $scope.trackedLocation = 'list';
             }
         };
         vm.locationTracker(vm.location);

@@ -29,21 +29,36 @@
                    previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></p>
             </div>
             <div ng-show="productList.length > 0" class="divider">
-                <div class="draggable-table">
+                <div>
                     <!--draggable on-drag-end="tableColDrag($start, $target)"-->
-                    <table class="table custom-table table-striped">
+                    <table class="table custom-table table-striped draggable-table">
                         <thead>
-                        <tr>
-                            <!--class="pointer"-->
-                            <th ng-repeat="header in headerColumns" ng-if="header.visible"  ng-bind="header.colName"></th>
-                        </tr>
+                            <tr>
+                                <th ng-repeat="header in headerColumns" ng-if="header.visible"  ng-bind="header.colName"></th>
+                                <th></th>
+                            </tr>
                         </thead>
                         <tbody>
-                        <tr ng-repeat="product in productList | orderBy: orderByFunction" data-toggle="modal"
+                        <tr ng-repeat="product in productList | orderBy: '-createdTime'" data-toggle="modal"
                             class="editable-row center pointer user-details-table-hover"
-                            ng-click="displayProduct('app/pages/services/productService/product/editProductModal/editProductModal.html', 'md',product)">
+                            ng-click="displayProductModal('app/pages/services/productService/product/displayProductModal/displayProductModal.html', 'md',product)">
                             <td class="transactions-list-element" ng-repeat="header in headerColumns"
-                                ng-if="header.visible" ng-bind="product[header.fieldName]"></td>
+                                ng-if="header.visible">
+                                <span ng-if="header.fieldName != 'enabled'">{{product[header.fieldName]}}</span>
+                                <input ng-if="header.fieldName == 'enabled'" class="custom-rehive-checkbox table-checkbox"
+                                       ng-click="toggleProductStatus(product); $event.stopPropagation()"
+                                       ng-model="product[header.fieldName]" type="checkbox">
+                            </td>
+                            <td class="rehive-table-row-last-child table-options" ng-click="showProductOptionsBox(product); $event.stopPropagation()" click-outside="closeProductOptionsBox()">
+                                <span class="table-options-container pull-right">
+                                <span class="fa fa-ellipsis-h pull-right pointer table-options-icon no-margin"></span>
+                                    <ul ng-show="product.id == productId" class="table-options-box">
+                                        <li ng-click="showProductOptionsBox(product)"><i class="dropdown-arr"></i></li>
+                                        <li ng-click="openEditProductView(product)">Edit</li>
+                                        <li ng-click="deleteProductConfirm(product)">Delete</li>
+                                    </ul>
+                                </span>
+                            </td>
                         </tr>
                         </tbody>
                     </table>

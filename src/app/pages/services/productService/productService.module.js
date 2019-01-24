@@ -4,6 +4,7 @@
     angular.module('BlurAdmin.pages.services.productService', [
         'BlurAdmin.pages.services.productService.productList',
         'BlurAdmin.pages.services.productService.createProduct',
+        'BlurAdmin.pages.services.productService.editProduct',
         'BlurAdmin.pages.services.productService.productSettings',
         'BlurAdmin.pages.services.productService.ordersList'
     ])

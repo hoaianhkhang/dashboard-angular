@@ -1,11 +1,11 @@
 (function () {
     'use strict';
 
-    angular.module('BlurAdmin.pages.services.productService.createProduct')
-        .controller('AddProductCtrl', AddProductCtrl);
+    angular.module('BlurAdmin.pages.services.productService.editProduct')
+        .controller('EditProductCtrl', EditProductCtrl);
 
     /** @ngInject */
-    function AddProductCtrl($scope,$http,$location,localStorageManagement,currencyModifiers,
+    function EditProductCtrl($scope,$http,$location,localStorageManagement,currencyModifiers,
                             Rehive,serializeFiltersService,toastr,errorHandler) {
 
         var vm = this;
@@ -18,7 +18,7 @@
             quantity: '',
             type: '',
             code: '',
-            prices: [],
+            prices: [{currency: {},amount: 10}],
             enabled: true
         };
 
@@ -30,6 +30,7 @@
                     archived: false
                 }}).then(function (res) {
                     $scope.currencyOptions = res.results.slice();
+                    $scope.newProductParams.prices[0].currency = res.results[(res.results.length - 1)];
                     $scope.$apply();
                 }, function (error) {
                     errorHandler.evaluateErrors(error);
@@ -45,9 +46,9 @@
                 name: newProductParams.name,
                 description: newProductParams.description,
                 quantity: newProductParams.quantity || null,
-                type: newProductParams.type || null,
+                type: newProductParams.product_type || null,
                 code: newProductParams.code || null,
-                enabled: newProductParams.enabled.toString() || null
+                enabled: newProductParams.enabled || null
             };
 
             newProduct = serializeFiltersService.objectFilters(newProduct);
@@ -62,10 +63,7 @@
                 }).then(function (res) {
                     if (res.status === 201 || res.status === 200) {
                         if($scope.newProductParams.prices.length > 0){
-                            vm.formatPricesForProduct(res.data.data);
-                        } else{
-                            toastr.success('Product added successfully');
-                            $location.path('/services/product/list');
+                            vm.formatPricesForProduct(res.data);
                         }
                     }
                 }).catch(function (error) {

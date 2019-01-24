@@ -6,7 +6,7 @@
 
     /** @ngInject */
     function ProductCtrl($scope,Rehive,$http,localStorageManagement,serializeFiltersService,
-                          $location,$uibModal,errorHandler,$filter) {
+                         $ngConfirm,$location,$uibModal,errorHandler,toastr,$filter) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
@@ -18,6 +18,8 @@
         $scope.showingProductsColumnFilters = false;
         $scope.productList = [];
         $scope.productListOptions = [];
+        $scope.productId = '';
+        $scope.enabledOptions = ['True','False'];
 
         $scope.productPagination = {
             itemsPerPage: 25,
@@ -37,38 +39,39 @@
         //     localStorageManagement.setValue(vm.savedProductsTableColumns,JSON.stringify(headerColumns));
         // }
 
-        if(localStorageManagement.getValue(vm.savedProductsTableColumns)){
-            var headerColumns = JSON.parse(localStorageManagement.getValue(vm.savedProductsTableColumns));
-            var recipientFieldExists = false;
-            headerColumns.forEach(function (col) {
-                if(col.colName == 'Cost price'){
-                    recipientFieldExists = true;
-                }
-            });
-
-            if(!recipientFieldExists){
-                headerColumns.splice(4,0,{colName: 'Cost price',fieldName: 'cost_price',visible: true});
-            }
-
-            localStorageManagement.setValue(vm.savedProductsTableColumns,JSON.stringify(headerColumns));
-        }
+        // if(localStorageManagement.getValue(vm.savedProductsTableColumns)){
+        //     var headerColumns = JSON.parse(localStorageManagement.getValue(vm.savedProductsTableColumns));
+        //     var recipientFieldExists = false;
+        //     headerColumns.forEach(function (col) {
+        //         if(col.colName == 'Cost price'){
+        //             recipientFieldExists = true;
+        //         }
+        //     });
+        //
+        //     if(!recipientFieldExists){
+        //         headerColumns.splice(4,0,{colName: 'Cost price',fieldName: 'cost_price',visible: true});
+        //     }
+        //
+        //     localStorageManagement.setValue(vm.savedProductsTableColumns,JSON.stringify(headerColumns));
+        // }
 
         $scope.headerColumns = localStorageManagement.getValue(vm.savedProductsTableColumns) ? JSON.parse(localStorageManagement.getValue(vm.savedProductsTableColumns)) : [
-            {colName: 'Id',fieldName: 'id',visible: true},
+            {colName: 'Product id',fieldName: 'id',visible: true},
             {colName: 'Name',fieldName: 'name',visible: true},
             {colName: 'Description',fieldName: 'description',visible: true},
-            {colName: 'Cost price',fieldName: 'cost_price',visible: true},
-            {colName: 'Value',fieldName: 'value',visible: true},
-            {colName: 'Currency',fieldName: 'currency',visible: true},
             {colName: 'Quantity',fieldName: 'quantity',visible: true},
-            {colName: 'Type',fieldName: 'product_type',visible: true}
+            {colName: 'Product type',fieldName: 'type',visible: true},
+            {colName: 'Enabled',fieldName: 'enabled',visible: true},
+            {colName: 'Created',fieldName: 'created',visible: true}
         ];
 
         $scope.filtersObj = {
             idFilter: false,
             nameFilter: false,
-            currencyFilter: false,
-            typeFilter: false
+            quantityFilter: false,
+            typeFilter: false,
+            codeFilter: false,
+            enabledFilter: false
         };
         $scope.applyFiltersObj = {
             idFilter: {
@@ -77,11 +80,17 @@
             nameFilter: {
                 selectedName: null
             },
-            currencyFilter: {
-                selectedCurrency: {}
+            quantityFilter: {
+                selectedQuantity: null
             },
             typeFilter: {
                 selectedType: null
+            },
+            codeFilter: {
+                selectedCode: null
+            },
+            enabledFilter: {
+                selectedEnabled: 'True'
             }
         };
 
@@ -89,8 +98,10 @@
             $scope.filtersObj = {
                 idFilter: false,
                 nameFilter: false,
-                currencyFilter: false,
-                typeFilter: false
+                quantityFilter: false,
+                typeFilter: false,
+                codeFilter: false,
+                enabledFilter: false
             };
         };
 
@@ -153,6 +164,14 @@
         };
         //Column filters end
 
+        $scope.showProductOptionsBox = function (product) {
+            $scope.productId = product.id;
+        };
+
+        $scope.closeProductOptionsBox = function () {
+            $scope.productId = '';
+        };
+
         vm.getProductsList = function () {
             if(vm.token) {
                 $http.get(vm.serviceUrl + 'admin/products/?page_size=250', {
@@ -189,10 +208,12 @@
             var searchObj = {
                 page: $scope.productPagination.pageNo,
                 page_size: $scope.productPagination.itemsPerPage || 25,
-                campaign: $scope.filtersObj.campaignFilter ? ($scope.applyFiltersObj.campaignFilter.selectedCampaign ? $scope.applyFiltersObj.campaignFilter.selectedCampaign.id : null): null,
-                id: $scope.filtersObj.rewardIdFilter ? $scope.applyFiltersObj.rewardIdFilter.selectedRewardId : null,
-                reward_type: $scope.filtersObj.rewardTypeFilter ? ($scope.applyFiltersObj.rewardTypeFilter.selectedRewardType ? $scope.applyFiltersObj.rewardTypeFilter.selectedRewardType.toLowerCase() : null): null,
-                status: $scope.filtersObj.statusFilter ? ($scope.applyFiltersObj.statusFilter.selectedStatus ? $scope.applyFiltersObj.statusFilter.selectedStatus.toLowerCase() : null): null
+                id: $scope.filtersObj.idFilter ? $scope.applyFiltersObj.idFilter.selectedId : null,
+                name: $scope.filtersObj.nameFilter ? $scope.applyFiltersObj.nameFilter.selectedName : null,
+                quantity: $scope.filtersObj.quantityFilter ? $scope.applyFiltersObj.quantityFilter.selectedQuantity : null,
+                type: $scope.filtersObj.typeFilter ? $scope.applyFiltersObj.typeFilter.selectedType : null,
+                code: $scope.filtersObj.codeFilter ? $scope.applyFiltersObj.codeFilter.selectedCode : null,
+                enabled: $scope.filtersObj.enabledFilter ? ($scope.applyFiltersObj.enabledFilter.selectedEnabled == 'True'? 'true' : 'false') : null
             };
 
             return vm.serviceUrl + 'admin/products/?' + serializeFiltersService.serializeFilters(searchObj);
@@ -242,25 +263,88 @@
             productListArray.forEach(function (productObj) {
                 $scope.productList.push({
                     id: productObj.id,
-                    name: productObj.name,
-                    description: productObj.description,
-                    cost_price: productObj.cost_price ? $filter("currencyModifiersFilter")(productObj.cost_price,productObj.currency.divisibility) : '',
-                    value: productObj.value ? $filter("currencyModifiersFilter")(productObj.value,productObj.currency.divisibility) : '',
-                    currency: productObj.currency ? productObj.currency.code : null,
-                    quantity: productObj.quantity,
-                    product_type: productObj.product_type
+                    name: productObj.name || '',
+                    description: productObj.description || '',
+                    quantity: productObj.quantity || '',
+                    type: productObj.type || '',
+                    created: $filter('date')(productObj.created,'MMM d, y') + ' ' +$filter('date')(productObj.created,'shortTime'),
+                    enabled: productObj.enabled,
+                    createdTime: productObj.created
                 });
             });
 
             $scope.loadingProducts = false;
         };
 
-        $scope.displayProduct = function (page,size,productObj) {
+        $scope.deleteProductConfirm = function (product) {
+            $ngConfirm({
+                title: 'Delete product',
+                content: 'Are you sure you want to delete this product?',
+                animationBounce: 1,
+                animationSpeed: 100,
+                scope: $scope,
+                buttons: {
+                    close: {
+                        text: "Cancel",
+                        btnClass: 'btn-default dashboard-btn'
+                    },
+                    Add: {
+                        text: "Delete",
+                        btnClass: 'btn-danger dashboard-btn',
+                        keys: ['enter'], // will trigger when enter is pressed
+                        action: function(scope){
+                            $scope.deleteProduct(product);
+                        }
+                    }
+                }
+            });
+        };
+
+        $scope.deleteProduct = function (product) {
+            if(vm.token) {
+                $scope.loadingProducts = true;
+                $http.delete(vm.serviceUrl + 'admin/products/' + product.id + '/', {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': vm.token
+                    }
+                }).then(function (res) {
+                    if (res.status === 200) {
+                        toastr.success('Product successfully deleted');
+                        $scope.getProductsLists();
+                    }
+                }).catch(function (error) {
+                    $scope.loadingProducts =  false;
+                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.handleErrors(error);
+                });
+            }
+        };
+
+        $scope.toggleProductStatus = function (product) {
+            if(vm.token) {
+                $http.patch(vm.serviceUrl + 'admin/products/' + product.id + '/',{enabled: product.enabled},{
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': vm.token
+                    }
+                }).then(function (res) {
+                    if (res.status === 200) {
+                        toastr.success('Product successfully updated');
+                    }
+                }).catch(function (error) {
+                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.handleErrors(error);
+                });
+            }
+        };
+
+        $scope.displayProductModal = function (page,size,productObj) {
             vm.theModal = $uibModal.open({
                 animation: true,
                 templateUrl: page,
                 size: size,
-                controller: 'ShowProductModalCtrl',
+                controller: 'DisplayProductModalCtrl',
                 resolve: {
                     productObj: function () {
                         return productObj;
@@ -274,6 +358,10 @@
                 }
             }, function(){
             });
+        };
+
+        $scope.openEditProductView = function (product) {
+            $location.path('/services/product/edit/' + product.id);
         };
 
         $scope.goToAddProduct =  function () {

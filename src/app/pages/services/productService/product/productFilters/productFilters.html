@@ -37,18 +37,18 @@
                 </div>
             </div>
         </div>
-        <div id="filterCurrency">
+        <div id="filterQuantity">
             <div>
                 <label class="checkbox-inline custom-checkbox nowrap">
-                    <input type="checkbox" ng-model="filtersObj.currencyFilter">
-                    <span>Currency</span>
+                    <input type="checkbox" ng-model="filtersObj.quantityFilter">
+                    <span>Quantity</span>
                 </label>
             </div>
-            <div ng-if="filtersObj.currencyFilter" class="row divider-top-6">
+            <div ng-if="filtersObj.quantityFilter" class="row divider-top-6">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 date-filter-view">
-                    <select class="form-control pointer" ng-model="applyFiltersObj.currencyFilter.selectedCurrency"
-                            ng-options="currency.code for currency in currencyOptions | orderBy: 'code' track by currency.code">
-                    </select>
+                    <input type="text" ng-model="applyFiltersObj.quantityFilter.selectedQuantity" placeholder="Enter product quantity"
+                           auto-focus="filtersObj.quantityFilter"
+                           class="transaction-id-input">
                 </div>
             </div>
         </div>
@@ -64,6 +64,36 @@
                     <input type="text" ng-model="applyFiltersObj.typeFilter.selectedType" placeholder="Enter product type"
                            auto-focus="filtersObj.typeFilter"
                            class="transaction-id-input">
+                </div>
+            </div>
+        </div>
+        <div id="filterCode">
+            <div>
+                <label class="checkbox-inline custom-checkbox nowrap">
+                    <input type="checkbox" ng-model="filtersObj.codeFilter">
+                    <span>Code</span>
+                </label>
+            </div>
+            <div ng-if="filtersObj.codeFilter" class="row divider-top-6">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 date-filter-view">
+                    <input type="text" ng-model="applyFiltersObj.codeFilter.selectedCode" placeholder="Enter product code"
+                           auto-focus="filtersObj.codeFilter"
+                           class="transaction-id-input">
+                </div>
+            </div>
+        </div>
+        <div id="filterEnabled">
+            <div>
+                <label class="checkbox-inline custom-checkbox nowrap">
+                    <input type="checkbox" ng-model="filtersObj.enabledFilter">
+                    <span>Enabled</span>
+                </label>
+            </div>
+            <div ng-if="filtersObj.enabledFilter" class="row divider-top-6">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 date-filter-view">
+                    <select class="form-control pointer" ng-model="applyFiltersObj.enabledFilter.selectedEnabled"
+                            ng-options="enabledStatus for enabledStatus in enabledOptions">
+                    </select>
                 </div>
             </div>
         </div>

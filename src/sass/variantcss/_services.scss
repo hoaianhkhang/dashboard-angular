@@ -1,3 +1,72 @@
+.table-checkbox{
+  top: 5px;
+}
+
+.table-options{
+  & .table-options-container{
+    position: relative;
+    margin-right: 6px;
+  }
+  & .table-options-icon{
+    padding: 4px 0;
+    display: block;
+    color: #A8A8A8;
+    &:hover{
+      color: $primary;
+    }
+  }
+  .table-options-box{
+    position: absolute;
+    top: 22px;
+    right: -14px;
+    width: 123px;
+    z-index: 100;
+    background-color: white;
+    box-shadow: 0 2px 6px #A8A8A8;
+    padding: 14px 20px 16px 20px;
+    list-style: none;
+    & li{
+      font-weight: 600 !important;
+      line-height: 24px !important;
+    }
+    & li:hover{
+      color: $primary;
+      cursor: pointer;
+    }
+
+    i.dropdown-arr {
+      position: absolute;
+      top: -22px;
+      right: 8px;
+      display: block;
+      width: 0;
+      height: 0;
+      border: 11px solid transparent;
+      border-bottom-color: rgba(0, 0, 0, .15);
+      &:after {
+        top: -9px;
+        left: 0;
+        margin-left: -10px;
+        position: absolute;
+        display: block;
+        width: 0;
+        height: 0;
+        border: 10px solid transparent;
+        border-bottom-color: $default;
+      }
+    }
+  }
+}
+
+.product-prices-add-icon{
+  color: $success;
+  font-size: 25px;
+  cursor: pointer;
+  &:hover{
+    color: $success-dark;
+  }
+}
+
 .table-actions{
   z-index: 100;
   position: absolute;
