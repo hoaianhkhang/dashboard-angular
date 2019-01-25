@@ -98,7 +98,7 @@
                         $scope.$apply();
                     } else {
                         $scope.loadingVerifyAuth = false;
-                        $location.path('/settings/security');
+                        $location.path('/account-info');
                         $scope.$apply();
                     }
                 }, function (error) {
