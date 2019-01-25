@@ -12,20 +12,21 @@
   color: #A8A8A8;
   font-weight: normal;
   font-size: 14px;
+  top: 10px;
 }
 
 .custom-radio-btn:before{
   content: '';
   margin: 0 6px 0 0;
-  height: 21px;
-  width: 21px;
+  height: 15px;
+  width: 15px;
   padding: 3px;
   display: inline-flex;
   border: 2px solid $primary-light;
   border-radius: 100px;
   background-clip: content-box;
   position: relative;
-  top: 1px;
+  top: -2px;
 }
 
 input[type="radio"]:checked + .custom-radio-btn:before{

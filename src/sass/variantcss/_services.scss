@@ -155,7 +155,8 @@
 }
 
 .active-notification-nav{
-  color: #B8B7C6 !important ;
+  color: $primary !important ;
+  font-weight: bold;
 }
 
 .notification-webhooks-buttons{
