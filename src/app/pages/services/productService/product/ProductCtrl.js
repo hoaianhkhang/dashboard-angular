@@ -17,7 +17,6 @@
         $scope.showingProductsFilters = false;
         $scope.showingProductsColumnFilters = false;
         $scope.productList = [];
-        $scope.productListOptions = [];
         $scope.productId = '';
         $scope.enabledOptions = ['True','False'];
 
@@ -171,28 +170,6 @@
         $scope.closeProductOptionsBox = function () {
             $scope.productId = '';
         };
-
-        vm.getProductsList = function () {
-            if(vm.token) {
-                $http.get(vm.serviceUrl + 'admin/products/?page_size=250', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
-                    if (res.status === 200) {
-                        if(res.data.data.results.length > 0){
-                            $scope.productListOptions = res.data.data.results;
-                        }
-                    }
-                }).catch(function (error) {
-                    $scope.loadingProducts =  false;
-                    errorHandler.evaluateErrors(error.data);
-                    errorHandler.handleErrors(error);
-                });
-            }
-        };
-        vm.getProductsList();
 
         vm.getProductsUrl = function(){
             $scope.filtersCount = 0;

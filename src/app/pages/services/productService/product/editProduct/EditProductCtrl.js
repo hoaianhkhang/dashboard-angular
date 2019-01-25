@@ -73,8 +73,10 @@
                 $scope.currencyOptions.forEach(function (currency) {
                     if(currency.code == price.currency.code){
                         $scope.editProductObj.prices.push({
+                            id: price.id,
                             currency: currency,
-                            amount: price.amount ? $filter("currencyModifiersFilter")(price.amount,currency.divisibility) : 0
+                            amount: price.amount ? $filter("currencyModifiersFilter")(price.amount,currency.divisibility) : 0,
+                            disable: true
                         });
                     }
                 });
@@ -103,7 +105,9 @@
         $scope.priceChanged = function (price) {
             $scope.editProductObj.prices.forEach(function (priceObj) {
                 if(priceObj.id == price.id){
-                    price.type = 'change';
+                    if(price.type != 'add'){
+                        price.type = 'change';
+                    }
                 }
             });
         };
@@ -138,23 +142,25 @@
             var pricesDeleted = [];
 
             $scope.editProductObj.prices.forEach(function (priceObj,indx,array) {
-                if(indx === array.length - 1){
-                    if(priceObj == 'change'){
+                if(indx === (array.length - 1)){
+
+                    if(priceObj.type == 'change'){
                         pricesChanged.push(priceObj);
-                    } else if(priceObj == 'delete'){
+                    } else if(priceObj.type == 'delete'){
                         pricesDeleted.push(priceObj);
-                    } else if(priceObj == 'add'){
+                    } else if(priceObj.type == 'add'){
                         pricesAdded.push(priceObj);
                     }
 
                     vm.executeDeletePricesArray(pricesDeleted,pricesAdded,pricesChanged);
+                    return false;
                 }
 
-                if(priceObj == 'change'){
+                if(priceObj.type == 'change'){
                     pricesChanged.push(priceObj);
-                } else if(priceObj == 'delete'){
+                } else if(priceObj.type == 'delete'){
                     pricesDeleted.push(priceObj);
-                } else if(priceObj == 'add'){
+                } else if(priceObj.type == 'add'){
                     pricesAdded.push(priceObj);
                 }
             });
@@ -162,7 +168,7 @@
 
         vm.executeDeletePricesArray = function (pricesDeleted,pricesAdded,pricesChanged) {
             if(pricesDeleted.length > 0){
-                pricesDeleted.prices.forEach(function(price,idx,array){
+                pricesDeleted.forEach(function(price,idx,array){
                     if(idx === array.length - 1){
                         vm.deletePrice(price,'last',pricesAdded,pricesChanged);
                         return false;
@@ -197,7 +203,7 @@
 
         vm.executeChangePricesArray = function (pricesAdded,pricesChanged) {
             if(pricesChanged.length > 0){
-                pricesChanged.prices.forEach(function(price,idx,array){
+                pricesChanged.forEach(function(price,idx,array){
                     if(idx === array.length - 1){
                         vm.updateChangedPrice(price,{amount: currencyModifiers.convertToCents(price.amount,price.currency.divisibility)},'last',pricesAdded);
                         return false;
@@ -232,7 +238,7 @@
 
         vm.executeAddPricesArray = function (pricesAdded) {
             if(pricesAdded.length > 0){
-                pricesAdded.prices.forEach(function(price,idx,array){
+                pricesAdded.forEach(function(price,idx,array){
                     if(idx === array.length - 1){
                         vm.addPrice({currency: price.currency.code,amount: currencyModifiers.convertToCents(price.amount,price.currency.divisibility)},'last');
                         return false;
@@ -266,11 +272,6 @@
                 });
             }
         };
-
-        $scope.ifPriceIdExists = function (price) {
-            return false;
-        };
-
 
         $scope.backToProductList = function () {
             $location.path('/services/product/list');
