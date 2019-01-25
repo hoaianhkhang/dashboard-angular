@@ -67,6 +67,17 @@
   }
 }
 
+.product-prices-remove-icon{
+  position: relative;
+  top: 6px;
+  color: $danger;
+  font-size: 25px;
+  cursor: pointer;
+  &:hover{
+    color: $danger-dark;
+  }
+}
+
 .table-actions{
   z-index: 100;
   position: absolute;

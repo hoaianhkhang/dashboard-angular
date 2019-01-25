@@ -79,10 +79,10 @@
         vm.formatPricesForProduct = function (product) {
             $scope.newProductParams.prices.forEach(function(price,idx,array){
                 if(idx === array.length - 1){
-                    vm.addPricesToProduct(product,{currency: price.currency.code,amount: price.amount},'last');
+                    vm.addPricesToProduct(product,{currency: price.currency.code,amount: currencyModifiers.convertToCents(price.amount,price.currency.divisibility)},'last');
                     return false;
                 }
-                vm.addPricesToProduct(product,{currency: price.currency.code,amount: price.amount});
+                vm.addPricesToProduct(product,{currency: price.currency.code,amount: currencyModifiers.convertToCents(price.amount,price.currency.divisibility)});
             });
         };
 

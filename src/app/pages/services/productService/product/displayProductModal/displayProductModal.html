@@ -95,7 +95,7 @@
                     <p>{{price.currency.code}}</p>
                 </div>
                 <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 no-right-padding">
-                    <p>{{price.amount}}</p>
+                    <p>{{price.amount | currencyModifiersFilter: price.currency.divisibility}}</p>
                 </div>
             </div>
         </div>
