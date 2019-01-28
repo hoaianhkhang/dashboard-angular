@@ -1,12 +1,12 @@
 <div ng-hide="loadingSmsAuth" class="auth-main">
     <div class="auth-block text-center">
-        <h1>Enable sms authentication</h1>
+        <h1>Enable SMS authentication</h1>
         <div class="row verification-btn-box">
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 divider">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" ng-class="{'divider': numberFromGetCall,'divider-20': !numberFromGetCall}">
                 <input class="form-control divider" type="text" ng-model="smsAuthObj.mobile" placeholder="Enter valid mobile number e.g. +8801703843242">
                 <button ng-disabled="!smsAuthObj.mobile" class="btn btn-primary btn-auth" ng-click="postSmsAuthNumber()">Save</button>
             </div>
-            <div ng-show="numberFromGetCall" class="col-lg-12 col-md-12 col-sm-12 col-xs-12 divider">
+            <div ng-show="numberFromGetCall" class="col-lg-12 col-md-12 col-sm-12 col-xs-12" ng-class="{'divider-20': numberFromGetCall,'divider': !numberFromGetCall}">
                 <button class="btn btn-danger btn-auth" ng-click="deleteSmsAuthNumber()">Delete</button>
             </div>
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
