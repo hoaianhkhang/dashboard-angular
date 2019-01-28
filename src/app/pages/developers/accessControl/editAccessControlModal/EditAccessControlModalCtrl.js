@@ -27,7 +27,7 @@
                     $scope.editAccessControlParams.applyRuleTo = 'group';
                     $scope.editAccessControlParams.group = $scope.editAccessControlParams.group.name;
                 } else {
-                    $scope.editAccessControlParams.applyRuleTo = 'user';
+                    $scope.editAccessControlParams.applyRuleTo = 'everyone';
                 }
                 $scope.$apply();
             }, function (error) {
@@ -57,6 +57,9 @@
                 updatedRuleObj.group = ' ';
             } else if($scope.editAccessControlParams.applyRuleTo === 'group') {
                 updatedRuleObj[$scope.editAccessControlParams.applyRuleTo] = vm.updatedAccessControlRule[$scope.editAccessControlParams.applyRuleTo];
+                updatedRuleObj.user = ' ';
+            } else {
+                updatedRuleObj.group = ' ';
                 updatedRuleObj.user = ' ';
             }
 

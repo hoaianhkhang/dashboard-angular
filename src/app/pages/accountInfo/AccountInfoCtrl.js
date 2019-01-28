@@ -40,6 +40,14 @@
             $location.path('/authentication/multi-factor');
         };
 
+        $scope.goToDisableMFA = function () {
+            if($scope.activatedMfa.toLowerCase() === 'sms'){
+                $location.path('/authentication/multi-factor/sms');
+            } else {
+                $location.path('/authentication/multi-factor/verify/token');
+            }
+        };
+
 
         $scope.accountInfoChanged = function(field){
             vm.updatedAdministrator[field] = $scope.administrator[field];
