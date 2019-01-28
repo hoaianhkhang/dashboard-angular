@@ -31,7 +31,7 @@
             {
                 "code": "XBT",
                 "description": "bitcoin",
-                "symbol": "฿",
+                "symbol": "₿",
                 "unit": "bitcoin",
                 "divisibility": 8
             },

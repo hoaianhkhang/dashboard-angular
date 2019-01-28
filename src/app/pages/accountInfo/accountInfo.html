@@ -124,7 +124,8 @@
                 <a ng-click="enableMultiFactorAuth()" class="user-details-panel-link pull-right pointer">Next</a>
             </div>
             <div class="panel-body">
-                <p class="no-margin"><span class="text-subtle">Enabled multi-factor authentication:</span> {{activatedMfa | capitalizeWord}}</p>
+                <span class="no-margin"><span class="text-subtle">Enabled multi-factor authentication:</span> {{activatedMfa == 'sms' ? (activatedMfa | uppercase) : (activatedMfa | capitalizeWord)}}</span>
+                <a class="pull-right pointer" ng-click="goToDisableMFA()" ng-hide="activatedMfa == 'None'">Remove</a>
             </div>
         </div>
     </div>

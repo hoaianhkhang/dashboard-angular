@@ -176,6 +176,13 @@
             });
         };
 
+        vm.isEnabledAllOnCounter = function (permissionOptionKey,operation) {
+
+            operation === 'Increment' ? ++$scope.totalPermissionsObj[permissionOptionKey].permissionCounter : --$scope.totalPermissionsObj[permissionOptionKey].permissionCounter;
+
+            return $scope.totalPermissionsObj[permissionOptionKey].permissionCounter === ($scope.totalPermissionsObj[permissionOptionKey].permissions.length * 4);
+        };
+
         $scope.trackPermissions = function (permission,level,permissionOptionKey) {
 
             //using id as a flag to see whether they have come from the backend or not
@@ -202,19 +209,13 @@
                             permissionsLevel.enabled = true;
                             vm.checkedLevels.push({type: permission.type,level: permissionsLevel.name,section: permission.section});
                             permission.levelCounter = 4;
-                            $scope.totalPermissionsObj[permissionOptionKey].permissionCounter = $scope.totalPermissionsObj[permissionOptionKey].permissionCounter + 1;
-                            if($scope.totalPermissionsObj[permissionOptionKey].permissionCounter == ($scope.totalPermissionsObj[permissionOptionKey].permissions.length * 4)){
-                                $scope.totalPermissionsObj[permissionOptionKey].enableAll = true;
-                            }
+                            $scope.totalPermissionsObj[permissionOptionKey].enableAll = vm.isEnabledAllOnCounter(permissionOptionKey,'Increment');
                         } else if(permissionsLevel.id && !permissionsLevel.enabled){
                             permissionsLevel.enabled = true;
                             var index = findIndexOfLevel(permission,permissionsLevel);
                             vm.checkedLevels.splice(index,1);
                             permission.levelCounter = 4;
-                            $scope.totalPermissionsObj[permissionOptionKey].permissionCounter = $scope.totalPermissionsObj[permissionOptionKey].permissionCounter + 1;
-                            if($scope.totalPermissionsObj[permissionOptionKey].permissionCounter == ($scope.totalPermissionsObj[permissionOptionKey].permissions.length * 4)){
-                                $scope.totalPermissionsObj[permissionOptionKey].enableAll = true;
-                            }
+                            $scope.totalPermissionsObj[permissionOptionKey].enableAll = vm.isEnabledAllOnCounter(permissionOptionKey,'Increment');
                         }
                     });
                 } else {
@@ -223,23 +224,13 @@
                             permissionsLevel.enabled = false;
                             vm.checkedLevels.push({type: permission.type,level: permissionsLevel.name,id: permissionsLevel.id,section: permission.section});
                             permission.levelCounter = 0;
-                            $scope.totalPermissionsObj[permissionOptionKey].permissionCounter = $scope.totalPermissionsObj[permissionOptionKey].permissionCounter - 1;
-                            // if it breaks
-                            // if($scope.totalPermissionsObj[permissionOptionKey].permissionCounter < ($scope.totalPermissionsObj[permissionOptionKey].permissions.length * 4)){
-                            //     $scope.totalPermissionsObj[permissionOptionKey].enableAll = false;
-                            // }
-                            $scope.totalPermissionsObj[permissionOptionKey].enableAll = false;
+                            $scope.totalPermissionsObj[permissionOptionKey].enableAll = vm.isEnabledAllOnCounter(permissionOptionKey,'Decrement');
                         } else if(!permissionsLevel.id  && permissionsLevel.enabled) {
                             permissionsLevel.enabled = false;
                             var index = findIndexOfLevel(permission,permissionsLevel);
                             vm.checkedLevels.splice(index,1);
                             permission.levelCounter = 0;
-                            $scope.totalPermissionsObj[permissionOptionKey].permissionCounter = $scope.totalPermissionsObj[permissionOptionKey].permissionCounter - 1;
-                            // if it breaks
-                            // if($scope.totalPermissionsObj[permissionOptionKey].permissionCounter < ($scope.totalPermissionsObj[permissionOptionKey].permissions.length * 4)){
-                            //     $scope.totalPermissionsObj[permissionOptionKey].enableAll = false;
-                            // }
-                            $scope.totalPermissionsObj[permissionOptionKey].enableAll = false;
+                            $scope.totalPermissionsObj[permissionOptionKey].enableAll = vm.isEnabledAllOnCounter(permissionOptionKey,'Decrement');
                         }
                     });
                 }
@@ -247,69 +238,29 @@
             } else {
 
                 //level.enabled && level.id means they were ticked from before
-
                 if(level.enabled && level.id){
                     var index = findIndexOfLevel(permission,level);
-                    if(index > -1){
-                        vm.checkedLevels.splice(index,1);
-                        permission.levelCounter = permission.levelCounter + 1;
-                        if(permission.levelCounter === 4){
-                            var allIndex = permission.levels.findIndex(function (element) {
-                                return element.name == 'all';
-                            });
-                            permission.levels[allIndex].enabled = true;
-                        }
-                        $scope.totalPermissionsObj[permissionOptionKey].permissionCounter = $scope.totalPermissionsObj[permissionOptionKey].permissionCounter + 1;
-                        if($scope.totalPermissionsObj[permissionOptionKey].permissionCounter == ($scope.totalPermissionsObj[permissionOptionKey].permissions.length * 4)){
-                            $scope.totalPermissionsObj[permissionOptionKey].enableAll = true;
-                        }
-                        return;
-                    } else {
-                        vm.checkedLevels.push({type: permission.type,level: level.name,id: level.id,section: permission.section});
-                        permission.levelCounter = permission.levelCounter - 1;
-                        if(permission.levelCounter < 4){
-                            var allIndex = permission.levels.findIndex(function (element) {
-                                return element.name == 'all';
-                            });
-                            permission.levels[allIndex].enabled = false;
-                        }
-                        $scope.totalPermissionsObj[permissionOptionKey].permissionCounter = $scope.totalPermissionsObj[permissionOptionKey].permissionCounter - 1;
-                        if($scope.totalPermissionsObj[permissionOptionKey].permissionCounter < ($scope.totalPermissionsObj[permissionOptionKey].permissions.length * 4)){
-                            $scope.totalPermissionsObj[permissionOptionKey].enableAll = false;
-                        }
-                        return;
+                    vm.checkedLevels.splice(index,1);
+                    permission.levelCounter = permission.levelCounter + 1;
+                    if(permission.levelCounter === 4){
+                        var allIndex = permission.levels.findIndex(function (element) {
+                            return element.name == 'all';
+                        });
+                        permission.levels[allIndex].enabled = true;
                     }
+                    $scope.totalPermissionsObj[permissionOptionKey].enableAll = vm.isEnabledAllOnCounter(permissionOptionKey,'Increment');
+                    return;
                 } else if(!level.enabled && level.id){
-                    var index = findIndexOfLevel(permission,level);
-                    if(index > -1){
-                        vm.checkedLevels.splice(index,1);
-                        permission.levelCounter = permission.levelCounter + 1;
-                        if(permission.levelCounter === 4){
-                            var allIndex = permission.levels.findIndex(function (element) {
-                                return element.name == 'all';
-                            });
-                            permission.levels[allIndex].enabled = true;
-                        }
-                        $scope.totalPermissionsObj[permissionOptionKey].permissionCounter = $scope.totalPermissionsObj[permissionOptionKey].permissionCounter + 1;
-                        if($scope.totalPermissionsObj[permissionOptionKey].permissionCounter == ($scope.totalPermissionsObj[permissionOptionKey].permissions.length * 4)){
-                            $scope.totalPermissionsObj[permissionOptionKey].enableAll = true;
-                        }
-                        return;
-                    } else {
-                        vm.checkedLevels.push({type: permission.type,level: level.name,id: level.id,section: permission.section});
-                        permission.levelCounter = permission.levelCounter - 1;
-                        if(permission.levelCounter < 4){
-                            var allIndex = permission.levels.findIndex(function (element) {
-                                return element.name == 'all';
-                            });
-                            permission.levels[allIndex].enabled = false;
-                        }
-                        $scope.totalPermissionsObj[permissionOptionKey].permissionCounter = $scope.totalPermissionsObj[permissionOptionKey].permissionCounter - 1;
-                        if($scope.totalPermissionsObj[permissionOptionKey].permissionCounter < ($scope.totalPermissionsObj[permissionOptionKey].permissions.length * 4)){
-                            $scope.totalPermissionsObj[permissionOptionKey].enableAll = false;
-                        }
-                        return;
+                    vm.checkedLevels.push({type: permission.type,level: level.name,id: level.id,section: permission.section});
+                    permission.levelCounter = permission.levelCounter - 1;
+                    if(permission.levelCounter < 4){
+                        var allIndex = permission.levels.findIndex(function (element) {
+                            return element.name == 'all';
+                        });
+                        permission.levels[allIndex].enabled = false;
                     }
+                    $scope.totalPermissionsObj[permissionOptionKey].enableAll = vm.isEnabledAllOnCounter(permissionOptionKey,'Decrement');
+                    return;
                 }
 
                 //only level.enabled means they were not ticked from before
@@ -323,10 +274,7 @@
                         });
                         permission.levels[allIndex].enabled = true;
                     }
-                    $scope.totalPermissionsObj[permissionOptionKey].permissionCounter = $scope.totalPermissionsObj[permissionOptionKey].permissionCounter + 1;
-                    if($scope.totalPermissionsObj[permissionOptionKey].permissionCounter == ($scope.totalPermissionsObj[permissionOptionKey].permissions.length * 4)){
-                        $scope.totalPermissionsObj[permissionOptionKey].enableAll = true;
-                    }
+                    $scope.totalPermissionsObj[permissionOptionKey].enableAll = vm.isEnabledAllOnCounter(permissionOptionKey,'Increment');
                 } else {
                     var index = findIndexOfLevel(permission,level);
                     vm.checkedLevels.splice(index,1);
@@ -337,10 +285,7 @@
                         });
                         permission.levels[allIndex].enabled = false;
                     }
-                    $scope.totalPermissionsObj[permissionOptionKey].permissionCounter = $scope.totalPermissionsObj[permissionOptionKey].permissionCounter - 1;
-                    if($scope.totalPermissionsObj[permissionOptionKey].permissionCounter < ($scope.totalPermissionsObj[permissionOptionKey].permissions.length * 4)){
-                        $scope.totalPermissionsObj[permissionOptionKey].enableAll = false;
-                    }
+                    $scope.totalPermissionsObj[permissionOptionKey].enableAll = vm.isEnabledAllOnCounter(permissionOptionKey,'Decrement');
                 }
             }
         };
