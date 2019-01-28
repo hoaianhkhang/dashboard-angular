@@ -5,17 +5,19 @@
         .controller('OrdersCtrl', OrdersCtrl);
 
     /** @ngInject */
-    function OrdersCtrl($scope,Rehive,$http,localStorageManagement,serializeFiltersService,
-                        $location,$uibModal,errorHandler,$filter) {
+    function OrdersCtrl($scope,$http,Rehive,localStorageManagement,serializeFiltersService,
+                        $uibModal,errorHandler,typeaheadService) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
         vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
         vm.companyIdentifier = localStorageManagement.getValue('companyIdentifier');
+        $scope.statusOptions = ['Pending','Complete','Failed'];
         $scope.loadingOrders = false;
         $scope.ordersFiltersCount = 0;
         $scope.showingOrdersFilters = false;
         $scope.ordersList = [];
+        $scope.currencyOptions = [];
 
         $scope.ordersPagination = {
             itemsPerPage: 25,
@@ -25,33 +27,58 @@
 
         $scope.ordersFiltersObj = {
             idFilter: false,
-            nameFilter: false,
+            userFilter: false,
+            statusFilter: false,
             currencyFilter: false,
-            typeFilter: false
+            totalPriceFilter: false
         };
         $scope.applyOrdersFiltersObj = {
             idFilter: {
                 selectedId: null
             },
-            nameFilter: {
-                selectedName: null
+            userFilter: {
+                selectedUser: null
+            },
+            statusFilter: {
+                selectedStatus: 'Pending'
             },
             currencyFilter: {
                 selectedCurrency: {}
             },
-            typeFilter: {
-                selectedType: null
+            totalPriceFilter: {
+                selectedTotalPrice: null
             }
         };
+
+        vm.getCompanyCurrencies = function () {
+            Rehive.admin.currencies.get({filters: {
+                page_size: 250,
+                archived: false
+            }}).then(function (res) {
+                if(res.results.length > 0){
+                    $scope.currencyOptions = res.results;
+                    $scope.applyOrdersFiltersObj.currencyFilter.selectedCurrency = res.results[0];
+                    $scope.$apply();
+                }
+            }, function (error) {
+                errorHandler.evaluateErrors(error);
+                errorHandler.handleErrors(error);
+                $scope.$apply();
+            });
+        };
+        vm.getCompanyCurrencies();
 
         $scope.clearOrdersFilters = function () {
             $scope.ordersFiltersObj = {
                 idFilter: false,
-                nameFilter: false,
+                userFilter: false,
+                statusFilter: false,
                 currencyFilter: false,
-                typeFilter: false
+                totalPriceFilter: false
             };
         };
+
+        $scope.getUsersEmailTypeahead = typeaheadService.getUsersEmailTypeahead();
 
         $scope.showOrdersFilters = function () {
             $scope.showingOrdersFilters = !$scope.showingOrdersFilters;
@@ -71,10 +98,11 @@
             var searchObj = {
                 page: $scope.ordersPagination.pageNo,
                 page_size: $scope.ordersPagination.itemsPerPage || 25,
-                campaign: $scope.ordersFiltersObj.campaignFilter ? ($scope.applyOrdersFiltersObj.campaignFilter.selectedCampaign ? $scope.applyOrdersFiltersObj.campaignFilter.selectedCampaign.id : null): null,
-                id: $scope.ordersFiltersObj.rewardIdFilter ? $scope.applyOrdersFiltersObj.rewardIdFilter.selectedRewardId : null,
-                reward_type: $scope.ordersFiltersObj.rewardTypeFilter ? ($scope.applyOrdersFiltersObj.rewardTypeFilter.selectedRewardType ? $scope.applyOrdersFiltersObj.rewardTypeFilter.selectedRewardType.toLowerCase() : null): null,
-                status: $scope.ordersFiltersObj.statusFilter ? ($scope.applyOrdersFiltersObj.statusFilter.selectedStatus ? $scope.applyOrdersFiltersObj.statusFilter.selectedStatus.toLowerCase() : null): null
+                id: $scope.ordersFiltersObj.idFilter ? $scope.applyOrdersFiltersObj.idFilter.selectedId : null,
+                user: $scope.ordersFiltersObj.userFilter ? ($scope.applyOrdersFiltersObj.userFilter.selectedUser ? $scope.applyOrdersFiltersObj.userFilter.selectedUser : null) : null,
+                status: $scope.ordersFiltersObj.statusFilter ? ($scope.applyOrdersFiltersObj.statusFilter.selectedStatus ? $scope.applyOrdersFiltersObj.statusFilter.selectedStatus.toLowerCase() : null): null,
+                currency: $scope.ordersFiltersObj.currencyFilter ? ($scope.applyOrdersFiltersObj.currencyFilter.selectedCurrency.code ? $scope.applyOrdersFiltersObj.currencyFilter.selectedCurrency.code : null): null,
+                total_price: $scope.ordersFiltersObj.totalPriceFilter ? ($scope.applyOrdersFiltersObj.totalPriceFilter.selectedTotalPrice ? $scope.applyOrdersFiltersObj.totalPriceFilter.selectedTotalPrice : null): null
             };
 
             return vm.serviceUrl + 'admin/orders/?' + serializeFiltersService.serializeFilters(searchObj);
@@ -107,6 +135,7 @@
                         if(res.data.data.results.length > 0){
                             $scope.ordersListData = res.data.data;
                             $scope.ordersList = $scope.ordersListData.results;
+                            $scope.loadingOrders = false;
                         } else {
                             $scope.loadingOrders = false;
                         }
@@ -119,6 +148,27 @@
             }
         };
         $scope.getOrdersLists();
+
+        $scope.displayOrderModal = function (page,size,orderObj) {
+            vm.theModal = $uibModal.open({
+                animation: true,
+                templateUrl: page,
+                size: size,
+                controller: 'DisplayOrderModalCtrl',
+                resolve: {
+                    order: function () {
+                        return orderObj;
+                    }
+                }
+            });
+
+            vm.theModal.result.then(function(order){
+                if(order){
+                    $scope.getOrdersLists();
+                }
+            }, function(){
+            });
+        };
 
     }
 })();

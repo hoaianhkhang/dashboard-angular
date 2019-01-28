@@ -22,21 +22,29 @@
                    previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></p>
             </div>
             <div ng-show="ordersList.length > 0" class="divider">
-                <div class="draggable-table">
-                    <!--draggable on-drag-end="tableColDrag($start, $target)"-->
-                    <table class="table custom-table table-striped">
+                <div>
+                    <table class="table custom-table table-striped draggable-table">
                         <thead>
                         <tr>
-                            <!--class="pointer"-->
-                            <th ng-repeat="header in headerColumns" ng-if="header.visible"  ng-bind="header.colName"></th>
+                            <th class="rehive-table-row-first-child">Id</th>
+                            <th>User</th>
+                            <th>Status</th>
+                            <th>Currency</th>
+                            <th>Total price</th>
+                            <th>Created</th>
+                            <th></th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr ng-repeat="product in ordersList | orderBy: orderByFunction" data-toggle="modal"
+                        <tr ng-repeat="order in ordersList | orderBy: '-created'" data-toggle="modal"
                             class="editable-row center pointer user-details-table-hover"
-                            ng-click="displayOrder('app/pages/services/ordersService/orders/showOrdersModal/showOrdersModal.html', 'md',product)">
-                            <td class="transactions-list-element" ng-repeat="header in headerColumns"
-                                ng-if="header.visible" ng-bind="product[header.fieldName]"></td>
+                            ng-click="displayOrderModal('app/pages/services/productService/orders/displayOrderModal/displayOrderModal.html','md',order)">
+                            <td class="table-row-center transactions-list-element">{{order.id}}</td>
+                            <td class="table-row-center transactions-list-element">{{order.user}}</td>
+                            <td class="table-row-center transactions-list-element">{{order.status | capitalizeWord}}</td>
+                            <td class="table-row-center transactions-list-element">{{order.currency.code}}</td>
+                            <td class="table-row-center transactions-list-element">{{order.total_price | currencyModifiersFilter: order.currency.divisibility}}</td>
+                            <td class="table-row-center transactions-list-element">{{order.created | date:'mediumDate'}} {{order.created | date:'shortTime'}}</td>
                         </tr>
                         </tbody>
                     </table>
