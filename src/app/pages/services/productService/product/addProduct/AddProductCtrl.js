@@ -116,6 +116,14 @@
             $scope.newProductParams.prices.push(priceObj);
         };
 
+        $scope.removeAddPriceRow = function (price) {
+            $scope.newProductParams.prices.forEach(function (priceObj,index,array) {
+                if(priceObj.currency.code == price.currency.code){
+                    array.splice(index,1);
+                }
+            });
+        };
+
         $scope.backToProductList = function () {
             $location.path('/services/product/list');
         };
