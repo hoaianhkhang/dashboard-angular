@@ -16,24 +16,40 @@
             </div>
             <div ng-if="ordersFiltersObj.idFilter" class="row divider-top-6">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 date-filter-view">
-                    <input type="text" ng-model="applyOrdersFiltersObj.idFilter.selectedId" placeholder="Enter product id"
+                    <input type="text" ng-model="applyOrdersFiltersObj.idFilter.selectedId" placeholder="Enter order id"
                            auto-focus="ordersFiltersObj.idFilter"
                            class="transaction-id-input">
                 </div>
             </div>
         </div>
-        <div id="filterName">
+        <div id="userFilter">
             <div>
                 <label class="checkbox-inline custom-checkbox nowrap">
-                    <input type="checkbox" ng-model="ordersFiltersObj.nameFilter">
-                    <span>Name</span>
+                    <input type="checkbox" ng-model="ordersFiltersObj.userFilter">
+                    <span>User</span>
                 </label>
             </div>
-            <div ng-if="ordersFiltersObj.nameFilter" class="row divider-top-6">
+            <div ng-if="ordersFiltersObj.userFilter" class="row divider-top-6">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 date-filter-view">
-                    <input type="text" ng-model="applyOrdersFiltersObj.nameFilter.selectedName" placeholder="Enter product name"
-                           auto-focus="ordersFiltersObj.nameFilter"
-                           class="transaction-id-input">
+                    <input type="text" ng-model="applyOrdersFiltersObj.userFilter.selectedUser" ng-model-options='{ debounce: 800 }'
+                           placeholder="Enter user" auto-focus="ordersFiltersObj.userFilter"
+                           uib-typeahead="email for email in getUsersEmailTypeahead($viewValue)"
+                           class="transaction-id-input" size="12">
+                </div>
+            </div>
+        </div>
+        <div id="filterStatus">
+            <div>
+                <label class="checkbox-inline custom-checkbox nowrap">
+                    <input type="checkbox" ng-model="ordersFiltersObj.statusFilter">
+                    <span>Status</span>
+                </label>
+            </div>
+            <div ng-if="ordersFiltersObj.statusFilter" class="row divider-top-6">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 date-filter-view">
+                    <select class="form-control pointer" ng-model="applyOrdersFiltersObj.statusFilter.selectedStatus"
+                            ng-options="option for option in statusOptions">
+                    </select>
                 </div>
             </div>
         </div>
@@ -52,17 +68,17 @@
                 </div>
             </div>
         </div>
-        <div id="filterType">
+        <div id="filterTotalPrice">
             <div>
                 <label class="checkbox-inline custom-checkbox nowrap">
-                    <input type="checkbox" ng-model="ordersFiltersObj.typeFilter">
-                    <span>Type</span>
+                    <input type="checkbox" ng-model="ordersFiltersObj.totalPriceFilter">
+                    <span>Total price</span>
                 </label>
             </div>
-            <div ng-if="ordersFiltersObj.typeFilter" class="row divider-top-6">
+            <div ng-if="ordersFiltersObj.totalPriceFilter" class="row divider-top-6">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 date-filter-view">
-                    <input type="text" ng-model="applyOrdersFiltersObj.typeFilter.selectedType" placeholder="Enter product type"
-                           auto-focus="ordersFiltersObj.typeFilter"
+                    <input type="text" ng-model="applyOrdersFiltersObj.totalPriceFilter.selectedTotalPrice" placeholder="Enter total price"
+                           auto-focus="ordersFiltersObj.totalPriceFilter"
                            class="transaction-id-input">
                 </div>
             </div>
