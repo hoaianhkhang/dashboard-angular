@@ -16,7 +16,7 @@
         $scope.products = [];
         $scope.currencyOptions= [];
         $scope.newOrderParams = {
-            userEmail: null,
+            user: null,
             status: "pending",
             currency: "",
             total_price: 0,
@@ -73,8 +73,9 @@
 
             $scope.addingOrder =  true;
             if(vm.token) {
-                Rehive.user.get({email: newOrderParams.userEmail}).then(function (res) {
-                    newOrder.user = res.id;
+                Rehive.admin.users.get({filters: {user: newOrderParams.user}}).then(function (res) {
+
+                    newOrder.user = res.results[0].id;
                     $http.post(vm.serviceUrl + 'admin/orders/', newOrder, {
                         headers: {
                             'Content-Type': 'application/json',
