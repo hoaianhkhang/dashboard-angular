@@ -6,7 +6,8 @@
         'BlurAdmin.pages.services.productService.createProduct',
         'BlurAdmin.pages.services.productService.editProduct',
         'BlurAdmin.pages.services.productService.productSettings',
-        'BlurAdmin.pages.services.productService.ordersList'
+        'BlurAdmin.pages.services.productService.ordersList',
+        'BlurAdmin.pages.services.productService.createOrder'
     ])
         .config(routeConfig);
 
