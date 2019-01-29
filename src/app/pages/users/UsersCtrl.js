@@ -32,7 +32,11 @@
         $scope.groupFilterOptions = ['Group name','In a group'];
         $scope.currencyOptions = [];
         $scope.filtersCount = 0;
+<<<<<<< HEAD
         $scope.initialLoad = true;
+=======
+        $scope.orderByVariable = '-createdJSTime';
+>>>>>>> master
 
         $scope.usersPagination = {
             itemsPerPage: 25,
@@ -696,7 +700,8 @@
                     language: userObj.language,
                     timezone: userObj.timezone,
                     birth_date: userObj.birth_date,
-                    username: userObj.username
+                    username: userObj.username,
+                    createdJSTime: userObj.created
                 });
             });
 

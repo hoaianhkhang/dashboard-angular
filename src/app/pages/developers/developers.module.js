@@ -2,6 +2,7 @@
     'use strict';
 
     angular.module('BlurAdmin.pages.developers', [
+        'BlurAdmin.pages.developers.accessControl',
         'BlurAdmin.pages.developers.tokens',
         'BlurAdmin.pages.developers.webhooks',
         'BlurAdmin.pages.developers.requestLogs',

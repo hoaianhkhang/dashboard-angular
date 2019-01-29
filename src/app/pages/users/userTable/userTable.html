@@ -53,6 +53,7 @@
                     <tbody>
                         <tr ng-repeat="user in users | orderBy: orderByVariable" data-toggle="modal"
                             class="editable-row center pointer user-details-table-hover"
+                            ng-class="{'system-users-admin': user.groupName == 'admin','system-users-service': user.groupName == 'service'}"
                             ng-mousedown="displayUser($event,user)" oncontextmenu="return false">
                             <td class="transactions-list-element" ng-repeat="header in headerColumns"
                                 ng-if="header.visible" ng-bind="user[header.fieldName]"></td>

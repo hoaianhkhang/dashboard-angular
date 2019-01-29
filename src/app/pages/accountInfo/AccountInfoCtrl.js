@@ -14,6 +14,40 @@
         $scope.loadingAdminEmails = true;
         $scope.newEmail = {primary: true};
         vm.updatedAdministrator = {};
+        $scope.activatedMfa = 'None';
+
+        vm.checkMultiFactorAuthEnabled = function () {
+            if(vm.token) {
+                Rehive.auth.mfa.status.get().then(function (res) {
+                    for(var key in res){
+                        if (res.hasOwnProperty(key)) {
+                            if(res[key]){
+                                $scope.activatedMfa = key;
+                                $scope.$apply();
+                            }
+                        }
+                    }
+                }, function (error) {
+                    errorHandler.evaluateErrors(error);
+                    errorHandler.handleErrors(error);
+                    $scope.$apply();
+                });
+            }
+        };
+        vm.checkMultiFactorAuthEnabled();
+
+        $scope.enableMultiFactorAuth = function(){
+            $location.path('/authentication/multi-factor');
+        };
+
+        $scope.goToDisableMFA = function () {
+            if($scope.activatedMfa.toLowerCase() === 'sms'){
+                $location.path('/authentication/multi-factor/sms');
+            } else {
+                $location.path('/authentication/multi-factor/verify/token');
+            }
+        };
+
 
         $scope.accountInfoChanged = function(field){
             vm.updatedAdministrator[field] = $scope.administrator[field];
