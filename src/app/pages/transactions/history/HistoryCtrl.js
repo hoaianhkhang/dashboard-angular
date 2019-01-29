@@ -825,7 +825,7 @@
 
         $scope.$on("modalClosing",function(event,transactionHasBeenUpdated){
             if(transactionHasBeenUpdated){
-                $scope.clearFilters();
+                // $scope.clearFilters();
                 $scope.getLatestTransactions();
             }
         });
