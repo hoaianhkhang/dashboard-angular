@@ -32,11 +32,8 @@
         $scope.groupFilterOptions = ['Group name','In a group'];
         $scope.currencyOptions = [];
         $scope.filtersCount = 0;
-<<<<<<< HEAD
         $scope.initialLoad = true;
-=======
         $scope.orderByVariable = '-createdJSTime';
->>>>>>> master
 
         $scope.usersPagination = {
             itemsPerPage: 25,
