@@ -183,7 +183,9 @@
             $location.path('/services/product/order/create');
         };
 
-        $scope.openEditOrderView = function(){};
+        $scope.openEditOrderView = function(order){
+            $location.path('/services/product/order/edit/' + order.id);
+        };
 
         $scope.deleteOrderConfirm = function(order){
             $ngConfirm({
