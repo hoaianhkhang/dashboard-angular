@@ -51,8 +51,6 @@
             var newRate = {
                 from_currency: $scope.rate.from_currency.code,
                 to_currency: $scope.rate.to_currency.code,
-                from_percentage_fee: $scope.rate.from_percentage_fee || null,
-                from_value_fee: $scope.rate.from_value_fee ? currencyModifiers.convertToCents($scope.rate.from_value_fee,$scope.rate.fromCurrency.divisibility) : null,
                 fixed_rate: $scope.rate.fixed_rate ? $scope.rate.fixed_rate.toString(): null
             };
             var cleanRate = cleanObject.cleanObj(newRate);
@@ -79,3 +77,7 @@
 
     }
 })();
+/*Insert into newRate if required.*/
+// from_percentage_fee: $scope.rate.from_percentage_fee || null,
+// from_value_fee: $scope.rate.from_value_fee ? currencyModifiers.convertToCents($scope.rate.from_value_fee,$scope.rate.fromCurrency.divisibility) : null,
+//
