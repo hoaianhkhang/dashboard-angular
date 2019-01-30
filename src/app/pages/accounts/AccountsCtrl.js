@@ -13,6 +13,8 @@
         $rootScope.dashboardTitle = 'Accounts | Rehive';
         vm.companyIdentifier = localStorageManagement.getValue('companyIdentifier');
         vm.savedAccountsTableColumns = vm.companyIdentifier + 'accountsTable';
+        vm.savedAccountsTableFilters = vm.companyIdentifier + 'accountsTableFilters';
+        $scope.initialLoad = true;
         $scope.accountsStateMessage = '';
         $scope.accountsList = [];
         $scope.accountsListData = {};
@@ -113,6 +115,56 @@
 
         vm.getAccountsFiltersObj = function(){
             $scope.filtersCount = 0;
+            var searchObj = {};
+            var filterObjects = {};
+
+            if($scope.initialLoad) {
+                $scope.initialLoad = false;
+                if (localStorageManagement.getValue(vm.savedAccountsTableFilters)) {
+                    filterObjects = JSON.parse(localStorageManagement.getValue(vm.savedAccountsTableFilters));
+
+                    $scope.filtersObj = filterObjects.filtersObj;
+
+                    $scope.applyFiltersObj = {
+                        nameFilter: {
+                            selectedNameFilter: filterObjects.applyFiltersObj.nameFilter.selectedNameFilter
+                        },
+                        primaryFilter: {
+                            selectedPrimaryFilter: filterObjects.applyFiltersObj.primaryFilter.selectedPrimaryFilter
+                        },
+                        referenceFilter: {
+                            selectedReferenceFilter: filterObjects.applyFiltersObj.referenceFilter.selectedReferenceFilter
+                        },
+                        userFilter: {
+                            selectedUserFilter: filterObjects.applyFiltersObj.userFilter.selectedUserFilter
+                        }
+                    };
+                    searchObj = filterObjects.searchObj;
+
+                } else {
+                    searchObj = {
+                        page: 1,
+                        page_size: $scope.filtersObj.pageSizeFilter? $scope.applyFiltersObj.paginationFilter.itemsPerPage : 25
+                    };
+                }
+            } else {
+
+                searchObj = {
+                    page: $scope.accountsPagination.pageNo,
+                    page_size: $scope.filtersObj.pageSizeFilter? $scope.accountsPagination.itemsPerPage : 25,
+                    user: $scope.filtersObj.userFilter ? ($scope.applyFiltersObj.userFilter.selectedUserFilter ?  $scope.applyFiltersObj.userFilter.selectedUserFilter : null): null,
+                    reference: $scope.filtersObj.referenceFilter ?($scope.applyFiltersObj.referenceFilter.selectedReferenceFilter ? $scope.applyFiltersObj.referenceFilter.selectedReferenceFilter : null): null,
+                    name: $scope.filtersObj.nameFilter ? ($scope.applyFiltersObj.nameFilter.selectedNameFilter ? $scope.applyFiltersObj.nameFilter.selectedNameFilter : null): null,
+                    primary: $scope.filtersObj.primaryFilter ? $scope.filtersObj.primaryFilter : null
+                };
+
+                vm.saveAccountsTableFiltersToLocalStorage({
+                    searchObj: serializeFiltersService.objectFilters(searchObj),
+                    filtersObj: $scope.filtersObj,
+                    applyFiltersObj: $scope.applyFiltersObj
+                });
+
+            }
 
             for(var x in $scope.filtersObj){
                 if($scope.filtersObj.hasOwnProperty(x)){
@@ -132,6 +184,10 @@
             };
 
             return serializeFiltersService.objectFilters(searchObj);
+        };
+
+        vm.saveAccountsTableFiltersToLocalStorage = function (filterObjects) {
+            localStorageManagement.setValue(vm.savedAccountsTableFilters,JSON.stringify(filterObjects));
         };
 
         vm.getCompanyCurrencies = function(){
