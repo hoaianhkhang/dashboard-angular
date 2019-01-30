@@ -19,7 +19,7 @@
                 </div>
                 <div class="form-group setup-groups-tooltip-div">
                     <label>Quantity
-                        &nbsp;<i uib-tooltip-html="'The amount of stock held for this product /item.'"
+                        &nbsp;<i uib-tooltip-html="'The amount of stock held for this product / item.'"
                                  class="ion-information-circled setup-groups-tooltip"></i></label>
                     <input type="text" ng-model="editProductObj.quantity" class="form-control"
                            ng-change="productChanged('quantity')"
@@ -42,8 +42,20 @@
                            placeholder="Enter code" required>
                 </div>
                 <div class="form-group setup-groups-tooltip-div">
-                    <label>Prices <i class="fa fa-plus-square-o pull-right product-prices-add-icon" ng-click="addPriceRow()"></i></label>
-                    <div class="row divider" ng-repeat="price in editProductObj.prices | orderBy: 'currency.code'" ng-if="price.type != 'delete'">
+                    <label><strong>Prices</strong>
+                        <i class="fa fa-plus-square-o product-prices-add-icon left-margin-12"
+                           ng-class="{'pull-right': editProductObj.prices.length > 0,'product-prices-add-icon-near-title': editProductObj.prices.length == 0}"
+                           ng-click="addEditPriceRow()"></i>
+                    </label>
+                    <div ng-show="editProductObj.prices.length > 0" class="row">
+                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                            <label>Currency</label>
+                        </div>
+                        <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7 no-left-padding">
+                            <label>Amount</label>
+                        </div>
+                    </div>
+                    <div class="row divider" ng-repeat="price in editProductObj.prices">
                         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
                             <div class="reward-multi-select">
                                 <select chosen

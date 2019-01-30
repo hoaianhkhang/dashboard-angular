@@ -24,21 +24,34 @@
 
         vm.getCompanyCurrencies = function(){
             if(vm.token){
-                Rehive.admin.currencies.get({filters: {
-                    page:1,
-                    page_size: 250,
-                    archived: false
-                }}).then(function (res) {
-                    $scope.currencyOptions = res.results.slice();
-                    $scope.$apply();
-                }, function (error) {
-                    errorHandler.evaluateErrors(error);
+                $http.get(vm.serviceUrl + 'admin/currencies/?page_size=250&archived=false', {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': vm.token
+                    }
+                }).then(function (res) {
+                    if (res.status === 200) {
+                        $scope.currencyOptions = res.data.data.results.slice();
+                    }
+                }).catch(function (error) {
+                    errorHandler.evaluateErrors(error.data);
                     errorHandler.handleErrors(error);
-                    $scope.$apply();
                 });
             }
         };
         vm.getCompanyCurrencies();
+
+        // Rehive.admin.currencies.get({filters: {
+        //     page_size: 250,
+        //     archived: false
+        // }}).then(function (res) {
+        //     $scope.currencyOptions = res.results.slice();
+        //     $scope.$apply();
+        // }, function (error) {
+        //     errorHandler.evaluateErrors(error);
+        //     errorHandler.handleErrors(error);
+        //     $scope.$apply();
+        // });
 
         $scope.addNewProduct = function (newProductParams) {
             var newProduct = {
