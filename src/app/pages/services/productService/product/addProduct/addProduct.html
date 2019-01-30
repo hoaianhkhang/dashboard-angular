@@ -1,0 +1,78 @@
+<div ng-hide="addingProduct">
+    <div class="panel">
+        <div class="panel-heading">
+            <span class="user-details-panel-title">Add product</span>
+        </div>
+        <div class="panel-body">
+            <form name="addProductForm" class="custom-form" novalidate>
+                <div class="form-group">
+                    <label>Product name <span class="required-icon">*</span></label>
+                    <input type="text" ng-model="newProductParams.name" class="form-control"
+                           placeholder="Enter product name" required>
+                </div>
+                <div class="form-group">
+                    <label>Product description </label>
+                    <textarea rows="4" type="text" ng-model="newProductParams.description"
+                              class="form-control"  placeholder='Enter product description'></textarea>
+                </div>
+                <div class="form-group setup-groups-tooltip-div">
+                    <label>Quantity
+                        &nbsp;<i uib-tooltip-html="'The amount of stock held for this product /item.'"
+                                 class="ion-information-circled setup-groups-tooltip"></i></label>
+                    <input type="text" ng-model="newProductParams.quantity" class="form-control"  placeholder="Enter quantity">
+                </div>
+                <div class="form-group setup-groups-tooltip-div">
+                    <label>Product type
+                        &nbsp;<i uib-tooltip-html="'A categorical tag to label products / items of the same type.'"
+                                 class="ion-information-circled setup-groups-tooltip"></i></label>
+                    <input type="text" ng-model="newProductParams.type" class="form-control"  placeholder="Enter product type">
+                </div>
+                <div class="form-group setup-groups-tooltip-div">
+                    <label>Code (barcode)
+                        &nbsp;<i uib-tooltip-html="'A barcode or unique code so that the product / item can be referenced from systems outside the Rehive environment.'"
+                                 class="ion-information-circled setup-groups-tooltip"></i></label>
+                    <input type="text" ng-model="newProductParams.code" class="form-control"  placeholder="Enter code">
+                </div>
+                <div class="form-group setup-groups-tooltip-div">
+                    <label>Prices <i class="fa fa-plus-square-o pull-right product-prices-add-icon" ng-click="addPriceRow()"></i></label>
+                    <div class="row divider" ng-repeat="price in newProductParams.prices">
+                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                            <div class="reward-multi-select">
+                                <select chosen
+                                        data-placeholder-text-single="'Choose a currency'"
+                                        width="40"
+                                        ng-model="price.currency"
+                                        ng-options="currency.code for currency in currencyOptions | orderBy: 'code'">
+                                    <option value=""></option>
+                                </select>
+                                <!--allow-single-deselect="true"-->
+                            </div>
+                        </div>
+                        <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7 no-right-padding no-left-padding">
+                            <input type="text" ng-model="price.amount" class="form-control"  placeholder="Enter amount">
+                        </div>
+                        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 no-left-padding">
+                            <i class="fa fa-minus-square-o pull-right product-prices-remove-icon"
+                               ng-click="removeAddPriceRow(price)"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group divider-20 setup-groups-tooltip-div">
+                    <label>Enabled</label>
+                    <br>
+                    <input class="custom-rehive-checkbox" ng-model="newProductParams.enabled" type="checkbox">
+                </div>
+                <div class="form-group">
+                    <button  ng-click="addNewProduct(newProductParams)" ng-disabled="!addProductForm.$valid"
+                             class="btn btn-primary dashboard-btn pull-right">Add</button>
+                    <button ng-click="backToProductList()" class="btn btn-default dashboard-btn pull-right margin-right-10">Back</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div ng-show="addingProduct" class="row">
+    <div ba-panel class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <loading-image></loading-image>
+    </div>
+</div>
