@@ -2,7 +2,7 @@
     'use strict';
 
     angular.module('BlurAdmin.pages.redirectToWebWallet',[])
-        .config(routeConfig)
+        .config(routeConfig);
 
     /** @ngInject */
 
@@ -10,7 +10,7 @@
         $stateProvider
             .state('redirectToWebWallet',{
                 fixedHref: 'https://wallet.rehive.com/',
-                title: 'Go to Web wallet',
+                title: 'Go to web wallet',
                 blank: true,
                 sidebarMeta: {
                     order: 800
