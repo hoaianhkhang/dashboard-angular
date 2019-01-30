@@ -17,10 +17,10 @@
             </tr>
             <tr>
                 <td class="table-row-center transactions-list-element rehive-table-row-first-child">
-                    Multi-factor authentication:
+                    Multi-factor authentication: {{mfaStatus | uppercase}} ACTIVE
                 </td>
             </tr>
-            <tr>
+            <tr ng-if="user.groups[0].name != 'admin'">
                 <td class="table-row-center transactions-list-element rehive-table-row-first-child">
                     <a class="pointer" ng-click="removeMFAStatusConfirm()">Remove multi-factor authentication</a>
                 </td>
