@@ -14,7 +14,7 @@
         $scope.accessControlParams = {
             type: 'ip',
             action: 'allow',
-            applyRuleTo: 'user'
+            applyRuleTo: 'everyone'
         };
 
         $scope.addAccessControlRules = function (accessControlParams) {
