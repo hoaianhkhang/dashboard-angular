@@ -1,6 +1,9 @@
 <div ng-hide="loadingAdminEmails">
     <div class="panel">
         <div class="panel-heading">
+            <button type="button" class="close" ng-click="$dismiss()" aria-label="Close">
+                <em class="ion-ios-close-empty sn-link-close"></em>
+            </button>
             <span class="user-details-panel-title">Add email</span>
         </div>
         <div class="panel-body">
@@ -16,7 +19,6 @@
                 </div>
                 <div class="form-group">
                     <button ng-disabled="!emailForm.$valid" ng-click="createEmail(newEmail)" class="btn btn-primary dashboard-btn pull-right">Add</button>
-                    <button ng-click="toggleAddEmailView()" class="btn btn-default dashboard-btn pull-right margin-right-10">Back</button>
                 </div>
             </form>
         </div>
