@@ -36,7 +36,7 @@
 
         $scope.checkUserMFAStatus = function () {
             if(vm.token) {
-                Rehive.auth.mfa.status.get().then(function (res) {
+                Rehive.admin.users.mfa.get(vm.uuid).then(function (res) {
                     for(var key in res){
                         if (res.hasOwnProperty(key)) {
                             if(res[key]){
@@ -100,7 +100,7 @@
             if(vm.token) {
                 $scope.loadingUserAdmin = true;
                 if($scope.mfaStatus == "sms"){
-                    Rehive.auth.mfa.sms.disable().then(function (res) {
+                    Rehive.admin.users.mfa.sms.delete(vm.uuid).then(function (res) {
                         toastr.success('SMS multi-factor authentication removed successfully');
                         $scope.loadingUserAdmin = false;
                         $scope.$apply();
@@ -111,8 +111,8 @@
                         $scope.$apply();
                     });
                 } else {
-                    Rehive.auth.mfa.token.disable().then(function (res) {
-                        toastr.success('Token mutli-factor authentication removed successfully');
+                    Rehive.admin.users.mfa.token.delete(vm.uuid).then(function (res) {
+                        toastr.success('Token multi-factor authentication removed successfully');
                         $scope.loadingUserAdmin = false;
                         $scope.$apply();
                     }, function (error) {
