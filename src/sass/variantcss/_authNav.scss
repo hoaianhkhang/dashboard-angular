@@ -28,28 +28,28 @@
   line-height: 1.3333333;
   width: 100px;
   background-color: $primary;
-  border: 1px solid $primary;
+  border: 1px solid #EAEAEF;
   border-radius: 2px;
   color:  $body-bg;
   &:focus{
     background-color: transparent;
-    border: 1px solid  $primary;
+    border: 1px solid  #EAEAEF;
     color: $primary;
   }
   &:hover{
     background-color: transparent;
-    border: 1px solid  $primary;
+    border: 1px solid  #EAEAEF;
     color: $primary;
   }
   &:active{
-    border: 1px solid  $primary;
+    border: 1px solid  #EAEAEF;
     color: $primary;
   }
 }
 
 .auth-nav-table > .auth-nav-cell > a > .active-auth-nav{
   background-color: transparent;
-  border: 1px solid $primary;
+  border: 1px solid #EAEAEF;
   color: $primary;
   border-radius: 2px;
 }
