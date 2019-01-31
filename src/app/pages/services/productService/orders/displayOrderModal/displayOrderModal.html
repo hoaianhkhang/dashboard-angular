@@ -1,0 +1,162 @@
+<div ng-hide="loadingOrder" class="modal-content">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="$dismiss()" aria-label="Close">
+            <em class="ion-ios-close-empty sn-link-close"></em>
+        </button>
+        <h4 class="modal-title" id="myModalLabel">View order</h4>
+    </div>
+    <div class="modal-body padding-bottom-25">
+        <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-left-padding divider">
+                <p class="text-subtle">Order id: </p>
+            </div>
+            <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7 no-right-padding">
+                <span ng-bind="orderObj.id"></span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-left-padding divider">
+                <p class="text-subtle">User: </p>
+            </div>
+            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 no-right-padding">
+                <p ng-bind="orderObj.user"></p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-left-padding divider">
+                <p class="text-subtle">Status: </p>
+            </div>
+            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 no-right-padding">
+                <p ng-bind="orderObj.status | capitalizeWord"></p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-left-padding divider">
+                <p class="text-subtle">Currency: </p>
+            </div>
+            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 no-right-padding">
+                <p ng-bind="orderObj.currency.code"></p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-left-padding divider">
+                <p class="text-subtle">Date created: </p>
+            </div>
+            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 no-right-padding">
+                <p>{{orderObj.created | date:'mediumDate'}} {{orderObj.created | date:'shortTime'}}</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-left-padding divider">
+                <p class="text-subtle">Date updated: </p>
+            </div>
+            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 no-right-padding">
+                <p>{{orderObj.updated | date:'mediumDate'}} {{orderObj.updated | date:'shortTime'}}</p>
+            </div>
+        </div>
+
+        <div class="row" ng-show="orderObj.items.length > 0">
+            <br>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-left-padding divider">
+                <p class="text-subtle">Items: </p>
+            </div>
+            <br><br>
+            <div class="row">
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-left-padding divider">
+                    <strong>Product</strong>
+                </div>
+                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                    <strong>Qty</strong>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                    <strong>Price</strong>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 no-right-padding">
+                    <strong>Total</strong>
+                </div>
+            </div>
+            <div class="row" ng-repeat="item in orderObj.items">
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-left-padding divider">
+                    <p>{{item.name}}</p>
+                </div>
+                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                    <p>{{item.quantity}}</p>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                    <p>{{orderObj.currency.symbol}} {{item.price | currencyModifiersFilter: orderObj.currency.divisibility}}</p>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 no-right-padding">
+                    <p>{{orderObj.currency.symbol}} {{item.total_price | currencyModifiersFilter: orderObj.currency.divisibility}}</p>
+                </div>
+            </div>
+            <div class="row divider-20">
+                <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 no-left-padding divider">
+                    <strong><p>Total price</p></strong>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4"></div>
+                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 no-right-padding">
+                    <strong><p>{{orderObj.currency.symbol}} {{orderObj.total_price | currencyModifiersFilter: orderObj.currency.divisibility}}</p></strong>
+                </div>
+            </div>
+            <div ng-show="orderObj.payments.length > 0" class="divider">
+                <div>
+                    <strong><p>Payment information</p></strong>
+                </div>
+                <br>
+                <div ng-repeat="payment in orderObj.payments">
+                    <div class="row">
+                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-left-padding divider">
+                            <p class="text-subtle">Type: </p>
+                        </div>
+                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 no-right-padding">
+                            <p ng-bind="payment.type"></p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-left-padding divider">
+                            <p class="text-subtle">Amount: </p>
+                        </div>
+                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 no-right-padding">
+                            <p>{{orderObj.currency.symbol}} {{payment.amount | currencyModifiersFilter: orderObj.currency.divisibility}}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-left-padding divider">
+                            <p class="text-subtle">Debit transaction: </p>
+                        </div>
+                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 no-right-padding">
+                            <p ng-bind="payment.debit_tx"></p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-left-padding divider">
+                            <p class="text-subtle">Status: </p>
+                        </div>
+                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 no-right-padding">
+                            <p ng-bind="payment.status | capitalizeWord"></p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-left-padding divider">
+                            <p class="text-subtle">Created: </p>
+                        </div>
+                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 no-right-padding">
+                            <p>{{payment.created | date:'mediumDate'}} {{payment.created | date:'shortTime'}}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-left-padding divider">
+                            <p class="text-subtle">Updated: </p>
+                        </div>
+                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 no-right-padding">
+                            <p>{{payment.updated | date:'mediumDate'}} {{payment.updated | date:'shortTime'}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div ba-panel ng-show="loadingOrder">
+    <loading-image></loading-image>
+</div>

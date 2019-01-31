@@ -30,7 +30,7 @@
                                         <input type="checkbox" ng-change="trackPermissions(permission,level,key)" ng-model="level.enabled"
                                                ng-disabled="user.groups[0].name == 'admin' || (level.from == 'fromGroup')"
                                                ng-checked="level.enabled || user.groups[0].name == 'admin'">
-                                        <span class="account-settings-span"></span>
+                                        <span class="account-settings-span permissions-checkbox-margin-top"></span>
                                     </label>
                                     <div ng-show="user.groups[0].name == 'admin'" class="group-permission-tooltip">
                                         Rehive system group user permissions cannot be edited.
