@@ -20,7 +20,8 @@
                 abstract: true,
                 title: " Developers",
                 sidebarMeta: {
-                    order: 500
+                    order: 500,
+                    icon: 'sidebar-developers-icon'
                 }
             });
         $urlRouterProvider.when("/developers", "/developers/api-tokens");

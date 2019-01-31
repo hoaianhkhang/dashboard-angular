@@ -27,7 +27,8 @@
       'BlurAdmin.pages.verification',
       'BlurAdmin.pages.newCompanySetup',
       'BlurAdmin.pages.initialSetupScreen',
-      'BlurAdmin.pages.accountInfo'
+      'BlurAdmin.pages.accountInfo',
+      'BlurAdmin.pages.redirectToWebWallet'
   ])
       .config(routeConfig);
 

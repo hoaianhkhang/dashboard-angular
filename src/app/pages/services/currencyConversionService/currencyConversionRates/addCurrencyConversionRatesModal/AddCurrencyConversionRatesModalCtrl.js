@@ -38,8 +38,6 @@
             var newRate = {
                 from_currency: $scope.rateParams.fromCurrency.code,
                 to_currency: $scope.rateParams.toCurrency.code,
-                from_percentage_fee: $scope.rateParams.from_percentage_fee || null,
-                from_value_fee: $scope.rateParams.from_value_fee ? currencyModifiers.convertToCents($scope.rateParams.from_value_fee,$scope.rateParams.fromCurrency.divisibility) : null,
                 fixed_rate: $scope.rateParams.fixed_rate ? $scope.rateParams.fixed_rate.toString(): null
             };
 
@@ -67,3 +65,9 @@
 
     }
 })();
+
+/*
+* from_percentage_fee: $scope.rateParams.from_percentage_fee || null,
+  from_value_fee: $scope.rateParams.from_value_fee ? currencyModifiers.convertToCents($scope.rateParams.from_value_fee,$scope.rateParams.fromCurrency.divisibility) : null,
+
+* */
