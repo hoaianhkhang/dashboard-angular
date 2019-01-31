@@ -85,8 +85,10 @@
                         $scope.filtersTextsArray.push('Has source transaction');
                     } else if(key == 'user'){
                         $scope.filtersTextsArray.push('User: ' + decodeURIComponent($scope.filtersObjForExport[key]));
+                    } else if(key == 'account__name'){
+                        $scope.filtersTextsArray.push('Account name: ' + $scope.filtersObjForExport[key]);
                     } else if(key == 'account'){
-                        $scope.filtersTextsArray.push('Account: ' + $scope.filtersObjForExport[key]);
+                        $scope.filtersTextsArray.push('Account reference: ' + $scope.filtersObjForExport[key]);
                     } else if(key == 'group'){
                         $scope.filtersTextsArray.push('Group: ' + $scope.filtersObjForExport[key]);
                     } else if(key == 'group__isnull'){
