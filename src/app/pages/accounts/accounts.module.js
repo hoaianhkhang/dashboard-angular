@@ -13,7 +13,8 @@
                 controller: 'AccountsCtrl',
                 title: 'Accounts',
                 sidebarMeta: {
-                    order: 100
+                    order: 100,
+                    icon: 'sidebar-accounts-icon'
                 }
             });
     }
