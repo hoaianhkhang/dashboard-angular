@@ -7,18 +7,18 @@
     </div>
     <div class="modal-body">
         <form name="subtypeForm" class="custom-form">
-            <div class="form-group">
+            <div class="divider-20">
                 <label>Select transaction type <span class="required-icon">*</span></label>
                 <div class="divider-20">
-                    <div class="setting-subtype">
-                        <input class="pointer" type="radio" ng-model="newSubtype.tx_type" value="credit">
-                        <span class="setting-subtype-label">Credit</span>
-
-                    </div>
-                    <div class="setting-subtype horizontal-divider-40">
-                        <input class="horizontal-divider-40 pointer" type="radio" ng-model="newSubtype.tx_type"
-                               value="debit">
-                        <span class="setting-subtype-label2">Debit</span>
+                    <div class="custom-radio-groups-btn">
+                        <label class="margin-right-10 pointer">
+                            <input class="pointer" type="radio" ng-model="newSubtype.tx_type" value="credit">
+                            <span class="custom-radio-btn">Credit</span>
+                        </label>
+                        <label class="margin-right-10 pointer">
+                            <input class="pointer" type="radio" ng-model="newSubtype.tx_type" value="debit">
+                            <span class="custom-radio-btn">Debit</span>
+                        </label>
                     </div>
                 </div>
             </div>

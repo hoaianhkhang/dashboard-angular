@@ -205,12 +205,11 @@
 }
 
 .custom-rehive-checkbox{
-  width: 19px;
-  height: 19px;
+  width: 21px;
+  height: 21px;
   -webkit-appearance: none;
-  background-color: #fbfbfb;
-  border: 1px solid #d7dcde;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0px -15px 10px -12px rgba(0,0,0,0.05);
+  background-color: #ffffff;
+  border: 2px solid $primary-light;
   padding: 9px;
   border-radius: 3px;
   display: inline-block;
@@ -223,9 +222,8 @@
 }
 
 .custom-rehive-checkbox:checked {
-  background-color: #00E5B8 !important;
-  border: 1px solid #00E5B8 !important;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0px -15px 10px -12px rgba(0,0,0,0.05), inset 15px 10px -12px rgba(255,255,255,0.1);
+  background-color: #ffffff !important;
+  border: 2px solid $primary-light !important;
   color: #99a1a7;
 }
 
@@ -233,11 +231,11 @@
   content: '';
   height: 7px;
   width: 11px;
-  border-bottom: 3px solid white;
-  border-left: 3px solid white;
+  border-bottom: 3px solid $primary;
+  border-left: 3px solid $primary;
   transform: rotate(-45deg);
   position: absolute;
-  top: 3px;
+  top: 3.5px;
   left: 3px;
   color: #fff;
 }
@@ -291,8 +289,8 @@ input.custom-rehive-checkbox:disabled{
 
 .user-switch-active, .user-switch-inactive {font-size:40px;cursor:pointer;}
 .user-switch-active, .user-switch-inactive {font-size:40px;cursor:pointer;}
-.user-switch-active { color: #03DBBB;}
-.user-switch-inactive {color: #A8A8A8;}
+.user-switch-active { color: #5969F6;}
+.user-switch-inactive {color: $primary;}
 
 .user-switches-table-header > th{
   color: #A8A8A8;
@@ -300,7 +298,7 @@ input.custom-rehive-checkbox:disabled{
 
 .user-address-status{
   border: 1px solid;
-  padding: 0 8px;
+  padding: 2px 8px;
   border-radius: 25px;
   font-weight: 400;
 }
@@ -408,8 +406,8 @@ input.custom-rehive-checkbox:disabled{
 }
 
 .status-verified{
-  color: #03DBBB;
-  border-color: #03DBBB;
+  color: $primary;
+  border-color:$primary;
 }
 
 .status-incomplete-declined{

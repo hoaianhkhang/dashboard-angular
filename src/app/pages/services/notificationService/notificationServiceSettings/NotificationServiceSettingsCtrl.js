@@ -124,7 +124,7 @@
         };
 
         $scope.goToGeneralWebhooks = function(secret){
-            $state.go('webhooks.list',{"secret": secret,"webhookUrl": vm.webhookUrl});
+            $state.go('developers.webhooks.list',{"secret": secret,"from": "Notifications"});
         };
 
         //twilio credentials

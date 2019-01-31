@@ -10,17 +10,26 @@
 
 .search-bar-main{
   width: 54vw;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  margin: 15px 0 15px 218px;
   display: inline-block;
+  &::before{
+    content: '';
+    position: absolute;
+    top: 26px;
+    left: 250px;
+    display: block;
+    background-image: url('../../assets/img/magnifyingglass.svg');
+    background-repeat: no-repeat;
+    width: 18px;
+    height: 18px;
+    z-index: 1000;
+  }
   & .task-icon{
     position: absolute;
     top: 10px;
     display: inline-block;
     font-size: 22px;
-    color: white;
+    color: #B8B7C6;
     margin-left: 20px
   }
   & .task-icon-circle-1{
@@ -41,10 +50,9 @@
   }
 }
 
-
 .search-bar-div{
   position: absolute;
-  top: 48px;
+  top: 62px;
 }
 
 .search-bar-results-box{
@@ -125,24 +133,43 @@
     left: 40%;
     transform: translate(-50%, -50%);
     display: inline-block;
+    &::before{
+      content: '';
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      display: block;
+      background-image: url('../../assets/img/magnifyingglass.svg');
+      background-repeat: no-repeat;
+      width: 18px;
+      height: 18px;
+      z-index: 1000;
+    }
     & .page-top-search-below-1200{
       width: 50vw;
       height: 40px;
       border-radius: 5px;
-      background-color: #5299C3;
-      color: white;
+      background-color: $sidebar;
+      color: $default-text;
       border: none;
-      padding: 15px;
+      padding: 15px 15px 15px 35px;
       &::placeholder{
-        color: white;
+        color: $default-text;
         font-weight: 100;
       }
+      &:hover{
+        background-color: #ffffff;
+        border: 1px solid #EAEAEF;
+        outline: none;
+      }
       &:focus{
-        border: none;
+        background-color: #ffffff;
+        border: 1px solid #EAEAEF;
         outline: none;
       }
       &:active{
-        border: none;
+        background-color: #ffffff;
+        border: 1px solid #EAEAEF;
       }
     }
     & .search-bar-div-below-1200{
