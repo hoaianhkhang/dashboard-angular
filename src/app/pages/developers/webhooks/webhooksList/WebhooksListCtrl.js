@@ -142,7 +142,6 @@
                 });
             }
         };
-        $scope.getWebhooks();
 
         $scope.openCreateWebhookModal = function (page, size) {
             vm.theModal = $uibModal.open({
@@ -213,8 +212,15 @@
             });
         };
 
-        if($state.params.secret || $state.params.webhookUrl){
+        if($state.params.from == "Notifications"){
+            $scope.filtersObj.secretFilter = true;
+            $scope.applyFiltersObj.secretFilter.selectedSecretOption = $state.params.secret;
+            $scope.getWebhooks('applyFilter');
+        } else if($state.params.secret || $state.params.webhookUrl){
+            $scope.getWebhooks();
             $scope.openCreateWebhookModal('app/pages/developers/webhooks/webhooksList/addWebhookModal/addWebhookModal.html','md');
+        }else{
+            $scope.getWebhooks();
         }
     }
 })();
