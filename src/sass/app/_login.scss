@@ -5,6 +5,11 @@ $text-color: #494242;
   color: #7f7b7a;
 }
 
+.register-error-message{
+  line-height: 14px!important;
+  color: #ed675A;
+}
+
 .required-symbol{
   color: #ed675A !important;
 }
@@ -75,6 +80,11 @@ $text-color: #494242;
   .form-group {
     margin-bottom: 10px;
   }
+}
+
+.invalid-data{
+  border-color: $danger;
+  box-shadow: 0 0 2px $danger;
 }
 
 .auth-input {
