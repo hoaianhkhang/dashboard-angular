@@ -17,13 +17,14 @@
         $scope.loadingUser = false;
         $scope.productList = [];
         $scope.products = [];
+        $scope.existingItems = [];
+        $scope.newItems = [];
         $scope.currencyOptions= [];
         $scope.editOrderObj = {
             user: null,
             status: "pending",
             currency: "",
             total_price: 0,
-            items: []
         };
         $scope.getUsersEmailTypeahead = typeaheadService.getUsersEmailTypeahead();
 
@@ -124,22 +125,14 @@
                 }
             }
 
-            var itemProduct = null;
-            $scope.updateProductList();
             editObj.items.forEach(function (item) {
-                for(var i = 0; i < $scope.products.length; ++i){
-                    if($scope.products[i].id === item.product){
-                        itemProduct = $scope.products[i];
-                        break;
+                for(var i = 0; i < $scope.productList.length; ++i){
+                    if($scope.productList[i].id === item.product){
+                        $scope.existingItems.push($scope.productList[i]);
                     }
                 }
-                $scope.editOrderObj.items.push({
-                    id: item.id,
-                    product: itemProduct,
-                    quantity: item.quantity
-                });
             });
-
+            vm.filterProducts();
             $scope.editingOrder = false;
         };
 
@@ -148,33 +141,33 @@
             var updatedOrder = serializeFiltersService.objectFilters($scope.editOrderObj);
 
             $scope.editingOrder =  true;
-            if(vm.token) {
-                Rehive.admin.users.get({filters: {user: editOrderObj.user}}).then(function (res) {
-                    updatedOrder.user = res.results[0].id;
-                    $http.post(vm.serviceUrl + 'admin/orders/' + vm.orderId + '/', updatedOrder, {
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': vm.token
-                        }
-                    }).then(function (res) {
-                        if (res.status === 201 || res.status === 200) {
-                            if($scope.editOrderObj.items.length > 0){
-                                vm.formatItemsForOrder(res.data.data);
-                            } else{
-                                toastr.success('Order added successfully');
-                                $location.path('/services/product/orders');
-                            }
-                        }
-                    }).catch(function (error) {
-                        $scope.editingOrder =  false;
-                        errorHandler.evaluateErrors(error.data);
-                        errorHandler.handleErrors(error);
-                    });
-                }, function (error) {
-                    errorHandler.evaluateErrors(error);
-                    errorHandler.handleErrors(error);
-                });
-            }
+            // if(vm.token) {
+            //     Rehive.admin.users.get({filters: {user: editOrderObj.user}}).then(function (res) {
+            //         updatedOrder.user = res.results[0].id;
+            //         $http.post(vm.serviceUrl + 'admin/orders/' + vm.orderId + '/', updatedOrder, {
+            //             headers: {
+            //                 'Content-Type': 'application/json',
+            //                 'Authorization': vm.token
+            //             }
+            //         }).then(function (res) {
+            //             if (res.status === 201 || res.status === 200) {
+            //                 if($scope.editOrderObj.items.length > 0){
+            //                     vm.formatItemsForOrder(res.data.data);
+            //                 } else{
+            //                     toastr.success('Order added successfully');
+            //                     $location.path('/services/product/orders');
+            //                 }
+            //             }
+            //         }).catch(function (error) {
+            //             $scope.editingOrder =  false;
+            //             errorHandler.evaluateErrors(error.data);
+            //             errorHandler.handleErrors(error);
+            //         });
+            //     }, function (error) {
+            //         errorHandler.evaluateErrors(error);
+            //         errorHandler.handleErrors(error);
+            //     });
+            // }
         };
 
         vm.formatItemsForOrder = function (order) {
@@ -210,42 +203,41 @@
             }
         };
 
-        $scope.updateProductList = function(){
-            $scope.products = [];
-            for(var i = 0; i < $scope.productList.length; ++i){
-                for(var j = 0; j < $scope.productList[i].prices.length; ++j){
-                    if($scope.productList[i].prices[j].currency.code === $scope.editOrderObj.currency.code && $scope.productList[i].enabled === true){
-                        $scope.products.push($scope.productList[i]);
-                    }
-                }
-            }
+        vm.filterProducts = function(){
+            $scope.products = $scope.productList;
+            $scope.existingItems.forEach(function(item){
+                $scope.products.splice($scope.products.indexOf(item), 1);
+            });
         };
 
-        // $scope.deleteExistingItem = function(item){
-        //     $http.delete(vm.serviceUrl + 'admin/orders/' + vm.orderId + '/items/' + item.id + '/', {
-        //         headers: {
-        //             'Content-Type': 'application/json',
-        //             'Authorization': vm.token
-        //         }
-        //     }).then(function (res) {
-        //         toastr.success('Item deleted successfully');
-        //
-        //     }).catch(function (error) {
-        //         errorHandler.evaluateErrors(error.data);
-        //         errorHandler.handleErrors(error);
-        //     });
-        // };
+        $scope.deleteExistingItem = function(item){
+            $http.delete(vm.serviceUrl + 'admin/orders/' + vm.orderId + '/items/' + item.id + '/', {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': vm.token
+                }
+            }).then(function (res) {
+                $scope.existingItems.split($scope.existingItems.indexOf(item), 1);
+                $scope.products.push(item);
+                toastr.success('Item deleted successfully');
+
+            }).catch(function (error) {
+                errorHandler.evaluateErrors(error.data);
+                errorHandler.handleErrors(error);
+            });
+        };
 
         $scope.addOrderItem = function () {
+            if($scope.products.length == 0) return;
             var item = {
                 product: $scope.products[($scope.products.length - 1)],
                 quantity: 1
             };
-            $scope.editOrderObj.items.push(item);
+            $scope.newItems.push(item);
         };
 
         $scope.removeAddOrderItem = function(item){
-            $scope.editOrderObj.items.forEach(function (itemObj,index,array) {
+            $scope.newItems.forEach(function (itemObj,index,array) {
                 if(itemObj.product.id === item.product.id){
                     array.splice(index,1);
                 }
@@ -255,6 +247,5 @@
         $scope.backToOrderList = function () {
             $location.path('/services/product/orders');
         };
-
     }
 })();

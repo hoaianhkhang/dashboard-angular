@@ -1,3 +1,11 @@
+.product-service-headers{
+  padding-top: 8px;
+}
+
+.strong-headers{
+  color: black!important;
+}
+
 .table-checkbox{
   top: 5px;
 }
@@ -68,6 +76,12 @@
   top: 6px;
 }
 
+.product-prices-icon-expanded{
+  position: relative;
+  left: 377px;
+  top: 6px;
+}
+
 .product-prices-add-icon{
   color: $success;
   font-size: 25px;
@@ -80,6 +94,7 @@
 .product-prices-remove-icon{
   position: relative;
   top: 6px;
+  left: -473px;
   color: $danger;
   font-size: 25px;
   cursor: pointer;
@@ -87,6 +102,29 @@
     color: $danger-dark;
   }
 }
+
+.order-items-add-icon{
+  color: $success;
+  position: relative;
+  font-size: 25px;
+  cursor: pointer;
+  &:hover{
+    color: $success-dark;
+  }
+}
+
+.order-items-remove-icon{
+  position: relative;
+  top: 6px;
+  left: -234px;
+  color: $danger;
+  font-size: 25px;
+  cursor: pointer;
+  &:hover{
+    color: $danger-dark;
+  }
+}
+
 
 .table-actions{
   z-index: 100;

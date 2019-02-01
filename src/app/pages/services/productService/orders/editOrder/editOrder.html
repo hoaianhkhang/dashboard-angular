@@ -7,8 +7,7 @@
             <form name="editOrderForm" class="custom-form" novalidate>
                 <div class="form-group">
                     <label>User<span class="required-icon">*</span></label>
-                    <input type="text" ng-model="editOrderObj.user" placeholder="Enter user email"
-                           uib-typeahead="email for email in getUsersEmailTypeahead($viewValue)" ng-model-options='{ debounce: 800 }'
+                    <input type="text" ng-model="editOrderObj.user" ng-disabled="true"
                            class="form-control" size="12">
                 </div>
                 <div class="form-group setup-groups-tooltip-div">
@@ -17,7 +16,7 @@
                         <select chosen
                                 data-placeholder-text-single="'Choose a currency'"
                                 width="100"
-                                ng-change="updateProductList()"
+                                ng-disabled="true"
                                 ng-model="editOrderObj.currency"
                                 ng-options="currency.code for currency in currencyOptions | orderBy: 'code'">
                             <option value=""></option>
@@ -26,16 +25,42 @@
                 </div>
                 <div class="form-group setup-groups-tooltip-div">
                     <div class="row">
-                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">Products </div>
+                        <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5">Products </div>
                         <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">Qty</div>
-                        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1"><i class="fa fa-plus-square-o pull-right product-prices-add-icon" ng-click="addOrderItem()"></i></div>
+                        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+                            <i ng-disable="$scope.products.length == 0" class="fa fa-plus-square-o order-items-add-icon"
+                               ng-click="addOrderItem()"></i>
+                        </div>
                     </div>
                     <div class="row divider" ng-repeat="item in editOrderObj.items">
-                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                        <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5">
                             <div class="reward-multi-select">
                                 <select chosen
                                         data-placeholder-text-single="'Choose a product'"
                                         ng-model="item.product"
+                                        ng-disabled="true"
+                                        ng-options="product.name for product in existingItems">
+                                    <option value=""></option>
+                                </select>
+                                <!--allow-single-deselect="true"-->
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 no-right-padding">
+                            <input type="text" ng-model="item.quantity" class="form-control"  placeholder="Enter quantity">
+                        </div>
+                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 no-right-padding"></div> <!-- Empty columns to separate the minus-->
+                        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 no-left-padding">
+                            <i class="fa fa-minus-square-o order-items-remove-icon"
+                               ng-click="deleteExistingItem(item)"></i>
+                        </div>
+                    </div>
+                    <div class="row divider" ng-repeat="item in editOrderObj.items">
+                        <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5">
+                            <div class="reward-multi-select">
+                                <select chosen
+                                        data-placeholder-text-single="'Choose a product'"
+                                        ng-model="item.product"
+                                        ng-disabled="true"
                                         ng-options="product.name for product in products">
                                     <option value=""></option>
                                 </select>
@@ -45,8 +70,9 @@
                         <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 no-right-padding">
                             <input type="text" ng-model="item.quantity" class="form-control"  placeholder="Enter quantity">
                         </div>
+                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 no-right-padding"></div> <!-- Empty columns to separate the minus-->
                         <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 no-left-padding">
-                            <i class="fa fa-minus-square-o pull-right product-prices-remove-icon"
+                            <i class="fa fa-minus-square-o order-items-remove-icon"
                                ng-click="removeAddOrderItem(item)"></i>
                         </div>
                     </div>

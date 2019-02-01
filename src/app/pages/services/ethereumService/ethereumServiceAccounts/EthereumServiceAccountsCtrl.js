@@ -8,6 +8,7 @@
     function EthereumServiceAccountsCtrl($scope) {
         $scope.ethereumAccountSettingView = 'hotwallet';
 
+
         $scope.goToEthereumAccountSetting = function (setting) {
             $scope.ethereumAccountSettingView = setting;
         };
