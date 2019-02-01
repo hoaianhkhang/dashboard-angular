@@ -18,7 +18,6 @@
         $scope.productList = [];
         $scope.products = [];
         $scope.existingItems = [];
-        $scope.newItems = [];
         $scope.currencyOptions= [];
         $scope.editOrderObj = {
             user: null,
@@ -30,16 +29,21 @@
 
         vm.getCompanyCurrencies = function(){
             if(vm.token){
-                Rehive.admin.currencies.get({filters: {
-                        page_size: 250,
-                        archived: false
-                    }}).then(function (res) {
-                    $scope.currencyOptions = res.results.slice();
-                    $scope.$apply();
-                }, function (error) {
-                    errorHandler.evaluateErrors(error);
+                $scope.editingOrder = true;
+                $http.get(vm.serviceUrl + 'admin/currencies/?page_size=250&archived=false', {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': vm.token
+                    }
+                }).then(function (res) {
+                    if (res.status === 200) {
+                        $scope.currencyOptions = res.data.data.results.slice();
+                        $scope.editingOrder = false;
+                    }
+                }).catch(function (error) {
+                    $scope.editingOrder = false;
+                    errorHandler.evaluateErrors(error.data);
                     errorHandler.handleErrors(error);
-                    $scope.$apply();
                 });
             }
         };
@@ -124,15 +128,19 @@
                     break;
                 }
             }
+            vm.filterProducts();
 
             editObj.items.forEach(function (item) {
-                for(var i = 0; i < $scope.productList.length; ++i){
-                    if($scope.productList[i].id === item.product){
-                        $scope.existingItems.push($scope.productList[i]);
+                for(var i = 0; i < $scope.products.length; ++i){
+                    if($scope.products[i].id === item.product){
+                        $scope.editOrderObj.items.push({
+                            id: item.id,
+                            product: $scope.products[i],
+                            quantity: item.quantity
+                        });
                     }
                 }
             });
-            vm.filterProducts();
             $scope.editingOrder = false;
         };
 
@@ -141,33 +149,7 @@
             var updatedOrder = serializeFiltersService.objectFilters($scope.editOrderObj);
 
             $scope.editingOrder =  true;
-            // if(vm.token) {
-            //     Rehive.admin.users.get({filters: {user: editOrderObj.user}}).then(function (res) {
-            //         updatedOrder.user = res.results[0].id;
-            //         $http.post(vm.serviceUrl + 'admin/orders/' + vm.orderId + '/', updatedOrder, {
-            //             headers: {
-            //                 'Content-Type': 'application/json',
-            //                 'Authorization': vm.token
-            //             }
-            //         }).then(function (res) {
-            //             if (res.status === 201 || res.status === 200) {
-            //                 if($scope.editOrderObj.items.length > 0){
-            //                     vm.formatItemsForOrder(res.data.data);
-            //                 } else{
-            //                     toastr.success('Order added successfully');
-            //                     $location.path('/services/product/orders');
-            //                 }
-            //             }
-            //         }).catch(function (error) {
-            //             $scope.editingOrder =  false;
-            //             errorHandler.evaluateErrors(error.data);
-            //             errorHandler.handleErrors(error);
-            //         });
-            //     }, function (error) {
-            //         errorHandler.evaluateErrors(error);
-            //         errorHandler.handleErrors(error);
-            //     });
-            // }
+
         };
 
         vm.formatItemsForOrder = function (order) {
@@ -204,22 +186,24 @@
         };
 
         vm.filterProducts = function(){
-            $scope.products = $scope.productList;
-            $scope.existingItems.forEach(function(item){
-                $scope.products.splice($scope.products.indexOf(item), 1);
-            });
+            $scope.products = [];
+            for(var i = 0; i < $scope.productList.length; ++i){
+                for(var j = 0; j < $scope.productList[i].prices.length; ++j){
+                    if($scope.productList[i].prices[j].currency.code == $scope.editOrderObj.currency.code){
+                        $scope.products.push($scope.productList[i]);
+                    }
+                }
+            }
         };
 
         $scope.deleteExistingItem = function(item){
+            $scope.editOrderObj.items.splice($scope.editOrderObj.items.indexOf(item), 1);
             $http.delete(vm.serviceUrl + 'admin/orders/' + vm.orderId + '/items/' + item.id + '/', {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': vm.token
                 }
             }).then(function (res) {
-                $scope.existingItems.split($scope.existingItems.indexOf(item), 1);
-                $scope.products.push(item);
-                toastr.success('Item deleted successfully');
 
             }).catch(function (error) {
                 errorHandler.evaluateErrors(error.data);
@@ -228,20 +212,25 @@
         };
 
         $scope.addOrderItem = function () {
-            if($scope.products.length == 0) return;
             var item = {
                 product: $scope.products[($scope.products.length - 1)],
                 quantity: 1
             };
-            $scope.newItems.push(item);
+            $scope.editOrderObj.items.push(item);
         };
 
         $scope.removeAddOrderItem = function(item){
-            $scope.newItems.forEach(function (itemObj,index,array) {
-                if(itemObj.product.id === item.product.id){
-                    array.splice(index,1);
-                }
-            });
+            if(item.id){
+                $scope.editOrderObj.items.splice($scope.editOrderObj.items.indexOf(item), 1);
+                $scope.existingItems.push(item);
+            }
+            else {
+                $scope.editOrderObj.items.forEach(function (itemObj,index,array) {
+                    if(itemObj.product.name === item.product.name){
+                        array.splice(index,1);
+                    }
+                });
+            }
         };
 
         $scope.backToOrderList = function () {
