@@ -24,7 +24,8 @@
         </form>
     </div>
     <div class="modal-footer">
-        <button ng-disabled="!addServiceForm.$valid" ng-click="addServicePrompt(selectedService)" class="btn btn-primary dashboard-btn pull-right">Add</button>
+        <!--<button ng-disabled="!addServiceForm.$valid" ng-click="addServicePrompt(selectedService)" class="btn btn-primary dashboard-btn pull-right">Add</button>-->
+        <button ng-disabled="!addServiceForm.$valid" ng-click="addServices()" class="btn btn-primary dashboard-btn pull-right">Add</button>
     </div>
 </div>
 <div ba-panel ng-show="loadingServices">

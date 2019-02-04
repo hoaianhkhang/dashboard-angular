@@ -1,13 +1,17 @@
+.filter-text{
+  color: $primary;
+}
+
 .system-users-admin{
   color: #03DBBB!important;
 }
 
 .system-users-service{
-  color: #3C8DBC!important;
+  color: $primary!important;
 }
 
 .sortable-header{
-  color: #3c8dbc !important;
+  color: $primary !important;
   &:hover {
     background-color: #f4f4f4 !important;
   }

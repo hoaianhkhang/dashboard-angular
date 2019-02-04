@@ -2,7 +2,7 @@
 
 @mixin hexagon($width,$height,$margin){
   position: relative;
-  background-color: #F8CF51;
+  background-color: #B8B7C6;
   width: $width;
   height: $height;
   margin: $margin;
@@ -54,11 +54,11 @@
 }
 
 .hexagon:before {
-  @include hexagon-before(20.21px solid #F8CF51);
+  @include hexagon-before(20.21px solid #B8B7C6);
 }
 
 .hexagon:after {
-  @include hexagon-after(20.21px solid #F8CF51);
+  @include hexagon-after(20.21px solid #B8B7C6);
 }
 .hex-over{
   @include hexagon-hex-over(70px,20px,-48px);
@@ -78,18 +78,18 @@
 }
 
 .overview-hexagon:before {
-  @include hexagon-before(42.15px solid #F8CF51);
+  @include hexagon-before(42.15px solid #B8B7C6);
 }
 
 .overview-hexagon:after {
-  @include hexagon-after(42.15px solid #F8CF51);
+  @include hexagon-after(42.15px solid #B8B7C6);
 }
 .overview-hex-over{
   @include hexagon-hex-over(146px,40px,-92px);
 }
 
 .dashboard-currencies-code{
-  background-color: #F8CF51;
+  background-color: #B8B7C6;
   width: 58px;
   border-radius: 30px;
   padding: 20px 0;
@@ -116,11 +116,11 @@
 }
 
 .services-hexagon:before {
-  @include hexagon-before(14.43px solid #F8CF51);
+  @include hexagon-before(14.43px solid #B8B7C6);
 }
 
 .services-hexagon:after {
-  @include hexagon-after(14.43px solid #F8CF51);
+  @include hexagon-after(14.43px solid #B8B7C6);
 }
 .services-hex-over{
   @include hexagon-hex-over(50px, 15px, -38px);
@@ -163,9 +163,9 @@
 }
 
 .group-hexagon:before {
-  @include hexagon-before(20px solid #F8CF51);
+  @include hexagon-before(20px solid #B8B7C6);
 }
 
 .group-hexagon:after {
-  @include hexagon-after(20px solid #F8CF51);
+  @include hexagon-after(20px solid #B8B7C6);
 }

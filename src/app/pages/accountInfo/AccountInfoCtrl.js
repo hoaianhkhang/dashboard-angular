@@ -5,9 +5,10 @@
         .controller('AccountInfoCtrl', AccountInfoCtrl);
 
     /** @ngInject */
-    function AccountInfoCtrl($scope,Rehive,localStorageManagement,errorHandler,toastr,$location) {
+    function AccountInfoCtrl($rootScope, $scope,Rehive,localStorageManagement,errorHandler,toastr,$location,$uibModal) {
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
+        $rootScope.dashboardTitle = 'My Profile | Rehive';
         $scope.loadingAccountInfo = true;
         $scope.changingPassword = false;
         $scope.addingEmail = false;
@@ -121,24 +122,21 @@
             }
         };
 
-        $scope.createEmail = function (newEmail) {
-            $scope.loadingAdminEmails = true;
-            if(vm.token) {
-                Rehive.user.emails.create(newEmail).then(function (res)
-                {
-                    $scope.loadingAdminEmails = false;
-                    toastr.success('Email added successfully');
-                    $scope.toggleAddEmailView();
-                    $scope.newEmail = {primary: true};
+        $scope.openAddEmailModal = function (page, size) {
+            vm.theModal = $uibModal.open({
+                animation: true,
+                templateUrl: page,
+                size: size,
+                controller: 'AddEmailModalCtrl',
+                scope: $scope
+            });
+
+            vm.theModal.result.then(function(newEmail){
+                if(newEmail){
                     vm.getUserEmails();
-                    $scope.$apply();
-                }, function (error) {
-                    $scope.loadingAdminEmails = false;
-                    errorHandler.evaluateErrors(error);
-                    errorHandler.handleErrors(error);
-                    $scope.$apply();
-                });
-            }
+                }
+            }, function(){
+            });
         };
 
         $scope.deleteEmail = function (email) {

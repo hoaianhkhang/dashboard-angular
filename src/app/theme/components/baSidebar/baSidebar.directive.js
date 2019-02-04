@@ -45,7 +45,7 @@
           if (newMenuCollapsed != baSidebarService.isMenuCollapsed() || scope.menuHeight != newMenuHeight) {
             scope.$apply(function () {
               scope.menuHeight = newMenuHeight;
-              baSidebarService.setMenuCollapsed(newMenuCollapsed)
+              baSidebarService.setMenuCollapsed(newMenuCollapsed);
             });
           }
         }

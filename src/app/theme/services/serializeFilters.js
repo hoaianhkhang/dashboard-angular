@@ -23,7 +23,7 @@
                 var serializedObj = {};
                 for(var p in obj){
                     if (obj.hasOwnProperty(p)) {
-                        if(obj[p]){
+                        if((obj[p] != null) || (obj[p] != undefined)){
                             serializedObj[p] = obj[p];
                         }
                     }

@@ -150,12 +150,16 @@
                 $scope.retrievedRecipientAccountsArray = [];
                 transactionData.credit_account = {};
                 transactionData.debit_account = {};
-                vm.getUserAccounts($scope.retrievedRecipientObj,transactionData,recipient);
-                vm.getUserAccounts($scope.retrievedSenderUserObj,transactionData);
+                if(transactionData.currency && transactionData.currency.code){
+                    vm.getUserAccounts($scope.retrievedRecipientObj,transactionData,recipient);
+                    vm.getUserAccounts($scope.retrievedSenderUserObj,transactionData);
+                }
             } else {
                 $scope.retrievedSenderUserAccountsArray = [];
                 transactionData.account = {};
-                vm.getUserAccounts($scope.retrievedSenderUserObj,transactionData);
+                if(transactionData.currency && transactionData.currency.code) {
+                    vm.getUserAccounts($scope.retrievedSenderUserObj,transactionData);
+                }
             }
         };
 

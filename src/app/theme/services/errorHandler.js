@@ -6,7 +6,6 @@
 
     /** @ngInject */
     function errorHandler(toastr,$location,localStorageManagement,$rootScope,Rehive) {
-
         return {
             evaluateErrors: function (errors) {
               if(errors && errors.data){

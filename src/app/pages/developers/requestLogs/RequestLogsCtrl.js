@@ -12,11 +12,13 @@
         vm.token = localStorageManagement.getValue('token');
         vm.companyIdentifier = localStorageManagement.getValue('companyIdentifier');
         vm.savedRequestTableColumns = vm.companyIdentifier + 'requestTable';
+        vm.savedRequestLogsTableFilters = vm.companyIdentifier + 'requestLogsTableFilters';
         $scope.requestLogs = [];
         $scope.loadingRequestLogs = true;
         $scope.showingFilters = false;
         $scope.filtersCount = 0;
         $scope.showingColumnFilters = false;
+        $scope.initialLoad = true;
 
         $scope.requestHeaderColumns = localStorageManagement.getValue(vm.savedRequestTableColumns) ? JSON.parse(localStorageManagement.getValue(vm.savedRequestTableColumns)) : [
             {colName: 'Id',fieldName: 'id',visible: true},
@@ -76,6 +78,7 @@
             contentTypeFilter: false,
             statusCodeFilter: false
         };
+
         $scope.applyFiltersObj = {
             userFilter: {
                 selectedUserOption: null
@@ -108,6 +111,69 @@
 
         vm.getRequestLogsFiltersObj = function(){
             $scope.filtersCount = 0;
+            var searchObj = {};
+            var filterObjects = {};
+
+            if($scope.initialLoad) {
+                $scope.initialLoad = false;
+                if (localStorageManagement.getValue(vm.savedRequestLogsTableFilters)) {
+                    filterObjects = JSON.parse(localStorageManagement.getValue(vm.savedRequestLogsTableFilters));
+
+                    $scope.filtersObj = filterObjects.filtersObj;
+
+                    $scope.applyFiltersObj = {
+                        userFilter: {
+                            selectedUserOption: filterObjects.applyFiltersObj.userFilter.selectedUserOption
+                        },
+                        keyFilter: {
+                            selectedKey: filterObjects.applyFiltersObj.keyFilter.selectedKey
+                        },
+                        schemeFilter: {
+                            selectedScheme: filterObjects.applyFiltersObj.schemeFilter.selectedScheme
+                        },
+                        pathFilter: {
+                            selectedPath: filterObjects.applyFiltersObj.pathFilter.selectedPath
+                        },
+                        methodFilter: {
+                            selectedMethod: filterObjects.applyFiltersObj.methodFilter.selectedMethod
+                        },
+                        contentTypeFilter: {
+                            selectedContentType: filterObjects.applyFiltersObj.contentTypeFilter.selectedContentType
+                        },
+                        statusCodeFilter: {
+                            selectedStatusCode: filterObjects.applyFiltersObj.statusCodeFilter.selectedStatusCode
+                        }
+                    };
+
+                    searchObj = filterObjects.searchObj;
+
+                } else {
+                    searchObj = {
+                        page: 1,
+                        page_size: $scope.filtersObj.pageSizeFilter? $scope.applyFiltersObj.paginationFilter.itemsPerPage : 25
+                    };
+                }
+            } else {
+
+                searchObj = {
+                    page: $scope.pagination.pageNo,
+                    page_size: $scope.pagination.itemsPerPage || 1,
+                    user: $scope.filtersObj.userFilter ? ($scope.applyFiltersObj.userFilter.selectedUserOption ? $scope.applyFiltersObj.userFilter.selectedUserOption : null): null,
+                    key: $scope.filtersObj.keyFilter ? ($scope.applyFiltersObj.keyFilter.selectedKey ? $scope.applyFiltersObj.keyFilter.selectedKey : null): null,
+                    path: $scope.filtersObj.pathFilter ? ($scope.applyFiltersObj.pathFilter.selectedPath ? $scope.applyFiltersObj.pathFilter.selectedPath : null): null,
+                    method: $scope.filtersObj.methodFilter ? ($scope.applyFiltersObj.methodFilter.selectedMethod ? $scope.applyFiltersObj.methodFilter.selectedMethod : null): null,
+                    content_type: $scope.filtersObj.contentTypeFilter ? ($scope.applyFiltersObj.contentTypeFilter.selectedContentType ? $scope.applyFiltersObj.contentTypeFilter.selectedContentType : null): null,
+                    status_code: $scope.filtersObj.statusCodeFilter ? ($scope.applyFiltersObj.statusCodeFilter.selectedStatusCode ? $scope.applyFiltersObj.statusCodeFilter.selectedStatusCode : null): null,
+                    orderby: '-created'
+                };
+
+                vm.saveRequestTableFiltersToLocalStorage({
+                    searchObj: serializeFiltersService.objectFilters(searchObj),
+                    filtersObj: $scope.filtersObj,
+                    applyFiltersObj: $scope.applyFiltersObj
+                });
+            }
+
 
             for(var x in $scope.filtersObj){
                 if($scope.filtersObj.hasOwnProperty(x)){
@@ -117,19 +183,12 @@
                 }
             }
 
-            var searchObj = {
-                page: $scope.pagination.pageNo,
-                page_size: $scope.pagination.itemsPerPage || 1,
-                user: $scope.filtersObj.userFilter ? ($scope.applyFiltersObj.userFilter.selectedUserOption ? $scope.applyFiltersObj.userFilter.selectedUserOption : null): null,
-                key: $scope.filtersObj.keyFilter ? ($scope.applyFiltersObj.keyFilter.selectedKey ? $scope.applyFiltersObj.keyFilter.selectedKey : null): null,
-                path: $scope.filtersObj.pathFilter ? ($scope.applyFiltersObj.pathFilter.selectedPath ? $scope.applyFiltersObj.pathFilter.selectedPath : null): null,
-                method: $scope.filtersObj.methodFilter ? ($scope.applyFiltersObj.methodFilter.selectedMethod ? $scope.applyFiltersObj.methodFilter.selectedMethod : null): null,
-                content_type: $scope.filtersObj.contentTypeFilter ? ($scope.applyFiltersObj.contentTypeFilter.selectedContentType ? $scope.applyFiltersObj.contentTypeFilter.selectedContentType : null): null,
-                status_code: $scope.filtersObj.statusCodeFilter ? ($scope.applyFiltersObj.statusCodeFilter.selectedStatusCode ? $scope.applyFiltersObj.statusCodeFilter.selectedStatusCode : null): null,
-                orderby: '-created'
-            };
 
             return serializeFiltersService.objectFilters(searchObj);
+        };
+
+        vm.saveRequestTableFiltersToLocalStorage = function (filterObjects) {
+            localStorageManagement.setValue(vm.savedRequestLogsTableFilters,JSON.stringify(filterObjects));
         };
 
         $scope.getRequestLogs = function (applyFilter) {
@@ -161,6 +220,7 @@
                 });
             }
         };
+
         $scope.getRequestLogs();
 
         vm.formatRequestLogsArray = function (requestLogsArray) {
@@ -212,6 +272,5 @@
         $scope.closeColumnFiltersBox = function () {
             $scope.showingColumnFilters = false;
         };
-
     }
 })();
