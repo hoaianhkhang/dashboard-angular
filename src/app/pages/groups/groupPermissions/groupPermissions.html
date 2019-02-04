@@ -52,7 +52,16 @@
                             </tr>
                             <tr ng-repeat="permission in totalPermissionsObj[key].permissions">
                                 <td>
-                                    <p class="no-margin" ng-bind="permission.type"></p>
+                                    <span class="no-margin" ng-bind="permission.type"></span>
+                                    <span ng-if="permission.section == 'admin'">
+                                        <i ng-if="permission.type == 'Bank account'" uib-tooltip-html="'This refers to an user\'s bank account.'"
+                                            class="ion-information-circled setup-groups-tooltip" tooltip-placement="right"></i>
+                                        <i ng-if="permission.type == 'Request'" uib-tooltip-html="'This refers to request logs.'"
+                                            class="ion-information-circled setup-groups-tooltip" tooltip-placement="right"></i>
+                                        <i ng-if="permission.type == 'Service'" uib-tooltip-html="'This refers to activating a service.'"
+                                            class="ion-information-circled setup-groups-tooltip" tooltip-placement="right"></i>
+                                    </span>
+
                                 </td>
                                 <td class="text-center group-permission-td" ng-repeat="level in permission.levels">
                                     <input type="checkbox" ng-disabled="editGroupObj.name == 'admin' || editGroupObj.name == 'service'"
