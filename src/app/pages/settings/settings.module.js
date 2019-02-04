@@ -6,8 +6,7 @@
         'BlurAdmin.pages.settings.companyInfo',
         'BlurAdmin.pages.settings.companySettings',
         'BlurAdmin.pages.settings.bankAccounts',
-        'BlurAdmin.pages.settings.notifications',
-        'BlurAdmin.pages.settings.security'
+        'BlurAdmin.pages.settings.notifications'
     ])
         .config(routeConfig);
 
@@ -20,7 +19,8 @@
                 controller: "SettingsCtrl",
                 title: 'Settings',
                 sidebarMeta: {
-                    order: 700
+                    order: 700,
+                    icon: 'sidebar-settings-icon'
                 }
             });
     }

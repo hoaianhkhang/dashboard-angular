@@ -104,9 +104,7 @@
         $scope.$watch('debitTransactionData.user',function () {
             if($scope.debitTransactionData.user){
                 vm.resetDebitData();
-                if(!$scope.newTransactionParams.txType){
-                    vm.getDebitUserObj($scope.debitTransactionData);
-                }
+                vm.getDebitUserObj($scope.debitTransactionData);
             } else {
                 vm.resetDebitData();
             }
@@ -125,7 +123,9 @@
         $scope.debitCurrencySelected = function (debitTransactionData) {
             $scope.retrievedDebitUserAccountsArray = [];
             debitTransactionData.account = {};
-            vm.getDebitUserAccounts($scope.retrievedDebitUserObj,debitTransactionData);
+            if(debitTransactionData.currency && debitTransactionData.currency.code){
+                vm.getDebitUserAccounts($scope.retrievedDebitUserObj,debitTransactionData);
+            }
         };
 
         vm.getDebitUserAccounts = function (user,debitTransactionData) {
@@ -211,9 +211,11 @@
         }
 
         if($scope.newTransactionParams.txType){
-            $scope.loadingTransactionSettings = true;
-            $scope.debitTransactionData.user = $scope.newTransactionParams.userIdentity;
-            vm.getDebitUserObj($scope.debitTransactionData);
+            if($scope.newTransactionParams.userIdentity){
+                $scope.loadingTransactionSettings = true;
+                $scope.debitTransactionData.user = $scope.newTransactionParams.userIdentity;
+                vm.getDebitUserObj($scope.debitTransactionData);
+            }
         }
 
     }

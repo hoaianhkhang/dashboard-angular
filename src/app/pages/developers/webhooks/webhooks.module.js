@@ -17,7 +17,7 @@
                 controller: "WebhooksCtrl",
                 title: 'Webhooks',
                 sidebarMeta: {
-                    order: 200
+                    order: 400
                 }
             });
         $urlRouterProvider.when("/developers/webhooks", "/developers/webhooks/list");

@@ -8,7 +8,7 @@
         'BlurAdmin.pages.services.notificationService',
         'BlurAdmin.pages.services.exchangeService',
         'BlurAdmin.pages.services.icoService',
-        'BlurAdmin.pages.services.productsService',
+        'BlurAdmin.pages.services.productService',
         'BlurAdmin.pages.services.currencyConversionService',
         'BlurAdmin.pages.services.rewardsService',
         'BlurAdmin.pages.services.stellarTestnetService',
@@ -25,7 +25,8 @@
                 controller: "ServicesCtrl",
                 title: 'Services',
                 sidebarMeta: {
-                    order: 600
+                    order: 600,
+                    icon: 'sidebar-services-icon'
                 }
             });
     }

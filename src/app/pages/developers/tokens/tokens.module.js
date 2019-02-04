@@ -13,7 +13,7 @@
                 templateUrl: 'app/pages/developers/tokens/tokens.html',
                 title: "API tokens",
                 sidebarMeta: {
-                    order: 100
+                    order: 200
                 }
             });
     }

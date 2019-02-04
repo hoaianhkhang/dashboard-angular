@@ -73,9 +73,18 @@
                 <span ng-hide="(retrievedSenderUserObj.id)">Please choose sender first.</span>
             </label>
             <br>
-            <select class="form-control pointer" ng-model="transferTransactionData.currency" ng-change="currencySelected(transferTransactionData,'recipient')" ng-disabled="(!retrievedSenderUserObj.id)"
-                    ng-options="currency.code for currency in transferCurrencyOptions | orderBy: 'code' track by currency.code">
-            </select>
+            <div class="reward-multi-select">
+                <select chosen
+                        data-placeholder-text-single="'Choose a currency'"
+                        width="100"
+                        ng-disabled="(!retrievedSenderUserObj.id)"
+                        allow-single-deselect="true"
+                        ng-model="transferTransactionData.currency"
+                        ng-change="currencySelected(transferTransactionData,'recipient')"
+                        ng-options="currency.code for currency in transferCurrencyOptions | orderBy: 'code' track by currency.code">
+                    <option value=""></option>
+                </select>
+            </div>
         </div>
         <div class="form-group">
             <label>Sender account &nbsp;

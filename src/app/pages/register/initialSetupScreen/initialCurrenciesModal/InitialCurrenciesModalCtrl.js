@@ -96,8 +96,8 @@
 
         vm.addDefaultValues = function(){
             Rehive.admin.groups.create({
-                name: 'users',
-                label: 'Users',
+                name: 'user',
+                label: 'user',
                 default: true,
                 public: true
             }).then(function (res) {
@@ -112,7 +112,7 @@
         };
 
         vm.addDefaultPermissions = function () {
-            Rehive.admin.groups.permissions.create('users',{permissions: $scope.addingDefaultPermissionArray}).then(function (res) {
+            Rehive.admin.groups.permissions.create('user',{permissions: $scope.addingDefaultPermissionArray}).then(function (res) {
                 vm.addAccountConfiguration();
                 $scope.$apply();
             }, function (error) {
@@ -124,7 +124,7 @@
         };
 
         vm.addAccountConfiguration = function () {
-            Rehive.admin.groups.accountConfigurations.create('users',
+            Rehive.admin.groups.accountConfigurations.create('user',
             {
                 name: 'default',
                 label: 'Default',
@@ -143,7 +143,7 @@
 
         vm.addCurrenciesAccount = function () {
             $scope.currenciesToAdd.forEach(function(element,i,array) {
-                Rehive.admin.groups.accountConfigurations.currencies.create('users','default',
+                Rehive.admin.groups.accountConfigurations.currencies.create('user','default',
                 {
                     currency: element.code
                 }).then(function (res) {

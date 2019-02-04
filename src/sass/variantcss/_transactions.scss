@@ -1,3 +1,7 @@
+.selected-sorting-caret {
+  color: black !important;
+}
+
 .metadata-column-delete{
   display: inline-block;
   position: relative;
@@ -18,18 +22,6 @@
 .new-transaction-close-btn{
   position: relative;
   top: -6px;
-}
-
-.transactions-export-output-csv{
-  position: absolute;
-  top: 53px;
-  left: 46px;
-}
-
-.transactions-export-output-json{
-  position: absolute;
-  top: 53px;
-  left: 111px;
 }
 
 .company-setup-tx-type-debit {
@@ -337,32 +329,6 @@
   cursor: pointer;
 }
 
-.transaction-radio-inputs{
-  display: inline-block;
-  & label{
-    display: block;
-  }
-  & .transaction-radio-input-block{
-    display: inline-flex;
-    position: relative;
-    & .transaction-radio-labels1{
-      position: absolute;
-      top: 2px;
-      left: 21px;
-    }
-    & .transaction-radio-labels2{
-      position: absolute;
-      top: 2px;
-      left: 94px;
-    }
-    & .transaction-radio-labels3{
-      position: absolute;
-      top: 2px;
-      left: 167px;
-    }
-  }
-}
-
 .panel-header-transaction-export{
   position: absolute;
   top: 25px;
@@ -403,6 +369,7 @@
 }
 
 .transactions-filter-btn{
+  border: 1px solid $primary!important;
   width: 76px;
 }
 
@@ -443,21 +410,21 @@
       height: 22px;
       width: 120px;
       &.form-control{
-        padding: 0 4px !important;
+        padding: 1px 4px !important;
       }
     }
     & select.currencies-unit-filter{
       height: 22px;
       width: 350px;
       &.form-control{
-        padding: 0 4px !important;
+        padding: 1px 4px !important;
       }
     }
     & select.user-transactions-accounts-select{
       height: 22px;
       width: 250px;
       &.form-control{
-        padding: 0 4px !important;
+        padding: 1px 4px !important;
       }
     }
     & input{

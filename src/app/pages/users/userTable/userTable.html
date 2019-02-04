@@ -20,13 +20,16 @@
             <button ng-click="getAllUsers('applyFilter')" ng-disabled="loadingUsers"
                     class="btn btn-default transactions-btn panel-header-user-icon">Refresh</button>
             <button ng-click="openAddUserModal('app/pages/users/addUserModal/addUserModal.html','md')"
-                    class="btn btn-success transactions-btn panel-header-button">New</button>
+                    class="btn btn-primary transactions-btn panel-header-button">New</button>
         </div>
     </div>
     <div class="panel-body">
+        <div ng-show="filtersCount > 0" class="divider">
+            <p class="filter-text">Your results are currently being filtered</p>
+        </div>
         <div ng-show="users.length > 0" class="upper-pagination">
-            <p uib-pagination boundary-links="true" items-per-page="usersPagination.itemsPerPage"  total-items="usersData.count" ng-model="usersPagination.pageNo"
-               max-size="usersPagination.maxSize" class="pagination-sm pull-right no-margin" force-ellipses="true" ng-change="getAllUsers()"
+            <p uib-pagination boundary-links="true" items-per-page="applyFiltersObj.paginationFilter.itemsPerPage"  total-items="usersData.count" ng-model="applyFiltersObj.paginationFilter.pageNo"
+               max-size="applyFiltersObj.paginationFilter.maxSize" class="pagination-sm pull-right no-margin" force-ellipses="true" ng-change="getAllUsers()"
                previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></p>
         </div>
         <div ng-show="users.length > 0" class="divider">
@@ -35,13 +38,22 @@
                 <table class="table custom-table table-striped">
                     <thead>
                         <tr>
-                            <!--class="pointer"-->
-                            <th ng-repeat="header in headerColumns" ng-if="header.visible"  ng-bind="header.colName"></th>
+                            <!--sorting function-->
+                            <!--ng-click="orderByFunction(header)"-->
+                            <!--class="pointer sortable-header"-->
+                            <th  ng-repeat="header in headerColumns" ng-if="header.visible">
+                                {{header.colName}}&nbsp;&nbsp;
+                                <i ng-class="{'selected-sorting-caret': (orderByVariable.indexOf(header.fieldName) >= 0)}"
+                                   ng-show="header.orderByDirection == 'desc'" class="fa fa-caret-down"></i>
+                                <i ng-class="{'selected-sorting-caret': (orderByVariable.indexOf(header.fieldName) >= 0)}"
+                                   ng-show="header.orderByDirection == 'asc'" class="fa fa-caret-up"></i>
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="user in users | orderBy: orderByFunction" data-toggle="modal"
+                        <tr ng-repeat="user in users | orderBy: orderByVariable" data-toggle="modal"
                             class="editable-row center pointer user-details-table-hover"
+                            ng-class="{'system-users-admin': user.groupName == 'admin','system-users-service': user.groupName == 'service'}"
                             ng-mousedown="displayUser($event,user)" oncontextmenu="return false">
                             <td class="transactions-list-element" ng-repeat="header in headerColumns"
                                 ng-if="header.visible" ng-bind="user[header.fieldName]"></td>
@@ -50,8 +62,8 @@
                 </table>
             </div>
             <div ng-show="users.length > 0">
-                <p uib-pagination boundary-links="true" items-per-page="usersPagination.itemsPerPage"  total-items="usersData.count" ng-model="usersPagination.pageNo"
-                   max-size="usersPagination.maxSize" class="pagination-sm pull-right transaction-history-pagination" force-ellipses="true" ng-change="getAllUsers()"
+                <p uib-pagination boundary-links="true" items-per-page="applyFiltersObj.paginationFilter.itemsPerPage"  total-items="usersData.count" ng-model="applyFiltersObj.paginationFilter.pageNo"
+                   max-size="applyFiltersObj.paginationFilter.maxSize" class="pagination-sm pull-right transaction-history-pagination" force-ellipses="true" ng-change="getAllUsers()"
                    previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></p>
             </div>
         </div>

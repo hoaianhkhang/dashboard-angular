@@ -9,7 +9,7 @@
                 </div>
             </div>
             <div>
-                <button class="btn btn-success pull-right panel-header-button currencies-page-buttons-add"
+                <button class="btn btn-primary pull-right panel-header-button currencies-page-buttons-add"
                         ng-click="openAddCurrenciesModal('app/pages/currencies/addCurrencyModal/addCurrencyModal.html','md')">Add currency</button>
             </div>
         </div>
@@ -70,8 +70,8 @@
                                 <li ng-click="goToView('/currency/' + currency.code + '/overview')">View more details</li>
                                 <li ng-click="goToUsersState(currency.code)">View users</li>
                                 <li ng-click="goToHistoryState(currency.code)">View transactions</li>
-                                <li ng-click="goToView('/transactions/debit')">Create debit</li>
-                                <li ng-click="goToView('/transactions/credit')">Create credit</li>
+                                <li ng-click="goToTransactionsModalView('debit')">Create debit</li>
+                                <li ng-click="goToTransactionsModalView('credit')">Create credit</li>
                             </ul>
                         </div>
                     </div>

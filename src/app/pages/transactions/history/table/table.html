@@ -21,10 +21,13 @@
             <button ng-click="getLatestTransactions('applyFilter')" ng-disabled="loadingTransactions"
                     class="btn btn-default transactions-btn panel-header-user-icon">Refresh</button>
             <button ng-click="openMakeTransactionModal('app/pages/transactions/history/makeTransactionModal/makeTransactionModal.html', 'md')"
-                    class="btn btn-success transactions-btn panel-transaction-newTx-button">New</button>
+                    class="btn btn-primary transactions-btn panel-transaction-newTx-button">New</button>
         </div>
     </div>
     <div class="panel-body">
+        <div ng-show="filtersCount > 0" class="divider">
+            <p class="filter-text">Your results are currently being filtered</p>
+        </div>
         <div ng-show="transactions.length > 0" class="upper-pagination">
             <p uib-pagination boundary-links="true" items-per-page="pagination.itemsPerPage"  total-items="transactionsData.count" ng-model="pagination.pageNo"
                max-size="pagination.maxSize" class="pagination-sm pull-right no-margin" force-ellipses="true" ng-change="getLatestTransactions()"
@@ -36,12 +39,21 @@
                 <table class="table custom-table table-striped">
                     <thead>
                     <tr>
-                        <!--class="pointer"-->
-                        <th ng-repeat="header in headerColumns" ng-if="header.visible"  ng-bind="header.colName"></th>
+                        <th ng-click="orderByFunction(header)" ng-class="styleHeaders(header)"
+                            ng-repeat="header in headerColumns" ng-if="header.visible">
+                            <span ng-class="styleHeaders(header)">{{header.colName}}</span>&nbsp;&nbsp;
+                            <i ng-class="{'selected-sorting-caret': (applyFiltersObj.orderByFilter.selectedOrderByOption.tableFieldName == header.fieldName)}"
+                               ng-show="((applyFiltersObj.orderByFilter.selectedOrderByDirection == 'Desc') && (applyFiltersObj.orderByFilter.selectedOrderByOption.tableFieldName == header.fieldName))"
+                               class="fa fa-caret-down"></i>
+                            <i ng-class="{'selected-sorting-caret': (applyFiltersObj.orderByFilter.selectedOrderByOption.tableFieldName == header.fieldName)}"
+                               ng-show="applyFiltersObj.orderByFilter.selectedOrderByDirection == 'Asc' && (applyFiltersObj.orderByFilter.selectedOrderByOption.tableFieldName == header.fieldName)"
+                               class="fa fa-caret-up"></i>
+
+                        </th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="transaction in transactions | orderBy: orderByFunction" data-toggle="modal"
+                    <tr ng-repeat="transaction in transactions" data-toggle="modal"
                         class="editable-row center pointer user-details-table-hover" ng-click="openModal('app/pages/transactions/history/historyModal/historyModal.html', 'md',transaction)">
                         <td class="transactions-list-element" ng-repeat="header in headerColumns"
                             ng-if="header.visible" ng-bind="transaction[header.fieldName]"></td>

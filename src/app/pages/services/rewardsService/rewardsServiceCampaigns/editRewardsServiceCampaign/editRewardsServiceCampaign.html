@@ -112,22 +112,27 @@
                     </select>
                 </div>
             </div>
-            <div class="form-group setup-groups-tooltip-div">
+            <div class="divider-20 setup-groups-tooltip-div">
                 <label>Campaign status &nbsp;<i uib-tooltip-html="'The status of a campaign. This will automatically change to expired after the end date or when the reward total balance has been depleted.'"
                                                 class="ion-information-circled setup-groups-tooltip"></i></label>
-                <div class="reward-type-radio-groups-status">
-                    <input class="margin-right-10 pointer" type="radio"
-                           ng-change="campaignChanged('status')"
-                           ng-model="editCampaignParams.status" value="active">
-                    <span class="reward-radio-type1">Active</span>
-                    <input class="horizontal-divider-40 margin-right-10 pointer" type="radio"
-                           ng-change="campaignChanged('status')"
-                           ng-model="editCampaignParams.status"
-                           value="disabled"> <span class="reward-radio-type2">Disabled</span>
-                    <input class="horizontal-divider-55 margin-right-10 pointer" type="radio"
-                           ng-change="campaignChanged('status')"
-                           ng-model="editCampaignParams.status"
-                           value="expired"> <span class="reward-radio-type3">Expired</span>
+                <div class="divider-20">
+                    <div class="custom-radio-groups-btn">
+                        <label class="margin-right-10 pointer">
+                            <input class="pointer" type="radio" ng-model="editCampaignParams.status"
+                                   ng-change="campaignChanged('status')" value="active">
+                            <span class="custom-radio-btn">Active</span>
+                        </label>
+                        <label class="margin-right-10 pointer">
+                            <input class="pointer" type="radio" ng-model="editCampaignParams.status"
+                                   ng-change="campaignChanged('status')" value="disabled">
+                            <span class="custom-radio-btn">Disabled</span>
+                        </label>
+                        <label class="margin-right-10 pointer">
+                            <input class="pointer" type="radio" ng-model="editCampaignParams.status"
+                                   ng-change="campaignChanged('status')" value="expired">
+                            <span class="custom-radio-btn">Expired</span>
+                        </label>
+                    </div>
                 </div>
             </div>
             <div class="form-group setup-groups-tooltip-div">

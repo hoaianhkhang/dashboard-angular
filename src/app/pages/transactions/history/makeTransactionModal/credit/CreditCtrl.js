@@ -103,9 +103,7 @@
         $scope.$watch('creditTransactionData.user',function () {
             if($scope.creditTransactionData.user){
                 vm.resetCreditData();
-                if(!$scope.newTransactionParams.txType){
-                    vm.getCreditUserObj($scope.creditTransactionData);
-                }
+                vm.getCreditUserObj($scope.creditTransactionData);
             } else {
                 vm.resetCreditData();
             }
@@ -124,7 +122,9 @@
         $scope.creditCurrencySelected = function (creditTransactionData) {
             $scope.retrievedCreditUserAccountsArray = [];
             creditTransactionData.account = {};
-            vm.getCreditUserAccounts($scope.retrievedCreditUserObj,creditTransactionData);
+            if(creditTransactionData.currency && creditTransactionData.currency.code){
+                vm.getCreditUserAccounts($scope.retrievedCreditUserObj,creditTransactionData);
+            }
         };
 
         vm.getCreditUserAccounts = function (user,creditTransactionData) {
@@ -215,10 +215,11 @@
 
         if($scope.newTransactionParams.txType){
             //coming from user accounts credit shortcut
-
-            $scope.loadingTransactionSettings = true;
-            $scope.creditTransactionData.user = $scope.newTransactionParams.userIdentity;
-            vm.getCreditUserObj($scope.creditTransactionData);
+            if($scope.newTransactionParams.userIdentity){
+                $scope.loadingTransactionSettings = true;
+                $scope.creditTransactionData.user = $scope.newTransactionParams.userIdentity;
+                vm.getCreditUserObj($scope.creditTransactionData);
+            }
         }
 
     }

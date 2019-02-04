@@ -12,6 +12,9 @@
         var vm = this;
         vm.updatedWebhook = {};
         vm.token = localStorageManagement.getValue('token');
+        vm.companyIdentifier = localStorageManagement.getValue('companyIdentifier');
+        vm.savedWebhooksListFilters = vm.companyIdentifier + 'webhooksListFilters';
+        $scope.initialLoad = true;
         $scope.loadingWebhooks = true;
         $scope.filtersCount = 0;
         $scope.showingFilters = false;
@@ -84,6 +87,51 @@
 
         vm.getWebhooksFiltersObj = function(){
             $scope.filtersCount = 0;
+            var searchObj = {};
+            var filterObjects = {};
+
+            if($scope.initialLoad) {
+                $scope.initialLoad = false;
+                if (localStorageManagement.getValue(vm.savedWebhooksListFilters)) {
+                    filterObjects = JSON.parse(localStorageManagement.getValue(vm.savedWebhooksListFilters));
+
+                    $scope.filtersObj = filterObjects.filtersObj;
+
+                    $scope.applyFiltersObj = {
+                        eventFilter: {
+                            selectedEventOption: filterObjects.applyFiltersObj.eventFilter.selectedEventOption
+                        },
+                        urlFilter: {
+                            selectedUrlOption: filterObjects.applyFiltersObj.urlFilter.selectedUrlOption
+                        },
+                        secretFilter: {
+                            selectedSecretOption: filterObjects.applyFiltersObj.secretFilter.selectedSecretOption
+                        }
+                    };
+                    searchObj = filterObjects.searchObj;
+
+                } else {
+                    searchObj = {
+                        page: 1,
+                        page_size: $scope.filtersObj.pageSizeFilter? $scope.applyFiltersObj.paginationFilter.itemsPerPage : 25
+                    };
+                }
+            } else {
+
+                searchObj = {
+                    page: $scope.pagination.pageNo,
+                    page_size: $scope.pagination.itemsPerPage || 25,
+                    event: $scope.filtersObj.eventFilter ? event : null,
+                    url: $scope.filtersObj.urlFilter ? $scope.applyFiltersObj.urlFilter.selectedUrlOption : null,
+                    secret: $scope.filtersObj.secretFilter ? $scope.applyFiltersObj.secretFilter.selectedSecretOption : null
+                };
+
+                vm.saveWebhooksListFiltersToLocalStorage({
+                    searchObj: serializeFiltersService.objectFilters(searchObj),
+                    filtersObj: $scope.filtersObj,
+                    applyFiltersObj: $scope.applyFiltersObj
+                });
+            }
 
             for(var x in $scope.filtersObj){
                 if($scope.filtersObj.hasOwnProperty(x)){
@@ -92,23 +140,12 @@
                     }
                 }
             }
-            
-            var event;
-            if($scope.filtersObj.eventFilter){
-                event = $scope.applyFiltersObj.eventFilter.selectedEventOption.toUpperCase();
-                event = event.replace(/ /g, '_');
-                event = vm.eventOptionsObj[event];
-            }
-
-            var searchObj = {
-                page: $scope.pagination.pageNo,
-                page_size: $scope.pagination.itemsPerPage || 25,
-                event: $scope.filtersObj.eventFilter ? event : null,
-                url: $scope.filtersObj.urlFilter ? $scope.applyFiltersObj.urlFilter.selectedUrlOption : null,
-                secret: $scope.filtersObj.secretFilter ? $scope.applyFiltersObj.secretFilter.selectedSecretOption : null
-            };
 
             return serializeFiltersService.objectFilters(searchObj);
+        };
+
+        vm.saveWebhooksListFiltersToLocalStorage = function (filterObjects) {
+            localStorageManagement.setValue(vm.savedWebhooksListFilters,JSON.stringify(filterObjects));
         };
 
         $scope.getWebhooks = function (applyFilter) {
@@ -213,8 +250,15 @@
             });
         };
 
-        if($state.params.secret || $state.params.webhookUrl){
+        if($state.params.from == "Notifications"){
+            $scope.filtersObj.secretFilter = true;
+            $scope.applyFiltersObj.secretFilter.selectedSecretOption = $state.params.secret;
+            $scope.getWebhooks('applyFilter');
+        } else if($state.params.secret || $state.params.webhookUrl){
+            $scope.getWebhooks();
             $scope.openCreateWebhookModal('app/pages/developers/webhooks/webhooksList/addWebhookModal/addWebhookModal.html','md');
+        }else{
+            $scope.getWebhooks();
         }
     }
 })();

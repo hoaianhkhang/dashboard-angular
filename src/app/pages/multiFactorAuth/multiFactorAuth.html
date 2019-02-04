@@ -3,17 +3,20 @@
         <h1>Enable multi-factor authentication</h1>
         <p class="verification-btn-box">Choose your preferred method of authentication</p>
         <div class="row verification-btn-box">
-            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 divider" ng-repeat="(key,value) in multiFactorAuthOptions">
-                <button ng-click="goToMultiAuthMethod(key)" class="btn btn-primary btn-auth">{{key | capitalizeWord}}</button>
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 divider-20">
+                <button ng-click="goToMultiAuthMethod('sms')" class="btn btn-primary btn-auth">SMS</button>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 divider-20">
+                <button ng-click="goToMultiAuthMethod('token')" class="btn btn-primary btn-auth">Token</button>
             </div>
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                <a class="pull-left" href="/#/settings/security">Back</a>
+                <a class="pull-left" href="/#/account-info">Back</a>
             </div>
         </div>
     </div>
 </div>
 <div ng-show="loadingMfa" class="auth-main">
-    <div ba-panel class="auth-block text-center">
+    <div style="padding:20px 0" class="auth-block text-center">
         <loading-image></loading-image>
     </div>
 </div>

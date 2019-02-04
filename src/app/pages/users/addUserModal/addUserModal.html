@@ -13,9 +13,15 @@
                 </div>
                 <div class="form-group">
                     <label>Profile picture</label>
+                    <fieldset class="custom-file-upload">
+                        <label>
+                            <span class="custom-file-upload-span"><button>Choose File</button></span>
+                            <input type="file" ngf-select ng-model="newUserParams.profile" name="file"
+                                   accept="image/*" ngf-max-size="5MB" >
+                        </label>
+                    </fieldset>
                     <fieldset class="divider">
-                        <input type="file" ngf-select ng-model="newUserParams.profile" name="file"
-                               accept="image/*" ngf-max-size="10MB" >
+
                     </fieldset>
                 </div>
                 <div class="form-group">
