@@ -22,7 +22,6 @@
                 Rehive.admin.users.get({id: vm.uuid}).then(function (res) {
                     $scope.loadingUserAdmin = false;
                     $scope.user = res;
-                    console.log(res);
                     $scope.$apply();
                 }, function (error) {
                     $scope.loadingUserAdmin = false;
@@ -56,44 +55,27 @@
         $scope.checkUserMFAStatus();
 
         $scope.removeMFAStatusConfirm = function () {
-            if($scope.mfaStatus == "not"){
-                $ngConfirm({
-                    title: 'Remove multi-factor authentication',
-                    content: 'This user does not have Multi-factor Authentication turned on.',
-                    animationBounce: 1,
-                    animationSpeed: 100,
-                    scope: $scope,
-                    buttons: {
-                        ok: {
-                            text: "Close",
-                            btnClass: 'btn-primary dashboard-btn',
-                            keys: ['enter'], // will trigger when enter is pressed
+            $ngConfirm({
+                title: 'Remove multi-factor authentication',
+                content: "You are removing multi-factor authentication from this user's account, are you sure you want to proceed?",
+                animationBounce: 1,
+                animationSpeed: 100,
+                scope: $scope,
+                buttons: {
+                    close: {
+                        text: "No",
+                        btnClass: 'btn-default pull-left dashboard-btn'
+                    },
+                    ok: {
+                        text: "Remove",
+                        btnClass: 'btn-danger dashboard-btn',
+                        keys: ['enter'], // will trigger when enter is pressed
+                        action: function(scope){
+                            vm.removeMFAStatus();
                         }
                     }
-                });
-            } else {
-                $ngConfirm({
-                    title: 'Remove multi-factor authentication',
-                    content: "You are removing multi-factor authentication from this user's account, are you sure you want to proceed?",
-                    animationBounce: 1,
-                    animationSpeed: 100,
-                    scope: $scope,
-                    buttons: {
-                        close: {
-                            text: "No",
-                            btnClass: 'btn-default pull-left dashboard-btn'
-                        },
-                        ok: {
-                            text: "Remove",
-                            btnClass: 'btn-danger dashboard-btn',
-                            keys: ['enter'], // will trigger when enter is pressed
-                            action: function(scope){
-                                vm.removeMFAStatus();
-                            }
-                        }
-                    }
-                });
-            }
+                }
+            });
         };
 
         vm.removeMFAStatus = function () {

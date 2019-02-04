@@ -17,12 +17,15 @@
             </tr>
             <tr>
                 <td class="table-row-center transactions-list-element rehive-table-row-first-child">
-                    Multi-factor authentication: {{mfaStatus | uppercase}} ACTIVE
+                    Multi-factor authentication:
+                    <span ng-class="{'mfa-not-active': mfaStatus == 'not', 'mfa-active': mfaStatus != 'not'}">
+                        <strong>{{mfaStatus | uppercase}} ACTIVE</strong>
+                    </span>
                 </td>
             </tr>
-            <tr ng-if="user.groups[0].name != 'admin'">
-                <td class="table-row-center transactions-list-element rehive-table-row-first-child">
-                    <a class="pointer" ng-click="removeMFAStatusConfirm()">Remove multi-factor authentication</a>
+            <tr ng-if="user.groups[0].name != 'admin' && mfaStatus != 'not'">
+                <td class="table-row-center transactions-list-element rehive-table-row-first-child" >
+                    <a class="pointer" ng-click="removeMFAStatusConfirm()" >Remove multi-factor authentication</a>
                 </td>
             </tr>
         </table>
