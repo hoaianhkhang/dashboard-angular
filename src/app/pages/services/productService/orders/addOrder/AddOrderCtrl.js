@@ -124,7 +124,7 @@
                 }).then(function (res) {
                     if (res.status === 201 || res.status === 200) {
                         if(last){
-                            toastr.success('Order added successfully');
+                            toastr.success('Order items added successfully');
                             $location.path('/services/product/orders');
                         }
                     }
@@ -140,7 +140,7 @@
             $scope.products = [];
             for(var i = 0; i < $scope.productList.length; ++i){
                 for(var j = 0; j < $scope.productList[i].prices.length; ++j){
-                    if($scope.productList[i].prices[j].currency.code == $scope.newOrderParams.currency.code && $scope.productList[i].enabled == true){
+                    if($scope.productList[i].prices[j].currency.code === $scope.newOrderParams.currency.code && $scope.productList[i].enabled === true){
                         $scope.products.push($scope.productList[i]);
                     }
                 }

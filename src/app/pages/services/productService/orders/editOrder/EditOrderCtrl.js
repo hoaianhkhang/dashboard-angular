@@ -17,7 +17,7 @@
         $scope.loadingUser = false;
         $scope.productList = [];
         $scope.products = [];
-        $scope.existingItems = [];
+        $scope.existingItemsToDelete = [];
         $scope.currencyOptions= [];
         $scope.editOrderObj = {
             user: null,
@@ -112,6 +112,17 @@
 
         vm.getOrder();
 
+        vm.filterProducts = function(){
+            $scope.products = [];
+            for(var i = 0; i < $scope.productList.length; ++i){
+                for(var j = 0; j < $scope.productList[i].prices.length; ++j){
+                    if($scope.productList[i].prices[j].currency.code === $scope.editOrderObj.currency.code && $scope.productList[i].enabled === true){
+                        $scope.products.push($scope.productList[i]);
+                    }
+                }
+            }
+        };
+
         vm.assignOrderToScope = function(editObj){
             $scope.editOrderObj = {
                 id: editObj.id,
@@ -136,7 +147,8 @@
                         $scope.editOrderObj.items.push({
                             id: item.id,
                             product: $scope.products[i],
-                            quantity: item.quantity
+                            quantity: item.quantity,
+                            toUpdate: false
                         });
                     }
                 }
@@ -145,35 +157,49 @@
         };
 
         $scope.editOrder = function (editOrderObj) {
+            $scope.updatedOrder = serializeFiltersService.objectFilters(editOrderObj);
 
-            var updatedOrder = serializeFiltersService.objectFilters($scope.editOrderObj);
-
-            $scope.editingOrder =  true;
-
-        };
-
-        vm.formatItemsForOrder = function (order) {
-            $scope.editOrderObj.items.forEach(function(orderItem,idx,array){
-                if(idx === array.length - 1){
-                    vm.editOrderItems(order,{product: orderItem.product.id, quantity: orderItem.quantity},'last');
-                    return false;
+            $scope.updatedOrder.items.forEach(function(orderItem, idx, array){
+                if(orderItem.toUpdate){
+                    console.log(orderItem.id);
+                    (idx === array.length - 1) ?
+                        vm.updateExistingItems(orderItem.id, {quantity: orderItem.quantity}, "last") :
+                        vm.updateExistingItems(orderItem.id, {quantity: orderItem.quantity});
+                }else if(!orderItem.id){
+                    (idx === array.length - 1) ?
+                        vm.addNewOrderItems({product: orderItem.product.id, quantity: orderItem.quantity}, "last") :
+                        vm.addNewOrderItems({product: orderItem.product.id, quantity: orderItem.quantity});
                 }
-                vm.editOrderItems(order,{product: orderItem.product.id, quantity: orderItem.quantity});
             });
+
+            if($scope.existingItemsToDelete.length > 0){
+                $scope.existingItemsToDelete.forEach(function(orderItem, idx, array){
+                    if(idx === array.length - 1){
+                        vm.deleteExistingItem({id: orderItem.id}, 'last');
+                        return false;
+                    }
+                    vm.deleteExistingItem({id: orderItem.id});
+                });
+            }else{
+                $location.path('/services/product/orders');
+            }
+
         };
 
-        vm.editOrderItems = function (order,orderItem,last) {
+        vm.updateExistingItems = function (itemId, orderItem,last) {
+            $scope.editingOrder =  true;
             if(vm.token) {
-                $http.post(vm.serviceUrl + 'admin/orders/' + order.id + '/items/', orderItem, {
+                $http.patch(vm.serviceUrl + 'admin/orders/' + vm.orderId + '/items/' + itemId + '/',
+                    orderItem, {
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': vm.token
                     }
                 }).then(function (res) {
                     if (res.status === 201 || res.status === 200) {
+                        $scope.editingOrder =  false;
                         if(last){
-                            toastr.success('Order added successfully');
-                            $location.path('/services/product/orders');
+                            toastr.success('Order items updated successfully');
                             $scope.editingOrder =  false;
                         }
                     }
@@ -185,36 +211,57 @@
             }
         };
 
-        vm.filterProducts = function(){
-            $scope.products = [];
-            for(var i = 0; i < $scope.productList.length; ++i){
-                for(var j = 0; j < $scope.productList[i].prices.length; ++j){
-                    if($scope.productList[i].prices[j].currency.code == $scope.editOrderObj.currency.code){
-                        $scope.products.push($scope.productList[i]);
+        vm.addNewOrderItems = function (orderItem, last){
+            $scope.editingOrder =  true;
+            if(vm.token) {
+                $http.post(vm.serviceUrl + 'admin/orders/' + vm.orderId + '/items/', orderItem, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': vm.token
                     }
-                }
+                }).then(function (res) {
+                    if (res.status === 201 || res.status === 200) {
+                        $scope.editingOrder =  false;
+                        if(last){
+                            toastr.success('New items added successfully');
+                        }
+                    }
+                }).catch(function (error) {
+                    $scope.editingOrder =  false;
+                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.handleErrors(error);
+                });
             }
         };
 
-        $scope.deleteExistingItem = function(item){
-            $scope.editOrderObj.items.splice($scope.editOrderObj.items.indexOf(item), 1);
+        vm.deleteExistingItem = function(item, last){
             $http.delete(vm.serviceUrl + 'admin/orders/' + vm.orderId + '/items/' + item.id + '/', {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': vm.token
                 }
             }).then(function (res) {
-
+                if(last){
+                    toastr.success('Order items updated successfully');
+                    $location.path('/services/product/orders');
+                }
             }).catch(function (error) {
                 errorHandler.evaluateErrors(error.data);
                 errorHandler.handleErrors(error);
             });
         };
 
+        $scope.quantityCheck = function(item){
+            if(item.id){
+                item.toUpdate = true;
+            }
+        };
+
         $scope.addOrderItem = function () {
             var item = {
                 product: $scope.products[($scope.products.length - 1)],
-                quantity: 1
+                quantity: 1,
+                toUpdate: false
             };
             $scope.editOrderObj.items.push(item);
         };
@@ -222,7 +269,7 @@
         $scope.removeAddOrderItem = function(item){
             if(item.id){
                 $scope.editOrderObj.items.splice($scope.editOrderObj.items.indexOf(item), 1);
-                $scope.existingItems.push(item);
+                $scope.existingItemsToDelete.push(item);
             }
             else {
                 $scope.editOrderObj.items.forEach(function (itemObj,index,array) {
