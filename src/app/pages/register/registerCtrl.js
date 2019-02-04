@@ -5,7 +5,7 @@
         .controller('RegisterCtrl', RegisterCtrl);
 
     /** @ngInject */
-    function RegisterCtrl($rootScope,Rehive,$scope,errorHandler,$location,localStorageManagement, identifySearchInput) {
+    function RegisterCtrl($rootScope,Rehive,$scope,errorHandler,$location,localStorageManagement, identifySearchInput, $intercom) {
 
         //var vm = this;
         $scope.path = $location.path();
@@ -35,6 +35,13 @@
                 localStorageManagement.setValue('TOKEN','Token ' + token);
                 $location.path('/verification');
                 $scope.$apply();
+                $intercom.boot({
+                    email: res.email,
+                    name: res.first_name + ' ' + res.last_name,
+                    user_id: res.id,
+                    created_at: parseInt(res.created)/1000,
+                    company_id: res.company
+                });
             }, function (error) {
                 $rootScope.$pageFinishedLoading = true;
                 errorHandler.evaluateErrors(error);
