@@ -20,7 +20,7 @@
   "placeholder": {
     "environmentConfig": {
       "API": "{{API_URL}}",
-      "INTERCOM_APPID": "{{API_URL}}"
+      "INTERCOM_APPID": "{{INTERCOM_APPID}}"
     }
   }
 }
