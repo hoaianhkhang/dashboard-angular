@@ -14,6 +14,8 @@
         $scope.companyDateFormatString = localStorageManagement.getValue('DATE_FORMAT');
         $scope.currencyOptions = [];
         $scope.addingCampaign =  false;
+        $scope.campaignUserEmailForAccount = '';
+        $scope.campaignUserAccounts = [];
         $scope.newCampaignParams = {
             name: '',
             description: '',
@@ -188,10 +190,27 @@
             }
         };
 
+        $scope.showAccountList = false;
+        $scope.onSelect = function($item, $model, $label){
+            $scope.campaignUserAccounts = [];
+            $scope.accountOptions.forEach(function(account){
+                if(account.user.email == $model){
+                    $scope.campaignUserAccounts.push(account);
+                }
+            });
+            if($scope.campaignUserAccounts.length > 0){
+                $scope.showAccountList = true;
+                $scope.newCampaignParams.account = $scope.campaignUserAccounts[0];
+            }
+        };
+
+        $scope.emailChanging = function(){
+            $scope.showAccountList = false;
+        };
+
         $scope.goToCampaignListView = function () {
             $location.path('/services/rewards/campaigns');
         };
-
 
     }
 })();
