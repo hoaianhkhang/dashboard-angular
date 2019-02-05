@@ -5,8 +5,9 @@
         .controller('LoginCtrl', LoginCtrl);
 
     /** @ngInject */
-    function LoginCtrl($rootScope,Rehive,$scope,localStorageManagement,$location,errorHandler) {
+    function LoginCtrl($rootScope,Rehive,$scope,localStorageManagement,$location,errorHandler,$intercom) {
 
+        $intercom.shutdown();
         var vm = this;
         localStorageManagement.deleteValue('TOKEN');
         localStorageManagement.deleteValue('token');
@@ -31,6 +32,14 @@
                 //remove this at the end of integrating sdk
                 localStorageManagement.setValue('TOKEN','Token ' + token);
                 //remove above line
+
+                $intercom.boot({
+                    email: res.user.email,
+                    name: res.user.first_name + ' ' + res.user.last_name,
+                    user_id: res.user.id,
+                    company_id: res.user.company,
+                    phone: res.user.mobile
+                });
 
                 vm.checkMultiFactorAuthEnabled(token);
             },function(error){
