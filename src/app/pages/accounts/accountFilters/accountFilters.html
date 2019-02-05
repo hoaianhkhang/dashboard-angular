@@ -68,6 +68,21 @@
             </div>
         </div>
 
+        <div id="filterGroup">
+            <div>
+                <label class="checkbox-inline custom-checkbox nowrap">
+                    <input type="checkbox" ng-model="filtersObj.groupFilter">
+                    <span>User group</span>
+                </label>
+            </div>
+            <div ng-if="filtersObj.groupFilter" class="row divider-top-6">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <select class="form-control pointer" ng-model="applyFiltersObj.groupFilter.selectedUserGroup"
+                            ng-options="group.name for group in groupOptions">
+                    </select>
+                </div>
+            </div>
+        </div>
 
     </div>
 </div>

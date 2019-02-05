@@ -22,6 +22,7 @@
         $scope.showingColumnFilters = false;
         $scope.loadingAccounts = false;
         $scope.filtersCount = 0;
+        $scope.groupOptions = [];
         $scope.insertingBalanceCurrencyFromHeader = false;
         $scope.insertingAvailableBalanceCurrencyFromHeader = false;
         $scope.availableBalanceColumn = true;
@@ -45,7 +46,8 @@
             nameFilter: false,
             primaryFilter: false,
             referenceFilter: false,
-            userFilter: false
+            userFilter: false,
+            groupFilter: false
         };
         $scope.applyFiltersObj = {
             nameFilter: {
@@ -59,6 +61,9 @@
             },
             userFilter: {
                 selectedUserFilter: ''
+            },
+            groupFilter: {
+                selectedUserGroup: {}
             }
         };
         $scope.columnFiltersObj = {
@@ -109,7 +114,8 @@
                 nameFilter: false,
                 primaryFilter: false,
                 referenceFilter: false,
-                userFilter: false
+                userFilter: false,
+                groupFilter: false
             };
         };
 
@@ -137,6 +143,14 @@
                         },
                         userFilter: {
                             selectedUserFilter: filterObjects.applyFiltersObj.userFilter.selectedUserFilter
+                        },
+                        groupFilter: {
+                            selectedUserGroup: filterObjects.applyFiltersObj.groupFilter.selectedUserGroup ?
+                                $scope.groupOptions.find(function(group){
+                                    if(group.name == filterObjects.applyFiltersObj.groupFilter.selectedUserGroup.name){
+                                        return group;
+                                    }
+                                }) : $scope.groupOptions[0]
                         }
                     };
                     searchObj = filterObjects.searchObj;
@@ -155,7 +169,8 @@
                     user: $scope.filtersObj.userFilter ? ($scope.applyFiltersObj.userFilter.selectedUserFilter ?  $scope.applyFiltersObj.userFilter.selectedUserFilter : null): null,
                     reference: $scope.filtersObj.referenceFilter ?($scope.applyFiltersObj.referenceFilter.selectedReferenceFilter ? $scope.applyFiltersObj.referenceFilter.selectedReferenceFilter : null): null,
                     name: $scope.filtersObj.nameFilter ? ($scope.applyFiltersObj.nameFilter.selectedNameFilter ? $scope.applyFiltersObj.nameFilter.selectedNameFilter : null): null,
-                    primary: $scope.filtersObj.primaryFilter ? $scope.filtersObj.primaryFilter : null
+                    primary: $scope.filtersObj.primaryFilter ? $scope.filtersObj.primaryFilter : null,
+                    group: $scope.filtersObj.groupFilter ? $scope.applyFiltersObj.groupFilter.selectedUserGroup.name: null
                 };
 
                 vm.saveAccountsTableFiltersToLocalStorage({
@@ -173,40 +188,12 @@
                     }
                 }
             }
-
-            var searchObj = {
-                page: $scope.accountsPagination.pageNo,
-                page_size: $scope.filtersObj.pageSizeFilter? $scope.accountsPagination.itemsPerPage : 25,
-                user: $scope.filtersObj.userFilter ? ($scope.applyFiltersObj.userFilter.selectedUserFilter ?  $scope.applyFiltersObj.userFilter.selectedUserFilter : null): null,
-                reference: $scope.filtersObj.referenceFilter ?($scope.applyFiltersObj.referenceFilter.selectedReferenceFilter ? $scope.applyFiltersObj.referenceFilter.selectedReferenceFilter : null): null,
-                name: $scope.filtersObj.nameFilter ? ($scope.applyFiltersObj.nameFilter.selectedNameFilter ? $scope.applyFiltersObj.nameFilter.selectedNameFilter : null): null,
-                primary: $scope.filtersObj.primaryFilter ? $scope.filtersObj.primaryFilter : null
-            };
-
             return serializeFiltersService.objectFilters(searchObj);
         };
 
         vm.saveAccountsTableFiltersToLocalStorage = function (filterObjects) {
             localStorageManagement.setValue(vm.savedAccountsTableFilters,JSON.stringify(filterObjects));
         };
-
-        vm.getCompanyCurrencies = function(){
-            if(vm.token){
-                Rehive.admin.currencies.get({filters: {
-                    archived: false,
-                    page_size: 250
-                }}).then(function (res) {
-                    $scope.currenciesOptions = res.results;
-                    $scope.getAllAccounts();
-                    $scope.$apply();
-                }, function (error) {
-                    errorHandler.evaluateErrors(error);
-                    errorHandler.handleErrors(error);
-                    $scope.$apply();
-                });
-            }
-        };
-        vm.getCompanyCurrencies();
 
         $scope.getAllAccounts = function(applyFilter){
             $scope.accountsStateMessage = '';
@@ -249,6 +236,41 @@
                 $scope.$apply();
             });
         };
+
+        $scope.getGroups = function () {
+            if(vm.token) {
+                Rehive.admin.groups.get({filters: {page_size: 250}}).then(function (res) {
+                    if(res.results.length > 0){
+                        $scope.groupOptions = res.results;
+                        $scope.applyFiltersObj.groupFilter.selectedUserGroup = $scope.groupOptions[0];
+                    }
+                    $scope.getAllAccounts();
+                    $scope.$apply();
+                }, function (error) {
+                    errorHandler.evaluateErrors(error);
+                    errorHandler.handleErrors(error);
+                    $scope.$apply();
+                });
+            }
+        };
+        $scope.getGroups();
+
+        vm.getCompanyCurrencies = function(){
+            if(vm.token){
+                Rehive.admin.currencies.get({filters: {
+                        archived: false,
+                        page_size: 250
+                    }}).then(function (res) {
+                    $scope.currenciesOptions = res.results;
+                    $scope.$apply();
+                }, function (error) {
+                    errorHandler.evaluateErrors(error);
+                    errorHandler.handleErrors(error);
+                    $scope.$apply();
+                });
+            }
+        };
+        vm.getCompanyCurrencies();
 
         vm.getCurrencyHeaderColumns = function (firstAccountInList) {
             // inserting currency balance and available balance of first account obj
