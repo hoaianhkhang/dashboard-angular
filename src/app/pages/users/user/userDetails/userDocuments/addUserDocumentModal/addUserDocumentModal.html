@@ -10,9 +10,13 @@
             <img class="divider-20" ng-show="userDocumentParams.file" ngf-thumbnail="userDocumentParams.file" height="500px" width="100%">
         </div>
         <form name="addDocumentForm" class="custom-form" novalidate>
-            <fieldset class="divider-20">
-                <input ng-change="documentChanged()" type="file" ngf-select ng-model="userDocumentParams.file" name="file"
-                       accept="image/*" ngf-max-size="10MB" required>
+            <fieldset class="divider-20 custom-file-upload">
+                <label>
+                    <span class="custom-file-upload-span"><button>Choose File</button></span>
+                    <input ng-change="documentChanged()" type="file" ngf-select ng-model="userDocumentParams.file" name="file"
+                              accept="image/*" ngf-max-size="5MB" class="divider-6" required>
+                </label>
+                <p class="small">Max size is 5MB.</p>
             </fieldset>
             <div class="form-group divider-20">
                 <label>Document type <span class="required-icon">*</span></label>

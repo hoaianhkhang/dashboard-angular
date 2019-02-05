@@ -5,18 +5,37 @@
         .controller('AddGroupTierModalCtrl', AddGroupTierModalCtrl);
 
     function AddGroupTierModalCtrl($scope,$stateParams,$uibModalInstance,Rehive,
-                                   toastr,localStorageManagement,errorHandler) {
+                                   toastr,localStorageManagement,errorHandler,_) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('token');
         vm.groupName = $stateParams.groupName;
         $scope.addingTiers = false;
-        $scope.tierLevels = [1,2,3,4,5,6,7];
-        $scope.newTier = {level: 1};
+        $scope.newTier = {};
+
+        vm.getAllTiers = function(){
+            if(vm.token) {
+                $scope.addingTiers = true;
+                Rehive.admin.groups.tiers.get(vm.groupName).then(function (res) {
+                    var addedTierIds = _.pluck(res,'level');
+                    $scope.tierLevels = _.difference([1,2,3,4,5,6,7], addedTierIds);
+                    $scope.newTier.level = $scope.tierLevels[0];
+                    $scope.addingTiers = false;
+                    $scope.$apply();
+                }, function (error) {
+                    $scope.addingTiers = false;
+                    errorHandler.evaluateErrors(error);
+                    errorHandler.handleErrors(error);
+                    $scope.$apply();
+                });
+            }
+        };
+        vm.getAllTiers();
 
         $scope.addGroupTier = function(){
             if(vm.token) {
                 $scope.addingTiers = true;
+                $scope.newTier.name = $scope.newTier.level.toString();
                 Rehive.admin.groups.tiers.create(vm.groupName,$scope.newTier).then(function (res) {
                     $scope.addingTiers = false;
                     $scope.newTier = {currency: $scope.currencyCode,level: 1};

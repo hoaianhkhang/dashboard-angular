@@ -16,18 +16,19 @@
       'BlurAdmin.pages.accounts',
       'BlurAdmin.pages.groups',
       'BlurAdmin.pages.currency',
-      'BlurAdmin.pages.webhooks',
       'BlurAdmin.pages.users',
       'BlurAdmin.pages.services',
       'BlurAdmin.pages.login',
       'BlurAdmin.pages.register',
+      'BlurAdmin.pages.developers',
       'BlurAdmin.pages.resetPassword',
       'BlurAdmin.pages.resetPasswordConfirmation',
       'BlurAdmin.pages.verifyAdminEmail',
       'BlurAdmin.pages.verification',
       'BlurAdmin.pages.newCompanySetup',
       'BlurAdmin.pages.initialSetupScreen',
-      'BlurAdmin.pages.accountInfo'
+      'BlurAdmin.pages.accountInfo',
+      'BlurAdmin.pages.redirectToWebWallet'
   ])
       .config(routeConfig);
 

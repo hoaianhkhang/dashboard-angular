@@ -1,3 +1,22 @@
+.filter-text{
+  color: $primary;
+}
+
+.system-users-admin{
+  color: #03DBBB!important;
+}
+
+.system-users-service{
+  color: $primary!important;
+}
+
+.sortable-header{
+  color: $primary !important;
+  &:hover {
+    background-color: #f4f4f4 !important;
+  }
+}
+
 .user-metadata-tile {
   width: 100%;
   & .user-details-metadata{

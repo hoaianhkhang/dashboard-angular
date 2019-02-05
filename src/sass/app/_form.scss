@@ -44,7 +44,7 @@
   color: $default-text;
   @include placeholderStyle($default-text, 0.4);
   border: 1px solid $input-border;
-  border-radius: 0;
+  border-radius: 3px;
   background-color: $input-background;
   box-shadow: none;
   &:focus {
@@ -289,7 +289,7 @@ label.custom-checkbox {
     display: inline-block;
     margin: 0;
     color: #A8A8A8;
-    line-height: 15px;
+    line-height: 20px;
     font-size: 14px;
     font-weight: $font-light;
     cursor: pointer;
@@ -298,21 +298,24 @@ label.custom-checkbox {
     &.account-settings-span{
       color: #022b36 !important;
     }
+    &.permissions-checkbox-margin-top{
+      margin-top: 14px!important;
+    }
     &:before {
       cursor: pointer;
       font-family: fontAwesome;
       font-weight: $font-light;
       font-size: 12px;
-      color: $default-text;
+      color: $primary;
       content: "\a0";
-      background-color: transparent;
-      border: 1px solid $border;
-      border-radius: 0;
+      background-color: #ffffff;
+      border: 2px solid $primary-light;
+      border-radius: 3px;
       display: inline-block;
       text-align: center;
-      height: 16px;
-      line-height: 14px;
-      min-width: 16px;
+      height: 21px;
+      line-height: 18px;
+      min-width: 21px;
       margin-right: 6px;
       position: relative;
       top: 0;
