@@ -7,6 +7,7 @@
     /** @ngInject */
     function RegisterCtrl($rootScope,Rehive,$scope,errorHandler,$location,localStorageManagement, identifySearchInput, $intercom) {
 
+        $intercom.shutdown();
         //var vm = this;
         $scope.path = $location.path();
         $scope.registerData = {
