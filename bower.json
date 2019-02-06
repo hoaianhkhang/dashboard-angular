@@ -42,7 +42,8 @@
     "ng-intl-tel-input": "^2.0.0",
     "angular-chosen-localytics": "^1.8.0",
     "ng-tags-input": "^3.2.0",
-    "angular-ui-codemirror": "^0.3.0"
+    "angular-ui-codemirror": "^0.3.0",
+    "angular-intercom": "^2.1.1"
   },
   "resolutions": {
     "angular": "~1.5.8",
