@@ -17,6 +17,10 @@
                 <input type="text" ng-change="companyInfoChanged('website')" ng-model="company.details.website" class="form-control" placeholder="e.g. https://www.rehive.com">
             </div>
             <div class="form-group">
+                <label>Company email</label>
+                <input type="text" ng-change="companyInfoChanged('email')" ng-model="company.details.email" class="form-control" placeholder="e.g. info@rehive.com">
+            </div>
+            <div class="form-group">
                 <label>Password set url</label>
                 <input type="text" ng-change="companySettingsChanged('password_set_url')" ng-model="company.details.settings.password_set_url" class="form-control" placeholder="e.g. https://www.rehive.com/set/password/">
             </div>
