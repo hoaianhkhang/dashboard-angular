@@ -20,10 +20,13 @@ angular.module('BlurAdmin', [
     'ui.codemirror',
     'ng.codemirror.dictionary.hint',
     'BlurAdmin.theme',
-    'BlurAdmin.pages'
+    'BlurAdmin.pages',
+    'ngIntercom'
 ])
-    .config(function (ngIntlTelInputProvider) {
-    ngIntlTelInputProvider.set({initialCountry: 'us',utilsScript: 'https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/12.0.1/js/utils.js'});
+    .config(function (ngIntlTelInputProvider, $intercomProvider, environmentConfig) {
+        $intercomProvider.appID(environmentConfig.INTERCOM_APPID);
+        $intercomProvider.asyncLoading(true);
+        ngIntlTelInputProvider.set({initialCountry: 'us',utilsScript: 'https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/12.0.1/js/utils.js'});
 })
     .run(function($rootScope,errorHandler,localStorageManagement,toastr,Rehive,
                   environmentConfig,$window,$location,_){
