@@ -656,7 +656,6 @@
                 $scope.$apply();
             });
         };
-        console.log($scope.headerColumns);
         $scope.getAllUsers = function(applyFilter){
             $scope.usersStateMessage = '';
             $scope.loadingUsers = true;

@@ -145,12 +145,13 @@
                             selectedUserFilter: filterObjects.applyFiltersObj.userFilter.selectedUserFilter
                         },
                         groupFilter: {
-                            selectedUserGroup: filterObjects.applyFiltersObj.groupFilter.selectedUserGroup ?
-                                $scope.groupOptions.find(function(group){
-                                    if(group.name == filterObjects.applyFiltersObj.groupFilter.selectedUserGroup.name){
-                                        return group;
-                                    }
-                                }) : $scope.groupOptions[0]
+                            selectedUserGroup:
+                                filterObjects.applyFiltersObj.groupFilter.selectedUserGroup ?
+                                    $scope.groupOptions.find(function(group){
+                                        if(group.name == filterObjects.applyFiltersObj.groupFilter.selectedUserGroup.name){
+                                            return group;
+                                        }
+                                    }) : $scope.groupOptions[0]
                         }
                     };
                     searchObj = filterObjects.searchObj;
