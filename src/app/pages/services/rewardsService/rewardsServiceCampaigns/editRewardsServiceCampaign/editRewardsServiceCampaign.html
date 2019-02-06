@@ -182,15 +182,15 @@
                     </tags-input>
                 </div>
             </div>
-            <div class="form-group">
-                <label>Groups</label>
-                <div class="reward-multi-select">
-                    <tags-input ng-model="editCampaignParams.groups" on-tag-added="campaignChanged('groups')"
-                                placeholder="Enter one or more group name" on-tag-removed="campaignChanged('groups')">
-                        <auto-complete class="reward-tag-users-input" source="getGroupsTypeahead($query)"></auto-complete>
-                    </tags-input>
-                </div>
-            </div>
+            <!--<div class="form-group">-->
+                <!--<label>Groups</label>-->
+                <!--<div class="reward-multi-select">-->
+                    <!--<tags-input ng-model="editCampaignParams.groups" on-tag-added="campaignChanged('groups')"-->
+                                <!--placeholder="Enter one or more group name" on-tag-removed="campaignChanged('groups')">-->
+                        <!--<auto-complete class="reward-tag-users-input" source="getGroupsTypeahead($query)"></auto-complete>-->
+                    <!--</tags-input>-->
+                <!--</div>-->
+            <!--</div>-->
             <div class="form-group">
                 <button ng-disabled="(!campaignForm.$valid || !editCampaignParams.currency.code)" ng-click="updateCampaign(editCampaignParams)" class="btn btn-primary dashboard-btn pull-right">Save</button>
                 <button ng-click="goToCampaignListView()" class="btn btn-default dashboard-btn pull-right margin-right-10">Back</button>

@@ -134,11 +134,11 @@
                                 } else {
                                     editObj.event = '';
                                 }
-                                if(editObj.groups){
-                                    editObj.groups = editObj.groups.split(',');
-                                } else {
-                                    editObj.groups = [];
-                                }
+                                // if(editObj.groups){
+                                //     editObj.groups = editObj.groups.split(',');
+                                // } else {
+                                //     editObj.groups = [];
+                                // }
                                 if(editObj.users){
                                     editObj.users = editObj.users;
                                 } else {
@@ -218,9 +218,9 @@
             if(vm.updatedCampaignObj.users){
                 vm.updatedCampaignObj.users = (_.pluck(vm.updatedCampaignObj.users,'text'));
             }
-            if(vm.updatedCampaignObj.groups){
-                vm.updatedCampaignObj.groups = (_.pluck(vm.updatedCampaignObj.groups,'text')).join();
-            }
+            // if(vm.updatedCampaignObj.groups){
+            //     vm.updatedCampaignObj.groups = (_.pluck(vm.updatedCampaignObj.groups,'text')).join();
+            // }
             if(vm.updatedCampaignObj.event){
                 if(!vm.updatedCampaignObj.event.includes(".")){
                     var event;

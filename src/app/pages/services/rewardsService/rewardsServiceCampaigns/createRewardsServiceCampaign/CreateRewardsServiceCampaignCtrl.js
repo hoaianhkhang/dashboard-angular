@@ -32,7 +32,7 @@
             event: '',
             visible: false,
             request: false,
-            groups: []
+            // groups: []
         };
         $scope.amountTypeOptions = ['Fixed' , 'Percentage', 'Both'];
 
@@ -136,7 +136,7 @@
                 visible: newCampaignParams.visible,
                 request: newCampaignParams.request,
                 event: newCampaignParams.event,
-                groups: (_.pluck(newCampaignParams.groups,'text')).join(),
+                // groups: (_.pluck(newCampaignParams.groups,'text')).join(),
                 users: (_.pluck(newCampaignParams.users,'text'))
             };
 
