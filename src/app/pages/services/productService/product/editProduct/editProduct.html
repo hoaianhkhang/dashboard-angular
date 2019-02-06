@@ -44,9 +44,9 @@
                 <div class="form-group setup-groups-tooltip-div">
                     <label><strong class="strong-headers">Prices</strong>
                         <i class="fa fa-plus-square-o product-prices-add-icon left-margin-12"
+                           ng-hide="editProductObj.prices.length > 0"
                            ng-class="{
-                           'product-prices-icon-expanded': newProductParams.prices.length > 0,
-                           'product-prices-add-icon-near-title': newProductParams.prices.length == 0}"
+                           'product-prices-add-icon-near-title': editProductObj.prices.length == 0}"
                            ng-click="addEditPriceRow()"></i>
                     </label>
                     <!--<div ng-show="editProductObj.prices.length > 0" class="row">-->
@@ -59,7 +59,7 @@
                         </div>
                     </div>
                     <div class="row divider" ng-repeat="price in editProductObj.prices">
-                        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                        <div class="col-lg-2 col-md-2 col-sm-5 col-xs-5">
                             <div class="reward-multi-select">
                                 <select chosen
                                         data-placeholder-text-single="'Choose a currency'"
@@ -72,15 +72,15 @@
                                 <!--allow-single-deselect="true"-->
                             </div>
                         </div>
-                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 no-right-padding">
+                        <div class="col-lg-3 col-md-3 col-sm-4 col-xs-4 no-right-padding">
                             <input type="text" ng-model="price.amount" class="form-control"
                                    ng-change="priceChanged(price)"
                                    placeholder="Enter amount">
                         </div>
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 no-right-padding"></div> <!-- Empty columns to separate the minus-->
-                        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 no-left-padding">
+                        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-3 product-buttons-container">
                             <i class="fa fa-minus-square-o product-prices-remove-icon"
                                ng-click="removePriceRow(price)"></i>
+                            <i ng-show="$last" class="fa fa-plus-square-o product-prices-last-child" ng-click="addEditPriceRow()"></i>
                         </div>
                     </div>
                 </div>

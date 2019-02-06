@@ -29,10 +29,11 @@
                         <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">Qty</div>
                         <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
                             <i ng-disable="$scope.products.length == 0" class="fa fa-plus-square-o order-items-add-icon"
+                               ng-hide="editOrderObj.items.length > 0"
                                ng-click="addOrderItem()"></i>
                         </div>
                     </div>
-                    <div class="row divider" ng-repeat="item in editOrderObj.items" >
+                    <div class="row divider product-service-headers" ng-repeat="item in editOrderObj.items" >
                         <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5">
                             <div class="reward-multi-select">
                                 <select chosen
@@ -48,10 +49,10 @@
                         <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 no-right-padding">
                             <input type="text" ng-model="item.quantity" class="form-control" ng-change="quantityCheck(item)" placeholder="Enter quantity">
                         </div>
-                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 no-right-padding"></div> <!-- Empty columns to separate the minus-->
-                        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 no-left-padding">
-                            <i class="fa fa-minus-square-o order-items-remove-icon"
+                        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-3 product-buttons-container">
+                            <i class="fa fa-minus-square-o product-prices-remove-icon"
                                ng-click="removeAddOrderItem(item)"></i>
+                            <i ng-show="$last" class="fa fa-plus-square-o product-prices-last-child" ng-click="addOrderItem()"></i>
                         </div>
                     </div>
                 </div>

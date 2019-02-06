@@ -76,10 +76,22 @@
   top: 6px;
 }
 
-.product-prices-icon-expanded{
-  position: relative;
-  left: 377px;
-  top: 6px;
+.product-buttons-container{
+  margin-top: 5px;
+}
+
+.order-items-container{
+  margin-bottom: 5px;
+}
+
+.product-prices-last-child{
+  padding-left: 10px;
+  color: $success;
+  font-size: 25px;
+  cursor: pointer;
+  &:hover{
+    color: $success-dark;
+  }
 }
 
 .product-prices-add-icon{
@@ -93,8 +105,6 @@
 
 .product-prices-remove-icon{
   position: relative;
-  top: 6px;
-  left: -473px;
   color: $danger;
   font-size: 25px;
   cursor: pointer;
@@ -112,19 +122,6 @@
     color: $success-dark;
   }
 }
-
-.order-items-remove-icon{
-  position: relative;
-  top: 6px;
-  left: -234px;
-  color: $danger;
-  font-size: 25px;
-  cursor: pointer;
-  &:hover{
-    color: $danger-dark;
-  }
-}
-
 
 .table-actions{
   z-index: 100;
