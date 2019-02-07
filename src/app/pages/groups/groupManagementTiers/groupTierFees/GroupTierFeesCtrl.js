@@ -74,7 +74,6 @@
                     res.forEach(function (element) {
                         element.currency = vm.returnCurrencyObj(element.currency);
                     });
-
                     $scope.tiersFeesList = res;
                     $scope.$apply();
                 }, function (error) {
