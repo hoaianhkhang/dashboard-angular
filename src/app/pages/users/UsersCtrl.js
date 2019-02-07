@@ -29,7 +29,7 @@
         $scope.archivedOptions = ['True','False'];
         $scope.statusOptions = ['Status','Pending', 'Obsolete', 'Declined', 'Verified', 'Incomplete'];
         $scope.orderByOptions = ['Created','Last login date'];
-        $scope.groupFilterOptions = ['Group name','In a group'];
+        $scope.groupFilterOptions = ['User group','In a group'];
         $scope.currencyOptions = [];
         $scope.filtersCount = 0;
         $scope.initialLoad = true;
@@ -76,7 +76,7 @@
             {colName: 'Last name',fieldName: 'last_name',visible: true},
             {colName: 'Email',fieldName: 'email',visible: true},
             {colName: 'Mobile number',fieldName: 'mobile',visible: true},
-            {colName: 'Group name',fieldName: 'groupName',visible: true},
+            {colName: 'User group',fieldName: 'groupName',visible: true},
             {colName: 'Created',fieldName: 'created',visible: true},
             {colName: 'Updated',fieldName: 'updated',visible: false},
             {colName: 'Archived',fieldName: 'archived',visible: false},
@@ -130,7 +130,7 @@
                 selectedAccountReference: ''
             },
             groupFilter: {
-                selectedGroupOption: 'Group name',
+                selectedGroupOption: 'User group',
                 existsInGroup: false,
                 selectedGroup: {}
             },
@@ -192,7 +192,7 @@
 
         $scope.restoreColDefaults = function () {
             var defaultVisibleHeader = ['Id','First name','Last name','Email',
-                'Mobile number','Group name','Created'];
+                'Mobile number','User group','Created'];
 
             $scope.headerColumns.forEach(function (headerObj) {
                 if(defaultVisibleHeader.indexOf(headerObj.colName) > -1){
@@ -602,7 +602,7 @@
                     first_name__contains: $scope.filtersObj.firstNameFilter ? ($scope.applyFiltersObj.firstNameFilter.selectedFirstName ?  $scope.applyFiltersObj.firstNameFilter.selectedFirstName : null): null,
                     last_name__contains: $scope.filtersObj.lastNameFilter ? ($scope.applyFiltersObj.lastNameFilter.selectedLastName ?  $scope.applyFiltersObj.lastNameFilter.selectedLastName : null): null,
                     account: $scope.filtersObj.accountReferenceFilter ? ($scope.applyFiltersObj.accountReferenceFilter.selectedAccountReference ?  $scope.applyFiltersObj.accountReferenceFilter.selectedAccountReference : null): null,
-                    group: $scope.filtersObj.groupFilter ? $scope.applyFiltersObj.groupFilter.selectedGroupOption == 'Group name'? $scope.applyFiltersObj.groupFilter.selectedGroup.name: null : null,
+                    group: $scope.filtersObj.groupFilter ? $scope.applyFiltersObj.groupFilter.selectedGroupOption == 'User group'? $scope.applyFiltersObj.groupFilter.selectedGroup.name: null : null,
                     group__isnull: $scope.filtersObj.groupFilter ? $scope.applyFiltersObj.groupFilter.selectedGroupOption == 'In a group'? (!$scope.applyFiltersObj.groupFilter.existsInGroup).toString(): null : null,
                     created__gt: vm.dateObj.created__gt ? Date.parse(vm.dateObj.created__gt +'T00:00:00') : null,
                     created__lt: vm.dateObj.created__lt ? Date.parse(vm.dateObj.created__lt +'T00:00:00') : null,
@@ -656,7 +656,6 @@
                 $scope.$apply();
             });
         };
-
         $scope.getAllUsers = function(applyFilter){
             $scope.usersStateMessage = '';
             $scope.loadingUsers = true;
