@@ -1,3 +1,11 @@
+.mfa-active{
+  color: mediumseagreen;
+}
+
+.mfa-not-active{
+  color: $danger;
+}
+
 .custom-file-upload{
   & label{
     display: block;
