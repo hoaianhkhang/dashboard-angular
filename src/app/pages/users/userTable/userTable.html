@@ -3,7 +3,10 @@
     <div class="panel-heading">
         <div class="table-filter-heading">
             <div>
-                <button ng-click="showFilters()" ng-class="{'transactions-filter-btn': (filtersCount > 0), 'transactions-btn': (filtersCount == 0)}"
+                <button ng-click="showFilters()" ng-class="{
+                'transactions-filter-btn-large-filters': (filtersCount >= 10),
+                'transactions-filter-btn': (filtersCount > 0 && filtersCount < 10),
+                'transactions-btn': (filtersCount == 0)}"
                         class="btn btn-default">Filters
                     <span ng-show="filtersCount > 0">|</span> <span ng-show="filtersCount > 0" class="filter-count">{{filtersCount}}</span>
                 </button>
@@ -18,7 +21,7 @@
                 </div>
             </div>
             <button ng-click="getAllUsers('applyFilter')" ng-disabled="loadingUsers"
-                    class="btn btn-default transactions-btn panel-header-user-icon">Refresh</button>
+                    class="btn btn-default dynamic-columns panel-header-user-icon">Refresh</button>
             <button ng-click="openAddUserModal('app/pages/users/addUserModal/addUserModal.html','md')"
                     class="btn btn-primary transactions-btn panel-header-button">New</button>
         </div>

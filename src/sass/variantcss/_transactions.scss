@@ -369,8 +369,13 @@
 }
 
 .transactions-filter-btn{
-  border: 1px solid $primary!important;
-  width: 76px;
+  border: 2px solid $primary!important;
+  width: 82px;
+}
+
+.transactions-filter-btn-large-filters{
+  border: 2px solid $primary!important;
+  width: 92px;
 }
 
 .transactions-btn{

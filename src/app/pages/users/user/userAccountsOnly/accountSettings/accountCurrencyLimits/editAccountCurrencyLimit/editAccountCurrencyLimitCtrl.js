@@ -19,7 +19,7 @@
         $scope.editAccountCurrencyLimit = {};
         $scope.loadingSubtypes = false;
         $scope.txTypeOptions = ['Credit','Debit'];
-        $scope.typeOptions = ['Maximum','Maximum per day','Maximum per month','Minimum','Overdraft'];
+        $scope.typeOptions = ['Maximum per transaction','Maximum per day','Maximum per month','Minimum','Overdraft'];
 
         vm.getCurrencyObjFromCurrenciesList = function(){
             $scope.currencyObj = vm.currenciesList.find(function(element){
@@ -88,7 +88,7 @@
             if(vm.token) {
                 $scope.editingAccountCurrencyLimits = true;
                 vm.updatedAccountCurrencyLimit.tx_type ? vm.updatedAccountCurrencyLimit.tx_type = vm.updatedAccountCurrencyLimit.tx_type.toLowerCase() : '';
-                vm.updatedAccountCurrencyLimit.type ? vm.updatedAccountCurrencyLimit.type = vm.updatedAccountCurrencyLimit.type == 'Maximum' ? 'max': vm.updatedAccountCurrencyLimit.type == 'Maximum per day' ? 'day_max':
+                vm.updatedAccountCurrencyLimit.type ? vm.updatedAccountCurrencyLimit.type = vm.updatedAccountCurrencyLimit.type == 'Maximum per transaction' ? 'max': vm.updatedAccountCurrencyLimit.type == 'Maximum per day' ? 'day_max':
                     vm.updatedAccountCurrencyLimit.type == 'Maximum per month' ? 'month_max': vm.updatedAccountCurrencyLimit.type == 'Minimum' ? 'min': 'overdraft' : '';
 
                 Rehive.admin.accounts.currencies.limits.update(vm.reference,vm.currencyCode,$scope.editAccountCurrencyLimit.id,vm.updatedAccountCurrencyLimit).then(function (res) {
