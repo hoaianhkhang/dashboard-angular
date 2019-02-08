@@ -49,32 +49,24 @@
                                                ng-class="{'checkbox-disabled': (editGroupObj.name == 'admin'  || editGroupObj.name == 'service')}"
                                                ng-checked="enabledColumns[key].view || editGroupObj.name == 'admin'"
                                                class="custom-rehive-checkbox" ng-model="enabledColumns[key].view" ng-change="toggleAllLevelsByType('view', key)">
-                                    <span ng-show="editGroupObj.name == 'admin' || editGroupObj.name == 'service'" class="group-permission-tooltip">
-                                        Rehive system group permissions cannot be edited.</span>
                                 </th>
                                 <th width="12%">Add
                                     <input type="checkbox" ng-disabled="editGroupObj.name == 'admin' || editGroupObj.name == 'service'"
                                           ng-class="{'checkbox-disabled': (editGroupObj.name == 'admin'  || editGroupObj.name == 'service')}"
                                           ng-checked="enabledColumns[key].add || editGroupObj.name == 'admin'"
                                           class="custom-rehive-checkbox" ng-model="enabledColumns[key].add" ng-change="toggleAllLevelsByType('add', key)">
-                                    <span ng-show="editGroupObj.name == 'admin' || editGroupObj.name == 'service'" class="group-permission-tooltip">
-                                        Rehive system group permissions cannot be edited.</span>
                                 </th>
                                 <th width="12%">Change
                                     <input type="checkbox" ng-disabled="editGroupObj.name == 'admin' || editGroupObj.name == 'service'"
                                            ng-class="{'checkbox-disabled': (editGroupObj.name == 'admin'  || editGroupObj.name == 'service')}"
                                            ng-checked="enabledColumns[key].change || editGroupObj.name == 'admin'"
                                            class="custom-rehive-checkbox" ng-model="enabledColumns[key].change" ng-change="toggleAllLevelsByType('change', key)">
-                                    <span ng-show="editGroupObj.name == 'admin' || editGroupObj.name == 'service'" class="group-permission-tooltip">
-                                        Rehive system group permissions cannot be edited.</span>
                                 </th>
                                 <th width="12%">Delete
                                     <input type="checkbox" ng-disabled="editGroupObj.name == 'admin' || editGroupObj.name == 'service'"
                                            ng-class="{'checkbox-disabled': (editGroupObj.name == 'admin'  || editGroupObj.name == 'service')}"
                                            ng-checked="enabledColumns[key].delete || editGroupObj.name == 'admin'"
                                            class="custom-rehive-checkbox" ng-model="enabledColumns[key].delete" ng-change="toggleAllLevelsByType('delete', key)">
-                                    <span ng-show="editGroupObj.name == 'admin' || editGroupObj.name == 'service'" class="group-permission-tooltip">
-                                        Rehive system group permissions cannot be edited.</span>
                                 </th>
                                 <th width="12%" class="text-center">All</th>
                             </tr>

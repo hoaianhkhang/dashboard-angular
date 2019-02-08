@@ -176,13 +176,13 @@
                                         $scope.totalPermissionsObj[key].permissions[permissionsIndex].levels[levelIndex].enabled = true;
                                         $scope.totalPermissionsObj[key].permissions[permissionsIndex].levels[levelIndex].id = permissionsArray[index].id;
                                         $scope.totalPermissionsObj[key].permissions[permissionsIndex].levelCounter = $scope.totalPermissionsObj[key].permissions[permissionsIndex].levelCounter + 1;
-                                        ++$scope.allPermissionsEnabledOfType[key][level.name];
                                         if($scope.totalPermissionsObj[key].permissions[permissionsIndex].levelCounter === 4){
                                             var allIndex = $scope.totalPermissionsObj[key].permissions[permissionsIndex].levels.findIndex(function (element) {
                                                 return element.name === 'all';
                                             });
                                             $scope.totalPermissionsObj[key].permissions[permissionsIndex].levels[allIndex].enabled = true;
                                         }
+                                        ++$scope.allPermissionsEnabledOfType[key][level.name];
                                         if($scope.allPermissionsEnabledOfType[key][level.name] === $scope.totalPermissionsObj[key].permissions.length){
                                             $scope.enabledColumns[key][level.name] = true;
                                         }
@@ -258,64 +258,55 @@
                             vm.checkedLevels.push({type: permission.type,level: permissionsLevel.name,section: permission.section});
                             permission.levelCounter = 4;
                             $scope.totalPermissionsObj[permissionOptionKey].enableAll = vm.isEnabledAllOnCounter(permissionOptionKey,'Increment');
-                            $scope.allPermissionsEnabledOfType[permissionOptionKey][permissionsLevel.name] = $scope.totalPermissionsObj[permissionOptionKey].permissions.length;
+                            if(permissionsLevel.name !== 'all' && $scope.allPermissionsEnabledOfType[permissionOptionKey][permissionsLevel.name] < $scope.totalPermissionsObj[permissionOptionKey].permissions.length){
+                                ++$scope.allPermissionsEnabledOfType[permissionOptionKey][permissionsLevel.name];
+                            }
                         } else if(permissionsLevel.id && !permissionsLevel.enabled){
                             permissionsLevel.enabled = true;
                             var index = findIndexOfLevel(permission,permissionsLevel);
                             vm.checkedLevels.splice(index,1);
                             permission.levelCounter = 4;
                             $scope.totalPermissionsObj[permissionOptionKey].enableAll = vm.isEnabledAllOnCounter(permissionOptionKey,'Increment');
-                            $scope.allPermissionsEnabledOfType[permissionOptionKey][permissionsLevel.name] = $scope.totalPermissionsObj[permissionOptionKey].permissions.length;
+                            if(permissionsLevel.name !== 'all' && $scope.allPermissionsEnabledOfType[permissionOptionKey][permissionsLevel.name] < $scope.totalPermissionsObj[permissionOptionKey].permissions.length){
+                                ++$scope.allPermissionsEnabledOfType[permissionOptionKey][permissionsLevel.name];
+                            }
                         }
                     });
 
-                    $scope.allPermissionsEnabledOfType[permissionOptionKey] = {
-                        view: $scope.totalPermissionsObj[permissionOptionKey].permissions.length,
-                        add: $scope.totalPermissionsObj[permissionOptionKey].permissions.length,
-                        change: $scope.totalPermissionsObj[permissionOptionKey].permissions.length,
-                        delete: $scope.totalPermissionsObj[permissionOptionKey].permissions.length
-                    };
-                    $scope.enabledColumns[permissionOptionKey] = {
-                        view: true,
-                        add: true,
-                        change: true,
-                        delete: true
-                    };
+                    for(var levelName in $scope.allPermissionsEnabledOfType[permissionOptionKey]){
+                        if($scope.allPermissionsEnabledOfType[permissionOptionKey].hasOwnProperty(levelName)){
+                            $scope.enabledColumns[permissionOptionKey][levelName] = $scope.allPermissionsEnabledOfType[permissionOptionKey][levelName] === $scope.totalPermissionsObj[permissionOptionKey].permissions.length;
+                        }
+                    }
+
                 } else {
                     permission.levels.forEach(function (permissionsLevel) {
                         if(permissionsLevel.id  && permissionsLevel.enabled){
                             permissionsLevel.enabled = false;
-                            $scope.allPermissionsEnabledOfType[permissionOptionKey][permissionsLevel.name] = 0;
                             vm.checkedLevels.push({type: permission.type,level: permissionsLevel.name,id: permissionsLevel.id,section: permission.section});
                             permission.levelCounter = 0;
                             $scope.totalPermissionsObj[permissionOptionKey].enableAll = vm.isEnabledAllOnCounter(permissionOptionKey,'Decrement');
-                            $scope.allPermissionsEnabledOfType[permissionOptionKey][permissionsLevel.name] = 0;
+                            if(permissionsLevel.name !== 'all' && $scope.allPermissionsEnabledOfType[permissionOptionKey][permissionsLevel.name] > 0){
+                                --$scope.allPermissionsEnabledOfType[permissionOptionKey][permissionsLevel.name];
+                            }
                         } else if(!permissionsLevel.id  && permissionsLevel.enabled) {
                             permissionsLevel.enabled = false;
-                            $scope.allPermissionsEnabledOfType[permissionOptionKey][permissionsLevel.name] = 0;
                             var index = findIndexOfLevel(permission,permissionsLevel);
                             vm.checkedLevels.splice(index,1);
                             permission.levelCounter = 0;
                             $scope.totalPermissionsObj[permissionOptionKey].enableAll = vm.isEnabledAllOnCounter(permissionOptionKey,'Decrement');
-                            $scope.allPermissionsEnabledOfType[permissionOptionKey][permissionsLevel.name] = 0;
+                            if(permissionsLevel.name !== 'all' && $scope.allPermissionsEnabledOfType[permissionOptionKey][permissionsLevel.name] > 0){
+                                --$scope.allPermissionsEnabledOfType[permissionOptionKey][permissionsLevel.name];
+                            }
                         }
                     });
 
-                    $scope.allPermissionsEnabledOfType[permissionOptionKey] = {
-                        view: 0,
-                        add: 0,
-                        change: 0,
-                        delete: 0
-                    };
-                    $scope.enabledColumns[permissionOptionKey] = {
-                        view: false,
-                        add: false,
-                        change: false,
-                        delete: false
-                    };
+                    for(var levelName in $scope.allPermissionsEnabledOfType[permissionOptionKey]){
+                        if($scope.allPermissionsEnabledOfType[permissionOptionKey].hasOwnProperty(levelName)){
+                            $scope.enabledColumns[permissionOptionKey][levelName] = $scope.allPermissionsEnabledOfType[permissionOptionKey][levelName] === $scope.totalPermissionsObj[permissionOptionKey].permissions.length;
+                        }
+                    }
                 }
-
-                console.log($scope.enabledColumns[permissionOptionKey]);
             } else {
 
                 //level.enabled && level.id means they were ticked from before
