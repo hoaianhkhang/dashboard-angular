@@ -22,6 +22,12 @@
             enabled: true
         };
 
+        vm.preSortCurrencies = function(currency1, currency2){
+            if(currency1.code < currency2.code){return -1;}
+            if(currency1.code > currency2.code){return 1;}
+            return 0;
+        };
+
         vm.getCompanyCurrencies = function(){
             if(vm.token){
                 $http.get(vm.serviceUrl + 'admin/currencies/?page_size=250&archived=false', {
@@ -32,6 +38,10 @@
                 }).then(function (res) {
                     if (res.status === 200) {
                         $scope.currencyOptions = res.data.data.results.slice();
+                        $scope.currencyOptions.sort(vm.preSortCurrencies);
+                        for(let j in $scope.currencyOptions){
+                            $scope.currencyOptions[j].disabled = false;
+                        }
                     }
                 }).catch(function (error) {
                     errorHandler.evaluateErrors(error.data);
@@ -121,9 +131,36 @@
             }
         };
 
+        $scope.checkListedPrices = function(){
+            for(let j in $scope.currencyOptions){
+                $scope.currencyOptions[j].disabled = false;
+            }
+            console.log("now1: ", $scope.newProductParams.prices);
+            for(let i = 0; i < $scope.newProductParams.prices.length - 1; ++i){
+                for(let j = 0; j < $scope.currencyOptions.length; ++j){
+                    console.log($scope.currencyOptions[j].code, $scope.newProductParams.prices[i].currency.code);
+                    if($scope.currencyOptions[j].code === $scope.newProductParams.prices[i].currency.code){
+                        $scope.currencyOptions[j].disabled = true;
+                        break;
+                    }
+                }
+            }
+            console.log("now3: ", $scope.newProductParams.prices);
+        };
+
         $scope.addPriceRow = function () {
+            $scope.checkListedPrices();
+
+            var newCurrency = {};
+            for(let i in $scope.currencyOptions){
+                if(!$scope.currencyOptions[i].disabled){
+                    newCurrency = $scope.currencyOptions[i];
+                    break;
+                }
+            }
+
             var priceObj = {
-                currency: $scope.currencyOptions[($scope.currencyOptions.length - 1)],
+                currency: newCurrency,
                 amount: 10
             };
             $scope.newProductParams.prices.push(priceObj);
@@ -135,6 +172,7 @@
                     array.splice(index,1);
                 }
             });
+            $scope.checkListedPrices();
         };
 
         $scope.backToProductList = function () {

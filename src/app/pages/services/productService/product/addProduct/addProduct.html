@@ -41,8 +41,7 @@
                            'product-prices-add-icon-near-title': newProductParams.prices.length == 0}"
                            ng-click="addPriceRow()"></i>
                     </label>
-                    <!--<div ng-show="newProductParams.prices.length > 0" class="row">-->
-                    <div class="row product-service-headers">
+                    <div ng-show="newProductParams.prices.length > 0" class="row product-service-headers">
                         <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
                             <label>Currency</label>
                         </div>
@@ -57,7 +56,8 @@
                                         data-placeholder-text-single="'Choose a currency'"
                                         width="40"
                                         ng-model="price.currency"
-                                        ng-options="currency.code for currency in currencyOptions | orderBy: 'code'">
+                                        ng-change="checkListedPrices()"
+                                        ng-options="currency.code disable when currency.disabled for currency in currencyOptions | orderBy: 'code'">
                                     <option value=""></option>
                                 </select>
                                 <!--allow-single-deselect="true"-->
