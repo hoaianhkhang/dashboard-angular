@@ -14,7 +14,7 @@
         $scope.editingTierLimits = false;
         vm.groupName = $stateParams.groupName;
         $scope.editTierLimit = {};
-        $scope.typeOptions = ['Maximum','Maximum per day','Maximum per month','Minimum','Overdraft'];
+        $scope.typeOptions = ['Maximum per transaction','Maximum per day','Maximum per month','Minimum','Overdraft'];
         $scope.loadingSubtypes = false;
         vm.updatedTierLimit = {};
 
@@ -108,7 +108,7 @@
             if(vm.token) {
                 $scope.editingTierLimits = true;
                 vm.updatedTierLimit.tx_type ? vm.updatedTierLimit.tx_type = vm.updatedTierLimit.tx_type.toLowerCase() : '';
-                vm.updatedTierLimit.type ? vm.updatedTierLimit.type = vm.updatedTierLimit.type == 'Maximum' ? 'max': vm.updatedTierLimit.type == 'Maximum per day' ? 'day_max':
+                vm.updatedTierLimit.type ? vm.updatedTierLimit.type = vm.updatedTierLimit.type == 'Maximum per transaction' ? 'max': vm.updatedTierLimit.type == 'Maximum per day' ? 'day_max':
                     vm.updatedTierLimit.type == 'Maximum per month' ? 'month_max': vm.updatedTierLimit.type == 'Minimum' ? 'min': 'overdraft' : '';
 
                 Rehive.admin.groups.tiers.limits.update(vm.groupName,$scope.selectedTier.id, $scope.editTierLimit.id,vm.updatedTierLimit).then(function (res) {
