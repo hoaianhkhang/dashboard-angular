@@ -15,9 +15,9 @@
                 <user-transactions-filters></user-transactions-filters>
             </div>
             <button ng-click="openExportUserTransactionsModal('app/pages/users/user/userTransactions/userTransactionsExportModal/userTransactionsExportModal.html','md')"
-                    class="btn btn-default transactions-btn panel-header-transaction-export">Export</button>
+                    class="btn btn-default dynamic-columns panel-header-transaction-export">Export</button>
             <button ng-click="getLatestTransactions('applyFilter')" ng-disabled="loadingTransactions"
-                    class="btn btn-default transactions-btn panel-header-user-icon">Refresh</button>
+                    class="btn btn-default dynamic-columns panel-header-user-icon">Refresh</button>
             <button ng-click="goToNewTransactionModal()"
                     class="btn btn-primary transactions-btn panel-transaction-newTx-button">New</button>
         </div>

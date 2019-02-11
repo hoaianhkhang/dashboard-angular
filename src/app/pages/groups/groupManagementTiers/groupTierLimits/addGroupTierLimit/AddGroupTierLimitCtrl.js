@@ -15,10 +15,10 @@
         $scope.loadingSubtypes = false;
         $scope.tierLimitsParams = {
             tx_type: 'credit',
-            type: 'Maximum',
+            type: 'Maximum per transaction',
             subtype: ''
         };
-        $scope.typeOptions = ['Maximum','Maximum per day','Maximum per month','Minimum','Overdraft'];
+        $scope.typeOptions = ['Maximum per transaction','Maximum per day','Maximum per month','Minimum','Overdraft'];
 
         vm.getCompanyCurrencies = function(){
             if(vm.token){
@@ -72,7 +72,7 @@
             if(vm.token) {
                 $scope.addingTierLimit = true;
                 tierLimitsParams.tx_type = tierLimitsParams.tx_type.toLowerCase();
-                tierLimitsParams.type = tierLimitsParams.type == 'Maximum' ? 'max': tierLimitsParams.type == 'Maximum per day' ? 'day_max':
+                tierLimitsParams.type = tierLimitsParams.type == 'Maximum per transaction' ? 'max': tierLimitsParams.type == 'Maximum per day' ? 'day_max':
                                                                   tierLimitsParams.type == 'Maximum per month' ? 'month_max': tierLimitsParams.type == 'Minimum' ? 'min': 'overdraft';
 
                 tierLimitsParams.currency = tierLimitsParams.currency.code;
@@ -86,7 +86,7 @@
                 }, function (error) {
                     $scope.tierLimitsParams = {
                         tx_type: 'Credit',
-                        type: 'Maximum',
+                        type: 'Maximum per transaction',
                         subtype: ''
                     };
                     $scope.addingTierLimit = false;

@@ -16,11 +16,11 @@
         $scope.loadingSubtypes = false;
         $scope.accountCurrencyLimitsParams = {
             tx_type: 'Credit',
-            type: 'Maximum',
+            type: 'Maximum per transaction',
             subtype: ''
         };
         $scope.txTypeOptions = ['Credit','Debit'];
-        $scope.typeOptions = ['Maximum','Maximum per day','Maximum per month','Minimum','Overdraft'];
+        $scope.typeOptions = ['Maximum per transaction','Maximum per day','Maximum per month','Minimum','Overdraft'];
 
         vm.getCurrencyObjFromCurrenciesList = function(){
             $scope.currencyObj = vm.currenciesList.find(function(element){
@@ -62,7 +62,7 @@
             if(vm.token) {
                 $scope.addingAccountCurrencyLimits = true;
                 accountCurrencyLimitsParams.tx_type = accountCurrencyLimitsParams.tx_type.toLowerCase();
-                accountCurrencyLimitsParams.type = accountCurrencyLimitsParams.type == 'Maximum' ? 'max': accountCurrencyLimitsParams.type == 'Maximum per day' ? 'day_max':
+                accountCurrencyLimitsParams.type = accountCurrencyLimitsParams.type == 'Maximum per transaction' ? 'max': accountCurrencyLimitsParams.type == 'Maximum per day' ? 'day_max':
                     accountCurrencyLimitsParams.type == 'Maximum per month' ? 'month_max': accountCurrencyLimitsParams.type == 'Minimum' ? 'min': 'overdraft';
 
                 Rehive.admin.accounts.currencies.limits.create(vm.reference, vm.currencyCode, accountCurrencyLimitsParams).then(function (res) {
@@ -70,7 +70,7 @@
                     toastr.success('Limit added successfully.');
                     $scope.accountCurrencyLimitsParams = {
                         tx_type: 'Credit',
-                        type: 'Maximum',
+                        type: 'Maximum per transaction',
                         subtype: ''
                     };
                     $scope.getSubtypesArray($scope.accountCurrencyLimitsParams);
@@ -79,7 +79,7 @@
                 }, function (error) {
                     $scope.accountCurrencyLimitsParams = {
                         tx_type: 'Credit',
-                        type: 'Maximum',
+                        type: 'Maximum per transaction',
                         subtype: ''
                     };
                     $scope.getSubtypesArray($scope.accountCurrencyLimitsParams);
