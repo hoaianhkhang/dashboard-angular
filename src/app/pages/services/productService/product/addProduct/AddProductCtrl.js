@@ -146,7 +146,7 @@
             // };
             // $scope.newProductParams.prices.push(priceObj);
 
-            $scope.newProductParams.prices.push({currency: {}, amount: 10});
+            $scope.newProductParams.prices.push({currency: {}, amount: null});
         };
 
         $scope.removeAddPriceRow = function (price) {
