@@ -103,12 +103,13 @@
         };
 
         $scope.addEditPriceRow = function () {
-            var priceObj = {
-                currency: $scope.currencyOptions[($scope.currencyOptions.length - 1)],
-                amount: 10,
-                type: 'add'
-            };
-            $scope.editProductObj.prices.push(priceObj);
+            // var priceObj = {
+            //     currency: $scope.currencyOptions[($scope.currencyOptions.length - 1)],
+            //     amount: 10,
+            //     type: 'add'
+            // };
+            // $scope.editProductObj.prices.push(priceObj);
+            $scope.editProductObj.prices.push({currency: {}, amount: 10});
         };
 
         $scope.removePriceRow = function (price) {

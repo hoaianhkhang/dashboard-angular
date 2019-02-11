@@ -65,7 +65,7 @@
                                         width="40"
                                         ng-model="price.currency"
                                         ng-disabled="price.disable"
-                                        ng-options="currency.code for currency in currencyOptions | orderBy: 'code'">
+                                        ng-options="currency.code for currency in currencyOptions | excludeSelectedCurrencies: price.currency: editProductObj.prices | orderBy: 'code'">
                                     <option value=""></option>
                                 </select>
                                 <!--allow-single-deselect="true"-->
