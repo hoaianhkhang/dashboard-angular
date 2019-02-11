@@ -30,7 +30,7 @@
             status: 'active',
             max_per_user: null,
             event: '',
-            visible: false,
+            visible: true,
             request: false,
             // groups: []
         };

@@ -19,6 +19,7 @@
         $scope.campaignUserEmailForAccount = '';
         $scope.campaignUserAccounts = [];
         $scope.showAccountList = false;
+        $scope.showAdvancedOptions = false;
         vm.updatedCampaignObj = {};
         $scope.amountTypeOptions = ['Fixed' , 'Percentage', 'Both'];
 
