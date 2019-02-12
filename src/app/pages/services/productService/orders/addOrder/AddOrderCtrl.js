@@ -150,7 +150,7 @@
         $scope.addOrderItem = function () {
             var item = {
                 product: $scope.products[($scope.products.length - 1)],
-                quantity: 1
+                quantity: null
             };
             $scope.newOrderParams.items.push(item);
         };

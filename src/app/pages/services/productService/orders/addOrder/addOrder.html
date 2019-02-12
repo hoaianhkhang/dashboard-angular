@@ -12,7 +12,7 @@
                            class="form-control" size="12">
                 </div>
                 <div class="form-group setup-groups-tooltip-div">
-                    <label>Currencies<span class="required-icon">*</span></label>
+                    <label>Currency<span class="required-icon">*</span></label>
                     <div class="reward-multi-select">
                         <select chosen
                                 data-placeholder-text-single="'Choose a currency'"
@@ -26,13 +26,16 @@
                 </div>
                 <div class="form-group setup-groups-tooltip-div">
                     <div class="row">
-                        <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5">Products </div>
-                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">Qty</div>
-                        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+                        <div ng-hide="newOrderParams.items.length > 0" class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
+                            Products
                             <i class="fa fa-plus-square-o order-items-add-icon"
                                ng-hide="newOrderParams.items.length > 0"
-                               ng-click="addOrderItem()"></i>
+                               ng-class="{'order-items-add-icon-near-title': newOrderParams.items.length == 0}"
+                               ng-click="addOrderItem()">
+                            </i>
                         </div>
+                        <div ng-show="newOrderParams.items.length > 0" class="col-lg-5 col-md-5 col-sm-5 col-xs-5">Products </div>
+                        <div ng-show="newOrderParams.items.length > 0" class="col-lg-3 col-md-3 col-sm-3 col-xs-3">Qty</div>
                     </div>
                     <div class="row divider product-service-headers" ng-repeat="item in newOrderParams.items">
                         <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5">
