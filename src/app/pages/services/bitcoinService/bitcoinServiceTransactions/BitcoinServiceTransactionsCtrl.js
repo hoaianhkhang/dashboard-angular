@@ -5,12 +5,13 @@
         .controller('BitcoinServiceTransactionsCtrl', BitcoinServiceTransactionsCtrl);
 
     /** @ngInject */
-    function BitcoinServiceTransactionsCtrl($scope,$http,localStorageManagement,$uibModal,toastr,multiOptionsFilterService,
+    function BitcoinServiceTransactionsCtrl($rootScope, $scope,$http,localStorageManagement,$uibModal,toastr,multiOptionsFilterService,
                                             errorHandler,$state,$window,typeaheadService,serializeFiltersService) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
         vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
+        $rootScope.dashboardTitle = 'Bitcoin service | Rehive';
         $scope.companyDateFormatString = localStorageManagement.getValue('DATE_FORMAT');
         vm.currenciesList = JSON.parse($window.sessionStorage.currenciesList || '[]');
         $scope.showingFilters = false;

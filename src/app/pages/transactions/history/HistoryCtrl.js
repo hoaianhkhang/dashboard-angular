@@ -587,8 +587,6 @@
             }
 
             $scope.filtersObjForExport = searchObj;
-            console.log(searchObj);
-
             return serializeFiltersService.objectFilters(searchObj);
         };
 

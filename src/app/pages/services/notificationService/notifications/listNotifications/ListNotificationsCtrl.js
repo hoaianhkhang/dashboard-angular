@@ -5,13 +5,14 @@
         .controller('ListNotificationsCtrl', ListNotificationsCtrl);
 
     /** @ngInject */
-    function ListNotificationsCtrl($scope,$http,localStorageManagement,$uibModal,errorHandler,
+    function ListNotificationsCtrl($rootScope, $scope,$http,localStorageManagement,$uibModal,errorHandler,
                                    $ngConfirm,$location,_,toastr,$filter,$timeout) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
         vm.baseUrl = localStorageManagement.getValue('SERVICEURL');
         vm.notificationIdArray = [];
+        $rootScope.dashboardTitle = 'Notification service | Rehive';
         $scope.allNotifications = {
             allActions: false
         };
