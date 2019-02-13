@@ -16,7 +16,7 @@
 
         $scope.checkStellarServiceInitialState = function () {
             $scope.loadingStellarService = true;
-            $http.get(vm.serviceUrl + 'admin/company/activation-status/', {
+            $http.get(vm.serviceUrl + 'admin/company/', {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': vm.token
