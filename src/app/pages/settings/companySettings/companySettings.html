@@ -137,6 +137,41 @@
                     </div>
                 </td>
             </tr>
+            <tr ng-repeat="notification in notifications">
+                <td class="table-row-center divider transactions-list-element rehive-table-row-first-child">
+                    {{notification.description}}&nbsp;&nbsp;
+                    <span ng-show="notification.description == 'Send password set/reset notifications'">
+                        <i class="ion-information-circled setup-groups-tooltip"
+                           uib-tooltip-html="'
+                            Sends password set and reset notifications to users.<br><br>
+                            To use a custom page for password set and reset, add your custom page URLs on the <a href=\'/#/settings/company-info\'>Company info</a> page.<br><br>
+                            To send these notifications from your company\'s email address, enter a company email address on the<a href=\'/#/settings/company-info\'>Company info</a> page.<br><br>
+                            To override these emails entirely with your own custom emails, activate the<a href=\'/#/services/notifications\'>Notifications Service</a>.<br><br>'"
+                           class="ion-information-circled setup-groups-tooltip">
+                        </i>
+                    </span>
+
+                    <span ng-show="notification.description == 'Send email/mobile verification notifications'">
+                        <i uib-tooltip-html="'
+                            Sends email and mobile verification notifications to users.<br><br>
+                            To use a custom page for email verification, add your custom page URLs on the <a href=\'/#/settings/company-info\'>Company info</a> page.<br><br>
+                            To send these notifications from your company\'s email address, enter a company email address on the <a href=\'/#/settings/company-info\'>Company info</a> page.<br><br>
+                            To override these emails entirely with your own custom emails, activate the <a href=\'/#/services/notifications\'>Notifications Service</a>.<br><br>'"
+                           class="ion-information-circled setup-groups-tooltip">
+                        </i>
+                    </span>
+                </td>
+                <td class="rehive-table-row-last-child divider">
+                    <div ng-show="notification.enabled">
+                        <i class="fa fa-toggle-on user-switch-active pull-right no-margin"
+                           ng-click="toggleNotificationEnabled(notification)"></i>
+                    </div>
+                    <div ng-hide="notification.enabled">
+                        <i class="fa fa-toggle-on fa-rotate-180 user-switch-inactive pull-right no-margin"
+                           ng-click="toggleNotificationEnabled(notification)"></i>
+                    </div>
+                </td>
+            </tr>
             <tr>
                 <td class="table-row-center transactions-list-element rehive-table-row-first-child">
                     Default transaction status

@@ -17,7 +17,11 @@
                 <input type="text" ng-change="companyInfoChanged('website')" ng-model="company.details.website" class="form-control" placeholder="e.g. https://www.rehive.com">
             </div>
             <div class="form-group">
-                <label>Company email</label>
+                <label>Company email&nbsp;&nbsp;
+                    <span><i uib-tooltip-html="'If this field is filled in, password set/reset notifications and email verification notifications will be sent from this email address.
+                    You can override this by enabling the <a href=\'/services/notifications\'>Notifications Service</a> if you want your emails to send from an email address which
+                    is different to your company email address.'" class="ion-information-circled setup-groups-tooltip"></i></span>
+                </label>
                 <input type="text" ng-change="companyInfoChanged('email')" ng-model="company.details.email" class="form-control" placeholder="e.g. info@rehive.com">
             </div>
             <div class="form-group">
@@ -29,7 +33,7 @@
                 <input type="text" ng-change="companySettingsChanged('password_reset_url')" ng-model="company.details.settings.password_reset_url" class="form-control" placeholder="e.g. https://www.rehive.com/reset/password/">
             </div>
             <div class="form-group">
-                <label>Email confirmation url</label>
+                <label>Email verification url</label>
                 <input type="text" ng-change="companySettingsChanged('email_confirmation_url')" ng-model="company.details.settings.email_confirmation_url" class="form-control" placeholder="e.g. https://www.rehive.com/verify/email/">
             </div>
             <div class="form-group">
