@@ -11,6 +11,47 @@
         vm.token = localStorageManagement.getValue('token');
         $scope.addingGroups = false;
         $scope.groupsParams = {};
+        vm.savedGroupColors = [];
+        vm.colorIndex = -1;
+        vm.companyColors = localStorageManagement.getValue('companyIdentifier') + "_group_colors";
+        vm.color_picker = document.getElementById('addGroupColor');
+
+        vm.initializeGroupHighlightColor = function(){
+            $scope.groupsParams.group_highlight = {
+                group: null,
+                color: "#022b36"
+            };
+        };
+        vm.initializeGroupHighlightColor();
+
+        $scope.trackColorChange = function(){
+            // $scope.groupsParams.group_highlight.color = vm.color_picker.value;
+
+        };
+
+        vm.addGroupHighlightColor = function(){
+            console.log($scope.groupsParams.group_highlight.color);
+
+            if($scope.groupsParams.name == "service" || $scope.groupsParams.name == "admin"){
+                return;
+            }
+
+            $scope.groupsParams.group_highlight.group = $scope.groupsParams.name;
+            vm.savedGroupColors = localStorageManagement.getValue(vm.companyColors) ? JSON.parse(localStorageManagement.getValue(vm.companyColors)) : [];
+            vm.savedGroupColors.forEach(function(color){
+                if(color.group === $scope.groupsParams.name){
+                    vm.colorIndex = vm.savedGroupColors.indexOf(color);
+                    return;
+                }
+            });
+            if(vm.colorIndex === -1){
+                vm.savedGroupColors.push($scope.groupsParams.group_highlight);
+            }else{
+                vm.savedGroupColors[vm.colorIndex].color = $scope.groupsParams.group_highlight.color;
+            }
+            localStorageManagement.setValue(vm.companyColors, JSON.stringify(vm.savedGroupColors));
+        };
+
 
         $scope.groupNameToLowercase = function () {
             if($scope.groupsParams.name){
@@ -26,6 +67,7 @@
                 $scope.addingGroups = true;
                 Rehive.admin.groups.create(groupsParams).then(function (res) {
                     $scope.addingGroups = false;
+                    vm.addGroupHighlightColor();
                     $scope.groupsParams = {};
                     $uibModalInstance.close(res);
                     $scope.$apply();

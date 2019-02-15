@@ -26,6 +26,13 @@
                <br>
                <input class="custom-rehive-checkbox" ng-change="groupsParams.default? groupsParams.public=true:null" ng-model="groupsParams.default" type="checkbox">
            </div>
+           <div class="form-group">
+               <label>
+                   Choose a group highlight color
+                   <input id="addGroupColor" type="color" value="022b36" style="width: 54%; margin-left: 10px"
+                          ng-model="groupsParams.group_highlight.color" ng-change="trackColorChange()">
+               </label>
+           </div>
        </form>
     </div>
     <div class="modal-footer">
