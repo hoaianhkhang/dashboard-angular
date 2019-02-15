@@ -33,11 +33,11 @@
                         }
                     }
 
-                    if(stellarTestnetFullySetup){
-                        $location.path('/services/stellar-testnet/accounts');
-                    } else {
-                        $scope.loadingStellarTestnetService = false;
-                    }
+                    // if(stellarTestnetFullySetup){
+                    //     $location.path('/services/stellar-testnet/accounts');
+                    // } else {
+                    //     $scope.loadingStellarTestnetService = false;
+                    // }
                 }
             }).catch(function (error) {
                 $scope.loadingStellarTestnetService = false;
