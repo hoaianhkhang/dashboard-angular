@@ -29,7 +29,8 @@
         $scope.referenceFilterOptions = ['Is equal to','Is between','Is greater than','Is less than'];
         $scope.dateFilterIntervalOptions = ['days','months'];
         $scope.groupFilterOptions = ['Group name','In a group'];
-        $scope.accountFilterOptions = ['Name','Reference'];
+        // $scope.accountFilterOptions = ['Name','Reference'];
+        $scope.accountFilterOptions = ['Reference'];
         $scope.visibleColumnsArray = [];
         $scope.visibleColumnsSelectionChanged = false;
         $scope.filtersCount = 0;
@@ -155,7 +156,8 @@
                 selectedUserOption: null
             },
             accountFilter: {
-                selectedAccountOption: 'Name',
+                // selectedAccountOption: 'Name',
+                selectedAccountOption: 'Reference',
                 selectedAccountName: null,
                 selectedAccountReference: null
             },
@@ -475,7 +477,8 @@
                             selectedUserOption: filterObjects.applyFiltersObj.userFilter.selectedUserOption
                         },
                         accountFilter: {
-                            selectedAccountOption: filterObjects.applyFiltersObj.accountFilter.selectedAccountOption,
+                            // selectedAccountOption: filterObjects.applyFiltersObj.accountFilter.selectedAccountOption,
+                            selectedAccountOption: 'Reference',
                             selectedAccountName: filterObjects.applyFiltersObj.accountFilter.selectedAccountName,
                             selectedAccountReference: filterObjects.applyFiltersObj.accountFilter.selectedAccountReference
                         },
@@ -548,7 +551,7 @@
                     created__lt: vm.dateObj.created__lt ? Date.parse(vm.dateObj.created__lt +'T00:00:00') : null,
                     currency: $scope.filtersObj.currencyFilter || $scope.filtersObj.amountFilter ? $scope.applyFiltersObj.currencyFilter.selectedCurrencyOption.code: null,
                     user: $scope.filtersObj.userFilter ? ($scope.applyFiltersObj.userFilter.selectedUserOption ? $scope.applyFiltersObj.userFilter.selectedUserOption : null): null,
-                    account__name: $scope.filtersObj.accountFilter ? $scope.applyFiltersObj.accountFilter.selectedAccountOption == 'Name' ? $scope.applyFiltersObj.accountFilter.selectedAccountName : null : null,
+                    // account__name: $scope.filtersObj.accountFilter ? $scope.applyFiltersObj.accountFilter.selectedAccountOption == 'Name' ? $scope.applyFiltersObj.accountFilter.selectedAccountName : null : null,
                     account: $scope.filtersObj.accountFilter ? $scope.applyFiltersObj.accountFilter.selectedAccountOption == 'Reference' ? $scope.applyFiltersObj.accountFilter.selectedAccountReference : null : null,
                     group: $scope.filtersObj.groupFilter ? $scope.applyFiltersObj.groupFilter.selectedGroupOption == 'Group name'? $scope.applyFiltersObj.groupFilter.selectedGroup.name: null : null,
                     group__isnull: $scope.filtersObj.groupFilter ? $scope.applyFiltersObj.groupFilter.selectedGroupOption == 'In a group'? (!$scope.applyFiltersObj.groupFilter.existsInGroup).toString(): null : null,
