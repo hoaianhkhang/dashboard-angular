@@ -16,6 +16,10 @@
         $scope.currencyOptions = [];
         $scope.updatingCampaign =  false;
         $scope.editCampaignParams = {};
+        $scope.campaignUserEmailForAccount = '';
+        $scope.campaignUserAccounts = [];
+        $scope.showAccountList = false;
+        $scope.showAdvancedOptions = false;
         vm.updatedCampaignObj = {};
         $scope.amountTypeOptions = ['Fixed' , 'Percentage', 'Both'];
 
@@ -131,11 +135,11 @@
                                 } else {
                                     editObj.event = '';
                                 }
-                                if(editObj.groups){
-                                    editObj.groups = editObj.groups.split(',');
-                                } else {
-                                    editObj.groups = [];
-                                }
+                                // if(editObj.groups){
+                                //     editObj.groups = editObj.groups.split(',');
+                                // } else {
+                                //     editObj.groups = [];
+                                // }
                                 if(editObj.users){
                                     editObj.users = editObj.users;
                                 } else {
@@ -145,6 +149,13 @@
                                     $scope.accountOptions.forEach(function (element) {
                                         if(element.reference == editObj.account){
                                             editObj.account = element;
+                                            $scope.campaignUserEmailForAccount = editObj.account.user.email;
+                                            $scope.accountOptions.forEach(function(account){
+                                                if(account.user.email == $scope.campaignUserEmailForAccount){
+                                                    $scope.campaignUserAccounts.push(account);
+                                                }
+                                            });
+                                            $scope.showAccountList = true;
                                             $scope.editCampaignParams = editObj;
                                             $scope.updatingCampaign =  false;
                                         }
@@ -208,9 +219,9 @@
             if(vm.updatedCampaignObj.users){
                 vm.updatedCampaignObj.users = (_.pluck(vm.updatedCampaignObj.users,'text'));
             }
-            if(vm.updatedCampaignObj.groups){
-                vm.updatedCampaignObj.groups = (_.pluck(vm.updatedCampaignObj.groups,'text')).join();
-            }
+            // if(vm.updatedCampaignObj.groups){
+            //     vm.updatedCampaignObj.groups = (_.pluck(vm.updatedCampaignObj.groups,'text')).join();
+            // }
             if(vm.updatedCampaignObj.event){
                 if(!vm.updatedCampaignObj.event.includes(".")){
                     var event;
@@ -238,6 +249,23 @@
                     errorHandler.handleErrors(error);
                 });
             }
+        };
+
+        $scope.onSelect = function($item, $model, $label){
+            $scope.campaignUserAccounts = [];
+            $scope.accountOptions.forEach(function(account){
+                if(account.user.email == $model){
+                    $scope.campaignUserAccounts.push(account);
+                }
+            });
+            if($scope.campaignUserAccounts.length > 0){
+                $scope.showAccountList = true;
+                $scope.newCampaignParams.account = $scope.campaignUserAccounts[0];
+            }
+        };
+
+        $scope.emailChanging = function(){
+            $scope.showAccountList = false;
         };
 
         $scope.goToCampaignListView = function () {
