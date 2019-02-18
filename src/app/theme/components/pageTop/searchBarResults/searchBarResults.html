@@ -1,5 +1,54 @@
 <div ng-hide="hideSearchBar" class="panel search-bar-results-box">
     <div class="panel-body" ng-hide="loadingResults">
+        <div ng-show="searchedAccounts.length > 0">
+            <div>
+                <div class="search-title">ACCOUNTS</div>
+            </div>
+            <div class="search-user-body pointer" ng-repeat="account in searchedAccounts" >
+                <div class="search-user-result">
+                    <div class="row">
+                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                            <span class="search-user-result-title pull-left">{{account.name}}</span>
+                        </div>
+                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3"></div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            <span class="search-user-result-extra">Reference {{account.reference}}</span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                            <ul class="search-list-details">
+                                <li>
+                                    <span class="search-list-name">Currencies</span>
+                                </li>
+                                <li>
+                                    <span class="search-list-name">User</span>
+                                </li>
+                                <li>
+                                    <span class="search-list-name">Group</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pul-left">
+                            <ul class="search-list-details">
+                                <li>
+                                    <span class="search-list-value" ng-repeat="item in account.currencies">{{item.currency.code}}</span>
+                                </li>
+                                <li>
+                                    <span class="search-list-value">{{account.user.email}}</span>
+                                </li>
+                                <li>
+                                    <span class="search-list-value" ng-repeat="group in account.user.groups">{{group.name}}</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="show-more-results pointer" ng-click="goToAccounts()">
+                Show more results...
+            </div>
+        </div>
         <div ng-show="searchedUsers.length > 0">
             <div>
                 <div class="search-title">USERS</div>

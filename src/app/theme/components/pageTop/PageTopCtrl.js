@@ -12,6 +12,7 @@
 
         vm.token = localStorageManagement.getValue('TOKEN');
         vm.unfinishedDashboardTasks = [];
+        vm.searchBox = document.getElementById("searchBox");
         $scope.currencies = [];
         $scope.hideSearchBar = true;
         $scope.searchString = '';
@@ -31,6 +32,34 @@
             itemsPerPage: 10,
             pageNo: 1,
             maxSize: 5
+        };
+        $scope.displayOptions = false;
+        $scope.selectSearchCategory = [];
+        $scope.selectSearchCategory = [
+            {name: "account:", placeholder: "account associated with an user or transaction"},
+            {name: "email:", placeholder: "email address associated with user or transaction"},
+            {name: "id:", placeholder: "id associated with a transaction"},
+            {name: "mobile:", placeholder: "mobile number associated with user or transaction"}
+        ];
+
+        document.onclick = function(event){
+            if($scope.displayOptions && event.target !== vm.searchBox){
+                $scope.displaySearchOptions();
+            }
+        };
+
+        $scope.displaySearchOptions = function(){
+            $scope.displayOptions = !$scope.displayOptions;
+            vm.searchBox.placeholder = "";
+            if(!$scope.displayOptions){
+                vm.searchBox.placeholder = "Search by email, mobile number or transaction id";
+            }
+        };
+
+        $scope.searchSelectedOption = function(option){
+            $scope.displayOptions = false;
+            $scope.searchString = "";
+            $scope.searchString += option.name;
         };
 
         vm.currentLocation = $location.path();
@@ -133,20 +162,22 @@
                 $scope.hidingSearchBar();
                 return;
             }
+            const array = searchString.split(':');
+            var typeOfInput, searchCategory = array[0], searchItemString = array[1];
+            // if(identifySearchInput.isMobile(searchItemString)){
+            //     typeOfInput = 'mobile';
+            // } else {
+            //     typeOfInput = 'text';
+            // }
+            // vm.findUser(searchItemString,typeOfInput);
+            console.log(searchItemString,searchCategory);
 
-            var typeOfInput;
-
-            if(identifySearchInput.isMobile(searchString)){
-                typeOfInput = 'mobile';
-            } else {
-                typeOfInput = 'text';
-            }
-
-            vm.findUser(searchString,typeOfInput);
-
+            vm.findUser(searchItemString,searchCategory);
         };
 
         vm.findUser = function (searchString,typeOfInput) {
+            console.log("user: ", searchString,typeOfInput);
+
             $scope.loadingResults = true;
             vm.showSearchBar();
             $scope.searchedTransactions = [];
@@ -154,8 +185,10 @@
             if(vm.token){
                 if(typeOfInput == 'mobile'){
                     filter = 'mobile__contains';
-                } else {
+                } else if(typeOfInput == 'email'){
                     filter = 'email__contains';
+                } else if(typeOfInput == 'account'){
+                    filter = 'account';
                 }
 
                 var userFilter = { page_size: 2 };
@@ -164,10 +197,10 @@
                 Rehive.admin.users.get({filters: userFilter}).then(function (res) {
                     $scope.searchedUsers = res.results;
                     if(res.count == 1){
-                        vm.findTransactions(res.results[0].email,'user');
+                        vm.findTransactions(res.results[0].email, typeOfInput, searchString);
                         $scope.$apply();
                     } else {
-                        vm.findTransactions(searchString,'id');
+                        vm.findTransactions(searchString, typeOfInput, searchString);
                         $scope.$apply();
                     }
                 }, function (error) {
@@ -178,13 +211,17 @@
             }
         };
 
-        vm.findTransactions = function (searchString,typeOfInput) {
+        vm.findTransactions = function (searchString, typeOfInput, originalString) {
+            console.log("transaction: ", searchString,typeOfInput);
+
             var filter;
             if(vm.token){
-                if(typeOfInput == 'user'){
+                if(typeOfInput == 'email'){
                     filter = 'user';
-                } else {
+                } else if(typeOfInput == 'id'){
                     filter = 'id';
+                } else if(typeOfInput == 'account'){
+                    filter = 'account';
                 }
 
                 var transactionsFilter = { page_size: 2 };
@@ -193,6 +230,36 @@
                 Rehive.admin.transactions.get({filters: transactionsFilter}).then(function (res) {
                     $scope.loadingResults = false;
                     $scope.searchedTransactions = res.results;
+                    if(typeOfInput == 'account' || typeOfInput == 'email'){
+                        vm.findAccounts(originalString, typeOfInput);
+                    }
+                    $scope.$apply();
+                }, function (error) {
+                    $scope.loadingResults = false;
+                    errorHandler.evaluateErrors(error);
+                    errorHandler.handleErrors(error);
+                });
+            }
+        };
+
+        vm.findAccounts = function(searchString, typeOfInput){
+            console.log("account: ", searchString,typeOfInput);
+
+            var filter;
+            if(vm.token){
+                console.log(searchString);
+                if(typeOfInput == 'email'){
+                   filter = 'user';
+                } else {
+                    filter = 'reference';
+                }
+                var accountsFilter = { page_size: 2 };
+                accountsFilter[filter] = searchString;
+
+                Rehive.admin.accounts.get({filters: accountsFilter}).then(function (res) {
+                    $scope.loadingResults = false;
+                    $scope.searchedAccounts = res.results;
+                    console.log(res.results);
                     $scope.$apply();
                 }, function (error) {
                     $scope.loadingResults = false;
