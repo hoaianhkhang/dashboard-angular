@@ -170,9 +170,11 @@
             //     typeOfInput = 'text';
             // }
             // vm.findUser(searchItemString,typeOfInput);
-            console.log(searchItemString,searchCategory);
-
-            vm.findUser(searchItemString,searchCategory);
+            if(searchCategory == 'id'){
+                vm.findTransactions(searchItemString, searchCategory, null);
+            } else {
+                vm.findUser(searchItemString, searchCategory);
+            }
         };
 
         vm.findUser = function (searchString,typeOfInput) {
@@ -212,8 +214,6 @@
         };
 
         vm.findTransactions = function (searchString, typeOfInput, originalString) {
-            console.log("transaction: ", searchString,typeOfInput);
-
             var filter;
             if(vm.token){
                 if(typeOfInput == 'email'){
@@ -225,7 +225,11 @@
                 }
 
                 var transactionsFilter = { page_size: 2 };
-                transactionsFilter[filter] = searchString;
+                if(typeOfInput == 'account'){
+                    transactionsFilter[filter] = originalString;
+                } else {
+                    transactionsFilter[filter] = searchString;
+                }
 
                 Rehive.admin.transactions.get({filters: transactionsFilter}).then(function (res) {
                     $scope.loadingResults = false;
@@ -243,8 +247,6 @@
         };
 
         vm.findAccounts = function(searchString, typeOfInput){
-            console.log("account: ", searchString,typeOfInput);
-
             var filter;
             if(vm.token){
                 console.log(searchString);
@@ -290,9 +292,16 @@
                 $state.go('transactions.history',{transactionId: transaction.id});
             } else if($scope.searchedUsers.length > 0) {
                 $state.go('transactions.history',{id: $scope.searchedUsers[0].id});
+            } else if($scope.searchedAccounts.length > 0) {
+                $state.go('transactions.history',{account: $scope.searchedAccounts[0].reference});
             } else {
                 $state.go('transactions.history');
             }
+        };
+
+        $scope.goToAccounts = function (account) {
+            $scope.hidingSearchBar();
+            $state.go('accounts', {reference: account.reference});
         };
 
         // dashboardTasks start
