@@ -110,7 +110,6 @@
                 if (res.status === 200) {
                     $scope.usersData = res.data.data;
                     $scope.users = res.data.data.results;
-                    console.log($scope.users);
                     if($scope.users.length == 0){
                         $scope.usersStateMessage = 'No users have been found';
                         return;
