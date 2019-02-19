@@ -6,7 +6,7 @@
 
     /** @ngInject */
     function OrdersCtrl($scope,$http,Rehive,localStorageManagement,serializeFiltersService,
-                        $uibModal,errorHandler,typeaheadService) {
+                        $uibModal,errorHandler,typeaheadService,$location,toastr, $ngConfirm) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
@@ -18,6 +18,7 @@
         $scope.showingOrdersFilters = false;
         $scope.ordersList = [];
         $scope.currencyOptions = [];
+        $scope.orderId = '';
 
         $scope.ordersPagination = {
             itemsPerPage: 25,
@@ -149,7 +150,15 @@
         };
         $scope.getOrdersLists();
 
-        $scope.displayOrderModal = function (page,size,orderObj) {
+        $scope.showOrderOptionsBox = function (order) {
+            $scope.orderId = order.id;
+        };
+
+        $scope.closeOrderOptionsBox = function () {
+            $scope.orderId = '';
+        };
+
+        $scope.displayOrderModal = function(page, size, orderObj){
             vm.theModal = $uibModal.open({
                 animation: true,
                 templateUrl: page,
@@ -170,5 +179,58 @@
             });
         };
 
+        $scope.goToAddOrder =  function () {
+            $location.path('/services/product/order/create');
+        };
+
+        $scope.openEditOrderView = function(order){
+            $location.path('/services/product/order/edit/' + order.id);
+        };
+
+        $scope.deleteOrderConfirm = function(order){
+            $ngConfirm({
+                title: 'Delete order',
+                content: 'Are you sure you want to delete this order?',
+                animationBounce: 1,
+                animationSpeed: 100,
+                scope: $scope,
+                buttons: {
+                    close: {
+                        text: "Cancel",
+                        btnClass: 'btn-default dashboard-btn'
+                    },
+                    Add: {
+                        text: "Delete",
+                        btnClass: 'btn-danger dashboard-btn',
+                        keys: ['enter'], // will trigger when enter is pressed
+                        action: function($scope){
+                            $scope.deleteOrder(order);
+                        }
+                    }
+                }
+            });
+        };
+
+        $scope.deleteOrder = function (order) {
+            if(vm.token) {
+                $scope.loadingOrders = true;
+                console.log(order.id);
+                $http.delete(vm.serviceUrl + 'admin/orders/' + order.id + '/', {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': vm.token
+                    }
+                }).then(function (res) {
+                    if (res.status === 200) {
+                        toastr.success('Order successfully deleted');
+                        $scope.getOrdersLists();
+                    }
+                }).catch(function (error) {
+                    $scope.loadingOrders =  false;
+                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.handleErrors(error);
+                });
+            }
+        };
     }
 })();

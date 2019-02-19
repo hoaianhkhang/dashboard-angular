@@ -16,7 +16,7 @@
 
         $scope.checkStellarTestnetServiceInitialState = function () {
             $scope.loadingStellarTestnetService = true;
-            $http.get(vm.serviceUrl + 'admin/company/activation-status/', {
+            $http.get(vm.serviceUrl + 'admin/company/', {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': vm.token
@@ -24,6 +24,7 @@
             }).then(function (res) {
                 $scope.loadingStellarTestnetService = false;
                 if (res.status === 200) {
+                    // var stellarTestnetFullySetup = res.data.data.has_completed_setup;
                     var stellarTestnetFullySetup = true;
                     for(var state in res.data.data){
                         if(res.data.data.hasOwnProperty(state)){
@@ -32,7 +33,6 @@
                             }
                         }
                     }
-
                     if(stellarTestnetFullySetup){
                         $location.path('/services/stellar-testnet/accounts');
                     } else {
@@ -47,6 +47,25 @@
         };
         $scope.checkStellarTestnetServiceInitialState();
 
+        vm.updateSetupCompletionStatus = function(){
+            if(vm.token){
+                $http.patch(vm.serviceUrl + '/admin/company/', {has_completed_setup: true}, {
+                    headers: {
+                        'Content-type': 'application/json',
+                        'Authorization': vm.token
+                    }
+                }).then(function(res){
+                    $scope.loadingStellarTestnetService = false;
+                    $scope.stellarTestnetConfigComplete = true;
+                    $location.path('/services/stellar-testnet/configuration');
+                }).catch(function(error){
+                    $scope.loadingStellarTestnetService = false;
+                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.handleErrors(error);
+                });
+            }
+        };
+
         $scope.checkTXLMCurrency = function () {
             if(vm.token){
                 $scope.loadingStellarTestnetService = true;
@@ -57,12 +76,17 @@
                     }
                 }).then(function (res) {
                     if (res.status === 200) {
+                        // if(res.data.data.results.length == 1){
+                        //     vm.checkUserGroup();
+                        // } else if(res.data.data.results.length == 0){
+                        //     vm.createTXLMCurrency();
+                        // }
+                        // $location.path('/services/stellar-testnet/configuration');
                         if(res.data.data.results.length == 1){
-                            vm.checkUserGroup();
+                            vm.updateSetupCompletionStatus();
                         } else if(res.data.data.results.length == 0){
                             vm.createTXLMCurrency();
                         }
-                        $location.path('/services/stellar-testnet/configuration');
                     }
                 }).catch(function (error) {
                     $scope.loadingStellarTestnetService = false;
@@ -90,7 +114,8 @@
                     }
                 }).then(function (res) {
                     if (res.status === 201) {
-                        vm.checkUserGroup();
+                        // vm.checkUserGroup();
+                        vm.updateSetupCompletionStatus();
                     }
                 }).catch(function (error) {
                     $scope.loadingStellarTestnetService = false;
@@ -99,7 +124,7 @@
                 });
             }
         };
-
+        /**** Uncomment for complete setup -
         vm.checkUserGroup = function () {
             if(vm.token){
                 $scope.loadingStellarTestnetService = true;
@@ -232,5 +257,6 @@
             }
         };
 
+        ****/
     }
 })();
