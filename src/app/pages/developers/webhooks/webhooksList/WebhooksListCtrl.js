@@ -19,6 +19,8 @@
         $scope.filtersCount = 0;
         $scope.showingFilters = false;
         $scope.webhookList = [];
+        $scope.webhooksSectionedList = {};
+
         $scope.eventOptions = ['User Create','User Update','User Password Reset','User Password Set','User Email Verify','User Mobile Verify',
             'Address Create','Address Update','Document Create','Document Update', 'Bank Account Create','Bank Account Update',
             'Crypto Account Create','Crypto Account Update','Transaction Create','Transaction Update','Transaction Delete',
@@ -48,6 +50,7 @@
 
         var location = $location.path();
         var locationArray = location.split('/');
+
         $scope.locationIndicator = locationArray[(locationArray.length -1)];
 
         $scope.pagination = {
@@ -61,6 +64,7 @@
             urlFilter: false,
             secretFilter: false
         };
+
         $scope.applyFiltersObj = {
             eventFilter: {
                 selectedEventOption: ''
@@ -71,6 +75,17 @@
             secretFilter: {
                 selectedSecretOption: ''
             }
+        };
+
+        $scope.getServiceSize = function(service){
+            let size = 0, key;
+            for(key in service){
+                if(service.hasOwnProperty(key)){
+                    ++size;
+                }
+            }
+            console.log(service.name, size);
+            return size;
         };
 
         $scope.clearFilters = function () {
@@ -148,6 +163,78 @@
             localStorageManagement.setValue(vm.savedWebhooksListFilters,JSON.stringify(filterObjects));
         };
 
+        vm.formatWebhooksList = function(webhookList){
+            $scope.webhooksSectionedList = {};
+            $scope.webhooksSectionedList = {
+                bitcoin: {
+                    name: "Bitcoin Service"
+                },
+                bitcoin_testnet: {
+                    name: "Bitcoin-testnet Service"
+                },
+                conversion: {
+                    name: "Conversion Service"
+                },
+                ethereum: {
+                    name: "Ethereum Service"
+                },
+                exchange: {
+                    name: "Exchange Service"
+                },
+                ico: {
+                    name: "Ico Service"
+                },
+                miscellaneous: {
+                    name: "Miscellaneous events"
+                },
+                notification: {
+                    name: "Notification Service"
+                },
+                product: {
+                    name: "Product Service"
+                },
+                rewards: {
+                    name: "Rewards Service"
+                },
+                stellar: {
+                    name: "Stellar Service"
+                },
+                stellar_testnet: {
+                    name: "Stellar-testnet Service"
+                }
+            };
+
+            if(!webhookList || !webhookList.length){return;}
+
+            webhookList.forEach(function(webhook){
+                let service = webhook.url.split('/')[2].split('.')[0].replace(/-/, '_');
+                let event = webhook.event.split('.')[0];
+
+                if(!$scope.webhooksSectionedList[service]){
+                    service = "miscellaneous";
+                }
+
+                if(!$scope.webhooksSectionedList[service][event]){
+                    $scope.webhooksSectionedList[service][event]= {
+                        records: []
+                    };
+                }
+
+                // if(!$scope.webhooksSectionedList[service].name){
+                //     $scope.webhooksSectionedList[service].name = service.charAt(0).toUpperCase() + service.substr(1) + " Service";
+                // }
+
+                if(!$scope.webhooksSectionedList[service][event].name){
+                    $scope.webhooksSectionedList[service][event].name = event.charAt(0).toUpperCase() + event.substr(1);
+                    $scope.webhooksSectionedList[service][event].name = $scope.webhooksSectionedList[service][event].name.replace(/_/g, ' ');
+                }
+                $scope.webhooksSectionedList[service][event].records.push(webhook);
+            });
+            console.log($scope.webhooksSectionedList);
+        };
+
+
+
         $scope.getWebhooks = function (applyFilter) {
             if(vm.token) {
 
@@ -171,6 +258,7 @@
                     $scope.webhookList = res.results;
                     $window.scrollTo(0, 0);
                     $scope.$apply();
+                    vm.formatWebhooksList($scope.webhookList);
                 }, function (error) {
                     $scope.loadingWebhooks = false;
                     errorHandler.evaluateErrors(error);
