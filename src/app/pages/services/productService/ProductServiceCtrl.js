@@ -34,6 +34,10 @@
                 $scope.trackedLocation = 'settings';
             } else if (remainingLocation.indexOf('orders') != -1){
                 $scope.trackedLocation = 'orders';
+            } else if (remainingLocation.indexOf('order/create') != -1){
+                $scope.trackedLocation = 'orders';
+            } else if (remainingLocation.indexOf('order/edit') != -1){
+                $scope.trackedLocation = 'orders';
             } else if(remainingLocation.indexOf('list') != -1){
                 $scope.trackedLocation = 'list';
             } else if (remainingLocation.indexOf('create') != -1){
