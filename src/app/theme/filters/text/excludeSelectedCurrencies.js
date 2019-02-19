@@ -11,12 +11,12 @@
     /** @ngInject */
     function excludeSelectedCurrencies() {
         return function(list, ngModel, selectList) {
-            const listLength = selectList.length;
-            let output = [];
+            var listLength = selectList.length;
+            var output = [];
 
             angular.forEach(list, function(listItem){
                 var enabled = true;
-                for (let index = 0; index < listLength; ++index) {
+                for (var index = 0; index < listLength; ++index) {
                     console.log(selectList[index], ngModel, listItem);
                     if(selectList[index].currency.code !== ngModel.code && selectList[index].currency.code === listItem.code){
                         enabled = false;
