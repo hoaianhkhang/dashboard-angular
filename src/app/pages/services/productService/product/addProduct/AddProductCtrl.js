@@ -12,6 +12,7 @@
         vm.token = localStorageManagement.getValue('TOKEN');
         vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
         $scope.addingProduct = false;
+
         $scope.newProductParams = {
             name: '',
             description: '',
@@ -22,23 +23,43 @@
             enabled: true
         };
 
+        vm.preSortCurrencies = function(currency1, currency2){
+            if(currency1.code < currency2.code){return -1;}
+            if(currency1.code > currency2.code){return 1;}
+            return 0;
+        };
+
         vm.getCompanyCurrencies = function(){
             if(vm.token){
-                Rehive.admin.currencies.get({filters: {
-                    page:1,
-                    page_size: 250,
-                    archived: false
-                }}).then(function (res) {
-                    $scope.currencyOptions = res.results.slice();
-                    $scope.$apply();
-                }, function (error) {
-                    errorHandler.evaluateErrors(error);
+                $http.get(vm.serviceUrl + 'admin/currencies/?page_size=250&archived=false', {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': vm.token
+                    }
+                }).then(function (res) {
+                    if (res.status === 200) {
+                        $scope.currencyOptions = res.data.data.results.slice();
+                        $scope.currencyOptions.sort(vm.preSortCurrencies);
+                    }
+                }).catch(function (error) {
+                    errorHandler.evaluateErrors(error.data);
                     errorHandler.handleErrors(error);
-                    $scope.$apply();
                 });
             }
         };
         vm.getCompanyCurrencies();
+
+        // Rehive.admin.currencies.get({filters: {
+        //     page_size: 250,
+        //     archived: false
+        // }}).then(function (res) {
+        //     $scope.currencyOptions = res.results.slice();
+        //     $scope.$apply();
+        // }, function (error) {
+        //     errorHandler.evaluateErrors(error);
+        //     errorHandler.handleErrors(error);
+        //     $scope.$apply();
+        // });
 
         $scope.addNewProduct = function (newProductParams) {
             var newProduct = {
@@ -109,16 +130,28 @@
         };
 
         $scope.addPriceRow = function () {
-            var priceObj = {
-                currency: $scope.currencyOptions[($scope.currencyOptions.length - 1)],
-                amount: 10
-            };
-            $scope.newProductParams.prices.push(priceObj);
+            // $scope.checkListedPrices();
+            //
+            // var newCurrency = {};
+            // for(let i in $scope.currencyOptions){
+            //     if(!$scope.currencyOptions[i].disabled){
+            //         newCurrency = $scope.currencyOptions[i];
+            //         break;
+            //     }
+            // }
+            //
+            // var priceObj = {
+            //     currency: newCurrency,
+            //     amount: 10
+            // };
+            // $scope.newProductParams.prices.push(priceObj);
+
+            $scope.newProductParams.prices.push({currency: {}, amount: null});
         };
 
         $scope.removeAddPriceRow = function (price) {
             $scope.newProductParams.prices.forEach(function (priceObj,index,array) {
-                if(priceObj.currency.code == price.currency.code){
+                if(priceObj.currency.code === price.currency.code){
                     array.splice(index,1);
                 }
             });
