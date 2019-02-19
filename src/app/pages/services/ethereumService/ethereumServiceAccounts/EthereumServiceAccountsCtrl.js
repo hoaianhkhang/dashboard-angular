@@ -9,6 +9,7 @@
         $rootScope.dashboardTitle = 'Ethereum service | Rehive';
         $scope.ethereumAccountSettingView = 'hotwallet';
 
+
         $scope.goToEthereumAccountSetting = function (setting) {
             $scope.ethereumAccountSettingView = setting;
         };

@@ -22,7 +22,23 @@
   <!-- css files will be automatically insert here -->
   <!-- endinject -->
   <!-- endbuild -->
-  <link rel="stylesheet" type="text/css" href="./MyFontsWebfontsKit.css"/>
+  <!--<link rel="stylesheet" type="text/css" href="./MyFontsWebfontsKit.css"/>-->
+  <style type="text/css">
+    @font-face {
+      font-family: 'CamphorPro-Regular';
+      src: url('./webfonts/37C2D7_0_0.eot');
+      src: url('./webfonts/37C2D7_0_0.eot?#iefix') format('embedded-opentype'),
+      url('./webfonts/37C2D7_0_0.woff2') format('woff2'),url('./webfonts/37C2D7_0_0.woff') format('woff'),
+      url('./webfonts/37C2D7_0_0.ttf') format('truetype');
+    }
+    @font-face {
+      font-family: 'CamphorPro-Italic';
+      src: url('./webfonts/37C2D7_1_0.eot');
+      src: url('./webfonts/37C2D7_1_0.eot?#iefix') format('embedded-opentype'),
+      url('./webfonts/37C2D7_1_0.woff2') format('woff2'),url('./webfonts/37C2D7_1_0.woff') format('woff'),
+      url('./webfonts/37C2D7_1_0.ttf') format('truetype');
+    }
+  </style>
 </head>
 <body style="overflow-y: scroll">
 <div ui-view="admin" ></div>
