@@ -24,7 +24,6 @@
                     if (res.status === 200) {
                         $scope.loadingOrder =  false;
                         $scope.orderObj = res.data.data;
-                        console.log($scope.orderObj)
                     }
                 }).catch(function (error) {
                     $scope.loadingOrder =  false;
