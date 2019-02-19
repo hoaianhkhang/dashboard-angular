@@ -24,11 +24,11 @@
             <div ng-show="webhookList.length > 0">
                 <table class="table custom-table">
                     <tr class="divider">
-                        <th width="21%" class="no-left-padding">Event</th>
+                        <th width="20%" class="no-left-padding">Event</th>
                         <th width="21%">URL</th>
                         <th width="22%">Secret</th>
                         <th width="23%">Condition</th>
-                        <th width="13%"></th>
+                        <th width="14%"></th>
                     </tr>
                 </table>
                 <div ng-repeat="section in webhooksSectionedList">
@@ -38,11 +38,11 @@
                             <label class="transactions-list-element" ng-bind="category.name"></label>
                             <table class="table custom-table">
                                 <tr ng-repeat="webhook in category.records">
-                                    <td width="21%" class="transactions-list-element no-left-padding" title="{{webhook.event}}" ng-bind="webhook.event | capitalizeDottedSentence | capitalizeUnderscoredSentence"></td>
+                                    <td width="20%" class="transactions-list-element no-left-padding" title="{{webhook.event}}" ng-bind="webhook.event | capitalizeDottedSentence | capitalizeUnderscoredSentence"></td>
                                     <td width="21%" class="transactions-list-element" title="{{webhook.url}}" ng-bind="webhook.url"></td>
                                     <td width="22%" class="transactions-list-element" title="{{webhook.secret}}" ng-bind="webhook.secret"></td>
                                     <td width="23%" class="transactions-list-element" title="{{webhook.condition}}" ng-bind="webhook.condition"></td>
-                                    <td width="11%" class="transactions-list-element">
+                                    <td width="14%" class="transactions-list-element">
                                         <a ng-click="openWebhooksModal('app/pages/developers/webhooks/webhooksList/webhooksModal/webhooksModal.html','md',webhook)"
                                            class="pull-right pointer ">Delete</a>
                                         <a ng-click="openEditWebhookModal('app/pages/developers/webhooks/webhooksList/editWebhookModal/editWebhookModal.html','md',webhook)"
