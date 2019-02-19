@@ -40,6 +40,7 @@
             }
             console.log(vm.savedGroupColors);
             vm.color_picker.value = $scope.editGroupObj.group_highlight.color;
+            vm.color_picker.style.backgroundColor = vm.color_picker.value;
         };
 
         $scope.goToGroupView = function (path) {
@@ -83,6 +84,7 @@
 
         $scope.trackColorChange = function(){
             $scope.editGroupObj.group_highlight.color = vm.color_picker.value;
+            vm.color_picker.style.backgroundColor = vm.color_picker.value;
         };
 
         vm.updateGroupHighlightColor = function(){

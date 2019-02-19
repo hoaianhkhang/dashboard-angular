@@ -63,11 +63,13 @@
                             </div>
                         </div>
                         <div ng-hide="editGroupObj.name == 'service' || editGroupObj.name == 'admin'" class="form-group">
-                            <label>
+                            <label style="margin-top: -18px;">
                                 Choose a group highlight color
-                                <input id="editGroupColor" type="color" style="width: 54%; margin-left: 10px"
-                                       ng-model="editGroupObj.group_highlight.color" ng-change="trackColorChange()">
                             </label>
+                            <span>
+                                <input id="editGroupColor" type="color" class="group-highlight"
+                                       ng-model="editGroupObj.group_highlight.color" ng-change="trackColorChange()">
+                            </span>
                         </div>
                         <div class="form-group">
                             <button ng-click="updateGroupObj(editGroupObj)"
