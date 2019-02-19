@@ -12,7 +12,7 @@
     <div class="modal-footer">
         <!--<button type="button" class="btn btn-default dashboard-btn pull-left" ng-click="$dismiss()">Close</button>-->
         <button ng-click="deleteAccountConfigConfirm()"
-                type="button" class="btn btn-default pull-right margin-left-12">Delete permanently</button>
+                type="button" class="btn btn-default delete-button-lifted pull-right margin-left-12">Delete permanently</button>
         <button ng-click="archiveAccountConfig()" ng-disabled="accountConfig.archived"
                 ng-class="{'btn-primary': !accountConfig.archived,'btn-gray': accountConfig.archived}"
                 type="button" class="btn dashboard-btn pull-right">Archive</button>

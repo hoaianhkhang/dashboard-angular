@@ -132,7 +132,7 @@
                 buttons: {
                     Add: {
                         text: "Delete",
-                        btnClass: 'btn-default dashboard-btn',
+                        btnClass: 'btn-danger dashboard-btn',
                         keys: ['enter'], // will trigger when enter is pressed
                         action: function(scope){
                             if(scope.deleteText === 'DELETE'){
