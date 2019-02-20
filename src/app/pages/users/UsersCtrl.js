@@ -600,7 +600,7 @@
         };
 
         vm.formatUsersArray = function (usersArray) {
-            let idx = -1;
+            var idx = -1;
             usersArray.forEach(function (userObj) {
                 $scope.users.push({
                     id: userObj.id,
@@ -625,7 +625,7 @@
                     createdJSTime: userObj.created
                 });
                 ++idx;
-                const groupName = $scope.users[idx].groupName;
+                var groupName = $scope.users[idx].groupName;
                 if(groupName != "admin" && groupName != "service"){
                     $scope.users[idx].group_highlight_color = vm.initializeGroupColor(groupName);
                     console.log($scope.users[idx].group_highlight_color);

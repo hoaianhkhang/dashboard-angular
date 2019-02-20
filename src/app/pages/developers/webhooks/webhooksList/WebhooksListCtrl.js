@@ -78,7 +78,7 @@
         };
 
         $scope.getServiceSize = function(service){
-            let size = 0, key;
+            var size = 0, key;
             for(key in service){
                 if(service.hasOwnProperty(key)){
                     ++size;
@@ -207,8 +207,8 @@
             if(!webhookList || !webhookList.length){return;}
 
             webhookList.forEach(function(webhook){
-                let service = webhook.url.split('/')[2].split('.')[0].replace(/-/, '_');
-                let event = webhook.event.split('.')[0];
+                var service = webhook.url.split('/')[2].split('.')[0].replace(/-/, '_');
+                var event = webhook.event.split('.')[0];
 
                 if(!$scope.webhooksSectionedList[service]){
                     service = "miscellaneous";
