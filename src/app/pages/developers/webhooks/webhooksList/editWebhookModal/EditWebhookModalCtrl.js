@@ -69,7 +69,7 @@
                 event = event.replace(/ /g, '_');
                 vm.updatedWebhook.event = vm.eventOptionsObj[event];
             }
-
+            console.log(vm.updatedWebhook.event);
             Rehive.admin.webhooks.update($scope.editWebhook.id, vm.updatedWebhook).then(function (res) {
                 $scope.editingWebhook = false;
                 vm.updatedWebhook = {};
