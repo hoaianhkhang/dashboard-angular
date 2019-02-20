@@ -2,7 +2,7 @@ venv_python: ~/anaconda/envs/zapgo-core/bin/python3.5
 configs:
     staging:
       project_name: rehive-dashboard
-      docker_image: gcr.io/rehive-services/rehive-dashboard-staging
+      docker_image: gcr.io/rehive-services/rehive-dashboard
       cloud_project: rehive-services
       cluster: staging
       namespace: rehive-dashboard-staging
@@ -11,7 +11,7 @@ configs:
       helm_chart_version: 0.1.32
     production:
       project_name: rehive-dashboard
-      docker_image: gcr.io/rehive-services/rehive-dashboard-staging
+      docker_image: gcr.io/rehive-services/rehive-dashboard
       cloud_project: rehive-services
       cluster: production
       namespace: rehive-dashboard
