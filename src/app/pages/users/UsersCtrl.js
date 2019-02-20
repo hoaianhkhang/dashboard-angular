@@ -18,6 +18,8 @@
         vm.currenciesList = JSON.parse($window.sessionStorage.currenciesList || '[]');
         vm.location = $location.path();
         vm.locationArray = vm.location.split('/');
+        vm.savedGroupColors = [];
+        vm.companyColors = localStorageManagement.getValue('companyIdentifier') + "_group_colors";
         $scope.locationIndicator = vm.locationArray[vm.locationArray.length - 1];
         $scope.usersStateMessage = '';
         $scope.users = [];
@@ -582,7 +584,23 @@
 
         };
 
+        vm.initializeGroupColor = function(userGroupName){
+            if(userGroupName === null){return "#022b36";}
+            var idx = -1;
+            vm.savedGroupColors = localStorageManagement.getValue(vm.companyColors) ? JSON.parse(localStorageManagement.getValue(vm.companyColors)) : [];
+            vm.savedGroupColors.forEach(function(color){
+                console.log(color.group, userGroupName);
+                if(color.group == userGroupName){
+                    idx = vm.savedGroupColors.indexOf(color);
+                    return;
+                }
+            });
+            console.log(idx);
+            return (idx === -1) ? "#022b36" : vm.savedGroupColors[idx].color;
+        };
+
         vm.formatUsersArray = function (usersArray) {
+            let idx = -1;
             usersArray.forEach(function (userObj) {
                 $scope.users.push({
                     id: userObj.id,
@@ -606,6 +624,12 @@
                     username: userObj.username,
                     createdJSTime: userObj.created
                 });
+                ++idx;
+                const groupName = $scope.users[idx].groupName;
+                if(groupName != "admin" && groupName != "service"){
+                    $scope.users[idx].group_highlight_color = vm.initializeGroupColor(groupName);
+                    console.log($scope.users[idx].group_highlight_color);
+                }
             });
 
             $scope.loadingUsers = false;

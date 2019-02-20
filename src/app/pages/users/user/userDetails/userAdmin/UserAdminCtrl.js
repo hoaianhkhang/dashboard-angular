@@ -64,7 +64,7 @@
                 buttons: {
                     close: {
                         text: "No",
-                        btnClass: 'btn-default pull-left dashboard-btn'
+                        btnClass: 'btn-default dashboard-btn pull-left '
                     },
                     ok: {
                         text: "Remove",

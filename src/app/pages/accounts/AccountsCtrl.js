@@ -148,7 +148,7 @@
                             selectedUserGroup:
                                 filterObjects.applyFiltersObj.groupFilter.selectedUserGroup ?
                                     $scope.groupOptions.find(function(group){
-                                        if(group.name == filterObjects.applyFiltersObj.groupFilter.selectedUserGroup.name){
+                                        if(group.name === filterObjects.applyFiltersObj.groupFilter.selectedUserGroup.name){
                                             return group;
                                         }
                                     }) : $scope.groupOptions[0]

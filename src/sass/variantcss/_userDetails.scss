@@ -296,9 +296,12 @@ input.custom-rehive-checkbox:disabled{
 }
 
 .user-switch-active, .user-switch-inactive {font-size:40px;cursor:pointer;}
-.user-switch-active, .user-switch-inactive {font-size:40px;cursor:pointer;}
 .user-switch-active { color: #5969F6;}
 .user-switch-inactive {color: $primary;}
+
+.notification-switch-active, .notification-switch-inactive {font-size:34px;cursor:pointer;}
+.notification-switch-active { color: #5969F6;}
+.notification-switch-inactive {color: $primary;}
 
 .user-switches-table-header > th{
   color: #A8A8A8;

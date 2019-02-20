@@ -57,7 +57,8 @@
                         <tr ng-repeat="user in users | orderBy: orderByVariable" data-toggle="modal"
                             class="editable-row center pointer user-details-table-hover"
                             ng-class="{'system-users-admin': user.groupName == 'admin','system-users-service': user.groupName == 'service'}"
-                            ng-mousedown="displayUser($event,user)" oncontextmenu="return false">
+                            ng-mousedown="displayUser($event,user)" oncontextmenu="return false"
+                            ng-style="user.group_highlight_color && {'color': user.group_highlight_color}">
                             <td class="transactions-list-element" ng-repeat="header in headerColumns"
                                 ng-if="header.visible" ng-bind="user[header.fieldName]"></td>
                         </tr>

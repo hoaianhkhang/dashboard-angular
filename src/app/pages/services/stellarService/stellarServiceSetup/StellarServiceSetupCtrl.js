@@ -50,7 +50,7 @@
 
         vm.updateSetupCompletionStatus = function(){
             if(vm.token){
-                $http.patch(vm.serviceUrl + '/admin/company/', {has_completed_setup: true}, {
+                $http.patch(vm.serviceUrl + 'admin/company/', {has_completed_setup: true}, {
                     headers: {
                         'Content-type': 'application/json',
                         'Authorization': vm.token

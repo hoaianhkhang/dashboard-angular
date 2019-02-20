@@ -48,7 +48,7 @@
                     },
                     Add: {
                         text: "Delete permanently",
-                        btnClass: 'btn-danger',
+                        btnClass: 'btn-danger delete-button',
                         keys: ['enter'], // will trigger when enter is pressed
                         action: function(scope){
                             if(scope.deleteText != 'DELETE'){
