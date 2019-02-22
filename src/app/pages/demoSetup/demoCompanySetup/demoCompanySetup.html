@@ -1,34 +1,23 @@
 <div class="row company-setup-container">
-    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
-
-    </div>
+    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"></div>
     <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-        <div class="panel">
-            <div class="panel-heading">
-                <h2 class="no-margin">
-                    Welcome to Rehive
-                </h2>
+        <div ng-hide="settingUpDemo" class="align-items-center">
+            <button ng-click="initializeDemoSetup()"
+                    class="btn btn-primary demo-setup-button">Setup demo
+            </button>
+        </div>
+        <div ng-show="settingUpDemo" class="panel">
+            <div class="panel-heading" style="text-align: center">
+                <h3 class="no-margin">
+                    Setting up demo...
+                </h3>
             </div>
             <div class="panel-body">
-                <div class="divider-20">
-                    <p>Get ready to build and launch your fintech app with Rehive!</p>
-                    <p>We'll guide you through a step-by-step process to set up your company and
-                        configure the core components of your fintech app.</p>
-                    <p>You can skip through this
-                        setup and come back to it later if required.</p>
-                </div>
-                <div class="form-group">
-                    <button ng-click="goToNextView()"
-                            class="btn btn-auth btn-primary pull-right dashboard-btn">Let's go
-                    </button>
-                    <button ng-show="showDefaultSetup" ng-click="openPickInitialCurrenciesModal('app/pages/register/initialSetupScreen/initialCurrenciesModal/initialCurrenciesModal.html','md')"
-                            class="btn btn-auth btn-primary pull-left default-setup-btn">Use default setup
-                    </button>
+                <div>
+                    <img style="margin:auto; display:block" src="../../../../assets/img/loading.gif" width="100" height="100">
                 </div>
             </div>
         </div>
     </div>
-    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
-
-    </div>
+    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"> </div>
 </div>

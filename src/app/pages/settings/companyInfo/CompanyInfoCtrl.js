@@ -166,7 +166,7 @@
             } else if(vm.updatedCompanyInfo.config ===''){
                 vm.updatedCompanyInfo.config = {};
             }
-
+            console.log(vm.updatedCompanyInfo);
             Rehive.admin.company.update(vm.updatedCompanyInfo).then(function (res) {
                 vm.updatedCompanyInfo = {};
                 $scope.company.details = {};
