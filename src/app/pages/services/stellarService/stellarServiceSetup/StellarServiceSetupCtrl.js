@@ -24,15 +24,15 @@
             }).then(function (res) {
                 $scope.loadingStellarService = false;
                 if (res.status === 200) {
-                    // var stellarFullySetup = res.data.data.has_completed_setup;
-                    var stellarFullySetup = true;
-                    for(var state in res.data.data){
-                        if(res.data.data.hasOwnProperty(state)){
-                            if(!res.data.data[state]){
-                                stellarFullySetup = false;
-                            }
-                        }
-                    }
+                    var stellarFullySetup = res.data.data.has_completed_setup;
+                    // var stellarFullySetup = true;
+                    // for(var state in res.data.data){
+                    //     if(res.data.data.hasOwnProperty(state)){
+                    //         if(!res.data.data[state]){
+                    //             stellarFullySetup = false;
+                    //         }
+                    //     }
+                    // }
 
                     if(stellarFullySetup){
                         $location.path('/services/stellar/accounts');
