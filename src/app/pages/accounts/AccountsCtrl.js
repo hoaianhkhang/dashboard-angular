@@ -14,6 +14,8 @@
         vm.companyIdentifier = localStorageManagement.getValue('companyIdentifier');
         vm.savedAccountsTableColumns = vm.companyIdentifier + 'accountsTable';
         vm.savedAccountsTableFilters = vm.companyIdentifier + 'accountsTableFilters';
+        vm.savedGroupColors = [];
+        vm.companyColors = localStorageManagement.getValue('companyIdentifier') + "_group_colors";
         $scope.initialLoad = true;
         $scope.accountsStateMessage = '';
         $scope.accountsList = [];
@@ -342,6 +344,21 @@
             }
         };
 
+        vm.initializeGroupColor = function(userGroupName){
+            if(userGroupName === null || userGroupName === ''){return "#022b36";}
+            var idx = -1;
+            vm.savedGroupColors = localStorageManagement.getValue(vm.companyColors) ? JSON.parse(localStorageManagement.getValue(vm.companyColors)) : [];
+            vm.savedGroupColors.forEach(function(color){
+                console.log(color.group, userGroupName);
+                if(color.group == userGroupName){
+                    idx = vm.savedGroupColors.indexOf(color);
+                    return;
+                }
+            });
+            console.log(idx);
+            return (idx === -1) ? "#022b36" : vm.savedGroupColors[idx].color;
+        };
+
         vm.formatAccountsArray = function (accountsArray) {
 
             if(accountsArray.length === 0){
@@ -363,13 +380,19 @@
                             currencyBalanceAndAvailableBalanceObject[currencyObj.currency.code + 'availableBalance'] = $filter("currencyModifiersFilter")(currencyObj.available_balance,currencyObj.currency.divisibility);
                             currencyText.push(currencyObj.currency.code);
 
+                            var userGroup = accountObj.user.groups.length > 0 ? accountObj.user.groups[0].name : '';
+                            var group_highlight_color = null;
+                            if(userGroup != "admin" && userGroup != "service"){
+                                group_highlight_color = vm.initializeGroupColor(userGroup);
+                            }
                             var accountObject = {
                                 user: accountObj.user.email ? accountObj.user.email : accountObj.user.mobile ? accountObj.user.mobile : accountObj.user.id,
-                                group: accountObj.user.groups.length > 0 ? accountObj.user.groups[0].name : '',
+                                group: userGroup,
                                 name: accountObj.name,
                                 reference: accountObj.reference,
                                 primary: accountObj.primary ? 'primary': '',
-                                currencies: currencyText.sort().join(', ')
+                                currencies: currencyText.sort().join(', '),
+                                group_highlight_color: group_highlight_color
                             };
 
                             accountObject = _.extend(accountObject,currencyBalanceAndAvailableBalanceObject);

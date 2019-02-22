@@ -628,7 +628,6 @@
                 var groupName = $scope.users[idx].groupName;
                 if(groupName != "admin" && groupName != "service"){
                     $scope.users[idx].group_highlight_color = vm.initializeGroupColor(groupName);
-                    console.log($scope.users[idx].group_highlight_color);
                 }
             });
 
