@@ -82,6 +82,7 @@
                 $scope.loadingCompanyInfo = true;
                 Rehive.admin.company.get().then(function (res) {
                     $scope.loadingCompanyInfo = false;
+                    console.log(res);
                     if(res.config){
                         if(Object.keys(res.config).length == 0){
                             res.config = '';
