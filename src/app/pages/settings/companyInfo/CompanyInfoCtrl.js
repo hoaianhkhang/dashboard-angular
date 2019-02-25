@@ -82,10 +82,12 @@
                 $scope.loadingCompanyInfo = true;
                 Rehive.admin.company.get().then(function (res) {
                     $scope.loadingCompanyInfo = false;
-                    if(Object.keys(res.config).length == 0){
-                        res.config = '';
-                    } else {
-                        res.config = JSON.stringify(res.config,null,4);
+                    if(res.config){
+                        if(Object.keys(res.config).length == 0){
+                            res.config = '';
+                        } else {
+                            res.config = JSON.stringify(res.config,null,4);
+                        }
                     }
                     $scope.company.details = res;
                     $scope.companyImageUrl = res.logo;
