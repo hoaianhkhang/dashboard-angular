@@ -7,7 +7,7 @@
     function DemoSetupCtrl($rootScope, $scope, $http, $location,localStorageManagement, environmentConfig,
                            errorHandler, Rehive, toastr, currencyModifiers, serializeFiltersService) {
         var vm=this;
-        vm.token = localStorageManagement.getValue("token");
+        vm.token = localStorageManagement.getValue('TOKEN');
         $rootScope.dashboardTitle = 'Demo setup | Rehive';
         $rootScope.securityConfigured = false;
 
@@ -39,123 +39,122 @@
         };
 
         vm.configureCompanyDetails = function(){
-            // var demoCompany = {
-            //     name: "CompanyName",
-            //     description: "CompanyName is a multi cryptocurrencies app for spending online.",
-            //     website: "",
-            //     email: "",
-            //     logo: null,
-            //     icon: null,
-            //     public: false,
-            //     config: {
-            //         company: {
-            //             name: "CompanyName",
-            //             id: "CompanyId",
-            //             description: "CompanyName is a multi cryptocurrencies app for spending online."
-            //         },
-            //         auth: {
-            //             mfa: "",
-            //             username: false,
-            //             email: "",
-            //             terms: [],
-            //             identifier: "email",
-            //             mobile: "",
-            //             country: false,
-            //             pin: "",
-            //             first_name: false,
-            //             last_name: false
-            //         },
-            //         design: {
-            //             app: {
-            //                 surface: true,
-            //                 tabBarLabels: false
-            //             },
-            //             notifications: {
-            //                 actionButtonsType: "contained",
-            //                 layout: "material"
-            //             },
-            //             wallets: {
-            //                 balance: "badge",
-            //                 actionButtonsType: "",
-            //                 layout: "mini",
-            //                 showActions: false,
-            //                 headerColor: "font",
-            //                 header: "",
-            //                 headerActionType: "text"
-            //             },
-            //             home: {
-            //                 header: "wallets",
-            //                 content: [
-            //                     "notifications",
-            //                     "rewards",
-            //                     "wallets"
-            //                 ]
-            //             },
-            //             other: {
-            //                 floatingActionButtons: false,
-            //                 actionButtonsType: "text",
-            //                 homeCardLayout: "material"
-            //             },
-            //             campaigns: {
-            //                 actionButtonsType: "contained",
-            //                 layout: "material",
-            //                 showActions: true
-            //             },
-            //             general: {
-            //                 elevation: 2,
-            //                 shadow: 3,
-            //                 cornerRadius: 5
-            //             },
-            //             buttons: {
-            //                 elevation: 4,
-            //                 shadow: 10,
-            //                 bold: false,
-            //                 rounded: true
-            //             },
-            //             cards: {
-            //                 elevation: 3,
-            //                 shadow: 8,
-            //                 actionButtonsType: "contained",
-            //                 cornerRadius: 20
-            //             },
-            //             popUp: {
-            //                 cornerRadius: 20
-            //             }
-            //         },
-            //         cards: {
-            //             home: {
-            //                 custom: [
-            //                     {
-            //                         dismiss: true,
-            //                         image: "blocks-card",
-            //                         title: "Welcome to CompanyName",
-            //                         id: 0,
-            //                         description: "Multi-currency app for online payments and rewards."
-            //                     }
-            //                 ]
-            //             }
-            //         }
-            //     }
-            // };
-            // demoCompany.config = JSON.stringify(demoCompany.config);
-            //
-            // if(vm.isJson(demoCompany.config)){
-            //     demoCompany.config = JSON.parse(demoCompany.config);
-            // }
-            //
-            // if(vm.token){
-            //     Rehive.admin.company.update(demoCompany).then(function(res){
-            //         $rootScope.pageTopObj.companyObj = res;
-            //         vm.setupUserGroups();
-            //         $scope.$apply();
-            //     }).catch(function(error){
-            //         errorHandler.evaluateErrors(error.data);
-            //         errorHandler.handleErrors(error);
-            //         $scope.$apply();
-            //     });
-            // }
-            // vm.setupUserGroups();
-            vm.setupServices();
+            var demoCompany = {
+                name: "CompanyName",
+                description: "CompanyName is a multi cryptocurrencies app for spending online.",
+                website: "",
+                email: "",
+                logo: null,
+                icon: null,
+                public: false,
+                config: {
+                    company: {
+                        name: "CompanyName",
+                        id: "CompanyId",
+                        description: "CompanyName is a multi cryptocurrencies app for spending online."
+                    },
+                    auth: {
+                        mfa: "",
+                        username: false,
+                        email: "",
+                        terms: [],
+                        identifier: "email",
+                        mobile: "",
+                        country: false,
+                        pin: "",
+                        first_name: false,
+                        last_name: false
+                    },
+                    design: {
+                        app: {
+                            surface: true,
+                            tabBarLabels: false
+                        },
+                        notifications: {
+                            actionButtonsType: "contained",
+                            layout: "material"
+                        },
+                        wallets: {
+                            balance: "badge",
+                            actionButtonsType: "",
+                            layout: "mini",
+                            showActions: false,
+                            headerColor: "font",
+                            header: "",
+                            headerActionType: "text"
+                        },
+                        home: {
+                            header: "wallets",
+                            content: [
+                                "notifications",
+                                "rewards",
+                                "wallets"
+                            ]
+                        },
+                        other: {
+                            floatingActionButtons: false,
+                            actionButtonsType: "text",
+                            homeCardLayout: "material"
+                        },
+                        campaigns: {
+                            actionButtonsType: "contained",
+                            layout: "material",
+                            showActions: true
+                        },
+                        general: {
+                            elevation: 2,
+                            shadow: 3,
+                            cornerRadius: 5
+                        },
+                        buttons: {
+                            elevation: 4,
+                            shadow: 10,
+                            bold: false,
+                            rounded: true
+                        },
+                        cards: {
+                            elevation: 3,
+                            shadow: 8,
+                            actionButtonsType: "contained",
+                            cornerRadius: 20
+                        },
+                        popUp: {
+                            cornerRadius: 20
+                        }
+                    },
+                    cards: {
+                        home: {
+                            custom: [
+                                {
+                                    dismiss: true,
+                                    image: "blocks-card",
+                                    title: "Welcome to CompanyName",
+                                    id: 0,
+                                    description: "Multi-currency app for online payments and rewards."
+                                }
+                            ]
+                        }
+                    }
+                }
+            };
+            demoCompany.config = JSON.stringify(demoCompany.config);
+
+            if(vm.isJson(demoCompany.config)){
+                demoCompany.config = JSON.parse(demoCompany.config);
+            }
+
+            demoCompany = serializeFiltersService.objectFilters(demoCompany);
+            if(vm.token){
+                Rehive.admin.company.update(demoCompany).then(function(res){
+                    $rootScope.pageTopObj.companyObj = res;
+                    vm.setupUserGroups();
+                    $scope.$apply();
+                }).catch(function(error){
+                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.handleErrors(error);
+                    $scope.$apply();
+                });
+            }
         };
 
         vm.setupUserGroups = function(){
@@ -346,13 +345,13 @@
             var servicesArray = [4, 12, 45, 78, 79, 80];
             if(vm.token){
                 for(var index = 0; index < servicesArray.length; ++index) {
-                    $http.put(environmentConfig.API + '/admin/services/' + servicesArray[i] + '/',{terms_and_conditions: true, active: true},{
+                    $http.put(environmentConfig.API + '/admin/services/' + servicesArray[index] + '/',{terms_and_conditions: true, active: true},{
                         headers: {
                             'Content-Type': 'application/json',
                             'Authorization': vm.token
                         }
                     }).then(function (res) {
-                        if(res.status === 200 && index === (servicesArray.length - 1)){
+                        if(index === (servicesArray.length - 1)){
                             vm.setupBitcoinTestnetService();
                         }
                     }).catch(function (error) {
@@ -376,7 +375,7 @@
                 }).then(function (res) {
                     $scope.addingHotwallet = false;
                     if (res.status === 201) {
-                        $vm.setupStellarTestnetService();
+                        vm.setupStellarTestnetService();
                     }
                 }).catch(function (error) {
                     errorHandler.evaluateErrors(error.data);
@@ -387,36 +386,64 @@
         };
 
         vm.setupStellarTestnetService = function(){
-            vm.addStellarTestnetHotwallet();
+            if(vm.token){
+                $http.patch('https://stellar-testnet.services.rehive.io/api/1/admin/company/', {has_completed_setup: true}, {
+                    headers: {
+                        'Content-type': 'application/json',
+                        'Authorization': vm.token
+                    }
+                }).then(function(res){
+                    vm.fundStellarTestnetHotwallet();
+                }).catch(function(error){
+                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.handleErrors(error);
+                });
+            }
         };
 
-        vm.addStellarTestnetHotwallet = function(){
-            var hotwalletParams = {
-                low_balance_percentage: 0.1
-            };
-            $http.post('https://stellar-testnet.services.rehive.io/api/1/admin/hotwallet/', hotwalletParams, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': vm.token
-                }
-            }).then(function (res) {
+        vm.fundStellarTestnetHotwallet = function(){
+            if(vm.token){
                 $http.get('https://stellar-testnet.services.rehive.io/api/1/admin/hotwallet/fund', {
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': vm.token
                     }
                 }).then(function(res){
-                    vm.addDemoAsset(res.data.data.account_address);
+                    var hotwalletFundObj = res.data.data;
+                    var url = "https://friendbot.stellar.org/?addr=" + hotwalletFundObj.account_address;
+                    $http.get(url , {
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    }).then(function (res) {
+                        if (res.status === 200) {
+                            vm.addDemoAsset(hotwalletFundObj.account_address);
+                        }
+                    }).catch(function (error) {
+                        errorHandler.evaluateErrors(error.data);
+                        errorHandler.handleErrors(error);
+                    });
                 }).catch(function (error) {
-                    $scope.addingHotwallet = false;
                     errorHandler.evaluateErrors(error.data);
                     errorHandler.handleErrors(error);
                 });
-            }).catch(function (error) {
-                $scope.addingHotwallet = false;
-                errorHandler.evaluateErrors(error.data);
-                errorHandler.handleErrors(error);
-            });
+
+            }
+            // var hotwalletParams = {
+            //     low_balance_percentage: 0.1
+            // };
+            // $http.post('https://stellar-testnet.services.rehive.io/api/1/admin/hotwallet/', hotwalletParams, {
+            //     headers: {
+            //         'Content-Type': 'application/json',
+            //         'Authorization': vm.token
+            //     }
+            // }).then(function (res) {
+            //
+            // }).catch(function (error) {
+            //     $scope.addingHotwallet = false;
+            //     errorHandler.evaluateErrors(error.data);
+            //     errorHandler.handleErrors(error);
+            // });
         };
 
         vm.addDemoAsset = function(issuerAddress){
@@ -427,6 +454,7 @@
                 symbol: 'd',
                 unit: "demo"
             };
+            demoAssetParams = serializeFiltersService.objectFilters(demoAssetParams);
 
             $http.post('https://stellar-testnet.services.rehive.io/api/1/admin/asset/', demoAssetParams, {
                 headers: {
@@ -531,7 +559,7 @@
             }
 
             if(vm.token) {
-                $http.post(vm.baseUrl + 'admin/notifications/',notificationObj, {
+                $http.post('https://notification.services.rehive.io/api/admin/notifications/',notificationObj, {
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': vm.token
@@ -675,7 +703,7 @@
                         $scope.currencyOptions.sort(function(a, b){
                             return a.unit.localeCompare(b.unit);
                         });
-
+                        vm.setupCurrencies();
                         vm.setupAccountConfigurations();
                         $scope.$apply();
                     }, function (error) {
@@ -701,12 +729,14 @@
                 primary: true,
                 list: []
             };
+
+            operationalAccountConfig = serializeFiltersService.objectFilters(operationalAccountConfig);
+            walletAccountConfig = serializeFiltersService.objectFilters(walletAccountConfig);
+
             vm.addGroupAccountConfigurations("admin", operationalAccountConfig, null);
             vm.addGroupAccountConfigurations("manager", operationalAccountConfig, null);
             vm.addGroupAccountConfigurations("support", operationalAccountConfig, null);
             vm.addGroupAccountConfigurations("user", walletAccountConfig, 'last');
-
-
         };
 
         vm.addGroupAccountConfigurations = function(groupName, groupAccountConfigurationParams, last){
@@ -770,12 +800,18 @@
                     type: 'month_max'
                 };
 
-            for(var i = 0; i > $scope.currencyOptions.length; ++i){
+            tier1LimitCr = serializeFiltersService.objectFilters(tier1LimitCr);
+            tier1LimitDr = serializeFiltersService.objectFilters(tier1LimitDr);
+            tier2LimitCr = serializeFiltersService.objectFilters(tier2LimitCr);
+            tier2LimitDr = serializeFiltersService.objectFilters(tier2LimitDr);
+
+            for(var i = 0; i < $scope.currencyOptions.length; ++i){
                 var currency = $scope.currencyOptions[i];
-                tier1LimitCr.value = tier1LimitDr.value = currencyModifiers.convertToCents(tier1LimitDr.value, currency.divisibility);
-                tier2LimitCr.value = tier2LimitDr.value = currencyModifiers.convertToCents(userTier2LimitDr.value, currency.divisibility);
 
                 tier1LimitCr.currency = tier1LimitDr.currency = tier2LimitCr.currency = tier2LimitDr.currency = currency.code;
+
+                tier1LimitCr.value = tier1LimitDr.value = currencyModifiers.convertToCents(1000, currency.divisibility);
+                tier2LimitCr.value = tier2LimitDr.value = currencyModifiers.convertToCents(10000, currency.divisibility);
 
                 for(var j = 0; j < $scope.userGroupTiers.length; ++j){
                     if($scope.userGroupTiers[j].level === 1){
@@ -789,16 +825,16 @@
                 }
                 for(var k = 0; k < $scope.merchantGroupTiers.length; ++k){
                     if($scope.merchantGroupTiers[k].level === 1){
-                        vm.addTierLimit("merchant", $scope.userGroupTiers[k].id, tier1LimitCr, null);
-                        vm.addTierLimit("merchant", $scope.userGroupTiers[k].id, tier1LimitDr, null);
+                        vm.addTierLimit("merchant", $scope.merchantGroupTiers[k].id, tier1LimitCr, null);
+                        vm.addTierLimit("merchant", $scope.merchantGroupTiers[k].id, tier1LimitDr, null);
                     }
                     else if($scope.merchantGroupTiers[k].level === 2 && i === ($scope.currencyOptions.length - 1) && k === ($scope.merchantGroupTiers.length - 1)){
-                        vm.addTierLimit("merchant", $scope.userGroupTiers[k].id, tier2LimitCr, null);
-                        vm.addTierLimit("merchant", $scope.userGroupTiers[k].id, tier2LimitDr, 'last');
+                        vm.addTierLimit("merchant", $scope.merchantGroupTiers[k].id, tier2LimitCr, null);
+                        vm.addTierLimit("merchant", $scope.merchantGroupTiers[k].id, tier2LimitDr, 'last');
                     }
                     else if($scope.merchantGroupTiers[k].level === 2){
-                        vm.addTierLimit("merchant", $scope.userGroupTiers[k].id, tier2LimitCr, null);
-                        vm.addTierLimit("merchant", $scope.userGroupTiers[k].id, tier2LimitDr, null);
+                        vm.addTierLimit("merchant", $scope.merchantGroupTiers[k].id, tier2LimitCr, null);
+                        vm.addTierLimit("merchant", $scope.merchantGroupTiers[k].id, tier2LimitDr, null);
                     }
                 }
             }
@@ -835,7 +871,7 @@
                     reward_amount: currencyModifiers.convertToCents(20.00, $scope.demoCurrency.divisibility),
                     account: null,
                     reward_percentage: null,
-                    amount_type: 'Fixed',
+                    amount_type: "fixed",
                     status: 'active',
                     max_per_user: 1,
                     visible: true,
@@ -853,7 +889,7 @@
                 reward_amount: currencyModifiers.convertToCents(20.00, $scope.demoCurrency.divisibility),
                 account: null,
                 reward_percentage: null,
-                amount_type: 'Fixed',
+                amount_type: "fixed",
                 status: 'active',
                 max_per_user: 1,
                 visible: true,
@@ -890,6 +926,33 @@
             }
         };
 
+        /*To update the service currencies: */
+        vm.reactivateProductService = function(){
+            if(vm.token){
+                $http.put(environmentConfig.API + '/admin/services/' + 79 + '/',{active: false},{
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': vm.token
+                    }
+                }).then(function (res) {
+                    $http.put(environmentConfig.API + '/admin/services/' + 79 + '/',{terms_and_conditions: true, active: true},{
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': vm.token
+                        }
+                    }).then(function (res) {
+                        vm.setupProductService();
+                    }).catch(function (error) {
+                        errorHandler.evaluateErrors(error.data);
+                        errorHandler.handleErrors(error);
+                    });
+                }).catch(function (error) {
+                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.handleErrors(error);
+                });
+            }
+        };
+
         vm.setupProductService = function(){
             var newProduct1 = {
                 name: "Steam voucher",
@@ -899,8 +962,8 @@
                 code: "STEA10",
                 enabled: true,
                 prices: [
-                    {currency: "DEMO", amount: currencyModifiers.convertToCents(5, $scope.demoCurrency.divisibility)},
-                    {currency: "TXBT", amount: currencyModifiers.convertToCents(0.002.amount, $scope.txbtCurrency.divisibility)}
+                    {currency: $scope.demoCurrency, amount: 5000000},
+                    {currency: $scope.txbtCurrency, amount: 20000}
                 ]
             },
             newProduct2 = {
@@ -911,8 +974,8 @@
                 code: "AMAZ50",
                 enabled: true,
                 prices: [
-                    {currency: "DEMO", amount: currencyModifiers.convertToCents(10, $scope.demoCurrency.divisibility)},
-                    {currency: "TXBT", amount: currencyModifiers.convertToCents(0.005, $scope.txbtCurrency.divisibility)}
+                    {currency: $scope.demoCurrency, amount: 100000000},
+                    {currency: $scope.txbtCurrency, amount: 50000}
                 ]
             };
 
@@ -953,15 +1016,16 @@
 
         vm.formatPricesOfProducts = function(id, product){
             product.prices.forEach(function(price,idx,array){
-                if(idx === array.length - 1 && product.code === "AMAZ50"){
-                    vm.addPriceToProducts(id,{currency: price.currency, amount: price.amount},'last');
+                if(idx === (array.length - 1) && product.code === "AMAZ50"){
+                    vm.addPriceToProducts(id,{currency: price.currency.code, amount: price.amount},'last');
                     return false;
                 }
-                vm.addPriceToProducts(id,{currency: price.currency, amount: price.amount}, null);
+                vm.addPriceToProducts(id,{currency: price.currency.code, amount: price.amount}, null);
             });
         };
 
         vm.addPriceToProducts = function(productId, priceObj, last){
+            console.log(priceObj);
             if(vm.token) {
                 $http.post('https://product.services.rehive.io/api/admin/products/' + productId + '/prices/', priceObj, {
                     headers: {
@@ -986,7 +1050,8 @@
 
         $scope.initializeDemoSetup = function(){
             $scope.settingUpDemo = true;
-            vm.configureCompanyDetails();
+            // vm.configureCompanyDetails();
+            vm.fundStellarTestnetHotwallet();
         };
 
         vm.goToCurrencies = function(){
