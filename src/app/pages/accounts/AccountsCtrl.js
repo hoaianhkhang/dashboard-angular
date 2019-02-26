@@ -6,7 +6,7 @@
 
     /** @ngInject */
     function AccountsCtrl($rootScope,$scope,localStorageManagement,typeaheadService,compareArrayOfObjects,
-                          _,errorHandler,serializeFiltersService,$uibModal,Rehive,$filter) {
+                          _,errorHandler,serializeFiltersService,$uibModal,Rehive,$filter, $state) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
@@ -238,6 +238,18 @@
             });
         };
 
+        if($state.params.reference){
+            $scope.filtersObj.referenceFilter = true;
+            $scope.applyFiltersObj.referenceFilter.selectedReferenceFilter = $state.params.reference;
+            $scope.getAllAccounts();
+        } else if($state.params.email) {
+            $scope.filtersObj.userFilter = true;
+            $scope.applyFiltersObj.userFilter.selectedUserFilter = $state.params.email;
+            $scope.getAllAccounts();
+        } else {
+            $scope.getAllAccounts();
+        }
+
         $scope.getGroups = function () {
             if(vm.token) {
                 Rehive.admin.groups.get({filters: {page_size: 250}}).then(function (res) {
@@ -245,7 +257,6 @@
                         $scope.groupOptions = res.results;
                         $scope.applyFiltersObj.groupFilter.selectedUserGroup = $scope.groupOptions[0];
                     }
-                    $scope.getAllAccounts();
                     $scope.$apply();
                 }, function (error) {
                     errorHandler.evaluateErrors(error);

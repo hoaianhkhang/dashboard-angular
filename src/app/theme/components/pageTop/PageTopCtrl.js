@@ -13,6 +13,9 @@
         vm.token = localStorageManagement.getValue('TOKEN');
         vm.unfinishedDashboardTasks = [];
         vm.searchBox = document.getElementById("searchBox");
+        vm.companyIdentifier = localStorageManagement.getValue('companyIdentifier');
+        vm.savedAccountsTableFilters = vm.companyIdentifier + 'accountsTableFilters';
+        vm.savedTransactionTableFilters = vm.companyIdentifier + 'transactionTableFilters';
         $scope.currencies = [];
         $scope.hideSearchBar = true;
         $scope.searchString = '';
@@ -60,6 +63,7 @@
             $scope.displayOptions = false;
             $scope.searchString = "";
             $scope.searchString += option.name;
+            vm.searchBox.focus();
         };
 
         vm.currentLocation = $location.path();
@@ -162,24 +166,18 @@
                 $scope.hidingSearchBar();
                 return;
             }
-            const array = searchString.split(':');
-            var typeOfInput, searchCategory = array[0], searchItemString = array[1];
+            var array = searchString.split(':');
+            var typeOfInput = array[0], searchItemString = array[1];
             // if(identifySearchInput.isMobile(searchItemString)){
             //     typeOfInput = 'mobile';
             // } else {
             //     typeOfInput = 'text';
             // }
             // vm.findUser(searchItemString,typeOfInput);
-            if(searchCategory == 'id'){
-                vm.findTransactions(searchItemString, searchCategory, null);
-            } else {
-                vm.findUser(searchItemString, searchCategory);
-            }
+            vm.findUser(searchItemString, typeOfInput);
         };
 
         vm.findUser = function (searchString,typeOfInput) {
-            console.log("user: ", searchString,typeOfInput);
-
             $scope.loadingResults = true;
             vm.showSearchBar();
             $scope.searchedTransactions = [];
@@ -234,6 +232,7 @@
                 Rehive.admin.transactions.get({filters: transactionsFilter}).then(function (res) {
                     $scope.loadingResults = false;
                     $scope.searchedTransactions = res.results;
+
                     if(typeOfInput == 'account' || typeOfInput == 'email'){
                         vm.findAccounts(originalString, typeOfInput);
                     }
@@ -249,7 +248,6 @@
         vm.findAccounts = function(searchString, typeOfInput){
             var filter;
             if(vm.token){
-                console.log(searchString);
                 if(typeOfInput == 'email'){
                    filter = 'user';
                 } else {
@@ -261,7 +259,6 @@
                 Rehive.admin.accounts.get({filters: accountsFilter}).then(function (res) {
                     $scope.loadingResults = false;
                     $scope.searchedAccounts = res.results;
-                    console.log(res.results);
                     $scope.$apply();
                 }, function (error) {
                     $scope.loadingResults = false;
@@ -288,20 +285,33 @@
 
         $scope.goToTransactionsHistory = function (transaction) {
             $scope.hidingSearchBar();
-            if(transaction && transaction.id){
+            var type = $scope.searchString.split(':')[0];
+
+            if(type == "id"){
                 $state.go('transactions.history',{transactionId: transaction.id});
-            } else if($scope.searchedUsers.length > 0) {
-                $state.go('transactions.history',{id: $scope.searchedUsers[0].id});
-            } else if($scope.searchedAccounts.length > 0) {
-                $state.go('transactions.history',{account: $scope.searchedAccounts[0].reference});
-            } else {
+            }
+            else if(type == "email"){
+                $state.go('transactions.history',{id: transaction.user.id});
+            }
+            else if(type == "account"){
+                $state.go('transactions.history',{accountRef: transaction.account});
+            }
+            else {
                 $state.go('transactions.history');
             }
         };
 
         $scope.goToAccounts = function (account) {
             $scope.hidingSearchBar();
-            $state.go('accounts', {reference: account.reference});
+            var type = $scope.searchString.split(':')[0];
+
+            if(type === "account"){
+                $state.go('accounts',{reference: account.reference});
+            }else if(type === "email"){
+                $state.go('accounts',{email: account.user.email});
+            }else {
+                $state.go('accounts');
+            }
         };
 
         // dashboardTasks start
