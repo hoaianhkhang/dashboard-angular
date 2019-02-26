@@ -115,7 +115,7 @@
                     <div class="reward-multi-select col-lg-5 col-md-5 col-sm-5 col-xs-5">
                         <label>Search user to select reward account</label>
                         <input class="form-control" ng-model="campaignUserEmailForAccount"
-                               type="text" required placeholder="Enter email of user to list accounts"
+                               type="text" placeholder="Enter email of user to list accounts"
                                uib-typeahead="email for email in getUsersEmailTypeahead($viewValue)"
                                ng-change="emailChanging()"
                                typeahead-on-select="onSelect($item, $model, $label)" ng-model-options='{ debounce: 800 }' >

@@ -77,6 +77,10 @@ $panel-heading-font-size: 17px;
   }
 }
 
+.panel > .panel-heading-rehive-groups{
+  padding: 25px 10px 25px 25px;
+}
+
 .panel-heading, .panel-footer {
   height: $panel-title-height;
   font-size: $panel-heading-font-size;

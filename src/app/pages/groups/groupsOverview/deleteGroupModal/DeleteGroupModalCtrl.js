@@ -44,7 +44,7 @@
                 buttons: {
                     close: {
                         text: "Cancel",
-                        btnClass: 'btn-default dashboard-btn'
+                        btnClass: 'btn-default'
                     },
                     Add: {
                         text: "Delete permanently",

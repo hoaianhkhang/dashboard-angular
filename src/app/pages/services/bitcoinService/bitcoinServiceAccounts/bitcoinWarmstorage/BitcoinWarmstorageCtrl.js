@@ -5,8 +5,8 @@
         .controller('BitcoinWarmstorageCtrl', BitcoinWarmstorageCtrl);
 
     /** @ngInject */
-    function BitcoinWarmstorageCtrl($scope,localStorageManagement,errorHandler,currenciesList,$http,$uibModal,$state,$location,
-                                    sharedResources,_,environmentConfig,currencyModifiers,toastr,serializeFiltersService) {
+    function BitcoinWarmstorageCtrl($scope,localStorageManagement,errorHandler,currenciesList,$http,$uibModal,multiOptionsFilterService,
+                                    sharedResources,_,environmentConfig,currencyModifiers,toastr,serializeFiltersService,$location) {
 
         var vm = this;
         vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
@@ -171,92 +171,22 @@
         };
 
         vm.getDateFiltersWarmstorageObj = function () {
-            var dateObjWarmstorage = {
-                created__lt: null,
-                created__gt: null
+            var evaluatedDateObj = multiOptionsFilterService.evaluatedDates($scope.applyFiltersWarmstorageObj.dateFilter);
+
+            return {
+                created__lt: evaluatedDateObj.date__lt,
+                created__gt: evaluatedDateObj.date__gt
             };
-
-            switch($scope.applyFiltersWarmstorageObj.dateFilter.selectedDateOption) {
-                case 'Is in the last':
-                    if($scope.applyFiltersWarmstorageObj.dateFilter.selectedDayIntervalOption == 'days'){
-                        dateObjWarmstorage.created__lt = moment().add(1,'days').format('YYYY-MM-DD');
-                        dateObjWarmstorage.created__gt = moment().subtract($scope.applyFiltersWarmstorageObj.dateFilter.dayInterval,'days').format('YYYY-MM-DD');
-                    } else {
-                        dateObjWarmstorage.created__lt = moment().add(1,'days').format('YYYY-MM-DD');
-                        dateObjWarmstorage.created__gt = moment().subtract($scope.applyFiltersWarmstorageObj.dateFilter.dayInterval,'months').format('YYYY-MM-DD');
-                    }
-
-                    break;
-                case 'In between':
-                    dateObjWarmstorage.created__lt = moment(new Date($scope.applyFiltersWarmstorageObj.dateFilter.dateTo)).add(1,'days').format('YYYY-MM-DD');
-                    dateObjWarmstorage.created__gt = moment(new Date($scope.applyFiltersWarmstorageObj.dateFilter.dateFrom)).format('YYYY-MM-DD');
-
-                    break;
-                case 'Is equal to':
-                    dateObjWarmstorage.created__lt = moment(new Date($scope.applyFiltersWarmstorageObj.dateFilter.dateEqualTo)).add(1,'days').format('YYYY-MM-DD');
-                    dateObjWarmstorage.created__gt = moment(new Date($scope.applyFiltersWarmstorageObj.dateFilter.dateEqualTo)).format('YYYY-MM-DD');
-
-                    break;
-                case 'Is after':
-                    dateObjWarmstorage.created__lt = null;
-                    dateObjWarmstorage.created__gt = moment(new Date($scope.applyFiltersWarmstorageObj.dateFilter.dateFrom)).add(1,'days').format('YYYY-MM-DD');
-                    break;
-                case 'Is before':
-                    dateObjWarmstorage.created__lt = moment(new Date($scope.applyFiltersWarmstorageObj.dateFilter.dateTo)).format('YYYY-MM-DD');
-                    dateObjWarmstorage.created__gt = null;
-                    break;
-                default:
-                    break;
-            }
-
-            return dateObjWarmstorage;
         };
 
         vm.getAmountFiltersWarmstorage = function () {
-            var amountObj = {
-                amount: null,
-                amount__lt: null,
-                amount__gt: null
+            var evaluatedAmountObj = multiOptionsFilterService.evaluatedAmounts($scope.applyFiltersWarmstorageObj.amountFilter);
+
+            return {
+                amount: evaluatedAmountObj.amount,
+                amount__lt: evaluatedAmountObj.amount__lt,
+                amount__gt: evaluatedAmountObj.amount__gt
             };
-
-            switch($scope.applyFiltersWarmstorageObj.amountFilter.selectedAmountOption) {
-                case 'Is equal to':
-                    amountObj = {
-                        amount: $scope.applyFiltersWarmstorageObj.amountFilter.amount,
-                        amount__lt: null,
-                        amount__gt: null
-                    };
-
-                    break;
-                case 'Is between':
-                    amountObj = {
-                        amount: null,
-                        amount__lt: $scope.applyFiltersWarmstorageObj.amountFilter.amount__lt,
-                        amount__gt: $scope.applyFiltersWarmstorageObj.amountFilter.amount__gt
-                    };
-
-                    break;
-                case 'Is greater than':
-                    amountObj = {
-                        amount: null,
-                        amount__lt: null,
-                        amount__gt: $scope.applyFiltersWarmstorageObj.amountFilter.amount__gt
-                    };
-
-                    break;
-                case 'Is less than':
-                    amountObj = {
-                        amount: null,
-                        amount__lt: $scope.applyFiltersWarmstorageObj.amountFilter.amount__lt,
-                        amount__gt: null
-                    };
-
-                    break;
-                default:
-                    break;
-            }
-
-            return amountObj;
         };
 
         vm.getTransactionWarmstorageUrl = function(){

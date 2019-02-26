@@ -65,7 +65,7 @@
                 <div class="form-group">
                     <button ng-click="closeModal()" class="btn dashboard-btn btn-primary pull-right">Ok</button>
                     <button ng-click="takeToUser(retrievedCreditUserObj.id)" class="btn dashboard-btn btn-primary pull-right margin-right-10">View user</button>
-                    <button ng-click="showTransactionModal()" class="btn btn-primary pull-right margin-right-10">View transaction</button>
+                    <button ng-click="showTransactionModal()" class="btn btn-primary delete-button-lifted pull-right margin-right-10" style="margin-top: 15px">View transaction</button>
                 </div>
             </div>
             <div ng-show="transactionType.tx_type == 'debit'">
@@ -75,8 +75,8 @@
                 </div>
                 <div class="form-group">
                     <button ng-click="closeModal()" class="btn dashboard-btn btn-primary pull-right">Ok</button>
-                    <button ng-click="takeToUser(retrievedDebitUserObj.id)" class="btn dashboard-btn btn-primary pull-right margin-right-10">View user</button>
-                    <button ng-click="showTransactionModal()" class="btn btn-primary pull-right margin-right-10">View transaction</button>
+                    <button ng-click="takeToUser(retrievedDebitUserObj.id)" class="btn btn-primary delete-button-lifted pull-right margin-right-10">View user</button>
+                    <button ng-click="showTransactionModal()" class="btn btn-primary delete-button-lifted pull-right margin-right-10" style="margin-top: 15px">View transaction</button>
                 </div>
             </div>
             <div class="form-group" ng-show="transactionType.tx_type == 'transfer'">
@@ -88,7 +88,7 @@
                 <div class="form-group">
                     <button ng-click="closeModal()" class="btn dashboard-btn btn-primary pull-right">Ok</button>
                     <button ng-click="takeToUser(retrievedSenderUserObj.id)" class="btn dashboard-btn btn-primary pull-right margin-right-10">View user</button>
-                    <button ng-click="showTransactionModal()" class="btn btn-primary pull-right margin-right-10">View transaction</button>
+                    <button ng-click="showTransactionModal()" class="btn btn-primary delete-button-lifted pull-right margin-right-10" style="margin-top: 15px">View transaction</button>
                 </div>
             </div>
         </div>
