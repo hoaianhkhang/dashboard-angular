@@ -42,7 +42,7 @@
                 <table class="table custom-table table-striped">
                     <thead>
                     <tr>
-                        <th lr-drag-src="headers" lr-drop-target="headers"  ng-click="orderByFunction(header)" ng-class="styleHeaders(header)"
+                        <th class="draggable-headers" lr-drag-src="headers" lr-drop-target="headers" ng-click="orderByFunction(header)" ng-class="styleHeaders(header)"
                             ng-repeat="header in headerColumns" ng-if="header.visible">
                             <span ng-class="styleHeaders(header)">{{header.colName}}</span>&nbsp;&nbsp;
                             <i ng-class="{'selected-sorting-caret': (applyFiltersObj.orderByFilter.selectedOrderByOption.tableFieldName == header.fieldName)}"

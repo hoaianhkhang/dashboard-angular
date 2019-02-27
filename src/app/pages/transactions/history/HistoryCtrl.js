@@ -223,7 +223,8 @@
         $scope.restoreColDefaults = function () {
             $scope.visibleColumnsSelectionChanged = true;
             var defaultVisibleHeader = ['User','Type','Subtype','Currency',
-                'Amount','Fee','Status','Date','Id'];
+                'Amount','Status','Date','Id'];
+                // 'Amount','Fee','Status','Date','Id'];
 
             $scope.headerColumns.forEach(function (headerObj) {
                 if(defaultVisibleHeader.indexOf(headerObj.colName) > -1){

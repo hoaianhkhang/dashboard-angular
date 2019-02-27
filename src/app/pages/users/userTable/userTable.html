@@ -44,7 +44,7 @@
                             <!--sorting function-->
                             <!--ng-click="orderByFunction(header)"-->
                             <!--class="pointer sortable-header"-->
-                            <th lr-drag-src="headers" lr-drop-target="headers" ng-repeat="header in headerColumns" ng-if="header.visible">
+                            <th class="draggable-headers" lr-drag-src="headers" lr-drop-target="headers" ng-repeat="header in headerColumns" ng-if="header.visible">
                                 {{header.colName}}&nbsp;&nbsp;
                                 <i ng-class="{'selected-sorting-caret': (orderByVariable.indexOf(header.fieldName) >= 0)}"
                                    ng-show="header.orderByDirection == 'desc'" class="fa fa-caret-down"></i>

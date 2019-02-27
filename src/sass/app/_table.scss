@@ -2,6 +2,11 @@
   height: 295px;
 }
 
+.draggable-headers:hover{
+  cursor: pointer;
+  background-color: #f4f4f4;
+}
+
 .st-sort-ascent:before {
   content: '\25B2';
 }
