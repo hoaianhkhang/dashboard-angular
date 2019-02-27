@@ -13,7 +13,7 @@
     <div class="modal-footer">
         <!--<button type="button" class="btn btn-default dashboard-btn pull-left" ng-click="$dismiss()">Close</button>-->
         <button ng-click="deleteDocumentPrompt()" ng-disabled="deletingDocument" type="button"
-                class="btn btn-default pull-right margin-left-12">Delete permanently</button>
+                class="btn btn-danger delete-button pull-right margin-left-12">Delete permanently</button>
         <button ng-click="archiveDocument()" ng-disabled="document.archived"
                 ng-class="{'btn-primary': !document.archived,'btn-gray': document.archived}"
                 type="button" class="btn dashboard-btn pull-right">Archive</button>

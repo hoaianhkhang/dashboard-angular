@@ -28,6 +28,11 @@
         };
         vm.getCompanyNotifications();
 
+        $scope.toggleNotificationEnabled = function(notification){
+            notification.enabled = !notification.enabled;
+            $scope.saveNotifications(notification);
+        };
+
         $scope.saveNotifications = function(notification){
           $scope.loadingCompanyNotifications = true;
             Rehive.admin.notifications.update(notification.id, {enabled: notification.enabled}).then(function (res) {

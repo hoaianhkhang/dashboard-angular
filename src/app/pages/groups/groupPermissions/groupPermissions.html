@@ -44,25 +44,25 @@
                                            ng-checked="editGroupObj.name == 'admin'"
                                            class="custom-rehive-checkbox" ng-model="totalPermissionsObj[key].enableAll" ng-click="toggleAllPermissions(key,totalPermissionsObj[key].enableAll)">
                                 </th>
-                                <th width="12%">View
+                                <th width="12%" class="text-center">View
                                     <input type="checkbox" ng-disabled="editGroupObj.name == 'admin' || editGroupObj.name == 'service'"
                                                ng-class="{'checkbox-disabled': (editGroupObj.name == 'admin'  || editGroupObj.name == 'service')}"
                                                ng-checked="enabledColumns[key].view || editGroupObj.name == 'admin'"
                                                class="custom-rehive-checkbox" ng-model="enabledColumns[key].view" ng-change="toggleAllLevelsByType('view', key)">
                                 </th>
-                                <th width="12%">Add
+                                <th width="12%" class="text-center">Add
                                     <input type="checkbox" ng-disabled="editGroupObj.name == 'admin' || editGroupObj.name == 'service'"
                                           ng-class="{'checkbox-disabled': (editGroupObj.name == 'admin'  || editGroupObj.name == 'service')}"
                                           ng-checked="enabledColumns[key].add || editGroupObj.name == 'admin'"
                                           class="custom-rehive-checkbox" ng-model="enabledColumns[key].add" ng-change="toggleAllLevelsByType('add', key)">
                                 </th>
-                                <th width="12%">Change
+                                <th width="12%" class="text-center">Change
                                     <input type="checkbox" ng-disabled="editGroupObj.name == 'admin' || editGroupObj.name == 'service'"
                                            ng-class="{'checkbox-disabled': (editGroupObj.name == 'admin'  || editGroupObj.name == 'service')}"
                                            ng-checked="enabledColumns[key].change || editGroupObj.name == 'admin'"
                                            class="custom-rehive-checkbox" ng-model="enabledColumns[key].change" ng-change="toggleAllLevelsByType('change', key)">
                                 </th>
-                                <th width="12%">Delete
+                                <th width="12%" class="text-center">Delete
                                     <input type="checkbox" ng-disabled="editGroupObj.name == 'admin' || editGroupObj.name == 'service'"
                                            ng-class="{'checkbox-disabled': (editGroupObj.name == 'admin'  || editGroupObj.name == 'service')}"
                                            ng-checked="enabledColumns[key].delete || editGroupObj.name == 'admin'"
