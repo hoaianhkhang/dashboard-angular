@@ -120,7 +120,7 @@
         };
 
         vm.getAccountsFiltersObj = function(){
-            $scope.filtersCount = 0;
+           $scope.filtersCount = 0;
             var searchObj = {};
             var filterObjects = {};
 
@@ -182,6 +182,7 @@
 
             }
 
+            console.log(searchObj);
             for(var x in $scope.filtersObj){
                 if($scope.filtersObj.hasOwnProperty(x)){
                     if($scope.filtersObj[x]){
@@ -238,16 +239,36 @@
             });
         };
 
-        if($state.params.reference){
+        if($state.params.accountRef){
+            $scope.clearFilters();
             $scope.filtersObj.referenceFilter = true;
-            $scope.applyFiltersObj.referenceFilter.selectedReferenceFilter = $state.params.reference;
-            $scope.getAllAccounts();
+            $scope.applyFiltersObj.referenceFilter.selectedReferenceFilter = $state.params.accountRef;
+            var filtersObj = JSON.parse(localStorageManagement.getValue(vm.savedAccountsTableFilters));
+            filtersObj.searchObj.reference = $state.params.accountRef;
+            filtersObj.applyFiltersObj.referenceFilter.selectedReferenceFilter = $state.params.accountRef;
+            vm.saveAccountsTableFiltersToLocalStorage({
+                searchObj: serializeFiltersService.objectFilters(filtersObj.searchObj),
+                filtersObj: $scope.filtersObj,
+                applyFiltersObj: serializeFiltersService.objectFilters(filtersObj.applyFiltersObj)
+            });
+            $scope.getAllAccounts('applyFilter');
+
         } else if($state.params.email) {
+            $scope.clearFilters();
             $scope.filtersObj.userFilter = true;
             $scope.applyFiltersObj.userFilter.selectedUserFilter = $state.params.email;
-            $scope.getAllAccounts();
+            var filtersObj = JSON.parse(localStorageManagement.getValue(vm.savedAccountsTableFilters));
+            filtersObj.searchObj.user = $state.params.email;
+            filtersObj.applyFiltersObj.userFilter.selectedUserFilter = $state.params.email;
+            vm.saveAccountsTableFiltersToLocalStorage({
+                searchObj: serializeFiltersService.objectFilters(filtersObj.searchObj),
+                filtersObj: $scope.filtersObj,
+                applyFiltersObj: serializeFiltersService.objectFilters(filtersObj.applyFiltersObj)
+            });
+            $scope.getAllAccounts('applyFilter');
+
         } else {
-            $scope.getAllAccounts();
+            $scope.getAllAccounts(null, null);
         }
 
         $scope.getGroups = function () {
@@ -314,14 +335,16 @@
                     }
                     $scope.columnFiltersObj.balanceArray.push(firstAccountInList.currencies[0].currency);
                 } else {
-                    balanceArray.forEach(function (balanceCurrency) {
-                        $scope.currenciesOptions.forEach(function (currency) {
-                            if(currency.code === balanceCurrency.replace('balance','')){
-                                $scope.insertingBalanceCurrencyFromHeader = true;
-                                $scope.columnFiltersObj.balanceArray.push(currency);
-                            }
+                    if(balanceArray){
+                        balanceArray.forEach(function (balanceCurrency) {
+                            $scope.currenciesOptions.forEach(function (currency) {
+                                if(currency.code === balanceCurrency.replace('balance','')){
+                                    $scope.insertingBalanceCurrencyFromHeader = true;
+                                    $scope.columnFiltersObj.balanceArray.push(currency);
+                                }
+                            });
                         });
-                    });
+                    }
                 }
 
                 if(availableBalanceArray.length === 0){
@@ -341,14 +364,16 @@
                     }
                     $scope.columnFiltersObj.availableBalanceArray.push(firstAccountInList.currencies[0].currency);
                 } else {
-                    availableBalanceArray.forEach(function (availableBalanceCurrency) {
-                        $scope.currenciesOptions.forEach(function (currency) {
-                            if(currency.code === availableBalanceCurrency.replace('availableBalance','')){
-                                $scope.insertingAvailableBalanceCurrencyFromHeader = true;
-                                $scope.columnFiltersObj.availableBalanceArray.push(currency);
-                            }
-                        });
-                    });
+                   if(availableBalanceArray){
+                       availableBalanceArray.forEach(function (availableBalanceCurrency) {
+                           $scope.currenciesOptions.forEach(function (currency) {
+                               if(currency.code === availableBalanceCurrency.replace('availableBalance','')){
+                                   $scope.insertingAvailableBalanceCurrencyFromHeader = true;
+                                   $scope.columnFiltersObj.availableBalanceArray.push(currency);
+                               }
+                           });
+                       });
+                   }
                 }
             }
         };

@@ -181,38 +181,44 @@
             $scope.loadingResults = true;
             vm.showSearchBar();
             $scope.searchedTransactions = [];
-            var filter;
-            if(vm.token){
-                if(typeOfInput == 'mobile'){
-                    filter = 'mobile__contains';
-                } else if(typeOfInput == 'email'){
-                    filter = 'email__contains';
-                } else if(typeOfInput == 'account'){
-                    filter = 'account';
-                }
-
-                var userFilter = { page_size: 2 };
-                userFilter[filter] = searchString;
-
-                Rehive.admin.users.get({filters: userFilter}).then(function (res) {
-                    $scope.searchedUsers = res.results;
-                    if(res.count == 1){
-                        vm.findTransactions(res.results[0].email, typeOfInput, searchString);
-                        $scope.$apply();
-                    } else {
-                        vm.findTransactions(searchString, typeOfInput, searchString);
-                        $scope.$apply();
+            if(typeOfInput == 'id'){
+                vm.findTransactions(searchString, typeOfInput, searchString);
+            }
+            else{
+                var filter;
+                if(vm.token){
+                    if(typeOfInput == 'mobile'){
+                        filter = 'mobile__contains';
+                    } else if(typeOfInput == 'email'){
+                        filter = 'email__contains';
+                    } else if(typeOfInput == 'account'){
+                        filter = 'account';
                     }
-                }, function (error) {
-                    $scope.loadingResults = false;
-                    errorHandler.evaluateErrors(error);
-                    errorHandler.handleErrors(error);
-                });
+
+                    var userFilter = { page_size: 2 };
+                    userFilter[filter] = searchString;
+
+                    Rehive.admin.users.get({filters: userFilter}).then(function (res) {
+                        $scope.searchedUsers = res.results;
+                        if(res.count == 1){
+                            vm.findTransactions(res.results[0].email, typeOfInput, searchString);
+                            $scope.$apply();
+                        } else {
+                            vm.findTransactions(searchString, typeOfInput, searchString);
+                            $scope.$apply();
+                        }
+                    }, function (error) {
+                        $scope.loadingResults = false;
+                        errorHandler.evaluateErrors(error);
+                        errorHandler.handleErrors(error);
+                    });
+                }
             }
         };
 
         vm.findTransactions = function (searchString, typeOfInput, originalString) {
             var filter;
+            $scope.searchedAccounts = [];
             if(vm.token){
                 if(typeOfInput == 'email'){
                     filter = 'user';
@@ -304,10 +310,10 @@
         $scope.goToAccounts = function (account) {
             $scope.hidingSearchBar();
             var type = $scope.searchString.split(':')[0];
-
-            if(type === "account"){
-                $state.go('accounts',{reference: account.reference});
-            }else if(type === "email"){
+            console.log(type);
+            if(type == "account"){
+                $state.go('accounts',{accountRef: account.reference});
+            }else if(type == "email"){
                 $state.go('accounts',{email: account.user.email});
             }else {
                 $state.go('accounts');
