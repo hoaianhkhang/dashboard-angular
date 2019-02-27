@@ -829,7 +829,7 @@
                 Rehive.admin.groups.tiers.limits.create(groupName, tierId, tierLimitsParams)
                     .then(function (res){
                         if(last){
-                            vm.getAllUsers();
+                            vm.reactivateProductService();
                         }
                         $scope.$apply();
                     }, function (error) {
@@ -837,6 +837,126 @@
                         errorHandler.handleErrors(error);
                         $scope.$apply();
                     });
+            }
+        };
+
+        /*To update the service currencies: */
+        vm.reactivateProductService = function(){
+            if(vm.token){
+                $http.put(environmentConfig.API + '/admin/services/' + 79 + '/',{active: false},{
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': vm.token
+                    }
+                }).then(function (res) {
+                    $http.put(environmentConfig.API + '/admin/services/' + 79 + '/',{terms_and_conditions: true, active: true},{
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': vm.token
+                        }
+                    }).then(function (res) {
+                        vm.setupProductService();
+                    }).catch(function (error) {
+                        errorHandler.evaluateErrors(error.data);
+                        errorHandler.handleErrors(error);
+                    });
+                }).catch(function (error) {
+                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.handleErrors(error);
+                });
+            }
+        };
+
+        vm.setupProductService = function(){
+            var newProduct1 = {
+                    name: "Steam voucher",
+                    description: "$10 Steam voucher",
+                    quantity: 100,
+                    type: "voucher",
+                    code: "STEA10",
+                    enabled: true,
+                    prices: [
+                        {currency: $scope.demoCurrency, amount: 5000000},
+                        {currency: $scope.txbtCurrency, amount: 20000}
+                    ]
+                },
+                newProduct2 = {
+                    name: "Amazon voucher",
+                    description: "$50 Amazon voucher",
+                    quantity: 100,
+                    type: "voucher",
+                    code: "AMAZ50",
+                    enabled: true,
+                    prices: [
+                        {currency: $scope.demoCurrency, amount: 100000000},
+                        {currency: $scope.txbtCurrency, amount: 50000}
+                    ]
+                };
+
+            newProduct1 = serializeFiltersService.objectFilters(newProduct1);
+            newProduct2 = serializeFiltersService.objectFilters(newProduct2);
+
+            if(vm.token) {
+                $http.post('https://product.services.rehive.io/api/admin/products/', newProduct1, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': vm.token
+                    }
+                }).then(function (res) {
+                    if (res.status === 201 || res.status === 200) {
+                        vm.formatPricesOfProducts(res.data.data.id, newProduct1);
+                        $http.post('https://product.services.rehive.io/api/admin/products/', newProduct2, {
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': vm.token
+                            }
+                        }).then(function (res) {
+                            if (res.status === 201 || res.status === 200) {
+                                vm.formatPricesOfProducts(res.data.data.id, newProduct2);
+                            }
+                        }).catch(function (error) {
+                            $scope.addingProduct =  false;
+                            errorHandler.evaluateErrors(error.data);
+                            errorHandler.handleErrors(error);
+                        });
+                    }
+                }).catch(function (error) {
+                    $scope.addingProduct =  false;
+                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.handleErrors(error);
+                });
+            }
+        };
+
+        vm.formatPricesOfProducts = function(id, product){
+            product.prices.forEach(function(price,idx,array){
+                if(idx === (array.length - 1) && product.code === "AMAZ50"){
+                    vm.addPriceToProducts(id,{currency: price.currency.code, amount: price.amount},'last');
+                    return false;
+                }
+                vm.addPriceToProducts(id,{currency: price.currency.code, amount: price.amount}, null);
+            });
+        };
+
+        vm.addPriceToProducts = function(productId, priceObj, last){
+            console.log(priceObj);
+            if(vm.token) {
+                $http.post('https://product.services.rehive.io/api/admin/products/' + productId + '/prices/', priceObj, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': vm.token
+                    }
+                }).then(function (res) {
+                    if (res.status === 201 || res.status === 200) {
+                        if(last){
+                            vm.getAllUsers();
+                        }
+                    }
+                }).catch(function (error) {
+                    $scope.addingProduct =  false;
+                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.handleErrors(error);
+                });
             }
         };
 
@@ -977,136 +1097,12 @@
                             'Authorization': vm.token
                         }
                     }).then(function (res) {
-                        if (res.status === 201 || res.status === 200) {
-                            vm.reactivateProductService();
-                        }
+                        vm.goToCurrencies();
                     }).catch(function (error) {
                         errorHandler.evaluateErrors(error.data);
                         errorHandler.handleErrors(error);
                     });
                 }).catch(function (error) {
-                    errorHandler.evaluateErrors(error.data);
-                    errorHandler.handleErrors(error);
-                });
-            }
-        };
-
-        /*To update the service currencies: */
-        vm.reactivateProductService = function(){
-            if(vm.token){
-                $http.put(environmentConfig.API + '/admin/services/' + 79 + '/',{active: false},{
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
-                    $http.put(environmentConfig.API + '/admin/services/' + 79 + '/',{terms_and_conditions: true, active: true},{
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': vm.token
-                        }
-                    }).then(function (res) {
-                        vm.setupProductService();
-                    }).catch(function (error) {
-                        errorHandler.evaluateErrors(error.data);
-                        errorHandler.handleErrors(error);
-                    });
-                }).catch(function (error) {
-                    errorHandler.evaluateErrors(error.data);
-                    errorHandler.handleErrors(error);
-                });
-            }
-        };
-
-        vm.setupProductService = function(){
-            var newProduct1 = {
-                name: "Steam voucher",
-                description: "$10 Steam voucher",
-                quantity: 100,
-                type: "voucher",
-                code: "STEA10",
-                enabled: true,
-                prices: [
-                    {currency: $scope.demoCurrency, amount: 5000000},
-                    {currency: $scope.txbtCurrency, amount: 20000}
-                ]
-            },
-            newProduct2 = {
-                name: "Amazon voucher",
-                description: "$50 Amazon voucher",
-                quantity: 100,
-                type: "voucher",
-                code: "AMAZ50",
-                enabled: true,
-                prices: [
-                    {currency: $scope.demoCurrency, amount: 100000000},
-                    {currency: $scope.txbtCurrency, amount: 50000}
-                ]
-            };
-
-            newProduct1 = serializeFiltersService.objectFilters(newProduct1);
-            newProduct2 = serializeFiltersService.objectFilters(newProduct2);
-
-            if(vm.token) {
-                $http.post('https://product.services.rehive.io/api/admin/products/', newProduct1, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
-                    if (res.status === 201 || res.status === 200) {
-                        vm.formatPricesOfProducts(res.data.data.id, newProduct1);
-                        $http.post('https://product.services.rehive.io/api/admin/products/', newProduct2, {
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'Authorization': vm.token
-                            }
-                        }).then(function (res) {
-                            if (res.status === 201 || res.status === 200) {
-                                vm.formatPricesOfProducts(res.data.data.id, newProduct2);
-                            }
-                        }).catch(function (error) {
-                            $scope.addingProduct =  false;
-                            errorHandler.evaluateErrors(error.data);
-                            errorHandler.handleErrors(error);
-                        });
-                    }
-                }).catch(function (error) {
-                    $scope.addingProduct =  false;
-                    errorHandler.evaluateErrors(error.data);
-                    errorHandler.handleErrors(error);
-                });
-            }
-        };
-
-        vm.formatPricesOfProducts = function(id, product){
-            product.prices.forEach(function(price,idx,array){
-                if(idx === (array.length - 1) && product.code === "AMAZ50"){
-                    vm.addPriceToProducts(id,{currency: price.currency.code, amount: price.amount},'last');
-                    return false;
-                }
-                vm.addPriceToProducts(id,{currency: price.currency.code, amount: price.amount}, null);
-            });
-        };
-
-        vm.addPriceToProducts = function(productId, priceObj, last){
-            console.log(priceObj);
-            if(vm.token) {
-                $http.post('https://product.services.rehive.io/api/admin/products/' + productId + '/prices/', priceObj, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
-                    if (res.status === 201 || res.status === 200) {
-                        if(last){
-                            $scope.settingUpDemo = false;
-                            $rootScope.securityConfigured = true;
-                            vm.goToCurrencies();
-                        }
-                    }
-                }).catch(function (error) {
-                    $scope.addingProduct =  false;
                     errorHandler.evaluateErrors(error.data);
                     errorHandler.handleErrors(error);
                 });
@@ -1119,6 +1115,8 @@
         };
 
         vm.goToCurrencies = function(){
+            $scope.settingUpDemo = false;
+            $rootScope.securityConfigured = true;
             toastr.success('All demo config has been successfully setup.');
             $location.path('/currencies');
         };
