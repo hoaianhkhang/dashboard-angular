@@ -84,7 +84,6 @@
                     ++size;
                 }
             }
-            console.log(service.name, size);
             return size;
         };
 
@@ -185,7 +184,7 @@
                     name: "Ico Service"
                 },
                 miscellaneous: {
-                    name: "Miscellaneous events"
+                    name: "Miscellaneous webhooks"
                 },
                 notification: {
                     name: "Notification Service"
@@ -230,7 +229,6 @@
                 }
                 $scope.webhooksSectionedList[service][event].records.push(webhook);
             });
-            console.log($scope.webhooksSectionedList);
         };
 
 
