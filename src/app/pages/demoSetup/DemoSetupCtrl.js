@@ -5,7 +5,7 @@
         .controller("DemoSetupCtrl", DemoSetupCtrl);
 
     function DemoSetupCtrl($rootScope, $scope, $http, $location,localStorageManagement, environmentConfig,
-                           errorHandler, Rehive, toastr, currencyModifiers, serializeFiltersService) {
+                           errorHandler, Rehive, toastr, currencyModifiers, serializeFiltersService,$filter) {
         var vm=this;
         vm.token = localStorageManagement.getValue('TOKEN');
         $rootScope.dashboardTitle = 'Demo setup | Rehive';
@@ -296,23 +296,23 @@
                             vm.updateTierRequirements("user", $scope.userGroupTiers[i], "email_address");
                         }
                     }
-                    $scope.$apply();
-                }, function (error) {
-                    errorHandler.evaluateErrors(error);
-                    errorHandler.handleErrors(error);
-                    $scope.$apply();
-                });
-                Rehive.admin.groups.tiers.get("merchant").then(function (res) {
-                    $scope.merchantGroupTiers = res;
-                    for(var i = 0; i < $scope.merchantGroupTiers.length; ++i){
-                        if($scope.merchantGroupTiers[i].level === 1 || $scope.merchantGroupTiers[i].level === 2){
-                            vm.updateTierRequirements("merchant", $scope.merchantGroupTiers[i], "first_name");
-                            vm.updateTierRequirements("merchant", $scope.merchantGroupTiers[i], "last_name");
+                    Rehive.admin.groups.tiers.get("merchant").then(function (res) {
+                        $scope.merchantGroupTiers = res;
+                        for(var i = 0; i < $scope.merchantGroupTiers.length; ++i){
+                            if($scope.merchantGroupTiers[i].level === 1 || $scope.merchantGroupTiers[i].level === 2){
+                                vm.updateTierRequirements("merchant", $scope.merchantGroupTiers[i], "first_name");
+                                vm.updateTierRequirements("merchant", $scope.merchantGroupTiers[i], "last_name");
+                            }
+                            if($scope.merchantGroupTiers[i].level === 2){
+                                vm.updateTierRequirements("merchant", $scope.merchantGroupTiers[i], "email_address");
+                            }
                         }
-                        if($scope.merchantGroupTiers[i].level === 2){
-                            vm.updateTierRequirements("merchant", $scope.merchantGroupTiers[i], "email_address");
-                        }
-                    }
+                        $scope.$apply();
+                    }, function (error) {
+                        errorHandler.evaluateErrors(error);
+                        errorHandler.handleErrors(error);
+                        $scope.$apply();
+                    });
                     $scope.$apply();
                 }, function (error) {
                     errorHandler.evaluateErrors(error);
@@ -373,16 +373,12 @@
                         'Authorization': vm.token
                     }
                 }).then(function (res) {
-                    $scope.addingHotwallet = false;
-                    if (res.status === 201) {
-                        vm.setupStellarTestnetService();
-                    }
+                    vm.setupStellarTestnetService();
                 }).catch(function (error) {
                     errorHandler.evaluateErrors(error.data);
                     errorHandler.handleErrors(error);
                 });
             }
-            // vm.setupStellarTestnetService();
         };
 
         vm.setupStellarTestnetService = function(){
@@ -401,7 +397,7 @@
             }
         };
 
-        vm.fundStellarTestnetHotwallet = function(){
+        vm.fundStellarTestnetHotwallet = function(recall){
             if(vm.token){
                 $http.get('https://stellar-testnet.services.rehive.io/api/1/admin/hotwallet/fund', {
                     headers: {
@@ -410,40 +406,31 @@
                     }
                 }).then(function(res){
                     var hotwalletFundObj = res.data.data;
-                    var url = "https://friendbot.stellar.org/?addr=" + hotwalletFundObj.account_address;
-                    $http.get(url , {
-                        headers: {
-                            'Content-Type': 'application/json'
-                        }
-                    }).then(function (res) {
-                        if (res.status === 200) {
+                    if(recall){
+                        vm.addDemoAsset(hotwalletFundObj.account_address);
+                    }
+                    else{
+                        var url = "https://friendbot.stellar.org/?addr=" + hotwalletFundObj.account_address;
+                        $http.get(url , {
+                            headers: {
+                                'Content-Type': 'application/json'
+                            }
+                        }).then(function (res) {
                             vm.addDemoAsset(hotwalletFundObj.account_address);
-                        }
-                    }).catch(function (error) {
-                        errorHandler.evaluateErrors(error.data);
-                        errorHandler.handleErrors(error);
-                    });
+                        }).catch(function (error) {
+                            errorHandler.evaluateErrors(error.data);
+                            errorHandler.handleErrors(error);
+                        });
+                    }
                 }).catch(function (error) {
+                    if(error.status === 400){
+                        vm.fundStellarTestnetHotwallet('recalled');
+                    }
                     errorHandler.evaluateErrors(error.data);
                     errorHandler.handleErrors(error);
                 });
 
             }
-            // var hotwalletParams = {
-            //     low_balance_percentage: 0.1
-            // };
-            // $http.post('https://stellar-testnet.services.rehive.io/api/1/admin/hotwallet/', hotwalletParams, {
-            //     headers: {
-            //         'Content-Type': 'application/json',
-            //         'Authorization': vm.token
-            //     }
-            // }).then(function (res) {
-            //
-            // }).catch(function (error) {
-            //     $scope.addingHotwallet = false;
-            //     errorHandler.evaluateErrors(error.data);
-            //     errorHandler.handleErrors(error);
-            // });
         };
 
         vm.addDemoAsset = function(issuerAddress){
@@ -845,7 +832,7 @@
                 Rehive.admin.groups.tiers.limits.create(groupName, tierId, tierLimitsParams)
                     .then(function (res){
                         if(last){
-                            vm.setupRewardsService();
+                            vm.getAllUsers();
                         }
                         $scope.$apply();
                     }, function (error) {
@@ -856,10 +843,91 @@
             }
         };
 
-        vm.setupRewardsService = function(){
-            vm.setupCurrencies();
+        vm.getAllUsers = function(){
+            if(vm.token){
+                Rehive.admin.users.get().then(function (res) {
+                    vm.configureAdminAccount(res.results);
+                    $scope.$apply();
+                }, function (error) {
+                    errorHandler.evaluateErrors(error);
+                    errorHandler.handleErrors(error);
+                    $scope.$apply();
+                });
+            }
+        };
 
+        vm.getAdminUser = function(usersArray){
+            var adminUser = {};
+            usersArray.forEach(function (userObj) {
+                if(userObj.email){
+                    adminUser = {
+                        id: userObj.id,
+                        first_name: userObj.first_name,
+                        last_name: userObj.last_name,
+                        email: userObj.email,
+                        mobile: userObj.mobile,
+                        groupName: userObj.groups.length > 0 ? userObj.groups[0].name: null,
+                        created: userObj.created ? $filter("date")(userObj.created,'mediumDate') + ' ' + $filter("date")(userObj.created,'shortTime'): null,
+                        updated: userObj.updated ? $filter("date")(userObj.updated,'mediumDate') + ' ' + $filter("date")(userObj.updated,'shortTime'): null,
+                        archived: $filter("capitalizeWord")(userObj.archived),
+                        status: $filter("capitalizeWord")(userObj.status),
+                        kycStatus: $filter("capitalizeWord")(userObj.kyc.status),
+                        last_login: userObj.last_login ? $filter("date")(userObj.last_login,'mediumDate') + ' ' + $filter("date")(userObj.last_login,'shortTime'): null,
+                        verified: userObj.verified ? 'Yes' : 'No',
+                        id_number: userObj.id_number,
+                        nationality: userObj.nationality ? $filter("isoCountry")(userObj.nationality): null,
+                        language: userObj.language,
+                        timezone: userObj.timezone,
+                        birth_date: userObj.birth_date,
+                        username: userObj.username,
+                        createdJSTime: userObj.created
+                    };
+                }
+            });
+            return (adminUser === {}) ? null : adminUser;
+        };
+
+        vm.configureAdminAccount = function(usersArray){
+            var adminUser = vm.getAdminUser(usersArray);
+            var adminAccountParams = {
+                name: "operational",
+                primary: true,
+                // user: adminUser ? adminUser.email : null
+                user: adminUser.email
+            };
+
+            if(vm.token) {
+                Rehive.admin.accounts.create(adminAccountParams).then(function (res) {
+                    vm.addAdminAccountCurrencies(res.reference);
+                    $scope.$apply();
+                }, function (error) {
+                    errorHandler.evaluateErrors(error);
+                    errorHandler.handleErrors(error);
+                    $scope.$apply();
+                });
+            }
+        };
+
+        vm.addAdminAccountCurrencies = function(reference){
+            $scope.currencyOptions.forEach(function (element,index,array) {
+                if(vm.token) {
+                    Rehive.admin.accounts.currencies.create(reference,{currency: element.code}).then(function (res) {
+                        if(index == (array.length - 1)) {
+                            vm.setupRewardsService(reference);
+                            $scope.$apply();
+                        }
+                    }, function (error) {
+                        errorHandler.evaluateErrors(error);
+                        errorHandler.handleErrors(error);
+                        $scope.$apply();
+                    });
+                }
+            });
+        };
+
+        vm.setupRewardsService = function(adminAccountRef){
             var date1 = new Date(), date2 = new Date(new Date().setMonth(new Date().getMonth() + 1));
+
             var rewardsCampaign1 = {
                     name: "Just for joining",
                     description: "You have received 20 Demo tokens for registering!",
@@ -869,7 +937,7 @@
                     end_date: moment(date2).format('YYYY-MM-DD') +'T00:00:00Z',
                     reward_total: currencyModifiers.convertToCents(5000, $scope.demoCurrency.divisibility),
                     reward_amount: currencyModifiers.convertToCents(20.00, $scope.demoCurrency.divisibility),
-                    account: null,
+                    account: adminAccountRef,
                     reward_percentage: null,
                     amount_type: "fixed",
                     status: 'active',
@@ -887,7 +955,7 @@
                 end_date: moment(date2).format('YYYY-MM-DD') +'T00:00:00Z',
                 reward_total: currencyModifiers.convertToCents(2500, $scope.demoCurrency.divisibility),
                 reward_amount: currencyModifiers.convertToCents(20.00, $scope.demoCurrency.divisibility),
-                account: null,
+                account: adminAccountRef,
                 reward_percentage: null,
                 amount_type: "fixed",
                 status: 'active',
@@ -913,7 +981,7 @@
                         }
                     }).then(function (res) {
                         if (res.status === 201 || res.status === 200) {
-                            vm.setupProductService();
+                            vm.reactivateProductService();
                         }
                     }).catch(function (error) {
                         errorHandler.evaluateErrors(error.data);
@@ -1050,8 +1118,7 @@
 
         $scope.initializeDemoSetup = function(){
             $scope.settingUpDemo = true;
-            // vm.configureCompanyDetails();
-            vm.fundStellarTestnetHotwallet();
+            vm.configureCompanyDetails();
         };
 
         vm.goToCurrencies = function(){
