@@ -397,7 +397,7 @@
             }
         };
 
-        vm.fundStellarTestnetHotwallet = function(recall){
+        vm.fundStellarTestnetHotwallet = function(){
             if(vm.token){
                 $http.get('https://stellar-testnet.services.rehive.io/api/1/admin/hotwallet/fund', {
                     headers: {
@@ -406,22 +406,19 @@
                     }
                 }).then(function(res){
                     var hotwalletFundObj = res.data.data;
-                    if(recall){
-                        vm.addDemoAsset(hotwalletFundObj.account_address);
-                    }
-                    else{
-                        var url = "https://friendbot.stellar.org/?addr=" + hotwalletFundObj.account_address;
-                        $http.get(url , {
-                            headers: {
-                                'Content-Type': 'application/json'
-                            }
-                        }).then(function (res) {
+                    var url = "https://friendbot.stellar.org/?addr=" + hotwalletFundObj.account_address;
+                    $http.get(url , {
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    }).then(function (res) {
+                        setTimeout(function(){
                             vm.addDemoAsset(hotwalletFundObj.account_address);
-                        }).catch(function (error) {
-                            errorHandler.evaluateErrors(error.data);
-                            errorHandler.handleErrors(error);
-                        });
-                    }
+                        }, 3000);
+                    }).catch(function (error) {
+                        errorHandler.evaluateErrors(error.data);
+                        errorHandler.handleErrors(error);
+                    });
                 }).catch(function (error) {
                     if(error.status === 400){
                         vm.fundStellarTestnetHotwallet('recalled');
