@@ -9,7 +9,8 @@
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
-        vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
+        // vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
+        vm.serviceUrl = "https://stellar-testnet.services.rehive.io/api/1/";
         $rootScope.dashboardTitle = 'Stellar testnet service | Rehive';
         $scope.loadingStellarTestnetService = false;
         $scope.stellarTestnetConfigComplete = false;

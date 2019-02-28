@@ -10,7 +10,8 @@
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
-        vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
+        // vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
+        vm.serviceUrl = "https://product.services.rehive.io/api/";
         vm.orderId = $stateParams.orderId;
         $scope.editingOrder = false;
         $scope.loadingProducts = false;

@@ -10,7 +10,8 @@
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
-        vm.serviceId = localStorageManagement.getValue('SERVICEID');
+        // vm.serviceId = localStorageManagement.getValue('SERVICEID');
+        vm.serviceId = 45;
         $rootScope.dashboardTitle = 'Rewards service | Rehive';
         $scope.rewardsSettingView = '';
         $scope.deactivatingRewards = false;

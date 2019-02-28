@@ -10,7 +10,8 @@
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
-        vm.serviceId = localStorageManagement.getValue('SERVICEID');
+        // vm.serviceId = localStorageManagement.getValue('SERVICEID');
+        vm.serviceId = 12;
         $rootScope.dashboardTitle = 'Bitcoin service | Rehive';
         $scope.bitcoinSettingView = '';
         $scope.loadingHdkeys =  true;

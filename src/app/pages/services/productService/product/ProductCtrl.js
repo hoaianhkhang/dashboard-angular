@@ -34,7 +34,8 @@
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
-        vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
+        // vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
+        vm.serviceUrl = "https://product.services.rehive.io/api/";
         vm.companyIdentifier = localStorageManagement.getValue('companyIdentifier');
         vm.savedProductsTableColumns = vm.companyIdentifier + 'productServiceProductsTable';
         $scope.loadingProducts =  false;

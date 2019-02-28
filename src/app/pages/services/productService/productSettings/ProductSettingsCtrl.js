@@ -10,7 +10,8 @@
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
-        vm.serviceId = localStorageManagement.getValue('SERVICEID');
+        // vm.serviceId = localStorageManagement.getValue('SERVICEID');
+        vm.serviceId = 79;
         $rootScope.dashboardTitle = 'Products service | Rehive';
         $scope.productSettingView = '';
         $scope.loadingHdkeys =  true;

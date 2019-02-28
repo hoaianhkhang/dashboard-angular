@@ -9,7 +9,8 @@
                                            sharedResources,_,environmentConfig,currencyModifiers,toastr,serializeFiltersService) {
 
         var vm = this;
-        vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
+        // vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
+        vm.serviceUrl = "https://stellar-testnet.services.rehive.io/api/1/";
         vm.token = localStorageManagement.getValue('TOKEN');
         $scope.companyDateFormatString = localStorageManagement.getValue('DATE_FORMAT');
         $scope.stellarCurrency = {

@@ -10,7 +10,8 @@
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
-        vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
+        // vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
+        vm.serviceUrl = "https://stellar-testnet.services.rehive.io/api/1/";
         $scope.companyDateFormatString = localStorageManagement.getValue('DATE_FORMAT');
         vm.currenciesList = JSON.parse($window.sessionStorage.currenciesList || '[]');
         $scope.showingFilters = false;

@@ -10,7 +10,8 @@
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
-        vm.serviceId = localStorageManagement.getValue('SERVICEID');
+        // vm.serviceId = localStorageManagement.getValue('SERVICEID');
+        vm.serviceId = 78;
         $rootScope.dashboardTitle = 'Stellar testnet service | Rehive';
         $scope.stellarTestnetSettingView = '';
         $scope.loadingHdkeys =  true;

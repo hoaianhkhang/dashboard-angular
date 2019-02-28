@@ -10,7 +10,8 @@
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
-        vm.serviceId = localStorageManagement.getValue('SERVICEID');
+        // vm.serviceId = localStorageManagement.getValue('SERVICEID');
+        vm.serviceId = 9;
         $rootScope.dashboardTitle = 'Currency conversion service | Rehive';
         $scope.currencyConversionSettingView = '';
         $scope.deactivatingCurrencyConversion = false;
