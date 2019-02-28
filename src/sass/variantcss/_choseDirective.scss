@@ -14,13 +14,13 @@
 }
 
 .chosen-container-single .chosen-search input[type="text"] {
-  //background: url("../../assets/img/chosen-sprite.png") no-repeat 100% -20px!important;
-  background: url("../../assets/img/chosen-sprite@2x.png") no-repeat !important;
+  background: url("../../assets/img/chosen-sprite.png") no-repeat 100% -20px!important;
+  //background: url("../../assets/img/chosen-sprite@2x.png") no-repeat !important;
 }
 
 .chosen-rtl .chosen-search input[type="text"] {
-  //background: url("../../assets/img/chosen-sprite.png") no-repeat -30px -20px!important;
-  background: url("../../assets/img/chosen-sprite@2x.png") no-repeat !important;
+  background: url("../../assets/img/chosen-sprite.png") no-repeat -30px -20px!important;
+  //background: url("../../assets/img/chosen-sprite@2x.png") no-repeat !important;
 }
 
 .chosen-container-multi .chosen-choices li.search-choice .search-choice-close {
@@ -138,6 +138,8 @@
     background: none;
     & div b{
       background-position: 0 7px!important;
+      margin-left: -7px;
+      transform: scale(0.5);
     }
     & abbr{
       top: 11px!important;
