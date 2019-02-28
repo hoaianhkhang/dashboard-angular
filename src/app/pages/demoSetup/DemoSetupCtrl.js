@@ -242,30 +242,27 @@
         };
 
         vm.setupGroupTiers = function(){
-            var userTier1 = {
+            var tier1 = {
                     level: 1,
                     name: "1",
                     description: "Basic"
                 },
-                userTier2 = {
+                tier2 = {
                     level: 2,
                     name: "2",
                     description: "Intermediary"
                 },
-                merchantTier1 = {
-                    "level": 1,
-                    "name": "1",
-                    "description": "Basic"
-                },
-                merchantTier2 = {
-                    "level": 2,
-                    "name": "2",
-                    "description": "Intermediary"
-                }
-            vm.addGroupTiers("user", userTier1, null);
-            vm.addGroupTiers("user", userTier2, null);
-            vm.addGroupTiers("merchant", merchantTier1, null);
-            vm.addGroupTiers("merchant", merchantTier2, "last");
+                tier3 = {
+                    level: 3,
+                    name: "1",
+                    description: "Advanced"
+                };
+            vm.addGroupTiers("user", tier1, null);
+            vm.addGroupTiers("user", tier2, null);
+            vm.addGroupTiers("user", tier3, null);
+            vm.addGroupTiers("merchant", tier1, null);
+            vm.addGroupTiers("merchant", tier2, null);
+            vm.addGroupTiers("merchant", tier3, "last");
         };
 
         vm.addGroupTiers = function(groupName, tierObj, last){
@@ -288,23 +285,35 @@
                 Rehive.admin.groups.tiers.get("user").then(function (res) {
                     $scope.userGroupTiers = res;
                     for(var i = 0; i < $scope.userGroupTiers.length; ++i){
-                        if($scope.userGroupTiers[i].level === 1 || $scope.userGroupTiers[i].level === 2){
+                        if($scope.userGroupTiers[i].level === 2 || $scope.userGroupTiers[i].level === 3){
                             vm.updateTierRequirements("user", $scope.userGroupTiers[i], "first_name");
                             vm.updateTierRequirements("user", $scope.userGroupTiers[i], "last_name");
-                        }
-                        if($scope.userGroupTiers[i].level === 2){
                             vm.updateTierRequirements("user", $scope.userGroupTiers[i], "email_address");
+                        }
+                        if($scope.userGroupTiers[i].level === 3){
+                            vm.updateTierRequirements("user", $scope.userGroupTiers[i], "nationality");
+                            vm.updateTierRequirements("user", $scope.userGroupTiers[i], "birth_date");
+                            vm.updateTierRequirements("user", $scope.userGroupTiers[i], "id_number");
+                            vm.updateTierRequirements("user", $scope.userGroupTiers[i], "mobile_number");
+                            vm.updateTierRequirements("user", $scope.userGroupTiers[i], "proof_of_identity");
+                            vm.updateTierRequirements("user", $scope.userGroupTiers[i], "proof_of_address");
                         }
                     }
                     Rehive.admin.groups.tiers.get("merchant").then(function (res) {
                         $scope.merchantGroupTiers = res;
                         for(var i = 0; i < $scope.merchantGroupTiers.length; ++i){
-                            if($scope.merchantGroupTiers[i].level === 1 || $scope.merchantGroupTiers[i].level === 2){
+                            if($scope.merchantGroupTiers[i].level === 2 || $scope.merchantGroupTiers[i].level === 3){
                                 vm.updateTierRequirements("merchant", $scope.merchantGroupTiers[i], "first_name");
                                 vm.updateTierRequirements("merchant", $scope.merchantGroupTiers[i], "last_name");
-                            }
-                            if($scope.merchantGroupTiers[i].level === 2){
                                 vm.updateTierRequirements("merchant", $scope.merchantGroupTiers[i], "email_address");
+                            }
+                            if($scope.merchantGroupTiers[i].level === 3){
+                                vm.updateTierRequirements("merchant", $scope.merchantGroupTiers[i], "nationality");
+                                vm.updateTierRequirements("merchant", $scope.merchantGroupTiers[i], "birth_date");
+                                vm.updateTierRequirements("merchant", $scope.merchantGroupTiers[i], "id_number");
+                                vm.updateTierRequirements("merchant", $scope.merchantGroupTiers[i], "mobile_number");
+                                vm.updateTierRequirements("merchant", $scope.merchantGroupTiers[i], "proof_of_identity");
+                                vm.updateTierRequirements("merchant", $scope.merchantGroupTiers[i], "proof_of_address");
                             }
                         }
                         $scope.$apply();
@@ -329,7 +338,7 @@
                     "requirement": requirementName
                 }).then(function (res) {
                     ++vm.tierRequirementsAdded;
-                    if(vm.tierRequirementsAdded === 10){
+                    if(vm.tierRequirementsAdded === 24){
                         vm.setupServices();
                         $scope.$apply();
                     }
@@ -343,16 +352,17 @@
 
         vm.setupServices = function(){
             var servicesArray = [4, 12, 45, 78, 79, 80];
+            var len = servicesArray.length;
             if(vm.token){
-                for(var index = 0; index < servicesArray.length; ++index) {
-                    $http.put(environmentConfig.API + '/admin/services/' + servicesArray[index] + '/',{terms_and_conditions: true, active: true},{
+                for(var idx = 0; idx < len; ++idx) {
+                    $http.put(environmentConfig.API + '/admin/services/' + servicesArray[idx] + '/',{terms_and_conditions: true, active: true},{
                         headers: {
                             'Content-Type': 'application/json',
                             'Authorization': vm.token
                         }
                     }).then(function (res) {
-                        if(index === (servicesArray.length - 1)){
-                            vm.setupBitcoinTestnetService();
+                        if(idx === len){
+                            vm.setupStellarTestnetService();
                         }
                     }).catch(function (error) {
                         errorHandler.evaluateErrors(error.data);
@@ -362,24 +372,25 @@
             }
         };
 
-        vm.setupBitcoinTestnetService = function(){
-            var hotwalletParams = {
-                low_balance_percentage: 0.1
-            };
-            if(vm.token){
-                $http.post('https://bitcoin-testnet.services.rehive.io/api/1/admin/hotwallet/', hotwalletParams, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
-                    vm.setupStellarTestnetService();
-                }).catch(function (error) {
-                    errorHandler.evaluateErrors(error.data);
-                    errorHandler.handleErrors(error);
-                });
-            }
-        };
+        // vm.setupBitcoinTestnetService = function(){
+        //     var hotwalletParams = {
+        //         low_balance_percentage: 0.1
+        //     };
+        //     if(vm.token){
+        //         $http.post('https://bitcoin-testnet.services.rehive.io/api/1/admin/hotwallet/', hotwalletParams, {
+        //             headers: {
+        //                 'Content-Type': 'application/json',
+        //                 'Authorization': vm.token
+        //             }
+        //         }).then(function (res) {
+        //             vm.setupStellarTestnetService();
+        //
+        //         }).catch(function (error) {
+        //             errorHandler.evaluateErrors(error.data);
+        //             errorHandler.handleErrors(error);
+        //         });
+        //     }
+        // };
 
         vm.setupStellarTestnetService = function(){
             if(vm.token){
@@ -397,7 +408,7 @@
             }
         };
 
-        vm.fundStellarTestnetHotwallet = function(){
+        vm.fundStellarTestnetHotwallet = function(recall){
             if(vm.token){
                 $http.get('https://stellar-testnet.services.rehive.io/api/1/admin/hotwallet/fund', {
                     headers: {
@@ -412,17 +423,12 @@
                             'Content-Type': 'application/json'
                         }
                     }).then(function (res) {
-                        setTimeout(function(){
-                            vm.addDemoAsset(hotwalletFundObj.account_address);
-                        }, 3000);
+                        vm.addDemoAsset(hotwalletFundObj.account_address);
                     }).catch(function (error) {
                         errorHandler.evaluateErrors(error.data);
                         errorHandler.handleErrors(error);
                     });
                 }).catch(function (error) {
-                    if(error.status === 400){
-                        vm.fundStellarTestnetHotwallet('recalled');
-                    }
                     errorHandler.evaluateErrors(error.data);
                     errorHandler.handleErrors(error);
                 });
@@ -747,7 +753,8 @@
                 Rehive.admin.groups.accountConfigurations.currencies.create(groupName, account.name, {currency: element.code}).then(function (res)
                 {
                     if (last && index === (array.length - 1)){
-                        vm.setupTierLimits();
+                        // vm.setupTierLimits();
+                        vm.reactivateProductService();
                     }
                     $scope.$apply();
                 }, function (error) {
@@ -758,87 +765,87 @@
             });
         };
 
-        vm.setupTierLimits = function(){
-            var tier1LimitCr = {
-                    tx_type: "credit",
-                    currency: null,
-                    value: 1000,
-                    type: 'month_max'
-                },
-                tier1LimitDr = {
-                    tx_type: "debit",
-                    currency: null,
-                    value: 1000,
-                    type: 'month_max'
-                },
-                tier2LimitCr = {
-                    tx_type: "credit",
-                    currency: null,
-                    value: 10000,
-                    type: 'month_max'
-                },
-                tier2LimitDr = {
-                    tx_type: "debit",
-                    currency: null,
-                    value: 10000,
-                    type: 'month_max'
-                };
+        // vm.setupTierLimits = function(){
+        //     var tier1LimitCr = {
+        //             tx_type: "credit",
+        //             currency: null,
+        //             value: 1000,
+        //             type: 'month_max'
+        //         },
+        //         tier1LimitDr = {
+        //             tx_type: "debit",
+        //             currency: null,
+        //             value: 1000,
+        //             type: 'month_max'
+        //         },
+        //         tier2LimitCr = {
+        //             tx_type: "credit",
+        //             currency: null,
+        //             value: 10000,
+        //             type: 'month_max'
+        //         },
+        //         tier2LimitDr = {
+        //             tx_type: "debit",
+        //             currency: null,
+        //             value: 10000,
+        //             type: 'month_max'
+        //         };
+        //
+        //     tier1LimitCr = serializeFiltersService.objectFilters(tier1LimitCr);
+        //     tier1LimitDr = serializeFiltersService.objectFilters(tier1LimitDr);
+        //     tier2LimitCr = serializeFiltersService.objectFilters(tier2LimitCr);
+        //     tier2LimitDr = serializeFiltersService.objectFilters(tier2LimitDr);
+        //
+        //     for(var i = 0; i < $scope.currencyOptions.length; ++i){
+        //         var currency = $scope.currencyOptions[i];
+        //
+        //         tier1LimitCr.currency = tier1LimitDr.currency = tier2LimitCr.currency = tier2LimitDr.currency = currency.code;
+        //
+        //         tier1LimitCr.value = tier1LimitDr.value = currencyModifiers.convertToCents(1000, currency.divisibility);
+        //         tier2LimitCr.value = tier2LimitDr.value = currencyModifiers.convertToCents(10000, currency.divisibility);
+        //
+        //         for(var j = 0; j < $scope.userGroupTiers.length; ++j){
+        //             if($scope.userGroupTiers[j].level === 1){
+        //                 vm.addTierLimit("user", $scope.userGroupTiers[j].id, tier1LimitCr, null);
+        //                 vm.addTierLimit("user", $scope.userGroupTiers[j].id, tier1LimitDr, null);
+        //             }
+        //             else if($scope.userGroupTiers[j].level === 2){
+        //                 vm.addTierLimit("user", $scope.userGroupTiers[j].id, tier2LimitCr, null);
+        //                 vm.addTierLimit("user", $scope.userGroupTiers[j].id, tier2LimitDr, null);
+        //             }
+        //         }
+        //         for(var k = 0; k < $scope.merchantGroupTiers.length; ++k){
+        //             if($scope.merchantGroupTiers[k].level === 1){
+        //                 vm.addTierLimit("merchant", $scope.merchantGroupTiers[k].id, tier1LimitCr, null);
+        //                 vm.addTierLimit("merchant", $scope.merchantGroupTiers[k].id, tier1LimitDr, null);
+        //             }
+        //             else if($scope.merchantGroupTiers[k].level === 2 && i === ($scope.currencyOptions.length - 1) && k === ($scope.merchantGroupTiers.length - 1)){
+        //                 vm.addTierLimit("merchant", $scope.merchantGroupTiers[k].id, tier2LimitCr, null);
+        //                 vm.addTierLimit("merchant", $scope.merchantGroupTiers[k].id, tier2LimitDr, 'last');
+        //             }
+        //             else if($scope.merchantGroupTiers[k].level === 2){
+        //                 vm.addTierLimit("merchant", $scope.merchantGroupTiers[k].id, tier2LimitCr, null);
+        //                 vm.addTierLimit("merchant", $scope.merchantGroupTiers[k].id, tier2LimitDr, null);
+        //             }
+        //         }
+        //     }
+        // };
 
-            tier1LimitCr = serializeFiltersService.objectFilters(tier1LimitCr);
-            tier1LimitDr = serializeFiltersService.objectFilters(tier1LimitDr);
-            tier2LimitCr = serializeFiltersService.objectFilters(tier2LimitCr);
-            tier2LimitDr = serializeFiltersService.objectFilters(tier2LimitDr);
-
-            for(var i = 0; i < $scope.currencyOptions.length; ++i){
-                var currency = $scope.currencyOptions[i];
-
-                tier1LimitCr.currency = tier1LimitDr.currency = tier2LimitCr.currency = tier2LimitDr.currency = currency.code;
-
-                tier1LimitCr.value = tier1LimitDr.value = currencyModifiers.convertToCents(1000, currency.divisibility);
-                tier2LimitCr.value = tier2LimitDr.value = currencyModifiers.convertToCents(10000, currency.divisibility);
-
-                for(var j = 0; j < $scope.userGroupTiers.length; ++j){
-                    if($scope.userGroupTiers[j].level === 1){
-                        vm.addTierLimit("user", $scope.userGroupTiers[j].id, tier1LimitCr, null);
-                        vm.addTierLimit("user", $scope.userGroupTiers[j].id, tier1LimitDr, null);
-                    }
-                    else if($scope.userGroupTiers[j].level === 2){
-                        vm.addTierLimit("user", $scope.userGroupTiers[j].id, tier2LimitCr, null);
-                        vm.addTierLimit("user", $scope.userGroupTiers[j].id, tier2LimitDr, null);
-                    }
-                }
-                for(var k = 0; k < $scope.merchantGroupTiers.length; ++k){
-                    if($scope.merchantGroupTiers[k].level === 1){
-                        vm.addTierLimit("merchant", $scope.merchantGroupTiers[k].id, tier1LimitCr, null);
-                        vm.addTierLimit("merchant", $scope.merchantGroupTiers[k].id, tier1LimitDr, null);
-                    }
-                    else if($scope.merchantGroupTiers[k].level === 2 && i === ($scope.currencyOptions.length - 1) && k === ($scope.merchantGroupTiers.length - 1)){
-                        vm.addTierLimit("merchant", $scope.merchantGroupTiers[k].id, tier2LimitCr, null);
-                        vm.addTierLimit("merchant", $scope.merchantGroupTiers[k].id, tier2LimitDr, 'last');
-                    }
-                    else if($scope.merchantGroupTiers[k].level === 2){
-                        vm.addTierLimit("merchant", $scope.merchantGroupTiers[k].id, tier2LimitCr, null);
-                        vm.addTierLimit("merchant", $scope.merchantGroupTiers[k].id, tier2LimitDr, null);
-                    }
-                }
-            }
-        };
-
-        vm.addTierLimit = function(groupName, tierId, tierLimitsParams, last){
-            if(vm.token) {
-                Rehive.admin.groups.tiers.limits.create(groupName, tierId, tierLimitsParams)
-                    .then(function (res){
-                        if(last){
-                            vm.reactivateProductService();
-                        }
-                        $scope.$apply();
-                    }, function (error) {
-                        errorHandler.evaluateErrors(error);
-                        errorHandler.handleErrors(error);
-                        $scope.$apply();
-                    });
-            }
-        };
+        // vm.addTierLimit = function(groupName, tierId, tierLimitsParams, last){
+        //     if(vm.token) {
+        //         Rehive.admin.groups.tiers.limits.create(groupName, tierId, tierLimitsParams)
+        //             .then(function (res){
+        //                 if(last){
+        //                     vm.reactivateProductService();
+        //                 }
+        //                 $scope.$apply();
+        //             }, function (error) {
+        //                 errorHandler.evaluateErrors(error);
+        //                 errorHandler.handleErrors(error);
+        //                 $scope.$apply();
+        //             });
+        //     }
+        // };
 
         /*To update the service currencies: */
         vm.reactivateProductService = function(){
