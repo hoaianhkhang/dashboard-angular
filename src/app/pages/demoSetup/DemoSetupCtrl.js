@@ -361,7 +361,7 @@
                             'Authorization': vm.token
                         }
                     }).then(function (res) {
-                        if(idx === len){
+                        if(res.data.data.id === 78){
                             vm.setupStellarTestnetService();
                         }
                     }).catch(function (error) {
