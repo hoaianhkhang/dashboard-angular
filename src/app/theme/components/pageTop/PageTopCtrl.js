@@ -297,10 +297,16 @@
                 $state.go('transactions.history',{transactionId: transaction.id});
             }
             else if(type == "email"){
-                $state.go('transactions.history',{id: transaction.user.id});
+                var userId = transaction.id + ":" + transaction.user.email;
+                $state.go('transactions.history',{id: userId});
+            }
+            else if(type == "mobile"){
+                var userId = transaction.id + ":" + transaction.user.id;
+                $state.go('transactions.history',{id: userId});
             }
             else if(type == "account"){
-                $state.go('transactions.history',{accountRef: transaction.account});
+                var accountRef = transaction.id + ":" + transaction.account;
+                $state.go('transactions.history',{accountRef: accountRef});
             }
             else {
                 $state.go('transactions.history');

@@ -643,16 +643,17 @@
             }
         };
         if($state.params.accountRef){
+            var accountRef = $state.params.accountRef.split(':')[1], transactionId = $state.params.accountRef.split(':')[0];
             $scope.clearFilters();
             $scope.filtersObj.accountFilter = true;
             $scope.applyFiltersObj.accountFilter.selectedAccountOption = 'Reference';
-            $scope.applyFiltersObj.accountFilter.selectedAccountReference = $state.params.accountRef;
+            $scope.applyFiltersObj.accountFilter.selectedAccountReference = accountRef;
 
             var filtersObj = JSON.parse(localStorageManagement.getValue(vm.savedTransactionTableFilters));
 
-            filtersObj.searchObj.account = $state.params.accountRef;
+            filtersObj.searchObj.account = accountRef;
             filtersObj.applyFiltersObj.accountFilter.selectedAccountOption = 'Reference';
-            filtersObj.applyFiltersObj.accountFilter.selectedAccountReference = $state.params.accountRef;
+            filtersObj.applyFiltersObj.accountFilter.selectedAccountReference = accountRef;
 
             vm.saveTransactionsTableFiltersToLocalStorage({
                 searchObj: serializeFiltersService.objectFilters(filtersObj.searchObj),
@@ -660,17 +661,18 @@
                 applyFiltersObj: serializeFiltersService.objectFilters(filtersObj.applyFiltersObj)
             });
 
-            $scope.getLatestTransactions('applyFilter');
+            $scope.getLatestTransactions('applyFilter', transactionId);
         }
         else if($state.params.id) {
+            var userId = $state.params.id.split(':')[1], transactionId = $state.params.id.split(':')[0];
             $scope.clearFilters();
             $scope.filtersObj.userFilter = true;
-            $scope.applyFiltersObj.userFilter.selectedUserOption = $state.params.id;
+            $scope.applyFiltersObj.userFilter.selectedUserOption = userId;
 
             var filtersObj = JSON.parse(localStorageManagement.getValue(vm.savedTransactionTableFilters));
 
-            filtersObj.searchObj.user = $state.params.id;
-            filtersObj.applyFiltersObj.userFilter.selectedUserOption = $state.params.id;
+            filtersObj.searchObj.user = userId;
+            filtersObj.applyFiltersObj.userFilter.selectedUserOption = userId;
 
             vm.saveTransactionsTableFiltersToLocalStorage({
                 searchObj: serializeFiltersService.objectFilters(filtersObj.searchObj),
@@ -678,7 +680,7 @@
                 applyFiltersObj: serializeFiltersService.objectFilters(filtersObj.applyFiltersObj)
             });
 
-            $scope.getLatestTransactions('applyFilter');
+            $scope.getLatestTransactions('applyFilter', transactionId);
         }
         else if($state.params.transactionId) {
             $scope.clearFilters();
