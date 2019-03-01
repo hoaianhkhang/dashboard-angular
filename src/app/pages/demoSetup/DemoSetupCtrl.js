@@ -158,7 +158,9 @@
         };
 
         vm.setupUserGroups = function(){
-            var userGroup = {
+            var adminGroup = {name: "admin"},
+                serviceGroup = {name: "service"},
+                userGroup = {
                     name: "user",
                     label: "User",
                     public: true,
@@ -170,16 +172,16 @@
                     label: "Manager",
                     public: false,
                     default: false,
-                    description: "Managers have access to make transactions from their own operational account, " +
-                        "view and verify user data. Managers do not have access to  system configurations."
+                    description: "Managers are able to make transactions from their own operational account, " +
+                        "and view and verify user data. Managers do not have access to system configurations."
                 },
                 supportGroup = {
                     name: "support",
                     label: "Support",
                     public: false,
                     default: false,
-                    description: "Support has limited access to make transactions from their own operational account, " +
-                        "view and verify user data. Support do not have access to  system configurations."
+                    description: "Support have limited access to make transactions from their own operational account, " +
+                        "view and verify user data. Support do not have access to system configurations."
                 },
                 merchantGroup = {
                     name: "merchant",
@@ -188,11 +190,12 @@
                     default: false,
                     description: "Merchants are limited to their own accounts."
                 };
-
-            vm.addGroup(userGroup, null);
             vm.addGroup(managerGroup, null);
             vm.addGroup(supportGroup, null);
+            vm.addGroup(userGroup, null);
             vm.addGroup(merchantGroup, 'last');
+            // vm.addGroup(serviceGroup, null);
+            // vm.addGroup(adminGroup, 'last');
         };
 
         vm.addGroup = function(groupObj, last){
@@ -223,7 +226,7 @@
                         Rehive.admin.groups.update(groupObj.name, groupObj)
                             .then(function(res){
                                 if(last){
-                                    vm.setupGroupTiers();
+                                    vm.setupGroupPermissions();
                                 }
                                 $scope.$apply();
                             }, function (error) {
@@ -238,6 +241,124 @@
                         $scope.$apply();
                     });
                 }
+            }
+        };
+
+        vm.setupGroupPermissions = function(){
+            var userPermissions = [
+                {type:'account', level: "view", section: 'user'},
+                {type:'address', level: "view", section: 'user'},
+                {type:'bankaccount', level: "view", section: 'user'},
+                {type:'currency', level: "view", section: 'user'},
+                {type:'company', level: "view", section: 'user'},
+                {type:'cryptoaccount', level: "view", section: 'user'},
+                {type:'document', level: "view", section: 'user'},
+                {type:'email', level: "view", section: 'user'},
+                {type:'group', level: "view", section: 'user'},
+                {type:'mfa', level: "view", section: 'user'},
+                {type:'mobile', level: "view", section: 'user'},
+                {type:'token', level: "view", section: 'user'},
+                {type:'transaction', level: "view", section: 'user'},
+                {type:'user', level: "view", section: 'user'}
+            ];
+            var len = userPermissions.length;
+            for(var i = 0; i < len; ++i){
+                userPermissions.push({type: userPermissions[i].type, level: "add", section: 'user'});
+                userPermissions.push({type: userPermissions[i].type, level: "change", section: 'user'});
+                userPermissions.push({type: userPermissions[i].type, level: "delete", section: 'user'});
+            }
+            var managerAdminPermissions = [
+                {type:'accesscontrolrule', level: "view", section: 'admin'},
+                {type:'account', level: "view", section: 'admin'},
+                {type:'address', level: "view", section: 'admin'},
+                {type:'bankaccount', level: "view", section: 'admin'},
+                {type:'currency', level: "view", section: 'admin'},
+                {type:'company', level: "view", section: 'admin'},
+                {type:'cryptoaccount', level: "view", section: 'admin'},
+                {type:'document', level: "view", section: 'admin'},
+                {type:'email', level: "view", section: 'admin'},
+                {type:'group', level: "view", section: 'admin'},
+                {type:'mfa', level: "view", section: 'admin'},
+                {type:'mobile', level: "view", section: 'admin'},
+                {type:'notification', level: "view", section: 'admin'},
+                {type:'request', level: "view", section: 'admin'},
+                {type:'service', level: "view", section: 'admin'},
+                {type:'token', level: "view", section: 'admin'},
+                {type:'transaction', level: "view", section: 'admin'},
+                {type:'transactionsubtypes', level: "view", section: 'admin'},
+                {type:'user', level: "view", section: 'admin'},
+                {type:'webhook', level: "view", section: 'admin'}
+            ];
+            len = managerAdminPermissions.length;
+            for(var i = 0; i < len; ++i){
+                if(managerAdminPermissions[i].type === 'address' || managerAdminPermissions[i].type === 'bankaccount'
+                    || managerAdminPermissions[i].type === 'cryptoaccount' || managerAdminPermissions[i].type === 'document'
+                    || managerAdminPermissions[i].type === 'email' || managerAdminPermissions[i].type === 'mobile' || managerAdminPermissions[i].type === 'user'){
+                    managerAdminPermissions.push({type: managerAdminPermissions[i].type, level: "add", section: "admin"});
+                    managerAdminPermissions.push({type: managerAdminPermissions[i].type, level: "change", section: "admin"});
+                    managerAdminPermissions.push({type: managerAdminPermissions[i].type, level: "delete", section: "admin"});
+                }
+            }
+            var supportAdminPermissions = [
+                {type:'account', level: "view", section: 'admin'},
+                {type:'address', level: "view", section: 'admin'},
+                {type:'address', level: "add", section: 'admin'},
+                {type:'address', level: "change", section: 'admin'},
+                {type:'address', level: "delete", section: 'admin'},
+                {type:'bankaccount', level: "view", section: 'admin'},
+                {type:'bankaccount', level: "add", section: 'admin'},
+                {type:'bankaccount', level: "change", section: 'admin'},
+                {type:'bankaccount', level: "delete", section: 'admin'},
+                {type:'currency', level: "view", section: 'admin'},
+                {type:'cryptoaccount', level: "view", section: 'admin'},
+                {type:'cryptoaccount', level: "add", section: 'admin'},
+                {type:'cryptoaccount', level: "change", section: 'admin'},
+                {type:'cryptoaccount', level: "delete", section: 'admin'},
+                {type:'document', level: "view", section: 'admin'},
+                {type:'document', level: "add", section: 'admin'},
+                {type:'document', level: "change", section: 'admin'},
+                {type:'document', level: "delete", section: 'admin'},
+                {type:'email', level: "view", section: 'admin'},
+                {type:'email', level: "add", section: 'admin'},
+                {type:'email', level: "change", section: 'admin'},
+                {type:'email', level: "delete", section: 'admin'},
+                {type:'group', level: "view", section: 'admin'},
+                {type:'mobile', level: "view", section: 'admin'},
+                {type:'mobile', level: "add", section: 'admin'},
+                {type:'mobile', level: "change", section: 'admin'},
+                {type:'mobile', level: "delete", section: 'admin'},
+                {type:'transaction', level: "view", section: 'admin'},
+                {type:'transaction', level: "add", section: 'admin'},
+                {type:'transactionsubtypes', level: "view", section: 'admin'},
+                {type:'user', level: "view", section: 'admin'},
+                {type:'user', level: "add", section: 'admin'},
+                {type:'user', level: "change", section: 'admin'},
+                {type:'user', level: "delete", section: 'admin'},
+            ];
+
+            vm.addGroupPermissions('manager', userPermissions, null);
+            vm.addGroupPermissions('manager', managerAdminPermissions, null);
+            vm.addGroupPermissions('support', userPermissions, null);
+            vm.addGroupPermissions('support', supportAdminPermissions, null);
+            vm.addGroupPermissions('user', userPermissions, null);
+            vm.addGroupPermissions('merchant', userPermissions, 'last');
+        };
+
+        vm.addGroupPermissions = function(groupName, permissionsArray, last){
+            if(vm.token) {
+                $scope.loadingPermissions = true;
+                Rehive.admin.groups.permissions.create(groupName,{permissions: permissionsArray}).then(function (res) {
+                    if(last){
+                        vm.setupGroupTiers();
+                    }
+                    $scope.$apply();
+                }, function (error) {
+                    vm.checkedLevels = [];
+                    $scope.loadingPermissions = false;
+                    errorHandler.evaluateErrors(error);
+                    errorHandler.handleErrors(error);
+                    $scope.$apply();
+                });
             }
         };
 
@@ -712,21 +833,21 @@
                 primary: true,
                 list: []
             },
-            walletAccountConfig = {
-                name: "wallet",
-                label: "Wallet",
+            userAccountConfig = {
+                name: "default",
+                label: "Default",
                 default: true,
                 primary: true,
                 list: []
             };
 
             operationalAccountConfig = serializeFiltersService.objectFilters(operationalAccountConfig);
-            walletAccountConfig = serializeFiltersService.objectFilters(walletAccountConfig);
+            userAccountConfig = serializeFiltersService.objectFilters(userAccountConfig);
 
             vm.addGroupAccountConfigurations("admin", operationalAccountConfig, null);
             vm.addGroupAccountConfigurations("manager", operationalAccountConfig, null);
             vm.addGroupAccountConfigurations("support", operationalAccountConfig, null);
-            vm.addGroupAccountConfigurations("user", walletAccountConfig, 'last');
+            vm.addGroupAccountConfigurations("user", userAccountConfig, 'last');
         };
 
         vm.addGroupAccountConfigurations = function(groupName, groupAccountConfigurationParams, last){
@@ -883,7 +1004,7 @@
                     code: "STEA10",
                     enabled: true,
                     prices: [
-                        {currency: $scope.demoCurrency, amount: 5000000},
+                        {currency: $scope.demoCurrency, amount: 500000},
                         {currency: $scope.txbtCurrency, amount: 20000}
                     ]
                 },
@@ -946,7 +1067,6 @@
         };
 
         vm.addPriceToProducts = function(productId, priceObj, last){
-            console.log(priceObj);
             if(vm.token) {
                 $http.post('https://product.services.rehive.io/api/admin/products/' + productId + '/prices/', priceObj, {
                     headers: {
@@ -1016,13 +1136,12 @@
             var adminAccountParams = {
                 name: "operational",
                 primary: true,
-                // user: adminUser ? adminUser.email : null
                 user: adminUser.email
             };
 
             if(vm.token) {
                 Rehive.admin.accounts.create(adminAccountParams).then(function (res) {
-                    vm.addAdminAccountCurrencies(res.reference);
+                    vm.addAdminAccountCurrencies(res);
                     $scope.$apply();
                 }, function (error) {
                     errorHandler.evaluateErrors(error);
@@ -1032,12 +1151,12 @@
             }
         };
 
-        vm.addAdminAccountCurrencies = function(reference){
+        vm.addAdminAccountCurrencies = function(adminAccount){
             $scope.currencyOptions.forEach(function (element,index,array) {
                 if(vm.token) {
-                    Rehive.admin.accounts.currencies.create(reference,{currency: element.code}).then(function (res) {
+                    Rehive.admin.accounts.currencies.create(adminAccount.reference,{currency: element.code}).then(function (res) {
                         if(index == (array.length - 1)) {
-                            vm.setupRewardsService(reference);
+                            vm.fundAdminAccountWithDemo(adminAccount);
                             $scope.$apply();
                         }
                     }, function (error) {
@@ -1046,6 +1165,31 @@
                         $scope.$apply();
                     });
                 }
+            });
+        };
+
+        vm.fundAdminAccountWithDemo = function(adminAccount){
+            var creditTransactionData = {
+                account: adminAccount.reference,
+                amount: currencyModifiers.convertToCents(7500, $scope.demoCurrency.divisibility),
+                currency: "DEMO",
+                metadata: {},
+                note: "Demo currency amount added for Rewards",
+                reference: "rewards_demo",
+                status: "Complete",
+                subtype: "reward",
+                user: adminAccount.user.email,
+            };
+
+            creditTransactionData = serializeFiltersService.objectFilters(creditTransactionData);
+
+            Rehive.admin.transactions.createCredit(creditTransactionData).then(function (res) {
+                vm.setupRewardsService();
+                $scope.$apply();
+            }, function (error) {
+                errorHandler.evaluateErrors(error);
+                errorHandler.handleErrors(error);
+                $scope.$apply();
             });
         };
 
@@ -1068,17 +1212,17 @@
                     max_per_user: 1,
                     visible: true,
                     request: false,
-                    event: 'user.update'
+                    event: 'user.create'
             },
             rewardsCampaign2 = {
                 name: "First 250 users",
-                description: "The first 250 users to claim this reward get and additional 10 DEMO tokens.",
+                description: "The first 250 users to claim this reward get an additional 10 DEMO tokens.",
                 currency: $scope.demoCurrency.code,
                 company: $rootScope.pageTopObj.companyObj.id,
                 start_date: moment(date1).format('YYYY-MM-DD') +'T00:00:00Z',
                 end_date: moment(date2).format('YYYY-MM-DD') +'T00:00:00Z',
                 reward_total: currencyModifiers.convertToCents(2500, $scope.demoCurrency.divisibility),
-                reward_amount: currencyModifiers.convertToCents(20.00, $scope.demoCurrency.divisibility),
+                reward_amount: currencyModifiers.convertToCents(10.00, $scope.demoCurrency.divisibility),
                 account: adminAccountRef,
                 reward_percentage: null,
                 amount_type: "fixed",

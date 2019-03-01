@@ -38,7 +38,6 @@
             }else{
                 $scope.editGroupObj.group_highlight = vm.savedGroupColors[vm.colorIndex];
             }
-            console.log(vm.savedGroupColors);
             vm.color_picker.value = $scope.editGroupObj.group_highlight.color;
             vm.color_picker.style.backgroundColor = vm.color_picker.value;
         };
