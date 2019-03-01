@@ -29,6 +29,17 @@
                         };
                     }
                     $scope.editUserBasicInfo = res;
+                    if($scope.editUserBasicInfo.groups[0].name === "service"){
+                        $scope.editUserBasicInfo.groups[0].name = "extension";
+                        var firstName = "", arr = $scope.editUserBasicInfo.first_name.split(' ');
+                        var len = arr.length;
+                        arr[len-1] = "Extension";
+                        for(var i = 0; i < len; ++i){
+                            firstName += arr[i];
+                            if(i !== len-1){firstName += " ";}
+                        }
+                        $scope.editUserBasicInfo.first_name = firstName;
+                    }
                     $scope.editUserBasicInfo.status = $filter('capitalizeWord')(res.status);
                     $scope.$apply();
                 }, function (error) {

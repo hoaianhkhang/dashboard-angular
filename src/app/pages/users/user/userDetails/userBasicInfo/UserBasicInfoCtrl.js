@@ -32,6 +32,17 @@
                         };
                     }
                     $scope.user = res;
+                    if($scope.user.groups[0].name === "service"){
+                        $scope.user.groups[0].name = "extension";
+                        var firstName = "", arr = $scope.user.first_name.split(' ');
+                        var len = arr.length;
+                        arr[len-1] = "Extension";
+                        for(var i = 0; i < len; ++i){
+                            firstName += arr[i];
+                            if(i !== len-1){firstName += " ";}
+                        }
+                        $scope.user.first_name = firstName;
+                    }
                     $scope.$apply();
                 }, function (error) {
                     $scope.loadingUserBasicInfo = false;

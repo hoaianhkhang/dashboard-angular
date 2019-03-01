@@ -365,7 +365,7 @@
 
                             var accountObject = {
                                 user: accountObj.user.email ? accountObj.user.email : accountObj.user.mobile ? accountObj.user.mobile : accountObj.user.id,
-                                group: accountObj.user.groups.length > 0 ? accountObj.user.groups[0].name : '',
+                                group: accountObj.user.groups.length > 0 ? ((accountObj.user.groups[0].name === "service") ? "extension" : accountObj.user.groups[0].name) : '',
                                 name: accountObj.name,
                                 reference: accountObj.reference,
                                 primary: accountObj.primary ? 'primary': '',
@@ -386,7 +386,7 @@
                 } else {
                     $scope.accountsList.push({
                         user: accountObj.user.email ? accountObj.user.email : accountObj.user.mobile ? accountObj.user.mobile : accountObj.user.id,
-                        group: accountObj.user.groups.length > 0 ? accountObj.user.groups[0].name : '',
+                        group: accountObj.user.groups.length > 0 ? ((accountObj.user.groups[0].name === "service") ? "extension" : accountObj.user.groups[0].name) : '',
                         name: accountObj.name,
                         reference: accountObj.reference,
                         primary: accountObj.primary ? 'primary': '',

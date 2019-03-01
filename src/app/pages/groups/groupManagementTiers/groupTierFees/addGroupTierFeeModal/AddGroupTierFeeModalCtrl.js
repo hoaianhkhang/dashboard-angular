@@ -11,7 +11,7 @@
         $scope.selectedTier = selectedTier;
         $scope.addingTierFees = false;
         $scope.loadingSubtypes = false;
-        vm.groupName = $stateParams.groupName;
+        vm.groupName = ($stateParams.groupName == 'extension') ? 'service' : $stateParams.groupName;
         vm.token = localStorageManagement.getValue('token');
         $scope.tierFeesParams = {
             tx_type: 'credit',
