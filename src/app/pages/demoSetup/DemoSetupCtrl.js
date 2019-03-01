@@ -460,9 +460,117 @@
                 }).then(function (res) {
                     ++vm.tierRequirementsAdded;
                     if(vm.tierRequirementsAdded === 24){
-                        vm.setupServices();
+                        vm.setupTransactionSubtypes();
                         $scope.$apply();
                     }
+                }, function (error) {
+                    errorHandler.evaluateErrors(error);
+                    errorHandler.handleErrors(error);
+                    $scope.$apply();
+                });
+            }
+        };
+
+        vm.setupTransactionSubtypes = function(){
+            var subtypes = [
+                {
+                    name: "issue",
+                    label: "Issue",
+                    tx_type: "credit",
+                    description: "Subtype is used to issue funds to the destination address when issuing crypto assets."
+                },
+                {
+                    name: "fund",
+                    label: "Fund",
+                    tx_type: "credit",
+                    description: "Subtype is used to funds operational accounts."
+                },
+                {
+                    name: "deposit",
+                    label: "Deposit",
+                    tx_type: "credit",
+                    description: "Subtype is used to credit the destination account balance for a deposit transaction."
+                },
+                {
+                    name: "deposit",
+                    label: "Deposit",
+                    tx_type: "debit",
+                    description: "Subtype is used to debit the source account balance for a deposit transaction."
+                },
+                {
+                    name: "withdraw",
+                    label: "Withdraw",
+                    tx_type: "debit",
+                    description: "Subtype is used to debit the source account balance for a withdraw transaction."
+                },
+                {
+                    name: "send",
+                    label: "Send",
+                    tx_type: "debit",
+                    description: "Subtype is used to debit the source account balance for a transfer transaction."
+                },
+                {
+                    name: "receive",
+                    label: "Receive",
+                    tx_type: "credit",
+                    description: "Subtype is used to credit the destination account balance for a transfer transaction."
+                },
+                {
+                    name: "reward",
+                    label: "Reward",
+                    tx_type: "credit",
+                    description: "Subtype is used to credit the destination account balance for a rewards transaction."
+                },
+                {
+                    name: "reward",
+                    label: "Reward",
+                    tx_type: "debit",
+                    description: "Subtype is used to debit the source account balance for a rewards transaction."
+                },
+                {
+                    name: "purchase",
+                    label: "Purchase",
+                    tx_type: "credit",
+                    description: "Subtype is used to credit the destination account balance for a purchase transaction in the marketplace or in store."
+                },
+                {
+                    name: "purchase",
+                    label: "Purchase",
+                    tx_type: "debit",
+                    description: "Subtype is used to debit the source account balance for a purchase transaction in the marketplace or in store."
+                },
+                {
+                    name: "mass_send",
+                    label: "Mass send",
+                    tx_type: "debit",
+                    description: "Subtype is used to debit the source account balance for bulk transfer transactions."
+                },
+                {
+                    name: "mass_send",
+                    label: "Mass send",
+                    tx_type: "credit",
+                    description: "Subtype is used to credit the destination account balance for bulk transfer transactions."
+                }
+            ];
+
+            for(var i = 0; i < subtypes.length; ++i){
+                if(i === (subtypes.length - 1)){
+                    vm.addTransactionSubtype(subtypes[i], 'last');
+                }
+                else {
+                    vm.addTransactionSubtype(subtypes[i], null);
+                }
+            }
+
+        };
+
+        vm.addTransactionSubtype = function(subtypeObj, last){
+            if(vm.token){
+                Rehive.admin.subtypes.create(subtypeObj).then(function (res) {
+                    if(last){
+                        vm.setupServices();
+                    }
+                    $scope.$apply();
                 }, function (error) {
                     errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
@@ -482,8 +590,8 @@
                             'Authorization': vm.token
                         }
                     }).then(function (res) {
-                        if(res.data.data.id === 78){
-                            vm.setupStellarTestnetService();
+                        if(res.data.data.id === 12){
+                            vm.setupBitcoinTestnetService();
                         }
                     }).catch(function (error) {
                         errorHandler.evaluateErrors(error.data);
@@ -493,27 +601,43 @@
             }
         };
 
-        // vm.setupBitcoinTestnetService = function(){
-        //     var hotwalletParams = {
-        //         low_balance_percentage: 0.1
-        //     };
-        //     if(vm.token){
-        //         $http.post('https://bitcoin-testnet.services.rehive.io/api/1/admin/hotwallet/', hotwalletParams, {
-        //             headers: {
-        //                 'Content-Type': 'application/json',
-        //                 'Authorization': vm.token
-        //             }
-        //         }).then(function (res) {
-        //             vm.setupStellarTestnetService();
-        //
-        //         }).catch(function (error) {
-        //             errorHandler.evaluateErrors(error.data);
-        //             errorHandler.handleErrors(error);
-        //         });
-        //     }
-        // };
+        vm.setupBitcoinTestnetService = function(){
+            var bitCoinSubtypes = {
+                transaction_credit_subtype: "deposit",
+                transaction_debit_subtype: "withdraw",
+                transaction_fee_subtype: "fee",
+                transaction_fund_subtype: "fund",
+            };
+
+            bitCoinSubtypes = serializeFiltersService.objectFilters(bitCoinSubtypes);
+
+            if(vm.token){
+                $http.post('https://bitcoin-testnet.services.rehive.io/api/1/admin/company/configuration/', bitCoinSubtypes, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': vm.token
+                    }
+                }).then(function (res) {
+                    vm.setupStellarTestnetService();
+
+                }).catch(function (error) {
+                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.handleErrors(error);
+                });
+            }
+        };
 
         vm.setupStellarTestnetService = function(){
+            var stellarSubtypes = {
+                transaction_credit_subtype: "deposit",
+                transaction_debit_subtype: "withdraw",
+                transaction_fee_subtype: "fee",
+                transaction_fund_subtype: "fund",
+                transaction_issue_subtype: "issue",
+            };
+
+            stellarSubtypes = serializeFiltersService.objectFilters(stellarSubtypes);
+
             if(vm.token){
                 $http.patch('https://stellar-testnet.services.rehive.io/api/1/admin/company/', {has_completed_setup: true}, {
                     headers: {
@@ -521,7 +645,17 @@
                         'Authorization': vm.token
                     }
                 }).then(function(res){
-                    vm.fundStellarTestnetHotwallet();
+                    $http.patch('https://stellar-testnet.services.rehive.io/api/1/admin/company/configuration/', stellarSubtypes, {
+                        headers: {
+                            'Content-type': 'application/json',
+                            'Authorization': vm.token
+                        }
+                    }).then(function(res){
+                        vm.fundStellarTestnetHotwallet();
+                    }).catch(function(error){
+                        errorHandler.evaluateErrors(error.data);
+                        errorHandler.handleErrors(error);
+                    });
                 }).catch(function(error){
                     errorHandler.evaluateErrors(error.data);
                     errorHandler.handleErrors(error);
@@ -678,120 +812,12 @@
                 }).then(function (res) {
                     if (res.status === 200 || res.status === 201) {
                         if(last){
-                            vm.setupTransactionSubtypes();
+                            vm.getCompanyCurrencies();
                         }
                     }
                 }).catch(function (error) {
                     errorHandler.evaluateErrors(error.data);
                     errorHandler.handleErrors(error);
-                });
-            }
-        };
-
-        vm.setupTransactionSubtypes = function(){
-            var subtypes = [
-                {
-                    name: "issue",
-                    label: "Issue",
-                    tx_type: "credit",
-                    description: "Subtype is used to issue funds to the destination address when issuing crypto assets."
-                },
-                {
-                    name: "fund",
-                    label: "Fund",
-                    tx_type: "credit",
-                    description: "Subtype is used to funds operational accounts."
-                },
-                {
-                    name: "deposit",
-                    label: "Deposit",
-                    tx_type: "credit",
-                    description: "Subtype is used to credit the destination account balance for a deposit transaction."
-                },
-                {
-                    name: "deposit",
-                    label: "Deposit",
-                    tx_type: "debit",
-                    description: "Subtype is used to debit the source account balance for a deposit transaction."
-                },
-                {
-                    name: "withdraw",
-                    label: "Withdraw",
-                    tx_type: "debit",
-                    description: "Subtype is used to debit the source account balance for a withdraw transaction."
-                },
-                {
-                    name: "send",
-                    label: "Send",
-                    tx_type: "debit",
-                    description: "Subtype is used to debit the source account balance for a transfer transaction."
-                },
-                {
-                    name: "receive",
-                    label: "Receive",
-                    tx_type: "credit",
-                    description: "Subtype is used to credit the destination account balance for a transfer transaction."
-                },
-                {
-                    name: "reward",
-                    label: "Reward",
-                    tx_type: "credit",
-                    description: "Subtype is used to credit the destination account balance for a rewards transaction."
-                },
-                {
-                    name: "reward",
-                    label: "Reward",
-                    tx_type: "debit",
-                    description: "Subtype is used to debit the source account balance for a rewards transaction."
-                },
-                {
-                    name: "purchase",
-                    label: "Purchase",
-                    tx_type: "credit",
-                    description: "Subtype is used to credit the destination account balance for a purchase transaction in the marketplace or in store."
-                },
-                {
-                    name: "purchase",
-                    label: "Purchase",
-                    tx_type: "debit",
-                    description: "Subtype is used to debit the source account balance for a purchase transaction in the marketplace or in store."
-                },
-                {
-                    name: "mass_pay",
-                    label: "Mass pay",
-                    tx_type: "debit",
-                    description: "Subtype is used to debit the source account balance for bulk transfer transactions."
-                },
-                {
-                    name: "mass_pay",
-                    label: "Mass pay",
-                    tx_type: "credit",
-                    description: "Subtype is used to credit the destination account balance for bulk transfer transactions."
-                }
-            ];
-
-            for(var i = 0; i < subtypes.length; ++i){
-                if(i === (subtypes.length - 1)){
-                    vm.addTransactionSubtype(subtypes[i], 'last');
-                }
-                else {
-                    vm.addTransactionSubtype(subtypes[i], null);
-                }
-            }
-
-        };
-
-        vm.addTransactionSubtype = function(subtypeObj, last){
-            if(vm.token){
-                Rehive.admin.subtypes.create(subtypeObj).then(function (res) {
-                    if(last){
-                        vm.getCompanyCurrencies();
-                    }
-                    $scope.$apply();
-                }, function (error) {
-                    errorHandler.evaluateErrors(error);
-                    errorHandler.handleErrors(error);
-                    $scope.$apply();
                 });
             }
         };
