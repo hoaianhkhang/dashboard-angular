@@ -612,7 +612,7 @@
             bitCoinSubtypes = serializeFiltersService.objectFilters(bitCoinSubtypes);
 
             if(vm.token){
-                $http.post('https://bitcoin-testnet.services.rehive.io/api/1/admin/company/configuration/', bitCoinSubtypes, {
+                $http.patch('https://bitcoin-testnet.services.rehive.io/api/1/admin/company/configuration/', bitCoinSubtypes, {
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': vm.token
