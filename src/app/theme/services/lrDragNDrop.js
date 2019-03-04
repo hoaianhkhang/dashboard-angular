@@ -82,7 +82,7 @@
         };
     }]);
 
-    module.directive('lrDropTarget', ['lrDragStore', function (store) {
+    module.directive('lrDropTarget', ['lrDragStore', 'localStorageManagement', function (store, localStorageManagement) {
         return {
             link: function (scope, element, attr) {
 
@@ -106,11 +106,27 @@
                 collection = parseRepeater(scope, attr);
 
                 element.bind('drop', function (evt) {
+                    var companyIdentifier = localStorageManagement.getValue('companyIdentifier');
+                    var companyUserHeaders = companyIdentifier + "usersTable";
+                    var companyTransactionHeaders = companyIdentifier + "transactionsTable";
+                    var user = false, transactions = false;
                     var
                         collectionCopy = ng.copy(collection),
                         item = store.get(key),
                         dropIndex, i, l;
+
+                    if(collectionCopy.find(function(item){
+                        if(item.fieldName === "kycStatus"){
+                            return true;
+                        }
+                    })){
+                        user = true;
+                    }else {
+                        transactions = true;
+                    }
+
                     if (item !== null) {
+
                         dropIndex = scope.$index;
                         dropIndex = isAfter(evt.offsetX, evt.offsetY) ? dropIndex + 1 : dropIndex;
                         //srcCollection=targetCollection => we may need to apply a correction
@@ -124,6 +140,13 @@
                         }
                         scope.$apply(function () {
                             collection.splice(dropIndex, 0, item);
+                            if(user){
+                                var headers = collection;
+                                localStorageManagement.setValue(companyUserHeaders, JSON.stringify(headers));
+                            } else if(transactions){
+                                var headers = collection;
+                                localStorageManagement.setValue(companyTransactionHeaders, JSON.stringify(headers));
+                            }
                         });
                         evt.preventDefault();
                         resetStyle();
