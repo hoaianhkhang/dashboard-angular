@@ -4,7 +4,7 @@
     angular.module('BlurAdmin.pages.services.productService.ordersList')
         .controller('DisplayOrderModalCtrl', DisplayOrderModalCtrl);
 
-    function DisplayOrderModalCtrl($scope,$http,order,localStorageManagement,errorHandler,toastr, $location) {
+    function DisplayOrderModalCtrl($rootScope, $uibModalInstance, $scope,$http,order,localStorageManagement,errorHandler,toastr, $location) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
@@ -13,6 +13,7 @@
         $scope.loadingOrder = false;
         $scope.editingOrder = false;
         $scope.orderChanged = false;
+        $scope.disablePending = false;
         $scope.orderObj = {};
 
         vm.getOrder = function(){
@@ -29,6 +30,9 @@
                         $scope.loadingOrder =  false;
                         $scope.orderObj = res.data.data;
                         vm.orderStatus = $scope.orderObj.status;
+                        if($scope.orderObj.status == "failed" || $scope.orderObj.status == "complete"){
+                            $scope.disablePending = true;
+                        }
                     }
                 }).catch(function (error) {
                     $scope.loadingOrder =  false;
@@ -52,7 +56,6 @@
         };
 
         $scope.updateOrderStatus = function(){
-            console.log($scope.orderObj);
             if(vm.token && $scope.orderChanged){
                 $http.patch(vm.serviceUrl + 'admin/orders/' + order.id + '/',
                     {status: $scope.orderObj.status}, {
@@ -64,7 +67,7 @@
                     if (res.status === 201 || res.status === 200) {
                         $scope.editingOrder =  false;
                         toastr.success('Order status updated successfully');
-                        $location.path('/services/product/orders');
+                        $scope.closeModal();
                     }
                 }).catch(function (error) {
                     $scope.editingOrder =  false;
@@ -72,6 +75,11 @@
                     errorHandler.handleErrors(error);
                 });
             }
+        };
+
+        $scope.closeModal = function () {
+            $uibModalInstance.close(true);
+            $location.path('/services/product/orders');
         };
     }
 })();

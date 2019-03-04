@@ -37,7 +37,7 @@
             </div>
             <div ng-show="editingOrder" class="col-lg-8 col-md-8 col-sm-8 col-xs-8 custom-radio-groups-btn order-status-radio-btns">
                 <label class="margin-right-10 pointer">
-                    <input class="pointer" type="radio" ng-model="orderObj.status" value="pending" ng-change="orderStatusChanged()">
+                    <input class="pointer" type="radio" ng-model="orderObj.status" value="pending" ng-change="orderStatusChanged()" ng-disabled="disablePending">
                     <span class="custom-radio-btn">Pending</span>
                 </label>
                 <label class="margin-right-10 pointer">
