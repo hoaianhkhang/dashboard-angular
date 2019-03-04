@@ -16,7 +16,7 @@
     </div>
 </div>
 <div class="services-panels">
-    <div ng-hide="loadingServices" ng-show="servicesList.length > 0" class="panel" ng-repeat="service in servicesList">
+    <div ng-hide="loadingServices" ng-show="servicesList.length > 0" class="panel" ng-repeat="service in servicesList | orderBy: 'name'">
         <div class="panel-body">
             <div>
                 <table class="table">

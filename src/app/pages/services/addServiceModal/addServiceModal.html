@@ -15,7 +15,7 @@
                             data-placeholder-text-multiple="'Choose one or more services'"
                             width="100"
                             ng-model="selectedServices"
-                            ng-options="service.name for service in serviceListOptions"
+                            ng-options="service.name for service in serviceListOptions | orderBy: 'name'"
                             required>
                         <option value=""></option>
                     </select>
