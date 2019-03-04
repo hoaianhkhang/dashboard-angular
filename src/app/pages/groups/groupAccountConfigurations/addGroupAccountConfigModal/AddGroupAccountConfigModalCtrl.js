@@ -5,12 +5,13 @@
         .controller('AddGroupAccountConfigModalCtrl', AddGroupAccountConfigModalCtrl);
 
     function AddGroupAccountConfigModalCtrl($scope,$uibModalInstance,toastr,$stateParams,$filter,
-                                            Rehive,localStorageManagement,errorHandler,$timeout) {
+                                            Rehive,localStorageManagement,errorHandler,$timeout, $window) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('token');
         vm.groupName = $stateParams.groupName;
         $scope.loadingGroupAccountConfigurations = false;
+        $scope.companyCurrenciesAvailable = true;
         $scope.groupAccountConfigurationParams = {};
         $scope.newAccountConfigurationCurrencies = {
             list: []
@@ -24,6 +25,9 @@
                     page_size: 250
                 }}).then(function (res) {
                     $scope.currenciesList = res.results;
+                    if($scope.currenciesList.length === 0){
+                        $scope.companyCurrenciesAvailable = false;
+                    }
                     $scope.$apply();
                 }, function (error) {
                     errorHandler.evaluateErrors(error);
@@ -83,6 +87,8 @@
             });
         };
 
-
+        $scope.goToAddCurrencyModal = function () {
+            $window.open('/#/currencies?currencyAction=newCurrency','_blank');
+        };
     }
 })();
