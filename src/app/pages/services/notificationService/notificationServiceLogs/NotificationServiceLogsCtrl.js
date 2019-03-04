@@ -10,7 +10,8 @@
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
         vm.baseUrl = localStorageManagement.getValue('SERVICEURL');
-        $rootScope.dashboardTitle = 'Notification service | Rehive';
+        // $rootScope.dashboardTitle = 'Notification service | Rehive';
+        $rootScope.dashboardTitle = 'Notification extension | Rehive';
         $scope.loadingLogs =  false;
         $scope.notificationLogs = [];
 

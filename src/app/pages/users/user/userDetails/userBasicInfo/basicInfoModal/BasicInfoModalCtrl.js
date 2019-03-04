@@ -61,7 +61,9 @@
             if($scope.birthDate.year && $scope.birthDate.month && $scope.birthDate.day){
                 vm.updatedUserBasicInfo.birth_date = $scope.birthDate.year + '-' + $scope.birthDate.month + '-' + $scope.birthDate.day;
             }
-
+            if(vm.updatedUserBasicInfo.groups[0].name === "extension"){
+                vm.updatedUserBasicInfo.groups[0].name = "service";
+            }
             vm.updatedUserBasicInfo.status ? vm.updatedUserBasicInfo.status = vm.updatedUserBasicInfo.status.toLowerCase() : '';
             if(vm.token) {
                 $scope.loadingUserBasicInfo = true;

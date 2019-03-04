@@ -11,7 +11,8 @@
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
         vm.serviceId = localStorageManagement.getValue('SERVICEID');
-        $rootScope.dashboardTitle = 'Bitcoin service | Rehive';
+        // $rootScope.dashboardTitle = 'Bitcoin service | Rehive';
+        $rootScope.dashboardTitle = 'Bitcoin extension | Rehive';
         $scope.bitcoinSettingView = '';
         $scope.loadingHdkeys =  true;
         $scope.addingHdkey =  false;
@@ -24,7 +25,8 @@
 
         $scope.deactivateBitcoinServiceConfirm = function () {
             $ngConfirm({
-                title: 'Deactivate service',
+                // title: 'Deactivate service',
+                title: 'Deactivate extension',
                 contentUrl: 'app/pages/services/bitcoinService/bitcoinServiceSettings/bitcoinDeactivation/bitcoinDeactivationPrompt.html',
                 animationBounce: 1,
                 animationSpeed: 100,
@@ -58,8 +60,10 @@
                     if (res.status === 200) {
                         $timeout(function () {
                             $scope.deactivatingBitcoin = false;
-                            toastr.success('Service has been successfully deactivated');
-                            $location.path('/services');
+                            // toastr.success('Service has been successfully deactivated');
+                            // $location.path('/services');
+                            toastr.success('Extension has been successfully deactivated');
+                            $location.path('/extensions');
                         },600);
                     }
                 }).catch(function (error) {

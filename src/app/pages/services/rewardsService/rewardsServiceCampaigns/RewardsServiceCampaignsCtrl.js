@@ -27,7 +27,8 @@
         };
 
         $scope.goToCreateCampaignView = function () {
-            $location.path('/services/rewards/campaigns/create');
+            // $location.path('/services/rewards/campaigns/create');
+            $location.path('/extensions/rewards/campaigns/create');
         };
 
         $scope.campaignPagination = {
@@ -172,7 +173,8 @@
         };
 
         $scope.openEditCampaignView = function (campaign) {
-            $location.path('/services/rewards/campaigns/' + campaign.id + '/edit');
+            // $location.path('/services/rewards/campaigns/' + campaign.id + '/edit');
+            $location.path('/extensions/rewards/campaigns/' + campaign.id + '/edit');
         };
 
 

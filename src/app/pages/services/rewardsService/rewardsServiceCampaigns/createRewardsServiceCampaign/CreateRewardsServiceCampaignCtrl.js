@@ -180,7 +180,8 @@
                 }).then(function (res) {
                     if (res.status === 201 || res.status === 200) {
                         toastr.success('Campaign added successfully');
-                        $location.path('/services/rewards/campaigns');
+                        // $location.path('/services/rewards/campaigns');
+                        $location.path('/extensions/rewards/campaigns');
                     }
                 }).catch(function (error) {
                     $scope.addingCampaign =  false;
@@ -209,7 +210,8 @@
         };
 
         $scope.goToCampaignListView = function () {
-            $location.path('/services/rewards/campaigns');
+            // $location.path('/services/rewards/campaigns');
+            $location.path('/extensions/rewards/campaigns');
         };
 
     }
