@@ -855,6 +855,7 @@
             vm.addGroupAccountConfigurations("admin", operationalAccountConfig, null);
             vm.addGroupAccountConfigurations("manager", operationalAccountConfig, null);
             vm.addGroupAccountConfigurations("support", operationalAccountConfig, null);
+            vm.addGroupAccountConfigurations("merchant", operationalAccountConfig, null);
             vm.addGroupAccountConfigurations("user", userAccountConfig, 'last');
         };
 
