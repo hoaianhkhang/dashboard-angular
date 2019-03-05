@@ -636,7 +636,6 @@
                 ++idx;
                 if(groupName != "admin" && groupName != "extension"){
                     $scope.users[idx].group_highlight_color = vm.initializeGroupColor(groupName);
-                    console.log($scope.users[idx].group_highlight_color);
                 }
             });
 
