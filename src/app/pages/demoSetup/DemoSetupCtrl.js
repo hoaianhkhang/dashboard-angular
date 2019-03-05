@@ -672,17 +672,7 @@
                     }
                 }).then(function(res){
                     var hotwalletFundObj = res.data.data;
-                    var url = "https://friendbot.stellar.org/?addr=" + hotwalletFundObj.account_address;
-                    $http.get(url , {
-                        headers: {
-                            'Content-Type': 'application/json'
-                        }
-                    }).then(function (res) {
-                        vm.addDemoAsset(hotwalletFundObj.account_address);
-                    }).catch(function (error) {
-                        errorHandler.evaluateErrors(error.data);
-                        errorHandler.handleErrors(error);
-                    });
+                    vm.addDemoAsset(hotwalletFundObj.account_address);
                 }).catch(function (error) {
                     errorHandler.evaluateErrors(error.data);
                     errorHandler.handleErrors(error);
