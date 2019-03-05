@@ -6,7 +6,7 @@
 
     /** @ngInject */
     function EthereumHotwalletCtrl($scope,localStorageManagement,currenciesList,_,$http,errorHandler,toastr,sharedResources,
-                                   ss$uibModal,currencyModifiers,serializeFiltersService,environmentConfig,multiOptionsFilterService) {
+                                   $uibModal,currencyModifiers,serializeFiltersService,environmentConfig,multiOptionsFilterService) {
 
         var vm = this;
         vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
