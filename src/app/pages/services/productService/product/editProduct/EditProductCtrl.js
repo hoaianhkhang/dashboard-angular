@@ -266,7 +266,8 @@
                 });
             } else {
                 toastr.success('Product successfully updated');
-                $location.path('/services/product/list');
+                // $location.path('/services/product/list');
+                $location.path('/extensions/product/list');
             }
         };
 
@@ -281,7 +282,8 @@
                     if (res.status === 201 || res.status === 200) {
                         if(last){
                             toastr.success('Product successfully updated');
-                            $location.path('/services/product/list');
+                            // $location.path('/services/product/list');
+                            $location.path('/extensions/product/list');
                         }
                     }
                 }).catch(function (error) {
@@ -293,7 +295,8 @@
         };
 
         $scope.backToProductList = function () {
-            $location.path('/services/product/list');
+            // $location.path('/services/product/list');
+            $location.path('/extensions/product/list');
         };
 
     }

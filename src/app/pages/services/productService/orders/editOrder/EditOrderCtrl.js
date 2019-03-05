@@ -181,7 +181,8 @@
                     vm.deleteExistingItem({id: orderItem.id});
                 });
             }else{
-                $location.path('/services/product/orders');
+                // $location.path('/services/product/orders');
+                $location.path('/extensions/product/orders');
             }
 
         };
@@ -243,7 +244,8 @@
             }).then(function (res) {
                 if(last){
                     toastr.success('Order items updated successfully');
-                    $location.path('/services/product/orders');
+                    // $location.path('/services/product/orders');
+                    $location.path('/extensions/product/orders');
                 }
             }).catch(function (error) {
                 errorHandler.evaluateErrors(error.data);
@@ -281,7 +283,8 @@
         };
 
         $scope.backToOrderList = function () {
-            $location.path('/services/product/orders');
+            // $location.path('/services/product/orders');
+            $location.path('/extensions/product/orders');
         };
     }
 })();

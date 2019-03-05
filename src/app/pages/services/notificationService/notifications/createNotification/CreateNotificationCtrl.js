@@ -17,7 +17,8 @@
 
         $scope.goToCreateNotificationView = function (path) {
             $scope.createNotificationView = path;
-            $location.path('/services/notifications/create/' + $scope.createNotificationView);
+            // $location.path('/services/notifications/create/' + $scope.createNotificationView);
+            $location.path('/extensions/notifications/create/' + $scope.createNotificationView);
         };
         $scope.goToCreateNotificationView($scope.locationIndicator);
 

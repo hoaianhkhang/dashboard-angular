@@ -175,7 +175,8 @@
                 }).then(function (res) {
                     if (res.status === 200) {
                         toastr.success('Notification added successfully');
-                        $location.path('/services/notifications/list').search({type: 'sms'});
+                        // $location.path('/services/notifications/list').search({type: 'sms'});
+                        $location.path('/extensions/notifications/list').search({type: 'sms'});
                     }
                 }).catch(function (error) {
                     $scope.addingSmsNotification =  false;
@@ -186,7 +187,8 @@
         };
 
         $scope.goToSMSListView = function () {
-            $location.path('/services/notifications/list').search({type: 'sms'});
+            // $location.path('/services/notifications/list').search({type: 'sms'});
+            $location.path('/extensions/notifications/list').search({type: 'sms'});
         };
 
     }

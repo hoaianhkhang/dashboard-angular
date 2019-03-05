@@ -100,7 +100,8 @@
         $scope.getIcosList();
 
         $scope.goToAddIcoView = function () {
-            $location.path('/services/ico/add');
+            // $location.path('/services/ico/add');
+            $location.path('/extensions/ico/add');
         };
 
         $scope.deleteIcoPrompt = function(ico) {
@@ -163,11 +164,13 @@
         };
 
         $scope.goToIcoView = function (ico) {
-            $location.path('/services/ico/' + ico.id);
+            // $location.path('/services/ico/' + ico.id);
+            $location.path('/extensions/ico/' + ico.id);
         };
 
         $scope.goToEditView = function(ico){
-            $location.path('/services/ico/' + ico.id + '/edit');
+            // $location.path('/services/ico/' + ico.id + '/edit');
+            $location.path('/extensions/ico/' + ico.id + '/edit');
         };
 
 

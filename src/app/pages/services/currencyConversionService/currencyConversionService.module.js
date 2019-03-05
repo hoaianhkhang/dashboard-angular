@@ -13,11 +13,13 @@
     function routeConfig($stateProvider,$urlRouterProvider) {
         $stateProvider
             .state('currencyConversionService', {
-                url: '/services/conversion',
+                // url: '/services/conversion',
+                url: '/extensions/conversion',
                 abstract: true,
                 template:'<div ui-view="currencyConversionServiceViews"></div>'
             });
-        $urlRouterProvider.when("/services/conversion", "/services/conversion/rates");
+        // $urlRouterProvider.when("/services/conversion", "/services/conversion/rates");
+        $urlRouterProvider.when("/extensions/conversion", "/extensions/conversion/rates");
     }
 
 })();
