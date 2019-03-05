@@ -40,7 +40,7 @@
                 },
                 title: 'Transactions',
                 sidebarMeta: {
-                    order: 200,
+                    order: 300,
                     icon: 'sidebar-transactions-icon'
                 }
             });

@@ -1,0 +1,7 @@
+.get-started-panel{
+  display: flex;
+  align-items: center;
+  & .get-started-tabs{
+    display: inline-block;
+  }
+}
