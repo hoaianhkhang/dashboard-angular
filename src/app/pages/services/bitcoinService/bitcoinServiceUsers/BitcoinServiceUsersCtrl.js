@@ -11,7 +11,8 @@
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
         vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
-        $rootScope.dashboardTitle = 'Bitcoin service | Rehive';
+        // $rootScope.dashboardTitle = 'Bitcoin service | Rehive';
+        $rootScope.dashboardTitle = 'Bitcoin extension | Rehive';
         $scope.usersStateMessage = '';
         $scope.users = [];
         $scope.usersData = {};

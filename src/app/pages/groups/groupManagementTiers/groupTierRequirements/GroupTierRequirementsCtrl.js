@@ -10,7 +10,7 @@
 
         var vm = this;
         vm.token = localStorageManagement.getValue('token');
-        vm.groupName = $stateParams.groupName;
+        vm.groupName = ($stateParams.groupName == 'extension') ? 'service' : $stateParams.groupName;
         $scope.activeTabIndex = 0;
         $scope.loadingTierRequirements = true;
         $scope.tierRequirementFields = {};

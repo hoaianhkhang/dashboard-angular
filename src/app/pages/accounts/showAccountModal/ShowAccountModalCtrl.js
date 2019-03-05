@@ -19,6 +19,9 @@
                 $scope.loadingAccount = true;
                 Rehive.admin.accounts.get({reference: $scope.accountRef}).then(function (res) {
                     $scope.loadingAccount = false;
+                    if(res.group === "service"){
+                        res.group = "extension";
+                    }
                     $scope.accountObj = res;
                     $scope.$apply();
                 }, function (error) {

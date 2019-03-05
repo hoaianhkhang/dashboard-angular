@@ -9,7 +9,7 @@
                             $location,$stateParams,errorHandler,$window,toastr,serializeFiltersService,$filter,$uibModal,$ngConfirm) {
 
         var vm = this;
-        $scope.groupName = $stateParams.groupName;
+        $scope.groupName = ($stateParams.groupName == 'service') ? 'extension' : $stateParams.groupName;
         vm.token = localStorageManagement.getValue('token');
         vm.companyIdentifier = localStorageManagement.getValue('companyIdentifier');
         $scope.companyDateFormatString = localStorageManagement.getValue('DATE_FORMAT');
@@ -379,7 +379,7 @@
                 first_name__contains: $scope.filtersObj.firstNameFilter ? ($scope.applyFiltersObj.firstNameFilter.selectedFirstName ?  $scope.applyFiltersObj.firstNameFilter.selectedFirstName : null): null,
                 last_name__contains: $scope.filtersObj.lastNameFilter ? ($scope.applyFiltersObj.lastNameFilter.selectedLastName ?  $scope.applyFiltersObj.lastNameFilter.selectedLastName : null): null,
                 account: $scope.filtersObj.accountReferenceFilter ? ($scope.applyFiltersObj.accountReferenceFilter.selectedAccountReference ?  $scope.applyFiltersObj.accountReferenceFilter.selectedAccountReference : null): null,
-                group: $scope.groupName,
+                group: ($scope.groupName == 'extension') ? 'service' : $scope.groupName,
                 created__gt: vm.dateObj.created__gt ? Date.parse(vm.dateObj.created__gt +'T00:00:00') : null,
                 created__lt: vm.dateObj.created__lt ? Date.parse(vm.dateObj.created__lt +'T00:00:00') : null,
                 updated__gt: vm.updatedDateObj.updated__gt ? Date.parse(vm.updatedDateObj.updated__gt +'T00:00:00') : null,
@@ -429,13 +429,24 @@
 
         vm.formatUsersArray = function (usersArray) {
             usersArray.forEach(function (userObj) {
+                var firstName = userObj.first_name, groupName = (userObj.groups.length > 0) ? ((userObj.groups[0].name == 'service') ? $scope.groupName : userObj.groups[0].name) : null;
+                if(groupName === "extension"){
+                    var arr = firstName.split(' ');
+                    firstName = "";
+                    for(var i = 0; i < arr.length - 1; ++i){
+                        firstName += arr[i] + ' ';
+                    }
+                    firstName += "Extension";
+                }
                 $scope.users.push({
                     id: userObj.id,
-                    first_name: userObj.first_name,
+                    // first_name: userObj.first_name,
+                    first_name: firstName,
                     last_name: userObj.last_name,
                     email: userObj.email,
                     mobile: userObj.mobile,
-                    groupName: userObj.groups.length > 0 ? userObj.groups[0].name: null,
+                    // groupName: userObj.groups.length > 0 ? userObj.groups[0].name : null,
+                    groupName: groupName,
                     created: userObj.created ? $filter("date")(userObj.created,'mediumDate') + ' ' + $filter("date")(userObj.created,'shortTime'): null,
                     updated: userObj.updated ? $filter("date")(userObj.updated,'mediumDate') + ' ' + $filter("date")(userObj.updated,'shortTime'): null,
                     status: $filter("capitalizeWord")(userObj.status),
@@ -457,10 +468,15 @@
         };
 
         $scope.getGroup = function () {
+            var groupName = ($scope.groupName == 'extension') ? 'service' : $scope.groupName;
+
             if(vm.token) {
                 $scope.loadingGroup = true;
-                Rehive.admin.groups.get({name: $scope.groupName}).then(function (res) {
+                Rehive.admin.groups.get({name: groupName}).then(function (res) {
                     $scope.editGroupObj = res;
+                    if($scope.editGroupObj.name == 'service'){
+                        $scope.editGroupObj.name = 'extension';
+                    }
                     $scope.loadingGroup = false;
                     $scope.$apply();
                 }, function (error) {
