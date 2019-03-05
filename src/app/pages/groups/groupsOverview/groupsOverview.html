@@ -58,21 +58,21 @@
                         </div>
                         <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 group-overview-td">
                             <div>
-                                <input ng-disabled="group.name == 'admin' || group.name == 'service'" ng-change="updateGroup(group,'default')" class="custom-rehive-checkbox" type="checkbox" ng-model="group.default">
+                                <input ng-disabled="group.name == 'admin' || group.name == 'extension'" ng-change="updateGroup(group,'default')" class="custom-rehive-checkbox" type="checkbox" ng-model="group.default">
                                 <br>
                                 <span class="currencies-details-heading">Default</span>
                             </div>
-                            <div ng-show="group.name == 'admin' || group.name == 'service'" class="group-overview-tooltip">
+                            <div ng-show="group.name == 'admin' || group.name == 'extension'" class="group-overview-tooltip">
                                Rehive system group, cannot edit.
                             </div>
                         </div>
                         <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 group-overview-td">
                             <div>
-                                <input ng-disabled="group.name == 'admin' || group.name == 'service'" ng-change="updateGroup(group,'public')" class="custom-rehive-checkbox" type="checkbox" ng-model="group.public">
+                                <input ng-disabled="group.name == 'admin' || group.name == 'extension'" ng-change="updateGroup(group,'public')" class="custom-rehive-checkbox" type="checkbox" ng-model="group.public">
                                 <br>
                                 <span class="currencies-details-heading">Public</span>
                             </div>
-                            <div ng-show="group.name == 'admin' || group.name == 'service'" class="group-overview-tooltip">
+                            <div ng-show="group.name == 'admin' || group.name == 'extension'" class="group-overview-tooltip">
                                 Rehive system group, cannot edit.
                             </div>
                         </div>
@@ -90,7 +90,7 @@
                                 <a class="group-options-link" ng-href="{{'/#/groups/' + group.name + '/transaction-settings'}}"><li>Transaction settings</li></a>
                                 <a class="group-options-link" ng-href="{{'/#/groups/' + group.name + '/stats'}}"><li>Stats</li></a>
                                 <li ng-show="group.archived" ng-click="restoreGroup(group)">Restore group</li>
-                                <li ng-hide="group.name == 'admin' || group.name == 'service'"
+                                <li ng-hide="group.name == 'admin' || group.name == 'extension'"
                                     ng-click="openDeleteGroupModal('app/pages/groups/groupsOverview/deleteGroupModal/deleteGroupModal.html','md',group)">Delete group</li>
                             </ul>
                         </div>

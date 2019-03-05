@@ -12,7 +12,7 @@
         $scope.tierLimit = tierLimit;
         $scope.selectedTier = selectedTier;
         $scope.editingTierLimits = false;
-        vm.groupName = $stateParams.groupName;
+        vm.groupName = ($stateParams.groupName == 'extension') ? 'service' : $stateParams.groupName;
         $scope.editTierLimit = {};
         $scope.typeOptions = ['Maximum per transaction','Maximum per day','Maximum per month','Minimum','Overdraft'];
         $scope.loadingSubtypes = false;

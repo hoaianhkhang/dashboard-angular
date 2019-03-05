@@ -26,6 +26,12 @@
 
         $scope.decisionMadeToChangeGroupFunction = function () {
             $scope.decisionMadeToChangeGroup = !$scope.decisionMadeToChangeGroup;
+            if($scope.oldGroup.name === "service"){
+                $scope.oldGroup.name = "extension";
+            }
+            if($scope.groupForReassigning.name === "service"){
+                $scope.groupForReassigning.name = "extension";
+            }
         };
 
         vm.getUser = function(){
@@ -54,6 +60,11 @@
                     if(res.results.length > 0){
                         $scope.groupForReassigning = res.results[0];
                     }
+                    for(var i = 0; i < $scope.groups.length; ++i){
+                        if($scope.groups[i].name === "service"){
+                            $scope.groups[i].name = "extension";
+                        }
+                    }
                     $scope.$apply();
                 }, function (error) {
                     $scope.loadingGroups = false;
@@ -68,6 +79,9 @@
         $scope.deleteUserGroup = function () {
             $scope.loadingGroups = true;
             if(vm.user.groups[0] && vm.user.groups[0].name){
+                if(vm.user.groups[0].name === "extension"){
+                    vm.user.groups[0].name = "service";
+                }
                 Rehive.admin.users.groups.delete(vm.user.id,vm.user.groups[0].name).then(function (res) {
                     vm.reassignUser();
                 }, function (error) {
@@ -84,7 +98,7 @@
         vm.reassignUser = function () {
             if(vm.token) {
                 Rehive.admin.users.groups.create(vm.user.id, {
-                    group: $scope.groupForReassigning.name
+                    group: ($scope.groupForReassigning.name === "extension") ? "service" : $scope.groupForReassigning.name
                 }).then(function (res) {
                     $scope.loadingGroups = false;
                     toastr.success('User successfully reassigned');
