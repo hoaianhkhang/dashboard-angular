@@ -150,7 +150,6 @@
                     vm.setupUserGroups();
                     $scope.$apply();
                 }).catch(function(error){
-                    errorHandler.evaluateErrors(error.data);
                     errorHandler.handleErrors(error);
                     $scope.$apply();
                 });
@@ -215,7 +214,6 @@
                         .then(function(res){
                             $scope.$apply();
                         }, function (error) {
-                            errorHandler.evaluateErrors(error);
                             errorHandler.handleErrors(error);
                             $scope.$apply();
                         });
@@ -230,13 +228,11 @@
                                 }
                                 $scope.$apply();
                             }, function (error) {
-                                errorHandler.evaluateErrors(error);
                                 errorHandler.handleErrors(error);
                                 $scope.$apply();
                             });
                         $scope.$apply();
                     }, function (error) {
-                        errorHandler.evaluateErrors(error);
                         errorHandler.handleErrors(error);
                         $scope.$apply();
                     });
@@ -353,9 +349,6 @@
                     }
                     $scope.$apply();
                 }, function (error) {
-                    vm.checkedLevels = [];
-                    $scope.loadingPermissions = false;
-                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
                     $scope.$apply();
                 });
@@ -394,7 +387,6 @@
                     }
                     $scope.$apply();
                 }, function (error) {
-                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
                     $scope.$apply();
                 });
@@ -439,13 +431,11 @@
                         }
                         $scope.$apply();
                     }, function (error) {
-                        errorHandler.evaluateErrors(error);
                         errorHandler.handleErrors(error);
                         $scope.$apply();
                     });
                     $scope.$apply();
                 }, function (error) {
-                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
                     $scope.$apply();
                 });
@@ -464,7 +454,6 @@
                         $scope.$apply();
                     }
                 }, function (error) {
-                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
                     $scope.$apply();
                 });
@@ -572,7 +561,6 @@
                     }
                     $scope.$apply();
                 }, function (error) {
-                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
                     $scope.$apply();
                 });
@@ -594,7 +582,6 @@
                             vm.setupBitcoinTestnetService();
                         }
                     }).catch(function (error) {
-                        errorHandler.evaluateErrors(error.data);
                         errorHandler.handleErrors(error);
                     });
                 }
@@ -621,7 +608,6 @@
                     vm.setupStellarTestnetService();
 
                 }).catch(function (error) {
-                    errorHandler.evaluateErrors(error.data);
                     errorHandler.handleErrors(error);
                 });
             }
@@ -653,11 +639,9 @@
                     }).then(function(res){
                         vm.fundStellarTestnetHotwallet();
                     }).catch(function(error){
-                        errorHandler.evaluateErrors(error.data);
                         errorHandler.handleErrors(error);
                     });
                 }).catch(function(error){
-                    errorHandler.evaluateErrors(error.data);
                     errorHandler.handleErrors(error);
                 });
             }
@@ -681,11 +665,14 @@
                     }).then(function (res) {
                         vm.addDemoAsset(hotwalletFundObj.account_address);
                     }).catch(function (error) {
-                        errorHandler.evaluateErrors(error.data);
-                        errorHandler.handleErrors(error);
+                        if(error.status === 400){
+                            vm.demoCurrency(hotwalletFundObj.account_address);
+                        }
+                        else {
+                            errorHandler.handleErrors(error);
+                        }
                     });
                 }).catch(function (error) {
-                    errorHandler.evaluateErrors(error.data);
                     errorHandler.handleErrors(error);
                 });
 
@@ -710,8 +697,6 @@
             }).then(function (res) {
                 vm.setupNotificationService();
             }).catch(function (error) {
-                $scope.addingassets = false;
-                errorHandler.evaluateErrors(error.data);
                 errorHandler.handleErrors(error);
             });
         };
@@ -733,7 +718,6 @@
                     emailTemplates = res.data.data.results;
                     vm.getSmsNotificationTemplates(emailTemplates, smsTemplates);
                 }).catch(function (error) {
-                    errorHandler.evaluateErrors(error.data);
                     errorHandler.handleErrors(error);
                 });
             }
@@ -751,7 +735,6 @@
                     vm.enableBulkNotifications(emailTemplates, smsTemplates);
                 }).catch(function (error) {
                     $scope.addingBulkNotification = false;
-                    errorHandler.evaluateErrors(error.data);
                     errorHandler.handleErrors(error);
                 });
             }
@@ -817,7 +800,6 @@
                         }
                     }
                 }).catch(function (error) {
-                    errorHandler.evaluateErrors(error.data);
                     errorHandler.handleErrors(error);
                 });
             }
@@ -845,7 +827,6 @@
                         vm.setupAccountConfigurations();
                         $scope.$apply();
                     }, function (error) {
-                        errorHandler.evaluateErrors(error);
                         errorHandler.handleErrors(error);
                         $scope.$apply();
                 });
@@ -889,7 +870,6 @@
                     }
                     $scope.$apply();
                 }, function (error) {
-                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
                     $scope.$apply();
                 });
@@ -906,7 +886,6 @@
                     }
                     $scope.$apply();
                 }, function (error) {
-                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
                     $scope.$apply();
                 });
@@ -1012,11 +991,9 @@
                     }).then(function (res) {
                         vm.setupProductService();
                     }).catch(function (error) {
-                        errorHandler.evaluateErrors(error.data);
                         errorHandler.handleErrors(error);
                     });
                 }).catch(function (error) {
-                    errorHandler.evaluateErrors(error.data);
                     errorHandler.handleErrors(error);
                 });
             }
@@ -1070,14 +1047,10 @@
                                 vm.formatPricesOfProducts(res.data.data.id, newProduct2);
                             }
                         }).catch(function (error) {
-                            $scope.addingProduct =  false;
-                            errorHandler.evaluateErrors(error.data);
                             errorHandler.handleErrors(error);
                         });
                     }
                 }).catch(function (error) {
-                    $scope.addingProduct =  false;
-                    errorHandler.evaluateErrors(error.data);
                     errorHandler.handleErrors(error);
                 });
             }
@@ -1107,8 +1080,6 @@
                         }
                     }
                 }).catch(function (error) {
-                    $scope.addingProduct =  false;
-                    errorHandler.evaluateErrors(error.data);
                     errorHandler.handleErrors(error);
                 });
             }
@@ -1120,7 +1091,6 @@
                     vm.configureAdminAccount(res.results);
                     $scope.$apply();
                 }, function (error) {
-                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
                     $scope.$apply();
                 });
@@ -1171,7 +1141,6 @@
                     vm.addAdminAccountCurrencies(res);
                     $scope.$apply();
                 }, function (error) {
-                    errorHandler.evaluateErrors(error);
                     errorHandler.handleErrors(error);
                     $scope.$apply();
                 });
@@ -1187,7 +1156,6 @@
                             $scope.$apply();
                         }
                     }, function (error) {
-                        errorHandler.evaluateErrors(error);
                         errorHandler.handleErrors(error);
                         $scope.$apply();
                     });
@@ -1214,7 +1182,6 @@
                 vm.setupRewardsService();
                 $scope.$apply();
             }, function (error) {
-                errorHandler.evaluateErrors(error);
                 errorHandler.handleErrors(error);
                 $scope.$apply();
             });
@@ -1277,11 +1244,9 @@
                     }).then(function (res) {
                         vm.goToCurrencies();
                     }).catch(function (error) {
-                        errorHandler.evaluateErrors(error.data);
                         errorHandler.handleErrors(error);
                     });
                 }).catch(function (error) {
-                    errorHandler.evaluateErrors(error.data);
                     errorHandler.handleErrors(error);
                 });
             }
