@@ -14,7 +14,6 @@
             angular.forEach(list, function(listItem){
                 var enabled = true;
                 for (var index = 0; index < listLength; ++index) {
-                    console.log(selectList[index], ngModel, listItem);
                     if(selectList[index].currency.code !== ngModel.code && selectList[index].currency.code === listItem.code){
                         enabled = false;
                         break;
