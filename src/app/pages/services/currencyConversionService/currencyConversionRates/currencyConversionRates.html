@@ -14,7 +14,7 @@
                     <!--<th>From percentage fee</th>-->
                     <!--<th>From value fee</th>-->
                     <th>Fixed rate</th>
-                    <th>Rate</th>
+                    <th>Dynamic Rate</th>
                     <th></th>
                 </tr>
                 <tr ng-repeat="rate in ratesList" class="editable-row">
@@ -26,7 +26,8 @@
                     <!--</div></td>-->
                     <td><div title="{{rate.fixed_rate}}" ng-bind="rate.fixed_rate" class="transactions-list-element">
                     </div></td>
-                    <td><div title="{{rate.rate}}" ng-bind="rate.rate" class="transactions-list-element">
+                    <!--<td><div title="{{rate.rate}}" ng-bind="rate.rate" class="transactions-list-element">-->
+                    <td><div title="{{rate.dynamic_rate}}" ng-bind="rate.dynamic_rate" class="transactions-list-element">
                     </div></td>
                     <td class="rehive-table-row-last-child">
                         <a ng-click="openDeleteRatesModal('app/pages/services/currencyConversionService/currencyConversionRates/deleteCurrencyConversionRatesModal/deleteCurrencyConversionRatesModal.html','md',rate)"
