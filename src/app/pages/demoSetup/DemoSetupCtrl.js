@@ -666,7 +666,7 @@
                         vm.addDemoAsset(hotwalletFundObj.account_address);
                     }).catch(function (error) {
                         if(error.status === 400){
-                            vm.demoCurrency(hotwalletFundObj.account_address);
+                            vm.addDemoAsset(hotwalletFundObj.account_address);
                         }
                         else {
                             errorHandler.handleErrors(error);
