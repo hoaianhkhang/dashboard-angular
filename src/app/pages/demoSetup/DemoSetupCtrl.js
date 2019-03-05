@@ -672,7 +672,18 @@
                     }
                 }).then(function(res){
                     var hotwalletFundObj = res.data.data;
-                    vm.addDemoAsset(hotwalletFundObj.account_address);
+                    // vm.addDemoAsset(hotwalletFundObj.account_address);
+                    var url = "https://friendbot.stellar.org/?addr=" + hotwalletFundObj.account_address;
+                    $http.get(url, {
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    }).then(function (res) {
+                        vm.addDemoAsset(hotwalletFundObj.account_address);
+                    }).catch(function (error) {
+                        errorHandler.evaluateErrors(error.data);
+                        errorHandler.handleErrors(error);
+                    });
                 }).catch(function (error) {
                     errorHandler.evaluateErrors(error.data);
                     errorHandler.handleErrors(error);
