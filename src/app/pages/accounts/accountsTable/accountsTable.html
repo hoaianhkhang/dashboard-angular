@@ -45,8 +45,11 @@
                     <tbody>
                     <tr ng-repeat="account in accountsList | orderBy: '-created'" data-toggle="modal"
                         class="editable-row center pointer user-details-table-hover" ng-click="displayAccount('app/pages/accounts/showAccountModal/showAccountModal.html','md',account)">
-                        <td class="transactions-list-element" title="{{account[header.fieldName]}}" ng-repeat="header in headerColumns track by $index"
-                            ng-if="header.visible" ng-bind="account[header.fieldName]"></td>
+                        <td class="transactions-list-element" title="{{account[header.fieldName]}}"
+                            ng-class="{'system-users-admin': account.group == 'admin','system-users-service': account.group == 'service'}"
+                            ng-repeat="header in headerColumns track by $index"
+                            ng-if="header.visible" ng-bind="account[header.fieldName]"
+                            ng-style="account.group_highlight_color && {'color': account.group_highlight_color}"></td>
                     </tr>
                     </tbody>
                 </table>
