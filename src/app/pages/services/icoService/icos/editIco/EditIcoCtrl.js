@@ -78,7 +78,8 @@
                     if (res.status === 200) {
                         toastr.success('Ico updated successfully');
                         $scope.editingIco =  false;
-                        $location.path('/services/ico/list');
+                        // $location.path('/services/ico/list');
+                        $location.path('/extensions/ico/list');
                     }
                 }).catch(function (error) {
                     $scope.editingIco =  false;

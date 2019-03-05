@@ -10,7 +10,8 @@
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
         vm.baseUrl = localStorageManagement.getValue('SERVICEURL');
-        $rootScope.dashboardTitle = 'Products service | Rehive';
+        // $rootScope.dashboardTitle = 'Products service | Rehive';
+        $rootScope.dashboardTitle = 'Products extension | Rehive';
         $scope.loadingCampaigns =  false;
         vm.location = $location.path();
         vm.locationArray = vm.location.split('/');
@@ -27,7 +28,8 @@
         });
 
         vm.locationTracker = function (location) {
-            var baseLocation = '/services/product/';
+            // var baseLocation = '/services/product/';
+            var baseLocation = '/extensions/product/';
             var remainingLocation = location.split(baseLocation).pop();
 
             if(remainingLocation.indexOf('settings') != -1){

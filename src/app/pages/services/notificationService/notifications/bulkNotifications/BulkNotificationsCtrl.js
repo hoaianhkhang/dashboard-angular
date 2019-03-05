@@ -198,7 +198,8 @@
                     if (res.status === 200 || res.status === 201) {
                         if(last){
                             toastr.success('Bulk notifications added successfully');
-                            $location.path('/services/notifications/list');
+                            // $location.path('/services/notifications/list');
+                            $location.path('/extensions/notifications/list');
                         }
                     }
                 }).catch(function (error) {
@@ -210,7 +211,8 @@
         };
 
         $scope.goBackListView = function () {
-            $location.path('/services/notifications/list');
+            // $location.path('/services/notifications/list');
+            $location.path('/extensions/notifications/list');
         };
 
 

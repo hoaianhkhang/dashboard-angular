@@ -21,6 +21,9 @@
                     $scope.loadingUserGroup = false;
                     if(res.results.length > 0){
                         $scope.userGroups = res.results[0];
+                        if($scope.userGroups.name === "service"){
+                            $scope.userGroups.name = "extension";
+                        }
                     }
                     $scope.$apply();
                 }, function (error) {

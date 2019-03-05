@@ -89,7 +89,8 @@
                                 vm.formatItemsForOrder(res.data.data);
                             } else{
                                 toastr.success('Order added successfully');
-                                $location.path('/services/product/orders');
+                                // $location.path('/services/product/orders');
+                                $location.path('/extensions/product/orders');
                             }
                         }
                     }).catch(function (error) {
@@ -125,7 +126,8 @@
                     if (res.status === 201 || res.status === 200) {
                         if(last){
                             toastr.success('Order items added successfully');
-                            $location.path('/services/product/orders');
+                            // $location.path('/services/product/orders');
+                            $location.path('/extensions/product/orders');
                         }
                     }
                 }).catch(function (error) {
@@ -162,7 +164,8 @@
         };
 
         $scope.backToOrderList = function () {
-            $location.path('/services/product/orders');
+            // $location.path('/services/product/orders');
+            $location.path('/extensions/product/orders');
         };
     }
 })();

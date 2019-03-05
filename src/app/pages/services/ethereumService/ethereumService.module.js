@@ -13,11 +13,14 @@
     function routeConfig($stateProvider,$urlRouterProvider) {
         $stateProvider
             .state('ethereumService', {
-                url: '/services/ethereum',
+                // url: '/services/ethereum',
+                url: '/extensions/ethereum',
                 abstract:true,
-                title: 'Ethereum service'
+                // title: 'Ethereum service'
+                title: 'Ethereum extension'
             });
-            $urlRouterProvider.when("/services/ethereum", "/services/ethereum/accounts");
+            // $urlRouterProvider.when("/services/ethereum", "/services/ethereum/accounts");
+            $urlRouterProvider.when("/extensions/ethereum", "/extensions/ethereum/accounts");
     }
 
 })();

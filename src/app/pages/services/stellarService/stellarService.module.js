@@ -16,13 +16,16 @@
     function routeConfig($stateProvider,$urlRouterProvider) {
         $stateProvider
             .state('stellarService', {
-                url: '/services/stellar',
+                // url: '/services/stellar',
+                url: '/extensions/stellar',
                 abstract:true,
                 // templateUrl: 'app/pages/services/stellarService/stellarService.html',
                 // controller: "StellarServiceCtrl",
-                title: 'Stellar service'
+                // title: 'Stellar service'
+                title: 'Stellar extension'
             });
-            $urlRouterProvider.when("/services/stellar", "/services/stellar/setup");
+            // $urlRouterProvider.when("/services/stellar", "/services/stellar/setup");
+            $urlRouterProvider.when("/extensions/stellar", "/extensions/stellar/setup");
             //"/services/stellar/setup"
     }
 
