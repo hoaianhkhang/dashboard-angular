@@ -12,7 +12,8 @@
         vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
 
         $scope.goToIcoOptions = function(path){
-            $location.path('/services/ico/' + $stateParams.id + path);
+            // $location.path('/services/ico/' + $stateParams.id + path);
+            $location.path('/extensions/ico/' + $stateParams.id + path);
         };
 
 

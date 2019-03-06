@@ -14,7 +14,6 @@
             angular.forEach(list, function(listItem){
                 var enabled = true;
                 for (var index = 0; index < listLength; ++index) {
-                    console.log(selectList[index], ngModel, listItem);
                     if(selectList[index].currency.code !== ngModel.code && selectList[index].currency.code === listItem.code){
                         enabled = false;
                         break;
@@ -364,11 +363,13 @@
         };
 
         $scope.openEditProductView = function (product) {
-            $location.path('/services/product/edit/' + product.id);
+            // $location.path('/services/product/edit/' + product.id);
+            $location.path('/extensions/product/edit/' + product.id);
         };
 
         $scope.goToAddProduct =  function () {
-            $location.path('/services/product/create');
+            // $location.path('/services/product/create');
+            $location.path('/extensions/product/create');
         };
 
     }

@@ -15,7 +15,8 @@
         // vm.serviceId = localStorageManagement.getValue('SERVICEID');
         vm.serviceId = 4;
         vm.webhookUrl = "https://notification.services.rehive.io/api/admin/webhook/";
-        $rootScope.dashboardTitle = 'Notification service | Rehive';
+        // $rootScope.dashboardTitle = 'Notification service | Rehive';
+        $rootScope.dashboardTitle = 'Notification extension | Rehive';
         $scope.notificationSettingView = '';
         $scope.updatingCompanyDetails =  false;
         vm.updatedCompany = {};
@@ -79,7 +80,8 @@
 
         $scope.deactivateServiceConfirm = function () {
             $ngConfirm({
-                title: 'Deactivate service',
+                // title: 'Deactivate service',
+                title: 'Deactivate extension',
                 contentUrl: 'app/pages/services/notificationService/notificationServiceSettings/notificationDeactivation/deactivateNotificationPrompt.html',
                 animationBounce: 1,
                 animationSpeed: 100,
@@ -113,8 +115,10 @@
                     if (res.status === 200) {
                         $timeout(function () {
                             $scope.updatingCompanyDetails = false;
-                            toastr.success('Service has been successfully deactivated');
-                            $location.path('/services');
+                            toastr.success('Extension has been successfully deactivated');
+                            // toastr.success('Service has been successfully deactivated');
+                            // $location.path('/services');
+                            $location.path('/extensions');
                         },600);
                     }
                 }).catch(function (error) {

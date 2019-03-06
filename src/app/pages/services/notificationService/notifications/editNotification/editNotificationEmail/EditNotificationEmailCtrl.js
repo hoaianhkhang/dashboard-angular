@@ -119,7 +119,8 @@
         };
 
         $scope.goToNotificationListView = function () {
-            $location.path('/services/notifications/list');
+            // $location.path('/services/notifications/list');
+            $location.path('/extensions/notifications/list');
         };
 
 
@@ -157,7 +158,8 @@
                 }).then(function (res) {
                     if (res.status === 200) {
                         toastr.success('Notification updated successfully');
-                        $location.path('/services/notifications/list');
+                        // $location.path('/services/notifications/list');
+                        $location.path('/extensions/notifications/list');
                     }
                 }).catch(function (error) {
                     $scope.loadingNotifications =  false;

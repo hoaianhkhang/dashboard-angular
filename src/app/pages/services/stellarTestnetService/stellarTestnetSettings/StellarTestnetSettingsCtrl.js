@@ -12,7 +12,8 @@
         vm.token = localStorageManagement.getValue('TOKEN');
         // vm.serviceId = localStorageManagement.getValue('SERVICEID');
         vm.serviceId = 78;
-        $rootScope.dashboardTitle = 'Stellar testnet service | Rehive';
+        // $rootScope.dashboardTitle = 'Stellar testnet service | Rehive';
+        $rootScope.dashboardTitle = 'Stellar testnet extension | Rehive';
         $scope.stellarTestnetSettingView = '';
         $scope.loadingHdkeys =  true;
         $scope.addingHdkey =  false;
@@ -25,7 +26,8 @@
 
         $scope.deactivateStellarTestnetServiceConfirm = function () {
             $ngConfirm({
-                title: 'Deactivate service',
+                title: 'Deactivate extension',
+                // title: 'Deactivate service',
                 contentUrl: 'app/pages/services/stellarTestnetService/stellarTestnetSettings/stellarTestnetDeactivation/stellarTestnetDeactivationPrompt.html',
                 animationBounce: 1,
                 animationSpeed: 100,
@@ -59,8 +61,10 @@
                     if (res.status === 200) {
                         $timeout(function () {
                             $scope.deactivatingStellarTestnet = false;
-                            toastr.success('Service has been successfully deactivated');
-                            $location.path('/services');
+                            toastr.success('Extension has been successfully deactivated');
+                            // toastr.success('Service has been successfully deactivated');
+                            // $location.path('/services');
+                            $location.path('/extensions');
                         },600);
                     }
                 }).catch(function (error) {

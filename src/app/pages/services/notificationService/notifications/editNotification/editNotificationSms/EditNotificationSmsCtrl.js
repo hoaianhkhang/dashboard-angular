@@ -118,7 +118,8 @@
         };
 
         $scope.goToNotificationListView = function () {
-            $location.path('/services/notifications/list').search({type: 'sms'});
+            // $location.path('/services/notifications/list').search({type: 'sms'});
+            $location.path('/extensions/notifications/list').search({type: 'sms'});
         };
 
 
@@ -156,7 +157,8 @@
                 }).then(function (res) {
                     if (res.status === 200) {
                         toastr.success('Notification updated successfully');
-                        $location.path('/services/notifications/list').search({type: 'sms'});
+                        // $location.path('/services/notifications/list').search({type: 'sms'});
+                        $location.path('/extensions/notifications/list').search({type: 'sms'});
                     }
                 }).catch(function (error) {
                     $scope.loadingNotifications =  false;

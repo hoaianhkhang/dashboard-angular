@@ -13,7 +13,8 @@
         // vm.baseUrl = localStorageManagement.getValue('SERVICEURL');
         vm.baseUrl = "https://notification.services.rehive.io/api/";
         vm.notificationIdArray = [];
-        $rootScope.dashboardTitle = 'Notification service | Rehive';
+        // $rootScope.dashboardTitle = 'Notification service | Rehive';
+        $rootScope.dashboardTitle = 'Notification extension | Rehive';
         $scope.allNotifications = {
             allActions: false
         };
@@ -350,11 +351,13 @@
         };
 
         $scope.goToCreateNotification = function () {
-            $location.path('/services/notifications/create/' + $scope.listNotificationType);
+            // $location.path('/services/notifications/create/' + $scope.listNotificationType);
+            $location.path('/extensions/notifications/create/' + $scope.listNotificationType);
         };
 
         $scope.goToBulkAdd = function () {
-            $location.path('/services/notifications/bulk/add');
+            // $location.path('/services/notifications/bulk/add');
+            $location.path('/extensions/notifications/bulk/add');
         };
 
     }

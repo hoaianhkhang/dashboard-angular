@@ -602,13 +602,22 @@
         vm.formatUsersArray = function (usersArray) {
             var idx = -1;
             usersArray.forEach(function (userObj) {
+                var firstName = userObj.first_name, groupName = (userObj.groups.length > 0) ? ((userObj.groups[0].name == 'service') ? "extension" : userObj.groups[0].name) : null;
+                if(groupName === "extension"){
+                    var arr = firstName.split(' ');
+                    firstName = "";
+                    for(var i = 0; i < arr.length - 1; ++i){
+                        firstName += arr[i] + ' ';
+                    }
+                    firstName += "Extension";
+                }
                 $scope.users.push({
                     id: userObj.id,
-                    first_name: userObj.first_name,
+                    first_name: firstName,
                     last_name: userObj.last_name,
                     email: userObj.email,
                     mobile: userObj.mobile,
-                    groupName: userObj.groups.length > 0 ? userObj.groups[0].name: null,
+                    groupName: groupName,
                     created: userObj.created ? $filter("date")(userObj.created,'mediumDate') + ' ' + $filter("date")(userObj.created,'shortTime'): null,
                     updated: userObj.updated ? $filter("date")(userObj.updated,'mediumDate') + ' ' + $filter("date")(userObj.updated,'shortTime'): null,
                     archived: $filter("capitalizeWord")(userObj.archived),
@@ -625,10 +634,8 @@
                     createdJSTime: userObj.created
                 });
                 ++idx;
-                var groupName = $scope.users[idx].groupName;
-                if(groupName != "admin" && groupName != "service"){
+                if(groupName != "admin" && groupName != "extension"){
                     $scope.users[idx].group_highlight_color = vm.initializeGroupColor(groupName);
-                    console.log($scope.users[idx].group_highlight_color);
                 }
             });
 

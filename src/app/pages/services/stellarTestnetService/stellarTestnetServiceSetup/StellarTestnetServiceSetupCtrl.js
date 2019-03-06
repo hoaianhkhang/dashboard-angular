@@ -9,9 +9,15 @@
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
+<<<<<<< HEAD
         // vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
         vm.serviceUrl = "https://stellar-testnet.services.rehive.io/api/1/";
         $rootScope.dashboardTitle = 'Stellar testnet service | Rehive';
+=======
+        vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
+        // $rootScope.dashboardTitle = 'Stellar testnet service | Rehive';
+        $rootScope.dashboardTitle = 'Stellar testnet extension | Rehive';
+>>>>>>> master
         $scope.loadingStellarTestnetService = false;
         $scope.stellarTestnetConfigComplete = false;
 
@@ -35,7 +41,8 @@
                     //     }
                     // }
                     if(stellarTestnetFullySetup){
-                        $location.path('/services/stellar-testnet/accounts');
+                        // $location.path('/services/stellar-testnet/accounts');
+                        $location.path('/extensions/stellar-testnet/accounts');
                     } else {
                         $scope.loadingStellarTestnetService = false;
                     }
@@ -58,7 +65,8 @@
                 }).then(function(res){
                     $scope.loadingStellarTestnetService = false;
                     $scope.stellarTestnetConfigComplete = true;
-                    $location.path('/services/stellar-testnet/configuration');
+                    // $location.path('/services/stellar-testnet/configuration');
+                    $location.path('/extensions/stellar-testnet/configuration');
                 }).catch(function(error){
                     $scope.loadingStellarTestnetService = false;
                     errorHandler.evaluateErrors(error.data);

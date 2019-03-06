@@ -270,7 +270,8 @@
         };
 
         $scope.goToCampaignListView = function () {
-            $location.path('/services/rewards/campaigns');
+            // $location.path('/services/rewards/campaigns');
+            $location.path('/extensions/rewards/campaigns');
         };
 
 

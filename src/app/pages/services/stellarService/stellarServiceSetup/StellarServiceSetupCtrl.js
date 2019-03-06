@@ -11,7 +11,8 @@
         vm.token = localStorageManagement.getValue('TOKEN');
         // vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
         vm.serviceUrl = "https://stellar.services.rehive.io/api/1/";
-        $rootScope.dashboardTitle = 'Stellar service | Rehive';
+        // $rootScope.dashboardTitle = 'Stellar service | Rehive';
+        $rootScope.dashboardTitle = 'Stellar extension | Rehive';
         $scope.loadingStellarService = false;
         $scope.stellarConfigComplete = false;
 
@@ -36,7 +37,8 @@
                     // }
 
                     if(stellarFullySetup){
-                        $location.path('/services/stellar/accounts');
+                        // $location.path('/services/stellar/accounts');
+                        $location.path('/extensions/stellar/accounts');
                     } else {
                         $scope.loadingStellarService = false;
                     }
@@ -59,7 +61,8 @@
                 }).then(function(res){
                     $scope.loadingStellarService = false;
                     $scope.stellarConfigComplete = true;
-                    $location.path('/services/stellar/configuration');
+                    // $location.path('/services/stellar/configuration');
+                    $location.path('/extensions/stellar/configuration');
                 }).catch(function(error){
                     $scope.loadingStellarTestnetService = false;
                     errorHandler.evaluateErrors(error.data);

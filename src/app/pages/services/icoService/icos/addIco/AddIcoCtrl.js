@@ -112,7 +112,8 @@
                     $scope.creatingIco =  false;
                     if (res.status === 201 || res.status === 200) {
                         toastr.success('Ico added successfully');
-                        $location.path('/services/ico/list');
+                        // $location.path('/services/ico/list');
+                        $location.path('/extensions/ico/list');
                     }
                 }).catch(function (error) {
                     $scope.creatingIco =  false;
