@@ -6,8 +6,9 @@
 
     /** @ngInject */
     function CurrenciesCtrl($rootScope,$scope,$location,localStorageManagement,
-                            errorHandler,$state,_,serializeFiltersService,$uibModal,Rehive) {
+                            errorHandler,$state,_,serializeFiltersService,$uibModal,Rehive, $intercom) {
 
+        $intercom.update({});
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
         $rootScope.dashboardTitle = 'Currencies | Rehive';

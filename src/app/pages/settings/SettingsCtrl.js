@@ -6,8 +6,9 @@
 
     /** @ngInject */
     function SettingsCtrl($rootScope,Rehive,$scope,environmentConfig,Upload,localStorageManagement,
-                          errorHandler,$window,$timeout,$location) {
+                          errorHandler,$window,$timeout,$location,$intercom) {
 
+        $intercom.update({});
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
         $scope.settingView = 'accountInfo';

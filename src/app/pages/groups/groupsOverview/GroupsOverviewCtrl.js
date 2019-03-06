@@ -6,8 +6,9 @@
 
     /** @ngInject */
     function GroupsOverviewCtrl($rootScope,$scope,localStorageManagement,$uibModal,
-                                errorHandler,serializeFiltersService,toastr,Rehive) {
+                                errorHandler,serializeFiltersService,toastr,Rehive,$intercom) {
 
+        $intercom.update({});
         var vm = this;
         vm.token = localStorageManagement.getValue('token');
         $rootScope.dashboardTitle = 'Groups | Rehive';
