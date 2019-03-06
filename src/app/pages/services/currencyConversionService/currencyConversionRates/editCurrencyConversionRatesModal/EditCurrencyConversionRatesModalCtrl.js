@@ -13,7 +13,25 @@
         vm.baseUrl = localStorageManagement.getValue('SERVICEURL');
         $scope.updatingRate = false;
         $scope.invalidAmount = false;
-        $scope.currenciesList = currenciesList;
+        $scope.currenciesList = [];
+
+        vm.getServiceCurrencies = function(){
+            $http.get(vm.baseUrl + 'admin/currencies/', {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': vm.token
+                }
+            }).then(function (res) {
+                console.log(res);
+                if (res.status === 200) {
+                    $scope.currenciesList = res.data.data.results;
+                }
+            }).catch(function (error) {
+                errorHandler.evaluateErrors(error.data);
+                errorHandler.handleErrors(error);
+            });
+        };
+        vm.getServiceCurrencies();
 
         $scope.getRate = function () {
             $scope.updatingRate =  true;
