@@ -1009,7 +1009,7 @@
                     code: "STEA10",
                     enabled: true,
                     prices: [
-                        {currency: $scope.demoCurrency, amount: 500000},
+                        {currency: $scope.demoCurrency, amount: 50000000},
                         {currency: $scope.txbtCurrency, amount: 20000}
                     ]
                 },
@@ -1180,7 +1180,7 @@
             creditTransactionData = serializeFiltersService.objectFilters(creditTransactionData);
 
             Rehive.admin.transactions.createCredit(creditTransactionData).then(function (res) {
-                vm.setupRewardsService();
+                vm.setupRewardsService(adminAccount.reference);
                 $scope.$apply();
             }, function (error) {
                 errorHandler.handleErrors(error);
