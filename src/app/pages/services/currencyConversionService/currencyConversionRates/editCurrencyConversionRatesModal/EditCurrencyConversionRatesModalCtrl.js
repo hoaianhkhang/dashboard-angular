@@ -49,13 +49,13 @@
         $scope.updateRate = function () {
             $scope.updatingRate = true;
             var newRate = {
-                from_currency: $scope.rate.from_currency.code,
-                to_currency: $scope.rate.to_currency.code,
-                fixed_rate: $scope.rate.fixed_rate ? $scope.rate.fixed_rate.toString(): null
+                from_currency: $scope.editRate.from_currency.code,
+                to_currency: $scope.editRate.to_currency.code,
+                fixed_rate: $scope.editRate.fixed_rate ? $scope.editRate.fixed_rate.toString(): null
             };
             var cleanRate = cleanObject.cleanObj(newRate);
 
-            $http.patch(vm.baseUrl + 'admin/rates/' + $scope.rate.id + '/', cleanRate, {
+            $http.patch(vm.baseUrl + 'admin/rates/' + $scope.editRate.id + '/', cleanRate, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': vm.token
@@ -63,7 +63,7 @@
             }).then(function (res) {
                 $scope.updatingRate = false;
                 if (res.status === 201) {
-                    toastr.success('Rate successfully added');
+                    toastr.success('Rate successfully updated');
                     $uibModalInstance.close(res.data);
                 }
             }).catch(function (error) {
@@ -77,7 +77,36 @@
 
     }
 })();
-/*Insert into newRate if required.*/
-// from_percentage_fee: $scope.rate.from_percentage_fee || null,
-// from_value_fee: $scope.rate.from_value_fee ? currencyModifiers.convertToCents($scope.rate.from_value_fee,$scope.rate.fromCurrency.divisibility) : null,
-//
+/***
+ * from_percentage_fee: $scope.rate.from_percentage_fee || null,
+ * from_value_fee: $scope.rate.from_value_fee ? currencyModifiers.convertToCents($scope.rate.from_value_fee,$scope.rate.fromCurrency.divisibility) : null,
+ *
+ *
+ *
+    $http.delete(vm.baseUrl + 'admin/rates/' + $scope.editRate.id + '/', {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': vm.token
+            }
+        }).then(function (res) {
+            $http.post(vm.baseUrl + 'admin/rates/', cleanRate, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': vm.token
+                }
+            }).then(function (res) {
+                $scope.updatingRate = false;
+                toastr.success('Rate successfully updated');
+                $uibModalInstance.close(res.data);
+            }).catch(function (error) {
+                $scope.updatingRate = false;
+                errorHandler.evaluateErrors(error.data);
+                errorHandler.handleErrors(error);
+            });
+        }).catch(function (error) {
+            $scope.updatingRate = false;
+            errorHandler.evaluateErrors(error.data);
+            errorHandler.handleErrors(error);
+        });
+
+***/

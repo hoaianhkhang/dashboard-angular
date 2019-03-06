@@ -60,7 +60,6 @@
                     if (res.status === 200) {
                         $scope.ratesListData = res.data.data;
                         $scope.ratesList = res.data.data.results;
-                        console.log($scope.ratesList);
                     }
                 }).catch(function (error) {
                     $scope.loadingRates =  false;
