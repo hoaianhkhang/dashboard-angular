@@ -8,7 +8,8 @@
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
-        vm.baseUrl = localStorageManagement.getValue('SERVICEURL');
+        // vm.baseUrl = localStorageManagement.getValue('SERVICEURL');
+        vm.baseUrl = "https://stellar.services.rehive.io/api/1/";
         $scope.addingassets = false;
 
         $scope.addAssets = function (assetParams) {

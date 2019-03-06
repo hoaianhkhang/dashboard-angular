@@ -10,7 +10,8 @@
 
         $scope.notification = notification;
         vm.token = localStorageManagement.getValue('TOKEN');
-        vm.baseUrl = localStorageManagement.getValue('SERVICEURL');
+        // vm.baseUrl = localStorageManagement.getValue('SERVICEURL');
+        vm.baseUrl = "https://notification.services.rehive.io/api/";
         $scope.deletingNotification = false;
 
 

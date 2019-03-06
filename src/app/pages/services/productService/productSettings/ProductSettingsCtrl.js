@@ -10,9 +10,15 @@
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
+<<<<<<< HEAD
+        // vm.serviceId = localStorageManagement.getValue('SERVICEID');
+        vm.serviceId = 79;
+        $rootScope.dashboardTitle = 'Products service | Rehive';
+=======
         vm.serviceId = localStorageManagement.getValue('SERVICEID');
         // $rootScope.dashboardTitle = 'Products service | Rehive';
         $rootScope.dashboardTitle = 'Products extension | Rehive';
+>>>>>>> master
         $scope.productSettingView = '';
         $scope.loadingHdkeys =  true;
         $scope.addingHdkey =  false;

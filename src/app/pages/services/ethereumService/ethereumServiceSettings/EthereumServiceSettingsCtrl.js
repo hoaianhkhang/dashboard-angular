@@ -10,7 +10,8 @@
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
-        vm.serviceId = localStorageManagement.getValue('SERVICEID');
+        // vm.serviceId = localStorageManagement.getValue('SERVICEID');
+        vm.serviceId = 6;
         // $rootScope.dashboardTitle = 'Ethereum service | Rehive';
         $rootScope.dashboardTitle = 'Ethereum extension | Rehive';
         $scope.ethereumSettingView = '';

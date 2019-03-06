@@ -10,7 +10,8 @@
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
-        vm.serviceId = localStorageManagement.getValue('SERVICEID');
+        // vm.serviceId = localStorageManagement.getValue('SERVICEID');
+        vm.serviceId = 2;
         // $rootScope.dashboardTitle = 'Stellar service | Rehive';
         $rootScope.dashboardTitle = 'Stellar extension | Rehive';
         $scope.stellarSettingView = '';
