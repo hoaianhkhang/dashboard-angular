@@ -39,10 +39,10 @@
         $scope.displayOptions = false;
         $scope.selectSearchCategory = [];
         $scope.selectSearchCategory = [
-            {name: "account:", placeholder: "account associated with an user or transaction"},
-            {name: "email:", placeholder: "email address associated with user or transaction"},
+            {name: "account:", placeholder: "account associated with a user or transaction"},
+            {name: "email:", placeholder: "email address associated with a user or transaction"},
             {name: "id:", placeholder: "id associated with a transaction"},
-            {name: "mobile:", placeholder: "mobile number associated with user or transaction"}
+            {name: "mobile:", placeholder: "mobile number associated with a user or transaction"}
         ];
 
         document.onclick = function(event){
@@ -123,6 +123,7 @@
 
         $scope.hidingSearchBar = function () {
             $scope.hideSearchBar =  true;
+            vm.searchBox.placeholder = "Search by email, mobile number or transaction id";
         };
 
         vm.showSearchBar = function () {
@@ -281,10 +282,11 @@
 
         $scope.goToUsers = function () {
             $scope.hidingSearchBar();
-            if(identifySearchInput.isMobile($scope.searchString)){
-                $state.go('users',{mobile: $scope.searchString});
+            var data = $scope.searchString.split(':')[1];
+            if(identifySearchInput.isMobile(data)){
+                $state.go('users',{mobile: data});
             } else {
-                $state.go('users',{email: $scope.searchString});
+                $state.go('users',{email: data});
             }
 
         };
@@ -293,37 +295,64 @@
             $scope.hidingSearchBar();
             var type = $scope.searchString.split(':')[0];
 
-            if(type == "id"){
-                $state.go('transactions.history',{transactionId: transaction.id});
-            }
-            else if(type == "email"){
-                var userId = transaction.id + ":" + transaction.user.email;
-                $state.go('transactions.history',{id: userId});
-            }
-            else if(type == "mobile"){
-                var userId = transaction.id + ":" + transaction.user.id;
-                $state.go('transactions.history',{id: userId});
-            }
-            else if(type == "account"){
-                var accountRef = transaction.id + ":" + transaction.account;
-                $state.go('transactions.history',{accountRef: accountRef});
-            }
-            else {
-                $state.go('transactions.history');
+            if(transaction){
+                if(type == "id"){
+                    $state.go('transactions.history',{transactionId: transaction.id});
+                }
+                else if(type == "email"){
+                    var userId = transaction.id + ":" + transaction.user.email;
+                    $state.go('transactions.history',{id: userId});
+                }
+                else if(type == "mobile"){
+                    var userId = transaction.id + ":" + transaction.user.id;
+                    $state.go('transactions.history',{id: userId});
+                }
+                else if(type == "account"){
+                    var accountRef = transaction.id + ":" + transaction.account;
+                    $state.go('transactions.history',{accountRef: accountRef});
+                }
+            } else {
+                var data = $scope.searchString.split(':')[1];
+                if(type == "id"){
+                    $state.go('transactions.history',{transactionId: data});
+                }
+                else if(type == "email"){
+                    var userId = "0:" + data;
+                    $state.go('transactions.history',{id: userId});
+                }
+                else if(type == "mobile"){
+                    var userId = "0:" + data;
+                    $state.go('transactions.history',{id: userId});
+                }
+                else if(type == "account"){
+                    var accountRef = "0:" + data;
+                    $state.go('transactions.history',{accountRef: accountRef});
+                }
             }
         };
 
         $scope.goToAccounts = function (account) {
             $scope.hidingSearchBar();
             var type = $scope.searchString.split(':')[0];
-            console.log(type);
-            if(type == "account"){
-                $state.go('accounts',{accountRef: account.reference});
-            }else if(type == "email"){
-                $state.go('accounts',{email: account.user.email});
-            }else {
-                $state.go('accounts');
+            if(account){
+                if(type == "account"){
+                    $state.go('accounts',{accountRef: account.reference});
+                }else if(type == "email"){
+                    $state.go('accounts',{email: account.user.email});
+                }else {
+                    $state.go('accounts');
+                }
+            } else {
+                var data = $scope.searchString.split(':')[1];
+                if(type == "account"){
+                    $state.go('accounts',{accountRef: data});
+                }else if(type == "email"){
+                    $state.go('accounts',{email: data});
+                }else {
+                    $state.go('accounts');
+                }
             }
+
         };
 
         // dashboardTasks start

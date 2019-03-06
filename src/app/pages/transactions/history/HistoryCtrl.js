@@ -649,7 +649,13 @@
             $scope.applyFiltersObj.accountFilter.selectedAccountOption = 'Reference';
             $scope.applyFiltersObj.accountFilter.selectedAccountReference = accountRef;
 
-            var filtersObj = JSON.parse(localStorageManagement.getValue(vm.savedTransactionTableFilters));
+            var filtersObj = localStorageManagement.getValue(vm.savedTransactionTableFilters) ? JSON.parse(localStorageManagement.getValue(vm.savedTransactionTableFilters)) : {};
+
+            if(filtersObj === {}){
+                filtersObj.searchObj = {};
+                filtersObj.applyFiltersObj = {};
+                filtersObj.applyFiltersObj.accountFilter = {};
+            }
 
             filtersObj.searchObj.account = accountRef;
             filtersObj.applyFiltersObj.accountFilter.selectedAccountOption = 'Reference';
@@ -661,7 +667,11 @@
                 applyFiltersObj: serializeFiltersService.objectFilters(filtersObj.applyFiltersObj)
             });
 
-            $scope.getLatestTransactions('applyFilter', transactionId);
+            if(transactionId === 0){
+                $scope.getLatestTransactions('applyFilter', null);
+            } else {
+                $scope.getLatestTransactions('applyFilter', transactionId);
+            }
         }
         else if($state.params.id) {
             var userId = $state.params.id.split(':')[1], transactionId = $state.params.id.split(':')[0];
@@ -669,8 +679,12 @@
             $scope.filtersObj.userFilter = true;
             $scope.applyFiltersObj.userFilter.selectedUserOption = userId;
 
-            var filtersObj = JSON.parse(localStorageManagement.getValue(vm.savedTransactionTableFilters));
-
+            var filtersObj = localStorageManagement.getValue(vm.savedTransactionTableFilters) ? JSON.parse(localStorageManagement.getValue(vm.savedTransactionTableFilters)) : {};
+            if(filtersObj === {}){
+                filtersObj.searchObj = {};
+                filtersObj.applyFiltersObj = {};
+                filtersObj.applyFiltersObj.userFilter = {};
+            }
             filtersObj.searchObj.user = userId;
             filtersObj.applyFiltersObj.userFilter.selectedUserOption = userId;
 
@@ -680,15 +694,24 @@
                 applyFiltersObj: serializeFiltersService.objectFilters(filtersObj.applyFiltersObj)
             });
 
-            $scope.getLatestTransactions('applyFilter', transactionId);
+            if(transactionId === 0){
+                $scope.getLatestTransactions('applyFilter', null);
+            } else {
+                $scope.getLatestTransactions('applyFilter', transactionId);
+            }
         }
         else if($state.params.transactionId) {
             $scope.clearFilters();
             $scope.filtersObj.transactionIdFilter = true;
             $scope.applyFiltersObj.transactionIdFilter.selectedTransactionIdOption = $state.params.transactionId;
 
-            var filtersObj = JSON.parse(localStorageManagement.getValue(vm.savedTransactionTableFilters));
+            var filtersObj = localStorageManagement.getValue(vm.savedTransactionTableFilters) ? JSON.parse(localStorageManagement.getValue(vm.savedTransactionTableFilters)) : {};
 
+            if(filtersObj === {}){
+                filtersObj.searchObj = {};
+                filtersObj.applyFiltersObj = {};
+                filtersObj.applyFiltersObj.transactionIdFilter = {};
+            }
             filtersObj.searchObj.id = $state.params.transactionId;
             filtersObj.applyFiltersObj.transactionIdFilter.selectedTransactionIdOption = $state.params.transactionId;
 
@@ -697,7 +720,6 @@
                 filtersObj: $scope.filtersObj,
                 applyFiltersObj: serializeFiltersService.objectFilters(filtersObj.applyFiltersObj)
             });
-
             $scope.getLatestTransactions('applyFilter', $state.params.transactionId);
         }
         else if($state.params.currencyCode) {
