@@ -80,33 +80,4 @@
 /***
  * from_percentage_fee: $scope.rate.from_percentage_fee || null,
  * from_value_fee: $scope.rate.from_value_fee ? currencyModifiers.convertToCents($scope.rate.from_value_fee,$scope.rate.fromCurrency.divisibility) : null,
- *
- *
- *
-    $http.delete(vm.baseUrl + 'admin/rates/' + $scope.editRate.id + '/', {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': vm.token
-            }
-        }).then(function (res) {
-            $http.post(vm.baseUrl + 'admin/rates/', cleanRate, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': vm.token
-                }
-            }).then(function (res) {
-                $scope.updatingRate = false;
-                toastr.success('Rate successfully updated');
-                $uibModalInstance.close(res.data);
-            }).catch(function (error) {
-                $scope.updatingRate = false;
-                errorHandler.evaluateErrors(error.data);
-                errorHandler.handleErrors(error);
-            });
-        }).catch(function (error) {
-            $scope.updatingRate = false;
-            errorHandler.evaluateErrors(error.data);
-            errorHandler.handleErrors(error);
-        });
-
 ***/
