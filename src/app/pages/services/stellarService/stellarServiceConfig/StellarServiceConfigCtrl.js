@@ -9,7 +9,8 @@
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
-        vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
+        // vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
+        vm.serviceUrl = "https://stellar.services.rehive.io/api/1/";
         $scope.currentConfigView = 'hot wallet';
         $scope.hotwalletHasBeenFunded = false;
         $scope.warmStorageHasBeenFunded = false;

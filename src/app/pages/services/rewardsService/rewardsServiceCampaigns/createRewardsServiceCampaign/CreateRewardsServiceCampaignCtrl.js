@@ -10,7 +10,8 @@
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
-        vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
+        // vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
+        vm.serviceUrl = "https://reward.services.rehive.io/api/";
         $scope.companyDateFormatString = localStorageManagement.getValue('DATE_FORMAT');
         $scope.currencyOptions = [];
         $scope.addingCampaign =  false;
@@ -180,7 +181,8 @@
                 }).then(function (res) {
                     if (res.status === 201 || res.status === 200) {
                         toastr.success('Campaign added successfully');
-                        $location.path('/services/rewards/campaigns');
+                        // $location.path('/services/rewards/campaigns');
+                        $location.path('/extensions/rewards/campaigns');
                     }
                 }).catch(function (error) {
                     $scope.addingCampaign =  false;
@@ -209,7 +211,8 @@
         };
 
         $scope.goToCampaignListView = function () {
-            $location.path('/services/rewards/campaigns');
+            // $location.path('/services/rewards/campaigns');
+            $location.path('/extensions/rewards/campaigns');
         };
 
     }

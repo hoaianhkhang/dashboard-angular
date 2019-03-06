@@ -10,7 +10,7 @@
 
         var vm = this;
         vm.token = localStorageManagement.getValue('token');
-        $scope.groupName = $stateParams.groupName;
+        $scope.groupName = ($stateParams.groupName == 'service') ? 'extension' : $stateParams.groupName;
         vm.checkedLevels = [];
         $scope.loadingPermissions = true;
         $scope.totalPermissionsObj = {};
@@ -50,11 +50,15 @@
         };
 
         $scope.getGroup = function () {
+            var groupName = ($scope.groupName == 'extension') ? 'service' : $scope.groupName;
             if(vm.token) {
                 $scope.loadingGroup = true;
-                Rehive.admin.groups.get({name: $scope.groupName}).then(function (res) {
+                Rehive.admin.groups.get({name: groupName}).then(function (res) {
                     $scope.editGroupObj = res;
                     $scope.editGroupObj.prevName = res.name;
+                    if(res.name == 'service'){
+                        $scope.editGroupObj.prevName = $scope.editGroupObj.name = "extension";
+                    }
                     $scope.loadingGroup = false;
                     $scope.$apply();
                 }, function (error) {
@@ -149,9 +153,10 @@
         vm.initializePermissions();
 
         vm.getPermissions = function () {
+            var groupName = ($scope.groupName == 'extension') ? 'service' : $scope.groupName;
             if(vm.token) {
                 $scope.loadingPermissions = true;
-                Rehive.admin.groups.permissions.get($scope.groupName,{filters: {page_size: 200}}).then(function (res) {
+                Rehive.admin.groups.permissions.get(groupName,{filters: {page_size: 200}}).then(function (res) {
                     $scope.loadingPermissions = false;
                     vm.checkforAllowedPermissions(res.results);
                     $scope.$apply();
@@ -416,9 +421,10 @@
         };
 
         vm.addPermissions = function (addingPermissionArray,deletingPermissionArray) {
+            var groupName = ($scope.groupName == 'extension') ? 'service' : $scope.groupName;
             if(vm.token) {
                 $scope.loadingPermissions = true;
-                Rehive.admin.groups.permissions.create($scope.groupName,{permissions: addingPermissionArray}).then(function (res) {
+                Rehive.admin.groups.permissions.create(groupName,{permissions: addingPermissionArray}).then(function (res) {
                     vm.deletePermissionsArray(deletingPermissionArray);
                     $scope.$apply();
                 }, function (error) {
@@ -448,9 +454,10 @@
         };
 
         vm.deletePermission = function (permission,last) {
+            var groupName = ($scope.groupName == 'extension') ? 'service' : $scope.groupName;
             if(vm.token) {
                 $scope.loadingPermissions = true;
-                Rehive.admin.groups.permissions.delete($scope.groupName,permission.id).then(function (res) {
+                Rehive.admin.groups.permissions.delete(groupName,permission.id).then(function (res) {
                     if(last){
                         vm.finishSavingPermissionsProcess();
                         $scope.$apply();

@@ -82,10 +82,13 @@
                 $scope.loadingCompanyInfo = true;
                 Rehive.admin.company.get().then(function (res) {
                     $scope.loadingCompanyInfo = false;
-                    if(Object.keys(res.config).length == 0){
-                        res.config = '';
-                    } else {
-                        res.config = JSON.stringify(res.config,null,4);
+                    console.log(res);
+                    if(res.config){
+                        if(Object.keys(res.config).length == 0){
+                            res.config = '';
+                        } else {
+                            res.config = JSON.stringify(res.config,null,4);
+                        }
                     }
                     $scope.company.details = res;
                     $scope.companyImageUrl = res.logo;
@@ -166,7 +169,7 @@
             } else if(vm.updatedCompanyInfo.config ===''){
                 vm.updatedCompanyInfo.config = {};
             }
-
+            console.log(vm.updatedCompanyInfo);
             Rehive.admin.company.update(vm.updatedCompanyInfo).then(function (res) {
                 vm.updatedCompanyInfo = {};
                 $scope.company.details = {};

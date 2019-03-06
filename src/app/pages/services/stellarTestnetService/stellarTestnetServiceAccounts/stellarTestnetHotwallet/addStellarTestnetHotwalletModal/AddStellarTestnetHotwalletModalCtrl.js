@@ -8,7 +8,8 @@
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
-        vm.baseUrl = localStorageManagement.getValue('SERVICEURL');
+        // vm.baseUrl = localStorageManagement.getValue('SERVICEURL');
+        vm.baseUrl = "https://stellar-testnet.services.rehive.io/api/1/";
         $scope.addingHotwallet = false;
         $scope.hotwalletParams = {
             low_balance_percentage: 0.1

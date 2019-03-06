@@ -9,8 +9,10 @@
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
-        vm.baseUrl = localStorageManagement.getValue('SERVICEURL');
-        $rootScope.dashboardTitle = 'Conversion service | Rehive';
+        // vm.baseUrl = localStorageManagement.getValue('SERVICEURL');
+        vm.baseUrl = "https://conversion.services.rehive.io/api/";
+        // $rootScope.dashboardTitle = 'Conversion service | Rehive';
+        $rootScope.dashboardTitle = 'Conversion extension | Rehive';
         $scope.loadingRates =  true;
 
         $scope.pagination = {

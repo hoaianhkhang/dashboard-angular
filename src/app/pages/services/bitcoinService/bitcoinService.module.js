@@ -13,11 +13,14 @@
     function routeConfig($stateProvider,$urlRouterProvider) {
         $stateProvider
             .state('bitcoinService', {
-                url: '/services/bitcoin',
+                // url: '/services/bitcoin',
+                url: '/extensions/bitcoin',
                 abstract:true,
-                title: 'Bitcoin service'
+                // title: 'Bitcoin service'
+                title: 'Bitcoin extension'
             });
-            $urlRouterProvider.when("/services/bitcoin", "/services/bitcoin/accounts");
+            // $urlRouterProvider.when("/services/bitcoin", "/services/bitcoin/accounts");
+            $urlRouterProvider.when("/extensions/bitcoin", "/extensions/bitcoin/accounts");
     }
 
 })();

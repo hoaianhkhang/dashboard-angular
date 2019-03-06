@@ -9,8 +9,15 @@
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
-        vm.baseUrl = localStorageManagement.getValue('SERVICEURL');
+<<<<<<< HEAD
+        // vm.baseUrl = localStorageManagement.getValue('SERVICEURL');
+        vm.baseUrl = "https://reward.services.rehive.io/api/";
         $rootScope.dashboardTitle = 'Rewards service | Rehive';
+=======
+        vm.baseUrl = localStorageManagement.getValue('SERVICEURL');
+        // $rootScope.dashboardTitle = 'Rewards service | Rehive';
+        $rootScope.dashboardTitle = 'Rewards extension | Rehive';
+>>>>>>> master
         $scope.loadingCampaigns =  false;
         vm.location = $location.path();
         vm.locationArray = vm.location.split('/');
@@ -27,7 +34,8 @@
         });
 
         vm.locationTracker = function (location) {
-            var baseLocation = '/services/rewards/';
+            // var baseLocation = '/services/rewards/';
+            var baseLocation = '/extensions/rewards/';
             var remainingLocation = location.split(baseLocation).pop();
             var remainingLocationArray = remainingLocation.split('/');
 

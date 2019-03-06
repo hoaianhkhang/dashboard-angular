@@ -32,6 +32,10 @@
                         };
                     }
                     $scope.user = res;
+                    if($scope.user.groups[0].name === "service"){
+                        $scope.user.groups[0].name = "extension";
+                        $scope.user.first_name = $scope.user.first_name.replace("Service", "Extension");
+                    }
                     $scope.$apply();
                 }, function (error) {
                     $scope.loadingUserBasicInfo = false;

@@ -11,11 +11,13 @@
     function routeConfig($stateProvider,$urlRouterProvider) {
         $stateProvider
             .state('exchangeService', {
-                url: '/services/exchanges',
+                // url: '/services/exchanges',
+                url: '/extensions/exchanges',
                 abstract: true,
                 template:'<div ui-view="exchangeServiceViews"></div>'
             });
-            $urlRouterProvider.when("/services/exchanges", "/services/exchanges/settings");
+            // $urlRouterProvider.when("/services/exchanges", "/services/exchanges/settings");
+            $urlRouterProvider.when("/extensions/exchanges", "/extensions/exchanges/settings");
     }
 
 })();

@@ -62,7 +62,8 @@
                                 <input class="custom-rehive-checkbox" ng-model="editGroupObj.public" ng-change="groupChanged('public')" type="checkbox">
                             </div>
                         </div>
-                        <div ng-hide="editGroupObj.name == 'service' || editGroupObj.name == 'admin'" class="form-group">
+                        <!--<div ng-hide="editGroupObj.name == 'service' || editGroupObj.name == 'admin'" class="form-group">-->
+                        <div ng-hide="editGroupObj.name == 'extension' || editGroupObj.name == 'admin'" class="form-group">
                             <label style="margin-top: -18px;">
                                 Choose a group highlight color
                             </label>
