@@ -1,3 +1,11 @@
+.product-service-headers{
+  padding-top: 8px;
+}
+
+.strong-headers{
+  color: black!important;
+}
+
 .table-checkbox{
   top: 5px;
 }
@@ -58,6 +66,34 @@
   }
 }
 
+.modal-view-checkbox{
+  position: relative;
+  top: -5px;
+}
+
+.product-prices-add-icon-near-title{
+  position: relative;
+  top: 6px;
+}
+
+.product-buttons-container{
+  margin-top: 5px;
+}
+
+.order-items-container{
+  margin-bottom: 5px;
+}
+
+.product-prices-last-child{
+  padding-left: 10px;
+  color: $success;
+  font-size: 25px;
+  cursor: pointer;
+  &:hover{
+    color: $success-dark;
+  }
+}
+
 .product-prices-add-icon{
   color: $success;
   font-size: 25px;
@@ -69,13 +105,27 @@
 
 .product-prices-remove-icon{
   position: relative;
-  top: 6px;
   color: $danger;
   font-size: 25px;
   cursor: pointer;
   &:hover{
     color: $danger-dark;
   }
+}
+
+.order-items-add-icon{
+  color: $success;
+  position: relative;
+  font-size: 25px;
+  cursor: pointer;
+  &:hover{
+    color: $success-dark;
+  }
+}
+
+.order-items-add-icon-near-title {
+  top: 5px;
+  margin-left: 12px;
 }
 
 .table-actions{
@@ -226,7 +276,8 @@
     color: #A8A8A8;
   }
   & h5:hover{
-    color: #B8B7C6;
+    //color: #B8B7C6; /*previous light grey*/
+    color: #A4A5F5;
   }
 }
 

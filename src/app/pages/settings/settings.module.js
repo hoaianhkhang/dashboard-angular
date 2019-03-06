@@ -15,6 +15,7 @@
         $stateProvider
             .state('settings', {
                 url: '/settings',
+                abstract: true,
                 templateUrl: 'app/pages/settings/settings.html',
                 controller: "SettingsCtrl",
                 title: 'Settings',
@@ -23,6 +24,7 @@
                     icon: 'sidebar-settings-icon'
                 }
             });
+        $urlRouterProvider.when("/settings", "/settings/company-info");
     }
 
 })();

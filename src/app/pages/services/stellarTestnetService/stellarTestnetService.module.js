@@ -16,13 +16,16 @@
     function routeConfig($stateProvider,$urlRouterProvider) {
         $stateProvider
             .state('stellarTestnetService', {
-                url: '/services/stellar-testnet',
+                // url: '/services/stellar-testnet',
+                url: '/extensions/stellar-testnet',
                 abstract:true,
                 // templateUrl: 'app/pages/services/stellarTestnetService/stellarTestnetService.html',
                 // controller: "StellarTestnetServiceCtrl",
-                title: 'Stellar Testnet service'
+                // title: 'Stellar Testnet service'
+                title: 'Stellar Testnet extension'
             });
-        $urlRouterProvider.when("/services/stellar-testnet", "/services/stellar-testnet/setup");
+        // $urlRouterProvider.when("/services/stellar-testnet", "/services/stellar-testnet/setup");
+        $urlRouterProvider.when("/extensions/stellar-testnet", "/extensions/stellar-testnet/setup");
     }
 
 })();

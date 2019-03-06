@@ -14,6 +14,8 @@
         vm.companyIdentifier = localStorageManagement.getValue('companyIdentifier');
         vm.savedAccountsTableColumns = vm.companyIdentifier + 'accountsTable';
         vm.savedAccountsTableFilters = vm.companyIdentifier + 'accountsTableFilters';
+        vm.savedGroupColors = [];
+        vm.companyColors = localStorageManagement.getValue('companyIdentifier') + "_group_colors";
         $scope.initialLoad = true;
         $scope.accountsStateMessage = '';
         $scope.accountsList = [];
@@ -22,6 +24,7 @@
         $scope.showingColumnFilters = false;
         $scope.loadingAccounts = false;
         $scope.filtersCount = 0;
+        $scope.groupOptions = [];
         $scope.insertingBalanceCurrencyFromHeader = false;
         $scope.insertingAvailableBalanceCurrencyFromHeader = false;
         $scope.availableBalanceColumn = true;
@@ -45,7 +48,8 @@
             nameFilter: false,
             primaryFilter: false,
             referenceFilter: false,
-            userFilter: false
+            userFilter: false,
+            groupFilter: false
         };
         $scope.applyFiltersObj = {
             nameFilter: {
@@ -59,6 +63,9 @@
             },
             userFilter: {
                 selectedUserFilter: ''
+            },
+            groupFilter: {
+                selectedUserGroup: {}
             }
         };
         $scope.columnFiltersObj = {
@@ -109,7 +116,8 @@
                 nameFilter: false,
                 primaryFilter: false,
                 referenceFilter: false,
-                userFilter: false
+                userFilter: false,
+                groupFilter: false
             };
         };
 
@@ -137,6 +145,15 @@
                         },
                         userFilter: {
                             selectedUserFilter: filterObjects.applyFiltersObj.userFilter.selectedUserFilter
+                        },
+                        groupFilter: {
+                            selectedUserGroup:
+                                filterObjects.applyFiltersObj.groupFilter.selectedUserGroup ?
+                                    $scope.groupOptions.find(function(group){
+                                        if(group.name === filterObjects.applyFiltersObj.groupFilter.selectedUserGroup.name){
+                                            return group;
+                                        }
+                                    }) : $scope.groupOptions[0]
                         }
                     };
                     searchObj = filterObjects.searchObj;
@@ -155,7 +172,8 @@
                     user: $scope.filtersObj.userFilter ? ($scope.applyFiltersObj.userFilter.selectedUserFilter ?  $scope.applyFiltersObj.userFilter.selectedUserFilter : null): null,
                     reference: $scope.filtersObj.referenceFilter ?($scope.applyFiltersObj.referenceFilter.selectedReferenceFilter ? $scope.applyFiltersObj.referenceFilter.selectedReferenceFilter : null): null,
                     name: $scope.filtersObj.nameFilter ? ($scope.applyFiltersObj.nameFilter.selectedNameFilter ? $scope.applyFiltersObj.nameFilter.selectedNameFilter : null): null,
-                    primary: $scope.filtersObj.primaryFilter ? $scope.filtersObj.primaryFilter : null
+                    primary: $scope.filtersObj.primaryFilter ? $scope.filtersObj.primaryFilter : null,
+                    group: $scope.filtersObj.groupFilter ? $scope.applyFiltersObj.groupFilter.selectedUserGroup.name: null
                 };
 
                 vm.saveAccountsTableFiltersToLocalStorage({
@@ -173,40 +191,12 @@
                     }
                 }
             }
-
-            var searchObj = {
-                page: $scope.accountsPagination.pageNo,
-                page_size: $scope.filtersObj.pageSizeFilter? $scope.accountsPagination.itemsPerPage : 25,
-                user: $scope.filtersObj.userFilter ? ($scope.applyFiltersObj.userFilter.selectedUserFilter ?  $scope.applyFiltersObj.userFilter.selectedUserFilter : null): null,
-                reference: $scope.filtersObj.referenceFilter ?($scope.applyFiltersObj.referenceFilter.selectedReferenceFilter ? $scope.applyFiltersObj.referenceFilter.selectedReferenceFilter : null): null,
-                name: $scope.filtersObj.nameFilter ? ($scope.applyFiltersObj.nameFilter.selectedNameFilter ? $scope.applyFiltersObj.nameFilter.selectedNameFilter : null): null,
-                primary: $scope.filtersObj.primaryFilter ? $scope.filtersObj.primaryFilter : null
-            };
-
             return serializeFiltersService.objectFilters(searchObj);
         };
 
         vm.saveAccountsTableFiltersToLocalStorage = function (filterObjects) {
             localStorageManagement.setValue(vm.savedAccountsTableFilters,JSON.stringify(filterObjects));
         };
-
-        vm.getCompanyCurrencies = function(){
-            if(vm.token){
-                Rehive.admin.currencies.get({filters: {
-                    archived: false,
-                    page_size: 250
-                }}).then(function (res) {
-                    $scope.currenciesOptions = res.results;
-                    $scope.getAllAccounts();
-                    $scope.$apply();
-                }, function (error) {
-                    errorHandler.evaluateErrors(error);
-                    errorHandler.handleErrors(error);
-                    $scope.$apply();
-                });
-            }
-        };
-        vm.getCompanyCurrencies();
 
         $scope.getAllAccounts = function(applyFilter){
             $scope.accountsStateMessage = '';
@@ -249,6 +239,41 @@
                 $scope.$apply();
             });
         };
+
+        $scope.getGroups = function () {
+            if(vm.token) {
+                Rehive.admin.groups.get({filters: {page_size: 250}}).then(function (res) {
+                    if(res.results.length > 0){
+                        $scope.groupOptions = res.results;
+                        $scope.applyFiltersObj.groupFilter.selectedUserGroup = $scope.groupOptions[0];
+                    }
+                    $scope.getAllAccounts();
+                    $scope.$apply();
+                }, function (error) {
+                    errorHandler.evaluateErrors(error);
+                    errorHandler.handleErrors(error);
+                    $scope.$apply();
+                });
+            }
+        };
+        $scope.getGroups();
+
+        vm.getCompanyCurrencies = function(){
+            if(vm.token){
+                Rehive.admin.currencies.get({filters: {
+                        archived: false,
+                        page_size: 250
+                    }}).then(function (res) {
+                    $scope.currenciesOptions = res.results;
+                    $scope.$apply();
+                }, function (error) {
+                    errorHandler.evaluateErrors(error);
+                    errorHandler.handleErrors(error);
+                    $scope.$apply();
+                });
+            }
+        };
+        vm.getCompanyCurrencies();
 
         vm.getCurrencyHeaderColumns = function (firstAccountInList) {
             // inserting currency balance and available balance of first account obj
@@ -319,6 +344,21 @@
             }
         };
 
+        vm.initializeGroupColor = function(userGroupName){
+            if(userGroupName === null || userGroupName === ''){return "#022b36";}
+            var idx = -1;
+            vm.savedGroupColors = localStorageManagement.getValue(vm.companyColors) ? JSON.parse(localStorageManagement.getValue(vm.companyColors)) : [];
+            vm.savedGroupColors.forEach(function(color){
+                console.log(color.group, userGroupName);
+                if(color.group == userGroupName){
+                    idx = vm.savedGroupColors.indexOf(color);
+                    return;
+                }
+            });
+            console.log(idx);
+            return (idx === -1) ? "#022b36" : vm.savedGroupColors[idx].color;
+        };
+
         vm.formatAccountsArray = function (accountsArray) {
 
             if(accountsArray.length === 0){
@@ -340,13 +380,19 @@
                             currencyBalanceAndAvailableBalanceObject[currencyObj.currency.code + 'availableBalance'] = $filter("currencyModifiersFilter")(currencyObj.available_balance,currencyObj.currency.divisibility);
                             currencyText.push(currencyObj.currency.code);
 
+                            var userGroup = accountObj.user.groups.length > 0 ? ((accountObj.user.groups[0].name === "service") ? "extension" : accountObj.user.groups[0].name) : '';
+                            var group_highlight_color = null;
+                            if(userGroup != "admin" && userGroup != "extension"){
+                                group_highlight_color = vm.initializeGroupColor(userGroup);
+                            }
                             var accountObject = {
                                 user: accountObj.user.email ? accountObj.user.email : accountObj.user.mobile ? accountObj.user.mobile : accountObj.user.id,
-                                group: accountObj.user.groups.length > 0 ? accountObj.user.groups[0].name : '',
+                                group: userGroup,
                                 name: accountObj.name,
                                 reference: accountObj.reference,
                                 primary: accountObj.primary ? 'primary': '',
-                                currencies: currencyText.sort().join(', ')
+                                currencies: currencyText.sort().join(', '),
+                                group_highlight_color: group_highlight_color
                             };
 
                             accountObject = _.extend(accountObject,currencyBalanceAndAvailableBalanceObject);
@@ -363,7 +409,7 @@
                 } else {
                     $scope.accountsList.push({
                         user: accountObj.user.email ? accountObj.user.email : accountObj.user.mobile ? accountObj.user.mobile : accountObj.user.id,
-                        group: accountObj.user.groups.length > 0 ? accountObj.user.groups[0].name : '',
+                        group: accountObj.user.groups.length > 0 ? ((accountObj.user.groups[0].name === "service") ? "extension" : accountObj.user.groups[0].name) : '',
                         name: accountObj.name,
                         reference: accountObj.reference,
                         primary: accountObj.primary ? 'primary': '',

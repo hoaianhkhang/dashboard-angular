@@ -7,7 +7,7 @@
     /** @ngInject */
     function HistoryCtrl($rootScope,Rehive,$scope,localStorageManagement,$uibModal,sharedResources,
                          toastr,currencyModifiers,errorHandler,$state,$window,typeaheadService,$filter,
-                         serializeFiltersService,$location,_) {
+                         serializeFiltersService,$location,_,multiOptionsFilterService) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('token');
@@ -29,7 +29,8 @@
         $scope.referenceFilterOptions = ['Is equal to','Is between','Is greater than','Is less than'];
         $scope.dateFilterIntervalOptions = ['days','months'];
         $scope.groupFilterOptions = ['Group name','In a group'];
-        $scope.accountFilterOptions = ['Name','Reference'];
+        // $scope.accountFilterOptions = ['Name','Reference'];
+        $scope.accountFilterOptions = ['Reference'];
         $scope.visibleColumnsArray = [];
         $scope.visibleColumnsSelectionChanged = false;
         $scope.filtersCount = 0;
@@ -63,31 +64,31 @@
         //     }
 
         $scope.initializeHeaderCol = function () {
-            var headerCols = [
-                {colName: 'User',fieldName: 'user',visible: true},
-                {colName: 'Recipient',fieldName: 'recipient',visible: true},
-                {colName: 'Type',fieldName: 'tx_type',visible: true},
-                {colName: 'Subtype',fieldName: 'subtype',visible: true},
-                {colName: 'Currency',fieldName: 'currencyCode',visible: true},
-                {colName: 'Amount',fieldName: 'amount',visible: true},
-                {colName: 'Fee',fieldName: 'fee',visible: true},
-                {colName: 'Status',fieldName: 'status',visible: true},
-                {colName: 'Id',fieldName: 'id',visible: true},
-                {colName: 'Date',fieldName: 'createdDate',visible: true},
-                {colName: 'Total amount',fieldName: 'totalAmount',visible: false},
-                {colName: 'Balance',fieldName: 'balance',visible: false},
-                {colName: 'Account',fieldName: 'account',visible: false},
-                {colName: 'Username',fieldName: 'username',visible: false},
-                {colName: 'User id',fieldName: 'userId',visible: false},
-                {colName: 'Updated',fieldName: 'updatedDate',visible: false},
-                {colName: 'Mobile',fieldName: 'mobile',visible: false},
-                {colName: 'Destination tx id',fieldName: 'destination_tx_id',visible: false},
-                {colName: 'Source tx id',fieldName: 'source_tx_id',visible: false},
-                {colName: 'Label',fieldName: 'label',visible: false},
-                {colName: 'Reference',fieldName: 'reference',visible: false},
-                {colName: 'Note',fieldName: 'note',visible: false},
-                {colName: 'Metadata',fieldName: 'metadata',visible: false}
-            ];
+            var headerCols = localStorageManagement.getValue(vm.savedTransactionTableColumns) ? JSON.parse(localStorageManagement.getValue(vm.savedTransactionTableColumns)) : [
+                    {colName: 'User',fieldName: 'user',visible: true},
+                    {colName: 'Recipient',fieldName: 'recipient',visible: true},
+                    {colName: 'Type',fieldName: 'tx_type',visible: true},
+                    {colName: 'Subtype',fieldName: 'subtype',visible: true},
+                    {colName: 'Currency',fieldName: 'currencyCode',visible: true},
+                    {colName: 'Amount',fieldName: 'amount',visible: true},
+                    {colName: 'Fee',fieldName: 'fee',visible: true},
+                    {colName: 'Status',fieldName: 'status',visible: true},
+                    {colName: 'Id',fieldName: 'id',visible: true},
+                    {colName: 'Date',fieldName: 'createdDate',visible: true},
+                    {colName: 'Total amount',fieldName: 'totalAmount',visible: false},
+                    {colName: 'Balance',fieldName: 'balance',visible: false},
+                    {colName: 'Account',fieldName: 'account',visible: false},
+                    {colName: 'Username',fieldName: 'username',visible: false},
+                    {colName: 'User id',fieldName: 'userId',visible: false},
+                    {colName: 'Updated',fieldName: 'updatedDate',visible: false},
+                    {colName: 'Mobile',fieldName: 'mobile',visible: false},
+                    {colName: 'Destination tx id',fieldName: 'destination_tx_id',visible: false},
+                    {colName: 'Source tx id',fieldName: 'source_tx_id',visible: false},
+                    {colName: 'Label',fieldName: 'label',visible: false},
+                    {colName: 'Reference',fieldName: 'reference',visible: false},
+                    {colName: 'Note',fieldName: 'note',visible: false},
+                    {colName: 'Metadata',fieldName: 'metadata',visible: false}
+                ];
 
             localStorageManagement.setValue(vm.savedTransactionTableColumns,JSON.stringify(headerCols));
 
@@ -155,7 +156,8 @@
                 selectedUserOption: null
             },
             accountFilter: {
-                selectedAccountOption: 'Name',
+                // selectedAccountOption: 'Name',
+                selectedAccountOption: 'Reference',
                 selectedAccountName: null,
                 selectedAccountReference: null
             },
@@ -221,7 +223,8 @@
         $scope.restoreColDefaults = function () {
             $scope.visibleColumnsSelectionChanged = true;
             var defaultVisibleHeader = ['User','Type','Subtype','Currency',
-                'Amount','Fee','Status','Date','Id'];
+                'Amount','Status','Date','Id'];
+                // 'Amount','Fee','Status','Date','Id'];
 
             $scope.headerColumns.forEach(function (headerObj) {
                 if(defaultVisibleHeader.indexOf(headerObj.colName) > -1){
@@ -358,139 +361,32 @@
         };
 
         vm.getDateFilters = function () {
-            var dateObj = {
-                created__lt: null,
-                created__gt: null
+            var evaluatedDateObj = multiOptionsFilterService.evaluatedDates($scope.applyFiltersObj.dateFilter);
+
+            return {
+                created__lt: evaluatedDateObj.date__lt,
+                created__gt: evaluatedDateObj.date__gt
             };
-
-            switch($scope.applyFiltersObj.dateFilter.selectedDateOption) {
-                case 'Is in the last':
-                    if($scope.applyFiltersObj.dateFilter.selectedDayIntervalOption == 'days'){
-                        dateObj.created__lt = moment().add(1,'days').format('YYYY-MM-DD');
-                        dateObj.created__gt = moment().subtract($scope.applyFiltersObj.dateFilter.dayInterval,'days').format('YYYY-MM-DD');
-                    } else {
-                        dateObj.created__lt = moment().add(1,'days').format('YYYY-MM-DD');
-                        dateObj.created__gt = moment().subtract($scope.applyFiltersObj.dateFilter.dayInterval,'months').format('YYYY-MM-DD');
-                    }
-
-                    break;
-                case 'In between':
-                    dateObj.created__lt = moment(new Date($scope.applyFiltersObj.dateFilter.dateTo)).add(1,'days').format('YYYY-MM-DD');
-                    dateObj.created__gt = moment(new Date($scope.applyFiltersObj.dateFilter.dateFrom)).format('YYYY-MM-DD');
-
-                    break;
-                case 'Is equal to':
-                    dateObj.created__lt = moment(new Date($scope.applyFiltersObj.dateFilter.dateEqualTo)).add(1,'days').format('YYYY-MM-DD');
-                    dateObj.created__gt = moment(new Date($scope.applyFiltersObj.dateFilter.dateEqualTo)).format('YYYY-MM-DD');
-
-                    break;
-                case 'Is after':
-                    dateObj.created__lt = null;
-                    dateObj.created__gt = moment(new Date($scope.applyFiltersObj.dateFilter.dateFrom)).add(1,'days').format('YYYY-MM-DD');
-                    break;
-                case 'Is before':
-                    dateObj.created__lt = moment(new Date($scope.applyFiltersObj.dateFilter.dateTo)).format('YYYY-MM-DD');
-                    dateObj.created__gt = null;
-                    break;
-                default:
-                    break;
-            }
-
-            return dateObj;
         };
 
         vm.getAmountFilters = function () {
-            var amountObj = {
-                amount: null,
-                amount__lt: null,
-                amount__gt: null
+            var evaluatedAmountObj = multiOptionsFilterService.evaluatedAmounts($scope.applyFiltersObj.amountFilter);
+
+            return {
+                amount: evaluatedAmountObj.amount,
+                amount__lt: evaluatedAmountObj.amount__lt,
+                amount__gt: evaluatedAmountObj.amount__gt
             };
-
-            switch($scope.applyFiltersObj.amountFilter.selectedAmountOption) {
-                case 'Is equal to':
-                    amountObj = {
-                        amount: $scope.applyFiltersObj.amountFilter.amount,
-                        amount__lt: null,
-                        amount__gt: null
-                    };
-
-                    break;
-                case 'Is between':
-                    amountObj = {
-                        amount: null,
-                        amount__lt: $scope.applyFiltersObj.amountFilter.amount__lt,
-                        amount__gt: $scope.applyFiltersObj.amountFilter.amount__gt
-                    };
-
-                    break;
-                case 'Is greater than':
-                    amountObj = {
-                        amount: null,
-                        amount__lt: null,
-                        amount__gt: $scope.applyFiltersObj.amountFilter.amount__gt
-                    };
-
-                    break;
-                case 'Is less than':
-                    amountObj = {
-                        amount: null,
-                        amount__lt: $scope.applyFiltersObj.amountFilter.amount__lt,
-                        amount__gt: null
-                    };
-
-                    break;
-                default:
-                    break;
-            }
-
-            return amountObj;
         };
 
         vm.getReferenceFilters = function () {
-            var referenceObj = {
-                reference: null,
-                reference__lt: null,
-                reference__gt: null
+            var evaluatedAmountObj = multiOptionsFilterService.evaluateReference($scope.applyFiltersObj.referenceFilter);
+
+            return {
+                reference: evaluatedAmountObj.reference,
+                reference__lt: evaluatedAmountObj.reference__lt,
+                reference__gt: evaluatedAmountObj.reference__gt
             };
-
-            switch($scope.applyFiltersObj.referenceFilter.selectedReferenceOption) {
-                case 'Is equal to':
-                    referenceObj = {
-                        reference: $scope.applyFiltersObj.referenceFilter.reference,
-                        reference__lt: null,
-                        reference__gt: null
-                    };
-
-                    break;
-                case 'Is between':
-                    referenceObj = {
-                        reference: null,
-                        reference__lt: $scope.applyFiltersObj.referenceFilter.reference__lt,
-                        reference__gt: $scope.applyFiltersObj.referenceFilter.reference__gt
-                    };
-
-                    break;
-                case 'Is greater than':
-                    referenceObj = {
-                        reference: null,
-                        reference__lt: null,
-                        reference__gt: $scope.applyFiltersObj.referenceFilter.reference__gt
-                    };
-
-                    break;
-                case 'Is less than':
-                    referenceObj = {
-                        reference: null,
-                        reference__lt: $scope.applyFiltersObj.referenceFilter.reference__lt,
-                        reference__gt: null
-                    };
-
-                    break;
-                default:
-                    break;
-            }
-
-            return referenceObj;
         };
 
         vm.getVisibleColumnsArray = function () {
@@ -582,7 +478,8 @@
                             selectedUserOption: filterObjects.applyFiltersObj.userFilter.selectedUserOption
                         },
                         accountFilter: {
-                            selectedAccountOption: filterObjects.applyFiltersObj.accountFilter.selectedAccountOption,
+                            // selectedAccountOption: filterObjects.applyFiltersObj.accountFilter.selectedAccountOption,
+                            selectedAccountOption: 'Reference',
                             selectedAccountName: filterObjects.applyFiltersObj.accountFilter.selectedAccountName,
                             selectedAccountReference: filterObjects.applyFiltersObj.accountFilter.selectedAccountReference
                         },
@@ -655,7 +552,7 @@
                     created__lt: vm.dateObj.created__lt ? Date.parse(vm.dateObj.created__lt +'T00:00:00') : null,
                     currency: $scope.filtersObj.currencyFilter || $scope.filtersObj.amountFilter ? $scope.applyFiltersObj.currencyFilter.selectedCurrencyOption.code: null,
                     user: $scope.filtersObj.userFilter ? ($scope.applyFiltersObj.userFilter.selectedUserOption ? $scope.applyFiltersObj.userFilter.selectedUserOption : null): null,
-                    account__name: $scope.filtersObj.accountFilter ? $scope.applyFiltersObj.accountFilter.selectedAccountOption == 'Name' ? $scope.applyFiltersObj.accountFilter.selectedAccountName : null : null,
+                    // account__name: $scope.filtersObj.accountFilter ? $scope.applyFiltersObj.accountFilter.selectedAccountOption == 'Name' ? $scope.applyFiltersObj.accountFilter.selectedAccountName : null : null,
                     account: $scope.filtersObj.accountFilter ? $scope.applyFiltersObj.accountFilter.selectedAccountOption == 'Reference' ? $scope.applyFiltersObj.accountFilter.selectedAccountReference : null : null,
                     group: $scope.filtersObj.groupFilter ? $scope.applyFiltersObj.groupFilter.selectedGroupOption == 'Group name'? $scope.applyFiltersObj.groupFilter.selectedGroup.name: null : null,
                     group__isnull: $scope.filtersObj.groupFilter ? $scope.applyFiltersObj.groupFilter.selectedGroupOption == 'In a group'? (!$scope.applyFiltersObj.groupFilter.existsInGroup).toString(): null : null,
@@ -694,8 +591,6 @@
             }
 
             $scope.filtersObjForExport = searchObj;
-            console.log(searchObj);
-
             return serializeFiltersService.objectFilters(searchObj);
         };
 

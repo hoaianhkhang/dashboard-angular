@@ -3,7 +3,10 @@
     <div class="panel-heading">
         <div class="table-filter-heading">
             <div>
-                <button ng-click="showFilters()" ng-class="{'transactions-filter-btn': (filtersCount > 0), 'transactions-btn': (filtersCount == 0)}"
+                <button ng-click="showFilters()" ng-class="{
+                'transactions-filter-btn-large-filters': (filtersCount >= 10),
+                'transactions-filter-btn': (filtersCount > 0 && filtersCount < 10),
+                'transactions-btn': (filtersCount == 0)}"
                         class="btn btn-default">Filters
                     <span ng-show="filtersCount > 0">|</span> <span ng-show="filtersCount > 0" class="filter-count">{{filtersCount}}</span>
                 </button>
@@ -18,7 +21,7 @@
                 </div>
             </div>
             <button ng-click="getAllUsers('applyFilter')" ng-disabled="loadingUsers"
-                    class="btn btn-default transactions-btn panel-header-user-icon">Refresh</button>
+                    class="btn btn-default dynamic-columns panel-header-user-icon">Refresh</button>
             <button ng-click="openAddUserModal('app/pages/users/addUserModal/addUserModal.html','md')"
                     class="btn btn-primary transactions-btn panel-header-button">New</button>
         </div>
@@ -35,13 +38,13 @@
         <div ng-show="users.length > 0" class="divider">
             <div class="draggable-table">
                 <!--draggable on-drag-end="tableColDrag($start, $target)"-->
-                <table class="table custom-table table-striped">
+                <table class="table custom-table table-striped" st-table="users">
                     <thead>
                         <tr>
                             <!--sorting function-->
                             <!--ng-click="orderByFunction(header)"-->
                             <!--class="pointer sortable-header"-->
-                            <th  ng-repeat="header in headerColumns" ng-if="header.visible">
+                            <th class="draggable-headers" lr-drag-src="headers" lr-drop-target="headers" ng-repeat="header in headerColumns" ng-if="header.visible">
                                 {{header.colName}}&nbsp;&nbsp;
                                 <i ng-class="{'selected-sorting-caret': (orderByVariable.indexOf(header.fieldName) >= 0)}"
                                    ng-show="header.orderByDirection == 'desc'" class="fa fa-caret-down"></i>
@@ -53,8 +56,9 @@
                     <tbody>
                         <tr ng-repeat="user in users | orderBy: orderByVariable" data-toggle="modal"
                             class="editable-row center pointer user-details-table-hover"
-                            ng-class="{'system-users-admin': user.groupName == 'admin','system-users-service': user.groupName == 'service'}"
-                            ng-mousedown="displayUser($event,user)" oncontextmenu="return false">
+                            ng-class="{'system-users-admin': user.groupName == 'admin','system-users-service': user.groupName == 'extension'}"
+                            ng-mousedown="displayUser($event,user)" oncontextmenu="return false"
+                            ng-style="user.group_highlight_color && {'color': user.group_highlight_color}">
                             <td class="transactions-list-element" ng-repeat="header in headerColumns"
                                 ng-if="header.visible" ng-bind="user[header.fieldName]"></td>
                         </tr>

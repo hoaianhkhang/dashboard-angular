@@ -2,7 +2,10 @@
     <div class="panel-heading">
         <div class="table-filter-heading">
             <div>
-                <button ng-click="showFilters()" ng-class="{'transactions-filter-btn': (filtersCount > 0), 'transactions-btn': (filtersCount == 0)}"
+                <button ng-click="showFilters()" ng-class="{
+                'transactions-filter-btn-large-filters': (filtersCount >= 10),
+                'transactions-filter-btn': (filtersCount > 0 && filtersCount < 10),
+                'transactions-btn': (filtersCount == 0)}"
                         class="btn btn-default">Filters
                     <span ng-show="filtersCount > 0">|</span> <span ng-show="filtersCount > 0" class="filter-count">{{filtersCount}}</span>
                 </button>
@@ -17,9 +20,9 @@
                 </div>
             </div>
             <button ng-click="openExportTransactionsModal('app/pages/transactions/history/exportConfirmModal/exportConfirmModal.html', 'md')"
-                    class="btn btn-default transactions-btn panel-header-transaction-export">Export</button>
+                    class="btn btn-default dynamic-columns panel-header-transaction-export">Export</button>
             <button ng-click="getLatestTransactions('applyFilter')" ng-disabled="loadingTransactions"
-                    class="btn btn-default transactions-btn panel-header-user-icon">Refresh</button>
+                    class="btn btn-default dynamic-columns panel-header-user-icon">Refresh</button>
             <button ng-click="openMakeTransactionModal('app/pages/transactions/history/makeTransactionModal/makeTransactionModal.html', 'md')"
                     class="btn btn-primary transactions-btn panel-transaction-newTx-button">New</button>
         </div>
@@ -39,7 +42,7 @@
                 <table class="table custom-table table-striped">
                     <thead>
                     <tr>
-                        <th ng-click="orderByFunction(header)" ng-class="styleHeaders(header)"
+                        <th class="draggable-headers" lr-drag-src="headers" lr-drop-target="headers" ng-click="orderByFunction(header)" ng-class="styleHeaders(header)"
                             ng-repeat="header in headerColumns" ng-if="header.visible">
                             <span ng-class="styleHeaders(header)">{{header.colName}}</span>&nbsp;&nbsp;
                             <i ng-class="{'selected-sorting-caret': (applyFiltersObj.orderByFilter.selectedOrderByOption.tableFieldName == header.fieldName)}"

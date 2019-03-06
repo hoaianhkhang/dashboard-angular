@@ -12,12 +12,18 @@
   }
 }
 
+.transparent-header-company-setup {
+  background-color: $transparent;
+  position: absolute;
+}
+
+
 .logo-div{
   position: absolute;
   height: 70px;
   background-color: $body-bg;
   width: 220px;
-  z-index: -100;
+  z-index: 0;
   left: 0;
 }
 

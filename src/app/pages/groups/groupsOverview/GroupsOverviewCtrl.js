@@ -108,6 +108,9 @@
                     group: group.name
                 }}).then(function (res) {
                     $scope.groups.forEach(function (element,index) {
+                        if(element.name == 'service'){
+                            element.name = 'extension';
+                        }
                         if(element.name == group.name){
                             element.totalUsers = res.total;
                             element.deactiveUsers = res.archived;

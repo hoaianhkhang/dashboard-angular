@@ -15,27 +15,44 @@
         $scope.editingProduct = false;
         $scope.editProductObj = {};
         vm.updatedProduct = {};
+        $scope.pricesDeleted = [];
 
         vm.getCompanyCurrencies = function(){
             if(vm.token){
                 $scope.editingProduct = true;
-                Rehive.admin.currencies.get({filters: {
-                    page:1,
-                    page_size: 250,
-                    archived: false
-                }}).then(function (res) {
-                    $scope.currencyOptions = res.results.slice();
-                    vm.getProduct();
-                    $scope.$apply();
-                }, function (error) {
+                $http.get(vm.serviceUrl + 'admin/currencies/?page_size=250&archived=false', {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': vm.token
+                    }
+                }).then(function (res) {
+                    if (res.status === 200) {
+                        $scope.currencyOptions = res.data.data.results.slice();
+                        vm.getProduct();
+                    }
+                }).catch(function (error) {
                     $scope.editingProduct = false;
-                    errorHandler.evaluateErrors(error);
+                    errorHandler.evaluateErrors(error.data);
                     errorHandler.handleErrors(error);
-                    $scope.$apply();
                 });
             }
         };
         vm.getCompanyCurrencies();
+
+        // Rehive.admin.currencies.get({filters: {
+        //     page:1,
+        //     page_size: 250,
+        //     archived: false
+        // }}).then(function (res) {
+        //     $scope.currencyOptions = res.results.slice();
+        //     vm.getProduct();
+        //     $scope.$apply();
+        // }, function (error) {
+        //     $scope.editingProduct = false;
+        //     errorHandler.evaluateErrors(error);
+        //     errorHandler.handleErrors(error);
+        //     $scope.$apply();
+        // });
 
         vm.getProduct = function () {
             if(vm.token) {
@@ -85,19 +102,22 @@
             $scope.editingProduct = false;
         };
 
-        $scope.addPriceRow = function () {
-            var priceObj = {
-                currency: $scope.currencyOptions[($scope.currencyOptions.length - 1)],
-                amount: 10,
-                type: 'add'
-            };
-            $scope.editProductObj.prices.push(priceObj);
+        $scope.addEditPriceRow = function () {
+            // var priceObj = {
+            //     currency: $scope.currencyOptions[($scope.currencyOptions.length - 1)],
+            //     amount: 10,
+            //     type: 'add'
+            // };
+            // $scope.editProductObj.prices.push(priceObj);
+            $scope.editProductObj.prices.push({currency: {}, amount: 10});
         };
 
         $scope.removePriceRow = function (price) {
-            $scope.editProductObj.prices.forEach(function (priceObj) {
+            $scope.editProductObj.prices.forEach(function (priceObj,index,array) {
                 if(priceObj.id == price.id){
                     price.type = 'delete';
+                    $scope.pricesDeleted.push(price);
+                    array.splice(index,1);
                 }
             });
         };
@@ -139,36 +159,31 @@
         vm.trackPricesChanges = function () {
             var pricesAdded = [];
             var pricesChanged = [];
-            var pricesDeleted = [];
 
             $scope.editProductObj.prices.forEach(function (priceObj,indx,array) {
                 if(indx === (array.length - 1)){
 
                     if(priceObj.type == 'change'){
                         pricesChanged.push(priceObj);
-                    } else if(priceObj.type == 'delete'){
-                        pricesDeleted.push(priceObj);
                     } else if(priceObj.type == 'add'){
                         pricesAdded.push(priceObj);
                     }
 
-                    vm.executeDeletePricesArray(pricesDeleted,pricesAdded,pricesChanged);
+                    vm.executeDeletePricesArray(pricesAdded,pricesChanged);
                     return false;
                 }
 
                 if(priceObj.type == 'change'){
                     pricesChanged.push(priceObj);
-                } else if(priceObj.type == 'delete'){
-                    pricesDeleted.push(priceObj);
                 } else if(priceObj.type == 'add'){
                     pricesAdded.push(priceObj);
                 }
             });
         };
 
-        vm.executeDeletePricesArray = function (pricesDeleted,pricesAdded,pricesChanged) {
-            if(pricesDeleted.length > 0){
-                pricesDeleted.forEach(function(price,idx,array){
+        vm.executeDeletePricesArray = function (pricesAdded,pricesChanged) {
+            if($scope.pricesDeleted.length > 0){
+                $scope.pricesDeleted.forEach(function(price,idx,array){
                     if(idx === array.length - 1){
                         vm.deletePrice(price,'last',pricesAdded,pricesChanged);
                         return false;
@@ -181,7 +196,7 @@
         };
 
         vm.deletePrice = function (priceObj,last,pricesAdded,pricesChanged) {
-            if(vm.token) {
+            if(priceObj && priceObj.id) {
                 $http.delete(vm.serviceUrl + 'admin/products/' + vm.productId + '/prices/' + priceObj.id + '/', {
                     headers: {
                         'Content-Type': 'application/json',
@@ -198,6 +213,10 @@
                     errorHandler.evaluateErrors(error.data);
                     errorHandler.handleErrors(error);
                 });
+            } else {
+                if(last){
+                    vm.executeChangePricesArray(pricesAdded,pricesChanged);
+                }
             }
         };
 
@@ -247,7 +266,8 @@
                 });
             } else {
                 toastr.success('Product successfully updated');
-                $location.path('/services/product/list');
+                // $location.path('/services/product/list');
+                $location.path('/extensions/product/list');
             }
         };
 
@@ -262,7 +282,8 @@
                     if (res.status === 201 || res.status === 200) {
                         if(last){
                             toastr.success('Product successfully updated');
-                            $location.path('/services/product/list');
+                            // $location.path('/services/product/list');
+                            $location.path('/extensions/product/list');
                         }
                     }
                 }).catch(function (error) {
@@ -274,7 +295,8 @@
         };
 
         $scope.backToProductList = function () {
-            $location.path('/services/product/list');
+            // $location.path('/services/product/list');
+            $location.path('/extensions/product/list');
         };
 
     }

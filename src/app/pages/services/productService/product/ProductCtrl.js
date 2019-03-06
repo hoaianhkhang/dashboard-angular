@@ -2,9 +2,33 @@
     'use strict';
 
     angular.module('BlurAdmin.pages.services.productService.productList')
-        .controller('ProductCtrl', ProductCtrl);
+        .controller('ProductCtrl', ProductCtrl)
+        .filter('excludeSelectedCurrencies', excludeSelectedCurrencies);
 
     /** @ngInject */
+    function excludeSelectedCurrencies() {
+        return function(list, ngModel, selectList) {
+            var listLength = selectList.length;
+            var output = [];
+
+            angular.forEach(list, function(listItem){
+                var enabled = true;
+                for (var index = 0; index < listLength; ++index) {
+                    console.log(selectList[index], ngModel, listItem);
+                    if(selectList[index].currency.code !== ngModel.code && selectList[index].currency.code === listItem.code){
+                        enabled = false;
+                        break;
+                    }
+                }
+                if(enabled){
+                    output.push(listItem);
+                }
+            });
+
+            return output;
+        };
+    }
+
     function ProductCtrl($scope,Rehive,$http,localStorageManagement,serializeFiltersService,
                          $ngConfirm,$location,$uibModal,errorHandler,toastr,$filter) {
 
@@ -104,23 +128,24 @@
             };
         };
 
-        vm.getCompanyCurrencies = function(){
-            if(vm.token){
-                Rehive.admin.currencies.get({filters: {
-                    page:1,
-                    page_size: 250,
-                    archived: false
-                }}).then(function (res) {
-                    $scope.currencyOptions = res.results.slice();
-                    $scope.$apply();
-                }, function (error) {
-                    errorHandler.evaluateErrors(error);
-                    errorHandler.handleErrors(error);
-                    $scope.$apply();
-                });
-            }
-        };
-        vm.getCompanyCurrencies();
+        // vm.getCompanyCurrencies = function(){
+        //     if(vm.token){
+        //         $http.get(vm.serviceUrl + 'admin/currencies/?page_size=250&archived=false', {
+        //             headers: {
+        //                 'Content-Type': 'application/json',
+        //                 'Authorization': vm.token
+        //             }
+        //         }).then(function (res) {
+        //             if (res.status === 200) {
+        //                 $scope.currencyOptions = res.data.data.results.slice();
+        //             }
+        //         }).catch(function (error) {
+        //             errorHandler.evaluateErrors(error.data);
+        //             errorHandler.handleErrors(error);
+        //         });
+        //     }
+        // };
+        // vm.getCompanyCurrencies();
 
         $scope.showProductsFilters = function () {
             $scope.showingProductsColumnFilters = false;
@@ -338,11 +363,13 @@
         };
 
         $scope.openEditProductView = function (product) {
-            $location.path('/services/product/edit/' + product.id);
+            // $location.path('/services/product/edit/' + product.id);
+            $location.path('/extensions/product/edit/' + product.id);
         };
 
         $scope.goToAddProduct =  function () {
-            $location.path('/services/product/create');
+            // $location.path('/services/product/create');
+            $location.path('/extensions/product/create');
         };
 
     }

@@ -15,11 +15,13 @@
     function routeConfig($stateProvider,$urlRouterProvider) {
         $stateProvider
             .state('notificationService', {
-                url: '/services/notifications',
+                // url: '/services/notifications',
+                url: '/extensions/notifications',
                 abstract: true,
                 template:'<div ui-view="notificationServiceViews"></div>'
             });
-            $urlRouterProvider.when("/services/notifications", "/services/notifications/list");
+            // $urlRouterProvider.when("/services/notifications", "/services/notifications/list");
+            $urlRouterProvider.when("/extensions/notifications", "/extensions/notifications/list");
     }
 
 })();

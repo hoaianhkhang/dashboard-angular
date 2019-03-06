@@ -8,7 +8,8 @@
     function routeConfig($stateProvider,$urlRouterProvider) {
         $stateProvider
             .state('ethereumServiceAccounts', {
-                url: '/services/ethereum/accounts',
+                // url: '/services/ethereum/accounts',
+                url: '/extensions/ethereum/accounts',
                 templateUrl: 'app/pages/services/ethereumService/ethereumServiceAccounts/ethereumServiceAccounts.html',
                 controller: "EthereumServiceAccountsCtrl",
                 title: 'Accounts'
