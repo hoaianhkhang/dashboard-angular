@@ -9,15 +9,9 @@
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
-<<<<<<< HEAD
-        // vm.baseUrl = localStorageManagement.getValue('SERVICEURL');
-        vm.baseUrl = "https://reward.services.rehive.io/api/";
-        $rootScope.dashboardTitle = 'Rewards service | Rehive';
-=======
         vm.baseUrl = localStorageManagement.getValue('SERVICEURL');
         // $rootScope.dashboardTitle = 'Rewards service | Rehive';
         $rootScope.dashboardTitle = 'Rewards extension | Rehive';
->>>>>>> master
         $scope.loadingCampaigns =  false;
         vm.location = $location.path();
         vm.locationArray = vm.location.split('/');
