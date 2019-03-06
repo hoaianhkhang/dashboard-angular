@@ -25,24 +25,24 @@
                 <table class="table custom-table">
                     <tr class="divider">
                         <th width="20%" class="no-left-padding">Event</th>
-                        <th width="21%">URL</th>
-                        <th width="22%">Secret</th>
-                        <th width="23%">Condition</th>
-                        <th width="14%"></th>
+                        <th width="23%">URL</th>
+                        <th width="21%">Secret</th>
+                        <th width="22%">Condition</th>
+                        <th width="12%"></th>
                     </tr>
                 </table>
                 <div ng-repeat="section in webhooksSectionedList">
                     <div ng-hide="getServiceSize(section) == 1">
-                        <label class="service-h4" ng-bind="section.name"></label>
+                        <label class="service-h4 webhooks-section" ng-bind="section.name"></label>
                         <div ng-repeat="category in section">
-                            <label class="transactions-list-element" ng-bind="category.name"></label>
+                            <label class="transactions-list-element webhooks-category" ng-bind="category.name"></label>
                             <table class="table custom-table">
                                 <tr ng-repeat="webhook in category.records">
-                                    <td width="20%" class="transactions-list-element no-left-padding" title="{{webhook.event}}" ng-bind="webhook.event | capitalizeDottedSentence | capitalizeUnderscoredSentence"></td>
-                                    <td width="21%" class="transactions-list-element" title="{{webhook.url}}" ng-bind="webhook.url"></td>
-                                    <td width="22%" class="transactions-list-element" title="{{webhook.secret}}" ng-bind="webhook.secret"></td>
-                                    <td width="23%" class="transactions-list-element" title="{{webhook.condition}}" ng-bind="webhook.condition"></td>
-                                    <td width="14%" class="transactions-list-element">
+                                    <td width="20%" class="transactions-list-element" style="padding-left: 30px;" title="{{webhook.event}}" ng-bind="webhook.event | capitalizeDottedSentence | capitalizeUnderscoredSentence"></td>
+                                    <td width="23%" class="transactions-list-element" title="{{webhook.url}}" ng-bind="webhook.url"></td>
+                                    <td width="23%" class="transactions-list-element" title="{{webhook.secret}}" ng-bind="webhook.secret"></td>
+                                    <td width="22%" class="transactions-list-element" title="{{webhook.condition}}" ng-bind="webhook.condition"></td>
+                                    <td width="12%" class="transactions-list-element no-left-padding">
                                         <a ng-click="openWebhooksModal('app/pages/developers/webhooks/webhooksList/webhooksModal/webhooksModal.html','md',webhook)"
                                            class="pull-right pointer ">Delete</a>
                                         <a ng-click="openEditWebhookModal('app/pages/developers/webhooks/webhooksList/editWebhookModal/editWebhookModal.html','md',webhook)"
@@ -50,6 +50,7 @@
                                     </td>
                                 </tr>
                             </table>
+                            <div ng-if="$last" class="divider-20"></div>
                         </div>
                     </div>
                 </div>

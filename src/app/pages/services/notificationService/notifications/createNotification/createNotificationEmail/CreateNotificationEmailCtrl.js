@@ -176,7 +176,8 @@
                 }).then(function (res) {
                     if (res.status === 200) {
                         toastr.success('Notification added successfully');
-                        $location.path('/services/notifications/list').search({type: 'email'});
+                        // $location.path('/services/notifications/list').search({type: 'email'});
+                        $location.path('/extensions/notifications/list').search({type: 'email'});
                     }
                 }).catch(function (error) {
                     $scope.addingEmailNotification =  false;
@@ -206,7 +207,8 @@
         };
 
         $scope.goToEmailListView = function () {
-            $location.path('/services/notifications/list').search({type: 'email'});
+            // $location.path('/services/notifications/list').search({type: 'email'});
+            $location.path('/extensions/notifications/list').search({type: 'email'});
         };
 
     }

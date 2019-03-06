@@ -362,11 +362,13 @@
         };
 
         $scope.openEditProductView = function (product) {
-            $location.path('/services/product/edit/' + product.id);
+            // $location.path('/services/product/edit/' + product.id);
+            $location.path('/extensions/product/edit/' + product.id);
         };
 
         $scope.goToAddProduct =  function () {
-            $location.path('/services/product/create');
+            // $location.path('/services/product/create');
+            $location.path('/extensions/product/create');
         };
 
     }

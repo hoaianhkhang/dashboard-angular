@@ -8,7 +8,8 @@
     function routeConfig($stateProvider,$urlRouterProvider) {
         $stateProvider
             .state('stellarTestnetServiceTransactions', {
-                url: '/services/stellar-testnet/transactions',
+                // url: '/services/stellar-testnet/transactions',
+                url: '/extensions/stellar-testnet/transactions',
                 templateUrl: 'app/pages/services/stellarTestnetService/stellarTestnetServiceTransactions/stellarTestnetServiceTransactions.html',
                 controller: "StellarTestnetServiceTransactionsCtrl",
                 title: 'Transactions'
