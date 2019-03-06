@@ -10,7 +10,8 @@
 
         $scope.rate = rate;
         vm.token = localStorageManagement.getValue('TOKEN');
-        vm.baseUrl = localStorageManagement.getValue('SERVICEURL');
+        // vm.baseUrl = localStorageManagement.getValue('SERVICEURL');
+        vm.baseUrl = "https://conversion.services.rehive.io/api/";
         $scope.deletingRate = false;
 
 

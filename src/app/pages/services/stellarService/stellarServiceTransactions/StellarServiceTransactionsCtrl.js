@@ -10,7 +10,8 @@
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
-        vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
+        // vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
+        vm.serviceUrl = "https://stellar.services.rehive.io/api/1/";
         vm.companyIdentifier = localStorageManagement.getValue('companyIdentifier');
         vm.savedStellarTransactionTableColumns = vm.companyIdentifier + 'stellarTransactionsTable';
         $scope.companyDateFormatString = localStorageManagement.getValue('DATE_FORMAT');

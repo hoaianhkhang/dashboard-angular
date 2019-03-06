@@ -180,9 +180,6 @@
                 exchange: {
                     name: "Exchange Service"
                 },
-                ico: {
-                    name: "Ico Service"
-                },
                 miscellaneous: {
                     name: "Miscellaneous webhooks"
                 },
@@ -192,8 +189,8 @@
                 product: {
                     name: "Product Service"
                 },
-                rewards: {
-                    name: "Rewards Service"
+                reward: {
+                    name: "Reward Service"
                 },
                 stellar: {
                     name: "Stellar Service"

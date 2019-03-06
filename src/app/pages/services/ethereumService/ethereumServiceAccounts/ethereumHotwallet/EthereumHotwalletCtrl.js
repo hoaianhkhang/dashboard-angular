@@ -9,7 +9,8 @@
                                    $uibModal,currencyModifiers,serializeFiltersService,environmentConfig,multiOptionsFilterService) {
 
         var vm = this;
-        vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
+        // vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
+        vm.serviceUrl = "https://ethereum.services.rehive.io/api/1/";
         vm.token = localStorageManagement.getValue('TOKEN');
         $scope.companyDateFormatString = localStorageManagement.getValue('DATE_FORMAT');
         $scope.ethereumCurrency = currenciesList.find(function (element) {

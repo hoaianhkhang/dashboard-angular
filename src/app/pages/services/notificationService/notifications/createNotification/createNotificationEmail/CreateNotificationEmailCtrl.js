@@ -10,7 +10,8 @@
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
-        vm.baseUrl = localStorageManagement.getValue('SERVICEURL');
+        // vm.baseUrl = localStorageManagement.getValue('SERVICEURL');
+        vm.baseUrl = "https://notification.services.rehive.io/api/";
         $scope.addingEmailNotification =  false;
         $scope.emailNotificationParams = {
             enabled: true,
@@ -176,7 +177,8 @@
                 }).then(function (res) {
                     if (res.status === 200) {
                         toastr.success('Notification added successfully');
-                        $location.path('/services/notifications/list').search({type: 'email'});
+                        // $location.path('/services/notifications/list').search({type: 'email'});
+                        $location.path('/extensions/notifications/list').search({type: 'email'});
                     }
                 }).catch(function (error) {
                     $scope.addingEmailNotification =  false;
@@ -206,7 +208,8 @@
         };
 
         $scope.goToEmailListView = function () {
-            $location.path('/services/notifications/list').search({type: 'email'});
+            // $location.path('/services/notifications/list').search({type: 'email'});
+            $location.path('/extensions/notifications/list').search({type: 'email'});
         };
 
     }

@@ -10,7 +10,8 @@
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
-        vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
+        // vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
+        vm.serviceUrl = "https://product.services.rehive.io/api/";
         $scope.addingProduct = false;
 
         $scope.newProductParams = {
@@ -86,7 +87,8 @@
                             vm.formatPricesForProduct(res.data.data);
                         } else{
                             toastr.success('Product added successfully');
-                            $location.path('/services/product/list');
+                            // $location.path('/services/product/list');
+                            $location.path('/extensions/product/list');
                         }
                     }
                 }).catch(function (error) {
@@ -118,7 +120,8 @@
                     if (res.status === 201 || res.status === 200) {
                         if(last){
                             toastr.success('Product added successfully');
-                            $location.path('/services/product/list');
+                            // $location.path('/services/product/list');
+                            $location.path('/extensions/product/list');
                         }
                     }
                 }).catch(function (error) {
@@ -158,7 +161,8 @@
         };
 
         $scope.backToProductList = function () {
-            $location.path('/services/product/list');
+            // $location.path('/services/product/list');
+            $location.path('/extensions/product/list');
         };
 
     }

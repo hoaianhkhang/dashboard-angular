@@ -10,7 +10,7 @@
         var vm = this;
         $scope.selectedTier = selectedTier;
         $scope.tierFee = tierFee;
-        vm.groupName = $stateParams.groupName;
+        vm.groupName = ($stateParams.groupName == 'extension') ? 'service' : $stateParams.groupName;
         vm.token = localStorageManagement.getValue('token');
         $scope.editingTierFees = false;
         $scope.loadingSubtypes = false;

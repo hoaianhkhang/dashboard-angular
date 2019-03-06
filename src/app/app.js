@@ -21,7 +21,9 @@ angular.module('BlurAdmin', [
     'ng.codemirror.dictionary.hint',
     'BlurAdmin.theme',
     'BlurAdmin.pages',
-    'ngIntercom'
+    'ngIntercom',
+    'lrDragNDrop',
+    'smart-table'
 ])
     .config(function (ngIntlTelInputProvider, $intercomProvider, environmentConfig) {
         $intercomProvider.appID(environmentConfig.INTERCOM_APPID);

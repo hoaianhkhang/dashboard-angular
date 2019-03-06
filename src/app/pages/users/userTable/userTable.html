@@ -38,13 +38,13 @@
         <div ng-show="users.length > 0" class="divider">
             <div class="draggable-table">
                 <!--draggable on-drag-end="tableColDrag($start, $target)"-->
-                <table class="table custom-table table-striped">
+                <table class="table custom-table table-striped" st-table="users">
                     <thead>
                         <tr>
                             <!--sorting function-->
                             <!--ng-click="orderByFunction(header)"-->
                             <!--class="pointer sortable-header"-->
-                            <th  ng-repeat="header in headerColumns" ng-if="header.visible">
+                            <th class="draggable-headers" lr-drag-src="headers" lr-drop-target="headers" ng-repeat="header in headerColumns" ng-if="header.visible">
                                 {{header.colName}}&nbsp;&nbsp;
                                 <i ng-class="{'selected-sorting-caret': (orderByVariable.indexOf(header.fieldName) >= 0)}"
                                    ng-show="header.orderByDirection == 'desc'" class="fa fa-caret-down"></i>
@@ -56,7 +56,7 @@
                     <tbody>
                         <tr ng-repeat="user in users | orderBy: orderByVariable" data-toggle="modal"
                             class="editable-row center pointer user-details-table-hover"
-                            ng-class="{'system-users-admin': user.groupName == 'admin','system-users-service': user.groupName == 'service'}"
+                            ng-class="{'system-users-admin': user.groupName == 'admin','system-users-service': user.groupName == 'extension'}"
                             ng-mousedown="displayUser($event,user)" oncontextmenu="return false"
                             ng-style="user.group_highlight_color && {'color': user.group_highlight_color}">
                             <td class="transactions-list-element" ng-repeat="header in headerColumns"

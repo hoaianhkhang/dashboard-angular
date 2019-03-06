@@ -9,7 +9,8 @@
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
-        vm.baseUrl = localStorageManagement.getValue('SERVICEURL');
+        // vm.baseUrl = localStorageManagement.getValue('SERVICEURL');
+        vm.baseUrl = "https://notification.services.rehive.io/api/";
         $scope.allBulkNotifications = {
             emailBulkEnabled : false,
             smsBulkEnabled : false
@@ -198,7 +199,8 @@
                     if (res.status === 200 || res.status === 201) {
                         if(last){
                             toastr.success('Bulk notifications added successfully');
-                            $location.path('/services/notifications/list');
+                            // $location.path('/services/notifications/list');
+                            $location.path('/extensions/notifications/list');
                         }
                     }
                 }).catch(function (error) {
@@ -210,7 +212,8 @@
         };
 
         $scope.goBackListView = function () {
-            $location.path('/services/notifications/list');
+            // $location.path('/services/notifications/list');
+            $location.path('/extensions/notifications/list');
         };
 
 

@@ -11,7 +11,8 @@
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
-        vm.baseUrl = localStorageManagement.getValue('SERVICEURL');
+        // vm.baseUrl = localStorageManagement.getValue('SERVICEURL');
+        vm.baseUrl = "https://notification.services.rehive.io/api/";
         $scope.editingSendGridCreds =  false;
         $scope.editSendGridCredsObj = sendGridCreds.credentials;
         vm.updatedSendGridCreds = {};

@@ -10,7 +10,8 @@
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
         vm.baseUrl = localStorageManagement.getValue('SERVICEURL');
-        $rootScope.dashboardTitle = 'Exchange service | Rehive';
+        // $rootScope.dashboardTitle = 'Exchange service | Rehive';
+        $rootScope.dashboardTitle = 'Exchange extension | Rehive';
         $scope.exchangeSettingView = '';
         $scope.updatingCompanyDetails =  false;
         vm.updatedCompany = {};

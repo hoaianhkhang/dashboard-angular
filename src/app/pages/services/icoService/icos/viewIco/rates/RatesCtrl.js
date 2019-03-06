@@ -35,7 +35,8 @@
         vm.getIcoRates();
 
         $scope.backToPhaseList = function(){
-            $location.path('/services/ico/' + $stateParams.id + '/phase/list');
+            // $location.path('/services/ico/' + $stateParams.id + '/phase/list');
+            $location.path('/extensions/ico/' + $stateParams.id + '/phase/list');
         }
 
 

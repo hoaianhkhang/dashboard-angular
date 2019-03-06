@@ -10,8 +10,10 @@
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
-        vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
-        $rootScope.dashboardTitle = 'Ethereum service | Rehive';
+        // vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
+        vm.serviceUrl = "https://ethereum.services.rehive.io/api/1/";
+        // $rootScope.dashboardTitle = 'Ethereum service | Rehive';
+        $rootScope.dashboardTitle = 'Ethereum extension | Rehive';
         $scope.companyDateFormatString = localStorageManagement.getValue('DATE_FORMAT');
         vm.currenciesList = JSON.parse($window.sessionStorage.currenciesList || '[]');
         $scope.showingFilters = false;

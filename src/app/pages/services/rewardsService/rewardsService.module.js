@@ -14,12 +14,14 @@
     function routeConfig($stateProvider,$urlRouterProvider) {
         $stateProvider
             .state('rewardsService', {
-                url: '/services/rewards',
+                // url: '/services/rewards',
+                url: '/extensions/rewards',
                 abstract: true,
                 templateUrl:'app/pages/services/rewardsService/rewardsService.html',
                 controller: "RewardsServiceCtrl"
             });
-        $urlRouterProvider.when("/services/rewards", "/services/rewards/campaigns");
+        // $urlRouterProvider.when("/services/rewards", "/services/rewards/campaigns");
+        $urlRouterProvider.when("/extensions/rewards", "/extensions/rewards/campaigns");
     }
 
 })();
