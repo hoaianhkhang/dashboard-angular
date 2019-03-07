@@ -19,7 +19,7 @@
             },
             isCompanyId: function(companyId){
                 if(!companyId)return true;
-                var companyIdRegex = /^[a-zA-Z]([a-zA-Z_ 0-9])*[a-zA-z0-9]$/;
+                var companyIdRegex = /^[a-zA-Z0-9]([a-zA-Z_ 0-9])*[a-zA-z0-9]$/;
                 return companyIdRegex.test(companyId);
             }
         }
