@@ -282,13 +282,16 @@
 
         $scope.goToUsers = function () {
             $scope.hidingSearchBar();
-            var data = $scope.searchString.split(':')[1];
-            if(identifySearchInput.isMobile(data)){
+            var type = $scope.searchString.split(':')[0], data = $scope.searchString.split(':')[1];
+            if(type == 'mobile'){
                 $state.go('users',{mobile: data});
-            } else {
+            } else if(type == 'email'){
                 $state.go('users',{email: data});
+            } else if(type == 'account'){
+                $state.go('users',{reference: data});
+            } else {
+                $state.go('users');
             }
-
         };
 
         $scope.goToTransactionsHistory = function (transaction) {
