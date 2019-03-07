@@ -12,9 +12,11 @@
         $scope.transaction = transaction;
         vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
         if(vm.serviceUrl.indexOf('testnet') > 0){
-            $scope.bitcoinBlockTrailUrl = 'https://www.blocktrail.com/tBTC';
+            $scope.bitcoinBlockTrailUrl = 'https://live.blockcypher.com/bcy/';
+            // $scope.bitcoinBlockTrailUrl = 'https://www.blocktrail.com/tBTC';
         } else {
-            $scope.bitcoinBlockTrailUrl = 'https://www.blocktrail.com/BTC';
+            $scope.bitcoinBlockTrailUrl = 'https://live.blockcypher.com/';
+            // $scope.bitcoinBlockTrailUrl = 'https://www.blocktrail.com/BTC';
         }
 
         $scope.goToUser = function () {
