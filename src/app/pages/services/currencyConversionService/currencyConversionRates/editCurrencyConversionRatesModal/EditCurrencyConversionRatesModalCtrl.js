@@ -6,7 +6,7 @@
 
     /** @ngInject */
     function EditCurrencyConversionRatesModalCtrl($scope,$uibModalInstance,currenciesList,toastr,cleanObject,
-                                                  currencyModifiers,$http,localStorageManagement,errorHandler, rate) {
+                                                  currencyModifiers,$http,localStorageManagement,errorHandler, rate, $state) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
@@ -23,7 +23,6 @@
                     'Authorization': vm.token
                 }
             }).then(function (res) {
-                console.log(res);
                 if (res.status === 200) {
                     $scope.currenciesList = res.data.data.results;
                 }
@@ -81,10 +80,9 @@
                 }
             }).then(function (res) {
                 $scope.updatingRate = false;
-                if (res.status === 201) {
-                    toastr.success('Rate successfully updated');
-                    $uibModalInstance.close(res.data);
-                }
+                toastr.success('Rate successfully updated');
+                $uibModalInstance.close(res.data);
+                $state.go('currencyConversionService.currencyConversionRates');
             }).catch(function (error) {
                 $scope.updatingRate = false;
                 errorHandler.evaluateErrors(error.data);

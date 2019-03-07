@@ -8,16 +8,16 @@
     <div class="modal-body">
         <form class="custom-form" name="rateForm" novalidate>
             <div class="form-group divider-20">
-                <label>From currency <span class="required-icon">*</span></label>
-                <select class="form-control pointer" ng-model="editRate.from_currency" ng-disabled="true"
-                        ng-options="currency.code for currency in currenciesList | orderBy: 'code' track by currency.code">
-                </select>
+                <label>From currency: <span>&nbsp;{{editRate.from_currency.code}}</span></label>
+                <!--<select class="form-control pointer" ng-model="editRate.from_currency" ng-disabled="true"-->
+                        <!--ng-options="currency.code for currency in currenciesList | orderBy: 'code' track by currency.code">-->
+                <!--</select>-->
             </div>
             <div class="form-group divider-20">
-                <label>To currency <span class="required-icon">*</span></label>
-                <select class="form-control pointer" ng-model="editRate.to_currency" ng-disabled="true"
-                        ng-options="currency.code for currency in currenciesList | orderBy: 'code' track by currency.code">
-                </select>
+                <label>To currency: <span>&nbsp;{{editRate.to_currency.code}}</span></label>
+                <!--<select class="form-control pointer" ng-model="editRate.to_currency" ng-disabled="true"-->
+                        <!--ng-options="currency.code for currency in currenciesList | orderBy: 'code' track by currency.code">-->
+                <!--</select>-->
             </div>
             <!--<div class="form-group divider-20">-->
                 <!--<label>From percentage fee</label>-->
