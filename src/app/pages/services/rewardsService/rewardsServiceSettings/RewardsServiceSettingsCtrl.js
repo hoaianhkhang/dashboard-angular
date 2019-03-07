@@ -10,8 +10,10 @@
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
-        vm.serviceId = localStorageManagement.getValue('SERVICEID');
-        $rootScope.dashboardTitle = 'Rewards service | Rehive';
+        // vm.serviceId = localStorageManagement.getValue('SERVICEID');
+        vm.serviceId = 45;
+        // $rootScope.dashboardTitle = 'Rewards service | Rehive';
+        $rootScope.dashboardTitle = 'Rewards extension | Rehive';
         $scope.rewardsSettingView = '';
         $scope.deactivatingRewards = false;
 
@@ -22,7 +24,8 @@
 
         $scope.deactivateRewardsServiceConfirm = function () {
             $ngConfirm({
-                title: 'Deactivate service',
+                // title: 'Deactivate service',
+                title: 'Deactivate extension',
                 contentUrl: 'app/pages/services/rewardsService/rewardsServiceSettings/rewardsDeactivation/rewardsDeactivationPrompt.html',
                 animationBounce: 1,
                 animationSpeed: 100,
@@ -56,8 +59,10 @@
                     if (res.status === 200) {
                         $timeout(function () {
                             $scope.deactivatingRewards = false;
-                            toastr.success('Service has been successfully deactivated');
-                            $location.path('/services');
+                            toastr.success('Extension has been successfully deactivated');
+                            // toastr.success('Service has been successfully deactivated');
+                            // $location.path('/services');
+                            $location.path('/extensions');
                         },600);
                     }
                 }).catch(function (error) {

@@ -51,6 +51,9 @@
                         });
                     });
                     $scope.serviceListOptions =  res.data.data.results;
+                    for(var i = 0; i < $scope.serviceListOptions; ++i){
+                        $scope.serviceListOptions[i].name = $scope.serviceListOptions[i].name.replace("Service", "Extension");
+                    }
                     $timeout(function () {
                         var wrappedResult = angular.element('.chosen-search-input');
                         wrappedResult.focus();
@@ -108,7 +111,7 @@
                             if(index == (array.length - 1)){
                                 $timeout(function () {
                                     $scope.loadingServices = false;
-                                    toastr.success('Services have been successfully added');
+                                    toastr.success('Extensions have been successfully added');
                                     $uibModalInstance.close(true);
                                 },600);
                             }

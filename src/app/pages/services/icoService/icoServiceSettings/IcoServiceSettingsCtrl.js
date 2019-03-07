@@ -10,7 +10,8 @@
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
         vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
-        $rootScope.dashboardTitle = 'Ico service | Rehive';
+        // $rootScope.dashboardTitle = 'Ico service | Rehive';
+        $rootScope.dashboardTitle = 'Ico extension | Rehive';
         $scope.updatingCompanyInfo = false;
         $scope.icoSettingView = '';
         $scope.company = {

@@ -30,7 +30,13 @@
                        ng-model="groupAccountConfigurationParams.primary" type="checkbox">
             </div>
             <div class="form-group">
-                <label>Currencies <span class="required-icon">*</span></label>
+                <label>Currencies <span class="required-icon">*</span>&nbsp;
+                    <span class="no-accounts-available"
+                          ng-hide="companyCurrenciesAvailable">No currencies found.
+                    <span ng-click="goToAddCurrencyModal()"> Add a currency here.</span>
+                </span>
+                </label>
+
                 <div class="reward-multi-select divider">
                     <select chosen
                             multiple

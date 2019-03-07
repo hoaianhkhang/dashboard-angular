@@ -9,7 +9,8 @@
 
 
         var vm = this;
-        vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
+        // vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
+        vm.serviceUrl = "https://bitcoin-testnet.services.rehive.io/api/1/";
         vm.token = localStorageManagement.getValue('TOKEN');
         $scope.loadingHdkeys =  true;
         $scope.addingHdkey =  false;
