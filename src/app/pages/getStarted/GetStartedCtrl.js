@@ -45,7 +45,7 @@
         };
 
         $scope.openWebWallet = function(){
-            $window.open('https://wallet.rehive.com/login?company=' + $scope.adminCompany, '_blank');
+            $window.open('https://wallet.rehive.com/register?company=' + $scope.adminCompany, '_blank');
         };
 
     }

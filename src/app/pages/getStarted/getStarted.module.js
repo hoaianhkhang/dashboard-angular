@@ -14,7 +14,7 @@
                 title: 'Get started',
                 sidebarMeta: {
                     order: 0,
-                    icon: 'sidebar-currencies-icon'
+                    icon: 'sidebar-getStarted-icon'
                 }
             });
     }
