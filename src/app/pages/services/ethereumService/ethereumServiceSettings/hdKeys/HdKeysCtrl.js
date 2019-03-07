@@ -8,7 +8,8 @@
     function HdKeysCtrl($scope,$http,localStorageManagement,toastr,errorHandler,$ngConfirm) {
 
         var vm = this;
-        vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
+        // vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
+        vm.serviceUrl = "https://ethereum.services.rehive.io/api/1/";
         vm.token = localStorageManagement.getValue('TOKEN');
         $scope.loadingHdkeys =  true;
         $scope.addingHdkey =  false;

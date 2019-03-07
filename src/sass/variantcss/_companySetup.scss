@@ -1,3 +1,18 @@
+.align-items-center{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.demo-setup-button{
+  background-color: $primary;
+  margin-top: 120px;
+  padding: 16px 10px !important;
+  font-size: 30px;
+  width: 200px !important;
+  color: #ffffff!important;
+}
+
 .default-setup-btn{
   padding: 6px 0!important;
   width: 164px!important;

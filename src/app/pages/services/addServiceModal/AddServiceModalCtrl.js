@@ -51,6 +51,9 @@
                         });
                     });
                     $scope.serviceListOptions =  res.data.data.results;
+                    for(var i = 0; i < $scope.serviceListOptions; ++i){
+                        $scope.serviceListOptions[i].name = $scope.serviceListOptions[i].name.replace("Service", "Extension");
+                    }
                     $timeout(function () {
                         var wrappedResult = angular.element('.chosen-search-input');
                         wrappedResult.focus();

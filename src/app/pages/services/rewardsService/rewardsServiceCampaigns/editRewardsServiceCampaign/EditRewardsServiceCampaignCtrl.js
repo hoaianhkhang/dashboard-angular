@@ -10,7 +10,8 @@
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
-        vm.baseUrl = localStorageManagement.getValue('SERVICEURL');
+        // vm.baseUrl = localStorageManagement.getValue('SERVICEURL');
+        vm.baseUrl = "https://reward.services.rehive.io/api/";
         $scope.companyDateFormatString = localStorageManagement.getValue('DATE_FORMAT');
         vm.campaignId = $stateParams.campaignId;
         $scope.currencyOptions = [];
@@ -269,7 +270,8 @@
         };
 
         $scope.goToCampaignListView = function () {
-            $location.path('/services/rewards/campaigns');
+            // $location.path('/services/rewards/campaigns');
+            $location.path('/extensions/rewards/campaigns');
         };
 
 

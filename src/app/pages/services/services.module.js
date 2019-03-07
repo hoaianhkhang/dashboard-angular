@@ -19,11 +19,14 @@
     /** @ngInject */
     function routeConfig($stateProvider,$urlRouterProvider) {
         $stateProvider
-            .state('services', {
-                url: '/services',
+            // .state('services', {
+            .state('extensions', {
+                // url: '/services',
+                url: '/extensions',
                 templateUrl: 'app/pages/services/services.html',
                 controller: "ServicesCtrl",
-                title: 'Services',
+                // title: 'Services',
+                title: 'Extensions',
                 sidebarMeta: {
                     order: 600,
                     icon: 'sidebar-services-icon'

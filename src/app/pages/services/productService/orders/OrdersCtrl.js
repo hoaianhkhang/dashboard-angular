@@ -10,7 +10,8 @@
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
-        vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
+        // vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
+        vm.serviceUrl = "https://product.services.rehive.io/api/";
         vm.companyIdentifier = localStorageManagement.getValue('companyIdentifier');
         $scope.statusOptions = ['Pending','Complete','Failed'];
         $scope.loadingOrders = false;
@@ -180,11 +181,13 @@
         };
 
         $scope.goToAddOrder =  function () {
-            $location.path('/services/product/order/create');
+            // $location.path('/services/product/order/create');
+            $location.path('/extensions/product/order/create');
         };
 
         $scope.openEditOrderView = function(order){
-            $location.path('/services/product/order/edit/' + order.id);
+            // $location.path('/services/product/order/edit/' + order.id);
+            $location.path('/extensions/product/order/edit/' + order.id);
         };
 
         $scope.deleteOrderConfirm = function(order){

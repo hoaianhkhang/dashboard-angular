@@ -84,7 +84,6 @@
                     ++size;
                 }
             }
-            console.log(service.name, size);
             return size;
         };
 
@@ -181,11 +180,8 @@
                 exchange: {
                     name: "Exchange Service"
                 },
-                ico: {
-                    name: "Ico Service"
-                },
                 miscellaneous: {
-                    name: "Miscellaneous events"
+                    name: "Miscellaneous webhooks"
                 },
                 notification: {
                     name: "Notification Service"
@@ -193,8 +189,8 @@
                 product: {
                     name: "Product Service"
                 },
-                rewards: {
-                    name: "Rewards Service"
+                reward: {
+                    name: "Reward Service"
                 },
                 stellar: {
                     name: "Stellar Service"
@@ -230,7 +226,6 @@
                 }
                 $scope.webhooksSectionedList[service][event].records.push(webhook);
             });
-            console.log($scope.webhooksSectionedList);
         };
 
 
