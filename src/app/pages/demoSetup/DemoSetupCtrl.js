@@ -8,9 +8,11 @@
                            errorHandler, Rehive, toastr, currencyModifiers, serializeFiltersService,$filter) {
         var vm=this;
         vm.token = localStorageManagement.getValue('TOKEN');
+        vm.tasksDone = document.getElementById('tasksDone');
         $rootScope.dashboardTitle = 'Demo setup | Rehive';
         $rootScope.securityConfigured = false;
 
+        $scope.companyName = "";
         $scope.settingUpDemo = false;
         $scope.userGroupTiers = [];
         $scope.merchantGroupTiers = [];
@@ -27,6 +29,7 @@
                     $scope.txbtCurrency = currency;
                 }
             });
+            vm.trackTasks('apply');
         };
 
         vm.isJson = function (str) {
@@ -40,19 +43,20 @@
 
         vm.configureCompanyDetails = function(){
             var demoCompany = {
-                name: "CompanyName",
-                description: "CompanyName is a multi cryptocurrencies app for spending online.",
+                name: $scope.companyName,
+                description: $scope.companyName+ " is a multi cryptocurrencies app for spending online.",
                 website: "",
                 email: "",
                 logo: null,
                 icon: null,
+                address: null,
+                settings: {
+                    password_set_url: "https://wallet.rehive.com/password/reset/confirm",
+                    password_reset_url: "https://wallet.rehive.com/password/reset/confirm",
+                    email_confirmation_url: "https://wallet.rehive.com/email/verify",
+                },
                 public: false,
                 config: {
-                    company: {
-                        name: "CompanyName",
-                        id: "CompanyId",
-                        description: "CompanyName is a multi cryptocurrencies app for spending online."
-                    },
                     auth: {
                         mfa: "",
                         username: false,
@@ -147,9 +151,60 @@
             if(vm.token){
                 Rehive.admin.company.update(demoCompany).then(function(res){
                     $rootScope.pageTopObj.companyObj = res;
-                    vm.setupUserGroups();
+                    Rehive.admin.company.settings.update(demoCompany.settings).then(function (res) {
+                        vm.trackTasks('apply');
+                        vm.getCompanyNotifications();
+                        $scope.$apply();
+                    }, function (error) {
+                        errorHandler.handleErrors(error);
+                        $scope.$apply();
+                    });
                     $scope.$apply();
                 }).catch(function(error){
+                    errorHandler.handleErrors(error);
+                    $scope.$apply();
+                });
+            }
+        };
+
+        vm.getCompanyNotifications = function () {
+            var notifications = [];
+            if(vm.token) {
+                $scope.loadingCompanyNotifications = true;
+                Rehive.admin.notifications.get().then(function (res) {
+                    vm.trackTasks('apply');
+                    res.forEach(function(notification){
+                        if(notification.description == "Account password reset notifications" || notification.description == "Account verification notifications"){
+                            notification.enabled = false;
+                            notifications.push(notification);
+                        }
+                    });
+                    if(notifications.length > 0){
+                        vm.updateCompanyNotifications(notifications[0], null);
+                        vm.updateCompanyNotifications(notifications[1], 'last');
+                    }
+                    else {
+                        vm.setupUserGroups();
+                    }
+                    $scope.$apply();
+                }, function (error) {
+                    $scope.loadingCompanyNotifications = false;
+                    errorHandler.evaluateErrors(error);
+                    errorHandler.handleErrors(error);
+                    $scope.$apply();
+                });
+            }
+        };
+
+        vm.updateCompanyNotifications = function(notification, last){
+            if(vm.token){
+                Rehive.admin.notifications.update(notification.id, {enabled: notification.enabled}).then(function (res) {
+                    if(last){
+                        vm.trackTasks('apply');
+                        vm.setupUserGroups();
+                    }
+                    $scope.$apply();
+                }, function (error) {
                     errorHandler.handleErrors(error);
                     $scope.$apply();
                 });
@@ -193,6 +248,7 @@
             vm.addGroup(supportGroup, null);
             vm.addGroup(userGroup, null);
             vm.addGroup(merchantGroup, 'last');
+            vm.trackTasks('apply');
             // vm.addGroup(serviceGroup, null);
             // vm.addGroup(adminGroup, 'last');
         };
@@ -224,6 +280,7 @@
                         Rehive.admin.groups.update(groupObj.name, groupObj)
                             .then(function(res){
                                 if(last){
+                                    vm.trackTasks('apply');
                                     vm.setupGroupPermissions();
                                 }
                                 $scope.$apply();
@@ -338,6 +395,7 @@
             vm.addGroupPermissions('support', supportAdminPermissions, null);
             vm.addGroupPermissions('user', userPermissions, null);
             vm.addGroupPermissions('merchant', userPermissions, 'last');
+            vm.trackTasks('apply');
         };
 
         vm.addGroupPermissions = function(groupName, permissionsArray, last){
@@ -345,6 +403,7 @@
                 $scope.loadingPermissions = true;
                 Rehive.admin.groups.permissions.create(groupName,{permissions: permissionsArray}).then(function (res) {
                     if(last){
+                        vm.trackTasks('apply');
                         vm.setupGroupTiers();
                     }
                     $scope.$apply();
@@ -377,12 +436,14 @@
             vm.addGroupTiers("merchant", tier1, null);
             vm.addGroupTiers("merchant", tier2, null);
             vm.addGroupTiers("merchant", tier3, "last");
+            vm.trackTasks('apply');
         };
 
         vm.addGroupTiers = function(groupName, tierObj, last){
             if(vm.token) {
                 Rehive.admin.groups.tiers.create(groupName, tierObj).then(function (res) {
                     if(last){
+                        vm.trackTasks('apply');
                         vm.getAllTiers();
                     }
                     $scope.$apply();
@@ -396,6 +457,7 @@
         vm.getAllTiers = function(){
             if(vm.token){
                 Rehive.admin.groups.tiers.get("user").then(function (res) {
+                    vm.trackTasks('apply');
                     $scope.userGroupTiers = res;
                     for(var i = 0; i < $scope.userGroupTiers.length; ++i){
                         if($scope.userGroupTiers[i].level === 2 || $scope.userGroupTiers[i].level === 3){
@@ -450,6 +512,7 @@
                 }).then(function (res) {
                     ++vm.tierRequirementsAdded;
                     if(vm.tierRequirementsAdded === 24){
+                        vm.trackTasks('apply');
                         vm.setupTransactionSubtypes();
                         $scope.$apply();
                     }
@@ -473,6 +536,12 @@
                     label: "Fund",
                     tx_type: "credit",
                     description: "Subtype is used to funds operational accounts."
+                },
+                {
+                    name: "fee",
+                    label: "Fee",
+                    tx_type: "debit",
+                    description: "Subtype is used to record fees on transactions."
                 },
                 {
                     name: "deposit",
@@ -544,6 +613,7 @@
 
             for(var i = 0; i < subtypes.length; ++i){
                 if(i === (subtypes.length - 1)){
+                    vm.trackTasks('apply');
                     vm.addTransactionSubtype(subtypes[i], 'last');
                 }
                 else {
@@ -557,7 +627,8 @@
             if(vm.token){
                 Rehive.admin.subtypes.create(subtypeObj).then(function (res) {
                     if(last){
-                        vm.setupServices();
+                        vm.trackTasks('apply');
+                        vm.setupBatchSendService();
                     }
                     $scope.$apply();
                 }, function (error) {
@@ -567,24 +638,19 @@
             }
         };
 
-        vm.setupServices = function(){
-            var servicesArray = [4, 12, 45, 78, 79, 80];
-            var len = servicesArray.length;
+        vm.setupBatchSendService = function(){
             if(vm.token){
-                for(var idx = 0; idx < len; ++idx) {
-                    $http.put(environmentConfig.API + '/admin/services/' + servicesArray[idx] + '/',{terms_and_conditions: true, active: true},{
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': vm.token
-                        }
-                    }).then(function (res) {
-                        if(res.data.data.id === 12){
-                            vm.setupBitcoinTestnetService();
-                        }
-                    }).catch(function (error) {
-                        errorHandler.handleErrors(error);
-                    });
-                }
+                $http.put(environmentConfig.API + '/admin/services/80/',{terms_and_conditions: true, active: true},{
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': vm.token
+                    }
+                }).then(function (res) {
+                    vm.trackTasks(null);
+                    vm.setupBitcoinTestnetService();
+                }).catch(function (error) {
+                    errorHandler.handleErrors(error);
+                });
             }
         };
 
@@ -599,14 +665,24 @@
             bitCoinSubtypes = serializeFiltersService.objectFilters(bitCoinSubtypes);
 
             if(vm.token){
-                $http.patch('https://bitcoin-testnet.services.rehive.io/api/1/admin/company/configuration/', bitCoinSubtypes, {
+                $http.put(environmentConfig.API + '/admin/services/12/',{terms_and_conditions: true, active: true},{
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': vm.token
                     }
                 }).then(function (res) {
-                    vm.setupStellarTestnetService();
+                    $http.patch('https://bitcoin-testnet.services.rehive.io/api/1/admin/company/configuration/', bitCoinSubtypes, {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': vm.token
+                        }
+                    }).then(function (res) {
+                        vm.trackTasks(null);
+                        vm.setupStellarTestnetService();
 
+                    }).catch(function (error) {
+                        errorHandler.handleErrors(error);
+                    });
                 }).catch(function (error) {
                     errorHandler.handleErrors(error);
                 });
@@ -625,23 +701,33 @@
             stellarSubtypes = serializeFiltersService.objectFilters(stellarSubtypes);
 
             if(vm.token){
-                $http.patch('https://stellar-testnet.services.rehive.io/api/1/admin/company/', {has_completed_setup: true}, {
+                $http.put(environmentConfig.API + '/admin/services/78/',{terms_and_conditions: true, active: true},{
                     headers: {
-                        'Content-type': 'application/json',
+                        'Content-Type': 'application/json',
                         'Authorization': vm.token
                     }
-                }).then(function(res){
-                    $http.patch('https://stellar-testnet.services.rehive.io/api/1/admin/company/configuration/', stellarSubtypes, {
+                }).then(function (res) {
+                    $http.patch('https://stellar-testnet.services.rehive.io/api/1/admin/company/', {has_completed_setup: true}, {
                         headers: {
                             'Content-type': 'application/json',
                             'Authorization': vm.token
                         }
                     }).then(function(res){
-                        vm.fundStellarTestnetHotwallet();
+                        $http.patch('https://stellar-testnet.services.rehive.io/api/1/admin/company/configuration/', stellarSubtypes, {
+                            headers: {
+                                'Content-type': 'application/json',
+                                'Authorization': vm.token
+                            }
+                        }).then(function(res){
+                            vm.trackTasks(null);
+                            vm.fundStellarTestnetHotwallet();
+                        }).catch(function(error){
+                            errorHandler.handleErrors(error);
+                        });
                     }).catch(function(error){
                         errorHandler.handleErrors(error);
                     });
-                }).catch(function(error){
+                }).catch(function (error) {
                     errorHandler.handleErrors(error);
                 });
             }
@@ -656,16 +742,17 @@
                     }
                 }).then(function(res){
                     var hotwalletFundObj = res.data.data;
-                    // vm.addDemoAsset(hotwalletFundObj.account_address);
                     var url = "https://friendbot.stellar.org/?addr=" + hotwalletFundObj.account_address;
                     $http.get(url, {
                         headers: {
                             'Content-Type': 'application/json'
                         }
                     }).then(function (res) {
+                        vm.trackTasks(null);
                         vm.addDemoAsset(hotwalletFundObj.account_address);
                     }).catch(function (error) {
                         if(error.status === 400){
+                            vm.trackTasks(null);
                             vm.addDemoAsset(hotwalletFundObj.account_address);
                         }
                         else {
@@ -695,6 +782,7 @@
                     'Authorization': vm.token
                 }
             }).then(function (res) {
+                vm.trackTasks(null);
                 vm.setupNotificationService();
             }).catch(function (error) {
                 errorHandler.handleErrors(error);
@@ -704,7 +792,17 @@
         vm.setupNotificationService = function(){
             var emailTemplates = [];
             var smsTemplates = [];
-            vm.getEmailNotificationTemplates(emailTemplates, smsTemplates);
+            $http.put(environmentConfig.API + '/admin/services/4/',{terms_and_conditions: true, active: true},{
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': vm.token
+                }
+            }).then(function (res) {
+                vm.trackTasks(null);
+                vm.getEmailNotificationTemplates(emailTemplates, smsTemplates);
+            }).catch(function (error) {
+                errorHandler.handleErrors(error);
+            });
         };
 
         vm.getEmailNotificationTemplates = function(emailTemplates, smsTemplates){
@@ -716,6 +814,7 @@
                     }
                 }).then(function (res) {
                     emailTemplates = res.data.data.results;
+                    vm.trackTasks(null);
                     vm.getSmsNotificationTemplates(emailTemplates, smsTemplates);
                 }).catch(function (error) {
                     errorHandler.handleErrors(error);
@@ -732,6 +831,7 @@
                     }
                 }).then(function (res) {
                     smsTemplates = res.data.data.results;
+                    vm.trackTasks(null);
                     vm.enableBulkNotifications(emailTemplates, smsTemplates);
                 }).catch(function (error) {
                     $scope.addingBulkNotification = false;
@@ -747,6 +847,7 @@
 
             smsTemplates.forEach(function (emailNotification,index,arr) {
                 if(index === (arr.length-1) ){
+                    vm.trackTasks(null);
                     vm.addNotification(emailNotification, 'last', 'sms');
                 }
                 else{
@@ -796,6 +897,7 @@
                 }).then(function (res) {
                     if (res.status === 200 || res.status === 201) {
                         if(last){
+                            vm.trackTasks(null);
                             vm.getCompanyCurrencies();
                         }
                     }
@@ -824,6 +926,7 @@
                             return a.unit.localeCompare(b.unit);
                         });
                         vm.setupCurrencies();
+                        vm.trackTasks('apply');
                         vm.setupAccountConfigurations();
                         $scope.$apply();
                     }, function (error) {
@@ -857,6 +960,7 @@
             vm.addGroupAccountConfigurations("support", operationalAccountConfig, null);
             vm.addGroupAccountConfigurations("merchant", operationalAccountConfig, null);
             vm.addGroupAccountConfigurations("user", userAccountConfig, 'last');
+            vm.trackTasks('apply');
         };
 
         vm.addGroupAccountConfigurations = function(groupName, groupAccountConfigurationParams, last){
@@ -864,6 +968,7 @@
                 Rehive.admin.groups.accountConfigurations.create(groupName, groupAccountConfigurationParams).then(function (res)
                 {
                     if(last){
+                        vm.trackTasks('apply');
                         vm.addGroupAccountConfigurationCurrency(groupName, res, last);
                     }
                     else{
@@ -883,7 +988,8 @@
                 {
                     if (last && index === (array.length - 1)){
                         // vm.setupTierLimits();
-                        vm.reactivateProductService();
+                        vm.trackTasks('apply');
+                        vm.setupProductService();
                     }
                     $scope.$apply();
                 }, function (error) {
@@ -957,6 +1063,7 @@
         //             }
         //         }
         //     }
+        //      vm.trackTasks('apply');
         // };
 
         // vm.addTierLimit = function(groupName, tierId, tierLimitsParams, last){
@@ -964,6 +1071,7 @@
         //         Rehive.admin.groups.tiers.limits.create(groupName, tierId, tierLimitsParams)
         //             .then(function (res){
         //                 if(last){
+        //                     vm.trackTasks('apply');
         //                     vm.reactivateProductService();
         //                 }
         //                 $scope.$apply();
@@ -974,31 +1082,6 @@
         //             });
         //     }
         // };
-
-        /*To update the service currencies: */
-        vm.reactivateProductService = function(){
-            if(vm.token){
-                $http.put(environmentConfig.API + '/admin/services/' + 79 + '/',{active: false},{
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function (res) {
-                    $http.put(environmentConfig.API + '/admin/services/' + 79 + '/',{terms_and_conditions: true, active: true},{
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': vm.token
-                        }
-                    }).then(function (res) {
-                        vm.setupProductService();
-                    }).catch(function (error) {
-                        errorHandler.handleErrors(error);
-                    });
-                }).catch(function (error) {
-                    errorHandler.handleErrors(error);
-                });
-            }
-        };
 
         vm.setupProductService = function(){
             var newProduct1 = {
@@ -1030,27 +1113,37 @@
             newProduct2 = serializeFiltersService.objectFilters(newProduct2);
 
             if(vm.token) {
-                $http.post('https://product.services.rehive.io/api/admin/products/', newProduct1, {
+                $http.put(environmentConfig.API + '/admin/services/79/',{terms_and_conditions: true, active: true},{
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': vm.token
                     }
                 }).then(function (res) {
-                    if (res.status === 201 || res.status === 200) {
-                        vm.formatPricesOfProducts(res.data.data.id, newProduct1);
-                        $http.post('https://product.services.rehive.io/api/admin/products/', newProduct2, {
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'Authorization': vm.token
-                            }
-                        }).then(function (res) {
-                            if (res.status === 201 || res.status === 200) {
-                                vm.formatPricesOfProducts(res.data.data.id, newProduct2);
-                            }
-                        }).catch(function (error) {
-                            errorHandler.handleErrors(error);
-                        });
-                    }
+                    $http.post('https://product.services.rehive.io/api/admin/products/', newProduct1, {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': vm.token
+                        }
+                    }).then(function (res) {
+                        if (res.status === 201 || res.status === 200) {
+                            vm.formatPricesOfProducts(res.data.data.id, newProduct1);
+                            $http.post('https://product.services.rehive.io/api/admin/products/', newProduct2, {
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'Authorization': vm.token
+                                }
+                            }).then(function (res) {
+                                if (res.status === 201 || res.status === 200) {
+                                    vm.trackTasks(null);
+                                    vm.formatPricesOfProducts(res.data.data.id, newProduct2);
+                                }
+                            }).catch(function (error) {
+                                errorHandler.handleErrors(error);
+                            });
+                        }
+                    }).catch(function (error) {
+                        errorHandler.handleErrors(error);
+                    });
                 }).catch(function (error) {
                     errorHandler.handleErrors(error);
                 });
@@ -1060,6 +1153,7 @@
         vm.formatPricesOfProducts = function(id, product){
             product.prices.forEach(function(price,idx,array){
                 if(idx === (array.length - 1) && product.code === "AMAZ50"){
+                    vm.trackTasks('apply');
                     vm.addPriceToProducts(id,{currency: price.currency.code, amount: price.amount},'last');
                     return false;
                 }
@@ -1077,6 +1171,7 @@
                 }).then(function (res) {
                     if (res.status === 201 || res.status === 200) {
                         if(last){
+                            vm.trackTasks(null);
                             vm.getAllUsers();
                         }
                     }
@@ -1089,6 +1184,7 @@
         vm.getAllUsers = function(){
             if(vm.token){
                 Rehive.admin.users.get().then(function (res) {
+                    vm.trackTasks('apply');
                     vm.configureAdminAccount(res.results);
                     $scope.$apply();
                 }, function (error) {
@@ -1126,6 +1222,7 @@
                     };
                 }
             });
+            vm.trackTasks('apply');
             return (adminUser === {}) ? null : adminUser;
         };
 
@@ -1139,6 +1236,7 @@
 
             if(vm.token) {
                 Rehive.admin.accounts.create(adminAccountParams).then(function (res) {
+                    vm.trackTasks('apply');
                     vm.addAdminAccountCurrencies(res);
                     $scope.$apply();
                 }, function (error) {
@@ -1153,6 +1251,7 @@
                 if(vm.token) {
                     Rehive.admin.accounts.currencies.create(adminAccount.reference,{currency: element.code}).then(function (res) {
                         if(index == (array.length - 1)) {
+                            vm.trackTasks('apply');
                             vm.fundAdminAccountWithDemo(adminAccount);
                             $scope.$apply();
                         }
@@ -1180,11 +1279,44 @@
             creditTransactionData = serializeFiltersService.objectFilters(creditTransactionData);
 
             Rehive.admin.transactions.createCredit(creditTransactionData).then(function (res) {
-                vm.setupRewardsService(adminAccount.reference);
+                vm.trackTasks('apply');
+                vm.fundAdminHotwalletWithDemo(adminAccount.reference);
                 $scope.$apply();
             }, function (error) {
                 errorHandler.handleErrors(error);
                 $scope.$apply();
+            });
+        };
+
+        vm.fundAdminHotwalletWithDemo = function(adminAccountRef){
+            $http.get('https://stellar-testnet.services.rehive.io/api/1/admin/hotwallet/active/', {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': vm.token
+                }
+            }).then(function (res) {
+                var creditTransactionData = {
+                    account: res.data.data.rehive_account_reference,
+                    amount: currencyModifiers.convertToCents(10000, $scope.demoCurrency.divisibility),
+                    currency: "DEMO",
+                    metadata: {},
+                    note: "Demo currency amount credited for Stellar Testnet activation",
+                    reference: "Stellar activation fund",
+                    status: "Complete",
+                    subtype: '',
+                    user: res.data.data.user_account_identifier,
+                };
+                creditTransactionData = serializeFiltersService.objectFilters(creditTransactionData);
+                Rehive.admin.transactions.createCredit(creditTransactionData).then(function (res) {
+                    vm.trackTasks('apply');
+                    vm.setupRewardsService(adminAccountRef);
+                    $scope.$apply();
+                }, function (error) {
+                    errorHandler.handleErrors(error);
+                    $scope.$apply();
+                });
+            }).catch(function (error) {
+                errorHandler.handleErrors(error);
             });
         };
 
@@ -1231,19 +1363,29 @@
             rewardsCampaign2 = serializeFiltersService.objectFilters(rewardsCampaign2);
 
             if(vm.token) {
-                $http.post('https://reward.services.rehive.io/api/admin/campaigns/', rewardsCampaign1, {
+                $http.put(environmentConfig.API + '/admin/services/45/',{terms_and_conditions: true, active: true},{
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': vm.token
                     }
                 }).then(function (res) {
-                    $http.post('https://reward.services.rehive.io/api/admin/campaigns/',rewardsCampaign2, {
+                    $http.post('https://reward.services.rehive.io/api/admin/campaigns/', rewardsCampaign1, {
                         headers: {
                             'Content-Type': 'application/json',
                             'Authorization': vm.token
                         }
                     }).then(function (res) {
-                        vm.goToCurrencies();
+                        $http.post('https://reward.services.rehive.io/api/admin/campaigns/',rewardsCampaign2, {
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': vm.token
+                            }
+                        }).then(function (res) {
+                            vm.trackTasks(null);
+                            vm.goToCurrencies();
+                        }).catch(function (error) {
+                            errorHandler.handleErrors(error);
+                        });
                     }).catch(function (error) {
                         errorHandler.handleErrors(error);
                     });
@@ -1255,14 +1397,20 @@
 
         $scope.initializeDemoSetup = function(){
             $scope.settingUpDemo = true;
+            $scope.tasksCompleted = 0;
             vm.configureCompanyDetails();
         };
 
         vm.goToCurrencies = function(){
+            vm.trackTasks('apply');
             $scope.settingUpDemo = false;
             $rootScope.securityConfigured = true;
             toastr.success('All demo config has been successfully setup.');
             $location.path('/currencies');
+        };
+
+        vm.trackTasks = function(apply){
+            $scope.tasksCompleted++;
         };
     }
 })();
