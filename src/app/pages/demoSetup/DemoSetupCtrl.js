@@ -132,7 +132,7 @@
                                 {
                                     dismiss: true,
                                     image: "blocks-card",
-                                    title: "Welcome to CompanyName",
+                                    title: "Welcome to " + $scope.companyName,
                                     id: 0,
                                     description: "Multi-currency app for online payments and rewards."
                                 }
@@ -1398,7 +1398,7 @@
         $scope.initializeDemoSetup = function(){
             $scope.settingUpDemo = true;
             $scope.tasksCompleted = 0;
-            vm.configureCompanyDetails();
+            // vm.configureCompanyDetails();
         };
 
         vm.goToCurrencies = function(){
