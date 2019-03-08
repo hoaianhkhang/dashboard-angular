@@ -1398,7 +1398,7 @@
         $scope.initializeDemoSetup = function(){
             $scope.settingUpDemo = true;
             $scope.tasksCompleted = 0;
-            // vm.configureCompanyDetails();
+            vm.configureCompanyDetails();
         };
 
         vm.goToCurrencies = function(){
