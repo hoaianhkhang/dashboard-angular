@@ -10,7 +10,8 @@
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
-        vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
+        // vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
+        vm.serviceUrl = "https://ethereum.services.rehive.io/api/1/";
         // $rootScope.dashboardTitle = 'Ethereum service | Rehive';
         $rootScope.dashboardTitle = 'Ethereum extension | Rehive';
         $scope.usersStateMessage = '';

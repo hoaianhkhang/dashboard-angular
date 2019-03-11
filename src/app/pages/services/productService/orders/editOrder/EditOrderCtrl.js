@@ -10,7 +10,8 @@
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
-        vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
+        // vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
+        vm.serviceUrl = "https://product.services.rehive.io/api/";
         vm.orderId = $stateParams.orderId;
         $scope.editingOrder = false;
         $scope.loadingProducts = false;
@@ -161,7 +162,6 @@
 
             $scope.updatedOrder.items.forEach(function(orderItem, idx, array){
                 if(orderItem.toUpdate){
-                    console.log(orderItem.id);
                     (idx === array.length - 1) ?
                         vm.updateExistingItems(orderItem.id, {quantity: orderItem.quantity}, "last") :
                         vm.updateExistingItems(orderItem.id, {quantity: orderItem.quantity});

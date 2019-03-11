@@ -10,7 +10,8 @@
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
-        vm.baseUrl = localStorageManagement.getValue('SERVICEURL');
+        // vm.baseUrl = localStorageManagement.getValue('SERVICEURL');
+        vm.baseUrl = "https://notification.services.rehive.io/api/";
         vm.notificationIdArray = [];
         // $rootScope.dashboardTitle = 'Notification service | Rehive';
         $rootScope.dashboardTitle = 'Notification extension | Rehive';

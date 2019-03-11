@@ -23,8 +23,10 @@
                                   title="{{tierLimit.tx_type | capitalizeWord}}" ng-bind="tierLimit.tx_type | capitalizeWord | limitTo: '35'"></td>
                               <td title="{{tierLimit.currency.code}}"
                                   ng-bind="tierLimit.currency.code"></td>
-                              <td title="{{tierLimit.value | currencyModifiersFilter: tierLimit.currency.divisibility}}"
-                                  ng-bind="tierLimit.value | currencyModifiersFilter: tierLimit.currency.divisibility"></td>
+                              <!--<td title="{{tierLimit.value | currencyModifiersFilter: tierLimit.currency.divisibility}}"-->
+                              <!--ng-bind="tierLimit.value | currencyModifiersFilter: tierLimit.currency.divisibility"></td>-->
+                              <td title="{{tierLimit.value | tierLimitDecimalFix: tierLimit.currency.divisibility}}"
+                                  ng-bind="tierLimit.value | tierLimitDecimalFix: tierLimit.currency.divisibility"></td>
                               <td title="{{tierLimit.type}}"
                                   ng-bind="tierLimit.type | capitalizeWord | limitTo: '35'"></td>
                               <td title="{{tierLimit.subtype ? tierLimit.subtype : 'None'}}"

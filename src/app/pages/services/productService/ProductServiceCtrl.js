@@ -9,7 +9,8 @@
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
-        vm.baseUrl = localStorageManagement.getValue('SERVICEURL');
+        // vm.baseUrl = localStorageManagement.getValue('SERVICEURL');
+        vm.baseUrl = "https://product.services.rehive.io/api/";
         // $rootScope.dashboardTitle = 'Products service | Rehive';
         $rootScope.dashboardTitle = 'Products extension | Rehive';
         $scope.loadingCampaigns =  false;
