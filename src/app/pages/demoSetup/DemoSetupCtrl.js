@@ -841,24 +841,28 @@
         };
 
         vm.enableBulkNotifications = function(emailTemplates, smsTemplates){
-            emailTemplates.forEach(function (emailNotification,index,arr) {
-                vm.addNotification(emailNotification, null, 'email');
-            });
+            var cnt = 0, len = emailTemplates.length - 1;
+            var callAddEmailNotif = setInterval(function(){
+                vm.addNotification(emailTemplates[cnt], null, 'email');
+                cnt++;
+                if(cnt === len){
+                    clearInterval(callAddEmailNotif);
+                }
+            }, 500);
 
-            smsTemplates.forEach(function (emailNotification,index,arr) {
+            smsTemplates.forEach(function (smsNotification,index,arr) {
                 if(index === (arr.length-1) ){
                     vm.trackTasks(null);
-                    vm.addNotification(emailNotification, 'last', 'sms');
+                    vm.addNotification(smsNotification, 'last', 'sms');
                 }
                 else{
-                    vm.addNotification(emailNotification, null, 'sms');
+                    vm.addNotification(smsNotification, null, 'sms');
                 }
             });
         };
 
         vm.addNotification = function (notification,last,type) {
             var notificationObj = {};
-
             if(type == 'email'){
                 notificationObj = {
                     name: notification.name,
@@ -998,90 +1002,6 @@
                 });
             });
         };
-
-        // vm.setupTierLimits = function(){
-        //     var tier1LimitCr = {
-        //             tx_type: "credit",
-        //             currency: null,
-        //             value: 1000,
-        //             type: 'month_max'
-        //         },
-        //         tier1LimitDr = {
-        //             tx_type: "debit",
-        //             currency: null,
-        //             value: 1000,
-        //             type: 'month_max'
-        //         },
-        //         tier2LimitCr = {
-        //             tx_type: "credit",
-        //             currency: null,
-        //             value: 10000,
-        //             type: 'month_max'
-        //         },
-        //         tier2LimitDr = {
-        //             tx_type: "debit",
-        //             currency: null,
-        //             value: 10000,
-        //             type: 'month_max'
-        //         };
-        //
-        //     tier1LimitCr = serializeFiltersService.objectFilters(tier1LimitCr);
-        //     tier1LimitDr = serializeFiltersService.objectFilters(tier1LimitDr);
-        //     tier2LimitCr = serializeFiltersService.objectFilters(tier2LimitCr);
-        //     tier2LimitDr = serializeFiltersService.objectFilters(tier2LimitDr);
-        //
-        //     for(var i = 0; i < $scope.currencyOptions.length; ++i){
-        //         var currency = $scope.currencyOptions[i];
-        //
-        //         tier1LimitCr.currency = tier1LimitDr.currency = tier2LimitCr.currency = tier2LimitDr.currency = currency.code;
-        //
-        //         tier1LimitCr.value = tier1LimitDr.value = currencyModifiers.convertToCents(1000, currency.divisibility);
-        //         tier2LimitCr.value = tier2LimitDr.value = currencyModifiers.convertToCents(10000, currency.divisibility);
-        //
-        //         for(var j = 0; j < $scope.userGroupTiers.length; ++j){
-        //             if($scope.userGroupTiers[j].level === 1){
-        //                 vm.addTierLimit("user", $scope.userGroupTiers[j].id, tier1LimitCr, null);
-        //                 vm.addTierLimit("user", $scope.userGroupTiers[j].id, tier1LimitDr, null);
-        //             }
-        //             else if($scope.userGroupTiers[j].level === 2){
-        //                 vm.addTierLimit("user", $scope.userGroupTiers[j].id, tier2LimitCr, null);
-        //                 vm.addTierLimit("user", $scope.userGroupTiers[j].id, tier2LimitDr, null);
-        //             }
-        //         }
-        //         for(var k = 0; k < $scope.merchantGroupTiers.length; ++k){
-        //             if($scope.merchantGroupTiers[k].level === 1){
-        //                 vm.addTierLimit("merchant", $scope.merchantGroupTiers[k].id, tier1LimitCr, null);
-        //                 vm.addTierLimit("merchant", $scope.merchantGroupTiers[k].id, tier1LimitDr, null);
-        //             }
-        //             else if($scope.merchantGroupTiers[k].level === 2 && i === ($scope.currencyOptions.length - 1) && k === ($scope.merchantGroupTiers.length - 1)){
-        //                 vm.addTierLimit("merchant", $scope.merchantGroupTiers[k].id, tier2LimitCr, null);
-        //                 vm.addTierLimit("merchant", $scope.merchantGroupTiers[k].id, tier2LimitDr, 'last');
-        //             }
-        //             else if($scope.merchantGroupTiers[k].level === 2){
-        //                 vm.addTierLimit("merchant", $scope.merchantGroupTiers[k].id, tier2LimitCr, null);
-        //                 vm.addTierLimit("merchant", $scope.merchantGroupTiers[k].id, tier2LimitDr, null);
-        //             }
-        //         }
-        //     }
-        //      vm.trackTasks('apply');
-        // };
-
-        // vm.addTierLimit = function(groupName, tierId, tierLimitsParams, last){
-        //     if(vm.token) {
-        //         Rehive.admin.groups.tiers.limits.create(groupName, tierId, tierLimitsParams)
-        //             .then(function (res){
-        //                 if(last){
-        //                     vm.trackTasks('apply');
-        //                     vm.reactivateProductService();
-        //                 }
-        //                 $scope.$apply();
-        //             }, function (error) {
-        //                 errorHandler.evaluateErrors(error);
-        //                 errorHandler.handleErrors(error);
-        //                 $scope.$apply();
-        //             });
-        //     }
-        // };
 
         vm.setupProductService = function(){
             var newProduct1 = {
@@ -1399,6 +1319,7 @@
             $scope.settingUpDemo = true;
             $scope.tasksCompleted = 0;
             vm.configureCompanyDetails();
+            // vm.getEmailNotificationTemplates();
         };
 
         vm.goToCurrencies = function(){
