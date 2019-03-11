@@ -245,23 +245,40 @@
             $scope.clearFilters();
             $scope.filtersObj.referenceFilter = true;
             $scope.applyFiltersObj.referenceFilter.selectedReferenceFilter = $state.params.accountRef;
-            var filtersObj = JSON.parse(localStorageManagement.getValue(vm.savedAccountsTableFilters));
+
+            var filtersObj = localStorageManagement.getValue(vm.savedAccountsTableFilters) ? JSON.parse(localStorageManagement.getValue(vm.savedAccountsTableFilters)) : {};
+
+            if(filtersObj === {}){
+                filtersObj.searchObj = {};
+                filtersObj.applyFiltersObj = $scope.applyFiltersObj;
+            }
+
             filtersObj.searchObj.reference = $state.params.accountRef;
             filtersObj.applyFiltersObj.referenceFilter.selectedReferenceFilter = $state.params.accountRef;
+
             vm.saveAccountsTableFiltersToLocalStorage({
                 searchObj: serializeFiltersService.objectFilters(filtersObj.searchObj),
                 filtersObj: $scope.filtersObj,
                 applyFiltersObj: serializeFiltersService.objectFilters(filtersObj.applyFiltersObj)
             });
+
             $scope.getAllAccounts('applyFilter');
 
         } else if($state.params.email) {
             $scope.clearFilters();
             $scope.filtersObj.userFilter = true;
             $scope.applyFiltersObj.userFilter.selectedUserFilter = $state.params.email;
-            var filtersObj = JSON.parse(localStorageManagement.getValue(vm.savedAccountsTableFilters));
+
+            var filtersObj = localStorageManagement.getValue(vm.savedAccountsTableFilters) ? JSON.parse(localStorageManagement.getValue(vm.savedAccountsTableFilters)) : {};
+
+            if(filtersObj === {}){
+                filtersObj.searchObj = {};
+                filtersObj.applyFiltersObj = $scope.applyFiltersObj;
+            }
+
             filtersObj.searchObj.user = $state.params.email;
             filtersObj.applyFiltersObj.userFilter.selectedUserFilter = $state.params.email;
+
             vm.saveAccountsTableFiltersToLocalStorage({
                 searchObj: serializeFiltersService.objectFilters(filtersObj.searchObj),
                 filtersObj: $scope.filtersObj,
@@ -270,7 +287,7 @@
             $scope.getAllAccounts('applyFilter');
 
         } else {
-            $scope.getAllAccounts(null, null);
+            $scope.getAllAccounts(null);
         }
 
         $scope.getGroups = function () {

@@ -644,8 +644,7 @@
 
             if(filtersObj === {}){
                 filtersObj.searchObj = {};
-                filtersObj.applyFiltersObj = {};
-                filtersObj.applyFiltersObj.emailFilter = {};
+                filtersObj.applyFiltersObj = $scope.applyFiltersObj;
             }
             console.log(filtersObj);
             filtersObj.searchObj.email__contains = $state.params.email;
@@ -669,8 +668,7 @@
 
             if(filtersObj === {}){
                 filtersObj.searchObj = {};
-                filtersObj.applyFiltersObj = {};
-                filtersObj.applyFiltersObj.mobileFilter = {};
+                filtersObj.applyFiltersObj = $scope.applyFiltersObj;
             }
 
             filtersObj.searchObj.mobile__contains = $state.params.mobile;
@@ -694,8 +692,7 @@
 
             if(filtersObj === {}){
                 filtersObj.searchObj = {};
-                filtersObj.applyFiltersObj = {};
-                filtersObj.applyFiltersObj.accountReferenceFilter = {};
+                filtersObj.applyFiltersObj = $scope.applyFiltersObj;
             }
 
             filtersObj.searchObj.account = $state.params.reference;

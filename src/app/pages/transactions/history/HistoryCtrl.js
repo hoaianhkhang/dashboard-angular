@@ -436,7 +436,7 @@
                     filterObjects = JSON.parse(localStorageManagement.getValue(vm.savedTransactionTableFilters));
 
                     $scope.filtersObj = filterObjects.filtersObj;
-
+                    console.log(filterObjects.applyFiltersObj);
                     $scope.applyFiltersObj = {
                         dateFilter: {
                             selectedDateOption: filterObjects.applyFiltersObj.dateFilter.selectedDateOption,
@@ -643,6 +643,7 @@
                 });
             }
         };
+
         if($state.params.accountRef){
             var accountRef = $state.params.accountRef.split(':')[1], transactionId = $state.params.accountRef.split(':')[0];
             $scope.clearFilters();
@@ -654,8 +655,7 @@
 
             if(filtersObj === {}){
                 filtersObj.searchObj = {};
-                filtersObj.applyFiltersObj = {};
-                filtersObj.applyFiltersObj.accountFilter = {};
+                filtersObj.applyFiltersObj = $scope.applyFiltersObj;
             }
 
             filtersObj.searchObj.account = accountRef;
@@ -683,8 +683,7 @@
             var filtersObj = localStorageManagement.getValue(vm.savedTransactionTableFilters) ? JSON.parse(localStorageManagement.getValue(vm.savedTransactionTableFilters)) : {};
             if(filtersObj === {}){
                 filtersObj.searchObj = {};
-                filtersObj.applyFiltersObj = {};
-                filtersObj.applyFiltersObj.userFilter = {};
+                filtersObj.applyFiltersObj = $scope.applyFiltersObj;
             }
             filtersObj.searchObj.user = userId;
             filtersObj.applyFiltersObj.userFilter.selectedUserOption = userId;
@@ -710,8 +709,7 @@
 
             if(filtersObj === {}){
                 filtersObj.searchObj = {};
-                filtersObj.applyFiltersObj = {};
-                filtersObj.applyFiltersObj.transactionIdFilter = {};
+                filtersObj.applyFiltersObj = $scope.applyFiltersObj;
             }
             filtersObj.searchObj.id = $state.params.transactionId;
             filtersObj.applyFiltersObj.transactionIdFilter.selectedTransactionIdOption = $state.params.transactionId;
@@ -721,19 +719,22 @@
                 filtersObj: $scope.filtersObj,
                 applyFiltersObj: serializeFiltersService.objectFilters(filtersObj.applyFiltersObj)
             });
-            $scope.getLatestTransactions('applyFilter', $state.params.transactionId);
+            if(transactionId === 0){
+                $scope.getLatestTransactions('applyFilter', null);
+            } else {
+                $scope.getLatestTransactions('applyFilter', transactionId);
+            }
         }
         else if($state.params.currencyCode) {
             $scope.filtersObj.currencyFilter = true;
             $scope.applyFiltersObj.currencyFilter.selectedCurrencyOption.code = $state.params.currencyCode;
-            $scope.getLatestTransactions();
+            $scope.getLatestTransactions(null, null);
         }
         else {
-            $scope.getLatestTransactions();
+            $scope.getLatestTransactions(null, null);
         }
 
         vm.formatTransactionsArray = function (transactionsArray, transactionId) {
-
             //save unique metadata keys from 1st transactions
             if((transactionsArray[0] && transactionsArray[0].metadata) && (Object.keys(transactionsArray[0].metadata).length > 0)){
                 for(var key in transactionsArray[0].metadata){
@@ -796,14 +797,15 @@
             });
 
             $scope.loadingTransactions = false;
-            if(transactionId){
-                var searchedTransaction = {};
+            if(transactionId && transactionId !== 0){
+                console.log(transactionId);
+                var searchedTransaction = null;
                 $scope.transactions.forEach(function(transactionObj){
                     if(transactionObj.id === transactionId){
                         searchedTransaction = transactionObj;
                     }
                 });
-                $scope.openModal('app/pages/transactions/history/historyModal/historyModal.html', 'md',searchedTransaction);
+                if(searchedTransaction){$scope.openModal('app/pages/transactions/history/historyModal/historyModal.html', 'md',searchedTransaction);}
             }
         };
 
