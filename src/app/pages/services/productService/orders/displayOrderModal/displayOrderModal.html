@@ -7,6 +7,12 @@
     </div>
     <div class="modal-body padding-bottom-25">
         <div class="row">
+            <a ng-hide="editingOrder" class="pull-right divider pointer edit-transaction-divider"
+               ng-click="toggleEditingOrder()"><i class="fa fa-pencil"></i> Quick edit</a>
+            <a ng-show="editingOrder" class="pull-right divider pointer edit-transaction-divider"
+               ng-click="toggleEditingOrder()"><i class="fa fa-times"></i> Cancel edit</a>
+        </div>
+        <div class="row">
             <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-left-padding divider">
                 <p class="text-subtle">Order id: </p>
             </div>
@@ -26,8 +32,22 @@
             <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-left-padding divider">
                 <p class="text-subtle">Status: </p>
             </div>
-            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 no-right-padding">
+            <div ng-hide="editingOrder" class="col-lg-8 col-md-8 col-sm-8 col-xs-8 no-right-padding">
                 <p ng-bind="orderObj.status | capitalizeWord"></p>
+            </div>
+            <div ng-show="editingOrder" class="col-lg-8 col-md-8 col-sm-8 col-xs-8 custom-radio-groups-btn order-status-radio-btns">
+                <label class="margin-right-10 pointer">
+                    <input class="pointer" type="radio" ng-model="orderObj.status" value="pending" ng-change="orderStatusChanged()" ng-disabled="disablePending">
+                    <span class="custom-radio-btn">Pending</span>
+                </label>
+                <label class="margin-right-10 pointer">
+                    <input class="pointer" type="radio" ng-model="orderObj.status" value="failed" ng-change="orderStatusChanged()">
+                    <span class="custom-radio-btn">Failed</span>
+                </label>
+                <label class="margin-right-10 pointer">
+                    <input class="pointer" type="radio" ng-model="orderObj.status" value="complete" ng-change="orderStatusChanged()">
+                    <span class="custom-radio-btn">Complete</span>
+                </label>
             </div>
         </div>
         <div class="row">
@@ -154,6 +174,13 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+    <div class="modal-footer row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <button type="button" ng-show="editingOrder" ng-disabled="!orderChanged" id="transaction-modal-save-button"
+                    ng-click="updateOrderStatus()" ng-class="{'setup-next-btn': !orderChanged,'btn-primary': orderChanged}"
+                    class="dashboard-btn btn pull-right">Save</button>
         </div>
     </div>
 </div>
