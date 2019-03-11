@@ -162,7 +162,6 @@
 
             $scope.updatedOrder.items.forEach(function(orderItem, idx, array){
                 if(orderItem.toUpdate){
-                    console.log(orderItem.id);
                     (idx === array.length - 1) ?
                         vm.updateExistingItems(orderItem.id, {quantity: orderItem.quantity}, "last") :
                         vm.updateExistingItems(orderItem.id, {quantity: orderItem.quantity});
