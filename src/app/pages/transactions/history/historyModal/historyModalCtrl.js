@@ -12,6 +12,7 @@
         $scope.updateTransactionObj = {};
         $scope.formatted = {};
         $scope.formatted.metadata = {};
+        $scope.formatted.note = "";
         $scope.editingTransaction = false;
         $scope.updatingTransaction = false;
         $scope.untouchedTransaction = false;
@@ -38,6 +39,7 @@
                     $scope.transaction = res;
                     $scope.formatted.metadata = metadataTextService.convertToText($scope.transaction.metadata);
                     $scope.updateTransactionObj.status = $scope.transaction.status;
+                    $scope.updateTransactionObj.note = $scope.transaction.note;
                     $scope.transaction.recipient = $scope.transaction.destination_transaction ? $scope.transaction.destination_transaction.id ? $scope.transaction.destination_transaction.user.email : $scope.transaction.destination_transaction.user.email + ' (new user)' : "";
                     $scope.updatingTransaction = false;
                     vm.getUserDetails($scope.transaction.user);
@@ -115,6 +117,7 @@
 
             Rehive.admin.transactions.update($scope.transaction.id, {
                 status: $scope.updateTransactionObj.status,
+                note: $scope.updateTransactionObj.note,
                 metadata: metaData
             }).then(function (res) {
                 if(metaData == {}){
