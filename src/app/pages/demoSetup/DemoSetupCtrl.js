@@ -770,7 +770,7 @@
             var demoAssetParams = {
                 currency_code: "DEMO",
                 address: issuerAddress,
-                description: "a demo asset setup for Stellar Testnet service.",
+                description: "Demo asset.",
                 symbol: 'd',
                 unit: "demo"
             };
