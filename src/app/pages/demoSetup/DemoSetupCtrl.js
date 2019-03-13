@@ -212,9 +212,7 @@
         };
 
         vm.setupUserGroups = function(){
-            var adminGroup = {name: "admin"},
-                serviceGroup = {name: "service"},
-                userGroup = {
+            var userGroup = {
                     name: "user",
                     label: "User",
                     public: true,
@@ -277,17 +275,10 @@
                 else {
                     Rehive.admin.groups.create(groupObj).then(function (res)
                     {
-                        Rehive.admin.groups.update(groupObj.name, groupObj)
-                            .then(function(res){
-                                if(last){
-                                    vm.trackTasks('apply');
-                                    vm.setupGroupPermissions();
-                                }
-                                $scope.$apply();
-                            }, function (error) {
-                                errorHandler.handleErrors(error);
-                                $scope.$apply();
-                            });
+                        if(last){
+                            vm.trackTasks('apply');
+                            vm.setupGroupPermissions();
+                        }
                         $scope.$apply();
                     }, function (error) {
                         errorHandler.handleErrors(error);
