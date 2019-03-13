@@ -46,7 +46,7 @@
                         $scope.logoAvailable = true;
                     } else {
                         $scope.useRehiveLogo = true;
-                        $scope.rehiveLogo  = '../../assets/img/_rehiveLogo.png';
+                        $scope.rehiveLogo  = '../../assets/img/_rehiveLogo.svg';
                     }
                     console.log($scope.iconAvailable, $scope.logoAvailable, $scope.useRehiveLogo);
                     $scope.$apply();
