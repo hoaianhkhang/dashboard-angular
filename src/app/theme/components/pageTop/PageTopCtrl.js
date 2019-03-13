@@ -26,12 +26,39 @@
         $scope.showingDashboardTasks = false;
         $scope.showingDashboardBelow1200Tasks = false;
         $scope.allTasksDone = true;
+        $scope.iconAvailable = $scope.logoAvailable = $scope.useRehiveLogo = false;
 
         $scope.pagination = {
             itemsPerPage: 10,
             pageNo: 1,
             maxSize: 5
         };
+
+        vm.getCompanyInfo = function () {
+            if(vm.token) {
+                $scope.loadingCompanyInfo = true;
+                Rehive.admin.company.get().then(function (res) {
+                    $scope.companyImageUrl = res.logo;
+                    $scope.companyIconUrl = res.icon;
+                    if($scope.companyIconUrl){
+                        $scope.iconAvailable = true;
+                    } else if($scope.companyImageUrl){
+                        $scope.logoAvailable = true;
+                    } else {
+                        $scope.useRehiveLogo = true;
+                        $scope.rehiveLogo  = '../../assets/img/_rehiveLogo.png';
+                    }
+                    console.log($scope.iconAvailable, $scope.logoAvailable, $scope.useRehiveLogo);
+                    $scope.$apply();
+                }, function (error) {
+                    $scope.loadingCompanyInfo = false;
+                    errorHandler.evaluateErrors(error);
+                    errorHandler.handleErrors(error);
+                    $scope.$apply();
+                });
+            }
+        };
+        vm.getCompanyInfo();
 
         vm.currentLocation = $location.path();
         $rootScope.$on('$locationChangeStart', function (event,newUrl,oldURl) {
