@@ -8,23 +8,23 @@
                 <div class="form-group">
                     <div class="col-sm-12">
                         <label>
-                            <span class="pull-left login-labels">Email<span class="required-symbol">*</span></span>
-                            <span ng-show="invalidEmailData" class="register-error-message pull-right">Please enter a valid email address.</span>
-                        </label>
-                        <input type="text" ng-blur="validateCompanyEmail()" ng-model="registerData.email" class="form-control"
-                               ng-class="{'invalid-data': invalidEmailData}" ng-change="invalidEmailData = false"
-                               id="inputEmail1" placeholder="e.g. jane@rehive.com" auto-focus="true" required>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-sm-12">
-                        <label>
                             <span class="pull-left login-labels">Company ID<span class="required-symbol">*</span></span>
                             <span ng-show="invalidCompanyIdData" class="register-error-message pull-right">Please enter a valid company ID.</span>
                         </label>
                         <input type="text" ng-blur="validateCompanyId()" ng-change="fixformat(company)" ng-model="registerData.company"
                                ng-class="{'invalid-data': invalidCompanyIdData}" ng-change="invalidCompanyIdData = false"
                                class="form-control" id="inputName1" placeholder="Choose a unique ID for your company" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <label>
+                            <span class="pull-left login-labels">Email<span class="required-symbol">*</span></span>
+                            <span ng-show="invalidEmailData" class="register-error-message pull-right">Please enter a valid email address.</span>
+                        </label>
+                        <input type="text" ng-blur="validateCompanyEmail()" ng-model="registerData.email" class="form-control"
+                               ng-class="{'invalid-data': invalidEmailData}" ng-change="invalidEmailData = false"
+                               id="inputEmail1" placeholder="e.g. jane@rehive.com" auto-focus="true" required>
                     </div>
                 </div>
                 <div class="form-group">
