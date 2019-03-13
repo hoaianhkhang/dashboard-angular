@@ -5,7 +5,9 @@
         .controller('BitcoinServiceAccountsCtrl', BitcoinServiceAccountsCtrl);
 
     /** @ngInject */
-    function BitcoinServiceAccountsCtrl($scope,$timeout) {
+    function BitcoinServiceAccountsCtrl($rootScope, $scope,$timeout) {
+        // $rootScope.dashboardTitle = 'Bitcoin service | Rehive';
+        $rootScope.dashboardTitle = 'Bitcoin extension | Rehive';
         $scope.bitcoinAccountSettingView = '';
 
         $scope.goToBitcoinAccountSetting = function (setting) {

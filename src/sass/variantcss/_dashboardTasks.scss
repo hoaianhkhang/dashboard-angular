@@ -26,6 +26,19 @@
 .file-link{
   margin-top: 10px;
   display: block;
+  & i.dashboard-task-spinner{
+    display: inline-block;
+    & img{
+      width: 17px;
+      height: 17px;
+    }
+  }
+  & span{
+    position: absolute;
+    display: inline-block;
+    bottom: 4px;
+    left: 41px;
+  }
 }
 
 .dashboard-tasks-icon{
@@ -69,7 +82,7 @@
         float: right;
         margin: 18px 17px 0 0;
         font-size: 22px;
-        color: white;
+        color: #B8B7C6;
       }
       & .task-icon-circle-1{
         position: absolute;

@@ -9,14 +9,14 @@
                 </div>
             </div>
             <div>
-                <button class="btn btn-success pull-right panel-header-button currencies-page-button-filter"
+                <button class="btn btn-primary pull-right panel-header-button currencies-page-button-filter"
                         ng-click="openAddServicesModal('app/pages/services/addServiceModal/addServiceModal.html','md')">Add</button>
             </div>
         </div>
     </div>
 </div>
 <div class="services-panels">
-    <div ng-hide="loadingServices" ng-show="servicesList.length > 0" class="panel" ng-repeat="service in servicesList">
+    <div ng-hide="loadingServices" ng-show="servicesList.length > 0" class="panel" ng-repeat="service in servicesList | orderBy: 'name'">
         <div class="panel-body">
             <div>
                 <table class="table">

@@ -20,7 +20,8 @@
                 controller: "UsersCtrl",
                 title: 'Users',
                 sidebarMeta: {
-                    order: 300
+                    order: 300,
+                    icon: 'sidebar-users-icon'
                 }
             });
     }

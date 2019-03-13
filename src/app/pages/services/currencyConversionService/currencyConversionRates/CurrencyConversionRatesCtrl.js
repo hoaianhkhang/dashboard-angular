@@ -9,8 +9,10 @@
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
-        vm.baseUrl = localStorageManagement.getValue('SERVICEURL');
-        $rootScope.dashboardTitle = 'Conversion service | Rehive';
+        // vm.baseUrl = localStorageManagement.getValue('SERVICEURL');
+        vm.baseUrl = "https://conversion.services.rehive.io/api/";
+        // $rootScope.dashboardTitle = 'Conversion service | Rehive';
+        $rootScope.dashboardTitle = 'Conversion extension | Rehive';
         $scope.loadingRates =  true;
 
         $scope.pagination = {
@@ -115,7 +117,27 @@
             });
         };
 
+        $scope.openEditRatesModal = function (page, size,rate) {
+            vm.theModal = $uibModal.open({
+                animation: true,
+                templateUrl: page,
+                size: size,
+                controller: 'EditCurrencyConversionRatesModalCtrl',
+                scope: $scope,
+                resolve: {
+                    rate: function () {
+                        return rate;
+                    }
+                }
+            });
 
+            vm.theModal.result.then(function(rate){
+                if(rate){
+                    $scope.getRatesList();
+                }
+            }, function(){
+            });
+        };
 
     }
 

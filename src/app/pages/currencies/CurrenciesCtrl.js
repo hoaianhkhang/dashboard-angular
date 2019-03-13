@@ -195,6 +195,10 @@
             $state.go(state);
         };
 
+        $scope.goToTransactionsModalView = function (txType) {
+            $location.path('/transactions/history').search({txType: txType});
+        };
+
         $scope.openAddCurrenciesModal = function (page, size) {
             vm.theModal = $uibModal.open({
                 animation: true,

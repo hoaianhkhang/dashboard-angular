@@ -1,13 +1,23 @@
 <aside class="al-sidebar" ng-swipe-right="$baSidebarService.setMenuCollapsed(false)" ng-swipe-left="$baSidebarService.setMenuCollapsed(true)"
        ng-mouseleave="hoverElemTop=selectElemTop">
-  <ul class="al-sidebar-list" slimscroll="{height: '{{menuHeight}}px'}" slimscroll-watch="menuHeight" >
+  <ul class="al-sidebar-list" slimscroll="{height: '{{menuHeight}}px'}" slimscroll-watch="menuHeight"
+      ng-class="{'sidemenu-expanded': expandedMenu,'sidemenu-closed': !expandedMenu}"
+      ng-click="sideBarMenuSelected($event)">
     <li ng-repeat="item in ::menuItems" class="al-sidebar-list-item"
         ng-class="::{'with-sub-menu': item.subMenu}" ui-sref-active="selected"
         ba-sidebar-toggling-item="item">
-      <hr class="sidebar-custom-hr" ng-show="item.title=='Build a fintech app'">
-      <a ng-mouseenter="hoverItem($event, item)" ui-state="item.stateRef || ''" ng-href="{{::(item.fixedHref ? item.fixedHref: '')}}" ng-if="::!item.subMenu" class="al-sidebar-list-link">
-        <i class="{{ ::item.icon }}"></i>
-        <span ng-class="{'sidebar-custom-menu-title': item.title =='Build a fintech app','should-be-blue': shouldBeBlue == item.title}">
+      <!--<hr class="sidebar-custom-hr" ng-show="item.title=='Build a fintech app'">-->
+      <a ng-mouseenter="hoverItem($event, item)" ui-state="item.fixedHref ? '' : item.stateRef || ''"
+         ng-href="{{::(item.fixedHref ? item.fixedHref: '')}}"
+         ng-if="::(!item.subMenu && !item.disabled)" class="al-sidebar-list-link"
+         target="{{::(item.blank ? '_blank' : '_self')}}">
+
+        <!--<a ng-mouseenter="hoverItem($event, item)" ui-state="item.stateRef || ''"-->
+           <!--ng-href="{{::(item.fixedHref ? item.fixedHref: '')}}"-->
+           <!--ng-if="::!item.subMenu" class="al-sidebar-list-link"-->
+
+        <i ng-hide="item.title =='Go to web wallet'" class="{{ ::item.icon }}"></i>
+        <span ng-class="{'sidebar-custom-menu-title': item.title =='Go to web wallet','should-be-blue': shouldBeBlue == item.title}">
           {{ ::item.title }}
         </span>
       </a>
@@ -48,14 +58,19 @@
           </a>
           <a ng-mouseenter="hoverItem($event, item)" target="{{::(subitem.blank ? '_blank' : '_self')}}"
              ng-if="::(!subitem.subMenu && !subitem.disabled)"
-             ui-state="subitem.stateRef || ''"
+             ui-state="subitem.fixedHref ? '' : subitem.stateRef || ''"
              ng-href="{{::(subitem.fixedHref ? subitem.fixedHref: '')}}">
             {{ ::subitem.title}}
+            <i class="{{ ::subitem.icon }}"></i>
           </a>
         </li>
       </ul>
     </li>
   </ul>
-  <!--<div class="sidebar-hover-elem" ng-style="{top: hoverElemTop + 'px', height: hoverElemHeight + 'px'}"-->
-       <!--ng-class="{'show-hover-elem': showHoverElem }"></div>-->
+  <div class="sidebar-hover-elem" ng-style="{top: hoverElemTop + 'px', height: hoverElemHeight + 'px'}"
+       ng-class="{'show-hover-elem': showHoverElem }">
+  </div>
+  <!--<a href="/#/company/setup/initial" class="sidebar-initial-setup-link">-->
+    <!--Build a fintech app-->
+  <!--</a>-->
 </aside>

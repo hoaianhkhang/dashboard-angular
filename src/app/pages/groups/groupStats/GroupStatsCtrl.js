@@ -9,7 +9,7 @@
 
         var vm = this;
         vm.token = localStorageManagement.getValue('token');
-        $scope.groupName = $stateParams.groupName;
+        $scope.groupName = ($stateParams.groupName == 'service') ? 'extension' : $stateParams.groupName;
         $scope.loadingGroup = true;
         vm.location = $location.path();
         vm.locationArray = vm.location.split('/');
@@ -20,9 +20,13 @@
         };
 
         $scope.getGroup = function () {
+            var groupName = ($scope.groupName == 'extension') ? 'service' : $scope.groupName;
             if(vm.token) {
                 $scope.loadingGroup = true;
-                Rehive.admin.groups.get({name: $scope.groupName}).then(function (res) {
+                Rehive.admin.groups.get({name: groupName}).then(function (res) {
+                    if(res.name === "service"){
+                        res.name = "extension";
+                    }
                     $scope.editGroupObj = res;
                     $scope.editGroupObj.prevName = res.name;
                     vm.getGroupUsers($scope.editGroupObj);
@@ -38,6 +42,7 @@
         $scope.getGroup();
 
         vm.getGroupUsers = function (group) {
+            group.name = (group.name === "extension") ? "service" : group.name;
             if(vm.token) {
                 $scope.loadingGroup = true;
                 Rehive.admin.users.overview.get({filters: {
@@ -57,6 +62,7 @@
         };
 
         vm.getGroupUsersPerDay = function (group) {
+            group.name = (group.name === "extension") ? "service" : group.name;
             if(vm.token) {
                 $scope.loadingGroup = true;
                 Rehive.admin.users.overview.get({filters: {

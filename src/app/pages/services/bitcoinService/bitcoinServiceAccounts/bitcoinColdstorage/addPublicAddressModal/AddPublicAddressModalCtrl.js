@@ -8,7 +8,8 @@
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
-        vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
+        // vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
+        vm.serviceUrl = "https://bitcoin-testnet.services.rehive.io/api/1/";
         $scope.addingPublicAddress = false;
         $scope.publicAddressParams = {
             address: ''

@@ -184,7 +184,7 @@
                     <select class="form-control pointer" ng-model="applyFiltersObj.groupFilter.selectedGroupOption"
                             ng-options="option for option in groupFilterOptions">
                     </select>
-                    <div ng-show="applyFiltersObj.groupFilter.selectedGroupOption == 'Group name'" class="date-filter-view">
+                    <div ng-show="applyFiltersObj.groupFilter.selectedGroupOption == 'User group'" class="date-filter-view">
                         <select class="form-control pointer margin-left-12" ng-model="applyFiltersObj.groupFilter.selectedGroup"
                                 ng-options="group.name for group in groupOptions">
                         </select>
@@ -366,7 +366,7 @@
             </div>
             <div ng-if="filtersObj.pageSizeFilter" class="row divider-top-6">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 date-filter-view">
-                    <input type="text" ng-model="usersPagination.itemsPerPage" ng-change="pageSizeChanged()"
+                    <input type="text" ng-model="applyFiltersObj.paginationFilter.itemsPerPage" ng-change="pageSizeChanged()"
                            auto-focus="filtersObj.pageSizeFilter"
                            placeholder="Enter page size" class="transaction-page-size-input">
                 </div>

@@ -45,7 +45,8 @@
             </tr>
             <tr>
                 <td class="table-row-center transactions-list-element rehive-table-row-first-child">
-                    Require verification
+                    Require verification&nbsp;&nbsp;<span><i uib-tooltip-html="'Enabling this will require users to have at least 1 verified mobile number or 1 verified
+                     email address before they can transact.'" class="ion-information-circled setup-groups-tooltip"></i></span>
                 </td>
                 <td class="rehive-table-row-last-child">
                     <div ng-show="companySettingsObj.require_verification">
@@ -133,6 +134,41 @@
                     <div ng-hide="companySettingsObj.require_privacy_policy">
                         <i class="fa fa-toggle-on fa-rotate-180 user-switch-inactive pull-right no-margin"
                            ng-click="toggleCompanySettings(companySettingsObj.require_privacy_policy,'require_privacy_policy')"></i>
+                    </div>
+                </td>
+            </tr>
+            <tr ng-repeat="notification in notifications">
+                <td class="table-row-center divider transactions-list-element rehive-table-row-first-child">
+                    {{notification.description}}&nbsp;&nbsp;
+                    <span ng-show="notification.description == 'Send password set/reset notifications'" class="large">
+                        <i id="sendResetNotification" class="ion-information-circled setup-groups-tooltip"
+                           uib-tooltip-html="'
+                            Sends password set and reset notifications to users.<br><br>
+                            To use a custom page for password set and reset, add your custom page URLs on the Company info page.<br><br>
+                            To send these notifications from your company\'s email address, enter a company email address on the Company info page.<br><br>
+                            To override these emails entirely with your own custom emails, activate the Notifications Service.<br><br>'"
+                           class="ion-information-circled setup-groups-tooltip">
+                        </i>
+                    </span>
+
+                    <span ng-show="notification.description == 'Send email/mobile verification notifications'" class="large">
+                        <i uib-tooltip-html="'
+                            Sends email and mobile verification notifications to users.<br><br>
+                            To use a custom page for email verification, add your custom page URLs on the Company info page.<br><br>
+                            To send these notifications from your company\'s email address, enter a company email address on the Company info page.<br><br>
+                            To override these emails entirely with your own custom emails, activate the Notifications Service.<br><br>'"
+                           class="ion-information-circled setup-groups-tooltip">
+                        </i>
+                    </span>
+                </td>
+                <td class="rehive-table-row-last-child divider">
+                    <div ng-show="notification.enabled">
+                        <i class="fa fa-toggle-on user-switch-active pull-right no-margin"
+                           ng-click="toggleNotificationEnabled(notification)"></i>
+                    </div>
+                    <div ng-hide="notification.enabled">
+                        <i class="fa fa-toggle-on fa-rotate-180 user-switch-inactive pull-right no-margin"
+                           ng-click="toggleNotificationEnabled(notification)"></i>
                     </div>
                 </td>
             </tr>

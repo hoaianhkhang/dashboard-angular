@@ -5,12 +5,13 @@
         .controller('StellarServiceTransactionsCtrl', StellarServiceTransactionsCtrl);
 
     /** @ngInject */
-    function StellarServiceTransactionsCtrl($scope,$http,localStorageManagement,$uibModal,toastr,$filter,
+    function StellarServiceTransactionsCtrl($scope,$http,localStorageManagement,$uibModal,toastr,$filter,multiOptionsFilterService,
                                             errorHandler,$state,$window,typeaheadService,serializeFiltersService) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
-        vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
+        // vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
+        vm.serviceUrl = "https://stellar.services.rehive.io/api/1/";
         vm.companyIdentifier = localStorageManagement.getValue('companyIdentifier');
         vm.savedStellarTransactionTableColumns = vm.companyIdentifier + 'stellarTransactionsTable';
         $scope.companyDateFormatString = localStorageManagement.getValue('DATE_FORMAT');
@@ -152,6 +153,7 @@
         };
 
         $scope.restoreColDefaults = function () {
+            $scope.visibleColumnsSelectionChanged = true;
             var defaultVisibleHeader = ['Email','Amount','Type','Transaction hash',
                 'Confirmations','Rehive code','Status','Created'];
 
@@ -203,127 +205,34 @@
         };
 
         vm.getDateFilters = function () {
+            var evaluatedDateObj = multiOptionsFilterService.evaluatedDates($scope.applyFiltersObj.dateFilter);
+
             var dateObj = {
-                created__lt: null,
-                created__gt: null
+                created__lt: evaluatedDateObj.date__lt,
+                created__gt: evaluatedDateObj.date__gt
             };
-
-            switch($scope.applyFiltersObj.dateFilter.selectedDateOption) {
-                case 'Is in the last':
-                    if($scope.applyFiltersObj.dateFilter.selectedDayIntervalOption == 'days'){
-                        dateObj.created__lt = moment().add(1,'days').format('YYYY-MM-DD');
-                        dateObj.created__gt = moment().subtract($scope.applyFiltersObj.dateFilter.dayInterval,'days').format('YYYY-MM-DD');
-                    } else {
-                        dateObj.created__lt = moment().add(1,'days').format('YYYY-MM-DD');
-                        dateObj.created__gt = moment().subtract($scope.applyFiltersObj.dateFilter.dayInterval,'months').format('YYYY-MM-DD');
-                    }
-
-                    break;
-                case 'In between':
-                    dateObj.created__lt = moment(new Date($scope.applyFiltersObj.dateFilter.dateTo)).add(1,'days').format('YYYY-MM-DD');
-                    dateObj.created__gt = moment(new Date($scope.applyFiltersObj.dateFilter.dateFrom)).format('YYYY-MM-DD');
-
-                    break;
-                case 'Is equal to':
-                    dateObj.created__lt = moment(new Date($scope.applyFiltersObj.dateFilter.dateEqualTo)).add(1,'days').format('YYYY-MM-DD');
-                    dateObj.created__gt = moment(new Date($scope.applyFiltersObj.dateFilter.dateEqualTo)).format('YYYY-MM-DD');
-
-                    break;
-                case 'Is after':
-                    dateObj.created__lt = null;
-                    dateObj.created__gt = moment(new Date($scope.applyFiltersObj.dateFilter.dateFrom)).add(1,'days').format('YYYY-MM-DD');
-                    break;
-                case 'Is before':
-                    dateObj.created__lt = moment(new Date($scope.applyFiltersObj.dateFilter.dateTo)).format('YYYY-MM-DD');
-                    dateObj.created__gt = null;
-                    break;
-                default:
-                    break;
-            }
 
             return dateObj;
         };
 
         vm.getUpdatedFilters = function () {
+            var evaluatedDateObj = multiOptionsFilterService.evaluatedDates($scope.applyFiltersObj.updatedFilter);
+
             var updatedDateObj = {
-                updated__lt: null,
-                created__gt: null
+                updated__lt: evaluatedDateObj.date__lt,
+                updated__gt: evaluatedDateObj.date__gt
             };
-
-            switch($scope.applyFiltersObj.updatedFilter.selectedDateOption) {
-                case 'Is in the last':
-                    if($scope.applyFiltersObj.updatedFilter.selectedDayIntervalOption == 'days'){
-                        updatedDateObj.updated__lt = moment().add(1,'days').format('YYYY-MM-DD');
-                        updatedDateObj.updated__gt = moment().subtract($scope.applyFiltersObj.updatedFilter.dayInterval,'days').format('YYYY-MM-DD');
-                    } else {
-                        updatedDateObj.updated__lt = moment().add(1,'days').format('YYYY-MM-DD');
-                        updatedDateObj.updated__gt = moment().subtract($scope.applyFiltersObj.updatedFilter.dayInterval,'months').format('YYYY-MM-DD');
-                    }
-
-                    break;
-                case 'In between':
-                    updatedDateObj.updated__lt = moment(new Date($scope.applyFiltersObj.updatedFilter.dateTo)).add(1,'days').format('YYYY-MM-DD');
-                    updatedDateObj.updated__gt = moment(new Date($scope.applyFiltersObj.updatedFilter.dateFrom)).format('YYYY-MM-DD');
-
-                    break;
-                case 'Is equal to':
-                    updatedDateObj.updated__lt = moment(new Date($scope.applyFiltersObj.updatedFilter.dateEqualTo)).add(1,'days').format('YYYY-MM-DD');
-                    updatedDateObj.updated__gt = moment(new Date($scope.applyFiltersObj.updatedFilter.dateEqualTo)).format('YYYY-MM-DD');
-
-                    break;
-                case 'Is after':
-                    updatedDateObj.updated__lt = null;
-                    updatedDateObj.updated__gt = moment(new Date($scope.applyFiltersObj.updatedFilter.dateFrom)).add(1,'days').format('YYYY-MM-DD');
-                    break;
-                case 'Is before':
-                    updatedDateObj.updated__lt = moment(new Date($scope.applyFiltersObj.updatedFilter.dateTo)).format('YYYY-MM-DD');
-                    updatedDateObj.updated__gt = null;
-                    break;
-                default:
-                    break;
-            }
 
             return updatedDateObj;
         };
 
         vm.getCompletedDateFilters = function () {
+            var evaluatedDateObj = multiOptionsFilterService.evaluatedDates($scope.applyFiltersObj.completedFilter);
+
             var completedDateObj = {
-                completed__lt: null,
-                completed__gt: null
+                completed__lt: evaluatedDateObj.date__lt,
+                completed__gt: evaluatedDateObj.date__gt
             };
-
-            switch($scope.applyFiltersObj.completedFilter.selectedDateOption) {
-                case 'Is in the last':
-                    if($scope.applyFiltersObj.completedFilter.selectedDayIntervalOption == 'days'){
-                        completedDateObj.completed__lt = moment().add(1,'days').format('YYYY-MM-DD');
-                        completedDateObj.completed__gt = moment().subtract($scope.applyFiltersObj.completedFilter.dayInterval,'days').format('YYYY-MM-DD');
-                    } else {
-                        completedDateObj.completed__lt = moment().add(1,'days').format('YYYY-MM-DD');
-                        completedDateObj.completed__gt = moment().subtract($scope.applyFiltersObj.completedFilter.dayInterval,'months').format('YYYY-MM-DD');
-                    }
-
-                    break;
-                case 'In between':
-                    completedDateObj.completed__lt = moment(new Date($scope.applyFiltersObj.completedFilter.dateTo)).add(1,'days').format('YYYY-MM-DD');
-                    completedDateObj.completed__gt = moment(new Date($scope.applyFiltersObj.completedFilter.dateFrom)).format('YYYY-MM-DD');
-
-                    break;
-                case 'Is equal to':
-                    completedDateObj.completed__lt = moment(new Date($scope.applyFiltersObj.completedFilter.dateEqualTo)).add(1,'days').format('YYYY-MM-DD');
-                    completedDateObj.completed__gt = moment(new Date($scope.applyFiltersObj.completedFilter.dateEqualTo)).format('YYYY-MM-DD');
-
-                    break;
-                case 'Is after':
-                    completedDateObj.completed__lt = null;
-                    completedDateObj.completed__gt = moment(new Date($scope.applyFiltersObj.completedFilter.dateFrom)).add(1,'days').format('YYYY-MM-DD');
-                    break;
-                case 'Is before':
-                    completedDateObj.completed__lt = moment(new Date($scope.applyFiltersObj.completedFilter.dateTo)).format('YYYY-MM-DD');
-                    completedDateObj.completed__gt = null;
-                    break;
-                default:
-                    break;
-            }
 
             return completedDateObj;
         };

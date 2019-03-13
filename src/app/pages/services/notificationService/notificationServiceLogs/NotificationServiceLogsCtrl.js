@@ -5,11 +5,14 @@
         .controller('NotificationServiceLogsCtrl', NotificationServiceLogsCtrl);
 
     /** @ngInject */
-    function NotificationServiceLogsCtrl($scope,$http,localStorageManagement,$uibModal,errorHandler) {
+    function NotificationServiceLogsCtrl($rootScope, $scope,$http,localStorageManagement,$uibModal,errorHandler) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
-        vm.baseUrl = localStorageManagement.getValue('SERVICEURL');
+        // vm.baseUrl = localStorageManagement.getValue('SERVICEURL');
+        vm.baseUrl = "https://notification.services.rehive.io/api/";
+        // $rootScope.dashboardTitle = 'Notification service | Rehive';
+        $rootScope.dashboardTitle = 'Notification extension | Rehive';
         $scope.loadingLogs =  false;
         $scope.notificationLogs = [];
 

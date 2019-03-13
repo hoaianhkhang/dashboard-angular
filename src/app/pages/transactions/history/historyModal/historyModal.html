@@ -7,14 +7,14 @@
     </div>
     <div class="modal-body">
         <div class="row">
-            <a ng-hide="editingTransaction" class="pull-right divider pointer"
+            <a ng-hide="editingTransaction" class="pull-right divider pointer edit-transaction-divider"
                ng-click="toggleEditingTransaction()"><i class="fa fa-pencil"></i> Edit transaction</a>
-            <a ng-show="editingTransaction" class="pull-right divider pointer"
+            <a ng-show="editingTransaction" class="pull-right divider pointer edit-transaction-divider"
                ng-click="toggleEditingTransaction()"><i class="fa fa-times"></i> Cancel edit</a>
         </div>
         <div class="row">
             <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-left-padding divider">
-                <p class="text-subtle">Code: </p>
+                <p class="text-subtle">Id: </p>
             </div>
             <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 no-right-padding">
                 <span ng-bind="transaction.id"></span>

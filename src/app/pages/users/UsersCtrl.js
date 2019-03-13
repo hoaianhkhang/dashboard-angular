@@ -5,7 +5,7 @@
         .controller('UsersCtrl', UsersCtrl);
 
     /** @ngInject */
-    function UsersCtrl($rootScope,$state,Rehive,$scope,typeaheadService,$location,$uibModal,
+    function UsersCtrl($rootScope,$state,Rehive,$scope,typeaheadService,$location,$uibModal,multiOptionsFilterService,
                        localStorageManagement,errorHandler,$window,toastr,serializeFiltersService,$filter) {
 
         var vm = this;
@@ -13,10 +13,13 @@
         vm.companyIdentifier = localStorageManagement.getValue('companyIdentifier');
         $scope.companyDateFormatString = localStorageManagement.getValue('DATE_FORMAT');
         vm.savedUserTableColumns = vm.companyIdentifier + 'usersTable';
+        vm.savedUserTableFilters = vm.companyIdentifier + 'usersTableFilters';
         $rootScope.dashboardTitle = 'Users | Rehive';
         vm.currenciesList = JSON.parse($window.sessionStorage.currenciesList || '[]');
         vm.location = $location.path();
         vm.locationArray = vm.location.split('/');
+        vm.savedGroupColors = [];
+        vm.companyColors = localStorageManagement.getValue('companyIdentifier') + "_group_colors";
         $scope.locationIndicator = vm.locationArray[vm.locationArray.length - 1];
         $scope.usersStateMessage = '';
         $scope.users = [];
@@ -28,16 +31,17 @@
         $scope.archivedOptions = ['True','False'];
         $scope.statusOptions = ['Status','Pending', 'Obsolete', 'Declined', 'Verified', 'Incomplete'];
         $scope.orderByOptions = ['Created','Last login date'];
-        $scope.groupFilterOptions = ['Group name','In a group'];
+        $scope.groupFilterOptions = ['User group','In a group'];
         $scope.currencyOptions = [];
         $scope.filtersCount = 0;
+        $scope.initialLoad = true;
+        $scope.orderByVariable = '-createdJSTime';
 
         $scope.usersPagination = {
             itemsPerPage: 25,
             pageNo: 1,
             maxSize: 5
         };
-
 
         // if(localStorageManagement.getValue(vm.savedUserTableColumns)){
         //     var headerColumns = JSON.parse(localStorageManagement.getValue(vm.savedUserTableColumns));
@@ -74,7 +78,7 @@
             {colName: 'Last name',fieldName: 'last_name',visible: true},
             {colName: 'Email',fieldName: 'email',visible: true},
             {colName: 'Mobile number',fieldName: 'mobile',visible: true},
-            {colName: 'Group name',fieldName: 'groupName',visible: true},
+            {colName: 'User group',fieldName: 'groupName',visible: true},
             {colName: 'Created',fieldName: 'created',visible: true},
             {colName: 'Updated',fieldName: 'updated',visible: false},
             {colName: 'Archived',fieldName: 'archived',visible: false},
@@ -128,7 +132,7 @@
                 selectedAccountReference: ''
             },
             groupFilter: {
-                selectedGroupOption: 'Group name',
+                selectedGroupOption: 'User group',
                 existsInGroup: false,
                 selectedGroup: {}
             },
@@ -164,6 +168,11 @@
             },
             orderByFilter: {
                 selectedOrderByOption: 'Created'
+            },
+            paginationFilter: {
+                itemsPerPage: 25,
+                pageNo: 1,
+                maxSize: 5
             }
         };
 
@@ -185,7 +194,7 @@
 
         $scope.restoreColDefaults = function () {
             var defaultVisibleHeader = ['Id','First name','Last name','Email',
-                'Mobile number','Group name','Created'];
+                'Mobile number','User group','Created'];
 
             $scope.headerColumns.forEach(function (headerObj) {
                 if(defaultVisibleHeader.indexOf(headerObj.colName) > -1){
@@ -204,6 +213,9 @@
                     if(res.results.length > 0){
                         $scope.groupOptions = res.results;
                         $scope.applyFiltersObj.groupFilter.selectedGroup = $scope.groupOptions[0];
+                        $scope.getAllUsers();
+                    } else {
+                        $scope.getAllUsers();
                     }
                     $scope.$apply();
                 }, function (error) {
@@ -213,13 +225,12 @@
                 });
             }
         };
-        $scope.getGroups();
 
         vm.getCompanyCurrencies = function(){
             //adding currency as default value in both results array and ng-model of currency
             vm.currenciesList.splice(0,0,{code: 'Currency'});
-            $scope.applyFiltersObj.currencyFilter.selectedCurrency.code = 'Currency';
             $scope.currencyOptions = vm.currenciesList;
+            $scope.getGroups();
         };
         vm.getCompanyCurrencies();
 
@@ -320,143 +331,205 @@
         };
 
         $scope.pageSizeChanged =  function () {
-            if($scope.usersPagination.itemsPerPage > 250){
-                $scope.usersPagination.itemsPerPage = 250;
+            if($scope.applyFiltersObj.paginationFilter.itemsPerPage > 250){
+                $scope.applyFiltersObj.paginationFilter.itemsPerPage = 250;
             }
         };
 
-        $scope.orderByFunction = function () {
-            return ($scope.applyFiltersObj.orderByFilter.selectedOrderByOption == 'Created' ? '-created' : '-last_login');
+        $scope.orderByFunction = function (header) {
+            if(header.orderByDirection == 'desc'){
+                header.orderByDirection = 'asc';
+                $scope.orderByVariable = header.fieldName;
+            } else {
+                header.orderByDirection = 'desc';
+                $scope.orderByVariable = '-' + header.fieldName;
+                localStorageManagement.setValue(vm.savedUserTableColumns,JSON.stringify($scope.headerColumns));
+            }
         };
 
         vm.getCreatedDateFilters = function () {
+            var evaluatedDateObj = multiOptionsFilterService.evaluatedDates($scope.applyFiltersObj.createdFilter);
+
             var dateObj = {
-                created__lt: null,
-                created__gt: null
+                created__lt: evaluatedDateObj.date__lt,
+                created__gt: evaluatedDateObj.date__gt
             };
-
-            switch($scope.applyFiltersObj.createdFilter.selectedDateOption) {
-                case 'Is in the last':
-                    if($scope.applyFiltersObj.createdFilter.selectedDayIntervalOption == 'days'){
-                        dateObj.created__lt = moment().add(1,'days').format('YYYY-MM-DD');
-                        dateObj.created__gt = moment().subtract($scope.applyFiltersObj.createdFilter.dayInterval,'days').format('YYYY-MM-DD');
-                    } else {
-                        dateObj.created__lt = moment().add(1,'days').format('YYYY-MM-DD');
-                        dateObj.created__gt = moment().subtract($scope.applyFiltersObj.createdFilter.dayInterval,'months').format('YYYY-MM-DD');
-                    }
-
-                    break;
-                case 'In between':
-                    dateObj.created__lt = moment(new Date($scope.applyFiltersObj.createdFilter.dateTo)).add(1,'days').format('YYYY-MM-DD');
-                    dateObj.created__gt = moment(new Date($scope.applyFiltersObj.createdFilter.dateFrom)).format('YYYY-MM-DD');
-
-                    break;
-                case 'Is equal to':
-                    dateObj.created__lt = moment(new Date($scope.applyFiltersObj.createdFilter.dateEqualTo)).add(1,'days').format('YYYY-MM-DD');
-                    dateObj.created__gt = moment(new Date($scope.applyFiltersObj.createdFilter.dateEqualTo)).format('YYYY-MM-DD');
-
-                    break;
-                case 'Is after':
-                    dateObj.created__lt = null;
-                    dateObj.created__gt = moment(new Date($scope.applyFiltersObj.createdFilter.dateFrom)).add(1,'days').format('YYYY-MM-DD');
-                    break;
-                case 'Is before':
-                    dateObj.created__lt = moment(new Date($scope.applyFiltersObj.createdFilter.dateTo)).format('YYYY-MM-DD');
-                    dateObj.created__gt = null;
-                    break;
-                default:
-                    break;
-            }
 
             return dateObj;
         };
 
         vm.getLastLoginDateFilters = function () {
+            var evaluatedDateObj = multiOptionsFilterService.evaluatedDates($scope.applyFiltersObj.lastLoginDateFilter);
+
             var dateObj = {
-                last_login__lt: null,
-                last_login__gt: null
+                last_login__lt: evaluatedDateObj.date__lt,
+                last_login__gt: evaluatedDateObj.date__gt
             };
-
-            switch($scope.applyFiltersObj.lastLoginDateFilter.selectedDateOption) {
-                case 'Is in the last':
-                    if($scope.applyFiltersObj.lastLoginDateFilter.selectedDayIntervalOption == 'days'){
-                        dateObj.last_login__lt = moment().add(1,'days').format('YYYY-MM-DD');
-                        dateObj.last_login__gt = moment().subtract($scope.applyFiltersObj.lastLoginDateFilter.dayInterval,'days').format('YYYY-MM-DD');
-                    } else {
-                        dateObj.last_login__lt = moment().add(1,'days').format('YYYY-MM-DD');
-                        dateObj.last_login__gt = moment().subtract($scope.applyFiltersObj.lastLoginDateFilter.dayInterval,'months').format('YYYY-MM-DD');
-                    }
-
-                    break;
-                case 'In between':
-                    dateObj.last_login__lt = moment(new Date($scope.applyFiltersObj.lastLoginDateFilter.dateTo)).add(1,'days').format('YYYY-MM-DD');
-                    dateObj.last_login__gt = moment(new Date($scope.applyFiltersObj.lastLoginDateFilter.dateFrom)).format('YYYY-MM-DD');
-
-                    break;
-                case 'Is equal to':
-                    dateObj.last_login__lt = moment(new Date($scope.applyFiltersObj.lastLoginDateFilter.dateEqualTo)).add(1,'days').format('YYYY-MM-DD');
-                    dateObj.last_login__gt = moment(new Date($scope.applyFiltersObj.lastLoginDateFilter.dateEqualTo)).format('YYYY-MM-DD');
-
-                    break;
-                case 'Is after':
-                    dateObj.last_login__lt = null;
-                    dateObj.last_login__gt = moment(new Date($scope.applyFiltersObj.lastLoginDateFilter.dateFrom)).add(1,'days').format('YYYY-MM-DD');
-                    break;
-                case 'Is before':
-                    dateObj.last_login__lt = moment(new Date($scope.applyFiltersObj.lastLoginDateFilter.dateTo)).format('YYYY-MM-DD');
-                    dateObj.last_login__gt = null;
-                    break;
-                default:
-                    break;
-            }
 
             return dateObj;
         };
 
         vm.getUpdatedDateFilters = function () {
+            var evaluatedDateObj = multiOptionsFilterService.evaluatedDates($scope.applyFiltersObj.updatedFilter);
+
             var dateObj = {
-                updated__lt: null,
-                updated__gt: null
+                updated__lt: evaluatedDateObj.date__lt,
+                updated__gt: evaluatedDateObj.date__gt
             };
-
-            switch($scope.applyFiltersObj.updatedFilter.selectedDateOption) {
-                case 'Is in the last':
-                    if($scope.applyFiltersObj.createdFilter.selectedDayIntervalOption == 'days'){
-                        dateObj.updated__lt = moment().add(1,'days').format('YYYY-MM-DD');
-                        dateObj.updated__gt = moment().subtract($scope.applyFiltersObj.updatedFilter.dayInterval,'days').format('YYYY-MM-DD');
-                    } else {
-                        dateObj.updated__lt = moment().add(1,'days').format('YYYY-MM-DD');
-                        dateObj.updated__gt = moment().subtract($scope.applyFiltersObj.updatedFilter.dayInterval,'months').format('YYYY-MM-DD');
-                    }
-
-                    break;
-                case 'In between':
-                    dateObj.updated__lt = moment(new Date($scope.applyFiltersObj.updatedFilter.dateTo)).add(1,'days').format('YYYY-MM-DD');
-                    dateObj.updated__gt = moment(new Date($scope.applyFiltersObj.updatedFilter.dateFrom)).format('YYYY-MM-DD');
-
-                    break;
-                case 'Is equal to':
-                    dateObj.updated__lt = moment(new Date($scope.applyFiltersObj.updatedFilter.dateEqualTo)).add(1,'days').format('YYYY-MM-DD');
-                    dateObj.updated__gt = moment(new Date($scope.applyFiltersObj.updatedFilter.dateEqualTo)).format('YYYY-MM-DD');
-
-                    break;
-                case 'Is after':
-                    dateObj.updated__lt = null;
-                    dateObj.updated__gt = moment(new Date($scope.applyFiltersObj.updatedFilter.dateFrom)).add(1,'days').format('YYYY-MM-DD');
-                    break;
-                case 'Is before':
-                    dateObj.updated__lt = moment(new Date($scope.applyFiltersObj.updatedFilter.dateTo)).format('YYYY-MM-DD');
-                    dateObj.updated__gt = null;
-                    break;
-                default:
-                    break;
-            }
 
             return dateObj;
         };
 
         vm.getUsersFiltersObj = function(){
             $scope.filtersCount = 0;
+            var searchObj = {};
+            var filterObjects = {};
+
+            // get saved user table filters on initial load from local storage if any
+            if($scope.initialLoad){
+                $scope.initialLoad = false;
+                if(localStorageManagement.getValue(vm.savedUserTableFilters)){
+                    filterObjects = JSON.parse(localStorageManagement.getValue(vm.savedUserTableFilters));
+
+                    $scope.filtersObj = filterObjects.filtersObj;
+
+                    $scope.applyFiltersObj = {
+                        archivedFilter: {
+                            selectedArchivedFilter: filterObjects.applyFiltersObj.archivedFilter.selectedArchivedFilter
+                        },
+                        idFilter: {
+                            selectedId: filterObjects.applyFiltersObj.idFilter.selectedId
+                        },
+                        emailFilter: {
+                            selectedEmail: $state.params.email || filterObjects.applyFiltersObj.emailFilter.selectedEmail
+                        },
+                        mobileFilter: {
+                            selectedMobile: $state.params.mobile || filterObjects.applyFiltersObj.mobileFilter.selectedMobile
+                        },
+                        firstNameFilter: {
+                            selectedFirstName: filterObjects.applyFiltersObj.firstNameFilter.selectedFirstName
+                        },
+                        lastNameFilter: {
+                            selectedLastName: filterObjects.applyFiltersObj.lastNameFilter.selectedLastName
+                        },
+                        accountReferenceFilter: {
+                            selectedAccountReference: filterObjects.applyFiltersObj.accountReferenceFilter.selectedAccountReference
+                        },
+                        groupFilter: {
+                            selectedGroupOption: filterObjects.applyFiltersObj.groupFilter.selectedGroupOption,
+                            existsInGroup: filterObjects.applyFiltersObj.groupFilter.existsInGroup,
+                            selectedGroup: filterObjects.applyFiltersObj.groupFilter.selectedGroup.name ?
+                                $scope.groupOptions.find(function (group) {
+                                    if(group.name == filterObjects.applyFiltersObj.groupFilter.selectedGroup.name){
+                                        return group;
+                                    }
+                                }) : $scope.groupOptions[0]
+                        },
+                        currencyFilter: {
+                            selectedCurrency: filterObjects.applyFiltersObj.currencyFilter.selectedCurrency.code ? filterObjects.applyFiltersObj.currencyFilter.selectedCurrency : filterObjects.applyFiltersObj.currencyFilter.selectedCurrency = { code: 'Currency' }
+                        },
+                        createdFilter: {
+                            selectedDateOption: filterObjects.applyFiltersObj.createdFilter.selectedDateOption,
+                            selectedDayIntervalOption: filterObjects.applyFiltersObj.createdFilter.selectedDayIntervalOption,
+                            dayInterval: filterObjects.applyFiltersObj.createdFilter.dayInterval,
+                            dateFrom: moment(filterObjects.applyFiltersObj.createdFilter.dateFrom).toDate(),
+                            dateTo: moment(filterObjects.applyFiltersObj.createdFilter.dateTo).toDate(),
+                            dateEqualTo: moment(filterObjects.applyFiltersObj.createdFilter.dateEqualTo).toDate()
+                        },
+                        updatedFilter: {
+                            selectedDateOption: filterObjects.applyFiltersObj.updatedFilter.selectedDateOption,
+                            selectedDayIntervalOption: filterObjects.applyFiltersObj.updatedFilter.selectedDayIntervalOption,
+                            dayInterval: filterObjects.applyFiltersObj.updatedFilter.dayInterval,
+                            dateFrom: moment(filterObjects.applyFiltersObj.updatedFilter.dateFrom).toDate(),
+                            dateTo: moment(filterObjects.applyFiltersObj.updatedFilter.dateTo).toDate(),
+                            dateEqualTo: moment(filterObjects.applyFiltersObj.updatedFilter.dateEqualTo).toDate()
+                        },
+                        lastLoginDateFilter: {
+                            selectedDateOption: filterObjects.applyFiltersObj.lastLoginDateFilter.selectedDateOption,
+                            selectedDayIntervalOption: filterObjects.applyFiltersObj.lastLoginDateFilter.selectedDayIntervalOption,
+                            dayInterval: filterObjects.applyFiltersObj.lastLoginDateFilter.dayInterval,
+                            dateFrom: moment(filterObjects.applyFiltersObj.lastLoginDateFilter.dateFrom).toDate(),
+                            dateTo: moment(filterObjects.applyFiltersObj.lastLoginDateFilter.dateTo).toDate(),
+                            dateEqualTo: moment(filterObjects.applyFiltersObj.lastLoginDateFilter.dateEqualTo).toDate()
+                        },
+                        kycFilter: {
+                            selectedKycFilter: filterObjects.applyFiltersObj.kycFilter.selectedKycFilter
+                        },
+                        orderByFilter: {
+                            selectedOrderByOption: filterObjects.applyFiltersObj.orderByFilter.selectedOrderByOption
+                        },
+                        paginationFilter: {
+                            itemsPerPage: filterObjects.applyFiltersObj.paginationFilter.itemsPerPage,
+                            pageNo: filterObjects.applyFiltersObj.paginationFilter.pageNo,
+                            maxSize: filterObjects.applyFiltersObj.paginationFilter.maxSize
+                        }
+                    };
+
+                    searchObj = filterObjects.searchObj;
+                } else {
+                    searchObj = {
+                        page: 1,
+                        page_size: $scope.filtersObj.pageSizeFilter? $scope.applyFiltersObj.paginationFilter.itemsPerPage : 25
+                    };
+                }
+
+            } else {
+
+                if($scope.filtersObj.createdFilter){
+                    vm.dateObj = vm.getCreatedDateFilters();
+                } else{
+                    vm.dateObj = {
+                        created__gt: null,
+                        created__lt: null
+                    };
+                }
+
+                if($scope.filtersObj.updatedFilter){
+                    vm.updatedDateObj = vm.getUpdatedDateFilters();
+                } else{
+                    vm.updatedDateObj = {
+                        updated__gt: null,
+                        updated__lt: null
+                    };
+                }
+
+                if($scope.filtersObj.lastLoginDateFilter){
+                    vm.lastLogindateObj = vm.getLastLoginDateFilters();
+                } else{
+                    vm.lastLogindateObj = {
+                        last_login__gt: null,
+                        last_login__lt: null
+                    };
+                }
+
+                searchObj = {
+                    page: $scope.applyFiltersObj.paginationFilter.pageNo,
+                    page_size: $scope.filtersObj.pageSizeFilter? $scope.applyFiltersObj.paginationFilter.itemsPerPage : 25,
+                    id__contains: $scope.filtersObj.idFilter ? ($scope.applyFiltersObj.idFilter.selectedId ?  $scope.applyFiltersObj.idFilter.selectedId : null): null,
+                    email__contains: $scope.filtersObj.emailFilter ?($scope.applyFiltersObj.emailFilter.selectedEmail ? $scope.applyFiltersObj.emailFilter.selectedEmail : null): null,
+                    mobile__contains: $scope.filtersObj.mobileFilter ? ($scope.applyFiltersObj.mobileFilter.selectedMobile ? $scope.applyFiltersObj.mobileFilter.selectedMobile : null): null,
+                    first_name__contains: $scope.filtersObj.firstNameFilter ? ($scope.applyFiltersObj.firstNameFilter.selectedFirstName ?  $scope.applyFiltersObj.firstNameFilter.selectedFirstName : null): null,
+                    last_name__contains: $scope.filtersObj.lastNameFilter ? ($scope.applyFiltersObj.lastNameFilter.selectedLastName ?  $scope.applyFiltersObj.lastNameFilter.selectedLastName : null): null,
+                    account: $scope.filtersObj.accountReferenceFilter ? ($scope.applyFiltersObj.accountReferenceFilter.selectedAccountReference ?  $scope.applyFiltersObj.accountReferenceFilter.selectedAccountReference : null): null,
+                    group: $scope.filtersObj.groupFilter ? $scope.applyFiltersObj.groupFilter.selectedGroupOption == 'User group'? $scope.applyFiltersObj.groupFilter.selectedGroup.name: null : null,
+                    group__isnull: $scope.filtersObj.groupFilter ? $scope.applyFiltersObj.groupFilter.selectedGroupOption == 'In a group'? (!$scope.applyFiltersObj.groupFilter.existsInGroup).toString(): null : null,
+                    created__gt: vm.dateObj.created__gt ? Date.parse(vm.dateObj.created__gt +'T00:00:00') : null,
+                    created__lt: vm.dateObj.created__lt ? Date.parse(vm.dateObj.created__lt +'T00:00:00') : null,
+                    updated__gt: vm.updatedDateObj.updated__gt ? Date.parse(vm.updatedDateObj.updated__gt +'T00:00:00') : null,
+                    updated__lt: vm.updatedDateObj.updated__lt ? Date.parse(vm.updatedDateObj.updated__lt +'T00:00:00') : null,
+                    last_login__gt: vm.lastLogindateObj.last_login__gt ? Date.parse(vm.lastLogindateObj.last_login__gt +'T00:00:00') : null,
+                    last_login__lt: vm.lastLogindateObj.last_login__lt ? Date.parse(vm.lastLogindateObj.last_login__lt +'T00:00:00') : null,
+                    kyc__status: $scope.filtersObj.kycFilter ? ($scope.applyFiltersObj.kycFilter.selectedKycFilter == 'Status' ? null : $scope.applyFiltersObj.kycFilter.selectedKycFilter.toLowerCase()): null,
+                    currency__code: $scope.filtersObj.currencyFilter ? ($scope.applyFiltersObj.currencyFilter.selectedCurrency.code ? ($scope.applyFiltersObj.currencyFilter.selectedCurrency.code == 'Currency' ? null : $scope.applyFiltersObj.currencyFilter.selectedCurrency.code) : null): null,
+                    archived: $scope.filtersObj.archivedFilter ? ($scope.applyFiltersObj.archivedFilter.selectedArchivedFilter == 'True' ?  true : false) : null
+                };
+
+                vm.saveUsersTableFiltersToLocalStorage({
+                    searchObj: serializeFiltersService.objectFilters(searchObj),
+                    filtersObj: $scope.filtersObj,
+                    applyFiltersObj: $scope.applyFiltersObj
+                });
+            }
 
             for(var x in $scope.filtersObj){
                 if($scope.filtersObj.hasOwnProperty(x)){
@@ -466,79 +539,20 @@
                 }
             }
 
-            if($scope.filtersObj.createdFilter){
-                vm.dateObj = vm.getCreatedDateFilters();
-            } else{
-                vm.dateObj = {
-                    created__gt: null,
-                    created__lt: null
-                };
-            }
-
-            if($scope.filtersObj.updatedFilter){
-                vm.updatedDateObj = vm.getUpdatedDateFilters();
-            } else{
-                vm.updatedDateObj = {
-                    updated__gt: null,
-                    updated__lt: null
-                };
-            }
-
-            if($scope.filtersObj.lastLoginDateFilter){
-                vm.lastLogindateObj = vm.getLastLoginDateFilters();
-            } else{
-                vm.lastLogindateObj = {
-                    last_login__gt: null,
-                    last_login__lt: null
-                };
-            }
-
-
-            var searchObj = {
-                page: $scope.usersPagination.pageNo,
-                page_size: $scope.filtersObj.pageSizeFilter? $scope.usersPagination.itemsPerPage : 25,
-                id__contains: $scope.filtersObj.idFilter ? ($scope.applyFiltersObj.idFilter.selectedId ?  $scope.applyFiltersObj.idFilter.selectedId : null): null,
-                email__contains: $scope.filtersObj.emailFilter ?($scope.applyFiltersObj.emailFilter.selectedEmail ? $scope.applyFiltersObj.emailFilter.selectedEmail : null): null,
-                mobile__contains: $scope.filtersObj.mobileFilter ? ($scope.applyFiltersObj.mobileFilter.selectedMobile ? $scope.applyFiltersObj.mobileFilter.selectedMobile : null): null,
-                first_name__contains: $scope.filtersObj.firstNameFilter ? ($scope.applyFiltersObj.firstNameFilter.selectedFirstName ?  $scope.applyFiltersObj.firstNameFilter.selectedFirstName : null): null,
-                last_name__contains: $scope.filtersObj.lastNameFilter ? ($scope.applyFiltersObj.lastNameFilter.selectedLastName ?  $scope.applyFiltersObj.lastNameFilter.selectedLastName : null): null,
-                account: $scope.filtersObj.accountReferenceFilter ? ($scope.applyFiltersObj.accountReferenceFilter.selectedAccountReference ?  $scope.applyFiltersObj.accountReferenceFilter.selectedAccountReference : null): null,
-                group: $scope.filtersObj.groupFilter ? $scope.applyFiltersObj.groupFilter.selectedGroupOption == 'Group name'? $scope.applyFiltersObj.groupFilter.selectedGroup.name: null : null,
-                group__isnull: $scope.filtersObj.groupFilter ? $scope.applyFiltersObj.groupFilter.selectedGroupOption == 'In a group'? (!$scope.applyFiltersObj.groupFilter.existsInGroup).toString(): null : null,
-                created__gt: vm.dateObj.created__gt ? Date.parse(vm.dateObj.created__gt +'T00:00:00') : null,
-                created__lt: vm.dateObj.created__lt ? Date.parse(vm.dateObj.created__lt +'T00:00:00') : null,
-                updated__gt: vm.updatedDateObj.updated__gt ? Date.parse(vm.updatedDateObj.updated__gt +'T00:00:00') : null,
-                updated__lt: vm.updatedDateObj.updated__lt ? Date.parse(vm.updatedDateObj.updated__lt +'T00:00:00') : null,
-                last_login__gt: vm.lastLogindateObj.last_login__gt ? Date.parse(vm.lastLogindateObj.last_login__gt +'T00:00:00') : null,
-                last_login__lt: vm.lastLogindateObj.last_login__lt ? Date.parse(vm.lastLogindateObj.last_login__lt +'T00:00:00') : null,
-                kyc__status: $scope.filtersObj.kycFilter ? ($scope.applyFiltersObj.kycFilter.selectedKycFilter == 'Status' ? null : $scope.applyFiltersObj.kycFilter.selectedKycFilter.toLowerCase()): null,
-                currency__code: $scope.filtersObj.currencyFilter ? ($scope.applyFiltersObj.currencyFilter.selectedCurrency.code ? ($scope.applyFiltersObj.currencyFilter.selectedCurrency.code == 'Currency' ? null : $scope.applyFiltersObj.currencyFilter.selectedCurrency.code) : null): null,
-                archived: $scope.filtersObj.archivedFilter ? ($scope.applyFiltersObj.archivedFilter.selectedArchivedFilter == 'True' ?  true : false) : null
-            };
-
             return serializeFiltersService.objectFilters(searchObj);
         };
 
-        $scope.getAllUsers = function(applyFilter){
-            $scope.usersStateMessage = '';
-            $scope.loadingUsers = true;
-            $scope.showingFilters = false;
+        vm.saveUsersTableFiltersToLocalStorage = function (filterObjects) {
+            localStorageManagement.setValue(vm.savedUserTableFilters,JSON.stringify(filterObjects));
+        };
 
-            if(applyFilter){
-                $scope.usersPagination.pageNo = 1;
-            }
-
-            if($scope.users.length > 0 ){
-                $scope.users.length = 0;
-            }
-
-            var usersFiltersObj = vm.getUsersFiltersObj();
-
+        vm.getAllUsersApiCall = function (usersFiltersObj) {
             Rehive.admin.users.get({filters: usersFiltersObj}).then(function (res) {
                 $scope.usersData = res;
                 vm.formatUsersArray(res.results);
                 if($scope.users.length == 0){
                     $scope.usersStateMessage = 'No users have been found';
+                    $scope.$apply();
                     return;
                 }
                 $scope.usersStateMessage = '';
@@ -551,17 +565,59 @@
                 $scope.$apply();
             });
         };
-        $scope.getAllUsers();
+        $scope.getAllUsers = function(applyFilter){
+            $scope.usersStateMessage = '';
+            $scope.loadingUsers = true;
+            $scope.showingFilters = false;
+            var usersFiltersObj = {};
+
+            if(applyFilter){
+                $scope.applyFiltersObj.paginationFilter.pageNo = 1;
+            }
+
+            if($scope.users.length > 0 ){
+                $scope.users.length = 0;
+            }
+
+            usersFiltersObj = vm.getUsersFiltersObj();
+            vm.getAllUsersApiCall(usersFiltersObj);
+
+        };
+
+        vm.initializeGroupColor = function(userGroupName){
+            if(userGroupName === null){return "#022b36";}
+            var idx = -1;
+            vm.savedGroupColors = localStorageManagement.getValue(vm.companyColors) ? JSON.parse(localStorageManagement.getValue(vm.companyColors)) : [];
+            vm.savedGroupColors.forEach(function(color){
+                console.log(color.group, userGroupName);
+                if(color.group == userGroupName){
+                    idx = vm.savedGroupColors.indexOf(color);
+                    return;
+                }
+            });
+            console.log(idx);
+            return (idx === -1) ? "#022b36" : vm.savedGroupColors[idx].color;
+        };
 
         vm.formatUsersArray = function (usersArray) {
+            var idx = -1;
             usersArray.forEach(function (userObj) {
+                var firstName = userObj.first_name, groupName = (userObj.groups.length > 0) ? ((userObj.groups[0].name == 'service') ? "extension" : userObj.groups[0].name) : null;
+                if(groupName === "extension"){
+                    var arr = firstName.split(' ');
+                    firstName = "";
+                    for(var i = 0; i < arr.length - 1; ++i){
+                        firstName += arr[i] + ' ';
+                    }
+                    firstName += "Extension";
+                }
                 $scope.users.push({
                     id: userObj.id,
-                    first_name: userObj.first_name,
+                    first_name: firstName,
                     last_name: userObj.last_name,
                     email: userObj.email,
                     mobile: userObj.mobile,
-                    groupName: userObj.groups.length > 0 ? userObj.groups[0].name: null,
+                    groupName: groupName,
                     created: userObj.created ? $filter("date")(userObj.created,'mediumDate') + ' ' + $filter("date")(userObj.created,'shortTime'): null,
                     updated: userObj.updated ? $filter("date")(userObj.updated,'mediumDate') + ' ' + $filter("date")(userObj.updated,'shortTime'): null,
                     archived: $filter("capitalizeWord")(userObj.archived),
@@ -574,11 +630,17 @@
                     language: userObj.language,
                     timezone: userObj.timezone,
                     birth_date: userObj.birth_date,
-                    username: userObj.username
+                    username: userObj.username,
+                    createdJSTime: userObj.created
                 });
+                ++idx;
+                if(groupName != "admin" && groupName != "extension"){
+                    $scope.users[idx].group_highlight_color = vm.initializeGroupColor(groupName);
+                }
             });
 
             $scope.loadingUsers = false;
+            $scope.$apply();
         };
 
         $scope.openAddUserModal = function (page, size) {

@@ -5,8 +5,9 @@
         .controller('RegisterCtrl', RegisterCtrl);
 
     /** @ngInject */
-    function RegisterCtrl($rootScope,Rehive,$scope,errorHandler,$location,localStorageManagement) {
+    function RegisterCtrl($rootScope,Rehive,$scope,errorHandler,$location,localStorageManagement, identifySearchInput, $intercom) {
 
+        $intercom.shutdown();
         //var vm = this;
         $scope.path = $location.path();
         $scope.registerData = {
@@ -17,6 +18,8 @@
             privacy_policy: false
         };
         $scope.showPassword1 = false;
+        $scope.invalidEmailData = false;
+        $scope.invalidCompanyIdData = false;
 
         $scope.togglePasswordVisibility1 = function () {
             $scope.showPassword1 = !$scope.showPassword1;
@@ -33,6 +36,13 @@
                 localStorageManagement.setValue('TOKEN','Token ' + token);
                 $location.path('/verification');
                 $scope.$apply();
+                $intercom.boot({
+                    email: res.email,
+                    name: res.first_name + ' ' + res.last_name,
+                    user_id: res.id,
+                    created_at: parseInt(res.created)/1000,
+                    company_id: res.company
+                });
             }, function (error) {
                 $rootScope.$pageFinishedLoading = true;
                 errorHandler.evaluateErrors(error);
@@ -41,9 +51,18 @@
             });
         };
 
+        $scope.validateCompanyEmail = function(){
+            $scope.invalidEmailData =  !identifySearchInput.isEmail($scope.registerData.email);
+        };
+
+        $scope.validateCompanyId = function(){
+            $scope.invalidCompanyIdData =  !identifySearchInput.isCompanyId($scope.registerData.company);
+        };
+
         $scope.fixformat = function(){
             $scope.registerData.company = $scope.registerData.company.toLowerCase();
             $scope.registerData.company = $scope.registerData.company.replace(/ /g, '_');
+            $scope.registerData.company = $scope.registerData.company.trim();
         };
 
     }

@@ -30,6 +30,11 @@
                 Rehive.admin.accounts.currencies.limits.get(vm.reference, vm.currencyCode).then(function (res) {
                     $scope.loadingAccountCurrencyLimits = false;
                     $scope.accountCurrencyLimitsList = res;
+                    $scope.accountCurrencyLimitsList.forEach(function(limit){
+                        if(limit.type === "Maximum"){
+                            limit.type = "Maximum per transaction";
+                        }
+                    });
                     $scope.$apply();
                 }, function (error) {
                     $scope.loadingAccountCurrencyLimits = false;
@@ -40,6 +45,7 @@
             }
         };
         $scope.getAccountCurrencyLimits();
+
 
         $scope.openAddAccountCurrencyLimitModal = function (page, size) {
             vm.theModal = $uibModal.open({

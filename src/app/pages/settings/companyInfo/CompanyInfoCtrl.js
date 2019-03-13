@@ -5,13 +5,13 @@
         .controller('CompanyInfoCtrl', CompanyInfoCtrl);
 
     /** @ngInject */
-    function CompanyInfoCtrl($scope,Rehive,$rootScope,Upload,environmentConfig,
-                             $timeout,toastr,localStorageManagement,errorHandler,_) {
+    function CompanyInfoCtrl($scope,Rehive,$rootScope,Upload,environmentConfig,serializeFiltersService,
+                             $timeout,toastr,localStorageManagement,errorHandler) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
-        $scope.companyImageUrl = null;
         $scope.companyImageUrl = "/assets/img/app/placeholders/hex_grey.svg";
+        $scope.companyIconUrl = "/assets/img/app/placeholders/hex_grey.svg";
         $scope.updatingLogo = false;
         $scope.loadingCompanyInfo = true;
         $scope.company = {
@@ -25,7 +25,8 @@
         };
         $scope.statusOptions = ['Pending','Complete'];
         $scope.imageFile = {
-            file: {}
+            file: {},
+            iconFile: {}
         };
         $scope.editorEnabled= false;
 
@@ -44,15 +45,19 @@
         };
 
         $scope.upload = function () {
-            if(!$scope.imageFile.file.name){
+            if(!$scope.imageFile.file.name && !$scope.imageFile.iconFile.name){
                 return;
             }
             $scope.updatingLogo = true;
+
+            var uploadDataObj = {
+                logo: $scope.imageFile.file.name ? $scope.imageFile.file: null,
+                icon: $scope.imageFile.iconFile.name ? $scope.imageFile.iconFile: null
+            };
+
             Upload.upload({
                 url: environmentConfig.API +'/admin/company/',
-                data: {
-                    logo: $scope.imageFile.file
-                },
+                data: serializeFiltersService.objectFilters(uploadDataObj),
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': vm.token},
@@ -77,13 +82,17 @@
                 $scope.loadingCompanyInfo = true;
                 Rehive.admin.company.get().then(function (res) {
                     $scope.loadingCompanyInfo = false;
-                    if(Object.keys(res.config).length == 0){
-                        res.config = '';
-                    } else {
-                        res.config = JSON.stringify(res.config,null,4);
+                    console.log(res);
+                    if(res.config){
+                        if(Object.keys(res.config).length == 0){
+                            res.config = '';
+                        } else {
+                            res.config = JSON.stringify(res.config,null,4);
+                        }
                     }
                     $scope.company.details = res;
                     $scope.companyImageUrl = res.logo;
+                    $scope.companyIconUrl = res.icon;
                     $scope.enableEditor();
                     $scope.$apply();
                 }, function (error) {
@@ -160,7 +169,7 @@
             } else if(vm.updatedCompanyInfo.config ===''){
                 vm.updatedCompanyInfo.config = {};
             }
-
+            console.log(vm.updatedCompanyInfo);
             Rehive.admin.company.update(vm.updatedCompanyInfo).then(function (res) {
                 vm.updatedCompanyInfo = {};
                 $scope.company.details = {};
@@ -176,6 +185,5 @@
                 $scope.$apply();
             });
         };
-
     }
 })();

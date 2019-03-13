@@ -1,0 +1,106 @@
+<div ng-hide="editingProduct">
+    <div class="panel">
+        <div class="panel-heading">
+            <span class="user-details-panel-title">Edit product</span>
+        </div>
+        <div class="panel-body">
+            <form name="addProductForm" class="custom-form" novalidate>
+                <div class="form-group">
+                    <label>Product name <span class="required-icon">*</span></label>
+                    <input type="text" ng-model="editProductObj.name" class="form-control"
+                           ng-change="productChanged('name')"
+                           placeholder="Enter product name" required>
+                </div>
+                <div class="form-group">
+                    <label>Product description </label>
+                    <textarea rows="4" type="text" ng-model="editProductObj.description"
+                              ng-change="productChanged('description')"
+                              class="form-control"  placeholder='Enter product description' required></textarea>
+                </div>
+                <div class="form-group setup-groups-tooltip-div">
+                    <label>Quantity
+                        &nbsp;<i uib-tooltip-html="'The amount of stock held for this product / item.'"
+                                 class="ion-information-circled setup-groups-tooltip"></i></label>
+                    <input type="text" ng-model="editProductObj.quantity" class="form-control"
+                           ng-change="productChanged('quantity')"
+                           placeholder="Enter quantity" required>
+                </div>
+                <div class="form-group setup-groups-tooltip-div">
+                    <label>Product type
+                        &nbsp;<i uib-tooltip-html="'A categorical tag to label products / items of the same type.'"
+                                 class="ion-information-circled setup-groups-tooltip"></i></label>
+                    <input type="text" ng-model="editProductObj.type" class="form-control"
+                           ng-change="productChanged('type')"
+                           placeholder="Enter product type" required>
+                </div>
+                <div class="form-group setup-groups-tooltip-div">
+                    <label>Code (barcode)
+                        &nbsp;<i uib-tooltip-html="'A barcode or unique code so that the product / item can be referenced from systems outside the Rehive environment.'"
+                                 class="ion-information-circled setup-groups-tooltip"></i></label>
+                    <input type="text" ng-model="editProductObj.code" class="form-control"
+                           ng-change="productChanged('code')"
+                           placeholder="Enter code" required>
+                </div>
+                <div class="form-group setup-groups-tooltip-div">
+                    <label><strong class="strong-headers">Prices</strong>
+                        <i class="fa fa-plus-square-o product-prices-add-icon left-margin-12"
+                           ng-hide="editProductObj.prices.length > 0"
+                           ng-class="{
+                           'product-prices-add-icon-near-title': editProductObj.prices.length == 0}"
+                           ng-click="addEditPriceRow()"></i>
+                    </label>
+                    <div ng-show="newProductParams.prices.length > 0" class="row product-service-headers">
+                        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                            <label>Currency</label>
+                        </div>
+                        <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">
+                            <label>Amount</label>
+                        </div>
+                    </div>
+                    <div class="row divider" ng-repeat="price in editProductObj.prices">
+                        <div class="col-lg-2 col-md-2 col-sm-5 col-xs-5">
+                            <div class="reward-multi-select">
+                                <select chosen
+                                        data-placeholder-text-single="'Choose a currency'"
+                                        width="40"
+                                        ng-model="price.currency"
+                                        ng-disabled="price.disable"
+                                        ng-options="currency.code for currency in currencyOptions | excludeSelectedCurrencies: price.currency: editProductObj.prices | orderBy: 'code'">
+                                    <option value=""></option>
+                                </select>
+                                <!--allow-single-deselect="true"-->
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-3 col-sm-4 col-xs-4 no-right-padding">
+                            <input type="text" ng-model="price.amount" class="form-control"
+                                   ng-change="priceChanged(price)"
+                                   placeholder="Enter amount">
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-3 product-buttons-container">
+                            <i class="fa fa-minus-square-o product-prices-remove-icon"
+                               ng-click="removePriceRow(price)"></i>
+                            <i ng-show="$last" class="fa fa-plus-square-o product-prices-last-child" ng-click="addEditPriceRow()"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group divider-20 setup-groups-tooltip-div">
+                    <label>Enabled</label>
+                    <br>
+                    <input class="custom-rehive-checkbox" ng-model="editProductObj.enabled"
+                           ng-change="productChanged('enabled')"
+                           type="checkbox">
+                </div>
+                <div class="form-group">
+                    <button  ng-click="editProduct(editProductObj)"
+                             class="btn btn-primary dashboard-btn pull-right">Save</button>
+                    <button ng-click="backToProductList()" class="btn btn-default dashboard-btn pull-right margin-right-10">Back</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div ng-show="editingProduct" class="row">
+    <div ba-panel class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <loading-image></loading-image>
+    </div>
+</div>

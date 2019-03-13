@@ -51,6 +51,9 @@
                         });
                     });
                     $scope.serviceListOptions =  res.data.data.results;
+                    for(var i = 0; i < $scope.serviceListOptions; ++i){
+                        $scope.serviceListOptions[i].name = $scope.serviceListOptions[i].name.replace("Service", "Extension");
+                    }
                     $timeout(function () {
                         var wrappedResult = angular.element('.chosen-search-input');
                         wrappedResult.focus();
@@ -66,7 +69,8 @@
         $scope.addServicePrompt = function() {
             $ngConfirm({
                 title: 'Add service',
-                contentUrl: 'app/pages/services/addServiceModal/addServicePrompt.html',
+                // contentUrl: 'app/pages/services/addServiceModal/addServicePrompt.html',
+                content: 'Are you sure about adding this service ?',
                 animationBounce: 1,
                 animationSpeed: 100,
                 scope: $scope,
@@ -80,11 +84,12 @@
                         keys: ['enter'], // will trigger when enter is pressed
                         btnClass: 'btn-primary dashboard-btn',
                         action: function(scope){
-                            if(!scope.password){
-                                toastr.error('Please enter your password');
-                                return;
-                            }
-                            scope.addServices(scope.password);
+                            // if(!scope.password){
+                            //     toastr.error('Please enter your password');
+                            //     return;
+                            // }
+                            // scope.addServices(scope.password);
+                            scope.addServices();
                         }
                     }
                 }
@@ -95,7 +100,8 @@
             $scope.loadingServices = true;
             if($scope.selectedServices.length > 0) {
                 $scope.selectedServices.forEach(function (service,index,array) {
-                    $http.put(environmentConfig.API + '/admin/services/' + service.id + '/',{password: password, terms_and_conditions: true, active: true}, {
+                    // $http.put(environmentConfig.API + '/admin/services/' + service.id + '/',{password: password, terms_and_conditions: true, active: true}, {
+                    $http.put(environmentConfig.API + '/admin/services/' + service.id + '/',{terms_and_conditions: true, active: true}, {
                         headers: {
                             'Content-Type': 'application/json',
                             'Authorization': vm.token
@@ -105,7 +111,7 @@
                             if(index == (array.length - 1)){
                                 $timeout(function () {
                                     $scope.loadingServices = false;
-                                    toastr.success('Services have been successfully added');
+                                    toastr.success('Extensions have been successfully added');
                                     $uibModalInstance.close(true);
                                 },600);
                             }

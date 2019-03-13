@@ -6,11 +6,12 @@
 
     /** @ngInject */
     function BitcoinHotwalletCtrl($scope,localStorageManagement,currenciesList,_,$http,errorHandler,toastr,sharedResources,
-                                  $uibModal,currencyModifiers,serializeFiltersService,environmentConfig) {
+                                  $uibModal,currencyModifiers,serializeFiltersService,environmentConfig,multiOptionsFilterService) {
         $scope.bitcoinAccountSettingView = '';
 
         var vm = this;
-        vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
+        // vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
+        vm.serviceUrl = "https://bitcoin-testnet.services.rehive.io/api/1/";
         vm.token = localStorageManagement.getValue('TOKEN');
         $scope.companyDateFormatString = localStorageManagement.getValue('DATE_FORMAT');
         $scope.bitcoinCurrency = currenciesList.find(function (element) {
@@ -197,92 +198,22 @@
         };
 
         vm.getDateFiltersHotwalletObj = function () {
-            var dateObjHotwallet = {
-                created__lt: null,
-                created__gt: null
+            var evaluatedDateObj = multiOptionsFilterService.evaluatedDates($scope.applyFiltersHotwalletObj.dateFilter);
+
+            return {
+                created__lt: evaluatedDateObj.date__lt,
+                created__gt: evaluatedDateObj.date__gt
             };
-
-            switch($scope.applyFiltersHotwalletObj.dateFilter.selectedDateOption) {
-                case 'Is in the last':
-                    if($scope.applyFiltersHotwalletObj.dateFilter.selectedDayIntervalOption == 'days'){
-                        dateObjHotwallet.created__lt = moment().add(1,'days').format('YYYY-MM-DD');
-                        dateObjHotwallet.created__gt = moment().subtract($scope.applyFiltersHotwalletObj.dateFilter.dayInterval,'days').format('YYYY-MM-DD');
-                    } else {
-                        dateObjHotwallet.created__lt = moment().add(1,'days').format('YYYY-MM-DD');
-                        dateObjHotwallet.created__gt = moment().subtract($scope.applyFiltersHotwalletObj.dateFilter.dayInterval,'months').format('YYYY-MM-DD');
-                    }
-
-                    break;
-                case 'In between':
-                    dateObjHotwallet.created__lt = moment(new Date($scope.applyFiltersHotwalletObj.dateFilter.dateTo)).add(1,'days').format('YYYY-MM-DD');
-                    dateObjHotwallet.created__gt = moment(new Date($scope.applyFiltersHotwalletObj.dateFilter.dateFrom)).format('YYYY-MM-DD');
-
-                    break;
-                case 'Is equal to':
-                    dateObjHotwallet.created__lt = moment(new Date($scope.applyFiltersHotwalletObj.dateFilter.dateEqualTo)).add(1,'days').format('YYYY-MM-DD');
-                    dateObjHotwallet.created__gt = moment(new Date($scope.applyFiltersHotwalletObj.dateFilter.dateEqualTo)).format('YYYY-MM-DD');
-
-                    break;
-                case 'Is after':
-                    dateObjHotwallet.created__lt = null;
-                    dateObjHotwallet.created__gt = moment(new Date($scope.applyFiltersHotwalletObj.dateFilter.dateFrom)).add(1,'days').format('YYYY-MM-DD');
-                    break;
-                case 'Is before':
-                    dateObjHotwallet.created__lt = moment(new Date($scope.applyFiltersHotwalletObj.dateFilter.dateTo)).format('YYYY-MM-DD');
-                    dateObjHotwallet.created__gt = null;
-                    break;
-                default:
-                    break;
-            }
-
-            return dateObjHotwallet;
         };
 
         vm.getAmountFiltersHotwallet = function () {
-            var amountObj = {
-                amount: null,
-                amount__lt: null,
-                amount__gt: null
+            var evaluatedAmountObj = multiOptionsFilterService.evaluatedAmounts($scope.applyFiltersHotwalletObj.amountFilter);
+
+            return {
+                amount: evaluatedAmountObj.amount,
+                amount__lt: evaluatedAmountObj.amount__lt,
+                amount__gt: evaluatedAmountObj.amount__gt
             };
-
-            switch($scope.applyFiltersHotwalletObj.amountFilter.selectedAmountOption) {
-                case 'Is equal to':
-                    amountObj = {
-                        amount: $scope.applyFiltersHotwalletObj.amountFilter.amount,
-                        amount__lt: null,
-                        amount__gt: null
-                    };
-
-                    break;
-                case 'Is between':
-                    amountObj = {
-                        amount: null,
-                        amount__lt: $scope.applyFiltersHotwalletObj.amountFilter.amount__lt,
-                        amount__gt: $scope.applyFiltersHotwalletObj.amountFilter.amount__gt
-                    };
-
-                    break;
-                case 'Is greater than':
-                    amountObj = {
-                        amount: null,
-                        amount__lt: null,
-                        amount__gt: $scope.applyFiltersHotwalletObj.amountFilter.amount__gt
-                    };
-
-                    break;
-                case 'Is less than':
-                    amountObj = {
-                        amount: null,
-                        amount__lt: $scope.applyFiltersHotwalletObj.amountFilter.amount__lt,
-                        amount__gt: null
-                    };
-
-                    break;
-                default:
-                    break;
-            }
-
-            return amountObj;
         };
 
         vm.getTransactionHotwalletUrl = function(){

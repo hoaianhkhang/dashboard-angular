@@ -1,3 +1,11 @@
+.selected-sorting-caret {
+  color: black !important;
+}
+
+.edit-transaction-divider {
+  margin-bottom: 20px !important;
+}
+
 .metadata-column-delete{
   display: inline-block;
   position: relative;
@@ -18,18 +26,6 @@
 .new-transaction-close-btn{
   position: relative;
   top: -6px;
-}
-
-.transactions-export-output-csv{
-  position: absolute;
-  top: 53px;
-  left: 46px;
-}
-
-.transactions-export-output-json{
-  position: absolute;
-  top: 53px;
-  left: 111px;
 }
 
 .company-setup-tx-type-debit {
@@ -337,32 +333,6 @@
   cursor: pointer;
 }
 
-.transaction-radio-inputs{
-  display: inline-block;
-  & label{
-    display: block;
-  }
-  & .transaction-radio-input-block{
-    display: inline-flex;
-    position: relative;
-    & .transaction-radio-labels1{
-      position: absolute;
-      top: 2px;
-      left: 21px;
-    }
-    & .transaction-radio-labels2{
-      position: absolute;
-      top: 2px;
-      left: 94px;
-    }
-    & .transaction-radio-labels3{
-      position: absolute;
-      top: 2px;
-      left: 167px;
-    }
-  }
-}
-
 .panel-header-transaction-export{
   position: absolute;
   top: 25px;
@@ -403,7 +373,13 @@
 }
 
 .transactions-filter-btn{
-  width: 76px;
+  border: 2px solid $primary!important;
+  width: 82px;
+}
+
+.transactions-filter-btn-large-filters{
+  border: 2px solid $primary!important;
+  width: 92px;
 }
 
 .transactions-btn{
@@ -415,6 +391,12 @@
   top: -4px;
 }
 
+.service-h4{
+  font-size: 1.22em;
+  font-weight: lighter;
+  margin-top: 10px;
+  margin-bottom: 0px;
+}
 .wider-table-filters{
   width: 590px!important;
 }
@@ -443,21 +425,21 @@
       height: 22px;
       width: 120px;
       &.form-control{
-        padding: 0 4px !important;
+        padding: 1px 4px !important;
       }
     }
     & select.currencies-unit-filter{
       height: 22px;
       width: 350px;
       &.form-control{
-        padding: 0 4px !important;
+        padding: 1px 4px !important;
       }
     }
     & select.user-transactions-accounts-select{
       height: 22px;
       width: 250px;
       &.form-control{
-        padding: 0 4px !important;
+        padding: 1px 4px !important;
       }
     }
     & input{

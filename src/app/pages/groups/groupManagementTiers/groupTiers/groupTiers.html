@@ -9,13 +9,13 @@
             <table ng-show="tiersList.length > 0" class="table">
                 <tr class="user-switches-table-header divider">
                     <th class="rehive-table-row-first-child">Tier</th>
-                    <th>Name</th>
+                    <!--<th>Name</th>-->
                     <th>Description</th>
                     <th></th>
                 </tr>
                 <tr ng-repeat="tier in tiersList | orderBy: 'created'">
                     <td ng-class="{'archived-text': tier.archived}" class="table-row-center transactions-list-element rehive-table-row-first-child" ng-bind="tier.level"></td>
-                    <td ng-class="{'archived-text': tier.archived}" class="table-row-center transactions-list-element" title="{{tier.name}}" ng-bind="tier.name"></td>
+                    <!--<td ng-class="{'archived-text': tier.archived}" class="table-row-center transactions-list-element" title="{{tier.name}}" ng-bind="tier.name"></td>-->
                     <td ng-class="{'archived-text': tier.archived}" class="table-row-center transactions-list-element" title="{{tier.description}}" ng-bind="tier.description || 'None'"></td>
                     <td class="rehive-table-row-last-child pull-right">
                         <a ng-click="openDeleteTierModal('app/pages/groups/groupManagementTiers/groupTiers/deleteGroupTierModal/deleteGroupTierModal.html','md',tier)"

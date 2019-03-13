@@ -11,26 +11,29 @@
                 <tr>
                     <th class="rehive-table-row-first-child">From currency</th>
                     <th>To currency</th>
-                    <th>From percentage fee</th>
-                    <th>From value fee</th>
+                    <!--<th>From percentage fee</th>-->
+                    <!--<th>From value fee</th>-->
                     <th>Fixed rate</th>
-                    <th>Rate</th>
+                    <th>Dynamic Rate</th>
                     <th></th>
                 </tr>
                 <tr ng-repeat="rate in ratesList" class="editable-row">
                     <td class="transactions-list-element rehive-table-row-first-child" title="{{rate.from_currency.code}}" ng-bind="rate.from_currency.code"></td>
                     <td class="transactions-list-element" title="{{rate.to_currency.code}}" ng-bind="rate.to_currency.code"></td>
-                    <td class="transactions-list-element" title="{{rate.from_percentage_fee}}" ng-bind="rate.from_percentage_fee ? rate.from_percentage_fee + '%' : 'None'"></td>
-                    <td><div title="{{rate.from_value_fee  | currencyModifiersFilter: rate.from_currency.divisibility}}" class="transactions-list-element">
-                        {{rate.from_currency.symbol}} {{rate.from_value_fee  | currencyModifiersFilter: rate.from_currency.divisibility}}
-                    </div></td>
+                    <!--<td class="transactions-list-element" title="{{rate.from_percentage_fee}}" ng-bind="rate.from_percentage_fee ? rate.from_percentage_fee + '%' : 'None'"></td>-->
+                    <!--<td><div title="{{rate.from_value_fee  | currencyModifiersFilter: rate.from_currency.divisibility}}" class="transactions-list-element">-->
+                        <!--{{rate.from_currency.symbol}} {{rate.from_value_fee  | currencyModifiersFilter: rate.from_currency.divisibility}}-->
+                    <!--</div></td>-->
                     <td><div title="{{rate.fixed_rate}}" ng-bind="rate.fixed_rate" class="transactions-list-element">
                     </div></td>
-                    <td><div title="{{rate.rate}}" ng-bind="rate.rate" class="transactions-list-element">
+                    <!--<td><div title="{{rate.rate}}" ng-bind="rate.rate" class="transactions-list-element">-->
+                    <td><div title="{{rate.dynamic_rate}}" ng-bind="rate.dynamic_rate" class="transactions-list-element">
                     </div></td>
                     <td class="rehive-table-row-last-child">
                         <a ng-click="openDeleteRatesModal('app/pages/services/currencyConversionService/currencyConversionRates/deleteCurrencyConversionRatesModal/deleteCurrencyConversionRatesModal.html','md',rate)"
                            class="pull-right pointer ">Delete</a>
+                        <a ng-click="openEditRatesModal('app/pages/services/currencyConversionService/currencyConversionRates/editCurrencyConversionRatesModal/editCurrencyConversionRatesModal.html','md',rate)"
+                           class="pull-right pointer user-address-edit margin-right-30">Edit</a>
                     </td>
                 </tr>
             </table>

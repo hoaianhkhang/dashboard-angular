@@ -5,11 +5,12 @@
         .controller('StellarTestnetColdstorageCtrl', StellarTestnetColdstorageCtrl);
 
     /** @ngInject */
-    function StellarTestnetColdstorageCtrl($scope,localStorageManagement,errorHandler,$http,$uibModal,cleanObject,
-                                    sharedResources,_,$location,environmentConfig,currencyModifiers,toastr,serializeFiltersService) {
+    function StellarTestnetColdstorageCtrl($scope,localStorageManagement,errorHandler,$http,$uibModal,cleanObject,multiOptionsFilterService,
+                                           sharedResources,_,$location,environmentConfig,currencyModifiers,toastr,serializeFiltersService) {
 
         var vm = this;
-        vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
+        // vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
+        vm.serviceUrl = "https://stellar-testnet.services.rehive.io/api/1/";
         vm.token = localStorageManagement.getValue('TOKEN');
         $scope.companyDateFormatString = localStorageManagement.getValue('DATE_FORMAT');
         $scope.publicAddressesList = [];
@@ -234,92 +235,22 @@
         };
 
         vm.getDateFiltersColdstorageObj = function () {
-            var dateObjColdstorage = {
-                created__lt: null,
-                created__gt: null
+            var evaluatedDateObj = multiOptionsFilterService.evaluatedDates($scope.applyFiltersColdstorageObj.dateFilter);
+
+            return {
+                created__lt: evaluatedDateObj.date__lt,
+                created__gt: evaluatedDateObj.date__gt
             };
-
-            switch($scope.applyFiltersColdstorageObj.dateFilter.selectedDateOption) {
-                case 'Is in the last':
-                    if($scope.applyFiltersColdstorageObj.dateFilter.selectedDayIntervalOption == 'days'){
-                        dateObjColdstorage.created__lt = moment().add(1,'days').format('YYYY-MM-DD');
-                        dateObjColdstorage.created__gt = moment().subtract($scope.applyFiltersColdstorageObj.dateFilter.dayInterval,'days').format('YYYY-MM-DD');
-                    } else {
-                        dateObjColdstorage.created__lt = moment().add(1,'days').format('YYYY-MM-DD');
-                        dateObjColdstorage.created__gt = moment().subtract($scope.applyFiltersColdstorageObj.dateFilter.dayInterval,'months').format('YYYY-MM-DD');
-                    }
-
-                    break;
-                case 'In between':
-                    dateObjColdstorage.created__lt = moment(new Date($scope.applyFiltersColdstorageObj.dateFilter.dateTo)).add(1,'days').format('YYYY-MM-DD');
-                    dateObjColdstorage.created__gt = moment(new Date($scope.applyFiltersColdstorageObj.dateFilter.dateFrom)).format('YYYY-MM-DD');
-
-                    break;
-                case 'Is equal to':
-                    dateObjColdstorage.created__lt = moment(new Date($scope.applyFiltersColdstorageObj.dateFilter.dateEqualTo)).add(1,'days').format('YYYY-MM-DD');
-                    dateObjColdstorage.created__gt = moment(new Date($scope.applyFiltersColdstorageObj.dateFilter.dateEqualTo)).format('YYYY-MM-DD');
-
-                    break;
-                case 'Is after':
-                    dateObjColdstorage.created__lt = null;
-                    dateObjColdstorage.created__gt = moment(new Date($scope.applyFiltersColdstorageObj.dateFilter.dateFrom)).add(1,'days').format('YYYY-MM-DD');
-                    break;
-                case 'Is before':
-                    dateObjColdstorage.created__lt = moment(new Date($scope.applyFiltersColdstorageObj.dateFilter.dateTo)).format('YYYY-MM-DD');
-                    dateObjColdstorage.created__gt = null;
-                    break;
-                default:
-                    break;
-            }
-
-            return dateObjColdstorage;
         };
 
         vm.getAmountFiltersColdstorage = function () {
-            var amountObj = {
-                amount: null,
-                amount__lt: null,
-                amount__gt: null
+            var evaluatedAmountObj = multiOptionsFilterService.evaluatedAmounts($scope.applyFiltersColdstorageObj.amountFilter);
+
+            return {
+                amount: evaluatedAmountObj.amount,
+                amount__lt: evaluatedAmountObj.amount__lt,
+                amount__gt: evaluatedAmountObj.amount__gt
             };
-
-            switch($scope.applyFiltersColdstorageObj.amountFilter.selectedAmountOption) {
-                case 'Is equal to':
-                    amountObj = {
-                        amount: $scope.applyFiltersColdstorageObj.amountFilter.amount,
-                        amount__lt: null,
-                        amount__gt: null
-                    };
-
-                    break;
-                case 'Is between':
-                    amountObj = {
-                        amount: null,
-                        amount__lt: $scope.applyFiltersColdstorageObj.amountFilter.amount__lt,
-                        amount__gt: $scope.applyFiltersColdstorageObj.amountFilter.amount__gt
-                    };
-
-                    break;
-                case 'Is greater than':
-                    amountObj = {
-                        amount: null,
-                        amount__lt: null,
-                        amount__gt: $scope.applyFiltersColdstorageObj.amountFilter.amount__gt
-                    };
-
-                    break;
-                case 'Is less than':
-                    amountObj = {
-                        amount: null,
-                        amount__lt: $scope.applyFiltersColdstorageObj.amountFilter.amount__lt,
-                        amount__gt: null
-                    };
-
-                    break;
-                default:
-                    break;
-            }
-
-            return amountObj;
         };
 
         vm.getTransactionColdstorageUrl = function(){

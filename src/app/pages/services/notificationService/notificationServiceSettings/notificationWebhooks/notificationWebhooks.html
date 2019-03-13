@@ -3,16 +3,13 @@
         <span class="user-details-panel-title">Webhook shortcuts</span>
     </div>
     <div class="panel-body">
-        <p>Notifications are triggered by Rehive webhooks. In order to correctly trigger a notification you should ensure you have at least one webhook of the same
-            event type as the notification event. All notification webhooks should be configured with the company secret
-            because it ensures secure communication between Rehive and the service.</p>
-
-        <p class="text-muted">Note: The "secret" field will automatically get filled with the company secret by using the below webhook shortcut buttons
-            or you can manually copy the company secret and paste it in the webhook forms ensuring secure
-            communication between Rehive Platform and the service.</p>
+        <!--<p>The Notification Service uses Rehive webhooks to send event data. When creating notifications these are automatically handled by the service.-->
+        <p>The Notification Extension uses Rehive webhooks to send event data. When creating notifications these are automatically handled by the extension.
+            If you would like to see a list of webhooks click the button below.
+            <strong>Warning: deleting or editing your webhooks may cause your notifications to break.</strong></p>
 
         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 col-lg-offset-3 col-md-offset-3 col-sm-offset-3 col-xs-offset-3 rehive-webhook-div-left">
-            <button ng-click="goToGeneralWebhooks(company.secret)" class="btn notification-webhooks-buttons btn-primary btn-block">Webhooks</button>
+            <button ng-click="goToGeneralWebhooks(company.secret)" class="btn notification-webhooks-buttons btn-primary btn-block">Go to notifications webhooks</button>
         </div>
     </div>
 </div>

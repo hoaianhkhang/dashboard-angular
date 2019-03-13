@@ -5,8 +5,11 @@
         .controller('EthereumServiceAccountsCtrl', EthereumServiceAccountsCtrl);
 
     /** @ngInject */
-    function EthereumServiceAccountsCtrl($scope) {
+    function EthereumServiceAccountsCtrl($rootScope, $scope) {
+        // $rootScope.dashboardTitle = 'Ethereum service | Rehive';
+        $rootScope.dashboardTitle = 'Ethereum extension | Rehive';
         $scope.ethereumAccountSettingView = 'hotwallet';
+
 
         $scope.goToEthereumAccountSetting = function (setting) {
             $scope.ethereumAccountSettingView = setting;

@@ -10,10 +10,13 @@
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
-        vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
+        // vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
+        vm.serviceUrl = "https://reward.services.rehive.io/api/";
         $scope.companyDateFormatString = localStorageManagement.getValue('DATE_FORMAT');
         $scope.currencyOptions = [];
         $scope.addingCampaign =  false;
+        $scope.campaignUserEmailForAccount = '';
+        $scope.campaignUserAccounts = [];
         $scope.newCampaignParams = {
             name: '',
             description: '',
@@ -28,9 +31,9 @@
             status: 'active',
             max_per_user: null,
             event: '',
-            visible: false,
+            visible: true,
             request: false,
-            groups: []
+            // groups: []
         };
         $scope.amountTypeOptions = ['Fixed' , 'Percentage', 'Both'];
 
@@ -134,7 +137,7 @@
                 visible: newCampaignParams.visible,
                 request: newCampaignParams.request,
                 event: newCampaignParams.event,
-                groups: (_.pluck(newCampaignParams.groups,'text')).join(),
+                // groups: (_.pluck(newCampaignParams.groups,'text')).join(),
                 users: (_.pluck(newCampaignParams.users,'text'))
             };
 
@@ -178,7 +181,8 @@
                 }).then(function (res) {
                     if (res.status === 201 || res.status === 200) {
                         toastr.success('Campaign added successfully');
-                        $location.path('/services/rewards/campaigns');
+                        // $location.path('/services/rewards/campaigns');
+                        $location.path('/extensions/rewards/campaigns');
                     }
                 }).catch(function (error) {
                     $scope.addingCampaign =  false;
@@ -188,10 +192,28 @@
             }
         };
 
-        $scope.goToCampaignListView = function () {
-            $location.path('/services/rewards/campaigns');
+        $scope.showAccountList = false;
+        $scope.onSelect = function($item, $model, $label){
+            $scope.campaignUserAccounts = [];
+            $scope.accountOptions.forEach(function(account){
+                if(account.user.email == $model){
+                    $scope.campaignUserAccounts.push(account);
+                }
+            });
+            if($scope.campaignUserAccounts.length > 0){
+                $scope.showAccountList = true;
+                $scope.newCampaignParams.account = $scope.campaignUserAccounts[0];
+            }
         };
 
+        $scope.emailChanging = function(){
+            $scope.showAccountList = false;
+        };
+
+        $scope.goToCampaignListView = function () {
+            // $location.path('/services/rewards/campaigns');
+            $location.path('/extensions/rewards/campaigns');
+        };
 
     }
 })();

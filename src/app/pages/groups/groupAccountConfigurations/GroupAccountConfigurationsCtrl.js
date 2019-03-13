@@ -10,7 +10,7 @@
 
         var vm = this;
         vm.token = localStorageManagement.getValue('token');
-        $scope.groupName = $stateParams.groupName;
+        $scope.groupName = ($stateParams.groupName == 'service') ? 'extension' : $stateParams.groupName;
         vm.updatedGroup = {};
         $scope.loadingGroup = true;
         vm.location = $location.path();
@@ -23,9 +23,10 @@
         };
 
         $scope.getGroup = function () {
+            var groupName = ($scope.groupName == 'extension') ? 'service' : $scope.groupName;
             if(vm.token) {
                 $scope.loadingGroup = true;
-                Rehive.admin.groups.get({name: $scope.groupName}).then(function (res) {
+                Rehive.admin.groups.get({name: groupName}).then(function (res) {
                     $scope.editGroupObj = res;
                     $scope.editGroupObj.prevName = res.name;
                     $scope.loadingGroup = false;
@@ -75,8 +76,8 @@
                 }
 
                 var groupAccountConfigurationsFilterObj = vm.getGroupAccountConfigurationsFilterObj();
-
-                Rehive.admin.groups.accountConfigurations.get($scope.groupName,{filters: groupAccountConfigurationsFilterObj}).then(function (res)
+                var groupName = ($scope.groupName == 'extension') ? 'service' : $scope.groupName;
+                Rehive.admin.groups.accountConfigurations.get(groupName,{filters: groupAccountConfigurationsFilterObj}).then(function (res)
                 {
                     $scope.loadingGroupAccountConfigurations = false;
                     $scope.groupAccountConfigurationsData = res;
@@ -104,8 +105,8 @@
                 }
 
             }
-
-            Rehive.admin.groups.accountConfigurations.update($scope.groupName,accountConfig.name,updateObj).then(function (res) {
+            var groupName = ($scope.groupName == 'extension') ? 'service' : $scope.groupName;
+            Rehive.admin.groups.accountConfigurations.update(groupName,accountConfig.name,updateObj).then(function (res) {
                 toastr.success('Account configuration updated successfully');
                 if(type == 'primary'){
                     $scope.getGroupAccountConfigurations();
@@ -120,8 +121,9 @@
         };
 
         $scope.restoreAccountConfiguration = function (accountConfig) {
+            var groupName = ($scope.groupName == 'extension') ? 'service' : $scope.groupName;
             $scope.loadingGroupAccountConfigurations = true;
-            Rehive.admin.groups.accountConfigurations.update(vm.groupName,accountConfig.name,{archived : false}).then(function (res) {
+            Rehive.admin.groups.accountConfigurations.update(groupName,accountConfig.name,{archived : false}).then(function (res) {
                 $scope.getGroupAccountConfigurations();
                 $scope.$apply();
             }, function (error) {

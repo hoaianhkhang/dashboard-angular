@@ -9,7 +9,8 @@
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
-        vm.baseUrl = localStorageManagement.getValue('SERVICEURL');
+        // vm.baseUrl = localStorageManagement.getValue('SERVICEURL');
+        vm.baseUrl = "https://conversion.services.rehive.io/api/";
         $scope.addingRate = false;
         $scope.invalidAmount = false;
         $scope.rateParams = {
@@ -38,8 +39,6 @@
             var newRate = {
                 from_currency: $scope.rateParams.fromCurrency.code,
                 to_currency: $scope.rateParams.toCurrency.code,
-                from_percentage_fee: $scope.rateParams.from_percentage_fee || null,
-                from_value_fee: $scope.rateParams.from_value_fee ? currencyModifiers.convertToCents($scope.rateParams.from_value_fee,$scope.rateParams.fromCurrency.divisibility) : null,
                 fixed_rate: $scope.rateParams.fixed_rate ? $scope.rateParams.fixed_rate.toString(): null
             };
 
@@ -67,3 +66,9 @@
 
     }
 })();
+
+/*
+* from_percentage_fee: $scope.rateParams.from_percentage_fee || null,
+  from_value_fee: $scope.rateParams.from_value_fee ? currencyModifiers.convertToCents($scope.rateParams.from_value_fee,$scope.rateParams.fromCurrency.divisibility) : null,
+
+* */

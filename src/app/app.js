@@ -20,10 +20,15 @@ angular.module('BlurAdmin', [
     'ui.codemirror',
     'ng.codemirror.dictionary.hint',
     'BlurAdmin.theme',
-    'BlurAdmin.pages'
+    'BlurAdmin.pages',
+    'ngIntercom',
+    'lrDragNDrop',
+    'smart-table'
 ])
-    .config(function (ngIntlTelInputProvider) {
-    ngIntlTelInputProvider.set({initialCountry: 'us',utilsScript: 'https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/12.0.1/js/utils.js'});
+    .config(function (ngIntlTelInputProvider, $intercomProvider, environmentConfig) {
+        $intercomProvider.appID(environmentConfig.INTERCOM_APPID);
+        $intercomProvider.asyncLoading(true);
+        ngIntlTelInputProvider.set({initialCountry: 'us',utilsScript: 'https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/12.0.1/js/utils.js'});
 })
     .run(function($rootScope,errorHandler,localStorageManagement,toastr,Rehive,
                   environmentConfig,$window,$location,_){
@@ -43,17 +48,14 @@ angular.module('BlurAdmin', [
         //using to check if user is in changing password or setting up 2 factor authentication
         $rootScope.securityConfigured = true;
 
-        var locationChangeStart = $rootScope.$on('$locationChangeStart', function (event,newUrl) {
+        var locationChangeStart = $rootScope.$on('$locationChangeStart', function (event,newUrl,oldUrl) {
 
             $rootScope.shouldBeBlue = '';
 
-            var newUrlArray = newUrl.split('/'),
-                newUrlLastElement = _.last(newUrlArray);
-
-            routeManagement(event,newUrl);
+            routeManagement(event,newUrl,oldUrl);
         });
 
-        function routeManagement(event,newUrl){
+        function routeManagement(event,newUrl,oldUrl){
             var token = localStorageManagement.getValue('token'),
                 newUrlArray = newUrl.split('/'),
                 newUrlLastElement = _.last(newUrlArray);

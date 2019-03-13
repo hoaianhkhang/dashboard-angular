@@ -9,14 +9,16 @@
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
-        vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
-        $rootScope.dashboardTitle = 'Stellar service | Rehive';
+        // vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
+        vm.serviceUrl = "https://stellar.services.rehive.io/api/1/";
+        // $rootScope.dashboardTitle = 'Stellar service | Rehive';
+        $rootScope.dashboardTitle = 'Stellar extension | Rehive';
         $scope.loadingStellarService = false;
         $scope.stellarConfigComplete = false;
 
         $scope.checkStellarServiceInitialState = function () {
             $scope.loadingStellarService = true;
-            $http.get(vm.serviceUrl + 'admin/company/activation-status/', {
+            $http.get(vm.serviceUrl + 'admin/company/', {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': vm.token
@@ -24,17 +26,19 @@
             }).then(function (res) {
                 $scope.loadingStellarService = false;
                 if (res.status === 200) {
-                    var stellarFullySetup = true;
-                    for(var state in res.data.data){
-                        if(res.data.data.hasOwnProperty(state)){
-                            if(!res.data.data[state]){
-                                stellarFullySetup = false;
-                            }
-                        }
-                    }
+                    var stellarFullySetup = res.data.data.has_completed_setup;
+                    // var stellarFullySetup = true;
+                    // for(var state in res.data.data){
+                    //     if(res.data.data.hasOwnProperty(state)){
+                    //         if(!res.data.data[state]){
+                    //             stellarFullySetup = false;
+                    //         }
+                    //     }
+                    // }
 
                     if(stellarFullySetup){
-                        $location.path('/services/stellar/accounts');
+                        // $location.path('/services/stellar/accounts');
+                        $location.path('/extensions/stellar/accounts');
                     } else {
                         $scope.loadingStellarService = false;
                     }
@@ -47,6 +51,26 @@
         };
         $scope.checkStellarServiceInitialState();
 
+        vm.updateSetupCompletionStatus = function(){
+            if(vm.token){
+                $http.patch(vm.serviceUrl + 'admin/company/', {has_completed_setup: true}, {
+                    headers: {
+                        'Content-type': 'application/json',
+                        'Authorization': vm.token
+                    }
+                }).then(function(res){
+                    $scope.loadingStellarService = false;
+                    $scope.stellarConfigComplete = true;
+                    // $location.path('/services/stellar/configuration');
+                    $location.path('/extensions/stellar/configuration');
+                }).catch(function(error){
+                    $scope.loadingStellarTestnetService = false;
+                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.handleErrors(error);
+                });
+            }
+        };
+
         $scope.checkXLMCurrency = function () {
             if(vm.token){
                 $scope.loadingStellarService = true;
@@ -57,12 +81,17 @@
                     }
                 }).then(function (res) {
                     if (res.status === 200) {
+                        // if(res.data.data.results.length == 1){
+                        //     vm.checkUserGroup();
+                        // } else if(res.data.data.results.length == 0){
+                        //     vm.createXLMCurrency();
+                        // }
+                        // $location.path('/services/stellar/configuration');
                         if(res.data.data.results.length == 1){
-                            vm.checkUserGroup();
+                            vm.updateSetupCompletionStatus();
                         } else if(res.data.data.results.length == 0){
                             vm.createXLMCurrency();
                         }
-                        $location.path('/services/stellar/configuration');
                     }
                 }).catch(function (error) {
                     $scope.loadingStellarService = false;
@@ -90,7 +119,8 @@
                     }
                 }).then(function (res) {
                     if (res.status === 201) {
-                        vm.checkUserGroup();
+                        // vm.checkUserGroup();
+                        vm.updateSetupCompletionStatus();
                     }
                 }).catch(function (error) {
                     $scope.loadingStellarService = false;
@@ -99,7 +129,7 @@
                 });
             }
         };
-
+        /**** Uncomment for complete setup -
         vm.checkUserGroup = function () {
             if(vm.token){
                 $scope.loadingStellarService = true;
@@ -231,6 +261,6 @@
                 });
             }
         };
-
+        ****/
     }
 })();

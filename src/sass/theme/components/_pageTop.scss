@@ -1,8 +1,7 @@
 .page-top {
-  background-color: $sidebar-top;
+  background-color: $sidebar;
   position: fixed;
   z-index: 904;
-  box-shadow: 2px 0 3px rgba(0, 0, 0, 0.5);
   height: 70px;
   width: 100%;
   min-width: $resMin;
@@ -11,6 +10,21 @@
   &.scrolled {
     background-color: rgba(60, 141, 188, 1)
   }
+}
+
+.transparent-header-company-setup {
+  background-color: $transparent;
+  position: absolute;
+}
+
+
+.logo-div{
+  position: absolute;
+  height: 70px;
+  background-color: $body-bg;
+  width: 220px;
+  z-index: 0;
+  left: 0;
 }
 
 a.al-logo {
@@ -24,11 +38,6 @@ a.al-logo {
   top: 27px;
   left: 17px;
   outline: none !important;
-
-  &:hover{
-    color:#84c9f1;
-  }
-
   span {
     color: $primary;
   }
@@ -89,7 +98,7 @@ a.collapse-menu-link {
 
   &:hover {
     text-decoration: none;
-    color: #84c9f1;;
+    color: $primary;
   }
 }
 

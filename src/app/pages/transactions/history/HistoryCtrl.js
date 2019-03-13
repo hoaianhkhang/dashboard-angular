@@ -7,7 +7,7 @@
     /** @ngInject */
     function HistoryCtrl($rootScope,Rehive,$scope,localStorageManagement,$uibModal,sharedResources,
                          toastr,currencyModifiers,errorHandler,$state,$window,typeaheadService,$filter,
-                         serializeFiltersService,$location,_) {
+                         serializeFiltersService,$location,_,multiOptionsFilterService) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('token');
@@ -15,6 +15,8 @@
         $scope.companyDateFormatString = localStorageManagement.getValue('DATE_FORMAT');
         vm.savedTransactionTableColumns = vm.companyIdentifier + 'transactionsTable';
         vm.savedTransactionMetadataColumns = vm.companyIdentifier + 'transactionsMetadataColumns';
+        vm.savedTransactionTableFilters = vm.companyIdentifier + 'transactionTableFilters';
+        $scope.initialLoad = true;
         $scope.transactionsMetadataColumns = localStorageManagement.getValue(vm.savedTransactionMetadataColumns) ?
             JSON.parse(localStorageManagement.getValue(vm.savedTransactionMetadataColumns)) : [];
         vm.newTransactionParams = $location.search();
@@ -27,7 +29,8 @@
         $scope.referenceFilterOptions = ['Is equal to','Is between','Is greater than','Is less than'];
         $scope.dateFilterIntervalOptions = ['days','months'];
         $scope.groupFilterOptions = ['Group name','In a group'];
-        $scope.accountFilterOptions = ['Name','Reference'];
+        // $scope.accountFilterOptions = ['Name','Reference'];
+        $scope.accountFilterOptions = ['Reference'];
         $scope.visibleColumnsArray = [];
         $scope.visibleColumnsSelectionChanged = false;
         $scope.filtersCount = 0;
@@ -61,31 +64,31 @@
         //     }
 
         $scope.initializeHeaderCol = function () {
-            var headerCols = [
-                {colName: 'User',fieldName: 'user',visible: true},
-                {colName: 'Recipient',fieldName: 'recipient',visible: true},
-                {colName: 'Type',fieldName: 'tx_type',visible: true},
-                {colName: 'Subtype',fieldName: 'subtype',visible: true},
-                {colName: 'Currency',fieldName: 'currencyCode',visible: true},
-                {colName: 'Amount',fieldName: 'amount',visible: true},
-                {colName: 'Fee',fieldName: 'fee',visible: true},
-                {colName: 'Status',fieldName: 'status',visible: true},
-                {colName: 'Id',fieldName: 'id',visible: true},
-                {colName: 'Date',fieldName: 'createdDate',visible: true},
-                {colName: 'Total amount',fieldName: 'totalAmount',visible: false},
-                {colName: 'Balance',fieldName: 'balance',visible: false},
-                {colName: 'Account',fieldName: 'account',visible: false},
-                {colName: 'Username',fieldName: 'username',visible: false},
-                {colName: 'User id',fieldName: 'userId',visible: false},
-                {colName: 'Updated',fieldName: 'updatedDate',visible: false},
-                {colName: 'Mobile',fieldName: 'mobile',visible: false},
-                {colName: 'Destination tx id',fieldName: 'destination_tx_id',visible: false},
-                {colName: 'Source tx id',fieldName: 'source_tx_id',visible: false},
-                {colName: 'Label',fieldName: 'label',visible: false},
-                {colName: 'Reference',fieldName: 'reference',visible: false},
-                {colName: 'Note',fieldName: 'note',visible: false},
-                {colName: 'Metadata',fieldName: 'metadata',visible: false}
-            ];
+            var headerCols = localStorageManagement.getValue(vm.savedTransactionTableColumns) ? JSON.parse(localStorageManagement.getValue(vm.savedTransactionTableColumns)) : [
+                    {colName: 'User',fieldName: 'user',visible: true},
+                    {colName: 'Recipient',fieldName: 'recipient',visible: true},
+                    {colName: 'Type',fieldName: 'tx_type',visible: true},
+                    {colName: 'Subtype',fieldName: 'subtype',visible: true},
+                    {colName: 'Currency',fieldName: 'currencyCode',visible: true},
+                    {colName: 'Amount',fieldName: 'amount',visible: true},
+                    {colName: 'Fee',fieldName: 'fee',visible: true},
+                    {colName: 'Status',fieldName: 'status',visible: true},
+                    {colName: 'Id',fieldName: 'id',visible: true},
+                    {colName: 'Date',fieldName: 'createdDate',visible: true},
+                    {colName: 'Total amount',fieldName: 'totalAmount',visible: false},
+                    {colName: 'Balance',fieldName: 'balance',visible: false},
+                    {colName: 'Account',fieldName: 'account',visible: false},
+                    {colName: 'Username',fieldName: 'username',visible: false},
+                    {colName: 'User id',fieldName: 'userId',visible: false},
+                    {colName: 'Updated',fieldName: 'updatedDate',visible: false},
+                    {colName: 'Mobile',fieldName: 'mobile',visible: false},
+                    {colName: 'Destination tx id',fieldName: 'destination_tx_id',visible: false},
+                    {colName: 'Source tx id',fieldName: 'source_tx_id',visible: false},
+                    {colName: 'Label',fieldName: 'label',visible: false},
+                    {colName: 'Reference',fieldName: 'reference',visible: false},
+                    {colName: 'Note',fieldName: 'note',visible: false},
+                    {colName: 'Metadata',fieldName: 'metadata',visible: false}
+                ];
 
             localStorageManagement.setValue(vm.savedTransactionTableColumns,JSON.stringify(headerCols));
 
@@ -153,7 +156,8 @@
                 selectedUserOption: null
             },
             accountFilter: {
-                selectedAccountOption: 'Name',
+                // selectedAccountOption: 'Name',
+                selectedAccountOption: 'Reference',
                 selectedAccountName: null,
                 selectedAccountReference: null
             },
@@ -166,7 +170,8 @@
                 selectedCurrencyOption: {}
             },
             orderByFilter: {
-                selectedOrderByOption: 'Latest'
+                selectedOrderByOption: {},
+                selectedOrderByDirection: 'Desc'
             }
         };
         $scope.pagination = {
@@ -183,8 +188,17 @@
         $scope.loadingTransactions = false;
         $scope.typeOptions = ['Credit','Debit']; //Transfer
         $scope.statusOptions = ['Pending','Complete','Failed','Deleted'];
+        $scope.orderByOptions = [
+            {name:'Amount',fieldName: 'amount',tableFieldName: 'amount'},
+            {name:'Balance',fieldName: 'balance',tableFieldName: 'balance'},
+            {name:'Created',fieldName: 'created',tableFieldName: 'createdDate'},
+            {name:'Fee',fieldName: 'fee',tableFieldName: 'fee'},
+            {name:'Reference',fieldName: 'reference',tableFieldName: 'reference'},
+            {name:'Total amount',fieldName: 'total_amount',tableFieldName: 'totalAmount'},
+            {name:'Updated',fieldName: 'updated',tableFieldName: 'updatedDate'}
+        ];
+        $scope.orderByDirection = ['Desc','Asc'];
         $scope.currencyOptions = [];
-        $scope.orderByOptions = ['Latest','Largest','Smallest'];
         $scope.groupOptions = [];
 
         //Column filters
@@ -194,6 +208,7 @@
         };
 
         $scope.selectAllColumns = function () {
+            $scope.visibleColumnsSelectionChanged = true;
             $scope.headerColumns.forEach(function (headerObj) {
                 headerObj.visible = true;
             });
@@ -206,8 +221,10 @@
         };
 
         $scope.restoreColDefaults = function () {
+            $scope.visibleColumnsSelectionChanged = true;
             var defaultVisibleHeader = ['User','Type','Subtype','Currency',
-                'Amount','Fee','Status','Date','Id'];
+                'Amount','Status','Date','Id'];
+                // 'Amount','Fee','Status','Date','Id'];
 
             $scope.headerColumns.forEach(function (headerObj) {
                 if(defaultVisibleHeader.indexOf(headerObj.colName) > -1){
@@ -258,10 +275,28 @@
 
         //end angular datepicker
 
-        $scope.orderByFunction = function () {
-            return ($scope.applyFiltersObj.orderByFilter.selectedOrderByOption == 'Latest' ? '-created' :
-                $scope.applyFiltersObj.orderByFilter.selectedOrderByOption == 'Largest' ? '-amount' :
-                    $scope.applyFiltersObj.orderByFilter.selectedOrderByOption == 'Smallest' ? 'amount' : '');
+        $scope.orderByFunction = function (header) {
+            if($scope.applyFiltersObj.orderByFilter.selectedOrderByDirection === 'Desc'){
+                $scope.filtersObj.orderByFilter = true;
+                if(header.fieldName == $scope.applyFiltersObj.orderByFilter.selectedOrderByOption.tableFieldName){
+                    $scope.applyFiltersObj.orderByFilter.selectedOrderByDirection = 'Asc';
+                }
+                $scope.orderByOptions.forEach(function (element) {
+                    if(element.tableFieldName == header.fieldName){
+                        $scope.applyFiltersObj.orderByFilter.selectedOrderByOption = element;
+                        $scope.getLatestTransactions();
+                    }
+                });
+            } else if($scope.applyFiltersObj.orderByFilter.selectedOrderByDirection === 'Asc'){
+                $scope.filtersObj.orderByFilter = true;
+                $scope.applyFiltersObj.orderByFilter.selectedOrderByDirection = 'Desc';
+                $scope.orderByOptions.forEach(function (element) {
+                    if(element.tableFieldName == header.fieldName){
+                        $scope.applyFiltersObj.orderByFilter.selectedOrderByOption = element;
+                        $scope.getLatestTransactions();
+                    }
+                });
+            }
         };
 
         $scope.pageSizeChanged =  function () {
@@ -269,6 +304,15 @@
                 $scope.pagination.itemsPerPage = 10000;
             }
         };
+
+        vm.getOrderByInitialValue = function () {
+            $scope.orderByOptions.forEach(function (orderByElement,index) {
+                if(orderByElement.name === 'Created'){
+                    $scope.applyFiltersObj.orderByFilter.selectedOrderByOption = $scope.orderByOptions[index];
+                }
+            });
+        };
+        vm.getOrderByInitialValue();
 
         vm.getCompanyCurrencies = function(){
             //adding currency as default value in both results array and ng-model of currency
@@ -317,139 +361,32 @@
         };
 
         vm.getDateFilters = function () {
-            var dateObj = {
-                created__lt: null,
-                created__gt: null
+            var evaluatedDateObj = multiOptionsFilterService.evaluatedDates($scope.applyFiltersObj.dateFilter);
+
+            return {
+                created__lt: evaluatedDateObj.date__lt,
+                created__gt: evaluatedDateObj.date__gt
             };
-
-            switch($scope.applyFiltersObj.dateFilter.selectedDateOption) {
-                case 'Is in the last':
-                    if($scope.applyFiltersObj.dateFilter.selectedDayIntervalOption == 'days'){
-                        dateObj.created__lt = moment().add(1,'days').format('YYYY-MM-DD');
-                        dateObj.created__gt = moment().subtract($scope.applyFiltersObj.dateFilter.dayInterval,'days').format('YYYY-MM-DD');
-                    } else {
-                        dateObj.created__lt = moment().add(1,'days').format('YYYY-MM-DD');
-                        dateObj.created__gt = moment().subtract($scope.applyFiltersObj.dateFilter.dayInterval,'months').format('YYYY-MM-DD');
-                    }
-
-                    break;
-                case 'In between':
-                    dateObj.created__lt = moment(new Date($scope.applyFiltersObj.dateFilter.dateTo)).add(1,'days').format('YYYY-MM-DD');
-                    dateObj.created__gt = moment(new Date($scope.applyFiltersObj.dateFilter.dateFrom)).format('YYYY-MM-DD');
-
-                    break;
-                case 'Is equal to':
-                    dateObj.created__lt = moment(new Date($scope.applyFiltersObj.dateFilter.dateEqualTo)).add(1,'days').format('YYYY-MM-DD');
-                    dateObj.created__gt = moment(new Date($scope.applyFiltersObj.dateFilter.dateEqualTo)).format('YYYY-MM-DD');
-
-                    break;
-                case 'Is after':
-                    dateObj.created__lt = null;
-                    dateObj.created__gt = moment(new Date($scope.applyFiltersObj.dateFilter.dateFrom)).add(1,'days').format('YYYY-MM-DD');
-                    break;
-                case 'Is before':
-                    dateObj.created__lt = moment(new Date($scope.applyFiltersObj.dateFilter.dateTo)).format('YYYY-MM-DD');
-                    dateObj.created__gt = null;
-                    break;
-                default:
-                    break;
-            }
-
-            return dateObj;
         };
 
         vm.getAmountFilters = function () {
-            var amountObj = {
-                amount: null,
-                amount__lt: null,
-                amount__gt: null
+            var evaluatedAmountObj = multiOptionsFilterService.evaluatedAmounts($scope.applyFiltersObj.amountFilter);
+
+            return {
+                amount: evaluatedAmountObj.amount,
+                amount__lt: evaluatedAmountObj.amount__lt,
+                amount__gt: evaluatedAmountObj.amount__gt
             };
-
-            switch($scope.applyFiltersObj.amountFilter.selectedAmountOption) {
-                case 'Is equal to':
-                    amountObj = {
-                        amount: $scope.applyFiltersObj.amountFilter.amount,
-                        amount__lt: null,
-                        amount__gt: null
-                    };
-
-                    break;
-                case 'Is between':
-                    amountObj = {
-                        amount: null,
-                        amount__lt: $scope.applyFiltersObj.amountFilter.amount__lt,
-                        amount__gt: $scope.applyFiltersObj.amountFilter.amount__gt
-                    };
-
-                    break;
-                case 'Is greater than':
-                    amountObj = {
-                        amount: null,
-                        amount__lt: null,
-                        amount__gt: $scope.applyFiltersObj.amountFilter.amount__gt
-                    };
-
-                    break;
-                case 'Is less than':
-                    amountObj = {
-                        amount: null,
-                        amount__lt: $scope.applyFiltersObj.amountFilter.amount__lt,
-                        amount__gt: null
-                    };
-
-                    break;
-                default:
-                    break;
-            }
-
-            return amountObj;
         };
 
         vm.getReferenceFilters = function () {
-            var referenceObj = {
-                reference: null,
-                reference__lt: null,
-                reference__gt: null
+            var evaluatedAmountObj = multiOptionsFilterService.evaluateReference($scope.applyFiltersObj.referenceFilter);
+
+            return {
+                reference: evaluatedAmountObj.reference,
+                reference__lt: evaluatedAmountObj.reference__lt,
+                reference__gt: evaluatedAmountObj.reference__gt
             };
-
-            switch($scope.applyFiltersObj.referenceFilter.selectedReferenceOption) {
-                case 'Is equal to':
-                    referenceObj = {
-                        reference: $scope.applyFiltersObj.referenceFilter.reference,
-                        reference__lt: null,
-                        reference__gt: null
-                    };
-
-                    break;
-                case 'Is between':
-                    referenceObj = {
-                        reference: null,
-                        reference__lt: $scope.applyFiltersObj.referenceFilter.reference__lt,
-                        reference__gt: $scope.applyFiltersObj.referenceFilter.reference__gt
-                    };
-
-                    break;
-                case 'Is greater than':
-                    referenceObj = {
-                        reference: null,
-                        reference__lt: null,
-                        reference__gt: $scope.applyFiltersObj.referenceFilter.reference__gt
-                    };
-
-                    break;
-                case 'Is less than':
-                    referenceObj = {
-                        reference: null,
-                        reference__lt: $scope.applyFiltersObj.referenceFilter.reference__lt,
-                        reference__gt: null
-                    };
-
-                    break;
-                default:
-                    break;
-            }
-
-            return referenceObj;
         };
 
         vm.getVisibleColumnsArray = function () {
@@ -490,6 +427,152 @@
         vm.getTransactionsFiltersObj = function(){
             $scope.filtersCount = 0;
             $scope.filtersObjForExport = {};
+            var searchObj = {};
+            var filterObjects = {};
+
+            if($scope.initialLoad) {
+                $scope.initialLoad = false;
+                if (localStorageManagement.getValue(vm.savedTransactionTableFilters)) {
+                    filterObjects = JSON.parse(localStorageManagement.getValue(vm.savedTransactionTableFilters));
+
+                    $scope.filtersObj = filterObjects.filtersObj;
+
+                    $scope.applyFiltersObj = {
+                        dateFilter: {
+                            selectedDateOption: filterObjects.applyFiltersObj.dateFilter.selectedDateOption,
+                            selectedDayIntervalOption: filterObjects.applyFiltersObj.dateFilter.selectedDayIntervalOption,
+                            dayInterval: filterObjects.applyFiltersObj.dateFilter.dayInterval,
+                            dateFrom: moment(filterObjects.applyFiltersObj.dateFilter.dateFrom).toDate(),
+                            dateTo: moment(filterObjects.applyFiltersObj.dateFilter.dateTo).toDate(),
+                            dateEqualTo: moment(filterObjects.applyFiltersObj.dateFilter.dateEqualTo).toDate()
+                        },
+                        amountFilter: {
+                            selectedAmountOption: filterObjects.applyFiltersObj.amountFilter.selectedAmountOption,
+                            amount: filterObjects.applyFiltersObj.amountFilter.amount,
+                            amount__lt: filterObjects.applyFiltersObj.amountFilter.amount__lt,
+                            amount__gt: filterObjects.applyFiltersObj.amountFilter.amount__gt
+                        },
+                        statusFilter: {
+                            selectedStatusOption: filterObjects.applyFiltersObj.statusFilter.selectedStatusOption
+                        },
+                        transactionTypeFilter: {
+                            selectedTransactionTypeOption: filterObjects.applyFiltersObj.transactionTypeFilter.selectedTransactionTypeOption
+                        },
+                        transactionSubtypeFilter: {
+                            selectedTransactionSubtypeOption: filterObjects.applyFiltersObj.transactionSubtypeFilter.selectedTransactionSubtypeOption
+                        },
+                        transactionIdFilter: {
+                            selectedTransactionIdOption: filterObjects.applyFiltersObj.transactionIdFilter.selectedTransactionIdOption
+                        },
+                        metadataFilter: {
+                            selectedMetadataKey: filterObjects.applyFiltersObj.metadataFilter.selectedMetadataKey,
+                            selectedMetadataValue: filterObjects.applyFiltersObj.metadataFilter.selectedMetadataValue
+                        },
+                        referenceFilter: {
+                            selectedReferenceOption: filterObjects.applyFiltersObj.referenceFilter.selectedReferenceOption,
+                            reference: filterObjects.applyFiltersObj.referenceFilter.reference,
+                            reference__lt: filterObjects.applyFiltersObj.referenceFilter.reference__lt,
+                            reference__gt: filterObjects.applyFiltersObj.referenceFilter.reference__gt
+                        },
+                        userFilter: {
+                            selectedUserOption: filterObjects.applyFiltersObj.userFilter.selectedUserOption
+                        },
+                        accountFilter: {
+                            // selectedAccountOption: filterObjects.applyFiltersObj.accountFilter.selectedAccountOption,
+                            selectedAccountOption: 'Reference',
+                            selectedAccountName: filterObjects.applyFiltersObj.accountFilter.selectedAccountName,
+                            selectedAccountReference: filterObjects.applyFiltersObj.accountFilter.selectedAccountReference
+                        },
+                        groupFilter: {
+                            selectedGroupOption: filterObjects.applyFiltersObj.groupFilter.selectedGroupOption,
+                            existsInGroup: filterObjects.applyFiltersObj.groupFilter.existsInGroup,
+                            selectedGroup: filterObjects.applyFiltersObj.groupFilter.selectedGroup.name ?
+                                $scope.groupOptions.find(function (group) {
+                                    if(group.name == filterObjects.applyFiltersObj.groupFilter.selectedGroup.name){
+                                        return group;
+                                    }
+                                }) : $scope.groupOptions[0]
+                        },
+                        currencyFilter:{
+                            selectedCurrencyOption: filterObjects.applyFiltersObj.currencyFilter.selectedCurrencyOption
+                        },
+                        orderByFilter: {
+                            selectedOrderByOption: filterObjects.applyFiltersObj.orderByFilter.selectedOrderByOption,
+                            selectedOrderByDirection: filterObjects.applyFiltersObj.orderByFilter.selectedOrderByDirection
+                        }
+                    };
+                    searchObj = filterObjects.searchObj;
+
+                } else {
+                    searchObj = {
+                        page: 1,
+                        page_size: $scope.filtersObj.pageSizeFilter? $scope.applyFiltersObj.paginationFilter.itemsPerPage : 25
+                    };
+                }
+            } else {
+                if($scope.filtersObj.dateFilter){
+                    vm.dateObj = vm.getDateFilters();
+                } else{
+                    vm.dateObj = {
+                        created__lt: null,
+                        created__gt: null
+                    };
+                }
+
+                if($scope.filtersObj.amountFilter){
+                    vm.amountObj = vm.getAmountFilters();
+                } else{
+                    vm.amountObj = {
+                        amount: null,
+                        amount__lt: null,
+                        amount__gt: null
+                    };
+                }
+
+                if($scope.filtersObj.referenceFilter){
+                    vm.referenceObj = vm.getReferenceFilters();
+                } else{
+                    vm.referenceObj = {
+                        reference: null,
+                        reference__lt: null,
+                        reference__gt: null
+                    };
+                }
+
+                searchObj = {
+                    page: $scope.pagination.pageNo,
+                    page_size: $scope.filtersObj.pageSizeFilter? $scope.pagination.itemsPerPage : 25,
+                    amount: vm.amountObj.amount ? currencyModifiers.convertToCents(vm.amountObj.amount,$scope.applyFiltersObj.currencyFilter.selectedCurrencyOption.divisibility) : null,
+                    amount__lt: vm.amountObj.amount__lt ? currencyModifiers.convertToCents(vm.amountObj.amount__lt,$scope.applyFiltersObj.currencyFilter.selectedCurrencyOption.divisibility) : null,
+                    amount__gt: vm.amountObj.amount__gt ? currencyModifiers.convertToCents(vm.amountObj.amount__gt,$scope.applyFiltersObj.currencyFilter.selectedCurrencyOption.divisibility) : null,
+                    reference: vm.referenceObj.reference ? vm.referenceObj.reference : null,
+                    reference__lt: vm.referenceObj.reference__lt ? vm.referenceObj.reference__lt : null,
+                    reference__gt: vm.referenceObj.reference__gt ? vm.referenceObj.reference__gt : null,
+                    created__gt: vm.dateObj.created__gt ? Date.parse(vm.dateObj.created__gt +'T00:00:00') : null,
+                    created__lt: vm.dateObj.created__lt ? Date.parse(vm.dateObj.created__lt +'T00:00:00') : null,
+                    currency: $scope.filtersObj.currencyFilter || $scope.filtersObj.amountFilter ? $scope.applyFiltersObj.currencyFilter.selectedCurrencyOption.code: null,
+                    user: $scope.filtersObj.userFilter ? ($scope.applyFiltersObj.userFilter.selectedUserOption ? $scope.applyFiltersObj.userFilter.selectedUserOption : null): null,
+                    // account__name: $scope.filtersObj.accountFilter ? $scope.applyFiltersObj.accountFilter.selectedAccountOption == 'Name' ? $scope.applyFiltersObj.accountFilter.selectedAccountName : null : null,
+                    account: $scope.filtersObj.accountFilter ? $scope.applyFiltersObj.accountFilter.selectedAccountOption == 'Reference' ? $scope.applyFiltersObj.accountFilter.selectedAccountReference : null : null,
+                    group: $scope.filtersObj.groupFilter ? $scope.applyFiltersObj.groupFilter.selectedGroupOption == 'Group name'? $scope.applyFiltersObj.groupFilter.selectedGroup.name: null : null,
+                    group__isnull: $scope.filtersObj.groupFilter ? $scope.applyFiltersObj.groupFilter.selectedGroupOption == 'In a group'? (!$scope.applyFiltersObj.groupFilter.existsInGroup).toString(): null : null,
+                    id: $scope.filtersObj.transactionIdFilter ? ($scope.applyFiltersObj.transactionIdFilter.selectedTransactionIdOption ? $scope.applyFiltersObj.transactionIdFilter.selectedTransactionIdOption : null): null,
+                    destination_transaction : $scope.filtersObj.destinationIdFilter ? 'true' : null,
+                    source_transaction : $scope.filtersObj.sourceIdFilter ? 'true' : null,
+                    tx_type: $scope.filtersObj.transactionTypeFilter ? $scope.applyFiltersObj.transactionTypeFilter.selectedTransactionTypeOption.toLowerCase() : null,
+                    status: $scope.filtersObj.statusFilter ? $scope.applyFiltersObj.statusFilter.selectedStatusOption: null,
+                    subtype: $scope.filtersObj.transactionSubtypeFilter ? ($scope.applyFiltersObj.transactionSubtypeFilter.selectedTransactionSubtypeOption ? $scope.applyFiltersObj.transactionSubtypeFilter.selectedTransactionSubtypeOption: null): null,
+                    fields: $scope.visibleColumnsArray.join(','),
+                    orderby: $scope.filtersObj.orderByFilter ? $scope.applyFiltersObj.orderByFilter.selectedOrderByDirection == 'Desc' ? '-' + $scope.applyFiltersObj.orderByFilter.selectedOrderByOption.fieldName : $scope.applyFiltersObj.orderByFilter.selectedOrderByOption.fieldName : null
+
+                };
+
+                vm.saveTransactionsTableFiltersToLocalStorage({
+                    searchObj: serializeFiltersService.objectFilters(searchObj),
+                    filtersObj: $scope.filtersObj,
+                    applyFiltersObj: $scope.applyFiltersObj
+                });
+            }
 
             for(var x in $scope.filtersObj){
                 if($scope.filtersObj.hasOwnProperty(x)){
@@ -499,63 +582,7 @@
                 }
             }
 
-            if($scope.filtersObj.dateFilter){
-                vm.dateObj = vm.getDateFilters();
-            } else{
-                vm.dateObj = {
-                    created__lt: null,
-                    created__gt: null
-                };
-            }
-
-            if($scope.filtersObj.amountFilter){
-                vm.amountObj = vm.getAmountFilters();
-            } else{
-                vm.amountObj = {
-                    amount: null,
-                    amount__lt: null,
-                    amount__gt: null
-                };
-            }
-
-            if($scope.filtersObj.referenceFilter){
-                vm.referenceObj = vm.getReferenceFilters();
-            } else{
-                vm.referenceObj = {
-                    reference: null,
-                    reference__lt: null,
-                    reference__gt: null
-                };
-            }
-
             $scope.visibleColumnsArray = vm.getVisibleColumnsArray();
-
-            var searchObj = {
-                page: $scope.pagination.pageNo,
-                page_size: $scope.filtersObj.pageSizeFilter? $scope.pagination.itemsPerPage : 25,
-                amount: vm.amountObj.amount ? currencyModifiers.convertToCents(vm.amountObj.amount,$scope.applyFiltersObj.currencyFilter.selectedCurrencyOption.divisibility) : null,
-                amount__lt: vm.amountObj.amount__lt ? currencyModifiers.convertToCents(vm.amountObj.amount__lt,$scope.applyFiltersObj.currencyFilter.selectedCurrencyOption.divisibility) : null,
-                amount__gt: vm.amountObj.amount__gt ? currencyModifiers.convertToCents(vm.amountObj.amount__gt,$scope.applyFiltersObj.currencyFilter.selectedCurrencyOption.divisibility) : null,
-                reference: vm.referenceObj.reference ? vm.referenceObj.reference : null,
-                reference__lt: vm.referenceObj.reference__lt ? vm.referenceObj.reference__lt : null,
-                reference__gt: vm.referenceObj.reference__gt ? vm.referenceObj.reference__gt : null,
-                created__gt: vm.dateObj.created__gt ? Date.parse(vm.dateObj.created__gt +'T00:00:00') : null,
-                created__lt: vm.dateObj.created__lt ? Date.parse(vm.dateObj.created__lt +'T00:00:00') : null,
-                currency: $scope.filtersObj.currencyFilter || $scope.filtersObj.amountFilter ? $scope.applyFiltersObj.currencyFilter.selectedCurrencyOption.code: null,
-                user: $scope.filtersObj.userFilter ? ($scope.applyFiltersObj.userFilter.selectedUserOption ? $scope.applyFiltersObj.userFilter.selectedUserOption : null): null,
-                account__name: $scope.filtersObj.accountFilter ? $scope.applyFiltersObj.accountFilter.selectedAccountOption == 'Name' ? $scope.applyFiltersObj.accountFilter.selectedAccountName : null : null,
-                account: $scope.filtersObj.accountFilter ? $scope.applyFiltersObj.accountFilter.selectedAccountOption == 'Reference' ? $scope.applyFiltersObj.accountFilter.selectedAccountReference : null : null,
-                group: $scope.filtersObj.groupFilter ? $scope.applyFiltersObj.groupFilter.selectedGroupOption == 'Group name'? $scope.applyFiltersObj.groupFilter.selectedGroup.name: null : null,
-                group__isnull: $scope.filtersObj.groupFilter ? $scope.applyFiltersObj.groupFilter.selectedGroupOption == 'In a group'? (!$scope.applyFiltersObj.groupFilter.existsInGroup).toString(): null : null,
-                orderby: $scope.filtersObj.orderByFilter ? ($scope.applyFiltersObj.orderByFilter.selectedOrderByOption == 'Latest' ? '-created' : $scope.applyFiltersObj.orderByFilter.selectedOrderByOption == 'Largest' ? '-amount' : $scope.applyFiltersObj.orderByFilter.selectedOrderByOption == 'Smallest' ? 'amount' : null): null,
-                id: $scope.filtersObj.transactionIdFilter ? ($scope.applyFiltersObj.transactionIdFilter.selectedTransactionIdOption ? $scope.applyFiltersObj.transactionIdFilter.selectedTransactionIdOption : null): null,
-                destination_transaction : $scope.filtersObj.destinationIdFilter ? 'true' : null,
-                source_transaction : $scope.filtersObj.sourceIdFilter ? 'true' : null,
-                tx_type: $scope.filtersObj.transactionTypeFilter ? $scope.applyFiltersObj.transactionTypeFilter.selectedTransactionTypeOption.toLowerCase() : null,
-                status: $scope.filtersObj.statusFilter ? $scope.applyFiltersObj.statusFilter.selectedStatusOption: null,
-                subtype: $scope.filtersObj.transactionSubtypeFilter ? ($scope.applyFiltersObj.transactionSubtypeFilter.selectedTransactionSubtypeOption ? $scope.applyFiltersObj.transactionSubtypeFilter.selectedTransactionSubtypeOption: null): null,
-                fields: $scope.visibleColumnsArray.join(',')
-            };
 
             if($scope.filtersObj.metadataFilter){
                 searchObj['metadata__' + $scope.applyFiltersObj.metadataFilter.selectedMetadataKey] = $scope.applyFiltersObj.metadataFilter.selectedMetadataValue;
@@ -564,8 +591,11 @@
             }
 
             $scope.filtersObjForExport = searchObj;
-
             return serializeFiltersService.objectFilters(searchObj);
+        };
+
+        vm.saveTransactionsTableFiltersToLocalStorage = function (filterObjects) {
+            localStorageManagement.setValue(vm.savedTransactionTableFilters,JSON.stringify(filterObjects));
         };
 
         $scope.getLatestTransactions = function(applyFilter){
@@ -786,7 +816,7 @@
 
         $scope.$on("modalClosing",function(event,transactionHasBeenUpdated){
             if(transactionHasBeenUpdated){
-                $scope.clearFilters();
+                // $scope.clearFilters();
                 $scope.getLatestTransactions();
             }
         });
@@ -817,6 +847,21 @@
 
         $scope.deleteMetadataColumn = function (column) {
             column.hide = true;
+        };
+
+        $scope.styleHeaders = function (header) {
+            var sortableHeaderExists = false;
+
+            $scope.orderByOptions.forEach(function (element) {
+                if(element.tableFieldName == header.fieldName){
+                    sortableHeaderExists = true;
+                }
+            });
+
+            if(sortableHeaderExists){
+                return 'pointer sortable-header';
+            }
+
         };
 
         // shortcuts from other places

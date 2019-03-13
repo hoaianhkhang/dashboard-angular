@@ -18,11 +18,15 @@
                 </div>
             </div>
             <button ng-click="getAllAccounts('applyFilter')" ng-disabled="loadingAccounts"
-                    class="btn btn-default transactions-btn panel-header-user-icon">Refresh</button>
-            <button ng-click="goToAddAccount('app/pages/accounts/newAccountModal/newAccountModal.html','md')" class="btn btn-success transactions-btn panel-header-button">New</button>
+                    class="btn btn-default dynamic-columns panel-header-user-icon">Refresh</button>
+            <button ng-click="goToAddAccount('app/pages/accounts/newAccountModal/newAccountModal.html','md')"
+                    class="btn btn-primary transactions-btn panel-header-button">New</button>
         </div>
     </div>
     <div class="panel-body">
+        <div ng-show="filtersCount > 0" class="divider">
+            <p class="filter-text">Your results are currently being filtered</p>
+        </div>
         <div ng-show="accountsList.length > 0" class="upper-pagination">
             <p uib-pagination boundary-links="true" items-per-page="accountsPagination.itemsPerPage"  total-items="accountsListData.count" ng-model="accountsPagination.pageNo"
                max-size="accountsPagination.maxSize" class="pagination-sm pull-right no-margin" force-ellipses="true" ng-change="getAllAccounts()"
@@ -40,9 +44,13 @@
                     </thead>
                     <tbody>
                     <tr ng-repeat="account in accountsList | orderBy: '-created'" data-toggle="modal"
+                        ng-class="{'system-users-admin': account.group == 'admin','system-users-service': account.group == 'extension'}"
                         class="editable-row center pointer user-details-table-hover" ng-click="displayAccount('app/pages/accounts/showAccountModal/showAccountModal.html','md',account)">
-                        <td class="transactions-list-element" title="{{account[header.fieldName]}}" ng-repeat="header in headerColumns track by $index"
-                            ng-if="header.visible" ng-bind="account[header.fieldName]"></td>
+                        <td class="transactions-list-element" title="{{account[header.fieldName]}}"
+                            ng-class="{'system-users-admin': account.group == 'admin','system-users-service': account.group == 'service'}"
+                            ng-repeat="header in headerColumns track by $index"
+                            ng-if="header.visible" ng-bind="account[header.fieldName]"
+                            ng-style="account.group_highlight_color && {'color': account.group_highlight_color}"></td>
                     </tr>
                     </tbody>
                 </table>

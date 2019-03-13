@@ -15,6 +15,9 @@
         </div>
     </div>
     <div class="panel-body">
+        <div ng-show="filtersWarmstorageCount > 0" class="divider">
+            <p class="filter-text">Your results are currently being filtered</p>
+        </div>
         <div ng-hide="transactionsWarmstorage.length == 0" class="divider">
             <table class="table custom-table">
                 <tr>

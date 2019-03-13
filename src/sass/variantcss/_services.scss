@@ -1,3 +1,137 @@
+.product-service-headers{
+  padding-top: 8px;
+}
+
+.strong-headers{
+  color: black!important;
+}
+
+.table-checkbox{
+  top: 5px;
+}
+
+.table-options{
+  & .table-options-container{
+    position: relative;
+    margin-right: 6px;
+  }
+  & .table-options-icon{
+    padding: 4px 0;
+    display: block;
+    color: #A8A8A8;
+    &:hover{
+      color: $primary;
+    }
+  }
+  .table-options-box{
+    position: absolute;
+    top: 22px;
+    right: -14px;
+    width: 123px;
+    z-index: 100;
+    background-color: white;
+    box-shadow: 0 2px 6px #A8A8A8;
+    padding: 14px 20px 16px 20px;
+    list-style: none;
+    & li{
+      font-weight: 600 !important;
+      line-height: 24px !important;
+    }
+    & li:hover{
+      color: $primary;
+      cursor: pointer;
+    }
+
+    i.dropdown-arr {
+      position: absolute;
+      top: -22px;
+      right: 8px;
+      display: block;
+      width: 0;
+      height: 0;
+      border: 11px solid transparent;
+      border-bottom-color: rgba(0, 0, 0, .15);
+      &:after {
+        top: -9px;
+        left: 0;
+        margin-left: -10px;
+        position: absolute;
+        display: block;
+        width: 0;
+        height: 0;
+        border: 10px solid transparent;
+        border-bottom-color: $default;
+      }
+    }
+  }
+}
+
+.modal-view-checkbox{
+  position: relative;
+  top: -5px;
+}
+
+.product-prices-add-icon-near-title{
+  position: relative;
+  top: 6px;
+}
+
+.product-buttons-container{
+  margin-top: 5px;
+}
+
+.order-items-container{
+  margin-bottom: 5px;
+}
+
+.product-prices-last-child{
+  padding-left: 10px;
+  color: $success;
+  font-size: 25px;
+  cursor: pointer;
+  &:hover{
+    color: $success-dark;
+  }
+}
+
+.product-prices-add-icon{
+  color: $success;
+  font-size: 25px;
+  cursor: pointer;
+  &:hover{
+    color: $success-dark;
+  }
+}
+
+.product-prices-remove-icon{
+  position: relative;
+  color: $danger;
+  font-size: 25px;
+  cursor: pointer;
+  &:hover{
+    color: $danger-dark;
+  }
+}
+
+.order-items-add-icon{
+  color: $success;
+  position: relative;
+  font-size: 25px;
+  cursor: pointer;
+  &:hover{
+    color: $success-dark;
+  }
+}
+
+.order-items-add-icon-near-title {
+  top: 5px;
+  margin-left: 12px;
+}
+
+.order-status-radio-btns{
+  margin: 2.5px 0px !important;
+}
+
 .table-actions{
   z-index: 100;
   position: absolute;
@@ -55,7 +189,7 @@
 }
 
 .stellar-public-key-help-message{
-  color: #03DBBB;
+  color: $primary;
 }
 
 .stellar-hotwallet-address{
@@ -146,16 +280,18 @@
     color: #A8A8A8;
   }
   & h5:hover{
-    color: #F8CF51;
+    //color: #B8B7C6; /*previous light grey*/
+    color: #A4A5F5;
   }
 }
 
 .service-header .panel{
-  border-top-color: #F8CF51 !important;
+  border-top-color: #B8B7C6 !important;
 }
 
 .active-notification-nav{
-  color: #F8CF51 !important ;
+  color: $primary !important ;
+  font-weight: bold;
 }
 
 .notification-webhooks-buttons{

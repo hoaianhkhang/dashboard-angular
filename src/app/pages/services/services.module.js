@@ -8,7 +8,7 @@
         'BlurAdmin.pages.services.notificationService',
         'BlurAdmin.pages.services.exchangeService',
         'BlurAdmin.pages.services.icoService',
-        'BlurAdmin.pages.services.productsService',
+        'BlurAdmin.pages.services.productService',
         'BlurAdmin.pages.services.currencyConversionService',
         'BlurAdmin.pages.services.rewardsService',
         'BlurAdmin.pages.services.stellarTestnetService',
@@ -19,13 +19,17 @@
     /** @ngInject */
     function routeConfig($stateProvider,$urlRouterProvider) {
         $stateProvider
-            .state('services', {
-                url: '/services',
+            // .state('services', {
+            .state('extensions', {
+                // url: '/services',
+                url: '/extensions',
                 templateUrl: 'app/pages/services/services.html',
                 controller: "ServicesCtrl",
-                title: 'Services',
+                // title: 'Services',
+                title: 'Extensions',
                 sidebarMeta: {
-                    order: 600
+                    order: 600,
+                    icon: 'sidebar-services-icon'
                 }
             });
     }

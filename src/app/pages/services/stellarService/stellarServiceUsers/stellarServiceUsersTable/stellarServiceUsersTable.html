@@ -11,22 +11,29 @@
                 </div>
             </div>
             <button ng-click="getAllUsers('applyFilter')" ng-disabled="loadingUsers"
-                    class="btn btn-default transactions-btn panel-header-button">Refresh</button>
+                    class="btn btn-default dynamic-columns panel-header-button">Refresh</button>
         </div>
     </div>
     <div class="panel-body">
+        <div ng-show="filtersCount > 0" class="divider">
+            <p class="filter-text">Your results are currently being filtered</p>
+        </div>
         <div ng-show="users.length > 0" class="divider">
             <table class="table custom-table">
                 <tr>
-                    <th class="rehive-table-row-first-child">Email</th>
-                    <th>Id</th>
-                    <th>Address</th>
+                    <th width="20%" class="rehive-table-row-first-child">Email</th>
+                    <th width="15%">Username</th>
+                    <th width="25%">Id</th>
+                    <th width="15%">Memo</th>
+                    <th width="20%">Address</th>
                 </tr>
                 <tr ng-repeat="user in users" data-toggle="modal"
                     class="editable-row center">
-                    <td class="rehive-table-row-first-child"><a href="#/user/{{user.id}}/details"><div title="{{user.email}}" ng-bind="user.email"></div></a></td>
-                    <td title="{{user.id}}" ng-bind="user.id"></td>
-                    <td title="{{user.crypto.federated_address}}" ng-bind="user.crypto.federated_address"></td>
+                    <td width="20%" class="rehive-table-row-first-child"><a href="#/user/{{user.id}}/details"><div title="{{user.email}}" ng-bind="user.email"></div></a></td>
+                    <td width="15%" class="transactions-list-element" title="{{user.username}}" ng-bind="user.username"></td>
+                    <td width="25%" class="transactions-list-element" title="{{user.id}}" ng-bind="user.id"></td>
+                    <td width="15%" class="transactions-list-element" title="{{user.memo}}" ng-bind="user.memo"></td>
+                    <td width="20%" class="transactions-list-element" title="{{user.crypto.federated_address}}" ng-bind="user.crypto.federated_address"></td>
                 </tr>
             </table>
             <div>

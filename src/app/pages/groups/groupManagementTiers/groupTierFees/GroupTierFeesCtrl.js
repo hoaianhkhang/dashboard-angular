@@ -10,7 +10,7 @@
 
         var vm = this;
         vm.token = localStorageManagement.getValue('token');
-        vm.groupName = $stateParams.groupName;
+        vm.groupName = ($stateParams.groupName == 'extension') ? 'service' : $stateParams.groupName;
         $scope.currenciesList = JSON.parse($window.sessionStorage.currenciesList || '[]');
         $scope.activeTabIndex = 0;
         $scope.loadingTierFees = true;
@@ -74,7 +74,6 @@
                     res.forEach(function (element) {
                         element.currency = vm.returnCurrencyObj(element.currency);
                     });
-
                     $scope.tiersFeesList = res;
                     $scope.$apply();
                 }, function (error) {

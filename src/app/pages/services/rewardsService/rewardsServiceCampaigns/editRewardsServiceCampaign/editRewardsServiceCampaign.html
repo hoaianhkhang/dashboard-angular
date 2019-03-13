@@ -96,54 +96,6 @@
                            ng-model="editCampaignParams.reward_percentage" type="text" ng-required="editCampaignParams.amount_type == 'Percentage'">
                 </div>
             </div>
-            <div class="form-group setup-groups-tooltip-div">
-                <label>Account
-                    <!--&nbsp;<i uib-tooltip-html="'Reward currency that will be credited to the user account.'"-->
-                    <!--class="ion-information-circled setup-groups-tooltip"></i>-->
-                </label>
-                <div class="reward-multi-select">
-                    <select chosen
-                            data-placeholder-text-single="'Choose an account'"
-                            width="100"
-                            ng-model="editCampaignParams.account"
-                            ng-change="campaignChanged('account')"
-                            ng-options="account.name + ' - ' + account.reference for account in accountOptions | orderBy: 'name'">
-                        <option value=""></option>
-                    </select>
-                </div>
-            </div>
-            <div class="form-group setup-groups-tooltip-div">
-                <label>Campaign status &nbsp;<i uib-tooltip-html="'The status of a campaign. This will automatically change to expired after the end date or when the reward total balance has been depleted.'"
-                                                class="ion-information-circled setup-groups-tooltip"></i></label>
-                <div class="reward-type-radio-groups-status">
-                    <input class="margin-right-10 pointer" type="radio"
-                           ng-change="campaignChanged('status')"
-                           ng-model="editCampaignParams.status" value="active">
-                    <span class="reward-radio-type1">Active</span>
-                    <input class="horizontal-divider-40 margin-right-10 pointer" type="radio"
-                           ng-change="campaignChanged('status')"
-                           ng-model="editCampaignParams.status"
-                           value="disabled"> <span class="reward-radio-type2">Disabled</span>
-                    <input class="horizontal-divider-55 margin-right-10 pointer" type="radio"
-                           ng-change="campaignChanged('status')"
-                           ng-model="editCampaignParams.status"
-                           value="expired"> <span class="reward-radio-type3">Expired</span>
-                </div>
-            </div>
-            <div class="form-group setup-groups-tooltip-div">
-                <label>Max per user
-                    &nbsp;<i uib-tooltip-html="'The maximum times a user can receive a reward in this campaign.'"
-                                             class="ion-information-circled setup-groups-tooltip"></i></label>
-                <br>
-                <input class="form-control" ng-change="campaignChanged('max_per_user')" ng-model="editCampaignParams.max_per_user" type="number">
-            </div>
-            <div class="form-group">
-                <label>Event</label>
-                <br>
-                <select class="form-control pointer" ng-change="campaignChanged('event')" ng-model="editCampaignParams.event"
-                        ng-options="event for event in eventOptions">
-                </select>
-            </div>
             <div class="form-group divider-20 setup-groups-tooltip-div">
                 <label>Visible &nbsp;<i uib-tooltip-html="'This will make the campaign visible to users.'"
                                         class="ion-information-circled setup-groups-tooltip"></i></label>
@@ -156,25 +108,99 @@
                 <br>
                 <input class="custom-rehive-checkbox" ng-change="campaignChanged('request')" ng-model="editCampaignParams.request" type="checkbox">
             </div>
-            <div class="form-group">
-                <label>Users</label>
-                <div class="reward-multi-select">
-                    <tags-input ng-model="editCampaignParams.users" on-tag-added="campaignChanged('users')"
-                                on-tag-removed="campaignChanged('users')"
-                                placeholder="Enter one or more user IDs.">
-                        <auto-complete class="reward-tag-users-input" source="getUsersEmailTypeahead($query)"></auto-complete>
-                    </tags-input>
+            <div class="form-group setup-groups-tooltip-div">
+                <div class="row">
+                    <div class="reward-multi-select col-lg-5 col-md-5 col-sm-5 col-xs-5">
+                        <label>Search user to select reward account</label>
+                        <input class="form-control" ng-model="campaignUserEmailForAccount"
+                               type="text" required placeholder="Enter email of user to list accounts"
+                               uib-typeahead="email for email in getUsersEmailTypeahead($viewValue)"
+                               ng-change="emailChanging()"
+                               typeahead-on-select="onSelect($item, $model, $label)" ng-model-options='{ debounce: 800 }' >
+
+                    </div>
+                    <div ng-show="showAccountList && campaignUserEmailForAccount != ''" class="col-lg-7 col-md-7 col-sm-7 col-xs-7 no-left-padding">
+                        <div class="reward-multi-select">
+                            <label>Accounts</label>
+                            <select chosen
+                                    data-placeholder-text-single="'Choose an account'"
+                                    width="100"
+                                    allow-single-deselect="false"
+                                    ng-model="editCampaignParams.account"
+                                    ng-change="campaignChanged('account')"
+                                    ng-options="account.name + ' - ' + account.reference for account in campaignUserAccounts | orderBy: 'name'">
+                                <option value=""></option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="divider-20 setup-groups-tooltip-div">
+                <label>Campaign status &nbsp;<i uib-tooltip-html="'The status of a campaign. This will automatically change to expired after the end date or when the reward total balance has been depleted.'"
+                                                class="ion-information-circled setup-groups-tooltip"></i></label>
+                <div class="divider-20">
+                    <div class="custom-radio-groups-btn">
+                        <label class="margin-right-10 pointer">
+                            <input class="pointer" type="radio" ng-model="editCampaignParams.status"
+                                   ng-change="campaignChanged('status')" value="active">
+                            <span class="custom-radio-btn">Active</span>
+                        </label>
+                        <label class="margin-right-10 pointer">
+                            <input class="pointer" type="radio" ng-model="editCampaignParams.status"
+                                   ng-change="campaignChanged('status')" value="disabled">
+                            <span class="custom-radio-btn">Disabled</span>
+                        </label>
+                        <label class="margin-right-10 pointer">
+                            <input class="pointer" type="radio" ng-model="editCampaignParams.status"
+                                   ng-change="campaignChanged('status')" value="expired">
+                            <span class="custom-radio-btn">Expired</span>
+                        </label>
+                    </div>
                 </div>
             </div>
             <div class="form-group">
-                <label>Groups</label>
-                <div class="reward-multi-select">
-                    <tags-input ng-model="editCampaignParams.groups" on-tag-added="campaignChanged('groups')"
-                                placeholder="Enter one or more group name" on-tag-removed="campaignChanged('groups')">
-                        <auto-complete class="reward-tag-users-input" source="getGroupsTypeahead($query)"></auto-complete>
-                    </tags-input>
-                </div>
+                <a ng-click="showAdvancedOptions = !showAdvancedOptions" class="pointer">
+                    <span ng-hide="showAdvancedOptions">Show advanced options</span>
+                    <span ng-show="showAdvancedOptions">Hide advanced options</span>
+                </a>
             </div>
+            <div ng-show="showAdvancedOptions">
+                <div class="form-group setup-groups-tooltip-div">
+                    <label>Max per user
+                        &nbsp;<i uib-tooltip-html="'The maximum times a user can receive a reward in this campaign.'"
+                                 class="ion-information-circled setup-groups-tooltip"></i></label>
+                    <br>
+                    <input class="form-control" ng-change="campaignChanged('max_per_user')" ng-model="editCampaignParams.max_per_user" type="number">
+                </div>
+                <div class="form-group">
+                    <label>Event</label>
+                    <br>
+                    <select class="form-control pointer" ng-change="campaignChanged('event')" ng-model="editCampaignParams.event"
+                            ng-options="event for event in eventOptions">
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Users</label>
+                    <div class="reward-multi-select">
+                        <tags-input ng-model="editCampaignParams.users" on-tag-added="campaignChanged('users')"
+                                    on-tag-removed="campaignChanged('users')"
+                                    placeholder="Enter one or more user IDs.">
+                            <auto-complete class="reward-tag-users-input" source="getUsersEmailTypeahead($query)"></auto-complete>
+                        </tags-input>
+                    </div>
+                </div>
+                <!--<div class="form-group">-->
+                <!--<label>Groups</label>-->
+                <!--<div class="reward-multi-select">-->
+                <!--<tags-input ng-model="editCampaignParams.groups" on-tag-added="campaignChanged('groups')"-->
+                <!--placeholder="Enter one or more group name" on-tag-removed="campaignChanged('groups')">-->
+                <!--<auto-complete class="reward-tag-users-input" source="getGroupsTypeahead($query)"></auto-complete>-->
+                <!--</tags-input>-->
+                <!--</div>-->
+                <!--</div>-->
+            </div>
+
+
             <div class="form-group">
                 <button ng-disabled="(!campaignForm.$valid || !editCampaignParams.currency.code)" ng-click="updateCampaign(editCampaignParams)" class="btn btn-primary dashboard-btn pull-right">Save</button>
                 <button ng-click="goToCampaignListView()" class="btn btn-default dashboard-btn pull-right margin-right-10">Back</button>

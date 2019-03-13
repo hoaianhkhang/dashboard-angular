@@ -4,10 +4,12 @@
     </div>
     <div class="panel-body">
         <div class="divider" ng-repeat="notification in notifications">
-            <label  class="checkbox-inline custom-checkbox nowrap">
-                <input type="checkbox" ng-change="saveNotifications(notification)" ng-model="notification.enabled" ng-checked="notification.enabled">
-                <span class="account-settings-span">{{notification.description}}</span>
-            </label>
+            <div class="form-group">
+                <label  class="checkbox-inline custom-checkbox nowrap">
+                    <input type="checkbox" ng-change="saveNotifications(notification)" ng-model="notification.enabled" ng-checked="notification.enabled">
+                    <span class="account-settings-span">{{notification.description}}</span>
+                </label>
+            </div>
         </div>
     </div>
 </div>
