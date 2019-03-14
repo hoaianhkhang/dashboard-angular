@@ -5,26 +5,27 @@
     </div>
 </div>
 
-<div ng-show="hotwalletObjLength > 0 && !loadingHotwalletTransactions" class="panel">
-    <div class="panel-body">
+<div ng-show="hotwalletObjLength > 0 && !loadingHotwalletTransactions" class="panel" ng-repeat="currency in hotWalletCurrencies">
+    <div class="panel-body" >
         <div class="row">
             <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
                 <div class="dashboard-currencies-code">
-                    TXLM
+                    {{currency.currency.code}}
                 </div>
             </div>
             <div class="currencies-page-row">
                 <div>
-                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
                         <div>
                             <span><strong>{{hotwalletObj.rehive_account_reference}}</strong></span>
                             <br>
                             <span class="currencies-details-heading">Account reference</span>
                         </div>
                     </div>
-                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
                         <div>
-                            <span><strong>{{stellarCurrency.symbol}} {{hotwalletObj.balance | currencyModifiersFilter: stellarCurrency.divisibility}}</strong></span>
+                            <!--<span><strong>{{stellarCurrency.symbol}} {{hotwalletObj.balance | currencyModifiersFilter: stellarCurrency.divisibility}}</strong></span>-->
+                            <span><strong>{{currency.currency.symbol}} {{currency.balance | currencyModifiersFilter: currency.currency.divisibility}}</strong></span>
                             <br>
                             <span class="currencies-details-heading">Total</span>
                         </div>
@@ -36,8 +37,8 @@
                             <span class="currencies-details-heading">Low balance percentage</span>
                         </div>
                     </div>
-                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                        <button class="btn btn-primary dashboard-btn pull-right"
+                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                        <button class="btn btn-primary dashboard-btn pull-right" style="margin-top: 0px!important;"
                                 ng-click="openFundHotwalletModal('app/pages/services/stellarTestnetService/stellarTestnetServiceAccounts/stellarTestnetHotwallet/fundStellarTestnetHotwalletModal/fundStellarTestnetHotwalletModal.html','md')">
                             Fund
                         </button>
