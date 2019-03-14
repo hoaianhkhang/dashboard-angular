@@ -48,5 +48,17 @@
             $window.open('https://wallet.rehive.com/register?company=' + $scope.adminCompany, '_blank');
         };
 
+        $scope.openBusinessCases = function(){
+            $window.open('https://docsend.com/view/yx2vhzm', '_blank');
+
+        };
+
+        $scope.walletLearnMore = function(){
+            $window.open('https://docsend.com/view/yx2vhzm', '_blank');
+        };
+
+        $scope.openWalletContact = function(){
+            $window.open('https://rehive.typeform.com/to/hBcRmF', '_blank');
+        };
     }
 })();
