@@ -13,7 +13,7 @@
                         </label>
                         <input type="text" ng-blur="validateCompanyId()" ng-change="fixformat(company)" ng-model="registerData.company"
                                ng-class="{'invalid-data': invalidCompanyIdData}" ng-change="invalidCompanyIdData = false"
-                               class="form-control" id="inputName1" placeholder="Choose a unique ID for your company" required>
+                               class="form-control" id="inputName1" placeholder="Choose a unique ID for your company" auto-focus="true" required>
                     </div>
                 </div>
                 <div class="form-group">
@@ -24,7 +24,7 @@
                         </label>
                         <input type="text" ng-blur="validateCompanyEmail()" ng-model="registerData.email" class="form-control"
                                ng-class="{'invalid-data': invalidEmailData}" ng-change="invalidEmailData = false"
-                               id="inputEmail1" placeholder="e.g. jane@rehive.com" auto-focus="true" required>
+                               id="inputEmail1" placeholder="e.g. jane@rehive.com" required>
                     </div>
                 </div>
                 <div class="form-group">
