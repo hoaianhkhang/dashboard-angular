@@ -6,7 +6,7 @@
 
     /** @ngInject */
     function StellarTestnetHotwalletCtrl($scope,localStorageManagement,$http,errorHandler,_,toastr,sharedResources,
-                                  $uibModal,currencyModifiers,serializeFiltersService,environmentConfig,multiOptionsFilterService) {
+                                  $uibModal,currencyModifiers,serializeFiltersService,environmentConfig,multiOptionsFilterService, Rehive) {
         $scope.stellarAccountSettingView = '';
 
         var vm = this;
@@ -25,6 +25,21 @@
         $scope.transactionsHotwalletStateMessage = '';
         $scope.hotwalletObjLength = 0;
 
+        vm.getAccountFilterObj = function(accountRef){
+            var searchObj = {
+                page: 1,
+                page_size: 25,
+                user: null,
+                reference: accountRef,
+                name: null,
+                primary: null,
+                group: null
+            };
+
+            return serializeFiltersService.objectFilters(searchObj);
+        };
+
+
         vm.getHotwalletActive = function (applyFilter) {
             $scope.loadingHotwalletTransactions =  true;
             if(vm.token) {
@@ -38,11 +53,20 @@
                     if (res.status === 200) {
                         $scope.hotwalletObj = res.data.data;
                         $scope.hotwalletObjLength = Object.keys($scope.hotwalletObj).length;
-                        if(applyFilter){
-                            $scope.getLatestHotwalletTransactions('applyFilter');
-                        } else {
-                            $scope.getLatestHotwalletTransactions();
-                        }
+                        var filtersObj = vm.getAccountFilterObj($scope.hotwalletObj.rehive_account_reference);
+                        $scope.hotWalletCurrencies = [];
+                        Rehive.admin.accounts.get({filters: filtersObj}).then(function (res) {
+                            $scope.hotWalletCurrencies = res.results[0].currencies;
+                            if(applyFilter){
+                                $scope.getLatestHotwalletTransactions('applyFilter');
+                            } else {
+                                $scope.getLatestHotwalletTransactions();
+                            }
+                            $scope.$apply();
+                        }, function (error) {
+                            errorHandler.handleErrors(error);
+                            $scope.$apply();
+                        });
                     }
                 }).catch(function (error) {
                     $scope.loadingHotwalletTransactions =  false;
