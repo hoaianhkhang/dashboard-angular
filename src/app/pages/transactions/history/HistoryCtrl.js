@@ -7,8 +7,9 @@
     /** @ngInject */
     function HistoryCtrl($rootScope,Rehive,$scope,localStorageManagement,$uibModal,sharedResources,
                          toastr,currencyModifiers,errorHandler,$state,$window,typeaheadService,$filter,
-                         serializeFiltersService,$location,_,multiOptionsFilterService) {
+                         serializeFiltersService,$location,_,multiOptionsFilterService,$intercom) {
 
+        $intercom.update({});
         var vm = this;
         vm.token = localStorageManagement.getValue('token');
         vm.companyIdentifier = localStorageManagement.getValue('companyIdentifier');

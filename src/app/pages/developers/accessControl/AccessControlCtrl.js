@@ -6,8 +6,9 @@
 
     /** @ngInject */
     function AccessControlCtrl($rootScope,$scope,serializeFiltersService,
-                               localStorageManagement,errorHandler,$uibModal,Rehive) {
+                               localStorageManagement,errorHandler,$uibModal,Rehive,$intercom) {
 
+        $intercom.update({});
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
         $rootScope.dashboardTitle = 'Access control | Rehive';

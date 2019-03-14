@@ -5,9 +5,10 @@
         .controller('TokensCtrl', TokensCtrl);
 
     /** @ngInject */
-    function TokensCtrl(Rehive,$scope,localStorageManagement,
+    function TokensCtrl(Rehive,$scope,localStorageManagement,$intercom,
                         errorHandler,$uibModal,$rootScope) {
 
+        $intercom.update({});
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
         $rootScope.dashboardTitle = 'Api tokens | Rehive';

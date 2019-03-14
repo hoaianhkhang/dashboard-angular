@@ -7,7 +7,7 @@
     /** @ngInject */
 
     function PageTopCtrl($rootScope,$scope,Rehive,localStorageManagement,$state,$timeout,serializeFiltersService,
-                         $location,errorHandler,$window,identifySearchInput) {
+                         $location,errorHandler,$window,identifySearchInput,$intercom) {
         var vm = this;
 
         vm.token = localStorageManagement.getValue('TOKEN');
@@ -446,6 +446,7 @@
             $rootScope.securityConfigured = true;
             $window.sessionStorage.currenciesList = '';
             $rootScope.pageTopObj = {};
+            $intercom.shutdown();
             localStorageManagement.deleteValue('TOKEN');
             localStorageManagement.deleteValue('token');
             Rehive.removeToken();

@@ -6,8 +6,9 @@
 
     /** @ngInject */
     function AccountsCtrl($rootScope,$scope,localStorageManagement,typeaheadService,compareArrayOfObjects,
-                          _,errorHandler,serializeFiltersService,$uibModal,Rehive,$filter) {
+                          _,errorHandler,serializeFiltersService,$uibModal,Rehive,$filter,$intercom) {
 
+        $intercom.update({});
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
         $rootScope.dashboardTitle = 'Accounts | Rehive';

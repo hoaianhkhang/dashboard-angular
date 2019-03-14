@@ -28,7 +28,7 @@
                 // title: 'Services',
                 title: 'Extensions',
                 sidebarMeta: {
-                    order: 600,
+                    order: 700,
                     icon: 'sidebar-services-icon'
                 }
             });
