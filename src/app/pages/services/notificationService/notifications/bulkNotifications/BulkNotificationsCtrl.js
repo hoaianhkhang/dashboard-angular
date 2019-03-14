@@ -120,10 +120,12 @@
                 }
             });
 
-            vm.addBulkNotifications(enabledEmailEventsArray,enabledSmsEventsArray);
+            vm.addBulkNotifications(0, enabledEmailEventsArray,enabledSmsEventsArray);
         };
 
-        vm.addBulkNotifications = function (enabledEmailEventsArray,enabledSmsEventsArray) {
+        vm.addBulkNotifications = function (callIdx, enabledEmailEventsArray,enabledSmsEventsArray) {
+            console.log(enabledEmailEventsArray);
+            /*
             if(enabledEmailEventsArray.length > 0){
                 enabledEmailEventsArray.forEach(function (emailNotif,index,arr) {
                     if(index == (arr.length - 1)){
@@ -145,18 +147,38 @@
                         vm.addNotification(emailNotif,null,'email');
                     }
                 });
-            } else {
-                enabledSmsEventsArray.forEach(function (smsNotif,smsIndex,smsArr) {
-                    if(smsIndex == (smsArr.length - 1)){
-                        vm.addNotification(smsNotif,'last','sms');
+            } */
+            var emailArrLen = enabledEmailEventsArray.length, smsArrLen = enabledSmsEventsArray.length;
+            if(emailArrLen > 0 && callIdx < emailArrLen){
+                if(callIdx == (emailArrLen - 1)){
+                    if(smsArrLen > 0){
+                        vm.addNotification(callIdx, enabledEmailEventsArray,enabledSmsEventsArray, enabledEmailEventsArray[callIdx],null,'email');
                     } else {
-                        vm.addNotification(smsNotif,null,'sms');
+                        vm.addNotification(callIdx, enabledEmailEventsArray,enabledSmsEventsArray, enabledEmailEventsArray[callIdx],'last','email');
                     }
-                });
+                    for(var smsIndex = 0; smsIndex < smsArrLen; ++smsIndex) {
+                        if(smsIndex === (smsArrLen - 1)){
+                            vm.addNotification(callIdx, null, null, enabledSmsEventsArray[smsIndex],'last','sms');
+                        } else {
+                            vm.addNotification(callIdx, null,null, enabledSmsEventsArray[smsIndex],null,'sms');
+                        }
+                    }
+                } else {
+                    vm.addNotification(callIdx, enabledEmailEventsArray,enabledSmsEventsArray, enabledEmailEventsArray[callIdx],null, 'email');
+                }
+            }
+            else {
+                for(var smsIndex = 0; smsIndex < smsArrLen; ++smsIndex) {
+                    if(smsIndex === (smsArrLen - 1)){
+                        vm.addNotification(callIdx, null, null, enabledSmsEventsArray[smsIndex],'last','sms');
+                    } else {
+                        vm.addNotification(callIdx, null,null, enabledSmsEventsArray[smsIndex],null,'sms');
+                    }
+                }
             }
         };
 
-        vm.addNotification = function (notification,last,type) {
+        vm.addNotification = function (callIdx, enabledEmailEventsArray,enabledSmsEventsArray, notification,last,type) {
             var notificationObj = {};
 
             if(type == 'email'){
@@ -201,6 +223,10 @@
                             toastr.success('Bulk notifications added successfully');
                             // $location.path('/services/notifications/list');
                             $location.path('/extensions/notifications/list');
+                        }
+                        else if(enabledEmailEventsArray){
+                            ++callIdx;
+                            vm.addBulkNotifications(callIdx, enabledEmailEventsArray, enabledSmsEventsArray);
                         }
                     }
                 }).catch(function (error) {

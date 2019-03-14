@@ -23,6 +23,9 @@
         $scope.company = {};
         $scope.twilioCredsList = [];
         $scope.sendGridCredsList = [];
+        $scope.changedCompanyInfo = false;
+        vm.prevCompanyName = "";
+        vm.prevCompanyEmail = "";
 
         $scope.goToNotificationSetting = function (setting) {
             $scope.notificationSettingView = setting;
@@ -41,6 +44,8 @@
                     $scope.updatingCompanyDetails =  false;
                     if (res.status === 200) {
                         $scope.company = res.data.data;
+                        $scope.prevCompanyName = $scope.company.name;
+                        $scope.prevCompanyEmail = $scope.company.email;
                     }
                 }).catch(function (error) {
                     $scope.updatingCompanyDetails =  false;
@@ -52,6 +57,7 @@
         vm.getCompanyDetails();
 
         $scope.companyDetailsChanged = function (field) {
+            $scope.changedCompanyInfo = (vm.prevCompanyName !== $scope.company.name || vm.prevCompanyEmail !== $scope.company.email);
             vm.updatedCompany[field] = $scope.company[field];
         };
 
