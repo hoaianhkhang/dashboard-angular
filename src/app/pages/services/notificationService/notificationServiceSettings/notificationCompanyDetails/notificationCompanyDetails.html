@@ -6,11 +6,11 @@
         <form name="companyEmailForm">
             <div class="form-group">
                 <label>Company name</label>
-                <input type="text" class="form-control divider" ng-change="companyDetailsChanged('name')" ng-model="company.name" placeholder="Enter company name" required/>
+                <input type="text" class="form-control divider" ng-change="companyDetailsChanged('name')" ng-model="company.name" placeholder="Enter company name"/>
             </div>
             <div class="form-group">
                 <label>From email</label>
-                <input type="email" class="form-control divider" ng-change="companyDetailsChanged('email')" ng-model="company.email" placeholder="Enter from email" required/>
+                <input type="email" class="form-control divider" ng-change="companyDetailsChanged('email')" ng-model="company.email" placeholder="Enter from email"/>
             </div>
             <!--<div class="form-group" ng-hide="sendGridCredsList.length > 0">-->
                 <!--<a ng-class="{'archived-text': sendGridCredsList.length > 0}" class="pointer" ng-click="openAddSendGridModal('app/pages/services/notificationService/notificationServiceSettings/notificationCompanyDetails/sendGridModal/sendGridModal.html','md')">-->
@@ -20,7 +20,7 @@
                 <!--<a ng-class="{'archived-text': twilioCredsList.length > 0}" class="pointer" ng-click="openAddTwilioModal('app/pages/services/notificationService/notificationServiceSettings/notificationCompanyDetails/twilioModal/twilioModal.html','md')">-->
                     <!--Add Twilio details</a>-->
             <!--</div>-->
-            <button ng-disabled="!companyEmailForm.$valid" ng-click="updateCompanyDetails()"
+            <button ng-disabled="!changedCompanyInfo" ng-click="updateCompanyDetails()"
                     class="btn btn-primary dashboard-btn pull-right">Save</button>
         </form>
     </div>

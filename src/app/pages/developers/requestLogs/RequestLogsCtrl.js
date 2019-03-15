@@ -6,8 +6,9 @@
 
     /** @ngInject */
     function RequestLogsCtrl($scope,Rehive,localStorageManagement,errorHandler,
-                             typeaheadService,serializeFiltersService,$uibModal,$filter) {
+                             typeaheadService,serializeFiltersService,$uibModal,$filter,$intercom) {
 
+        $intercom.update({});
         var vm = this;
         vm.token = localStorageManagement.getValue('token');
         vm.companyIdentifier = localStorageManagement.getValue('companyIdentifier');

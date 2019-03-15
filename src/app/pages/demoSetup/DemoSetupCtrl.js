@@ -212,9 +212,7 @@
         };
 
         vm.setupUserGroups = function(){
-            var adminGroup = {name: "admin"},
-                serviceGroup = {name: "service"},
-                userGroup = {
+            var userGroup = {
                     name: "user",
                     label: "User",
                     public: true,
@@ -277,17 +275,10 @@
                 else {
                     Rehive.admin.groups.create(groupObj).then(function (res)
                     {
-                        Rehive.admin.groups.update(groupObj.name, groupObj)
-                            .then(function(res){
-                                if(last){
-                                    vm.trackTasks('apply');
-                                    vm.setupGroupPermissions();
-                                }
-                                $scope.$apply();
-                            }, function (error) {
-                                errorHandler.handleErrors(error);
-                                $scope.$apply();
-                            });
+                        if(last){
+                            vm.trackTasks('apply');
+                            vm.setupGroupPermissions();
+                        }
                         $scope.$apply();
                     }, function (error) {
                         errorHandler.handleErrors(error);
@@ -832,7 +823,7 @@
                 }).then(function (res) {
                     smsTemplates = res.data.data.results;
                     vm.trackTasks(null);
-                    vm.enableBulkNotifications(emailTemplates, smsTemplates);
+                    vm.enableBulkNotifications(0, emailTemplates, smsTemplates);
                 }).catch(function (error) {
                     $scope.addingBulkNotification = false;
                     errorHandler.handleErrors(error);
@@ -840,25 +831,51 @@
             }
         };
 
-        vm.enableBulkNotifications = function(emailTemplates, smsTemplates){
-            emailTemplates.forEach(function (emailNotification,index,arr) {
-                vm.addNotification(emailNotification, null, 'email');
-            });
-
-            smsTemplates.forEach(function (emailNotification,index,arr) {
-                if(index === (arr.length-1) ){
-                    vm.trackTasks(null);
-                    vm.addNotification(emailNotification, 'last', 'sms');
+        vm.enableBulkNotifications = function(callIdx, emailTemplates, smsTemplates){
+            var emailArrLen = emailTemplates.length, smsArrLen = smsTemplates.length;
+            if(emailArrLen > 0 && callIdx < emailArrLen){
+                if(callIdx == (emailArrLen - 1)){
+                    if(smsArrLen > 0){
+                        vm.addNotification(callIdx, emailTemplates,smsTemplates, emailTemplates[callIdx],null,'email');
+                    } else {
+                        vm.trackTasks(null);
+                        vm.addNotification(callIdx, emailTemplates,smsTemplates, emailTemplates[callIdx],'last','email');
+                    }
+                    for(var smsIndex = 0; smsIndex < smsArrLen; ++smsIndex) {
+                        if(smsIndex === (smsArrLen - 1)){
+                            vm.trackTasks(null);
+                            vm.addNotification(callIdx, null, null, smsTemplates[smsIndex],'last','sms');
+                        } else {
+                            vm.addNotification(callIdx, null,null, smsTemplates[smsIndex],null,'sms');
+                        }
+                    }
+                } else {
+                    vm.addNotification(callIdx, emailTemplates,smsTemplates, emailTemplates[callIdx],null, 'email');
                 }
-                else{
-                    vm.addNotification(emailNotification, null, 'sms');
+            }
+            else {
+                for(var smsIndex = 0; smsIndex < smsArrLen; ++smsIndex) {
+                    if(smsIndex === (smsArrLen - 1)){
+                        vm.trackTasks(null);
+                        vm.addNotification(callIdx, null, null, smsTemplates[smsIndex],'last','sms');
+                    } else {
+                        vm.addNotification(callIdx, null,null, smsTemplates[smsIndex],null,'sms');
+                    }
                 }
-            });
+            }
+            // smsTemplates.forEach(function (smsNotification,index,arr) {
+            //     if(index === (arr.length-1) ){
+            //         vm.trackTasks(null);
+            //         vm.addNotification(smsNotification, 'last', 'sms');
+            //     }
+            //     else{
+            //         vm.addNotification(smsNotification, null, 'sms');
+            //     }
+            // });
         };
 
-        vm.addNotification = function (notification,last,type) {
+        vm.addNotification = function (callIdx, enabledEmailEventsArray,enabledSmsEventsArray, notification,last,type) {
             var notificationObj = {};
-
             if(type == 'email'){
                 notificationObj = {
                     name: notification.name,
@@ -899,6 +916,10 @@
                         if(last){
                             vm.trackTasks(null);
                             vm.getCompanyCurrencies();
+                        }
+                        else if(enabledEmailEventsArray){
+                            ++callIdx;
+                            vm.enableBulkNotifications(callIdx, enabledEmailEventsArray, enabledSmsEventsArray);
                         }
                     }
                 }).catch(function (error) {
@@ -998,90 +1019,6 @@
                 });
             });
         };
-
-        // vm.setupTierLimits = function(){
-        //     var tier1LimitCr = {
-        //             tx_type: "credit",
-        //             currency: null,
-        //             value: 1000,
-        //             type: 'month_max'
-        //         },
-        //         tier1LimitDr = {
-        //             tx_type: "debit",
-        //             currency: null,
-        //             value: 1000,
-        //             type: 'month_max'
-        //         },
-        //         tier2LimitCr = {
-        //             tx_type: "credit",
-        //             currency: null,
-        //             value: 10000,
-        //             type: 'month_max'
-        //         },
-        //         tier2LimitDr = {
-        //             tx_type: "debit",
-        //             currency: null,
-        //             value: 10000,
-        //             type: 'month_max'
-        //         };
-        //
-        //     tier1LimitCr = serializeFiltersService.objectFilters(tier1LimitCr);
-        //     tier1LimitDr = serializeFiltersService.objectFilters(tier1LimitDr);
-        //     tier2LimitCr = serializeFiltersService.objectFilters(tier2LimitCr);
-        //     tier2LimitDr = serializeFiltersService.objectFilters(tier2LimitDr);
-        //
-        //     for(var i = 0; i < $scope.currencyOptions.length; ++i){
-        //         var currency = $scope.currencyOptions[i];
-        //
-        //         tier1LimitCr.currency = tier1LimitDr.currency = tier2LimitCr.currency = tier2LimitDr.currency = currency.code;
-        //
-        //         tier1LimitCr.value = tier1LimitDr.value = currencyModifiers.convertToCents(1000, currency.divisibility);
-        //         tier2LimitCr.value = tier2LimitDr.value = currencyModifiers.convertToCents(10000, currency.divisibility);
-        //
-        //         for(var j = 0; j < $scope.userGroupTiers.length; ++j){
-        //             if($scope.userGroupTiers[j].level === 1){
-        //                 vm.addTierLimit("user", $scope.userGroupTiers[j].id, tier1LimitCr, null);
-        //                 vm.addTierLimit("user", $scope.userGroupTiers[j].id, tier1LimitDr, null);
-        //             }
-        //             else if($scope.userGroupTiers[j].level === 2){
-        //                 vm.addTierLimit("user", $scope.userGroupTiers[j].id, tier2LimitCr, null);
-        //                 vm.addTierLimit("user", $scope.userGroupTiers[j].id, tier2LimitDr, null);
-        //             }
-        //         }
-        //         for(var k = 0; k < $scope.merchantGroupTiers.length; ++k){
-        //             if($scope.merchantGroupTiers[k].level === 1){
-        //                 vm.addTierLimit("merchant", $scope.merchantGroupTiers[k].id, tier1LimitCr, null);
-        //                 vm.addTierLimit("merchant", $scope.merchantGroupTiers[k].id, tier1LimitDr, null);
-        //             }
-        //             else if($scope.merchantGroupTiers[k].level === 2 && i === ($scope.currencyOptions.length - 1) && k === ($scope.merchantGroupTiers.length - 1)){
-        //                 vm.addTierLimit("merchant", $scope.merchantGroupTiers[k].id, tier2LimitCr, null);
-        //                 vm.addTierLimit("merchant", $scope.merchantGroupTiers[k].id, tier2LimitDr, 'last');
-        //             }
-        //             else if($scope.merchantGroupTiers[k].level === 2){
-        //                 vm.addTierLimit("merchant", $scope.merchantGroupTiers[k].id, tier2LimitCr, null);
-        //                 vm.addTierLimit("merchant", $scope.merchantGroupTiers[k].id, tier2LimitDr, null);
-        //             }
-        //         }
-        //     }
-        //      vm.trackTasks('apply');
-        // };
-
-        // vm.addTierLimit = function(groupName, tierId, tierLimitsParams, last){
-        //     if(vm.token) {
-        //         Rehive.admin.groups.tiers.limits.create(groupName, tierId, tierLimitsParams)
-        //             .then(function (res){
-        //                 if(last){
-        //                     vm.trackTasks('apply');
-        //                     vm.reactivateProductService();
-        //                 }
-        //                 $scope.$apply();
-        //             }, function (error) {
-        //                 errorHandler.evaluateErrors(error);
-        //                 errorHandler.handleErrors(error);
-        //                 $scope.$apply();
-        //             });
-        //     }
-        // };
 
         vm.setupProductService = function(){
             var newProduct1 = {

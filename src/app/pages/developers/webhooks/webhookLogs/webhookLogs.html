@@ -6,24 +6,26 @@
         <div class="panel-body">
             <table class="table custom-table">
                 <tr>
-                    <th>Id</th>
-                    <th>Event</th>
-                    <th>Tries</th>
-                    <th>Failed</th>
-                    <th>Completed</th>
-                    <th class="align-right">Created</th>
+                    <th width="9%">Id</th>
+                    <th width="16%">Event</th>
+                    <th width="30%">URL</th>
+                    <th width="6%">Tries</th>
+                    <th width="3%">Failed</th>
+                    <th width="18%">Completed</th>
+                    <th width="18%" class="align-right">Created</th>
                 </tr>
                 <tr ng-show="webhookTasks.length > 0" ng-click="goToLog(log)" ng-repeat="log in webhookTasks | orderBy: '-created'" class=" user-details-table-hover pointer">
-                    <td class="table-row-center transactions-list-element" title="{{log.id}}" ng-bind="log.id"></td>
-                    <td class="table-row-center transactions-list-element" title="{{log.webhook.event}}" ng-bind="log.webhook.event | capitalizeDottedSentence | capitalizeUnderscoredSentence"></td>
-                    <td class="table-row-center transactions-list-element" title="{{log.tries}}" ng-bind="log.tries"></td>
-                    <td class="table-row-center transactions-list-element" title="{{log.failed | date:'mediumDate'}} {{log.failed | date:'shortTime'}}">
+                    <td width="9%"class="table-row-center transactions-list-element" title="{{log.id}}" ng-bind="log.id"></td>
+                    <td width="16%"class="table-row-center transactions-list-element" title="{{log.webhook.event}}" ng-bind="log.webhook.event | capitalizeDottedSentence | capitalizeUnderscoredSentence"></td>
+                    <td width="30%"class="table-row-center transactions-list-element" title="{{log.webhook.url}}" ng-bind="log.webhook.url"></td>
+                    <td width="6%"class="table-row-center transactions-list-element" title="{{log.tries}}" ng-bind="log.tries"></td>
+                    <td width="3%"class="table-row-center transactions-list-element" title="{{log.failed | date:'mediumDate'}} {{log.failed | date:'shortTime'}}">
                         {{log.failed | date:'mediumDate'}} {{log.failed | date:'shortTime'}}
                     </td>
-                    <td class="table-row-center transactions-list-element" title="{{log.completed | date:'mediumDate'}} {{log.completed | date:'shortTime'}}">
+                    <td width="18%" class="table-row-center transactions-list-element" title="{{log.completed | date:'mediumDate'}} {{log.completed | date:'shortTime'}}">
                         {{log.completed | date:'mediumDate'}} {{log.completed | date:'shortTime'}}
                     </td>
-                    <td class="table-row-center transactions-list-element align-right" title="{{log.created | date:'mediumDate'}} {{log.created | date:'shortTime'}}">
+                    <td width="18%" class="table-row-center transactions-list-element align-right" title="{{log.created | date:'mediumDate'}} {{log.created | date:'shortTime'}}">
                         {{log.created | date:'mediumDate'}} {{log.created | date:'shortTime'}}</td>
                 </tr>
             </table>

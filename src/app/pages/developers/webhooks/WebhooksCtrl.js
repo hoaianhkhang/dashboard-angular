@@ -5,8 +5,9 @@
         .controller('WebhooksCtrl', WebhooksCtrl);
 
     /** @ngInject */
-    function WebhooksCtrl($rootScope,$scope,$location,$state) {
+    function WebhooksCtrl($rootScope,$scope,$location,$state,$intercom) {
 
+        $intercom.update({});
         var vm = this;
         vm.updatedWebhook = {};
         $rootScope.dashboardTitle = 'Webhooks | Rehive';
