@@ -638,6 +638,7 @@
                     }
                 }).then(function (res) {
                     vm.trackTasks(null);
+                    // vm.setupStellarTestnetService();
                     vm.setupBitcoinTestnetService();
                 }).catch(function (error) {
                     errorHandler.handleErrors(error);
@@ -832,49 +833,21 @@
         };
 
         vm.enableBulkNotifications = function(callIdx, emailTemplates, smsTemplates){
-            var emailArrLen = emailTemplates.length, smsArrLen = smsTemplates.length;
-            if(emailArrLen > 0 && callIdx < emailArrLen){
-                if(callIdx == (emailArrLen - 1)){
-                    if(smsArrLen > 0){
-                        vm.addNotification(callIdx, emailTemplates,smsTemplates, emailTemplates[callIdx],null,'email');
-                    } else {
-                        vm.trackTasks(null);
-                        vm.addNotification(callIdx, emailTemplates,smsTemplates, emailTemplates[callIdx],'last','email');
-                    }
-                    for(var smsIndex = 0; smsIndex < smsArrLen; ++smsIndex) {
-                        if(smsIndex === (smsArrLen - 1)){
-                            vm.trackTasks(null);
-                            vm.addNotification(callIdx, null, null, smsTemplates[smsIndex],'last','sms');
-                        } else {
-                            vm.addNotification(callIdx, null,null, smsTemplates[smsIndex],null,'sms');
-                        }
-                    }
-                } else {
-                    vm.addNotification(callIdx, emailTemplates,smsTemplates, emailTemplates[callIdx],null, 'email');
+            emailTemplates.forEach(function(emailNotification){
+                vm.addNotification(emailNotification, null, 'email');
+            });
+            smsTemplates.forEach(function (smsNotification,index,arr) {
+                if(index === (arr.length-1) ){
+                    vm.trackTasks(null);
+                    vm.addNotification(smsNotification, 'last', 'sms');
                 }
-            }
-            else {
-                for(var smsIndex = 0; smsIndex < smsArrLen; ++smsIndex) {
-                    if(smsIndex === (smsArrLen - 1)){
-                        vm.trackTasks(null);
-                        vm.addNotification(callIdx, null, null, smsTemplates[smsIndex],'last','sms');
-                    } else {
-                        vm.addNotification(callIdx, null,null, smsTemplates[smsIndex],null,'sms');
-                    }
+                else{
+                    vm.addNotification(smsNotification, null, 'sms');
                 }
-            }
-            // smsTemplates.forEach(function (smsNotification,index,arr) {
-            //     if(index === (arr.length-1) ){
-            //         vm.trackTasks(null);
-            //         vm.addNotification(smsNotification, 'last', 'sms');
-            //     }
-            //     else{
-            //         vm.addNotification(smsNotification, null, 'sms');
-            //     }
-            // });
+            });
         };
 
-        vm.addNotification = function (callIdx, enabledEmailEventsArray,enabledSmsEventsArray, notification,last,type) {
+        vm.addNotification = function (notification,last,type) {
             var notificationObj = {};
             if(type == 'email'){
                 notificationObj = {
@@ -917,10 +890,6 @@
                             vm.trackTasks(null);
                             vm.getCompanyCurrencies();
                         }
-                        else if(enabledEmailEventsArray){
-                            ++callIdx;
-                            vm.enableBulkNotifications(callIdx, enabledEmailEventsArray, enabledSmsEventsArray);
-                        }
                     }
                 }).catch(function (error) {
                     errorHandler.handleErrors(error);
@@ -946,8 +915,8 @@
                         $scope.currencyOptions.sort(function(a, b){
                             return a.unit.localeCompare(b.unit);
                         });
-                        vm.setupCurrencies();
                         vm.trackTasks('apply');
+                        vm.setupCurrencies();
                         vm.setupAccountConfigurations();
                         $scope.$apply();
                     }, function (error) {
@@ -976,11 +945,12 @@
             operationalAccountConfig = serializeFiltersService.objectFilters(operationalAccountConfig);
             userAccountConfig = serializeFiltersService.objectFilters(userAccountConfig);
 
-            vm.addGroupAccountConfigurations("admin", operationalAccountConfig, null);
+
+            vm.addGroupAccountConfigurations("user", userAccountConfig, null);
             vm.addGroupAccountConfigurations("manager", operationalAccountConfig, null);
             vm.addGroupAccountConfigurations("support", operationalAccountConfig, null);
             vm.addGroupAccountConfigurations("merchant", operationalAccountConfig, null);
-            vm.addGroupAccountConfigurations("user", userAccountConfig, 'last');
+            vm.addGroupAccountConfigurations("admin", operationalAccountConfig, 'last');
             vm.trackTasks('apply');
         };
 
