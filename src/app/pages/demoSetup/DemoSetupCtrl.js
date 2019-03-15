@@ -832,46 +832,18 @@
         };
 
         vm.enableBulkNotifications = function(callIdx, emailTemplates, smsTemplates){
-            var emailArrLen = emailTemplates.length, smsArrLen = smsTemplates.length;
-            if(emailArrLen > 0 && callIdx < emailArrLen){
-                if(callIdx == (emailArrLen - 1)){
-                    if(smsArrLen > 0){
-                        vm.addNotification(callIdx, emailTemplates,smsTemplates, emailTemplates[callIdx],null,'email');
-                    } else {
-                        vm.trackTasks(null);
-                        vm.addNotification(callIdx, emailTemplates,smsTemplates, emailTemplates[callIdx],'last','email');
-                    }
-                    for(var smsIndex = 0; smsIndex < smsArrLen; ++smsIndex) {
-                        if(smsIndex === (smsArrLen - 1)){
-                            vm.trackTasks(null);
-                            vm.addNotification(callIdx, null, null, smsTemplates[smsIndex],'last','sms');
-                        } else {
-                            vm.addNotification(callIdx, null,null, smsTemplates[smsIndex],null,'sms');
-                        }
-                    }
-                } else {
-                    vm.addNotification(callIdx, emailTemplates,smsTemplates, emailTemplates[callIdx],null, 'email');
+            emailTemplates.forEach(function(emailNotification){
+                vm.addNotification(emailNotification, null, 'email');
+            });
+            smsTemplates.forEach(function (smsNotification,index,arr) {
+                if(index === (arr.length-1) ){
+                    vm.trackTasks(null);
+                    vm.addNotification(smsNotification, 'last', 'sms');
                 }
-            }
-            else {
-                for(var smsIndex = 0; smsIndex < smsArrLen; ++smsIndex) {
-                    if(smsIndex === (smsArrLen - 1)){
-                        vm.trackTasks(null);
-                        vm.addNotification(callIdx, null, null, smsTemplates[smsIndex],'last','sms');
-                    } else {
-                        vm.addNotification(callIdx, null,null, smsTemplates[smsIndex],null,'sms');
-                    }
+                else{
+                    vm.addNotification(smsNotification, null, 'sms');
                 }
-            }
-            // smsTemplates.forEach(function (smsNotification,index,arr) {
-            //     if(index === (arr.length-1) ){
-            //         vm.trackTasks(null);
-            //         vm.addNotification(smsNotification, 'last', 'sms');
-            //     }
-            //     else{
-            //         vm.addNotification(smsNotification, null, 'sms');
-            //     }
-            // });
+            });
         };
 
         vm.addNotification = function (callIdx, enabledEmailEventsArray,enabledSmsEventsArray, notification,last,type) {
