@@ -6,12 +6,16 @@
 
     /** @ngInject */
     function CompanyInfoCtrl($scope,Rehive,$rootScope,Upload,environmentConfig,serializeFiltersService,
-                             $timeout,toastr,localStorageManagement,errorHandler) {
+                             $timeout,toastr,localStorageManagement,errorHandler, $state) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
-        $scope.companyImageUrl = "/assets/img/app/placeholders/hex_grey.svg";
-        $scope.companyIconUrl = "/assets/img/app/placeholders/hex_grey.svg";
+        // $scope.companyImageUrl = "../../../assets/img/app/placeholders/_defaultLogo.svg";
+        // $scope.companyIconUrl = "../../../assets/img/app/placeholders/_defaultIcon.svg";
+        $scope.companyImageUrl = "";
+        $scope.companyIconUrl = "";
+        $scope.hasLogo = false;
+        $scope.hasIcon = false;
         $scope.updatingLogo = false;
         $scope.loadingCompanyInfo = true;
         $scope.company = {
@@ -67,9 +71,10 @@
                     $timeout(function(){
                         $scope.companyImageUrl = res.data.data.logo;
                         $scope.updatingLogo = false;
-                    },0);
+                    },10);
                     //$window.location.reload();
                 }
+                toastr.success('Image(s) uploaded successfully. Refresh the page to see changes.');
             }).catch(function (error) {
                 $scope.updatingLogo = false;
                 errorHandler.evaluateErrors(error.data);
@@ -90,8 +95,8 @@
                         }
                     }
                     $scope.company.details = res;
-                    $scope.companyImageUrl = res.logo;
-                    $scope.companyIconUrl = res.icon;
+                    if(res.logo !== null && res.logo !== ""){$scope.companyImageUrl = res.logo; $scope.hasLogo = true;}
+                    if(res.icon !== null && res.icon !== ""){$scope.companyIconUrl = res.icon; $scope.hasIcon = true;}
                     $scope.enableEditor();
                     $scope.$apply();
                 }, function (error) {
@@ -110,7 +115,6 @@
 
         $scope.updateCompanySettings = function () {
             if(Object.keys(vm.updatedCompanySettings.settings).length != 0){
-
                 $scope.loadingCompanyInfo = true;
                 Rehive.admin.company.settings.update(vm.updatedCompanySettings.settings).then(function (res) {
                     vm.updatedCompanySettings.settings = {};
