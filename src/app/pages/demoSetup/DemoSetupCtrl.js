@@ -18,15 +18,15 @@
         $scope.merchantGroupTiers = [];
         $scope.currencyOptions = [];
         $scope.demoCurrency = {};
-        $scope.txbtCurrency = {};
+        $scope.txlmCurrency = {};
 
         vm.setupCurrencies = function(){
             $scope.currencyOptions.forEach(function(currency){
                 if(currency.code === "DEMO"){
                     $scope.demoCurrency = currency;
                 }
-                else if(currency.code === "TXBT"){
-                    $scope.txbtCurrency = currency;
+                else if(currency.code === "TXLM"){
+                    $scope.txlmCurrency = currency;
                 }
             });
             vm.trackTasks('apply');
@@ -638,8 +638,8 @@
                     }
                 }).then(function (res) {
                     vm.trackTasks(null);
-                    // vm.setupStellarTestnetService();
-                    vm.setupBitcoinTestnetService();
+                    vm.setupStellarTestnetService();
+                    // vm.setupBitcoinTestnetService();
                 }).catch(function (error) {
                     errorHandler.handleErrors(error);
                 });
@@ -1000,7 +1000,7 @@
                     enabled: true,
                     prices: [
                         {currency: $scope.demoCurrency, amount: 50000000},
-                        {currency: $scope.txbtCurrency, amount: 20000}
+                        {currency: $scope.txlmCurrency, amount: 20000}
                     ]
                 },
                 newProduct2 = {
@@ -1012,7 +1012,7 @@
                     enabled: true,
                     prices: [
                         {currency: $scope.demoCurrency, amount: 100000000},
-                        {currency: $scope.txbtCurrency, amount: 50000}
+                        {currency: $scope.txlmCurrency, amount: 50000}
                     ]
                 };
 
