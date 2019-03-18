@@ -8,12 +8,19 @@
     function VerificationCtrl($rootScope,Rehive,$scope,toastr,localStorageManagement,
                               $location,errorHandler,userVerification,$intercom) {
 
+        $intercom.update({});
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
-        $scope.user = {};
-        $scope.verifyingEmail = false;
-        $rootScope.$pageFinishedLoading = false;
+        $scope.companyName = "";
+        // $scope.user = {};
+        // $scope.verifyingEmail = false;
+        $rootScope.dashboardTitle = 'Welcome | Rehive';
+        // $rootScope.$pageFinishedLoading = false;
+        $rootScope.inVerification = true;
 
+
+
+    /**
         vm.checkIfUserVerified = function(){
             userVerification.verify(function(err,verified){
                 if(verified){
@@ -66,7 +73,7 @@
             Rehive.removeToken();
             $location.path('/login');
         };
-
+    **/
 
     }
 })();

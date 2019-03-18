@@ -1,27 +1,33 @@
-<div class="auth-main">
-    <div class="auth-block">
-        <div class="text-left divider verification-text">
-            <h2>
-                Verify email
-            </h2>
-            <span class="verification-log-out pointer" ng-click="logout()">Log out</span>
-            <div style='border-bottom:1px solid #ccc;margin-left:-20px;margin-right: -20px;'></div>
-            <p>Please check your inbox for an email from Rehive. A verification email was sent to <strong>{{user.email}}</strong>.</p>
+<page-top class="body-white"></page-top>
+<div class="row">
+    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"></div>
+    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 template-1">
+        <div class="row template-container">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 align-items-center">
+                <label class="welcome-label1">Get Started with a template</label>
+            </div>
         </div>
-        <div class="verification-text divider">
-            <p style="margin-top: 0px;">Haven't received an email? <a ng-click="resendEmail()"
-                class="verification-link">Click here to resend email.</a></p>
+        <div class="row template-container">
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 align-items-center" style="">
+                <img src="../../../../assets/img/_mobileImg.png" class="iphone-image"/>
+            </div>
+            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8" style="margin-top: 10%;">
+                <label class="welcome-label2 template-text-container">Rewards and loyalty wallet on Stellar</label>
+                <p class="welcome-text template-text-container">We've set up all the basics for you, so you can get going faster. We've set up a multi currency wallet with rewards.</p>
+                <div class="template-button-container">
+                    <button class="btn btn-default template-button">Overview</button>
+                    <button class="btn btn-primary template-button" style="margin-left: 9%">
+                        Let's go&nbsp;&nbsp;&nbsp;<span class="template-arrow"><i class="fas fa-arrow-right"></i></span>
+                    </button>
+                </div>
+            </div>
         </div>
-        <div class="verification-text divider" style="padding-bottom: 2px;">
-            <p style="margin-top: 0px;">Still haven’t received an email?
-                <a href="https://rehive.com/contact-us/" target="_blank" class="verification-link">Click here to contact us.</a></p>
-        </div>
-        <div class="row form-group verification-btn-box">
-            <div class="col-sm-12">
-                <button ng-click="verifyUser()"
-                        class="btn btn-primary btn-auth verification-button">Continue without verifying
-                </button>
+        <div class="row template-container">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 align-items-center">
+                <a href="" class="terms-and-agreement-link">Manually setup your company instead</a>
             </div>
         </div>
     </div>
+    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"></div>
 </div>
+

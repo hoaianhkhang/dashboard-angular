@@ -18,7 +18,6 @@
 
         vm.getCompanyAdmin = function(){
             Rehive.user.get().then(function(res){
-                console.log(res);
                 $scope.adminEmail = res.email;
                 $scope.adminCompany = res.company;
                 $scope.$apply();

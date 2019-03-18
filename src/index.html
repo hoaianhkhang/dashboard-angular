@@ -41,7 +41,7 @@
     }
   </style>
 </head>
-<body style="overflow-y: scroll">
+<body style="overflow-y: scroll" ng-class="{'body-white': inVerification}">
 <div ui-view="admin" ></div>
 <div ng-hide="securityConfigured" ui-view="securityViews"></div>
 <div class="body-bg"></div>

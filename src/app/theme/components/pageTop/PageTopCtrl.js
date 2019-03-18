@@ -26,7 +26,6 @@
         $scope.showingDashboardTasks = false;
         $scope.showingDashboardBelow1200Tasks = false;
         $scope.allTasksDone = true;
-
         $scope.pagination = {
             itemsPerPage: 10,
             pageNo: 1,
@@ -80,7 +79,7 @@
         //when page refreshed
 
         vm.checkIfInCompanySetup = function (currentLocation) {
-            if(currentLocation.indexOf('company/setup') > 0 || currentLocation.indexOf('demo') > 0 ){
+            if(currentLocation.indexOf('company/setup') > 0 || currentLocation.indexOf('demo') > 0 || currentLocation.indexOf('verification') > 0){
                 $scope.inCompanySetupViews = true;
             } else {
                 $scope.inCompanySetupViews = false;

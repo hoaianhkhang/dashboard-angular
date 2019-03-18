@@ -1,5 +1,61 @@
-.verification-text{
+.body-white{
+  background-color: #ffffff;
+}
+
+.template-container{
+  padding: 30px 50px;
+}
+
+.template-1{
+  margin-top: 100px;
   box-sizing: border-box;
+}
+
+.welcome-label1{
+  font-size: 46px;
+  font-weight: normal;
+}
+
+.welcome-label2{
+  font-size: 32px;
+  font-weight: normal;
+}
+
+.welcome-text{
+  font-size: 20px;
+  font-weight: normal;
+}
+
+.template-text-container{
+  padding: 30px 50px;
+  margin-top: 20px;
+}
+
+.iphone-image{
+  width: 90%;
+  height: 100%;
+}
+
+.template-button-container{
+  width: 90%;
+  margin-top: 50px;
+}
+
+.template-button{
+  padding: 15px;
+  width: 40%;
+  margin-left: 7%;
+  font-size: 24px;
+  border-radius: 30px;
+}
+
+.template-arrow{
+  position: relative;
+  top: 2.5px;
+}
+
+.verification-text{
+
   position: relative;
  & > p{
    color:#666;
@@ -47,12 +103,15 @@
   line-height: 16px;
 }
 
+
+
 .verification-btn-box{
   margin-bottom: 24px !important;
 }
 
 .terms-and-agreement-link{
-  font-size: 14px !important;
+  font-size: 20px !important;
+  color: #A8A8A8;
 }
 
 .register-password-icon{
