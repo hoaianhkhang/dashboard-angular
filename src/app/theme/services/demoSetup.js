@@ -1323,6 +1323,8 @@
                 vm.trackTasks('apply');
                 $rootScope.settingUpDemo = false;
                 $rootScope.securityConfigured = true;
+                $rootScope.settingUpDemo = false;
+                $rootScope.inVerification = false;
                 toastr.success('All demo config has been successfully setup.');
                 $location.path('/get-started');
             }

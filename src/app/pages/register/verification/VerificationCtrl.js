@@ -5,8 +5,8 @@
         .controller('VerificationCtrl', VerificationCtrl);
 
     /** @ngInject */
-    function VerificationCtrl($rootScope,Rehive,$scope,toastr,localStorageManagement,
-                              $location,errorHandler,userVerification,$intercom,$window) {
+    function VerificationCtrl($rootScope,Rehive,$scope,toastr,localStorageManagement,environmentConfig,serializeFiltersService,
+                              $location,errorHandler,userVerification,$intercom,$window,Upload, demoSetupService) {
 
         $intercom.update({});
         var vm = this;
@@ -15,12 +15,80 @@
         // $scope.user = {};
         // $scope.verifyingEmail = false;
         $rootScope.dashboardTitle = 'Welcome | Rehive';
-        // $rootScope.$pageFinishedLoading = false;
+        $rootScope.$pageFinishedLoading = true;
         $rootScope.inVerification = true;
+        $rootScope.tasksCompleted = 0;
+        $scope.template1 = false;
+        $scope.template2 = false;
+        $scope.template3 = true;
+        $scope.companyName = "";
+        $scope.imageFile = {
+            file: {},
+            iconFile: {}
+        };
 
+        vm.testProgress = function(){
+            var interval = setInterval(function(){
+                $rootScope.tasksCompleted++;
+                $scope.percent = Math.round(($rootScope.tasksCompleted / 39) * 100);
+                if($rootScope.tasksCompleted > 39){
+                    clearInterval(interval);
+                    return false;
+                }
+                $scope.$apply();
+            },100);
+        };
+        vm.testProgress();
 
+        $scope.upload = function () {
+            if(!$scope.imageFile.file.name && !$scope.imageFile.iconFile.name){
+                return;
+            }
+            $scope.updatingLogo = true;
+
+            var uploadDataObj = {
+                logo: $scope.imageFile.file.name ? $scope.imageFile.file: null,
+                icon: $scope.imageFile.iconFile.name ? $scope.imageFile.iconFile: null
+            };
+
+            Upload.upload({
+                url: environmentConfig.API +'/admin/company/',
+                data: serializeFiltersService.objectFilters(uploadDataObj),
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': vm.token},
+                method: "PATCH"
+            }).then(function (res) {
+                if (res.status === 200) {
+                    setTimeout(function(){
+                        $scope.companyImageUrl = res.data.data.logo;
+                    },0);
+                }
+            }).catch(function (error) {
+                errorHandler.evaluateErrors(error.data);
+                errorHandler.handleErrors(error);
+            });
+        };
         $scope.openOverview = function(){
             $window.open('https://docsend.com/view/yx2vhzm', '_blank');
+        };
+
+        $scope.askForCompanyName = function(){
+          $scope.template1 = false;
+          $scope.template2 = true;
+        };
+
+        $scope.backToLanding = function(){
+            $scope.template1 = true;
+            $scope.template2 = false;
+        };
+
+        $scope.launchDemoSetup = function(){
+            $scope.template1 = false;
+            $scope.template2 = false;
+            $scope.template3 = true;
+            $rootScope.settingUpDemo = true;
+            demoSetupService.initializeDemoSetup($scope.companyName);
         };
     /**
         vm.checkIfUserVerified = function(){

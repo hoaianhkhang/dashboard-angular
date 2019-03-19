@@ -2,32 +2,94 @@
 <div class="row">
     <div class="col-lg-2 col-md-1 col-sm-1 col-xs-1"></div>
     <div class="col-lg-8 col-md-10 col-sm-10 col-xs-10 template-1">
-        <div class="row template-container">
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 align-items-center">
-                <label class="welcome-label1">Get Started with a template</label>
+        <div ng-show="template1" >
+            <div class="row template-container">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 align-items-center">
+                    <label class="welcome-label1">Get Started with a template</label>
+                </div>
             </div>
-        </div>
-        <div class="row template-container">
-            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 align-items-center" style="">
-                <img src="../../../../assets/img/_mobileImg.png" class="iphone-image"/>
+            <div class="row template-container">
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 align-items-center" style="">
+                    <img src="../../../../assets/img/_mobileImg.png" class="iphone-image"/>
+                </div>
+                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8" style="margin-top: 9%;">
+                    <label class="welcome-label2 template-text-container">Rewards and loyalty wallet on Stellar</label>
+                    <p class="welcome-text template-text-container">We've set up all the basics for you, so you can get going faster. We've set up a multi currency wallet with rewards.</p>
+                    <div class="template-button-container">
+                        <button class="btn btn-default pull-left template-button no-left-padding" ng-click="openOverview()">Overview</button>
+                        <button class="btn btn-primary pull-right template-button" ng-click="askForCompanyName()">
+                            Let's go&nbsp;&nbsp;&nbsp;<span class="template-arrow"><i class="fas fa-arrow-right"></i></span>
+                        </button>
+                    </div>
+                </div>
             </div>
-            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8" style="margin-top: 9%;">
-                <label class="welcome-label2 template-text-container">Rewards and loyalty wallet on Stellar</label>
-                <p class="welcome-text template-text-container">We've set up all the basics for you, so you can get going faster. We've set up a multi currency wallet with rewards.</p>
-                <div class="template-button-container">
-                    <button class="btn btn-default pull-left template-button no-left-padding">Overview</button>
-                    <button class="btn btn-primary pull-right template-button">
-                        Let's go&nbsp;&nbsp;&nbsp;<span class="template-arrow"><i class="fas fa-arrow-right"></i></span>
-                    </button>
+            <div class="row template-container">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 align-items-center">
+                    <a href="#/company/setup/company-details" class="manual-setup-text">Manually setup your company instead</a>
                 </div>
             </div>
         </div>
-        <div class="row template-container">
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 align-items-center">
-                <a href="#/company/setup/company-details" class="manual-setup-text">Manually setup your company instead</a>
+        <div ng-show="template2">
+            <div class="row align-items-center">
+                <div class="col-lg-3 col-md-3 col-sm-2 col-xs-2"></div>
+                <div class="col-lg-6 col-md-6 col-sm-8 col-xs-8">
+                    <label class="welcome-label3">Let's start with the basics</label>
+                    <form name="formTemplateBasics" class="template-company-container">
+                        <label class="welcome-text">Company name</label>
+                        <span>
+                        <input type="text" ng-model="companyName" class="form-control template-1-input"
+                               placeholder="enter a name for your company" auto-focus="true" required>
+                    </span>
+                    </form>
+                    <div class="template-company-container" style="margin-top: 5%">
+                        <label class="welcome-text">Company logo</label>
+                        <div style="margin-top: 13px; position: relative;">
+                            <img ng-hide="imageFile.file.name" src="../../../../assets/img/_defaultIcon.svg" width="100" height="100" alt="company logo">
+                            <img ng-show="imageFile.file.name" ngf-thumbnail="imageFile.file" width="100" height="100" alt="company logo">
+                        </div>
+                        <form class="divider">
+                            <fieldset class="custom-file-upload">
+                                <label>
+                                <span class="custom-file-upload-span">
+                                    <div class="template-edit-icon-container"><i class="fa fa-2x fa-pencil"></i></div>
+                                </span>
+                                    <input style="padding-left: 5px;text-indent: -5px;width: 300px"
+                                           type="file" ngf-select ng-model="imageFile.file" name="file"
+                                           accept="image/*" ngf-max-size="5MB" required>
+                                </label>
+                            </fieldset>
+                        </form>
+                    </div>
+                    <div class="template-company-container">
+                        <button class="btn btn-default pull-left template-button" style="margin-left: 0px;" ng-click="backToLanding()">Go Back</button>
+                        <button ng-disabled="!formTemplateBasics.$valid" class="btn btn-primary pull-right template-button" ng-click="launchDemoSetup();upload();" style="margin-left: 0px">
+                            Next&nbsp;&nbsp;&nbsp;<span class="template-arrow"><i class="fas fa-arrow-right"></i></span>
+                        </button>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-2 col-xs-2"></div>
             </div>
+        </div>
+        <div ng-show="template3">
+            <div class="row align-items-center">
+                <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1"></div>
+                <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
+                    <uib-progressbar class="demo-progressbar" value="tasksCompleted" max=39 style="margin: 100px 0px 0px 0px;"><span style="color:white; white-space:nowrap;">{{tasksCompleted}} / 39</span></uib-progressbar>
+                    <uib-progressbar class="demo-progressbar progress-striped" value="tasksCompleted" type="purple" max=39 style="margin: 10px 0px 0px 0px;"><span style="color:white; white-space:nowrap;">{{tasksCompleted}} / 39</span></uib-progressbar>
+                    <uib-progressbar class="demo-progressbar progress-striped active" value="tasksCompleted" type="warning" max=39 style="margin: 10px 0px 0px 0px;"><span style="color:white; white-space:nowrap;">{{percent}} %</span></uib-progressbar>
+                    <div>
+                        <label ng-if="tasksCompleted < 12" class="welcome-label3 align-items-center" style="font-size: 24px; margin-top: 20px">We are setting up company configurations, groups and their permissions...</label>
+                        <label ng-if="tasksCompleted > 12 && tasksCompleted < 22" class="welcome-label3 align-items-center" style="font-size: 24px; margin-top: 20px">You will start with TXLM and Demo asset on Stellar...</label>
+                        <label ng-if="tasksCompleted > 22 && tasksCompleted < 35" class="welcome-label3 align-items-center" style="font-size: 24px; margin-top: 20px">We've added the rewards, notifications and the marketplace extension...</label>
+                        <label ng-if="tasksCompleted > 35" class="welcome-label3 align-items-center" style="font-size: 24px; margin-top: 20px">Taking you to the Get Started page now...</label>
+                    </div>
+
+                </div>
+
+                <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1"></div>
+            </div>
+
         </div>
     </div>
     <div class="col-lg-2 col-md-1 col-sm-1 col-xs-1"></div>
 </div>
-
