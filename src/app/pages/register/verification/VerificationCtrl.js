@@ -6,7 +6,7 @@
 
     /** @ngInject */
     function VerificationCtrl($rootScope,Rehive,$scope,toastr,localStorageManagement,
-                              $location,errorHandler,userVerification,$intercom) {
+                              $location,errorHandler,userVerification,$intercom,$window) {
 
         $intercom.update({});
         var vm = this;
@@ -19,7 +19,9 @@
         $rootScope.inVerification = true;
 
 
-
+        $scope.openOverview = function(){
+            $window.open('https://docsend.com/view/yx2vhzm', '_blank');
+        };
     /**
         vm.checkIfUserVerified = function(){
             userVerification.verify(function(err,verified){

@@ -3,7 +3,8 @@
 }
 
 .template-container{
-  padding: 30px 50px;
+  padding: 20px 40px;
+  margin-top: 15px;
 }
 
 .template-1{
@@ -12,23 +13,24 @@
 }
 
 .welcome-label1{
-  font-size: 46px;
+  font-size: 41px;
   font-weight: normal;
 }
 
 .welcome-label2{
-  font-size: 32px;
+  font-size: 30px;
   font-weight: normal;
+  line-height: 1.0!important;
 }
 
 .welcome-text{
-  font-size: 20px;
+  font-size: 19px;
   font-weight: normal;
 }
 
 .template-text-container{
-  padding: 30px 50px;
-  margin-top: 20px;
+  padding: 20px 40px;
+  //margin-top: 10px;
 }
 
 .iphone-image{
@@ -37,21 +39,52 @@
 }
 
 .template-button-container{
-  width: 90%;
-  margin-top: 50px;
+  width: 100%;
+  margin: 20vh 0px 0px -15px;
 }
 
 .template-button{
   padding: 15px;
+  min-width: 180px;
   width: 40%;
   margin-left: 7%;
   font-size: 24px;
-  border-radius: 30px;
+  border-radius: 30px!important;
 }
 
 .template-arrow{
   position: relative;
   top: 2.5px;
+}
+
+.manual-setup-text{
+  font-size: 17px !important;
+  color: #A8A8A8;
+}
+
+@media only screen and (max-width: 1500px){
+  .welcome-label1{
+    font-size: 38px;
+  }
+  .welcome-label2{
+    font-size: 28px;
+  }
+
+  .welcome-text{
+    font-size: 17px;
+  }
+  .template-1{
+    margin-top: 40px;
+  }
+  .template-button{
+    font-size: 21px;
+  }
+  .template-button-container{
+    margin: 4% 0px 0px -15px;
+  }
+  .manual-setup-text{
+    margin-top: -50px !important;
+  }
 }
 
 .verification-text{
@@ -110,7 +143,7 @@
 }
 
 .terms-and-agreement-link{
-  font-size: 20px !important;
+  font-size: 17px !important;
   color: #A8A8A8;
 }
 
