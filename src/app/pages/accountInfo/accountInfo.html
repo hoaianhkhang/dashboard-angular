@@ -31,6 +31,29 @@
                         <input type="text" ng-change="accountInfoChanged('last_name')" ng-model="administrator.last_name" class="form-control" placeholder="e.g. Nakomoto">
                     </div>
                     <div class="form-group">
+                        <label>Upload profile picture</label>
+                        <div class="divider-20">
+                            <div ng-hide="hasProfileImage || imageFile.file.name">
+                                <img src="../../../assets/img/_defaultAvatar.png" width="200" height="200" style="margin: 2px 0px -5px 0px">
+                            </div>
+                            <div ng-show="hasProfileImage || imageFile.file.name">
+                                <img ng-hide="imageFile.file.name" ng-src="{{profilePicture}}" width="100" height="100" alt="icon Image">
+                                <img ng-show="imageFile.file.name" ngf-thumbnail="imageFile.file" width="200" height="200" alt="icon Image">
+                            </div>
+                        </div>
+                        <form name="uploadPicture" class="divider">
+                            <fieldset class="custom-file-upload">
+                                <label>
+                                    <span class="custom-file-upload-span"><button class="btn btn-default upload-button">Choose File</button></span>
+                                    <input style="padding-left: 5px;text-indent: -5px;width: 300px"
+                                           type="file" ngf-select ng-model="imageFile.file" name="file"
+                                           accept="image/*" ngf-max-size="5MB" required>
+                                </label>
+                            </fieldset>
+                        </form>
+                        <p class="small">Max size is 5MB. Recommended dimensions are 200 x 200px.</p>
+                    </div>
+                    <div class="form-group">
                         <label>Nationality</label>
                         <country-select class="form-control pointer" ng-change="accountInfoChanged('nationality')" data-ng-model="administrator.nationality"></country-select>
                     </div>
@@ -39,7 +62,7 @@
                         <input type="text" ng-change="accountInfoChanged('id_number')" ng-model="administrator.id_number" class="form-control" placeholder="e.g. 891218666987">
                     </div>
                     <div class="form-group">
-                        <button ng-click="updateAdministratorAccount()" class="btn btn-primary dashboard-btn pull-right">Save</button>
+                        <button ng-click="updateAdministratorAccount();upload();" class="btn btn-primary dashboard-btn pull-right">Save</button>
                     </div>
                 </div>
             </div>

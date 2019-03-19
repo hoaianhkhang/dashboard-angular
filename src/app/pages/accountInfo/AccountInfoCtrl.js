@@ -5,7 +5,8 @@
         .controller('AccountInfoCtrl', AccountInfoCtrl);
 
     /** @ngInject */
-    function AccountInfoCtrl($rootScope, $scope,Rehive,localStorageManagement,errorHandler,toastr,$location,$uibModal) {
+    function AccountInfoCtrl($rootScope, $scope,Rehive,localStorageManagement,errorHandler,toastr,$location,
+                             $uibModal, Upload, environmentConfig, serializeFiltersService) {
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
         $rootScope.dashboardTitle = 'My Profile | Rehive';
@@ -14,8 +15,49 @@
         $scope.addingEmail = false;
         $scope.loadingAdminEmails = true;
         $scope.newEmail = {primary: true};
+        $scope.hasProfileImage = false;
         vm.updatedAdministrator = {};
         $scope.activatedMfa = 'None';
+        $scope.imageFile = {
+            file: {}
+        };
+
+        $scope.upload = function () {
+            if(!$scope.imageFile.file.name){
+                return;
+            }
+            $scope.loadingAccountInfo = true;
+
+            var uploadDataObj = {
+                logo: null,
+                icon: null,
+                image: $scope.imageFile.file.name ? $scope.imageFile.file.name : null
+            };
+
+            Upload.upload({
+                url: environmentConfig.API +'/admin/company/',
+                data: serializeFiltersService.objectFilters(uploadDataObj),
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': vm.token},
+                method: "PATCH"
+            }).then(function (res) {
+                console.log(res);
+                if (res.status === 200) {
+                    setTimeout(function(){
+                        // $scope.companyImageUrl = res.data.data.logo;
+                        $scope.loadingAccountInfo = false;
+                    },10);
+                    //$window.location.reload();
+                }
+                toastr.success('Image(s) uploaded successfully. Refresh the page to see changes.');
+            }).catch(function (error) {
+                $scope.loadingAccountInfo = false;
+                errorHandler.evaluateErrors(error.data);
+                errorHandler.handleErrors(error);
+            });
+        };
+
 
         vm.checkMultiFactorAuthEnabled = function () {
             if(vm.token) {
