@@ -846,7 +846,7 @@
             });
         };
 
-        vm.addNotification = function (callIdx, enabledEmailEventsArray,enabledSmsEventsArray, notification,last,type) {
+        vm.addNotification = function (notification,last,type) {
             var notificationObj = {};
             if(type == 'email'){
                 notificationObj = {
@@ -888,10 +888,6 @@
                         if(last){
                             vm.trackTasks(null);
                             vm.getCompanyCurrencies();
-                        }
-                        else if(enabledEmailEventsArray){
-                            ++callIdx;
-                            vm.enableBulkNotifications(callIdx, enabledEmailEventsArray, enabledSmsEventsArray);
                         }
                     }
                 }).catch(function (error) {
