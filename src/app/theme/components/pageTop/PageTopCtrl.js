@@ -26,7 +26,7 @@
         $scope.showingDashboardTasks = false;
         $scope.showingDashboardBelow1200Tasks = false;
         $scope.allTasksDone = true;
-        $scope.iconAvailable = $scope.logoAvailable = $scope.useRehiveLogo = false;
+        $scope.profileImageAvailable = $scope.useRehiveLogo = false;
 
         $scope.pagination = {
             itemsPerPage: 10,
@@ -34,21 +34,35 @@
             maxSize: 5
         };
 
+        vm.getAdminProfile = function(){
+            if(vm.token){
+                $scope.loadingCompanyInfo = true;
+                Rehive.user.get().then(function (res) {
+                    $scope.profileImage = res.profile;
+                    if($scope.profileImage){
+                        $scope.profileImageAvailable = true;
+                    } else {
+                        $scope.useRehiveLogo = true;
+                        $scope.rehiveLogo  = '../../assets/img/_rehiveLogo.svg';
+                    }
+                    $scope.loadingCompanyInfo = false;
+                    $scope.$apply();
+                }, function (error) {
+                    $scope.loadingCompanyInfo = false;
+                    errorHandler.evaluateErrors(error);
+                    errorHandler.handleErrors(error);
+                    $scope.$apply();
+                });
+            }
+        };
+        vm.getAdminProfile();
+
         vm.getCompanyInfo = function () {
             if(vm.token) {
                 $scope.loadingCompanyInfo = true;
                 Rehive.admin.company.get().then(function (res) {
                     $scope.companyImageUrl = res.logo;
                     $scope.companyIconUrl = res.icon;
-                    if($scope.companyIconUrl){
-                        $scope.iconAvailable = true;
-                    } else if($scope.companyImageUrl){
-                        $scope.logoAvailable = true;
-                    } else {
-                        $scope.useRehiveLogo = true;
-                        $scope.rehiveLogo  = '../../assets/img/_rehiveLogo.svg';
-                    }
-                    console.log($scope.iconAvailable, $scope.logoAvailable, $scope.useRehiveLogo);
                     $scope.$apply();
                 }, function (error) {
                     $scope.loadingCompanyInfo = false;

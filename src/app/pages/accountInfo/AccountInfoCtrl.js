@@ -22,6 +22,24 @@
             file: {}
         };
 
+        vm.getAdminProfile = function(){
+            if(vm.token){
+                $scope.loadingAccountInfo = true;
+                Rehive.user.get().then(function (res) {
+                    $scope.profileImage = res.profile;
+                    $scope.hasProfileImage = $scope.profileImage;
+                    $scope.loadingAccountInfo = false;
+                    $scope.$apply();
+                }, function (error) {
+                    $scope.loadingAccountInfo = false;
+                    errorHandler.evaluateErrors(error);
+                    errorHandler.handleErrors(error);
+                    $scope.$apply();
+                });
+            }
+        };
+        vm.getAdminProfile();
+
         $scope.upload = function () {
             if(!$scope.imageFile.file.name){
                 return;
@@ -29,13 +47,11 @@
             $scope.loadingAccountInfo = true;
 
             var uploadDataObj = {
-                logo: null,
-                icon: null,
-                image: $scope.imageFile.file.name ? $scope.imageFile.file.name : null
+                profile: $scope.imageFile.file.name ? $scope.imageFile.file : null
             };
 
             Upload.upload({
-                url: environmentConfig.API +'/admin/company/',
+                url: 'https://api.rehive.com/3/user/',
                 data: serializeFiltersService.objectFilters(uploadDataObj),
                 headers: {
                     'Content-Type': 'application/json',
@@ -45,10 +61,9 @@
                 console.log(res);
                 if (res.status === 200) {
                     setTimeout(function(){
-                        // $scope.companyImageUrl = res.data.data.logo;
+                        $scope.profileImage = res.data.data.profile;
                         $scope.loadingAccountInfo = false;
                     },10);
-                    //$window.location.reload();
                 }
                 toastr.success('Image(s) uploaded successfully. Refresh the page to see changes.');
             }).catch(function (error) {
