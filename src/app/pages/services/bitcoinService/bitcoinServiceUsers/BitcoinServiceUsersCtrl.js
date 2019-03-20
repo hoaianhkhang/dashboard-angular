@@ -8,10 +8,11 @@
     function BitcoinServiceUsersCtrl($rootScope, $scope,$http,typeaheadService,
                                      localStorageManagement,errorHandler,serializeFiltersService) {
 
-        var vm = this;
+        var vm = this, extensionsList = localStorageManagement.getValue('extensionsList');
         vm.token = localStorageManagement.getValue('TOKEN');
-        // vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
-        vm.serviceUrl = "https://bitcoin-testnet.services.rehive.io/api/1/";
+        vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
+        vm.serviceUrl - (vm.serviceUrl.indexOf('bitcoin-testnet') > 0) ? extensionsList[12] : extensionsList[7];
+        // vm.serviceUrl = "https://bitcoin-testnet.services.rehive.io/api/1/";
         // $rootScope.dashboardTitle = 'Bitcoin service | Rehive';
         $rootScope.dashboardTitle = 'Bitcoin extension | Rehive';
         $scope.usersStateMessage = '';
