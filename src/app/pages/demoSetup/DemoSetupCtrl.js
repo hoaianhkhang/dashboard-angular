@@ -18,15 +18,15 @@
         $scope.merchantGroupTiers = [];
         $scope.currencyOptions = [];
         $scope.demoCurrency = {};
-        $scope.txbtCurrency = {};
+        $scope.txlmCurrency = {};
 
         vm.setupCurrencies = function(){
             $scope.currencyOptions.forEach(function(currency){
                 if(currency.code === "DEMO"){
                     $scope.demoCurrency = currency;
                 }
-                else if(currency.code === "TXBT"){
-                    $scope.txbtCurrency = currency;
+                else if(currency.code === "TXLM"){
+                    $scope.txlmCurrency = currency;
                 }
             });
             vm.trackTasks('apply');
@@ -638,7 +638,8 @@
                     }
                 }).then(function (res) {
                     vm.trackTasks(null);
-                    vm.setupBitcoinTestnetService();
+                    vm.setupStellarTestnetService();
+                    // vm.setupBitcoinTestnetService();
                 }).catch(function (error) {
                     errorHandler.handleErrors(error);
                 });
@@ -914,8 +915,8 @@
                         $scope.currencyOptions.sort(function(a, b){
                             return a.unit.localeCompare(b.unit);
                         });
-                        vm.setupCurrencies();
                         vm.trackTasks('apply');
+                        vm.setupCurrencies();
                         vm.setupAccountConfigurations();
                         $scope.$apply();
                     }, function (error) {
@@ -944,11 +945,12 @@
             operationalAccountConfig = serializeFiltersService.objectFilters(operationalAccountConfig);
             userAccountConfig = serializeFiltersService.objectFilters(userAccountConfig);
 
-            vm.addGroupAccountConfigurations("admin", operationalAccountConfig, null);
+
+            vm.addGroupAccountConfigurations("user", userAccountConfig, null);
             vm.addGroupAccountConfigurations("manager", operationalAccountConfig, null);
             vm.addGroupAccountConfigurations("support", operationalAccountConfig, null);
             vm.addGroupAccountConfigurations("merchant", operationalAccountConfig, null);
-            vm.addGroupAccountConfigurations("user", userAccountConfig, 'last');
+            vm.addGroupAccountConfigurations("admin", operationalAccountConfig, 'last');
             vm.trackTasks('apply');
         };
 
@@ -998,7 +1000,7 @@
                     enabled: true,
                     prices: [
                         {currency: $scope.demoCurrency, amount: 50000000},
-                        {currency: $scope.txbtCurrency, amount: 20000}
+                        {currency: $scope.txlmCurrency, amount: 20000}
                     ]
                 },
                 newProduct2 = {
@@ -1010,7 +1012,7 @@
                     enabled: true,
                     prices: [
                         {currency: $scope.demoCurrency, amount: 100000000},
-                        {currency: $scope.txbtCurrency, amount: 50000}
+                        {currency: $scope.txlmCurrency, amount: 50000}
                     ]
                 };
 
