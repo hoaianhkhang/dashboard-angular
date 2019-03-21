@@ -652,9 +652,10 @@
             $scope.applyFiltersObj.accountFilter.selectedAccountOption = 'Reference';
             $scope.applyFiltersObj.accountFilter.selectedAccountReference = accountRef;
 
-            var filtersObj = localStorageManagement.getValue(vm.savedTransactionTableFilters) ? JSON.parse(localStorageManagement.getValue(vm.savedTransactionTableFilters)) : {};
+            var filtersObj = localStorageManagement.getValue(vm.savedTransactionTableFilters) ? JSON.parse(localStorageManagement.getValue(vm.savedTransactionTableFilters)) : null;
 
-            if(filtersObj === {}){
+            if(!filtersObj){
+                filtersObj = {};
                 filtersObj.searchObj = {};
                 filtersObj.applyFiltersObj = $scope.applyFiltersObj;
             }
@@ -681,8 +682,10 @@
             $scope.filtersObj.userFilter = true;
             $scope.applyFiltersObj.userFilter.selectedUserOption = userId;
 
-            var filtersObj = localStorageManagement.getValue(vm.savedTransactionTableFilters) ? JSON.parse(localStorageManagement.getValue(vm.savedTransactionTableFilters)) : {};
-            if(filtersObj === {}){
+            var filtersObj = localStorageManagement.getValue(vm.savedTransactionTableFilters) ? JSON.parse(localStorageManagement.getValue(vm.savedTransactionTableFilters)) : null;
+
+            if(!filtersObj){
+                filtersObj = {};
                 filtersObj.searchObj = {};
                 filtersObj.applyFiltersObj = $scope.applyFiltersObj;
             }
@@ -706,12 +709,14 @@
             $scope.filtersObj.transactionIdFilter = true;
             $scope.applyFiltersObj.transactionIdFilter.selectedTransactionIdOption = $state.params.transactionId;
 
-            var filtersObj = localStorageManagement.getValue(vm.savedTransactionTableFilters) ? JSON.parse(localStorageManagement.getValue(vm.savedTransactionTableFilters)) : {};
+            var filtersObj = localStorageManagement.getValue(vm.savedTransactionTableFilters) ? JSON.parse(localStorageManagement.getValue(vm.savedTransactionTableFilters)) : null;
 
-            if(filtersObj === {}){
+            if(!filtersObj){
+                filtersObj = {};
                 filtersObj.searchObj = {};
                 filtersObj.applyFiltersObj = $scope.applyFiltersObj;
             }
+            console.log(filtersObj);
             filtersObj.searchObj.id = $state.params.transactionId;
             filtersObj.applyFiltersObj.transactionIdFilter.selectedTransactionIdOption = $state.params.transactionId;
 

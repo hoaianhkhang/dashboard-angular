@@ -247,9 +247,10 @@
             $scope.filtersObj.referenceFilter = true;
             $scope.applyFiltersObj.referenceFilter.selectedReferenceFilter = $state.params.accountRef;
 
-            var filtersObj = localStorageManagement.getValue(vm.savedAccountsTableFilters) ? JSON.parse(localStorageManagement.getValue(vm.savedAccountsTableFilters)) : {};
+            var filtersObj = localStorageManagement.getValue(vm.savedAccountsTableFilters) ? JSON.parse(localStorageManagement.getValue(vm.savedAccountsTableFilters)) : null;
 
-            if(filtersObj === {}){
+            if(!filtersObj){
+                filtersObj = {};
                 filtersObj.searchObj = {};
                 filtersObj.applyFiltersObj = $scope.applyFiltersObj;
             }
@@ -270,9 +271,10 @@
             $scope.filtersObj.userFilter = true;
             $scope.applyFiltersObj.userFilter.selectedUserFilter = $state.params.email;
 
-            var filtersObj = localStorageManagement.getValue(vm.savedAccountsTableFilters) ? JSON.parse(localStorageManagement.getValue(vm.savedAccountsTableFilters)) : {};
+            var filtersObj = localStorageManagement.getValue(vm.savedAccountsTableFilters) ? JSON.parse(localStorageManagement.getValue(vm.savedAccountsTableFilters)) : null;
 
-            if(filtersObj === {}){
+            if(!filtersObj){
+                filtersObj = {};
                 filtersObj.searchObj = {};
                 filtersObj.applyFiltersObj = $scope.applyFiltersObj;
             }
