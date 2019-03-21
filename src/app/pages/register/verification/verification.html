@@ -72,21 +72,39 @@
         </div>
         <div ng-show="template3">
             <div class="row align-items-center">
-                <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1"></div>
-                <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
-                    <uib-progressbar class="demo-progressbar" value="tasksCompleted" max=39 style="margin: 100px 0px 0px 0px;"><span style="color:white; white-space:nowrap;">{{tasksCompleted}} / 39</span></uib-progressbar>
-                    <uib-progressbar class="demo-progressbar progress-striped" value="tasksCompleted" type="purple" max=39 style="margin: 10px 0px 0px 0px;"><span style="color:white; white-space:nowrap;">{{tasksCompleted}} / 39</span></uib-progressbar>
-                    <uib-progressbar class="demo-progressbar progress-striped active" value="tasksCompleted" type="warning" max=39 style="margin: 10px 0px 0px 0px;"><span style="color:white; white-space:nowrap;">{{percent}} %</span></uib-progressbar>
-                    <div>
-                        <label ng-if="tasksCompleted < 12" class="welcome-label3 align-items-center" style="font-size: 24px; margin-top: 20px">We are setting up company configurations, groups and their permissions...</label>
-                        <label ng-if="tasksCompleted > 12 && tasksCompleted < 22" class="welcome-label3 align-items-center" style="font-size: 24px; margin-top: 20px">You will start with TXLM and Demo asset on Stellar...</label>
-                        <label ng-if="tasksCompleted > 22 && tasksCompleted < 35" class="welcome-label3 align-items-center" style="font-size: 24px; margin-top: 20px">We've added the rewards, notifications and the marketplace extension...</label>
-                        <label ng-if="tasksCompleted > 35" class="welcome-label3 align-items-center" style="font-size: 24px; margin-top: 20px">Taking you to the Get Started page now...</label>
+                <div class="col-lg-0 col-md-0 col-sm-0 col-xs-0"></div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 template-company-container">
+                    <div ng-show="tasksCompleted < 35 && settingUpDemo" ng-class="{'hide-loader': (tasksCompleted >= 35)}"class="align-items-center">
+                        <img style="margin:auto; display: inline;" src="../../../../assets/img/loading.gif" width="100" height="100">
                     </div>
+                    <div style="margin-top: 10px">
+                        <label ng-if="tasksCompleted < 35" class="welcome-label1 align-items-center" style="font-size: 30px">Hold on, we're building your template...</label>
+                        <label ng-if="tasksCompleted > 35" class="welcome-label1 align-items-center" style="font-size: 30px;">Complete! Taking you to the Get Started page now...</label>
+                     </div>
+                    <div class="row" style="margin-top: 10px">
+                        <div class="col-lg-2 col-md-2 col-xs-0 col-xs-0"></div>
+                        <div class="col-lg-8 col-md-8 col-xs-12 col-xs-12">
+                            <div class="row">
+                                <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12" style="margin-left: 10px;">
+                                    <span class="login-labels demo-labels demo-progress">Tasks&nbsp;:&nbsp;
+                                    <span style="color: #A4A5F5;">
+                                        <span ng-bind="tasksCompleted"></span> / 39</span>
+                                    </span>
+                                </div>
+                                <div class="col-lg-1 col-md-1 col-xs-0 col-xs-0"></div>
+                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 pull-right">
+                                    <label ng-show="tasksCompleted <= 12" class="welcome-label3 align-items-center" ng-animate="'fade'" style="font-size: 18px; margin-top: 18px;">We are setting up company configurations, groups and their permissions...</label>
+                                    <label ng-show="tasksCompleted > 12 && tasksCompleted <= 22" class="welcome-label3 align-items-center" ng-animate="'fade'" style="font-size: 18px;margin-top: 18px;">You will start with TXLM and Demo asset on Stellar...</label>
+                                    <label ng-show="tasksCompleted > 22 && tasksCompleted <= 35" class="welcome-label3 align-items-center" ng-animate="'fade'" style="font-size: 18px;margin-top: 18px;">We've added the rewards, notifications and the marketplace extension...</label>
 
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-xs-0 col-xs-0"></div>
+                    </div>
                 </div>
 
-                <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1"></div>
+                <div class="col-lg-0 col-md-0 col-sm-0 col-xs-0"></div>
             </div>
 
         </div>

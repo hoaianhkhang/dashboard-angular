@@ -18,6 +18,8 @@
         $rootScope.$pageFinishedLoading = true;
         $rootScope.inVerification = true;
         $rootScope.tasksCompleted = 0;
+        // $rootScope.tasksCompleted = 35;
+        $rootScope.settingUpDemo = true;
         $scope.template1 = false;
         $scope.template2 = false;
         $scope.template3 = true;
@@ -36,7 +38,7 @@
                     return false;
                 }
                 $scope.$apply();
-            },100);
+            },500);
         };
         vm.testProgress();
 
