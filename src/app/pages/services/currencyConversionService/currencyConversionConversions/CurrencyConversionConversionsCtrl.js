@@ -7,10 +7,10 @@
     /** @ngInject */
     function CurrencyConversionConversionsCtrl($scope,$http,localStorageManagement,errorHandler,$uibModal) {
 
-        var vm = this;
+        var vm = this, extensionsList = JSON.parse(localStorageManagement.getValue('extensionsList'));
         vm.token = localStorageManagement.getValue('TOKEN');
-        // vm.baseUrl = localStorageManagement.getValue('SERVICEURL');
-        vm.baseUrl = "https://conversion.services.rehive.io/api/";
+        vm.baseUrl = extensionsList[9];
+        // vm.baseUrl = "https://conversion.services.rehive.io/api/";
         $scope.loadingConversions =  true;
 
         $scope.pagination = {

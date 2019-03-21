@@ -6,7 +6,7 @@
 
     function AddBitcoinHotwalletModalCtrl($scope,$uibModalInstance,toastr,$http,localStorageManagement,errorHandler) {
 
-        var vm = this, extensionsList = localStorageManagement.getValue('extensionsList');
+        var vm = this, extensionsList = JSON.parse(localStorageManagement.getValue('extensionsList'));
         vm.token = localStorageManagement.getValue('TOKEN');
         vm.baseUrl = localStorageManagement.getValue('SERVICEURL');
         vm.baseUrl = (vm.baseUrl.indexOf('bitcoin-testnet') > 0) ? extensionsList[12] : extensionsList[7];

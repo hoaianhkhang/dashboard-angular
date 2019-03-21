@@ -8,10 +8,10 @@
     function EditProductCtrl($scope,$http,$location,localStorageManagement,$stateParams,
                              Rehive,currencyModifiers,toastr,$filter,errorHandler) {
 
-        var vm = this;
+        var vm = this, extensionsList = JSON.parse(localStorageManagement.getValue('extensionsList'));
         vm.token = localStorageManagement.getValue('TOKEN');
-        // vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
-        vm.serviceUrl = "https://product.services.rehive.io/api/";
+        vm.serviceUrl = extensionsList[79];
+        // vm.serviceUrl = "https://product.services.rehive.io/api/";
         vm.productId = $stateParams.productId;
         $scope.editingProduct = false;
         $scope.editProductObj = {};

@@ -8,7 +8,7 @@
     function BitcoinWarmstorageCtrl($scope,localStorageManagement,errorHandler,currenciesList,$http,$uibModal,multiOptionsFilterService,
                                     sharedResources,_,environmentConfig,currencyModifiers,toastr,serializeFiltersService,$location) {
 
-        var vm = this, extensionsList = localStorageManagement.getValue('extensionsList');
+        var vm = this, extensionsList = JSON.parse(localStorageManagement.getValue('extensionsList'));
         vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
         // vm.serviceUrl = "https://bitcoin-testnet.services.rehive.io/api/1/";
         vm.token = localStorageManagement.getValue('TOKEN');

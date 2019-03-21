@@ -7,10 +7,10 @@
     function RewardUserModalCtrl($scope,environmentConfig,$uibModalInstance,typeaheadService,currencyModifiers,
                                  toastr,$http,localStorageManagement,serializeFiltersService,errorHandler) {
 
-        var vm = this;
+        var vm = this, extensionsList = JSON.parse(localStorageManagement.getValue('extensionsList'));
         vm.token = localStorageManagement.getValue('TOKEN');
-        // vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
-        vm.serviceUrl = "https://reward.services.rehive.io/api/";
+        vm.serviceUrl = extensionsList[45];
+        // vm.serviceUrl = "https://reward.services.rehive.io/api/";
         $scope.campaignsListOptions = [];
         $scope.rewardUserObj = {
             campaign: {},

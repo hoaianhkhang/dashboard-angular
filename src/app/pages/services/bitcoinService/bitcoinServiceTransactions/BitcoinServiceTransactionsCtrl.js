@@ -8,10 +8,10 @@
     function BitcoinServiceTransactionsCtrl($rootScope, $scope,$http,localStorageManagement,$uibModal,toastr,multiOptionsFilterService,
                                             errorHandler,$state,$window,typeaheadService,serializeFiltersService) {
 
-        var vm = this, extensionsList = localStorageManagement.getValue('extensionsList');
+        var vm = this, extensionsList = JSON.parse(localStorageManagement.getValue('extensionsList'));
         vm.token = localStorageManagement.getValue('TOKEN');
         vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
-        vm.serviceUrl - (vm.serviceUrl.indexOf('bitcoin-testnet') > 0) ? extensionsList[12] : extensionsList[7];
+        vm.serviceUrl = (vm.serviceUrl.indexOf('bitcoin-testnet') > 0) ? extensionsList[12] : extensionsList[7];
         // $rootScope.dashboardTitle = 'Bitcoin service | Rehive';
         $rootScope.dashboardTitle = 'Bitcoin extension | Rehive';
         $scope.companyDateFormatString = localStorageManagement.getValue('DATE_FORMAT');

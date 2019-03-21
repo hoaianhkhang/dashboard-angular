@@ -5,6 +5,8 @@
         .controller('ServicesCtrl', ServicesCtrl);
 
     /** @ngInject */
+
+
     function ServicesCtrl($rootScope,$scope,$location,$http,environmentConfig,localStorageManagement,
                           errorHandler,$uibModal,$window,$intercom) {
 
@@ -37,11 +39,12 @@
                 if (res.status === 200) {
                   $scope.servicesList =  res.data.data.results;
                   if($scope.servicesList.length > 0){
+                      var list = {};
                       for(var i = 0; i < $scope.servicesList.length; ++i){
                           $scope.servicesList[i].name = $scope.servicesList[i].name.replace("Service", "Extension");
-                          vm.extensionsList[$scope.servicesList[i].id] = $scope.servicesList[i].url;
+                          list[$scope.servicesList[i].id] = $scope.servicesList[i].url;
                       }
-                      localStorageManagement.setValue('extensionsList',JSON.stringify(vm.extensionsList));
+                      localStorageManagement.setValue('extensionsList',JSON.stringify(list));
                   }
                 }
             }).catch(function (error) {

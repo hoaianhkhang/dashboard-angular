@@ -6,10 +6,10 @@
 
     function AddPublicAddressModalCtrl($scope,$uibModalInstance,toastr,$http,localStorageManagement,errorHandler) {
 
-        var vm = this;
+        var vm = this, extensionsList = JSON.parse(localStorageManagement.getValue('extensionsList'));
         vm.token = localStorageManagement.getValue('TOKEN');
-        // vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
-        vm.serviceUrl = "https://ethereum.services.rehive.io/api/1/";
+        vm.serviceUrl = extensionsList[6];
+        // vm.serviceUrl = "https://ethereum.services.rehive.io/api/1/";
         $scope.addingPublicAddress = false;
         $scope.publicAddressParams = {
             address: ''

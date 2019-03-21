@@ -8,10 +8,10 @@
     function BitcoinServiceSettingsCtrl($rootScope,$scope,localStorageManagement,$http,$ngConfirm,environmentConfig,
                                         $timeout,toastr,$location,errorHandler) {
 
-        var vm = this, extensionsList = localStorageManagement.getValue('extensionsList');
+        var vm = this, extensionsList = JSON.parse(localStorageManagement.getValue('extensionsList'));
         vm.token = localStorageManagement.getValue('TOKEN');
         vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
-        vm.serviceId - (vm.serviceUrl.indexOf('bitcoin-testnet') > 0) ? 12 : 7;
+        vm.serviceId = (vm.serviceUrl.indexOf('bitcoin-testnet') > 0) ? 12 : 7;
         // vm.serviceId = localStorageManagement.getValue('SERVICEID');
         // $rootScope.dashboardTitle = 'Bitcoin service | Rehive';
         $rootScope.dashboardTitle = 'Bitcoin extension | Rehive';

@@ -12,7 +12,7 @@
         <p class="divider"><span class="text-subtle">From percentage fee:</span> {{rate.from_percentage_fee ? rate.from_percentage_fee + '%' : 'None'}}</p>
         <p class="divider"><span class="text-subtle">From value fee:</span>{{rate.from_currency.symbol}} {{rate.from_value_fee | currencyModifiersFilter: rate.from_currency.divisibility}}</p>
         -->
-        <p><span class="text-subtle">Fixed rate:</span>{{rate.to_currency.symbol}} {{rate.fixed_rate | currencyModifiersFilter: rate.to_currency.divisibility}}</p>
+        <p><span class="text-subtle">Fixed rate:&nbsp;</span>{{rate.to_currency.symbol}} {{rate.fixed_rate | currencyModifiersFilter: rate.to_currency.divisibility}}</p>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-default dashboard-btn pull-left" ng-click="$dismiss()">Close</button>

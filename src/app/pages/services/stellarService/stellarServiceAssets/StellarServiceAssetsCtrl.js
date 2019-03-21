@@ -9,9 +9,9 @@
 
         $scope.stellarAccountSettingView = '';
 
-        var vm = this;
-        // vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
-        vm.serviceUrl = "https://stellar.services.rehive.io/api/1/";
+        var vm = this, extensionsList = JSON.parse(localStorageManagement.getValue('extensionsList'));
+        vm.serviceUrl = extensionsList[2];
+        // vm.serviceUrl = "https://stellar.services.rehive.io/api/1/";
         vm.token = localStorageManagement.getValue('TOKEN');
         $scope.stellarCurrency = {};
         $scope.assetsObj = [];
