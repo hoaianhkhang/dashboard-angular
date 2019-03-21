@@ -11,6 +11,7 @@
         $intercom.update({});
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
+        vm.extensionsList = localStorageManagement.getValue('extensionsList') ? JSON.parse(localStorageManagement.getValue('extensionsList')) : {};
         $rootScope.dashboardTitle = 'Services | Rehive';
         $scope.loadingServices = true;
         $scope.showingFilters = false;
@@ -31,13 +32,16 @@
                     'Authorization': vm.token
                 }
             }).then(function (res) {
+                
               $scope.loadingServices = false;
                 if (res.status === 200) {
                   $scope.servicesList =  res.data.data.results;
                   if($scope.servicesList.length > 0){
                       for(var i = 0; i < $scope.servicesList.length; ++i){
                           $scope.servicesList[i].name = $scope.servicesList[i].name.replace("Service", "Extension");
+                          vm.extensionsList[$scope.servicesList[i].id] = $scope.servicesList[i].url;
                       }
+                      localStorageManagement.setValue('extensionsList',JSON.stringify(vm.extensionsList));
                   }
                 }
             }).catch(function (error) {

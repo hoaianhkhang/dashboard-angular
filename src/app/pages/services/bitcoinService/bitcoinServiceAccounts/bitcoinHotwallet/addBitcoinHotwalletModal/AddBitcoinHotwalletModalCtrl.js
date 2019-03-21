@@ -6,10 +6,11 @@
 
     function AddBitcoinHotwalletModalCtrl($scope,$uibModalInstance,toastr,$http,localStorageManagement,errorHandler) {
 
-        var vm = this;
+        var vm = this, extensionsList = localStorageManagement.getValue('extensionsList');
         vm.token = localStorageManagement.getValue('TOKEN');
-        // vm.baseUrl = localStorageManagement.getValue('SERVICEURL');
-        vm.baseUrl = "https://bitcoin-testnet.services.rehive.io/api/1/";
+        vm.baseUrl = localStorageManagement.getValue('SERVICEURL');
+        vm.baseUrl = (vm.baseUrl.indexOf('bitcoin-testnet') > 0) ? extensionsList[12] : extensionsList[7];
+        // vm.baseUrl = "https://bitcoin-testnet.services.rehive.io/api/1/";
         $scope.addingHotwallet = false;
         $scope.hotwalletParams = {
             low_balance_percentage: 0.1

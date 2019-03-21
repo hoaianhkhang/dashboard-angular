@@ -9,9 +9,9 @@
                                   $uibModal,currencyModifiers,serializeFiltersService,environmentConfig,multiOptionsFilterService) {
         $scope.bitcoinAccountSettingView = '';
 
-        var vm = this;
-        // vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
-        vm.serviceUrl = "https://bitcoin-testnet.services.rehive.io/api/1/";
+        var vm = this, extensionsList = localStorageManagement.getValue('extensionsList');
+        vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
+        // vm.serviceUrl = "https://bitcoin-testnet.services.rehive.io/api/1/";
         vm.token = localStorageManagement.getValue('TOKEN');
         $scope.companyDateFormatString = localStorageManagement.getValue('DATE_FORMAT');
         $scope.bitcoinCurrency = currenciesList.find(function (element) {
@@ -21,8 +21,10 @@
         $scope.hotwalletObjLength = 0;
         if(vm.serviceUrl.indexOf('bitcoin-testnet') > 0){
             $scope.inTestnetService = true;
+            vm.serviceUrl = extensionsList[12];
         } else {
             $scope.inTestnetService = false;
+            vm.serviceUrl = extensionsList[7];
         }
 
         vm.getHotwalletActive = function (applyFilter) {
