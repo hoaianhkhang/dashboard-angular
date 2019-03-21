@@ -38,7 +38,7 @@
                 },
                 title: "Groups",
                 sidebarMeta: {
-                    order: 400,
+                    order: 500,
                     icon: 'sidebar-groups-icon'
                 }
             });

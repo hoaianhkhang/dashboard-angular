@@ -6,8 +6,9 @@
 
     /** @ngInject */
     function UsersCtrl($rootScope,$state,Rehive,$scope,typeaheadService,$location,$uibModal,multiOptionsFilterService,
-                       localStorageManagement,errorHandler,$window,toastr,serializeFiltersService,$filter) {
+                       localStorageManagement,errorHandler,$window,toastr,serializeFiltersService,$filter,$intercom) {
 
+        $intercom.update({});
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
         vm.companyIdentifier = localStorageManagement.getValue('companyIdentifier');

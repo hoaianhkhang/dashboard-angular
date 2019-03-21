@@ -21,6 +21,48 @@
             $location.path('company/setup/currency-setup');
         };
 
+        vm.prepareUserPermissions = function(){
+            $scope.userPermissions = [
+                {type:'account', level: "view", section: 'user'},
+                {type:'address', level: "view", section: 'user'},
+                {type:'bankaccount', level: "view", section: 'user'},
+                {type:'currency', level: "view", section: 'user'},
+                {type:'company', level: "view", section: 'user'},
+                {type:'cryptoaccount', level: "view", section: 'user'},
+                {type:'document', level: "view", section: 'user'},
+                {type:'email', level: "view", section: 'user'},
+                {type:'group', level: "view", section: 'user'},
+                {type:'mfa', level: "view", section: 'user'},
+                {type:'mobile', level: "view", section: 'user'},
+                {type:'token', level: "view", section: 'user'},
+                {type:'transaction', level: "view", section: 'user'},
+                {type:'user', level: "view", section: 'user'}
+            ];
+            var len = $scope.userPermissions.length;
+            for(var i = 0; i < len; ++i){
+                $scope.userPermissions.push({type: $scope.userPermissions[i].type, level: "add", section: 'user'});
+                $scope.userPermissions.push({type: $scope.userPermissions[i].type, level: "change", section: 'user'});
+                $scope.userPermissions.push({type: $scope.userPermissions[i].type, level: "delete", section: 'user'});
+            }
+        };
+        vm.prepareUserPermissions();
+
+        vm.addGroupPermissions = function(groupName){
+            if(vm.token) {
+                Rehive.admin.groups.permissions.create(groupName,{permissions: $scope.userPermissions}).then(function (res) {
+                    console.log(res);
+                    vm.getGroups();
+                    $scope.$apply();
+                }, function (error) {
+                    $scope.loadingUsersGroups = false;
+                    $rootScope.$pageFinishedLoading = true;
+                    errorHandler.evaluateErrors(error);
+                    errorHandler.handleErrors(error);
+                    $scope.$apply();
+                });
+            }
+        };
+
         $scope.groupNameChanged = function (user) {
             if(user.name){
                 user.name = user.name.toLowerCase();
@@ -74,12 +116,9 @@
             $scope.loadingUsersGroups = true;
             Rehive.admin.groups.create(group).then(function (res) {
                 $scope.user={};
-                vm.getGroups();
+                vm.addGroupPermissions(res.name);
                 $scope.$apply();
             }, function (error) {
-                $scope.loadingUsersGroups = false;
-                $rootScope.$pageFinishedLoading = true;
-                errorHandler.evaluateErrors(error);
                 errorHandler.handleErrors(error);
                 $scope.$apply();
             });

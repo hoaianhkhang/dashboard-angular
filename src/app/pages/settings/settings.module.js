@@ -20,7 +20,7 @@
                 controller: "SettingsCtrl",
                 title: 'Settings',
                 sidebarMeta: {
-                    order: 700,
+                    order: 800,
                     icon: 'sidebar-settings-icon'
                 }
             });

@@ -6,7 +6,7 @@
 
     /** @ngInject */
     function VerificationCtrl($rootScope,Rehive,$scope,toastr,localStorageManagement,
-                              $location,errorHandler,userVerification) {
+                              $location,errorHandler,userVerification,$intercom) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
@@ -60,6 +60,7 @@
             $rootScope.gotToken = false;
             $rootScope.securityConfigured = true;
             $rootScope.pageTopObj = {};
+            $intercom.shutdown();
             localStorageManagement.deleteValue('TOKEN');
             localStorageManagement.deleteValue('token');
             Rehive.removeToken();

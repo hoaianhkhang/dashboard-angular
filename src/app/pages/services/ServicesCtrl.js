@@ -6,8 +6,9 @@
 
     /** @ngInject */
     function ServicesCtrl($rootScope,$scope,$location,$http,environmentConfig,localStorageManagement,
-                          errorHandler,$uibModal,$window) {
+                          errorHandler,$uibModal,$window,$intercom) {
 
+        $intercom.update({});
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
         $rootScope.dashboardTitle = 'Services | Rehive';

@@ -20,7 +20,7 @@
                 abstract: true,
                 title: " Developers",
                 sidebarMeta: {
-                    order: 500,
+                    order: 600,
                     icon: 'sidebar-developers-icon'
                 }
             });
