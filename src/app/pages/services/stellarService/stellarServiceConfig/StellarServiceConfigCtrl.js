@@ -7,10 +7,10 @@
     /** @ngInject */
     function StellarServiceConfigCtrl($scope,$http,localStorageManagement,toastr,errorHandler,$location) {
 
-        var vm = this;
+        var vm = this, extensionsList = JSON.parse(localStorageManagement.getValue('extensionsList'));
         vm.token = localStorageManagement.getValue('TOKEN');
-        // vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
-        vm.serviceUrl = "https://stellar.services.rehive.io/api/1/";
+        vm.serviceUrl = extensionsList[2];
+        // vm.serviceUrl = "https://stellar.services.rehive.io/api/1/";
         $scope.currentConfigView = 'hot wallet';
         $scope.hotwalletHasBeenFunded = false;
         $scope.warmStorageHasBeenFunded = false;

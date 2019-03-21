@@ -7,9 +7,9 @@
     /** @ngInject */
     function RewardsServiceCtrl($scope,$rootScope,$http,localStorageManagement,$location,$uibModal,errorHandler) {
 
-        var vm = this;
+        var vm = this, extensionsList = JSON.parse(localStorageManagement.getValue('extensionsList'));
         vm.token = localStorageManagement.getValue('TOKEN');
-        vm.baseUrl = localStorageManagement.getValue('SERVICEURL');
+        vm.baseUrl = extensionsList[45];
         // $rootScope.dashboardTitle = 'Rewards service | Rehive';
         $rootScope.dashboardTitle = 'Rewards extension | Rehive';
         $scope.loadingCampaigns =  false;

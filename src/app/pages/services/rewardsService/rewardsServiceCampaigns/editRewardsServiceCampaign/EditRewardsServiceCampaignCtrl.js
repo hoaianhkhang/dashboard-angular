@@ -8,10 +8,10 @@
     function EditRewardsServiceCampaignsCtrl($scope,$stateParams,Rehive,typeaheadService,toastr,_,$filter,
                                              $http,localStorageManagement,$location,errorHandler,currencyModifiers) {
 
-        var vm = this;
+        var vm = this, extensionsList = JSON.parse(localStorageManagement.getValue('extensionsList'));
         vm.token = localStorageManagement.getValue('TOKEN');
-        // vm.baseUrl = localStorageManagement.getValue('SERVICEURL');
-        vm.baseUrl = "https://reward.services.rehive.io/api/";
+        vm.baseUrl = extensionsList[45];
+        // vm.baseUrl = "https://reward.services.rehive.io/api/";
         $scope.companyDateFormatString = localStorageManagement.getValue('DATE_FORMAT');
         vm.campaignId = $stateParams.campaignId;
         $scope.currencyOptions = [];

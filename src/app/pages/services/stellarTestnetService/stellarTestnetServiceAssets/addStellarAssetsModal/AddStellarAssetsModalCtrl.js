@@ -6,10 +6,10 @@
 
     function AddStellarAssetsModalCtrl($scope,$uibModalInstance,toastr,$http,localStorageManagement,errorHandler) {
 
-        var vm = this;
+        var vm = this, extensionsList = JSON.parse(localStorageManagement.getValue('extensionsList'));
         vm.token = localStorageManagement.getValue('TOKEN');
-        // vm.baseUrl = localStorageManagement.getValue('SERVICEURL');
-        vm.baseUrl = "https://stellar-testnet.services.rehive.io/api/1/";
+        vm.baseUrl = extensionsList[78];
+        // vm.baseUrl = "https://stellar-testnet.services.rehive.io/api/1/";
         $scope.addingassets = false;
 
         $scope.addAssets = function (assetParams) {

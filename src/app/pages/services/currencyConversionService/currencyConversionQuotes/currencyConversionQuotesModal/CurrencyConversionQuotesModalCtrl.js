@@ -7,10 +7,10 @@
     function CurrencyConversionQuotesModalCtrl($scope,metadataTextService,quote,localStorageManagement,$uibModal,$http,
                                                $uibModalInstance,toastr,errorHandler,$ngConfirm,$window) {
 
-        var vm = this;
+        var vm = this, extensionsList = JSON.parse(localStorageManagement.getValue('extensionsList'));
         vm.token = localStorageManagement.getValue('TOKEN');
-        // vm.baseUrl = localStorageManagement.getValue('SERVICEURL');
-        vm.baseUrl = "https://conversion.services.rehive.io/api/";
+        vm.baseUrl = extensionsList[9];
+        // vm.baseUrl = "https://conversion.services.rehive.io/api/";
         $scope.quote = quote;
         $scope.formatted = {};
         $scope.formatted.metadata = metadataTextService.convertToText(quote.metadata);
