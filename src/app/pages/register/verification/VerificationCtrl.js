@@ -18,6 +18,7 @@
         $rootScope.$pageFinishedLoading = true;
         $rootScope.inVerification = true;
         $rootScope.tasksCompleted = 0;
+        $scope.show = false;
         // $rootScope.tasksCompleted = 35;
         $rootScope.settingUpDemo = true;
         $scope.template1 = false;

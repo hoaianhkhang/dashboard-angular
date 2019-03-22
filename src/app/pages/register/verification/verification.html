@@ -78,8 +78,8 @@
                         <img style="margin:auto; display: inline;" src="../../../../assets/img/loading.gif" width="100" height="100">
                     </div>
                     <div style="margin-top: 10px">
-                        <label ng-if="tasksCompleted < 35" class="welcome-label1 align-items-center" style="font-size: 30px">Hold on, we're building your template...</label>
-                        <label ng-if="tasksCompleted > 35" class="welcome-label1 align-items-center" style="font-size: 30px;">Complete! Taking you to the Get Started page now...</label>
+                        <label fade-in-out="tasksCompleted < 35" class="welcome-label1 align-items-center" style="font-size: 30px">Hold on, we're building your template...</label>
+                        <label fade-in-out="tasksCompleted > 35" class="welcome-label1 align-items-center" style="font-size: 30px;">Complete! Taking you to the Get Started page now...</label>
                      </div>
                     <div class="row" style="margin-top: 10px">
                         <div class="col-lg-2 col-md-2 col-xs-0 col-xs-0"></div>
@@ -93,10 +93,13 @@
                                 </div>
                                 <div class="col-lg-1 col-md-1 col-xs-0 col-xs-0"></div>
                                 <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 pull-right">
-                                    <label ng-show="tasksCompleted <= 12" class="welcome-label3 align-items-center" ng-animate="'fade'" style="font-size: 18px; margin-top: 18px;">We are setting up company configurations, groups and their permissions...</label>
-                                    <label ng-show="tasksCompleted > 12 && tasksCompleted <= 22" class="welcome-label3 align-items-center" ng-animate="'fade'" style="font-size: 18px;margin-top: 18px;">You will start with TXLM and Demo asset on Stellar...</label>
-                                    <label ng-show="tasksCompleted > 22 && tasksCompleted <= 35" class="welcome-label3 align-items-center" ng-animate="'fade'" style="font-size: 18px;margin-top: 18px;">We've added the rewards, notifications and the marketplace extension...</label>
-
+                                    <label slide-in-out="tasksCompleted <= 12" class="welcome-label3 align-items-center" style="font-size: 18px; margin-top: 18px;">We are setting up company configurations, groups and their permissions...</label>
+                                    <label slide-in-out="tasksCompleted > 12 && tasksCompleted <= 22" class="welcome-label3 align-items-center" style="font-size: 18px;margin-top: 18px;">You will start with TXLM and Demo asset on Stellar...</label>
+                                    <label slide-in-out="tasksCompleted > 22 && tasksCompleted <= 35" class="welcome-label3 align-items-center"  style="font-size: 18px;margin-top: 18px;">We've added the rewards, notifications and the marketplace extension...</label>
+                                    <!--<div>-->
+                                        <!--<input type="checkbox" ng-click="show = !show">-->
+                                        <!--<div slide-in-out="show" slide-in-duration="1000">Show me now!</div>-->
+                                    <!--</div>-->
                                 </div>
                             </div>
                         </div>
