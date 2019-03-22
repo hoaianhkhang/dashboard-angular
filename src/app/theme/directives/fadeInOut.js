@@ -24,7 +24,7 @@
                     return;
                 }
                 // element.stop(true, true).fadeToggle(duration);
-                element.stop(true, true).fadeToggle(700);
+                element.stop(true, true).fadeToggle(400);
             });
         }
         return ({
