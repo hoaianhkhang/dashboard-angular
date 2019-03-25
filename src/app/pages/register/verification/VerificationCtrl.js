@@ -20,10 +20,10 @@
         $rootScope.tasksCompleted = 0;
         // $rootScope.tasksCompleted = 10;
         $scope.show = false;
-        $rootScope.settingUpDemo = true;
-        $scope.template1 = false;
+        $rootScope.settingUpDemo = false;
+        $scope.template1 = true;
         $scope.template2 = false;
-        $scope.template3 = true;
+        $scope.template3 = false;
         $scope.companyName = "";
         $scope.imageFile = {
             file: {},
@@ -34,13 +34,13 @@
             var interval = setInterval(function(){
                 $rootScope.tasksCompleted++;
                 if($rootScope.tasksCompleted >= 39){
-                    // $scope.launchDemoSetup('yesyt');
+                    $scope.launchDemoSetup('yesyt');
                     clearInterval(interval);
                 }
                 $scope.$apply();
             },500);
         };
-        vm.testProgress();
+        // vm.testProgress();
 
         $scope.upload = function () {
             if(!$scope.imageFile.file.name && !$scope.imageFile.iconFile.name){
@@ -86,7 +86,6 @@
         };
 
         $scope.launchDemoSetup = function(fromInterval){
-            $rootScope.settingUpDemo = true;
             $scope.template1 = false;
             $scope.template2 = false;
             $scope.template3 = true;
@@ -100,9 +99,9 @@
             //     }, 1000);
             //
             // }else {
-                vm.testProgress();
+            //     vm.testProgress();
             // }
-            // demoSetupService.initializeDemoSetup($scope.companyName);
+            demoSetupService.initializeDemoSetup($scope.companyName);
         };
     /**
         vm.checkIfUserVerified = function(){

@@ -1322,13 +1322,17 @@
                 var vm = this;
                 vm.trackTasks('apply');
                 setTimeout(function(){
-                    $rootScope.settingUpDemo = false;
-                    $rootScope.securityConfigured = true;
-                    $rootScope.settingUpDemo = false;
-                    $rootScope.inVerification = false;
-                    toastr.success('All demo config has been successfully setup.');
-                    $location.path('/get-started');
-                }, 500);
+                     vm.cleanUpSetupEnv();
+                }, 2000);
+            },
+            cleanUpSetupEnv: function(){
+                $rootScope.settingUpDemo = false;
+                $rootScope.securityConfigured = true;
+                $rootScope.settingUpDemo = false;
+                $rootScope.inVerification = false;
+                toastr.success('All demo config has been successfully setup.');
+                $location.path('/get-started');
+                $scope.$apply();
             }
         };
     }

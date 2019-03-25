@@ -26,5 +26,9 @@
             $location.path('/currencies');
         };
 
+        $scope.backToLanding = function(){
+            $location.path('/verification');
+        };
+
     }
 })();
