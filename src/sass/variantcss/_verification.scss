@@ -29,6 +29,7 @@
   font-weight: normal;
   color: $primary;
   margin-top: 50px;
+  line-height: 1.16;
 }
 
 .welcome-text{
@@ -74,7 +75,7 @@
 
 .template-button-container{
   width: 100%;
-  margin: 20vh 0px 0px -15px;
+  margin: 15vh 0px 0px -15px;
 }
 
 .template-button{
@@ -94,6 +95,7 @@
 .manual-setup-text{
   font-size: 17px !important;
   color: #A8A8A8;
+  cursor: pointer;
 }
 
 .template-progress-msg{
@@ -123,7 +125,7 @@
     font-size: 21px;
   }
   .template-button-container{
-    margin: 4% 0px 0px -15px;
+    margin: 3% 0px 0px -15px;
   }
   .manual-setup-text{
     margin-top: -50px !important;
