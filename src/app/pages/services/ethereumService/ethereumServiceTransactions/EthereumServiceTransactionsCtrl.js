@@ -8,10 +8,10 @@
     function EthereumServiceTransactionsCtrl($rootScope, $scope,$http,localStorageManagement,$uibModal,toastr,multiOptionsFilterService,
                                              errorHandler,$state,$window,typeaheadService,serializeFiltersService) {
 
-        var vm = this;
+        var vm = this, extensionsList = JSON.parse(localStorageManagement.getValue('extensionsList'));
         vm.token = localStorageManagement.getValue('TOKEN');
-        // vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
-        vm.serviceUrl = "https://ethereum.services.rehive.io/api/1/";
+        vm.serviceUrl = extensionsList[6];
+        // vm.serviceUrl = "https://ethereum.services.rehive.io/api/1/";
         // $rootScope.dashboardTitle = 'Ethereum service | Rehive';
         $rootScope.dashboardTitle = 'Ethereum extension | Rehive';
         $scope.companyDateFormatString = localStorageManagement.getValue('DATE_FORMAT');

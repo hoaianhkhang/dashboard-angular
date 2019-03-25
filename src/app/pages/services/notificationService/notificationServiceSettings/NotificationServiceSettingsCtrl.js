@@ -8,10 +8,10 @@
     function NotificationServiceSettingsCtrl(environmentConfig,$rootScope,$scope,$http,$ngConfirm,$timeout,$location,
                                              localStorageManagement,toastr,errorHandler,$state,$uibModal) {
 
-        var vm = this;
+        var vm = this, extensionsList = JSON.parse(localStorageManagement.getValue('extensionsList'));
         vm.token = localStorageManagement.getValue('TOKEN');
-        // vm.baseUrl = localStorageManagement.getValue('SERVICEURL');
-        vm.baseUrl = "https://notification.services.rehive.io/api/";
+        vm.baseUrl = extensionsList[4];
+        // vm.baseUrl = "https://notification.services.rehive.io/api/";
         // vm.serviceId = localStorageManagement.getValue('SERVICEID');
         vm.serviceId = 4;
         vm.webhookUrl = "https://notification.services.rehive.io/api/admin/webhook/";

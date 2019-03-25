@@ -8,10 +8,10 @@
     function StellarServiceTransactionsCtrl($scope,$http,localStorageManagement,$uibModal,toastr,$filter,multiOptionsFilterService,
                                             errorHandler,$state,$window,typeaheadService,serializeFiltersService) {
 
-        var vm = this;
+        var vm = this, extensionsList = JSON.parse(localStorageManagement.getValue('extensionsList'));
         vm.token = localStorageManagement.getValue('TOKEN');
-        // vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
-        vm.serviceUrl = "https://stellar.services.rehive.io/api/1/";
+        vm.serviceUrl = extensionsList[2];
+        // vm.serviceUrl = "https://stellar.services.rehive.io/api/1/";
         vm.companyIdentifier = localStorageManagement.getValue('companyIdentifier');
         vm.savedStellarTransactionTableColumns = vm.companyIdentifier + 'stellarTransactionsTable';
         $scope.companyDateFormatString = localStorageManagement.getValue('DATE_FORMAT');

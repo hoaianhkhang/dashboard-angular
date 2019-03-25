@@ -7,10 +7,10 @@
     function RewardsServiceRewardsModalCtrl($scope,reward,environmentConfig,$uibModalInstance,$ngConfirm,
                                             $state,toastr,$http,localStorageManagement,errorHandler,$filter) {
 
-        var vm = this;
+        var vm = this, extensionsList = JSON.parse(localStorageManagement.getValue('extensionsList'));
         vm.token = localStorageManagement.getValue('TOKEN');
-        // vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
-        vm.serviceUrl = "https://reward.services.rehive.io/api/";
+        vm.serviceUrl = extensionsList[45];
+        // vm.serviceUrl = "https://reward.services.rehive.io/api/";
         $scope.reward = reward;
         $scope.loadingReward = false;
         $scope.editingRequest = false;

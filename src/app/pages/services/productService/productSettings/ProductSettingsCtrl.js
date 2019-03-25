@@ -8,9 +8,10 @@
     function ProductSettingsCtrl($rootScope,$scope,localStorageManagement,$http,$ngConfirm,environmentConfig,
                                         $timeout,toastr,$location,errorHandler) {
 
-        var vm = this;
+        var vm = this, extensionsList = JSON.parse(localStorageManagement.getValue('extensionsList'));
         vm.token = localStorageManagement.getValue('TOKEN');
-        vm.serviceId = localStorageManagement.getValue('SERVICEID');
+        // vm.serviceId = localStorageManagement.getValue('SERVICEID');
+        vm.serviceId = 79;
         // $rootScope.dashboardTitle = 'Products service | Rehive';
         $rootScope.dashboardTitle = 'Products extension | Rehive';
         $scope.productSettingView = '';

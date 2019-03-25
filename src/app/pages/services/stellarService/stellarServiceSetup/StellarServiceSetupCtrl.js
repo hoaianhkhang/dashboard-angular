@@ -7,10 +7,10 @@
     /** @ngInject */
     function StellarServiceSetupCtrl($rootScope,$scope,$http,environmentConfig,localStorageManagement,errorHandler,$location) {
 
-        var vm = this;
+        var vm = this, extensionsList = JSON.parse(localStorageManagement.getValue('extensionsList'));
         vm.token = localStorageManagement.getValue('TOKEN');
-        // vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
-        vm.serviceUrl = "https://stellar.services.rehive.io/api/1/";
+        vm.serviceUrl = extensionsList[2];
+        // vm.serviceUrl = "https://stellar.services.rehive.io/api/1/";
         // $rootScope.dashboardTitle = 'Stellar service | Rehive';
         $rootScope.dashboardTitle = 'Stellar extension | Rehive';
         $scope.loadingStellarService = false;
