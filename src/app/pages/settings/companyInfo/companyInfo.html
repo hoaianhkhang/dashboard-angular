@@ -63,8 +63,13 @@
             <div class="form-group">
                 <label>Company logo</label>
                 <div class="divider-20">
-                    <img ng-hide="imageFile.file.name" ng-src="{{companyImageUrl}}" width="100" height="100" alt="token Image">
-                    <img ng-show="imageFile.file.name" ngf-thumbnail="imageFile.file" width="100" height="100" alt="token Image">
+                    <div ng-hide="hasLogo || imageFile.file.name">
+                        <img src="../../../../assets/img/_defaultLogo.png" width="175" height="47" style="margin: 8px 0 -2px 0px;">
+                    </div>
+                    <div ng-show="hasLogo || imageFile.file.name">
+                        <img ng-hide="imageFile.file.name" ng-src="{{companyImageUrl}}" width="200" height="200" alt="token Image">
+                        <img ng-show="imageFile.file.name" ngf-thumbnail="imageFile.file" width="100" height="100" alt="token Image">
+                    </div>
                 </div>
                 <form name="myForm" class="divider">
                     <fieldset class="custom-file-upload">
@@ -81,8 +86,13 @@
             <div class="form-group">
                 <label>Company icon</label>
                 <div class="divider-20">
-                    <img ng-hide="imageFile.iconFile.name" ng-src="{{companyIconUrl}}" width="100" height="100" alt="icon Image">
-                    <img ng-show="imageFile.iconFile.name" ngf-thumbnail="imageFile.iconFile" width="100" height="100" alt="icon Image">
+                    <div ng-hide="hasIcon || imageFile.iconFile.name">
+                        <img src="../../../../assets/img/_defaultIcon.png" width="90" height="90" style="margin: -5px 0 -15px -15px;">
+                    </div>
+                    <div ng-show="hasIcon || imageFile.iconFile.name">
+                        <img ng-hide="imageFile.iconFile.name" ng-src="{{companyIconUrl}}" width="100" height="100" alt="icon Image">
+                        <img ng-show="imageFile.iconFile.name" ngf-thumbnail="imageFile.iconFile" width="100" height="100" alt="icon Image">
+                    </div>
                 </div>
                 <form name="myForm" class="divider">
                     <fieldset class="custom-file-upload">
