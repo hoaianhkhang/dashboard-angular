@@ -18,7 +18,6 @@
         $rootScope.$pageFinishedLoading = true;
         $rootScope.inVerification = true;
         $rootScope.tasksCompleted = 0;
-        // $rootScope.tasksCompleted = 10;
         $scope.show = false;
         $rootScope.settingUpDemo = false;
         $scope.template1 = true;
@@ -29,18 +28,6 @@
             file: {},
             iconFile: {}
         };
-
-        vm.testProgress = function(){
-            var interval = setInterval(function(){
-                $rootScope.tasksCompleted++;
-                if($rootScope.tasksCompleted >= 39){
-                    $scope.launchDemoSetup('yesyt');
-                    clearInterval(interval);
-                }
-                $scope.$apply();
-            },500);
-        };
-        // vm.testProgress();
 
         $scope.upload = function () {
             if(!$scope.imageFile.file.name && !$scope.imageFile.iconFile.name){
@@ -71,6 +58,12 @@
                 errorHandler.handleErrors(error);
             });
         };
+
+        $scope.manualOnboarding = function(){
+            $rootScope.inVerification = false;
+            $location.path('/company/setup/company-details');
+        };
+
         $scope.openOverview = function(){
             $window.open('https://docsend.com/view/yx2vhzm', '_blank');
         };
@@ -85,22 +78,11 @@
             $scope.template2 = false;
         };
 
-        $scope.launchDemoSetup = function(fromInterval){
+        $scope.launchDemoSetup = function(){
             $scope.template1 = false;
             $scope.template2 = false;
             $scope.template3 = true;
             $rootScope.settingUpDemo = true;
-            // if(fromInterval){
-            //     setTimeout(function(){
-            //         $rootScope.inVerification = false;
-            //         $rootScope.settingUpDemo = false;
-            //         $location.path('/get-started');
-            //         $scope.$apply();
-            //     }, 1000);
-            //
-            // }else {
-            //     vm.testProgress();
-            // }
             demoSetupService.initializeDemoSetup($scope.companyName);
         };
     /**

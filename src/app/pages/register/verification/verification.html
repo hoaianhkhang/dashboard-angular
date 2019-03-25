@@ -25,7 +25,7 @@
             </div>
             <div class="row template-container">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 align-items-center">
-                    <a href="#/company/setup/company-details" class="manual-setup-text">Manually setup your company instead</a>
+                    <a class="manual-setup-text" ng-click="manualOnboarding()">Manually setup your company instead</a>
                 </div>
             </div>
         </div>
@@ -95,7 +95,7 @@
                                 <!-- For running tasks -->
                                 <div ng-hide="tasksCompleted >= 38" class="col-lg-3 col-md-3 col-sm-12 col-xs-12" style="height: 100px;">
                                     <div class="align-items-center">
-                                        <span class="login-labels demo-labels demo-progress" style="font-size: 18px;">Task&nbsp;
+                                        <span class="login-labels demo-labels demo-progress" style="font-size: 18px; margin-right: -15px;">Task&nbsp;
                                         <span style="color: #A4A5F5;">
                                             <span ng-bind="tasksCompleted"></span> / 39</span>
                                         </span>

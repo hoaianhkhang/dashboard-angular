@@ -27,6 +27,7 @@
         };
 
         $scope.backToLanding = function(){
+            $rootScope.inVerification = true;
             $location.path('/verification');
         };
 
