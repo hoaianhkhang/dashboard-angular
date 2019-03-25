@@ -72,6 +72,11 @@ $angle-right: "\f101";
   }
 }
 
+.sidebar-getStarted-icon{
+  mask-image: url("../../../assets/img/getStarted.svg");
+  mask-repeat: no-repeat;
+}
+
 .sidebar-currencies-icon{
   mask-image: url("../../../assets/img/currencies.svg");
   mask-repeat: no-repeat;

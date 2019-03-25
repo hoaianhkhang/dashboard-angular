@@ -8,10 +8,10 @@
     function RewardsServiceCampaignsCtrl($scope,$http,localStorageManagement,$location,
                                          serializeFiltersService,$ngConfirm,toastr,errorHandler) {
 
-        var vm = this;
+        var vm = this, extensionsList = JSON.parse(localStorageManagement.getValue('extensionsList'));
         vm.token = localStorageManagement.getValue('TOKEN');
-        // vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
-        vm.serviceUrl = "https://reward.services.rehive.io/api/";
+        vm.serviceUrl = extensionsList[45];
+        // vm.serviceUrl = "https://reward.services.rehive.io/api/";
         $scope.companyDateFormatString = localStorageManagement.getValue('DATE_FORMAT').toUpperCase();
         $scope.loadingCampaigns =  false;
         $scope.campaignList = [];

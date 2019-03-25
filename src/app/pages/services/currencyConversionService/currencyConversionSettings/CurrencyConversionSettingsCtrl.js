@@ -61,7 +61,6 @@
                         $timeout(function () {
                             $scope.deactivatingCurrencyConversion = false;
                             toastr.success('Extension has been successfully deactivated');
-                            // toastr.success('Service has been successfully deactivated');
                             // $location.path('/services');
                             $location.path('/extensions');
                         },600);

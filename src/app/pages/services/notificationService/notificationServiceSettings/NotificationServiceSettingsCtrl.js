@@ -8,10 +8,10 @@
     function NotificationServiceSettingsCtrl(environmentConfig,$rootScope,$scope,$http,$ngConfirm,$timeout,$location,
                                              localStorageManagement,toastr,errorHandler,$state,$uibModal) {
 
-        var vm = this;
+        var vm = this, extensionsList = JSON.parse(localStorageManagement.getValue('extensionsList'));
         vm.token = localStorageManagement.getValue('TOKEN');
-        // vm.baseUrl = localStorageManagement.getValue('SERVICEURL');
-        vm.baseUrl = "https://notification.services.rehive.io/api/";
+        vm.baseUrl = extensionsList[4];
+        // vm.baseUrl = "https://notification.services.rehive.io/api/";
         // vm.serviceId = localStorageManagement.getValue('SERVICEID');
         vm.serviceId = 4;
         vm.webhookUrl = "https://notification.services.rehive.io/api/admin/webhook/";
@@ -23,6 +23,9 @@
         $scope.company = {};
         $scope.twilioCredsList = [];
         $scope.sendGridCredsList = [];
+        $scope.changedCompanyInfo = false;
+        vm.prevCompanyName = "";
+        vm.prevCompanyEmail = "";
 
         $scope.goToNotificationSetting = function (setting) {
             $scope.notificationSettingView = setting;
@@ -41,6 +44,8 @@
                     $scope.updatingCompanyDetails =  false;
                     if (res.status === 200) {
                         $scope.company = res.data.data;
+                        $scope.prevCompanyName = $scope.company.name;
+                        $scope.prevCompanyEmail = $scope.company.email;
                     }
                 }).catch(function (error) {
                     $scope.updatingCompanyDetails =  false;
@@ -52,6 +57,7 @@
         vm.getCompanyDetails();
 
         $scope.companyDetailsChanged = function (field) {
+            $scope.changedCompanyInfo = (vm.prevCompanyName !== $scope.company.name || vm.prevCompanyEmail !== $scope.company.email);
             vm.updatedCompany[field] = $scope.company[field];
         };
 

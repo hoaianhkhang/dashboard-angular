@@ -7,14 +7,14 @@
     function BitcoinServiceTransactionsModalCtrl($uibModalInstance,$scope,transaction,metadataTextService,
                                                  localStorageManagement,$state,$location) {
 
-        var vm = this;
+        var vm = this, extensionsList = JSON.parse(localStorageManagement.getValue('extensionsList'));
         $scope.rehive_response = metadataTextService.convertToText(transaction.rehive_response);
         $scope.transaction = transaction;
         vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
         if(vm.serviceUrl.indexOf('testnet') > 0){
-            $scope.bitcoinBlockTrailUrl = 'https://www.blocktrail.com/tBTC';
+            $scope.bitcoinBlockTrailUrl = 'https://live.blockcypher.com/btc-testnet';
         } else {
-            $scope.bitcoinBlockTrailUrl = 'https://www.blocktrail.com/BTC';
+            $scope.bitcoinBlockTrailUrl = 'https://live.blockcypher.com/btc';
         }
 
         $scope.goToUser = function () {

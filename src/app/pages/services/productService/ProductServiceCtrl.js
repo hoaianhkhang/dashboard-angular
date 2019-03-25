@@ -7,10 +7,10 @@
     /** @ngInject */
     function ProductServiceCtrl($scope,$rootScope,localStorageManagement,$location) {
 
-        var vm = this;
+        var vm = this, extensionsList = JSON.parse(localStorageManagement.getValue('extensionsList'));
         vm.token = localStorageManagement.getValue('TOKEN');
-        // vm.baseUrl = localStorageManagement.getValue('SERVICEURL');
-        vm.baseUrl = "https://product.services.rehive.io/api/";
+        vm.baseUrl = extensionsList[79];
+        // vm.baseUrl = "https://product.services.rehive.io/api/";
         // $rootScope.dashboardTitle = 'Products service | Rehive';
         $rootScope.dashboardTitle = 'Products extension | Rehive';
         $scope.loadingCampaigns =  false;

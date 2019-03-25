@@ -8,9 +8,10 @@
     function BitcoinHdKeysCtrl($scope,$http,localStorageManagement,toastr,errorHandler,$ngConfirm) {
 
 
-        var vm = this;
-        // vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
-        vm.serviceUrl = "https://bitcoin-testnet.services.rehive.io/api/1/";
+        var vm = this, extensionsList = JSON.parse(localStorageManagement.getValue('extensionsList'));
+        vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
+        vm.serviceUrl = (vm.serviceUrl.indexOf('bitcoin-testnet') > 0) ? extensionsList[12] : extensionsList[7];
+        // vm.serviceUrl = "https://bitcoin-testnet.services.rehive.io/api/1/";
         vm.token = localStorageManagement.getValue('TOKEN');
         $scope.loadingHdkeys =  true;
         $scope.addingHdkey =  false;

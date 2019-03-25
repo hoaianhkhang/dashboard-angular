@@ -31,10 +31,10 @@
     function ProductCtrl($scope,Rehive,$http,localStorageManagement,serializeFiltersService,
                          $ngConfirm,$location,$uibModal,errorHandler,toastr,$filter) {
 
-        var vm = this;
+        var vm = this, extensionsList = JSON.parse(localStorageManagement.getValue('extensionsList'));
         vm.token = localStorageManagement.getValue('TOKEN');
-        // vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
-        vm.serviceUrl = "https://product.services.rehive.io/api/";
+        vm.serviceUrl = extensionsList[79];
+        // vm.serviceUrl = "https://product.services.rehive.io/api/";
         vm.companyIdentifier = localStorageManagement.getValue('companyIdentifier');
         vm.savedProductsTableColumns = vm.companyIdentifier + 'productServiceProductsTable';
         $scope.loadingProducts =  false;

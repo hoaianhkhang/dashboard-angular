@@ -5,12 +5,12 @@
     </div>
 </div>
 
-<div ng-show="hotwalletObjLength > 0 && !loadingHotwalletTransactions" class="panel">
+<div ng-show="hotwalletObjLength > 0 && !loadingHotwalletTransactions" class="panel" ng-repeat="currency in hotWalletCurrencies">
     <div class="panel-body">
         <div class="row">
             <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
                 <div class="dashboard-currencies-code">
-                    XLM
+                    {{currency.currency.code}}
                 </div>
             </div>
             <div class="currencies-page-row">
@@ -24,7 +24,7 @@
                     </div>
                     <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
                         <div>
-                            <span><strong>{{stellarCurrency.symbol}} {{hotwalletObj.balance | currencyModifiersFilter: stellarCurrency.divisibility}}</strong></span>
+                            <span><strong>{{currency.currency.symbol}} {{currency.balance | currencyModifiersFilter: currency.currency.divisibility}}</strong></span>
                             <br>
                             <span class="currencies-details-heading">Total</span>
                         </div>
@@ -37,7 +37,7 @@
                         </div>
                     </div>
                     <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                        <button class="btn btn-primary dashboard-btn pull-right"
+                        <button class="btn btn-primary dashboard-btn pull-right" style="margin-top: 0px!important;"
                                 ng-click="openFundHotwalletModal('app/pages/services/stellarService/stellarServiceAccounts/stellarHotwallet/fundStellarHotwalletModal/fundStellarHotwalletModal.html','md')">
                             Fund
                         </button>

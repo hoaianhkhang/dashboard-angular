@@ -8,7 +8,7 @@
     function EthereumServiceSettingsCtrl($rootScope,$scope,localStorageManagement,$ngConfirm,$http,environmentConfig,
                                          $timeout,toastr,$location,errorHandler) {
 
-        var vm = this;
+        var vm = this, extensionsList = JSON.parse(localStorageManagement.getValue('extensionsList'));
         vm.token = localStorageManagement.getValue('TOKEN');
         // vm.serviceId = localStorageManagement.getValue('SERVICEID');
         vm.serviceId = 6;

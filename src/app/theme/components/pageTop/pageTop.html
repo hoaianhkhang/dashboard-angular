@@ -24,10 +24,30 @@
         </div>
       </div>
       <div ng-hide="inCompanySetupViews" class="search-bar-main" click-outside="hidingSearchBar()">
-        <input type="text" class="page-top-search" placeholder="Search by email, mobile number or transaction id"
+        <input id="searchBox" type="text" class="page-top-search" placeholder="Search by email, mobile number or transaction id"
                ng-model="searchString"
                ng-keydown="($event.keyCode === 13)  && searchGlobal(searchString)"
-               ng-change="searchGlobal(searchString)" ng-model-options='{ debounce: 800 }'>
+               ng-change="searchGlobal(searchString)" ng-model-options='{ debounce: 800 }'
+               ng-click="displaySearchOptions()">
+
+        <div ng-show="displayOptions" class="search-bar-div">
+          <div class="panel search-bar-results-box">
+            <div class="panel-body" ng-hide="loadingResults">
+              <div class="search-user-body pointer" ng-repeat="category in selectSearchCategory">
+                <div class="search-user-result" ng-click="searchSelectedOption(category)">
+                  <div class="row">
+                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                      <span class="search-user-result-title pull-left" style="color: #A4A5F5">{{category.name}}</span>
+                    </div>
+                    <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10l">
+                      <span class="search-user-result-extra">{{category.placeholder}}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
         <div class="search-bar-div">
           <search-bar-results></search-bar-results>
         </div>

@@ -7,11 +7,15 @@
     /** @ngInject */
 
     function PageTopCtrl($rootScope,$scope,Rehive,localStorageManagement,$state,$timeout,serializeFiltersService,
-                         $location,errorHandler,$window,identifySearchInput) {
+                         $location,errorHandler,$window,identifySearchInput,$intercom) {
         var vm = this;
 
         vm.token = localStorageManagement.getValue('TOKEN');
         vm.unfinishedDashboardTasks = [];
+        vm.searchBox = document.getElementById("searchBox");
+        vm.companyIdentifier = localStorageManagement.getValue('companyIdentifier');
+        vm.savedAccountsTableFilters = vm.companyIdentifier + 'accountsTableFilters';
+        vm.savedTransactionTableFilters = vm.companyIdentifier + 'transactionTableFilters';
         $scope.currencies = [];
         $scope.hideSearchBar = true;
         $scope.searchString = '';
@@ -31,6 +35,35 @@
             itemsPerPage: 10,
             pageNo: 1,
             maxSize: 5
+        };
+        $scope.displayOptions = false;
+        $scope.selectSearchCategory = [];
+        $scope.selectSearchCategory = [
+            {name: "account:", placeholder: "account associated with a user or transaction"},
+            {name: "email:", placeholder: "email address associated with a user or transaction"},
+            {name: "id:", placeholder: "id associated with a transaction"},
+            {name: "mobile:", placeholder: "mobile number associated with a user or transaction"}
+        ];
+
+        document.onclick = function(event){
+            if($scope.displayOptions && event.target !== vm.searchBox){
+                $scope.displaySearchOptions();
+            }
+        };
+
+        $scope.displaySearchOptions = function(){
+            $scope.displayOptions = !$scope.displayOptions;
+            vm.searchBox.placeholder = "";
+            if(!$scope.displayOptions){
+                vm.searchBox.placeholder = "Search by email, mobile number or transaction id";
+            }
+        };
+
+        $scope.searchSelectedOption = function(option){
+            $scope.displayOptions = false;
+            $scope.searchString = "";
+            $scope.searchString += option.name;
+            vm.searchBox.focus();
         };
 
         vm.currentLocation = $location.path();
@@ -90,6 +123,7 @@
 
         $scope.hidingSearchBar = function () {
             $scope.hideSearchBar =  true;
+            vm.searchBox.placeholder = "Search by email, mobile number or transaction id";
         };
 
         vm.showSearchBar = function () {
@@ -133,43 +167,83 @@
                 $scope.hidingSearchBar();
                 return;
             }
-
-            var typeOfInput;
-
-            if(identifySearchInput.isMobile(searchString)){
-                typeOfInput = 'mobile';
-            } else {
-                typeOfInput = 'text';
-            }
-
-            vm.findUser(searchString,typeOfInput);
-
+            var array = searchString.split(':');
+            var typeOfInput = array[0], searchItemString = array[1];
+            // if(identifySearchInput.isMobile(searchItemString)){
+            //     typeOfInput = 'mobile';
+            // } else {
+            //     typeOfInput = 'text';
+            // }
+            // vm.findUser(searchItemString,typeOfInput);
+            vm.findUser(searchItemString, typeOfInput);
         };
 
         vm.findUser = function (searchString,typeOfInput) {
             $scope.loadingResults = true;
             vm.showSearchBar();
             $scope.searchedTransactions = [];
+            if(typeOfInput == 'id'){
+                vm.findTransactions(searchString, typeOfInput, searchString);
+            }
+            else{
+                var filter;
+                if(vm.token){
+                    if(typeOfInput == 'mobile'){
+                        filter = 'mobile__contains';
+                    } else if(typeOfInput == 'email'){
+                        filter = 'email__contains';
+                    } else if(typeOfInput == 'account'){
+                        filter = 'account';
+                    }
+
+                    var userFilter = { page_size: 2 };
+                    userFilter[filter] = searchString;
+
+                    Rehive.admin.users.get({filters: userFilter}).then(function (res) {
+                        $scope.searchedUsers = res.results;
+                        if(res.count == 1){
+                            vm.findTransactions(res.results[0].email, typeOfInput, searchString);
+                            $scope.$apply();
+                        } else {
+                            vm.findTransactions(searchString, typeOfInput, searchString);
+                            $scope.$apply();
+                        }
+                    }, function (error) {
+                        $scope.loadingResults = false;
+                        errorHandler.evaluateErrors(error);
+                        errorHandler.handleErrors(error);
+                    });
+                }
+            }
+        };
+
+        vm.findTransactions = function (searchString, typeOfInput, originalString) {
             var filter;
+            $scope.searchedAccounts = [];
             if(vm.token){
-                if(typeOfInput == 'mobile'){
-                    filter = 'mobile__contains';
-                } else {
-                    filter = 'email__contains';
+                if(typeOfInput == 'email'){
+                    filter = 'user';
+                } else if(typeOfInput == 'id'){
+                    filter = 'id';
+                } else if(typeOfInput == 'account'){
+                    filter = 'account';
                 }
 
-                var userFilter = { page_size: 2 };
-                userFilter[filter] = searchString;
+                var transactionsFilter = { page_size: 2 };
+                if(typeOfInput == 'account'){
+                    transactionsFilter[filter] = originalString;
+                } else {
+                    transactionsFilter[filter] = searchString;
+                }
 
-                Rehive.admin.users.get({filters: userFilter}).then(function (res) {
-                    $scope.searchedUsers = res.results;
-                    if(res.count == 1){
-                        vm.findTransactions(res.results[0].email,'user');
-                        $scope.$apply();
-                    } else {
-                        vm.findTransactions(searchString,'id');
-                        $scope.$apply();
+                Rehive.admin.transactions.get({filters: transactionsFilter}).then(function (res) {
+                    $scope.loadingResults = false;
+                    $scope.searchedTransactions = res.results;
+
+                    if(typeOfInput == 'account' || typeOfInput == 'email'){
+                        vm.findAccounts(originalString, typeOfInput);
                     }
+                    $scope.$apply();
                 }, function (error) {
                     $scope.loadingResults = false;
                     errorHandler.evaluateErrors(error);
@@ -178,21 +252,20 @@
             }
         };
 
-        vm.findTransactions = function (searchString,typeOfInput) {
+        vm.findAccounts = function(searchString, typeOfInput){
             var filter;
             if(vm.token){
-                if(typeOfInput == 'user'){
-                    filter = 'user';
+                if(typeOfInput == 'email'){
+                   filter = 'user';
                 } else {
-                    filter = 'id';
+                    filter = 'reference';
                 }
+                var accountsFilter = { page_size: 2 };
+                accountsFilter[filter] = searchString;
 
-                var transactionsFilter = { page_size: 2 };
-                transactionsFilter[filter] = searchString;
-
-                Rehive.admin.transactions.get({filters: transactionsFilter}).then(function (res) {
+                Rehive.admin.accounts.get({filters: accountsFilter}).then(function (res) {
                     $scope.loadingResults = false;
-                    $scope.searchedTransactions = res.results;
+                    $scope.searchedAccounts = res.results;
                     $scope.$apply();
                 }, function (error) {
                     $scope.loadingResults = false;
@@ -209,23 +282,80 @@
 
         $scope.goToUsers = function () {
             $scope.hidingSearchBar();
-            if(identifySearchInput.isMobile($scope.searchString)){
-                $state.go('users',{mobile: $scope.searchString});
+            var type = $scope.searchString.split(':')[0], data = $scope.searchString.split(':')[1];
+            if(type == 'mobile'){
+                $state.go('users',{mobile: data});
+            } else if(type == 'email'){
+                $state.go('users',{email: data});
+            } else if(type == 'account'){
+                $state.go('users',{reference: data});
             } else {
-                $state.go('users',{email: $scope.searchString});
+                $state.go('users');
             }
-
         };
 
         $scope.goToTransactionsHistory = function (transaction) {
             $scope.hidingSearchBar();
-            if(transaction && transaction.id){
-                $state.go('transactions.history',{transactionId: transaction.id});
-            } else if($scope.searchedUsers.length > 0) {
-                $state.go('transactions.history',{id: $scope.searchedUsers[0].id});
+            var type = $scope.searchString.split(':')[0];
+
+            if(transaction){
+                if(type == "id"){
+                    $state.go('transactions.history',{transactionId: transaction.id});
+                }
+                else if(type == "email"){
+                    var userId = transaction.id + ":" + transaction.user.email;
+                    $state.go('transactions.history',{id: userId});
+                }
+                else if(type == "mobile"){
+                    var userId = transaction.id + ":" + transaction.user.id;
+                    $state.go('transactions.history',{id: userId});
+                }
+                else if(type == "account"){
+                    var accountRef = transaction.id + ":" + transaction.account;
+                    $state.go('transactions.history',{accountRef: accountRef});
+                }
             } else {
-                $state.go('transactions.history');
+                var data = $scope.searchString.split(':')[1];
+                if(type == "id"){
+                    $state.go('transactions.history',{transactionId: data});
+                }
+                else if(type == "email"){
+                    var userId = "0:" + data;
+                    $state.go('transactions.history',{id: userId});
+                }
+                else if(type == "mobile"){
+                    var userId = "0:" + data;
+                    $state.go('transactions.history',{id: userId});
+                }
+                else if(type == "account"){
+                    var accountRef = "0:" + data;
+                    $state.go('transactions.history',{accountRef: accountRef});
+                }
             }
+        };
+
+        $scope.goToAccounts = function (account) {
+            $scope.hidingSearchBar();
+            var type = $scope.searchString.split(':')[0];
+            if(account){
+                if(type == "account"){
+                    $state.go('accounts',{accountRef: account.reference});
+                }else if(type == "email"){
+                    $state.go('accounts',{email: account.user.email});
+                }else {
+                    $state.go('accounts');
+                }
+            } else {
+                var data = $scope.searchString.split(':')[1];
+                if(type == "account"){
+                    $state.go('accounts',{accountRef: data});
+                }else if(type == "email"){
+                    $state.go('accounts',{email: data});
+                }else {
+                    $state.go('accounts');
+                }
+            }
+
         };
 
         // dashboardTasks start
@@ -446,6 +576,7 @@
             $rootScope.securityConfigured = true;
             $window.sessionStorage.currenciesList = '';
             $rootScope.pageTopObj = {};
+            $intercom.shutdown();
             localStorageManagement.deleteValue('TOKEN');
             localStorageManagement.deleteValue('token');
             Rehive.removeToken();

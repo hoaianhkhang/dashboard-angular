@@ -7,10 +7,10 @@
     function AddOrderCtrl($scope,$http,$location,localStorageManagement,currencyModifiers,
                           Rehive,serializeFiltersService,toastr,errorHandler,typeaheadService) {
 
-        var vm = this;
+        var vm = this, extensionsList = JSON.parse(localStorageManagement.getValue('extensionsList'));
         vm.token = localStorageManagement.getValue('TOKEN');
-        // vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
-        vm.serviceUrl = "https://product.services.rehive.io/api/";
+        vm.serviceUrl = extensionsList[79];
+        // vm.serviceUrl = "https://product.services.rehive.io/api/";
         $scope.addingOrder = false;
         $scope.loadingProducts = false;
         $scope.productList = [];

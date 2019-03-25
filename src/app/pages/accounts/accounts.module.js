@@ -13,8 +13,12 @@
                 controller: 'AccountsCtrl',
                 title: 'Accounts',
                 sidebarMeta: {
-                    order: 100,
+                    order: 200,
                     icon: 'sidebar-accounts-icon'
+                },
+                params: {
+                    email: null,
+                    accountRef: null
                 }
             });
     }

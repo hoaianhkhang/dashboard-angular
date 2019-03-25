@@ -7,10 +7,10 @@
     /** @ngInject */
     function StellarTestnetServiceSetupCtrl($rootScope,$scope,$http,environmentConfig,localStorageManagement,errorHandler,$location) {
 
-        var vm = this;
+        var vm = this, extensionsList = JSON.parse(localStorageManagement.getValue('extensionsList'));
         vm.token = localStorageManagement.getValue('TOKEN');
-        vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
-        // $rootScope.dashboardTitle = 'Stellar testnet service | Rehive';
+        vm.serviceUrl = extensionsList[78];
+        $rootScope.dashboardTitle = 'Stellar testnet service | Rehive';
         $rootScope.dashboardTitle = 'Stellar testnet extension | Rehive';
         $scope.loadingStellarTestnetService = false;
         $scope.stellarTestnetConfigComplete = false;

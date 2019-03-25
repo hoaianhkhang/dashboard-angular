@@ -151,7 +151,8 @@
                         $scope.loadingDefaultValues = false;
                         toastr.success('Company has been setup with default values');
                         $uibModalInstance.close();
-                        $location.path('/currencies');
+                        $location.path('/get-started');
+                        // $location.path('/currencies');
                         $scope.$apply();
                     }
                 }, function (error) {
