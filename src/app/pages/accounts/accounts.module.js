@@ -15,6 +15,10 @@
                 sidebarMeta: {
                     order: 200,
                     icon: 'sidebar-accounts-icon'
+                },
+                params: {
+                    email: null,
+                    accountRef: null
                 }
             });
     }

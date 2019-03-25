@@ -8,9 +8,9 @@
     function StellarWarmstorageCtrl($scope,localStorageManagement,errorHandler,currenciesList,$http,$uibModal,multiOptionsFilterService,
                                     sharedResources,_,environmentConfig,currencyModifiers,toastr,serializeFiltersService,cleanObject) {
 
-        var vm = this;
-        // vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
-        vm.serviceUrl = "https://stellar.services.rehive.io/api/1/";
+        var vm = this, extensionsList = JSON.parse(localStorageManagement.getValue('extensionsList'));
+        vm.serviceUrl = extensionsList[2];
+        // vm.serviceUrl = "https://stellar.services.rehive.io/api/1/";
         vm.token = localStorageManagement.getValue('TOKEN');
         $scope.companyDateFormatString = localStorageManagement.getValue('DATE_FORMAT');
         $scope.stellarCurrency = currenciesList.find(function (element) {

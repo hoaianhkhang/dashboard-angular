@@ -6,10 +6,10 @@
 
     function FundEthereumHotwalletModalCtrl($scope,toastr,$http,localStorageManagement,errorHandler) {
 
-        var vm = this;
+        var vm = this, extensionsList = JSON.parse(localStorageManagement.getValue('extensionsList'));
         vm.token = localStorageManagement.getValue('TOKEN');
-        // vm.baseUrl = localStorageManagement.getValue('SERVICEURL');
-        vm.baseUrl = "https://ethereum.services.rehive.io/api/1/";
+        vm.baseUrl = extensionsList[6];
+        // vm.baseUrl = "https://ethereum.services.rehive.io/api/1/";
         $scope.fundingHotwallet = false;
         $scope.hotwalletParams = {
             low_balance_percentage: 0.1

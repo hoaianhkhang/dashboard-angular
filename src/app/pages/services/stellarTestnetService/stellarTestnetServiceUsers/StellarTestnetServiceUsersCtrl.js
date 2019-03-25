@@ -8,10 +8,10 @@
     function StellarTestnetServiceUsersCtrl($scope,$http,typeaheadService,localStorageManagement,
                                             errorHandler,serializeFiltersService) {
 
-        var vm = this;
+        var vm = this, extensionsList = JSON.parse(localStorageManagement.getValue('extensionsList'));
         vm.token = localStorageManagement.getValue('TOKEN');
-        // vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
-        vm.serviceUrl = "https://stellar-testnet.services.rehive.io/api/1/";
+        vm.serviceUrl = extensionsList[78];
+        // vm.serviceUrl = "https://stellar-testnet.services.rehive.io/api/1/";
         $scope.usersStateMessage = '';
         $scope.users = [];
         $scope.usersData = {};

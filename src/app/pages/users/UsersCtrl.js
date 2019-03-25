@@ -235,23 +235,6 @@
         };
         vm.getCompanyCurrencies();
 
-        if($state.params.currencyCode){
-            $scope.filtersObj.currencyFilter = true;
-            vm.currenciesList.forEach(function (element) {
-                if(element.code == $state.params.currencyCode){
-                    $scope.applyFiltersObj.currencyFilter.selectedCurrency = element;
-                }
-            });
-        }
-
-        if($state.params.email){
-            $scope.filtersObj.emailFilter = true;
-        }
-
-        if($state.params.mobile){
-            $scope.filtersObj.mobileFilter = true;
-        }
-
         //for angular datepicker
         $scope.dateObj = {};
         $scope.dateObj.format = $scope.companyDateFormatString;
@@ -419,12 +402,12 @@
                         groupFilter: {
                             selectedGroupOption: filterObjects.applyFiltersObj.groupFilter.selectedGroupOption,
                             existsInGroup: filterObjects.applyFiltersObj.groupFilter.existsInGroup,
-                            selectedGroup: filterObjects.applyFiltersObj.groupFilter.selectedGroup.name ?
-                                $scope.groupOptions.find(function (group) {
+                            selectedGroup: $scope.groupOptions ? (filterObjects.applyFiltersObj.groupFilter.selectedGroup.name ?
+                                $scope.groupOptions.filter(function (group) {
                                     if(group.name == filterObjects.applyFiltersObj.groupFilter.selectedGroup.name){
                                         return group;
                                     }
-                                }) : $scope.groupOptions[0]
+                                }) : $scope.groupOptions[0]) : null
                         },
                         currencyFilter: {
                             selectedCurrency: filterObjects.applyFiltersObj.currencyFilter.selectedCurrency.code ? filterObjects.applyFiltersObj.currencyFilter.selectedCurrency : filterObjects.applyFiltersObj.currencyFilter.selectedCurrency = { code: 'Currency' }
@@ -470,7 +453,7 @@
                 } else {
                     searchObj = {
                         page: 1,
-                        page_size: $scope.filtersObj.pageSizeFilter? $scope.applyFiltersObj.paginationFilter.itemsPerPage : 25
+                        page_size: $scope.filtersObj.pageSizeFilter? $scope.applyFiltersObj.paginationFilter.itemsPerPage : 25,
                     };
                 }
 
@@ -643,6 +626,87 @@
             $scope.loadingUsers = false;
             $scope.$apply();
         };
+
+        if($state.params.currencyCode){
+            $scope.filtersObj.currencyFilter = true;
+            vm.currenciesList.forEach(function (element) {
+                if(element.code == $state.params.currencyCode){
+                    $scope.applyFiltersObj.currencyFilter.selectedCurrency = element;
+                }
+            });
+        }
+
+        if($state.params.email){
+            $scope.clearFilters();
+            $scope.filtersObj.emailFilter = true;
+            $scope.applyFiltersObj.emailFilter.selectedEmail = $state.params.email;
+
+            var filtersObj = localStorageManagement.getValue(vm.savedUserTableFilters) ? JSON.parse(localStorageManagement.getValue(vm.savedUserTableFilters)) : {};
+
+            if(filtersObj === {}){
+                filtersObj.searchObj = {};
+                filtersObj.applyFiltersObj = $scope.applyFiltersObj;
+            }
+            console.log(filtersObj);
+            filtersObj.searchObj.email__contains = $state.params.email;
+            filtersObj.applyFiltersObj.emailFilter.selectedEmail = $state.params.email;
+
+            vm.saveUsersTableFiltersToLocalStorage({
+                searchObj: serializeFiltersService.objectFilters(filtersObj.searchObj),
+                filtersObj: $scope.filtersObj,
+                applyFiltersObj: serializeFiltersService.objectFilters(filtersObj.applyFiltersObj)
+            });
+
+            $scope.getAllUsers('applyFilter');
+        }
+
+        if($state.params.mobile){
+            $scope.clearFilters();
+            $scope.filtersObj.mobileFilter = true;
+            $scope.applyFiltersObj.mobileFilter.selectedMobile = $state.params.mobile;
+
+            var filtersObj = localStorageManagement.getValue(vm.savedUserTableFilters) ? JSON.parse(localStorageManagement.getValue(vm.savedUserTableFilters)) : {};
+
+            if(filtersObj === {}){
+                filtersObj.searchObj = {};
+                filtersObj.applyFiltersObj = $scope.applyFiltersObj;
+            }
+
+            filtersObj.searchObj.mobile__contains = $state.params.mobile;
+            filtersObj.applyFiltersObj.mobileFilter.selectedMobile = $state.params.mobile;
+
+            vm.saveUsersTableFiltersToLocalStorage({
+                searchObj: serializeFiltersService.objectFilters(filtersObj.searchObj),
+                filtersObj: $scope.filtersObj,
+                applyFiltersObj: serializeFiltersService.objectFilters(filtersObj.applyFiltersObj)
+            });
+
+            $scope.getAllUsers('applyFilter');
+        }
+
+        if($state.params.reference){
+            $scope.clearFilters();
+            $scope.filtersObj.accountReferenceFilter = true;
+            $scope.applyFiltersObj.accountReferenceFilter.selectedAccountReference = $state.params.reference;
+
+            var filtersObj = localStorageManagement.getValue(vm.savedUserTableFilters) ? JSON.parse(localStorageManagement.getValue(vm.savedUserTableFilters)) : {};
+
+            if(filtersObj === {}){
+                filtersObj.searchObj = {};
+                filtersObj.applyFiltersObj = $scope.applyFiltersObj;
+            }
+
+            filtersObj.searchObj.account = $state.params.reference;
+            filtersObj.applyFiltersObj.accountReferenceFilter.selectedAccountReference = $state.params.reference;
+
+            vm.saveUsersTableFiltersToLocalStorage({
+                searchObj: serializeFiltersService.objectFilters(filtersObj.searchObj),
+                filtersObj: $scope.filtersObj,
+                applyFiltersObj: serializeFiltersService.objectFilters(filtersObj.applyFiltersObj)
+            });
+
+            $scope.getAllUsers('applyFilter');
+        }
 
         $scope.openAddUserModal = function (page, size) {
             vm.theAddModal = $uibModal.open({

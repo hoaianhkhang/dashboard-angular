@@ -6,10 +6,10 @@
 
     function DisplayProductModalCtrl($scope,$http,productObj,localStorageManagement,errorHandler) {
 
-        var vm = this;
+        var vm = this, extensionsList = JSON.parse(localStorageManagement.getValue('extensionsList'));
         vm.token = localStorageManagement.getValue('TOKEN');
-        // vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
-        vm.serviceUrl = "https://product.services.rehive.io/api/";
+        vm.serviceUrl = extensionsList[79];
+        // vm.serviceUrl = "https://product.services.rehive.io/api/";
         $scope.loadingProduct = false;
 
         vm.getProduct = function(){

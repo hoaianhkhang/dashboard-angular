@@ -8,10 +8,10 @@
                           Rehive,serializeFiltersService,toastr,errorHandler,typeaheadService,
                            $stateParams) {
 
-        var vm = this;
+        var vm = this, extensionsList = JSON.parse(localStorageManagement.getValue('extensionsList'));
         vm.token = localStorageManagement.getValue('TOKEN');
-        // vm.serviceUrl = localStorageManagement.getValue('SERVICEURL');
-        vm.serviceUrl = "https://product.services.rehive.io/api/";
+        vm.serviceUrl = extensionsList[79];
+        // vm.serviceUrl = "https://product.services.rehive.io/api/";
         vm.orderId = $stateParams.orderId;
         $scope.editingOrder = false;
         $scope.loadingProducts = false;

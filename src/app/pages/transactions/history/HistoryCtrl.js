@@ -437,7 +437,7 @@
                     filterObjects = JSON.parse(localStorageManagement.getValue(vm.savedTransactionTableFilters));
 
                     $scope.filtersObj = filterObjects.filtersObj;
-
+                    console.log(filterObjects.applyFiltersObj);
                     $scope.applyFiltersObj = {
                         dateFilter: {
                             selectedDateOption: filterObjects.applyFiltersObj.dateFilter.selectedDateOption,
@@ -599,7 +599,7 @@
             localStorageManagement.setValue(vm.savedTransactionTableFilters,JSON.stringify(filterObjects));
         };
 
-        $scope.getLatestTransactions = function(applyFilter){
+        $scope.getLatestTransactions = function(applyFilter, transactionId){
             if(vm.token) {
 
                 $scope.showingFilters = false;
@@ -622,13 +622,17 @@
 
                 Rehive.admin.transactions.get({filters: transactionsFiltersObj}).then(function (res) {
                     $scope.transactionsData = res;
-                    vm.formatTransactionsArray($scope.transactionsData.results);
+                    if(transactionId){
+                        vm.formatTransactionsArray($scope.transactionsData.results, transactionId);
+                    }
+                    else{
+                        vm.formatTransactionsArray($scope.transactionsData.results, null);
+                    }
                     if ($scope.transactions.length == 0) {
                         $scope.transactionsStateMessage = 'No transactions have been found';
                         $scope.$apply();
                         return;
                     }
-
                     $scope.transactionsStateMessage = '';
                     $scope.$apply();
                 }, function (error) {
@@ -640,29 +644,103 @@
                 });
             }
         };
+
         if($state.params.accountRef){
+            var accountRef = $state.params.accountRef.split(':')[1], transactionId = $state.params.accountRef.split(':')[0];
+            $scope.clearFilters();
             $scope.filtersObj.accountFilter = true;
             $scope.applyFiltersObj.accountFilter.selectedAccountOption = 'Reference';
-            $scope.applyFiltersObj.accountFilter.selectedAccountReference = $state.params.accountRef;
-            $scope.getLatestTransactions();
-        } else if($state.params.id) {
+            $scope.applyFiltersObj.accountFilter.selectedAccountReference = accountRef;
+
+            var filtersObj = localStorageManagement.getValue(vm.savedTransactionTableFilters) ? JSON.parse(localStorageManagement.getValue(vm.savedTransactionTableFilters)) : null;
+
+            if(!filtersObj){
+                filtersObj = {};
+                filtersObj.searchObj = {};
+                filtersObj.applyFiltersObj = $scope.applyFiltersObj;
+            }
+
+            filtersObj.searchObj.account = accountRef;
+            filtersObj.applyFiltersObj.accountFilter.selectedAccountOption = 'Reference';
+            filtersObj.applyFiltersObj.accountFilter.selectedAccountReference = accountRef;
+
+            vm.saveTransactionsTableFiltersToLocalStorage({
+                searchObj: serializeFiltersService.objectFilters(filtersObj.searchObj),
+                filtersObj: $scope.filtersObj,
+                applyFiltersObj: serializeFiltersService.objectFilters(filtersObj.applyFiltersObj)
+            });
+
+            if(transactionId === 0){
+                $scope.getLatestTransactions('applyFilter', null);
+            } else {
+                $scope.getLatestTransactions('applyFilter', transactionId);
+            }
+        }
+        else if($state.params.id) {
+            var userId = $state.params.id.split(':')[1], transactionId = $state.params.id.split(':')[0];
+            $scope.clearFilters();
             $scope.filtersObj.userFilter = true;
-            $scope.applyFiltersObj.userFilter.selectedUserOption = $state.params.id;
-            $scope.getLatestTransactions();
-        } else if($state.params.transactionId) {
+            $scope.applyFiltersObj.userFilter.selectedUserOption = userId;
+
+            var filtersObj = localStorageManagement.getValue(vm.savedTransactionTableFilters) ? JSON.parse(localStorageManagement.getValue(vm.savedTransactionTableFilters)) : null;
+
+            if(!filtersObj){
+                filtersObj = {};
+                filtersObj.searchObj = {};
+                filtersObj.applyFiltersObj = $scope.applyFiltersObj;
+            }
+            filtersObj.searchObj.user = userId;
+            filtersObj.applyFiltersObj.userFilter.selectedUserOption = userId;
+
+            vm.saveTransactionsTableFiltersToLocalStorage({
+                searchObj: serializeFiltersService.objectFilters(filtersObj.searchObj),
+                filtersObj: $scope.filtersObj,
+                applyFiltersObj: serializeFiltersService.objectFilters(filtersObj.applyFiltersObj)
+            });
+
+            if(transactionId === 0){
+                $scope.getLatestTransactions('applyFilter', null);
+            } else {
+                $scope.getLatestTransactions('applyFilter', transactionId);
+            }
+        }
+        else if($state.params.transactionId) {
+            $scope.clearFilters();
             $scope.filtersObj.transactionIdFilter = true;
             $scope.applyFiltersObj.transactionIdFilter.selectedTransactionIdOption = $state.params.transactionId;
-            $scope.getLatestTransactions();
-        } else if($state.params.currencyCode) {
+
+            var filtersObj = localStorageManagement.getValue(vm.savedTransactionTableFilters) ? JSON.parse(localStorageManagement.getValue(vm.savedTransactionTableFilters)) : null;
+
+            if(!filtersObj){
+                filtersObj = {};
+                filtersObj.searchObj = {};
+                filtersObj.applyFiltersObj = $scope.applyFiltersObj;
+            }
+            console.log(filtersObj);
+            filtersObj.searchObj.id = $state.params.transactionId;
+            filtersObj.applyFiltersObj.transactionIdFilter.selectedTransactionIdOption = $state.params.transactionId;
+
+            vm.saveTransactionsTableFiltersToLocalStorage({
+                searchObj: serializeFiltersService.objectFilters(filtersObj.searchObj),
+                filtersObj: $scope.filtersObj,
+                applyFiltersObj: serializeFiltersService.objectFilters(filtersObj.applyFiltersObj)
+            });
+            if(transactionId === 0){
+                $scope.getLatestTransactions('applyFilter', null);
+            } else {
+                $scope.getLatestTransactions('applyFilter', transactionId);
+            }
+        }
+        else if($state.params.currencyCode) {
             $scope.filtersObj.currencyFilter = true;
             $scope.applyFiltersObj.currencyFilter.selectedCurrencyOption.code = $state.params.currencyCode;
-            $scope.getLatestTransactions();
-        } else {
-            $scope.getLatestTransactions();
+            $scope.getLatestTransactions(null, null);
+        }
+        else {
+            $scope.getLatestTransactions(null, null);
         }
 
-        vm.formatTransactionsArray = function (transactionsArray) {
-
+        vm.formatTransactionsArray = function (transactionsArray, transactionId) {
             //save unique metadata keys from 1st transactions
             if((transactionsArray[0] && transactionsArray[0].metadata) && (Object.keys(transactionsArray[0].metadata).length > 0)){
                 for(var key in transactionsArray[0].metadata){
@@ -725,6 +803,16 @@
             });
 
             $scope.loadingTransactions = false;
+            if(transactionId && transactionId !== 0){
+                console.log(transactionId);
+                var searchedTransaction = null;
+                $scope.transactions.forEach(function(transactionObj){
+                    if(transactionObj.id === transactionId){
+                        searchedTransaction = transactionObj;
+                    }
+                });
+                if(searchedTransaction){$scope.openModal('app/pages/transactions/history/historyModal/historyModal.html', 'md',searchedTransaction);}
+            }
         };
 
         $scope.getUsersEmailTypeahead = typeaheadService.getUsersEmailTypeahead();

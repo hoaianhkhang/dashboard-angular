@@ -9,10 +9,10 @@
                                    $uibModalInstance,toastr,localStorageManagement) {
 
 
-        var vm = this;
+        var vm = this, extensionsList = JSON.parse(localStorageManagement.getValue('extensionsList'));
         vm.token = localStorageManagement.getValue('TOKEN');
-        // vm.baseUrl = localStorageManagement.getValue('SERVICEURL');
-        vm.baseUrl = "https://notification.services.rehive.io/api/";
+        vm.baseUrl = extensionsList[4];
+        // vm.baseUrl = "https://notification.services.rehive.io/api/";
         $scope.editingSendGridCreds =  false;
         $scope.editSendGridCredsObj = sendGridCreds.credentials;
         vm.updatedSendGridCreds = {};

@@ -6,12 +6,12 @@
 
     function NotificationModalCtrl($scope,$uibModalInstance,notification,toastr,$http,localStorageManagement,errorHandler) {
 
-        var vm = this;
+        var vm = this, extensionsList = JSON.parse(localStorageManagement.getValue('extensionsList'));
 
         $scope.notification = notification;
         vm.token = localStorageManagement.getValue('TOKEN');
-        // vm.baseUrl = localStorageManagement.getValue('SERVICEURL');
-        vm.baseUrl = "https://notification.services.rehive.io/api/";
+        vm.baseUrl = extensionsList[4];
+        // vm.baseUrl = "https://notification.services.rehive.io/api/";
         $scope.deletingNotification = false;
 
 
