@@ -1,5 +1,5 @@
 .get-started-title{
-  font-size: 26px!important;
+  font-size: 22px!important;
   color: #4c4a51;
 }
 
@@ -44,7 +44,8 @@
 }
 
 .get-started-icons-container{
-  background-color: #3b383d;
+  //background-color: #3b383d;
+  background-color: $primary;
   width: 65px;
   border-radius: 30px;
   padding: 15px 0;
@@ -61,7 +62,7 @@
 
 .get-started-info-numbers{
   font-size: 20px;
-  padding: 19px 1px 0 0;
+  padding-top: 19px;
 }
 
 .get-started-buttons{
@@ -77,3 +78,12 @@
   padding: 14px 0;
 }
 
+.back-button-rounded{
+  background-color: #ffffff;
+  font-size: 16px;
+  border-radius: 50px;
+  width: 35px;
+  height: 35px;
+  border: 2px solid;
+  padding: 7px 5px;
+}
