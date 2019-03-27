@@ -30,6 +30,7 @@
 
         $scope.goToWalletOptions = function(){
             $scope.inWalletOptions = true;
+            $intercom.trackEvent('try-wallet', {page: "get_started"});
         };
 
         $scope.goBackToGetStarted = function(){
@@ -38,26 +39,31 @@
 
         $scope.openIntercomm = function(){
             $intercom.show();
+            $intercom.trackEvent('chat', {page: "get_started"});
         };
 
         $scope.openRehiveContactForm = function(){
+            $intercom.trackEvent('contact', {page: "get_started"});
             $window.open('https://rehive.typeform.com/to/hBcRmF', '_blank');
         };
 
         $scope.openWebWallet = function(){
+            $intercom.trackEvent('open-wallet', {page: "try_wallet"});
             $window.open('https://wallet.rehive.com/register?company=' + $scope.adminCompany, '_blank');
         };
 
         $scope.openBusinessCases = function(){
             $window.open('https://docsend.com/view/yx2vhzm', '_blank');
-
+            $intercom.trackEvent('learn-more', {page: "get_started"});
         };
 
         $scope.walletLearnMore = function(){
+            $intercom.trackEvent('learn-more', {page: "try_wallet"});
             $window.open('https://docsend.com/view/yx2vhzm', '_blank');
         };
 
         $scope.openWalletContact = function(){
+            $intercom.trackEvent('contact', {page: "try_wallet"});
             $window.open('https://rehive.typeform.com/to/hBcRmF', '_blank');
         };
     }
