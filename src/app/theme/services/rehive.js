@@ -6,19 +6,11 @@
 
     /** @ngInject */
     function Rehive($window,environmentConfig) {
-        var config = {};
-        if(environmentConfig.API.indexOf('staging') >= 0){
-            config = {
-                apiVersion: 3,
-                storageMethod: 'local',
-                network: 'staging'
-            };
-        } else {
-            config = {
-                apiVersion: 3,
-                storageMethod: 'local'
-            };
-        }
+        var config = {
+            apiVersion: 3,
+            storageMethod: 'local',
+            customAPIURL: environmentConfig.API
+        };
         var rehive = new $window.Rehive(config);
         return rehive;
     }

@@ -1,19 +1,19 @@
 {
   "staging": {
     "environmentConfig": {
-      "API": "https://api.staging.rehive.com/3",
+      "API": "https://api.staging.rehive.com/3/",
       "INTERCOM_APPID": "dsonefdu"
     }
   },
   "local": {
     "environmentConfig": {
-      "API": "https://api.rehive.com/3",
+      "API": "https://api.rehive.com/3/",
       "INTERCOM_APPID": "dsonefdu"
     }
   },
   "production": {
     "environmentConfig": {
-      "API": "https://api.rehive.com/3",
+      "API": "https://api.rehive.com/3/",
       "INTERCOM_APPID": "c9th6fln"
     }
   },
