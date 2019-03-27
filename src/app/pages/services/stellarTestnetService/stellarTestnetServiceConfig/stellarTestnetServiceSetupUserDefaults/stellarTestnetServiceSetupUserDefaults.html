@@ -1,0 +1,73 @@
+<div class="panel">
+    <div class="panel-heading">
+        <span class="user-details-panel-title">User defaults</span>
+    </div>
+    <div class="panel-body">
+        <div class=" row divider-25">
+            <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
+                <ul class="ul-no-dot">
+                    <li>In order for users to transact using the Stellar Extension their accounts need to have Testnet Lumens (TXLM) as a currency. Rehive's default setup is to add TXLM to your default group's primary account.</li>
+                    <li>You can use the default setup provided on the right or choose your own.</li>
+                </ul>
+            </div>
+            <div class="col-lg-7 col-md-7 col-sm-12 col-xs-12 custom-form">
+                <div class="form-group setup-groups-tooltip-div">
+
+                    <div class="row divider" ng-repeat="group in testnetConfig.userDefaults.groups">
+                        <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
+                            <div class="reward-multi-select">
+                                <select chosen
+                                        data-placeholder-text-single="'Use default'"
+                                        width="100"
+                                        allow-single-deselect="true"
+                                        ng-model="group.group"
+                                        ng-change="trackGroupChange(group.group)"
+                                        ng-options="group.name for group in groupOptions | orderBy: 'name'">
+                                    <option value=""></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 no-right-padding">
+                            <div ng-show="hasAccountConfigs" class="reward-multi-select">
+                                <select chosen
+                                        data-placeholder-text-single="'Use primary'"
+                                        width="100"
+                                        allow-single-deselect="true"
+                                        ng-model="group.config"
+                                        ng-options="config.name for config in testnetConfig.userDefaults.groupAccountConfigs | orderBy: 'name'">
+                                    <option value=""></option>
+                                </select>
+                            </div>
+                            <div ng-hide="hasAccountConfigs">
+                                <a class="pull-right divider pointer edit-transaction-divider"
+                                   ng-click="addGroupAccountConfig(group.group)"><i class="fa fa-pencil"></i> Add an account configuration</a>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-3 col-sm-2 col-xs-3 product-buttons-container">
+                            <i ng-show="$first" ng-disabled="group.group == testnetConfig.userDefaults.defaultGroup" class="fa fa-plus-square-o product-prices-last-child stellar-testnet-plus-icon"
+                               ng-class="{'stellar-testnet-plus-initial': group.group == testnetConfig.userDefaults.defaultGroup}"></i>
+                            <i ng-show="testnetConfig.userDefaults.groups.length > 1" class="fa fa-minus-square-o product-prices-remove-icon stellar-testnet-minus-icon"
+                               ng-click="removeGroupConfig(group)"></i>
+                            <i ng-show="$last && testnetConfig.userDefaults.groups.length > 1 && hasAccountConfigs" class="fa fa-plus-square-o product-prices-last-child stellar-testnet-plus-icon"
+                               ng-click="addGroupConfig()"></i>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="form-group">
+            <!--<button ng-click="goToNextView()" ng-disabled="setupUsers==1"-->
+                    <!--class="btn btn-primary setup-skip-btn pull-left dashboard-btn">Back-->
+            <!--</button>-->
+            <button ng-click="skipAllView()"
+                    class="btn btn-primary setup-skip-btn pull-left dashboard-btn margin-left-10">Skip all
+            </button>
+            <button ng-click="goToNextView()" ng-disabled="setupUsers==0"
+                    class="btn btn-primary pull-right dashboard-btn">Next
+            </button>
+        </div>
+    </div>
+</div>

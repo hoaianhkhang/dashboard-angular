@@ -4,12 +4,12 @@
     angular.module('BlurAdmin.pages.groups.groupAccountConfigurations')
         .controller('AddGroupAccountConfigModalCtrl', AddGroupAccountConfigModalCtrl);
 
-    function AddGroupAccountConfigModalCtrl($scope,$uibModalInstance,toastr,$stateParams,$filter,
+    function AddGroupAccountConfigModalCtrl(groupObj, $scope,$uibModalInstance,toastr,$stateParams,$filter,
                                             Rehive,localStorageManagement,errorHandler,$timeout, $window) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('token');
-        vm.groupName = $stateParams.groupName;
+        vm.groupName = $stateParams.groupName ? $stateParams.groupName : groupObj.name;
         $scope.loadingGroupAccountConfigurations = false;
         $scope.companyCurrenciesAvailable = true;
         $scope.groupAccountConfigurationParams = {};

@@ -113,6 +113,24 @@
   }
 }
 
+.stellar-testnet-plus-initial{
+  margin: 5px 0 0 -5px!important;
+  color: #abacad;
+  &:hover{
+    color: #606060;
+  }
+}
+
+.stellar-testnet-minus-icon{
+  margin: 5px 0 0 -5px;
+  font-size: 18px!important;
+}
+
+.stellar-testnet-plus-icon{
+  margin: 5px 0 0 10px;
+  font-size: 18px!important;
+}
+
 .order-items-add-icon{
   color: $success;
   position: relative;

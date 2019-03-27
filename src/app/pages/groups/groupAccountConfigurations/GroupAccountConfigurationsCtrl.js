@@ -134,12 +134,17 @@
             });
         };
 
-        $scope.openAddAccountConfigurationsModal = function (page, size) {
+        $scope.openAddAccountConfigurationsModal = function (page, size, groupObj) {
             vm.theModal = $uibModal.open({
                 animation: true,
                 templateUrl: page,
                 size: size,
-                controller: 'AddGroupAccountConfigModalCtrl'
+                controller: 'AddGroupAccountConfigModalCtrl',
+                resolve: {
+                    groupObj: function () {
+                        return groupObj;
+                    }
+                }
             });
 
             vm.theModal.result.then(function(account){
