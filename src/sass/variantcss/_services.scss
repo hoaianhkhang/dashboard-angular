@@ -114,10 +114,10 @@
 }
 
 .stellar-testnet-plus-initial{
-  margin: 5px 0 0 -5px!important;
-  color: #abacad;
+  margin: 5px 0 0 -10px!important;
+  color: #abacad!important;
   &:hover{
-    color: #606060;
+    color: #606060!important;
   }
 }
 
@@ -126,9 +126,17 @@
   font-size: 18px!important;
 }
 
+.stellar-testnet-minus-icon-final{
+  margin: 5px 0 0 7px;
+}
+
 .stellar-testnet-plus-icon{
-  margin: 5px 0 0 10px;
+  margin: 5px 0 0 -15px;
   font-size: 18px!important;
+  color: mediumseagreen;
+  &:hover{
+    color: seagreen;
+  }
 }
 
 .order-items-add-icon{

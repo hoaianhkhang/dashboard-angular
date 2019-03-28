@@ -14,7 +14,8 @@
         // vm.serviceUrl = "https://stellar-testnet.services.rehive.io/api/1/";
         $scope.currentConfigView = 'user defaults';
         $scope.groupOptions = [];
-        $scope.maxOptions = -1;
+        $scope.maxOptions = 0;
+        $scope.addedCount = 0;
         $scope.testnetConfig = {};
         $scope.hotwalletHasBeenFunded = false;
         $scope.warmStorageHasBeenFunded = false;
@@ -25,7 +26,7 @@
         $scope.warmStoragePublicKeyLengthValid = false;
         $scope.showHelpMessage = false;
         $scope.fundingAccountUsingTestnet = false;
-        $scope.hasAccountConfigs = false;
+        $scope.hasAccountConfigs = true;
 
         vm.initialize = function(){
             $scope.testnetConfig.userDefaults = {};
@@ -49,22 +50,18 @@
         vm.getGroups = function(){
             if(vm.token) {
                 var groupFiltersObj = serializeFiltersService.objectFilters({
-                    page_size: 250,
-                    name: null
+                    page_size: 250
                 });
-
+                $scope.groupOptions = [];
                 Rehive.admin.groups.get({filters: groupFiltersObj}).then(function (res) {
-                    $scope.groupOptions = res.results;
-
-                    $scope.groupOptions.forEach(function(group, index, array){
-                        if(group.name === "service"){
-                            array.splice(index, 1);
+                    res.results.forEach(function(group){
+                        if(group.name !== "service" && group.name !== "admin"){
+                            $scope.groupOptions.push(group);
                         }
                         if(group.default){
                             $scope.testnetConfig.userDefaults.defaultGroup = group;
                         }
                     });
-
                     $scope.maxOptions = $scope.groupOptions.length;
 
                     if(!$scope.testnetConfig.userDefaults.defaultGroup){
@@ -72,11 +69,14 @@
                     } else{
                         $scope.testnetConfig.userDefaults.defaultGroup.name = $scope.testnetConfig.userDefaults.defaultGroup.name  + " (default)";
                     }
-                    console.log($scope.testnetConfig.userDefaults.defaultGroup.name);
+
                     $scope.testnetConfig.userDefaults.groups.push({
                         group: $scope.testnetConfig.userDefaults.defaultGroup,
-                        config: null
+                        config: null,
+                        hasAccountConfigs: false,
+                        groupAccountConfigs: []
                     });
+                    ++$scope.addedCount;
                     $scope.trackGroupChange($scope.testnetConfig.userDefaults.defaultGroup);
                     $scope.$apply();
                 }, function (error) {
@@ -108,18 +108,20 @@
                 $scope.testnetConfig.userDefaults.primaryAccountConfig = null;
                 Rehive.admin.groups.accountConfigurations.get(groupName,{filters: groupAccountConfigurationsFilterObj}).then(function (res)
                 {
-                    $scope.testnetConfig.userDefaults.groupAccountConfigs = res.results;
-                    if($scope.testnetConfig.userDefaults.groupAccountConfigs.length > 0){
-                        $scope.hasAccountConfigs = true;
-                        $scope.testnetConfig.userDefaults.groupAccountConfigs.forEach(function(config){
+                    $scope.testnetConfig.userDefaults.groups[idx].groupAccountConfigs = res.results;
+                    if($scope.testnetConfig.userDefaults.groups[idx].groupAccountConfigs.length > 0){
+                        $scope.testnetConfig.userDefaults.groups[idx].groupAccountConfigs.forEach(function(config){
                             if(config.primary){
                                 $scope.testnetConfig.userDefaults.primaryAccountConfig = config;
                                 return false;
                             }
                         });
                         $scope.testnetConfig.userDefaults.groups[idx].config = $scope.testnetConfig.userDefaults.primaryAccountConfig ? $scope.testnetConfig.userDefaults.primaryAccountConfig : res.results[0];
+                        $scope.testnetConfig.userDefaults.groups[idx].hasAccountConfigs = true;
+                        $scope.hasAccountConfigs = true;
                     }
                     else {
+                        $scope.testnetConfig.userDefaults.groups[idx].hasAccountConfigs = false;
                         $scope.hasAccountConfigs = false;
                     }
 
@@ -154,17 +156,38 @@
         };
 
         $scope.addGroupConfig = function(){
-
+            ++$scope.addedCount;
+            for(var i = 0; i < $scope.groupOptions.length; ++i){
+                var newGroup = true;
+                for(var j = 0; j < $scope.testnetConfig.userDefaults.groups.length; ++j){
+                    if($scope.groupOptions[i].name === $scope.testnetConfig.userDefaults.groups[j].group.name){
+                        newGroup = false;
+                        break;
+                    }
+                }
+                if(newGroup){
+                    $scope.testnetConfig.userDefaults.groups.push({
+                        group: $scope.groupOptions[i],
+                        config: null,
+                        hasAccountConfigs: false,
+                        groupAccountConfigs: []
+                    });
+                    $scope.trackGroupChange($scope.groupOptions[i]);
+                    break;
+                }
+            }
+            console.log($scope.testnetConfig.userDefaults.groups)
         };
 
         $scope.removeGroupConfig = function(groupObj){
             $scope.testnetConfig.userDefaults.groups.forEach(function(item, index, array){
-                if(item === groupObj){
+                if(item.group.name === groupObj.group.name){
                     array.splice(index, 1);
+                    --$scope.addedCount;
                 }
             });
+            console.log($scope.testnetConfig.userDefaults.groups)
         };
-
 
         $scope.fundAccountUsingFriendbot = function () {
             $scope.fundingAccountUsingTestnet = true;

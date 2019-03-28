@@ -1,14 +1,14 @@
 (function () {
     'use strict';
 
-    angular.module('BlurAdmin.pages.services.stellarTestnetService.stellarTestnetServiceConfig')
+    angular.module('BlurAdmin.pages.services.stellarTestnetService.stellarTestnetSettings')
         .directive('stellarTestnetServiceSetupSubtypes', stellarTestnetServiceSetupSubtypes);
 
     /** @ngInject */
     function stellarTestnetServiceSetupSubtypes() {
         return {
             restrict: 'E',
-            templateUrl: 'app/pages/services/stellarTestnetService/stellarTestnetServiceConfig/stellarTestnetServiceSetupSubtypes/stellarTestnetServiceSetupSubtypes.html'
+            templateUrl: 'app/pages/services/stellarTestnetService/stellarTestnetSettings/stellarTestnetServiceSetupSubtypes/stellarTestnetServiceSetupSubtypes.html'
         };
     }
 })();
