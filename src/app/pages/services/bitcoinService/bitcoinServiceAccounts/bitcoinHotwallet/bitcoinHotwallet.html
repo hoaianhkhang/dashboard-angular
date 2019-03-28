@@ -15,14 +15,14 @@
             </div>
             <div class="currencies-page-row">
                 <div>
-                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
                         <div>
                             <span><strong>{{hotwalletObj.rehive_account_reference}}</strong></span>
                             <br>
                             <span class="currencies-details-heading">Account reference</span>
                         </div>
                     </div>
-                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
                         <div>
                             <span><strong>{{bitcoinCurrency.symbol}} {{hotwalletObj.balance | currencyModifiersFilter: bitcoinCurrency.divisibility}}</strong></span>
                             <br>
@@ -36,7 +36,7 @@
                             <span class="currencies-details-heading">Low balance percentage</span>
                         </div>
                     </div>
-                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
                         <button class="btn btn-primary dashboard-btn pull-right"
                           ng-click="openFundHotwalletModal('app/pages/services/bitcoinService/bitcoinServiceAccounts/bitcoinHotwallet/fundBitcoinHotwalletModal/fundBitcoinHotwalletModal.html','md')">
                             Fund

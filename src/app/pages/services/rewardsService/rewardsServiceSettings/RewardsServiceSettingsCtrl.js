@@ -50,7 +50,7 @@
         $scope.deactivateRewardsService = function (password) {
             if(vm.token) {
                 $scope.deactivatingRewards = true;
-                $http.put(environmentConfig.API + '/admin/services/' + vm.serviceId + '/',{password: password,active: false}, {
+                $http.put(environmentConfig.API + 'admin/services/' + vm.serviceId + '/',{password: password,active: false}, {
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': vm.token
