@@ -110,7 +110,7 @@
             //     type: 'add'
             // };
             // $scope.editProductObj.prices.push(priceObj);
-            $scope.editProductObj.prices.push({currency: {}, amount: null});
+            $scope.editProductObj.prices.push({currency: {}, amount: null, type: 'add'});
         };
 
         $scope.removePriceRow = function (price) {
