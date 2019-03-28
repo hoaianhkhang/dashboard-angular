@@ -74,7 +74,7 @@
         $scope.checkXLMCurrency = function () {
             if(vm.token){
                 $scope.loadingStellarService = true;
-                $http.get(environmentConfig.API + '/admin/currencies/?archived=false&page_size=250&code=XLM', {
+                $http.get(environmentConfig.API + 'admin/currencies/?archived=false&page_size=250&code=XLM', {
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': vm.token
@@ -112,7 +112,7 @@
                     divisibility: 7
                 };
 
-                $http.post(environmentConfig.API + '/admin/currencies/', XLMCurrencyObj,{
+                $http.post(environmentConfig.API + 'admin/currencies/', XLMCurrencyObj,{
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': vm.token
@@ -133,7 +133,7 @@
         vm.checkUserGroup = function () {
             if(vm.token){
                 $scope.loadingStellarService = true;
-                $http.get(environmentConfig.API + '/admin/groups/?name=user', {
+                $http.get(environmentConfig.API + 'admin/groups/?name=user', {
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': vm.token
@@ -164,7 +164,7 @@
                     default: true
                 };
 
-                $http.post(environmentConfig.API + '/admin/groups/', UserGroupObj,{
+                $http.post(environmentConfig.API + 'admin/groups/', UserGroupObj,{
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': vm.token
@@ -184,7 +184,7 @@
         vm.checkDefaultAccConfig = function () {
             if(vm.token){
                 $scope.loadingStellarService = true;
-                $http.get(environmentConfig.API + '/admin/groups/user/account-configurations/', {
+                $http.get(environmentConfig.API + 'admin/groups/user/account-configurations/', {
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': vm.token
@@ -224,7 +224,7 @@
                     default: true
                 };
 
-                $http.post(environmentConfig.API + '/admin/groups/user/account-configurations/', defaultAccConfigObj,{
+                $http.post(environmentConfig.API + 'admin/groups/user/account-configurations/', defaultAccConfigObj,{
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': vm.token
@@ -244,7 +244,7 @@
         vm.addXLMToDefaultAccConfig = function () {
             if(vm.token){
                 $scope.loadingStellarService = true;
-                $http.post(environmentConfig.API + '/admin/groups/user/account-configurations/default/currencies/', {currency: 'XLM'},{
+                $http.post(environmentConfig.API + 'admin/groups/user/account-configurations/default/currencies/', {currency: 'XLM'},{
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': vm.token

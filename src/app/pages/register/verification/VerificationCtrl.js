@@ -41,7 +41,7 @@
             };
 
             Upload.upload({
-                url: environmentConfig.API +'/admin/company/',
+                url: environmentConfig.API +'admin/company/',
                 data: serializeFiltersService.objectFilters(uploadDataObj),
                 headers: {
                     'Content-Type': 'application/json',

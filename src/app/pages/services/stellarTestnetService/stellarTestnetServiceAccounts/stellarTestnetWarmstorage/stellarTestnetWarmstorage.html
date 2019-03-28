@@ -15,14 +15,14 @@
                             <span class="currencies-details-heading">Account reference</span>
                         </div>
                     </div>
-                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
                         <div>
                             <span><strong>{{stellarCurrency.symbol}} {{warmstorageObj.balance | currencyModifiersFilter: stellarCurrency.divisibility}}</strong></span>
                             <br>
                             <span class="currencies-details-heading">Total</span>
                         </div>
                     </div>
-                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" ng-click="toggleCurrenciesOptions(); $event.stopPropagation()" click-outside="closeOptionsBox()">
+                    <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5" ng-click="toggleCurrenciesOptions(); $event.stopPropagation()" click-outside="closeOptionsBox()">
                         <div>
                             <span class="fa fa-ellipsis-h pull-right pointer currencies-options"></span>
                             <ul ng-show="showOptionsAccountRef" class="currencies-options-box">

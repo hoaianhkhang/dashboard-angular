@@ -293,7 +293,7 @@
                 subtype: $scope.filtersColdstorageObj.transactionTypeFilter ? ($scope.applyFiltersColdstorageObj.transactionSubtypeFilter.selectedTransactionSubtypeOption ? $scope.applyFiltersColdstorageObj.transactionSubtypeFilter.selectedTransactionSubtypeOption: null): null
             };
 
-            return environmentConfig.API + '/admin/transactions/?' + serializeFiltersService.serializeFilters(cleanObject.cleanObj(searchObj));
+            return environmentConfig.API + 'admin/transactions/?' + serializeFiltersService.serializeFilters(cleanObject.cleanObj(searchObj));
         };
 
         $scope.getLatestColdstorageTransactions = function(applyFilter){
