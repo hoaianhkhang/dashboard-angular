@@ -5,15 +5,87 @@
         .controller('VerificationCtrl', VerificationCtrl);
 
     /** @ngInject */
-    function VerificationCtrl($rootScope,Rehive,$scope,toastr,localStorageManagement,
-                              $location,errorHandler,userVerification,$intercom) {
+    function VerificationCtrl($rootScope,Rehive,$scope,toastr,localStorageManagement,environmentConfig,serializeFiltersService,
+                              $location,errorHandler,userVerification,$intercom,$window,Upload, demoSetupService) {
 
+        $intercom.update({});
         var vm = this;
         vm.token = localStorageManagement.getValue('TOKEN');
-        $scope.user = {};
-        $scope.verifyingEmail = false;
-        $rootScope.$pageFinishedLoading = false;
+        $scope.companyName = "";
+        // $scope.user = {};
+        // $scope.verifyingEmail = false;
+        $rootScope.dashboardTitle = 'Welcome | Rehive';
+        $rootScope.$pageFinishedLoading = true;
+        $rootScope.inVerification = true;
+        $rootScope.tasksCompleted = 0;
+        $scope.show = false;
+        $rootScope.settingUpDemo = false;
+        $scope.template1 = true;
+        $scope.template2 = false;
+        $scope.template3 = false;
+        $scope.companyName = "";
+        $scope.imageFile = {
+            file: {},
+            iconFile: {}
+        };
 
+        $scope.upload = function () {
+            if(!$scope.imageFile.file.name && !$scope.imageFile.iconFile.name){
+                return;
+            }
+            $scope.updatingLogo = true;
+
+            var uploadDataObj = {
+                logo: $scope.imageFile.file.name ? $scope.imageFile.file: null,
+                icon: $scope.imageFile.iconFile.name ? $scope.imageFile.iconFile: null
+            };
+
+            Upload.upload({
+                url: environmentConfig.API +'/admin/company/',
+                data: serializeFiltersService.objectFilters(uploadDataObj),
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': vm.token},
+                method: "PATCH"
+            }).then(function (res) {
+                if (res.status === 200) {
+                    setTimeout(function(){
+                        $scope.companyImageUrl = res.data.data.logo;
+                    },0);
+                }
+            }).catch(function (error) {
+                errorHandler.evaluateErrors(error.data);
+                errorHandler.handleErrors(error);
+            });
+        };
+
+        $scope.manualOnboarding = function(){
+            $rootScope.inVerification = false;
+            $location.path('/company/setup/company-details');
+        };
+
+        $scope.openOverview = function(){
+            $window.open('https://docsend.com/view/yx2vhzm', '_blank');
+        };
+
+        $scope.askForCompanyName = function(){
+          $scope.template1 = false;
+          $scope.template2 = true;
+        };
+
+        $scope.backToLanding = function(){
+            $scope.template1 = true;
+            $scope.template2 = false;
+        };
+
+        $scope.launchDemoSetup = function(){
+            $scope.template1 = false;
+            $scope.template2 = false;
+            $scope.template3 = true;
+            $rootScope.settingUpDemo = true;
+            demoSetupService.initializeDemoSetup($scope.companyName);
+        };
+    /**
         vm.checkIfUserVerified = function(){
             userVerification.verify(function(err,verified){
                 if(verified){
@@ -66,7 +138,7 @@
             Rehive.removeToken();
             $location.path('/login');
         };
-
+    **/
 
     }
 })();

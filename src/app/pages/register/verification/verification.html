@@ -1,27 +1,125 @@
-<div class="auth-main">
-    <div class="auth-block">
-        <div class="text-left divider verification-text">
-            <h2>
-                Verify email
-            </h2>
-            <span class="verification-log-out pointer" ng-click="logout()">Log out</span>
-            <div style='border-bottom:1px solid #ccc;margin-left:-20px;margin-right: -20px;'></div>
-            <p>Please check your inbox for an email from Rehive. A verification email was sent to <strong>{{user.email}}</strong>.</p>
-        </div>
-        <div class="verification-text divider">
-            <p style="margin-top: 0px;">Haven't received an email? <a ng-click="resendEmail()"
-                class="verification-link">Click here to resend email.</a></p>
-        </div>
-        <div class="verification-text divider" style="padding-bottom: 2px;">
-            <p style="margin-top: 0px;">Still haven’t received an email?
-                <a href="https://rehive.com/contact-us/" target="_blank" class="verification-link">Click here to contact us.</a></p>
-        </div>
-        <div class="row form-group verification-btn-box">
-            <div class="col-sm-12">
-                <button ng-click="verifyUser()"
-                        class="btn btn-primary btn-auth verification-button">Continue without verifying
-                </button>
+<page-top></page-top>
+<div class="row">
+    <div class="col-lg-2 col-md-1 col-sm-1 col-xs-1"></div>
+    <div class="col-lg-8 col-md-10 col-sm-10 col-xs-10 template-1">
+        <div ng-show="template1" >
+            <div class="row template-container">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 align-items-center">
+                    <label class="welcome-label1">Get Started with a template</label>
+                </div>
+            </div>
+            <div class="row template-container">
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 align-items-center" style="">
+                    <img src="../../../../assets/img/_mobileImg.png" class="iphone-image"/>
+                </div>
+                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8" style="margin-top: 3%;">
+                    <label class="welcome-label2 template-text-container">Rewards and loyalty wallet on Stellar</label>
+                    <p class="welcome-text" style="margin: 0 0 -5px 39px;">Looking to launch your own white label fintech app on Stellar?</p>
+                    <p class="welcome-text template-text-container">This template configures a multi-currency app with powerful extensions including mass payments, rewards,
+                        in-app purchases and online checkout. You will have access to the iOS, Android and web wallet applications as well as admin dashboard.</p>
+                    <div class="template-button-container">
+                        <button class="btn btn-default pull-left template-button no-left-padding" ng-click="openOverview()">Overview</button>
+                        <button class="btn btn-primary pull-right template-button" ng-click="askForCompanyName()">
+                            Let's go&nbsp;&nbsp;&nbsp;<span class="template-arrow"><i class="fas fa-arrow-right"></i></span>
+                        </button>
+                    </div>
+                    <div style="text-align: center;">
+                        <a class="manual-setup-text" ng-click="manualOnboarding()">Or manually set up your company instead</a>
+                    </div>
+                </div>
             </div>
         </div>
+        <div ng-show="template2">
+            <div class="row align-items-center">
+                <div class="col-lg-3 col-md-3 col-sm-2 col-xs-2"></div>
+                <div class="col-lg-6 col-md-6 col-sm-8 col-xs-8">
+                    <label class="welcome-label3">Let's start with the basics</label>
+                    <form name="formTemplateBasics" class="template-company-container">
+                        <label class="welcome-text">Company name</label>
+                        <span>
+                        <input type="text" ng-model="companyName" class="form-control template-1-input"
+                               placeholder="enter a name for your company" auto-focus="true" required>
+                    </span>
+                    </form>
+                    <div class="template-company-container" style="margin-top: 6vh;">
+                        <label class="welcome-text">Company logo</label>
+                        <div style="margin-top: 13px; position: relative;">
+                            <img ng-hide="imageFile.file.name" src="../../../../assets/img/_defaultIcon.svg" width="100" height="100" alt="company logo">
+                            <img ng-show="imageFile.file.name" ngf-thumbnail="imageFile.file" width="100" height="100" alt="company logo">
+                        </div>
+                        <form class="divider">
+                            <fieldset class="custom-file-upload">
+                                <label>
+                                <span class="custom-file-upload-span">
+                                    <div class="template-edit-icon-container"><i class="fa fa-2x fa-pencil"></i></div>
+                                </span>
+                                    <input style="padding-left: 5px;text-indent: -5px;width: 300px"
+                                           type="file" ngf-select ng-model="imageFile.file" name="file"
+                                           accept="image/*" ngf-max-size="5MB" required>
+                                </label>
+                            </fieldset>
+                        </form>
+                    </div>
+                    <div>
+                        <button class="btn btn-default pull-left template-button" style="margin-left: 0px;" ng-click="backToLanding()">Go Back</button>
+                        <button ng-disabled="!formTemplateBasics.$valid" class="btn btn-primary pull-right template-button" ng-click="launchDemoSetup();upload();" style="margin-left: 0px">
+                            Next&nbsp;&nbsp;&nbsp;<span class="template-arrow"><i class="fas fa-arrow-right"></i></span>
+                        </button>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-2 col-xs-2"></div>
+            </div>
+        </div>
+        <div ng-show="template3">
+            <div class="row align-items-center">
+                <div class="col-lg-1 col-md-1 col-sm-0 col-xs-0"></div>
+                <div class="col-lg-10 col-md-10 col-sm-12 col-xs-12 template-company-container">
+                    <div ng-show="tasksCompleted < 38 && settingUpDemo" class="align-items-center" style="margin-bottom: 30px; display: block;">
+                        <img style="margin:auto; display: block;" src="../../../../assets/img/loading.gif" width="100" height="100">
+                    </div>
+                    <div style="margin-top: 10px" style="overflow: hidden;">
+                        <label fade-in-out="tasksCompleted < 38" class="welcome-label2 align-items-center" style="font-size: 26px;">Hold on, we're building your template...</label>
+                        <label fade-in-out="tasksCompleted >= 38" class="welcome-label2 align-items-center" style="font-size: 26px;">Complete! Taking you to the Get Started page now...</label>
+                     </div>
+                    <div class="row" style="margin-top: 10px">
+                        <div class="col-lg-1 col-md-1 col-sm-0 col-xs-0"></div>
+                        <div class="col-lg-10 col-md-10 col-xs-12 col-xs-12">
+                            <div class="row">
+                                <!-- On task completion -->
+                                <div ng-show="tasksCompleted > 38" class="col-lg-12 col-md-12 col-sm-12 col-xs-12 align-items-center" style="height: 100px;">
+                                    <span class="login-labels demo-labels demo-progress">Tasks&nbsp;
+                                    <span style="color: #A4A5F5;" ng-style="tasksCompleted == 39 && {'font-weight': 'bold'}">
+                                        <span ng-bind="tasksCompleted" ></span> / 39</span>
+                                    </span>
+                                </div>
+                                <!-- For running tasks -->
+                                <div ng-hide="tasksCompleted >= 38" class="col-lg-3 col-md-3 col-sm-12 col-xs-12" style="height: 100px;">
+                                    <div class="align-items-center">
+                                        <span class="login-labels demo-labels demo-progress" style="font-size: 18px; margin-right: -15px;">Task&nbsp;
+                                        <span style="color: #A4A5F5;">
+                                            <span ng-bind="tasksCompleted"></span> / 39</span>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div ng-hide="tasksCompleted >= 38" class="col-lg-9 col-md-9 col-sm-12 col-xs-12" style="height: 100px;">
+                                    <label slide-and-fade="tasksCompleted > 0 && tasksCompleted <= 12" class="welcome-label3 template-progress-msg">Setting up company configurations, groups and their permissions...</label>
+                                    <label slide-and-fade="tasksCompleted > 12 && tasksCompleted <= 22" class="welcome-label3 template-progress-msg">Configuring Stellar Testnet Extension and creating a custom token...</label>
+                                    <label slide-and-fade="tasksCompleted > 22 && tasksCompleted <= 32" class="welcome-label3 template-progress-msg">Setting up Notifications and bulk adding templates...</label>
+                                    <label slide-and-fade="tasksCompleted > 32 && tasksCompleted <= 38" class="welcome-label3 template-progress-msg">Configuring Rewards and Product marketplace extensions...</label>
+                                </div>
+
+                                <!--<div ng-hide="tasksCompleted >= 38" class="col-lg-1 col-md-1 col-xs-0 col-xs-0"></div>-->
+
+                            </div>
+                        </div>
+                        <div class="col-lg-1 col-md-1 col-sm-0 col-xs-0"></div>
+                    </div>
+                </div>
+
+                <div class="col-lg-1 col-md-1 col-sm-0 col-xs-0"></div>
+            </div>
+
+        </div>
     </div>
+    <div class="col-lg-2 col-md-1 col-sm-1 col-xs-1"></div>
 </div>

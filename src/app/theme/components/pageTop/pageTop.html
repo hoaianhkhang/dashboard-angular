@@ -1,8 +1,8 @@
-<div>
+<div ng-hide="settingUpDemo">
   <div class="page-top clearfix" ng-class="{'transparent-header-company-setup': inCompanySetupViews}"scroll-position="scrolled" max-height="50">
 
     <div class="show-above-1200px" style="background-color: #11ffee00;" >
-      <a ng-show="inCompanySetupViews" href="https://rehive.com/" class="al-rehive-logo clearfix">
+      <a ng-show="inCompanySetupViews" href="https://rehive.com/" class="al-rehive-logo clearfix" ng-class="{'body-white': inVerification}">
         <img style="width: 160px; height:70px; margin-bottom: 3px;" src="../../../../assets/img/setup-logo.png">
       </a>
       <div class="logo-div" ng-hide="inCompanySetupViews" >
@@ -21,7 +21,7 @@
           </a>
           <ul  class="top-dropdown-menu profile-dropdown" uib-dropdown-menu>
             <li><i class="dropdown-arr"></i></li>
-            <li ng-click="viewProfile()"><a href class="signout text-center"><i class="profile-navbar-icon ion-person"></i>
+            <li ng-hide="inVerification" ng-click="viewProfile()"><a href class="signout text-center"><i class="profile-navbar-icon ion-person"></i>
               View profile</a></li>
             <li ng-click="logout()"><a href class="signout text-center"><i class="profile-navbar-icon ion-log-out"></i>Log out</a></li>
           </ul>
