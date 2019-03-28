@@ -30,6 +30,7 @@
         $scope.showingDashboardTasks = false;
         $scope.showingDashboardBelow1200Tasks = false;
         $scope.allTasksDone = true;
+        $scope.profileImageAvailable = $scope.useRehiveLogo = false;
         $scope.pagination = {
             itemsPerPage: 10,
             pageNo: 1,
@@ -64,6 +65,46 @@
             $scope.searchString += option.name;
             vm.searchBox.focus();
         };
+
+        vm.getAdminProfile = function(){
+            if(vm.token){
+                $scope.loadingCompanyInfo = true;
+                Rehive.user.get().then(function (res) {
+                    $scope.profileImage = res.profile;
+                    if($scope.profileImage){
+                        $scope.profileImageAvailable = true;
+                    } else {
+                        $scope.useRehiveLogo = true;
+                        $scope.rehiveLogo  = '../../assets/img/_rehiveLogo.svg';
+                    }
+                    $scope.loadingCompanyInfo = false;
+                    $scope.$apply();
+                }, function (error) {
+                    $scope.loadingCompanyInfo = false;
+                    errorHandler.evaluateErrors(error);
+                    errorHandler.handleErrors(error);
+                    $scope.$apply();
+                });
+            }
+        };
+        vm.getAdminProfile();
+
+        vm.getCompanyInfo = function () {
+            if(vm.token) {
+                $scope.loadingCompanyInfo = true;
+                Rehive.admin.company.get().then(function (res) {
+                    $scope.companyImageUrl = res.logo;
+                    $scope.companyIconUrl = res.icon;
+                    $scope.$apply();
+                }, function (error) {
+                    $scope.loadingCompanyInfo = false;
+                    errorHandler.evaluateErrors(error);
+                    errorHandler.handleErrors(error);
+                    $scope.$apply();
+                });
+            }
+        };
+        vm.getCompanyInfo();
 
         vm.currentLocation = $location.path();
         $rootScope.$on('$locationChangeStart', function (event,newUrl,oldURl) {

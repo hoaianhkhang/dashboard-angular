@@ -297,11 +297,13 @@ input.custom-rehive-checkbox:disabled{
 
 .user-switch-active, .user-switch-inactive {font-size:40px;cursor:pointer;}
 .user-switch-active { color: $primary;}
-.user-switch-inactive {color: #A4A5F5;}
+//.user-switch-inactive {color: #A4A5F5;}
+.user-switch-inactive {color: #C1C1C1;}
 
 .notification-switch-active, .notification-switch-inactive {font-size:34px;cursor:pointer;}
 .notification-switch-active {color: $primary;}
-.notification-switch-inactive {color: #A4A5F5;}
+//.notification-switch-inactive {color: #A4A5F5;}
+.notification-switch-inactive {color: #C1C1C1;}
 
 .user-switches-table-header > th{
   color: #A8A8A8;

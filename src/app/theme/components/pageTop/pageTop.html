@@ -13,7 +13,11 @@
       <div class="user-profile clearfix">
         <div class="al-user-profile" uib-dropdown>
           <a uib-dropdown-toggle class="profile-toggle-link">
-            <div class="alternatePhoto-page-top pointer">{{pageTopObj.userInfoObj.first_name | limitTo: 1 | uppercase}}{{pageTopObj.userInfoObj.last_name | uppercase | limitTo: 1}}</div>
+            <!--<div class="alternatePhoto-page-top pointer">{{pageTopObj.userInfoObj.first_name | limitTo: 1 | uppercase}}{{pageTopObj.userInfoObj.last_name | uppercase | limitTo: 1}}</div>-->
+            <div class="pointer">
+              <div id="companyLogo" ng-show="profileImageAvailable" class="show-rehive-logo" ng-style="{'background-image': 'url(' + profileImage + ')'}"></div>
+              <div id="rehivelogo" ng-show="useRehiveLogo" class="show-rehive-logo floating-cube" ng-style="{'background-image':'url(' + rehiveLogo + ')'}"></div>
+            </div>
           </a>
           <ul  class="top-dropdown-menu profile-dropdown" uib-dropdown-menu>
             <li><i class="dropdown-arr"></i></li>
