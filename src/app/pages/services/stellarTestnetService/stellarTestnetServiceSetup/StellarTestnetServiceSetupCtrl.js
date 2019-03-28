@@ -72,7 +72,7 @@
         $scope.checkTXLMCurrency = function () {
             if(vm.token){
                 $scope.loadingStellarTestnetService = true;
-                $http.get(environmentConfig.API + 'admin/currencies/?archived=false&page_size=250&code=TXLM', {
+                $http.get(environmentConfig.API + '/admin/currencies/?archived=false&page_size=250&code=TXLM', {
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': vm.token
@@ -110,7 +110,7 @@
                     divisibility: 7
                 };
 
-                $http.post(environmentConfig.API + 'admin/currencies/', TXLMCurrencyObj,{
+                $http.post(environmentConfig.API + '/admin/currencies/', TXLMCurrencyObj,{
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': vm.token
@@ -131,7 +131,7 @@
         vm.checkUserGroup = function () {
             if(vm.token){
                 $scope.loadingStellarTestnetService = true;
-                $http.get(environmentConfig.API + 'admin/groups/?name=user', {
+                $http.get(environmentConfig.API + '/admin/groups/?name=user', {
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': vm.token
@@ -162,7 +162,7 @@
                     default: true
                 };
 
-                $http.post(environmentConfig.API + 'admin/groups/', UserGroupObj,{
+                $http.post(environmentConfig.API + '/admin/groups/', UserGroupObj,{
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': vm.token
@@ -182,7 +182,7 @@
         vm.checkDefaultAccConfig = function () {
             if(vm.token){
                 $scope.loadingStellarTestnetService = true;
-                $http.get(environmentConfig.API + 'admin/groups/user/account-configurations/', {
+                $http.get(environmentConfig.API + '/admin/groups/user/account-configurations/', {
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': vm.token
@@ -222,7 +222,7 @@
                     default: true
                 };
 
-                $http.post(environmentConfig.API + 'admin/groups/user/account-configurations/', defaultAccConfigObj,{
+                $http.post(environmentConfig.API + '/admin/groups/user/account-configurations/', defaultAccConfigObj,{
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': vm.token
@@ -242,7 +242,7 @@
         vm.addTXLMToDefaultAccConfig = function () {
             if(vm.token){
                 $scope.loadingStellarTestnetService = true;
-                $http.post(environmentConfig.API + 'admin/groups/user/account-configurations/default/currencies/', {currency: 'TXLM'},{
+                $http.post(environmentConfig.API + '/admin/groups/user/account-configurations/default/currencies/', {currency: 'TXLM'},{
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': vm.token

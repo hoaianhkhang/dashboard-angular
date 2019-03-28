@@ -67,7 +67,7 @@
 
         $scope.getUserObjEmail = function (id) {
             $scope.userEmailObj = '';
-            $http.get(environmentConfig.API + 'admin/users/?user=' + id, {
+            $http.get(environmentConfig.API + '/admin/users/?user=' + id, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': vm.token

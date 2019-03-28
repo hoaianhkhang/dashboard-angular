@@ -16,7 +16,7 @@
 
         $scope.getActiveServices = function(){
             $scope.loadingServices = true;
-            $http.get(environmentConfig.API + 'admin/services/?active=true', {
+            $http.get(environmentConfig.API + '/admin/services/?active=true', {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': vm.token
@@ -35,7 +35,7 @@
 
         $scope.getAllServices = function(activeServices){
             $scope.loadingServices = true;
-            $http.get(environmentConfig.API + 'admin/services/', {
+            $http.get(environmentConfig.API + '/admin/services/', {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': vm.token
@@ -100,8 +100,8 @@
             $scope.loadingServices = true;
             if($scope.selectedServices.length > 0) {
                 $scope.selectedServices.forEach(function (service,index,array) {
-                    // $http.put(environmentConfig.API + 'admin/services/' + service.id + '/',{password: password, terms_and_conditions: true, active: true}, {
-                    $http.put(environmentConfig.API + 'admin/services/' + service.id + '/',{terms_and_conditions: true, active: true}, {
+                    // $http.put(environmentConfig.API + '/admin/services/' + service.id + '/',{password: password, terms_and_conditions: true, active: true}, {
+                    $http.put(environmentConfig.API + '/admin/services/' + service.id + '/',{terms_and_conditions: true, active: true}, {
                         headers: {
                             'Content-Type': 'application/json',
                             'Authorization': vm.token

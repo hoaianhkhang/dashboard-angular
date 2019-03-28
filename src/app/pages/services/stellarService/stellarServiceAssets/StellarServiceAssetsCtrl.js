@@ -19,7 +19,7 @@
         vm.getXLMCurrency = function () {
             $scope.loadingAssets =  true;
             if(vm.token) {
-                $http.get(environmentConfig.API + 'admin/currencies/XLM/', {
+                $http.get(environmentConfig.API + '/admin/currencies/XLM/', {
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': vm.token

@@ -25,7 +25,7 @@
         };
 
         $scope.goToRecipientView= function (email) {
-            $http.get(environmentConfig.API + 'admin/users/?email__contains=' + email, {
+            $http.get(environmentConfig.API + '/admin/users/?email__contains=' + email, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': vm.token

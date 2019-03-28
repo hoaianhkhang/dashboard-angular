@@ -29,7 +29,7 @@
 
         $scope.findUserObj = function () {
             $scope.loadingReward = true;
-            $http.get(environmentConfig.API + 'admin/users/?user=' + $scope.reward.user, {
+            $http.get(environmentConfig.API + '/admin/users/?user=' + $scope.reward.user, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': vm.token

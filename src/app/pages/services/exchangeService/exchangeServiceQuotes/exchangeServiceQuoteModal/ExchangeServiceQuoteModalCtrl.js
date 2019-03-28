@@ -17,7 +17,7 @@
 
         vm.getTransactions = function() {
             $scope.loadingTransactions = true;
-            var url = environmentConfig.API + 'admin/transactions/?metadata__quote_id='+$scope.quote.id;
+            var url = environmentConfig.API + '/admin/transactions/?metadata__quote_id='+$scope.quote.id;
             $http.get(url, {
                     headers: {
                         'Content-Type': 'application/json',
