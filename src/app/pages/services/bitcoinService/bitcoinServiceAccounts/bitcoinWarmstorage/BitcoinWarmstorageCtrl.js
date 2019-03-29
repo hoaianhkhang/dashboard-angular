@@ -238,7 +238,7 @@
                 subtype: $scope.filtersWarmstorageObj.transactionTypeFilter ? ($scope.applyFiltersWarmstorageObj.transactionSubtypeFilter.selectedTransactionSubtypeOption ? $scope.applyFiltersWarmstorageObj.transactionSubtypeFilter.selectedTransactionSubtypeOption: null): null
             };
 
-            return environmentConfig.API + '/admin/transactions/?' + serializeFiltersService.serializeFilters(searchObj);
+            return environmentConfig.API + 'admin/transactions/?' + serializeFiltersService.serializeFilters(searchObj);
         };
 
         $scope.getLatestWarmstorageTransactions = function(applyFilter){

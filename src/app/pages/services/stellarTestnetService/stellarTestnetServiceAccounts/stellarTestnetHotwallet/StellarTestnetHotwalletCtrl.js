@@ -287,7 +287,7 @@
                 subtype: $scope.filtersHotwalletObj.transactionTypeFilter ? ($scope.applyFiltersHotwalletObj.transactionSubtypeFilter.selectedTransactionSubtypeOption ? $scope.applyFiltersHotwalletObj.transactionSubtypeFilter.selectedTransactionSubtypeOption: null): null
             };
 
-            return environmentConfig.API + '/admin/transactions/?' + serializeFiltersService.serializeFilters(searchObj);
+            return environmentConfig.API + 'admin/transactions/?' + serializeFiltersService.serializeFilters(searchObj);
         };
 
         $scope.getLatestHotwalletTransactions = function(applyFilter){

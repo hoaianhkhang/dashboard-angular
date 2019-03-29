@@ -19,7 +19,7 @@
         vm.getTXLMCurrency = function () {
             $scope.loadingAssets =  true;
             if(vm.token) {
-                $http.get(environmentConfig.API + '/admin/currencies/TXLM/', {
+                $http.get(environmentConfig.API + 'admin/currencies/TXLM/', {
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': vm.token

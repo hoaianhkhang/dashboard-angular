@@ -55,7 +55,7 @@
 
         vm.getCompanyCurrencies = function(){
             if(vm.token){
-                $http.get(environmentConfig.API + '/admin/currencies/?archived=false&page_size=250', {
+                $http.get(environmentConfig.API + 'admin/currencies/?archived=false&page_size=250', {
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': vm.token
@@ -78,7 +78,7 @@
 
         $scope.findUserObj = function (user) {
             $scope.rewardingUser = true;
-            $http.get(environmentConfig.API + '/admin/users/?user=' + encodeURIComponent(user), {
+            $http.get(environmentConfig.API + 'admin/users/?user=' + encodeURIComponent(user), {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': vm.token
