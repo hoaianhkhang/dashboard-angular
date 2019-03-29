@@ -6,10 +6,12 @@
 
     /** @ngInject */
     function StellarTestnetServiceConfigCtrl($scope,$http,localStorageManagement,toastr,errorHandler,$location,
-                                             Rehive, serializeFiltersService, $uibModal) {
+                                             Rehive, serializeFiltersService, $uibModal, $state) {
 
         var vm = this, extensionsList = JSON.parse(localStorageManagement.getValue('extensionsList'));
         vm.token = localStorageManagement.getValue('TOKEN');
+        vm.companyIdentifier = localStorageManagement.getValue('companyIdentifier');
+        vm.stellarTestnetConfigurations = vm.companyIdentifier + "_stellarTestnetConfigs";
         vm.serviceUrl = extensionsList[78];
         // vm.serviceUrl = "https://stellar-testnet.services.rehive.io/api/1/";
         $scope.currentConfigView = 'user defaults';
@@ -30,7 +32,19 @@
 
         vm.initialize = function(){
             $scope.testnetConfig.userDefaults = {};
-            $scope.testnetConfig.subtypes = {};
+            vm.testnetConfigs = localStorageManagement.getValue(vm.stellarTestnetConfigurations) ?
+                JSON.parse(localStorageManagement.getValue(vm.stellarTestnetConfigurations)) : null;
+
+            if(!vm.testnetConfigs){
+                vm.testnetConfigs = {
+                    step1Completed: false,
+                    step2Completed: false,
+                    currentStep: "user defaults",
+                    userDefaults: null
+                }
+            }
+
+            $scope.currentConfigView = vm.testnetConfigs.currentStep;
 
             $scope.testnetConfig.userDefaults.defaultGroup = null;
             $scope.testnetConfig.userDefaults.primaryAccountConfig = null;
@@ -45,6 +59,23 @@
 
         $scope.copiedSuccessfully = function () {
             toastr.success('Address copied successfully');
+        };
+
+        vm.updateSetupCompletionStatus = function(){
+            if(vm.token){
+                $http.patch(vm.serviceUrl + 'admin/company/', {has_completed_setup: true}, {
+                    headers: {
+                        'Content-type': 'application/json',
+                        'Authorization': vm.token
+                    }
+                }).then(function(res){
+                    // $location.path('/services/stellar-testnet/configuration');
+                    $location.path('/extensions/stellar-testnet/accounts');
+                }).catch(function(error){
+                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.handleErrors(error);
+                });
+            }
         };
 
         vm.getGroups = function(){
@@ -63,21 +94,29 @@
                         }
                     });
                     $scope.maxOptions = $scope.groupOptions.length;
-
+                    $scope.addedCount = 0;
                     if(!$scope.testnetConfig.userDefaults.defaultGroup){
                         $scope.testnetConfig.userDefaults.defaultGroup = $scope.groupOptions[0];
                     } else{
                         $scope.testnetConfig.userDefaults.defaultGroup.name = $scope.testnetConfig.userDefaults.defaultGroup.name  + " (default)";
                     }
 
-                    $scope.testnetConfig.userDefaults.groups.push({
-                        group: $scope.testnetConfig.userDefaults.defaultGroup,
-                        config: null,
-                        hasAccountConfigs: false,
-                        groupAccountConfigs: []
-                    });
-                    ++$scope.addedCount;
-                    $scope.trackGroupChange($scope.testnetConfig.userDefaults.defaultGroup);
+                    if(vm.testnetConfigs.userDefaults){
+                        console.log(vm.testnetConfigs.userDefaults);
+                        $scope.testnetConfig.userDefaults.groups = [];
+                        $scope.testnetConfig.userDefaults.groups = vm.testnetConfigs.userDefaults;
+                        $scope.addedCount = vm.testnetConfigs.userDefaults.length;
+                    }
+                    else if($scope.maxOptions > 0){
+                        $scope.testnetConfig.userDefaults.groups.push({
+                            group: $scope.testnetConfig.userDefaults.defaultGroup,
+                            config: null,
+                            hasAccountConfigs: false,
+                            groupAccountConfigs: []
+                        });
+                        ++$scope.addedCount;
+                        $scope.trackGroupChange($scope.testnetConfig.userDefaults.defaultGroup);
+                    }
                     $scope.$apply();
                 }, function (error) {
                     errorHandler.evaluateErrors(error);
@@ -132,6 +171,10 @@
                     $scope.$apply();
                 });
             }
+        };
+
+        $scope.openAddGroupModal = function () {
+            $state.go('groups.overview', {externalCall: "stellar-testnet"});
         };
 
         $scope.addGroupAccountConfig = function(groupObj){
@@ -189,6 +232,39 @@
             console.log($scope.testnetConfig.userDefaults.groups)
         };
 
+        $scope.goBack = function(view){
+            vm.testnetConfigs.currentStep = view;
+            localStorageManagement.setValue(vm.stellarTestnetConfigurations ,JSON.stringify(vm.testnetConfigs));
+            $scope.goToConfigView(view);
+        };
+
+        $scope.checkHotwalletFundStatus = function(){
+            $scope.goToConfigView("hotwallet warmstorage");
+            vm.testnetConfigs.currentStep = "hotwallet warmstorage";
+            vm.testnetConfigs.step1Completed = true;
+            vm.testnetConfigs.userDefaults = $scope.testnetConfig.userDefaults.groups;
+            localStorageManagement.setValue(vm.stellarTestnetConfigurations ,JSON.stringify(vm.testnetConfigs));
+
+            // if(vm.token){
+            //     if(!vm.testnetConfigs.step2Completed){
+                    $http.get(vm.serviceUrl + 'admin/hotwallet/active/', {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': vm.token
+                        }
+                    }).then(function(res){
+                        console.log(res);
+                        // if(res.data.data.balance == 0){
+                        //    $scope.fundAccountUsingFriendbot();
+                        // }
+                    }).catch(function(error){
+                        errorHandler.evaluateErrors(error.data);
+                        errorHandler.handleErrors(error);
+                    });
+            //     }
+            // }
+        };
+
         $scope.fundAccountUsingFriendbot = function () {
             $scope.fundingAccountUsingTestnet = true;
             var address = $scope.hotWalletFundObj.account_address;
@@ -198,15 +274,20 @@
                     'Content-Type': 'application/json'
                 }
             }).then(function (res) {
+                console.log(res);
                 if (res.status === 200) {
+                    vm.testnetConfigs.step2Completed = true;
+                    localStorageManagement.setValue(vm.stellarTestnetConfigurations ,JSON.stringify(vm.testnetConfigs));
                     $scope.fundingAccountUsingTestnet = false;
                     $scope.hotwalletHasBeenFunded = true;
                 }
             }).catch(function (error) {
                 $scope.fundingAccountUsingTestnet = false;
                 $scope.hotwalletHasBeenFunded = false;
-                errorHandler.evaluateErrors(error.data);
-                errorHandler.handleErrors(error);
+                if(error.status !== 400){
+                    errorHandler.evaluateErrors(error.data);
+                    errorHandler.handleErrors(error);
+                }
             });
         };
 

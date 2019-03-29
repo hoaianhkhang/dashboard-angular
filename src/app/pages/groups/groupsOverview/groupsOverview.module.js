@@ -11,6 +11,9 @@
                 url: '/overview',
                 controller: 'GroupsOverviewCtrl',
                 templateUrl: 'app/pages/groups/groupsOverview/groupsOverview.html',
+                params: {
+                    externalCall: null
+                },
                 title: "Groups details"
             });
 

@@ -50,26 +50,6 @@
         };
         $scope.checkStellarTestnetServiceInitialState();
 
-        vm.updateSetupCompletionStatus = function(){
-            if(vm.token){
-                $http.patch(vm.serviceUrl + 'admin/company/', {has_completed_setup: true}, {
-                    headers: {
-                        'Content-type': 'application/json',
-                        'Authorization': vm.token
-                    }
-                }).then(function(res){
-                    $scope.loadingStellarTestnetService = false;
-                    $scope.stellarTestnetConfigComplete = true;
-                    // $location.path('/services/stellar-testnet/configuration');
-                    $location.path('/extensions/stellar-testnet/configuration');
-                }).catch(function(error){
-                    $scope.loadingStellarTestnetService = false;
-                    errorHandler.evaluateErrors(error.data);
-                    errorHandler.handleErrors(error);
-                });
-            }
-        };
-
         $scope.checkTXLMCurrency = function () {
             if(vm.token){
                 $scope.loadingStellarTestnetService = true;
@@ -87,7 +67,8 @@
                         // }
                         // $location.path('/services/stellar-testnet/configuration');
                         if(res.data.data.results.length == 1){
-                            vm.updateSetupCompletionStatus();
+                            $location.path('/extensions/stellar-testnet/configuration');
+                            // vm.updateSetupCompletionStatus();
                         } else if(res.data.data.results.length == 0){
                             vm.createTXLMCurrency();
                         }
@@ -118,8 +99,8 @@
                     }
                 }).then(function (res) {
                     if (res.status === 201) {
-                        // vm.checkUserGroup();
-                        vm.updateSetupCompletionStatus();
+                        // vm.updateSetupCompletionStatus();
+                        $location.path('/extensions/stellar-testnet/configuration');
                     }
                 }).catch(function (error) {
                     $scope.loadingStellarTestnetService = false;

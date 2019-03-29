@@ -6,7 +6,7 @@
 
     /** @ngInject */
     function GroupsOverviewCtrl($rootScope,$scope,localStorageManagement,$uibModal,
-                                errorHandler,serializeFiltersService,toastr,Rehive,$intercom) {
+                                errorHandler,serializeFiltersService,toastr,Rehive,$intercom, $state) {
 
         $intercom.update({});
         var vm = this;
@@ -176,6 +176,7 @@
             });
         };
 
+
         $scope.openAddGroupModal = function (page, size) {
             vm.theModal = $uibModal.open({
                 animation: true,
@@ -191,6 +192,10 @@
             }, function(){
             });
         };
+
+        if($state.params.externalCall){
+            $scope.openAddGroupModal('app/pages/groups/groupsOverview/addGroupModal/addGroupModal.html', 'md');
+        }
 
         $scope.openDeleteGroupModal = function (page, size, group) {
             vm.theDeleteModal = $uibModal.open({

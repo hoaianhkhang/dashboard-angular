@@ -8,12 +8,13 @@
                 <ul class="ul-no-dot">
                     <li>In order for users to transact using the Stellar Extension their accounts need to have Testnet Lumens (TXLM) as a currency. Rehive's default setup is to add TXLM to your default group's primary account.</li>
                     <li>You can use the default setup provided on the right or choose your own.</li>
+                    <li><strong>Note: You must have multiple non-admin and non-extension groups to add them to the config.</strong></li>
                 </ul>
             </div>
             <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12 custom-form">
                 <div class="form-group setup-groups-tooltip-div">
 
-                    <div class="row divider" ng-repeat="group in testnetConfig.userDefaults.groups">
+                    <div ng-show="maxOptions > 0" class="row divider" ng-repeat="group in testnetConfig.userDefaults.groups">
                         <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
                             <div class="reward-multi-select">
                                 <select chosen
@@ -40,7 +41,7 @@
                             </div>
                             <div ng-hide="group.hasAccountConfigs">
                                 <a class="pull-right divider pointer edit-transaction-divider"
-                                   ng-click="addGroupAccountConfig(group.group)"><i class="fa fa-pencil"></i> Add an account configuration</a>
+                                   ng-click="addGroupAccountConfig(group.group)"><i class="fa fa-pencil"></i> Add an account configuration with TXLM currency</a>
                             </div>
                         </div>
                         <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 product-buttons-container">
@@ -48,9 +49,13 @@
                                ng-class="{'stellar-testnet-plus-initial': $first && group.group == testnetConfig.userDefaults.defaultGroup}"
                                ng-click="addGroupConfig()"></i>
                             <i ng-show="testnetConfig.userDefaults.groups.length > 1" class="fa fa-minus-square-o product-prices-remove-icon stellar-testnet-minus-icon"
-                               ng-class="{'stellar-testnet-minus-icon-final': $last && addedCount < maxOptions || !group.hasAccountConfigs}"
+                               ng-class="{'stellar-testnet-minus-icon-final': $last && addedCount < maxOptions && group.hasAccountConfigs}"
                                ng-click="removeGroupConfig(group)"></i>
                         </div>
+                    </div>
+                    <div ng-hide="maxOptions > 0" class="row divider">
+                        <a class="col-lg-12 col-md-12 col-sm-12 col-xs-12 divider pointer edit-transaction-divider"
+                           ng-click="openAddGroupModal()"><i class="fa fa-pencil"></i>  No groups found to be used. Add a default group</a>
                     </div>
                 </div>
 
@@ -58,13 +63,15 @@
         </div>
 
         <div class="form-group">
-            <!--<button ng-click="goToNextView()" ng-disabled="setupUsers==1"-->
-                    <!--class="btn btn-primary setup-skip-btn pull-left dashboard-btn">Back-->
-            <!--</button>-->
-            <button ng-click="goToConfigView('hotwallet warmstorage')"
-                    class="btn btn-primary setup-skip-btn pull-left dashboard-btn">Skip
+            <button ng-click="goBack('user defaults')"
+                    ng-disabled="!hasAccountConfigs || maxOptions < 1"
+                    class="btn btn-primary setup-skip-btn pull-left dashboard-btn">Back
             </button>
-            <button ng-click="goToNextView()" ng-disabled="!hasAccountConfigs" class="btn btn-primary pull-right dashboard-btn">Next
+            <button ng-click="goToConfigView('hotwallet warmstorage')"
+                    ng-disabled="!hasAccountConfigs || maxOptions < 1"
+                    class="btn btn-primary setup-skip-btn pull-left dashboard-btn margin-left-10">Skip
+            </button>
+            <button ng-click="checkHotwalletFundStatus()" ng-disabled="!hasAccountConfigs || maxOptions < 1" class="btn btn-primary pull-right dashboard-btn">Next
             </button>
         </div>
     </div>

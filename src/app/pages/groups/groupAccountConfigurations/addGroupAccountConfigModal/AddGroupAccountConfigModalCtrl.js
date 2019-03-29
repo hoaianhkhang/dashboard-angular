@@ -9,7 +9,7 @@
 
         var vm = this;
         vm.token = localStorageManagement.getValue('token');
-        vm.groupName = $stateParams.groupName ? $stateParams.groupName : groupObj.name;
+        vm.groupName = $stateParams.groupName ? $stateParams.groupName : (groupObj.name.indexOf("(default)") > 0) ? groupObj.name.split(' ')[0] : groupObj.name;
         $scope.loadingGroupAccountConfigurations = false;
         $scope.companyCurrenciesAvailable = true;
         $scope.groupAccountConfigurationParams = {};
