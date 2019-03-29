@@ -1,8 +1,8 @@
-FROM node:latest
+FROM node:10
 RUN npm install -g \
      gulp-cli \
      bower
-COPY package.json bower.json gulpfile.js /app/
+COPY package.json bower.json gulpfile.js .eslintrc.json /app/
 COPY gulp /app/gulp/
 # TODO: combine two commands above
 WORKDIR /app
