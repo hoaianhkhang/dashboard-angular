@@ -12,7 +12,8 @@
                 key: $stateParams.key
             }).then(function (res) {
                 toastr.success("Email has been verified successfully");
-                $location.path('/verification');
+                // $location.path('/verification');
+                $location.path('/template');
                 $scope.$apply();
             }, function (error) {
                 errorHandler.evaluateErrors(error);

@@ -7,8 +7,9 @@
     /** @ngInject */
     function routeConfig($stateProvider) {
         $stateProvider
-            .state('verification', {
-                url: '/verification',
+            // .state('verification', {
+            .state('template', {
+                url: '/template',
                 views:{
                     'admin':{
                         templateUrl: 'app/pages/register/verification/verification.html',

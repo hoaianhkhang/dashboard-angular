@@ -34,7 +34,8 @@
                 $rootScope.pageTopObj.userInfoObj = res;
                 var token = localStorageManagement.getValue('token');
                 localStorageManagement.setValue('TOKEN','Token ' + token);
-                $location.path('/verification');
+                // $location.path('/verification');
+                $location.path('/template');
                 $scope.$apply();
                 $intercom.boot({
                     email: res.email,

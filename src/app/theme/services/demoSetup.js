@@ -636,7 +636,7 @@
             setupBatchSendService: function () {
                 var vm = this;
                 if (vm.token) {
-                    $http.put(environmentConfig.API + '/admin/services/80/', {
+                    $http.put(environmentConfig.API + 'admin/services/80/', {
                         terms_and_conditions: true,
                         active: true
                     }, {
@@ -665,7 +665,7 @@
                 bitCoinSubtypes = serializeFiltersService.objectFilters(bitCoinSubtypes);
 
                 if (vm.token) {
-                    $http.put(environmentConfig.API + '/admin/services/12/', {
+                    $http.put(environmentConfig.API + 'admin/services/12/', {
                         terms_and_conditions: true,
                         active: true
                     }, {
@@ -703,7 +703,7 @@
                 stellarSubtypes = serializeFiltersService.objectFilters(stellarSubtypes);
 
                 if (vm.token) {
-                    $http.put(environmentConfig.API + '/admin/services/78/', {
+                    $http.put(environmentConfig.API + 'admin/services/78/', {
                         terms_and_conditions: true,
                         active: true
                     }, {
@@ -795,7 +795,7 @@
             setupNotificationService: function () {
                 var vm = this;
                 if(vm.token){
-                    $http.put(environmentConfig.API + '/admin/services/4/', {terms_and_conditions: true, active: true}, {
+                    $http.put(environmentConfig.API + 'admin/services/4/', {terms_and_conditions: true, active: true}, {
                         headers: {
                             'Content-Type': 'application/json',
                             'Authorization': vm.token
@@ -1024,7 +1024,7 @@
                 newProduct2 = serializeFiltersService.objectFilters(newProduct2);
 
                 if (vm.token) {
-                    $http.put(environmentConfig.API + '/admin/services/79/', {
+                    $http.put(environmentConfig.API + 'admin/services/79/', {
                         terms_and_conditions: true,
                         active: true
                     }, {
@@ -1277,7 +1277,7 @@
                 rewardsCampaign2 = serializeFiltersService.objectFilters(rewardsCampaign2);
 
                 if (vm.token) {
-                    $http.put(environmentConfig.API + '/admin/services/45/', {
+                    $http.put(environmentConfig.API + 'admin/services/45/', {
                         terms_and_conditions: true,
                         active: true
                     }, {

@@ -153,7 +153,7 @@
         //when page refreshed
 
         vm.checkIfInCompanySetup = function (currentLocation) {
-            if(currentLocation.indexOf('company/setup') > 0 || currentLocation.indexOf('demo') > 0 || currentLocation.indexOf('verification') > 0){
+            if(currentLocation.indexOf('company/setup') > 0 || currentLocation.indexOf('demo') > 0 || currentLocation.indexOf('template') > 0){
                 $scope.inCompanySetupViews = true;
             } else {
                 $scope.inCompanySetupViews = false;
