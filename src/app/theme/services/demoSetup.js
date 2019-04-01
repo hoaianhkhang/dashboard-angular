@@ -1332,7 +1332,7 @@
                 $rootScope.inVerification = false;
                 toastr.success('All demo config has been successfully setup.');
                 $location.path('/get-started');
-                $scope.$apply();
+                $rootScope.$apply();
             }
         };
     }
