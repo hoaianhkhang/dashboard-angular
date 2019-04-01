@@ -8,7 +8,7 @@
     function stellarTestnetServiceSetupCustomAsset() {
         return {
             restrict: 'E',
-            templateUrl: 'app/pages/services/stellarTestnetService/stellarTestnetServiceConfig/stellarTestnetServiceSetupCustomAsset/stellarTestnetServiceSetupCustomAsset.html'
+            templateUrl: 'app/pages/services/stellarTestnetService/stellarTestnetServiceConfig/stellarTestnetServiceConfigCustomAsset/stellarTestnetServiceConfigCustomAsset.html'
         };
     }
 })();

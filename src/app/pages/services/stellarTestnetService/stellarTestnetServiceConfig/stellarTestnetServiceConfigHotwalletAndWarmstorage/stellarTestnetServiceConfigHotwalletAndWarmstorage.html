@@ -35,8 +35,8 @@
                             <!--</button>-->
                             <loading-image class="stellar-testnet-hotwallet-funding-spinner"
                                            ng-show="fundingAccountUsingTestnet"></loading-image>
-                            <p ng-show="hotwalletHasBeenFunded" class="stellar-public-key-help-message">
-                                Account successfully funded</p>
+                            <p ng-show="fundingAccountUsingTestnet" class="stellar-public-key-help-message">
+                                Funding hotwallet. Please wait.</p>
                         </div>
                     </div>
                 </div>
@@ -48,11 +48,11 @@
                     ng-disabled="fundingAccountUsingTestnet"
                     class="btn btn-primary setup-skip-btn pull-left dashboard-btn">Back
             </button>
-            <button ng-click="goToConfigView('custom asset')"
-                    ng-disabled="fundingAccountUsingTestnet"
-                    class="btn btn-primary setup-skip-btn pull-left dashboard-btn margin-left-10">Skip
-            </button>
-            <button ng-click="" ng-disabled="fundingAccountUsingTestnet" class="btn btn-primary pull-right dashboard-btn">Next
+            <!--<button ng-click="goToConfigView('custom asset')"-->
+                    <!--ng-disabled="fundingAccountUsingTestnet"-->
+                    <!--class="btn btn-primary setup-skip-btn pull-left dashboard-btn margin-left-10">Skip-->
+            <!--</button>-->
+            <button ng-click="goToNext('hotwallet warmstorage', 'custom asset')" ng-disabled="fundingAccountUsingTestnet" class="btn btn-primary pull-right dashboard-btn">Next
             </button>
         </div>
     </div>

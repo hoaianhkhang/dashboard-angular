@@ -683,6 +683,9 @@ a.panel-header-filter-clear{
     text-overflow: ellipsis;
     white-space: nowrap;
   }
+  .warmstorage-keys{
+    max-width: 500px !important;
+  }
 }
 
 @media screen and (max-width: 1700px) {
@@ -691,6 +694,9 @@ a.panel-header-filter-clear{
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+  }
+  .warmstorage-keys{
+    max-width: 420px !important;
   }
 }
 
@@ -702,6 +708,9 @@ a.panel-header-filter-clear{
     text-overflow: ellipsis;
     white-space: nowrap;
   }
+  .warmstorage-keys{
+    max-width: 350px !important;
+  }
 }
 
 @media screen and (max-width: 1305px) {
@@ -710,5 +719,9 @@ a.panel-header-filter-clear{
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+  }
+
+  .warmstorage-keys{
+    max-width: 310px !important;
   }
 }

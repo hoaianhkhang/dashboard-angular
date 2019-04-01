@@ -8,7 +8,7 @@
     function stellarTestnetServiceSetupHotwalletAndWarmstorage() {
         return {
             restrict: 'E',
-            templateUrl: 'app/pages/services/stellarTestnetService/stellarTestnetServiceConfig/stellarTestnetServiceSetupHotwalletAndWarmstorage/stellarTestnetServiceSetupHotwalletAndWarmstorage.html'
+            templateUrl: 'app/pages/services/stellarTestnetService/stellarTestnetServiceConfig/stellarTestnetServiceConfigHotwalletAndWarmstorage/stellarTestnetServiceConfigHotwalletAndWarmstorage.html'
         };
     }
 })();

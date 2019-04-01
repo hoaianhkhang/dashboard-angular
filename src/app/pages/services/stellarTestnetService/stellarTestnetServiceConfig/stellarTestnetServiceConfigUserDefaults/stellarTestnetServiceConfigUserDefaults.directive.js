@@ -8,7 +8,7 @@
     function stellarTestnetServiceSetupUserDefaults() {
         return {
             restrict: 'E',
-            templateUrl: 'app/pages/services/stellarTestnetService/stellarTestnetServiceConfig/stellarTestnetServiceSetupUserDefaults/stellarTestnetServiceSetupUserDefaults.html'
+            templateUrl: 'app/pages/services/stellarTestnetService/stellarTestnetServiceConfig/stellarTestnetServiceConfigUserDefaults/stellarTestnetServiceConfigUserDefaults.html'
         };
     }
 })();

@@ -25,8 +25,7 @@
             }).then(function (res) {
                 $scope.loadingStellarTestnetService = false;
                 if (res.status === 200) {
-                    // var stellarTestnetFullySetup = res.data.data.has_completed_setup;
-                    var stellarTestnetFullySetup = false;
+                    var stellarTestnetFullySetup = res.data.data.has_completed_setup;
                     // var stellarTestnetFullySetup = true;
                     // for(var state in res.data.data){
                     //     if(res.data.data.hasOwnProperty(state)){
