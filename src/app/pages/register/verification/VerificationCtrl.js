@@ -61,21 +61,25 @@
 
         $scope.manualOnboarding = function(){
             $rootScope.inVerification = false;
+            $intercom.trackEvent('manual-setup', {page: "select_template"});
             $location.path('/company/setup/company-details');
         };
 
         $scope.openOverview = function(){
+            $intercom.trackEvent('overview', {page: "select_template"});
             $window.open('https://docsend.com/view/yx2vhzm', '_blank');
         };
 
         $scope.askForCompanyName = function(){
-          $scope.template1 = false;
-          $scope.template2 = true;
+            $scope.template1 = false;
+            $scope.template2 = true;
+            $intercom.trackEvent('selected-template', {page: "select_template"});
         };
 
         $scope.backToLanding = function(){
             $scope.template1 = true;
             $scope.template2 = false;
+            $intercom.trackEvent('back', {page: "basic_info"});
         };
 
         $scope.launchDemoSetup = function(){
@@ -83,6 +87,7 @@
             $scope.template2 = false;
             $scope.template3 = true;
             $rootScope.settingUpDemo = true;
+            $intercom.trackEvent('completed-template', {page: "basic_info"});
             demoSetupService.initializeDemoSetup($scope.companyName);
         };
     /**
