@@ -58,7 +58,8 @@
                     settings: {
                         password_set_url: "https://wallet.rehive.com/password/reset/confirm",
                         password_reset_url: "https://wallet.rehive.com/password/reset/confirm",
-                        email_confirmation_url: "https://wallet.rehive.com/email/verify",
+                        email_verification_url: "https://wallet.rehive.com/email/verify",
+                        // email_confirmation_url: "https://wallet.rehive.com/email/verify",
                     },
                     public: false,
                     config: {

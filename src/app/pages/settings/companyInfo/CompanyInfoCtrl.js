@@ -117,6 +117,7 @@
             if(Object.keys(vm.updatedCompanySettings.settings).length != 0){
                 $scope.loadingCompanyInfo = true;
                 Rehive.admin.company.settings.update(vm.updatedCompanySettings.settings).then(function (res) {
+                    console.log(res);
                     vm.updatedCompanySettings.settings = {};
                     vm.getCompanyInfo();
                     toastr.success('You have successfully updated the company info');
