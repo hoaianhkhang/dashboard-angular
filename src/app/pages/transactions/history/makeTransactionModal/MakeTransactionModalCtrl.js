@@ -177,8 +177,9 @@
                     debit_reference: $scope.transferTransactionData.debit_reference,
                     credit_reference: $scope.transferTransactionData.credit_reference,
                     debit_metadata: transferDebitMetadata,
-                    credit_metadata: transferCreditMetadata
-
+                    credit_metadata: transferCreditMetadata,
+                    debit_subtype: $scope.transferTransactionData.debit_subtype ? $scope.transferTransactionData.debit_subtype.name : null,
+                    credit_subtype: $scope.transferTransactionData.credit_subtype ? $scope.transferTransactionData.credit_subtype.name : null
                 };
 
                 if(!sendTransactionData.user || !sendTransactionData.recipient || !sendTransactionData.amount || !sendTransactionData.currency){

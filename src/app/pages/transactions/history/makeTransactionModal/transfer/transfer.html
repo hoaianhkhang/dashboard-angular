@@ -165,6 +165,25 @@
             <label>Recipient reference</label>
             <input type="text" ng-model="transferTransactionData.credit_reference" class="form-control"  placeholder="e.g. # 1234">
         </div>
+
+
+        <div class="form-group">
+            <label>Debit subtype</label>
+            <select class="form-control pointer" ng-model="transferTransactionData.debit_subtype"
+                    ng-options="subtypeOption.name for subtypeOption in allSubtypes | filter: {tx_type: 'debit'}">
+                <option value="">No subtype</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Credit subtype</label>
+            <select class="form-control pointer" ng-model="transferTransactionData.credit_subtype"
+                    ng-options="subtypeOption.name for subtypeOption in allSubtypes | filter: {tx_type: 'credit'}">
+                <option value="">No subtype</option>
+            </select>
+        </div>
+
+
+
         <span>
             <a class="pointer" ng-hide="showAdvancedTransferOption" ng-click="toggleAdvancedTransferOption()">Advanced options</a>
             <div ng-show="showAdvancedTransferOption">

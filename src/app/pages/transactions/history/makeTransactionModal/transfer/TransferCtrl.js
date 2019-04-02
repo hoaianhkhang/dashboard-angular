@@ -5,7 +5,7 @@
         .controller('TransferCtrl', TransferCtrl);
 
     function TransferCtrl(Rehive,$scope,errorHandler,metadataTextService,$window,
-                          $location,localStorageManagement) {
+                          $location,localStorageManagement, sharedResources) {
 
         var vm = this;
         vm.token = localStorageManagement.getValue('token');
@@ -22,6 +22,8 @@
         $scope.recipientCurrencyAccountsAvailable = true;
         $scope.showAdvancedTransferOption = false;
 
+        $scope.allSubtypes = [];
+
         $scope.transferTransactionData = {
             user: null,
             recipient: null,
@@ -32,13 +34,22 @@
             debit_reference: null,
             credit_reference: null,
             debit_metadata: null,
-            credit_metadata: null
+            credit_metadata: null,
+            debit_subtype: null,
+            credit_subtype: null
         };
 
         if($scope.newTransactionParams.userEmail){
             $scope.transferTransactionData.user = $scope.newTransactionParams.userEmail;
             $location.search('userEmail', null);
         }
+
+        $scope.getSubtypes = function () {
+            sharedResources.getSubtypes().then(function (res) {
+                $scope.allSubtypes = res;
+            });
+        };
+        $scope.getSubtypes();
 
         vm.getTransferCompanyCurrencies = function(){
             if(vm.token){
