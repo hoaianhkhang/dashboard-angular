@@ -35,10 +35,10 @@
                 <div class="col-lg-6 col-md-6 col-sm-8 col-xs-8">
                     <label class="welcome-label3">Let's start with the basics</label>
                     <form name="formTemplateBasics" class="template-company-container">
-                        <label class="welcome-text">Company name</label>
+                        <label class="welcome-text">Company name </label>
                         <span>
                         <input type="text" ng-model="companyName" class="form-control template-1-input"
-                               placeholder="enter a name for your company" auto-focus="true" required>
+                               placeholder="Enter a name for your company" auto-focus="true" required>
                     </span>
                     </form>
                     <div class="template-company-container" style="margin-top: 6vh;">
@@ -61,9 +61,9 @@
                         </form>
                     </div>
                     <div>
-                        <button class="btn btn-default pull-left template-button" style="margin-left: 0px;" ng-click="backToLanding()">Go Back</button>
-                        <button ng-disabled="!formTemplateBasics.$valid" class="btn btn-primary pull-right template-button" ng-click="launchDemoSetup();upload();" style="margin-left: 0px">
-                            Next&nbsp;&nbsp;&nbsp;<span class="template-arrow"><i class="fas fa-arrow-right"></i></span>
+                        <button class="btn btn-default pull-left template-button template-smaller-button" style="margin-left: 0px;" ng-click="backToLanding()">Go Back</button>
+                        <button ng-disabled="!formTemplateBasics.$valid" class="btn btn-primary pull-right template-button" ng-click="launchDemoSetup();upload();" style="margin-left: 0px; width: 55%;">
+                            Build my template&nbsp;&nbsp;&nbsp;<span class="template-arrow"><i class="fas fa-arrow-right"></i></span>
                         </button>
                     </div>
                 </div>
@@ -102,10 +102,11 @@
                                     </div>
                                 </div>
                                 <div ng-hide="tasksCompleted >= 38" class="col-lg-9 col-md-9 col-sm-12 col-xs-12" style="height: 100px;">
-                                    <label slide-and-fade="tasksCompleted > 0 && tasksCompleted <= 12" class="welcome-label3 template-progress-msg">Setting up company configurations, groups and their permissions...</label>
-                                    <label slide-and-fade="tasksCompleted > 12 && tasksCompleted <= 22" class="welcome-label3 template-progress-msg">Configuring Stellar Testnet Extension and creating a custom token...</label>
-                                    <label slide-and-fade="tasksCompleted > 22 && tasksCompleted <= 32" class="welcome-label3 template-progress-msg">Setting up Notifications and bulk adding templates...</label>
-                                    <label slide-and-fade="tasksCompleted > 32 && tasksCompleted <= 38" class="welcome-label3 template-progress-msg">Configuring Rewards and Product marketplace extensions...</label>
+                                    <label slide-and-fade="tasksCompleted > 0 && tasksCompleted <= 10" class="welcome-label3 template-progress-msg">Setting up company configurations, groups and their permissions...</label>
+                                    <label slide-and-fade="tasksCompleted > 10 && tasksCompleted <= 15" class="welcome-label3 template-progress-msg">Configuring Stellar Testnet Extension and creating your custom token...</label>
+                                    <label slide-and-fade="tasksCompleted > 15 && tasksCompleted <= 22" class="welcome-label3 template-progress-msg">Funding your Stellar Testnet hot wallet. This can take up to 2 minutes...</label>
+                                    <label slide-and-fade="tasksCompleted > 22 && tasksCompleted <= 32" class="welcome-label3 template-progress-msg">Setting up email and SMS notifications...</label>
+                                    <label slide-and-fade="tasksCompleted > 32 && tasksCompleted <= 38" class="welcome-label3 template-progress-msg">Configuring reward campaigns and the product marketplace...</label>
                                 </div>
 
                                 <!--<div ng-hide="tasksCompleted >= 38" class="col-lg-1 col-md-1 col-xs-0 col-xs-0"></div>-->
